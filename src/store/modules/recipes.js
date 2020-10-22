@@ -1,6 +1,7 @@
 import RecipeService from '@/services/RecipeService'
 
 export default {
+  namespaced: true,
   state: {
     recipes: []
   },

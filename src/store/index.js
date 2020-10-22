@@ -1,10 +1,14 @@
 import { createStore } from 'vuex'
+import myKitchen from './modules/myKitchen'
+import recipes from './modules/recipes'
+import shoppingList from './modules/shoppingList'
 import user from './modules/user'
-import recipe from './modules/recipe'
 
 export default createStore({
   modules: {
-    user,
-    recipe
+    myKitchen,
+    recipes,
+    shoppingList,
+    user
   }
 })

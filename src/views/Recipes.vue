@@ -17,13 +17,13 @@ export default {
   components: {
     RecipeBox
   },
-  created() {
-    this.$store.dispatch('fetchRecipes')
-  },
   computed: {
     ...mapState({
-      recipes: state => state.recipe.recipes
+      recipes: state => state.recipes.recipes
     })
+  },
+  created() {
+    this.$store.dispatch('recipes/fetchRecipes')
   }
 }
 </script>
