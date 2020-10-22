@@ -18,8 +18,8 @@ export default {
 <style lang="scss" scoped>
 .rating {
   &__value {
-    font-size: 12px;
-    font-weight: 600;
+    font-size: 14px;
+    font-weight: 700;
   }
 }
 </style>

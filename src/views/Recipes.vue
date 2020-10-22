@@ -32,9 +32,11 @@ export default {
 .recipes-list {
   display: flex;
   flex-wrap: wrap;
+  max-width: 416px;
+  margin: -8px;
 
   &__item {
-    width: 164px;
+    width: 50%;
     padding: 8px;
     box-sizing: border-box;
     cursor: pointer;

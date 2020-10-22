@@ -62,7 +62,7 @@ export default {
 
   &__name {
     margin-top: 12px;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 500;
   }
 
@@ -73,7 +73,7 @@ export default {
   &__rating {
     &__value {
       font-size: 10px;
-      font-weight: 600;
+      font-weight: 700;
     }
   }
 }

@@ -29,7 +29,7 @@ export default {
   border-radius: 48px;
   border: 1px solid #e2e9ed;
   display: flex;
-  max-width: 360px;
+  max-width: 416px;
 
   &__info {
     padding: 15px;
