@@ -15,6 +15,5 @@ export default {
         commit('SET_RECIPES', resp.data)
       })
     }
-  },
-  modules: {}
+  }
 }

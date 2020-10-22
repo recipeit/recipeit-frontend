@@ -15,7 +15,7 @@ export default {
 
 <style lang="scss">
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: Montserrat, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -33,5 +33,10 @@ export default {
       color: #42b983;
     }
   }
+}
+
+ul {
+  list-style: none;
+  padding: 0;
 }
 </style>
