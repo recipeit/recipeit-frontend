@@ -9,6 +9,42 @@
       "id": 2,
       "name": "Spaghetti po bolońsku",
       "rating": 4.5
+    },{
+      "id": 1,
+      "name": "Kurczak po chińsku",
+      "rating": 4.3
+    },
+    {
+      "id": 2,
+      "name": "Spaghetti po bolońsku",
+      "rating": 4.5
+    },{
+      "id": 1,
+      "name": "Kurczak po chińsku",
+      "rating": 4.3
+    },
+    {
+      "id": 2,
+      "name": "Spaghetti po bolońsku",
+      "rating": 4.5
+    },{
+      "id": 1,
+      "name": "Kurczak po chińsku",
+      "rating": 4.3
+    },
+    {
+      "id": 2,
+      "name": "Spaghetti po bolońsku",
+      "rating": 4.5
+    },{
+      "id": 1,
+      "name": "Kurczak po chińsku",
+      "rating": 4.3
+    },
+    {
+      "id": 2,
+      "name": "Spaghetti po bolońsku",
+      "rating": 4.5
     }
   ],
   "my-kitchen-products": [

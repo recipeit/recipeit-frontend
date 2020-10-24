@@ -18,6 +18,31 @@ export default {
         id: 2,
         name: 'Spaghetti po bolońsku',
         rating: 4.5
+      },
+      {
+        id: 2,
+        name: 'Spaghetti po bolońsku',
+        rating: 4.5
+      },
+      {
+        id: 2,
+        name: 'Spaghetti po bolońsku',
+        rating: 4.5
+      },
+      {
+        id: 2,
+        name: 'Spaghetti po bolońsku',
+        rating: 4.5
+      },
+      {
+        id: 2,
+        name: 'Spaghetti po bolońsku',
+        rating: 4.5
+      },
+      {
+        id: 2,
+        name: 'Spaghetti po bolońsku',
+        rating: 4.5
       }
     ]
   },

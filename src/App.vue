@@ -1,6 +1,10 @@
 <template>
-  <NavigationBar />
-  <router-view />
+  <div class="layout">
+    <div class="layout__page">
+      <router-view />
+    </div>
+    <NavigationBar />
+  </div>
 </template>
 
 <script>
@@ -14,38 +18,21 @@ export default {
 </script>
 
 <style lang="scss">
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&display=swap');
+@import './styles/styles';
 
-body {
-  padding: 0;
-  margin: 0;
-}
+.layout {
+  max-width: 460px;
+  box-sizing: border-box;
+  margin: 0 auto;
+  background: white;
+  min-height: 100%;
+  box-shadow: 0 0 64px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
 
-#app {
-  font-family: 'Montserrat', Helvetica, Arial, sans-serif;
-  font-weight: 500;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  padding: 32px;
-}
-
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
+  &__page {
+    padding: 32px 32px 0 32px;
+    flex: 1;
   }
-}
-
-ul {
-  list-style: none;
-  padding: 0;
 }
 </style>
