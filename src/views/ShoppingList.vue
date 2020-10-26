@@ -6,6 +6,7 @@
         <ShoppingListProduct :product="product" />
       </li>
     </ul>
+    <BaseButton>Dodaj produkt</BaseButton>
   </div>
 </template>
 

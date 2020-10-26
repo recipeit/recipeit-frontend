@@ -1,0 +1,29 @@
+@function get-color-yiq($color) {
+  $r: red($color);
+  $g: green($color);
+  $b: blue($color);
+
+  $yiq: (($r * 299) + ($g * 587) + ($b * 114))/1000;
+
+  @return $yiq;
+}
+
+@function get-contrast-color($background) {
+  $yiq: get-color-yiq($background);
+
+  @if $yiq >= 128 {
+    @return $text-primary;
+  } @else {
+    @return $white;
+  }
+}
+
+@function subtle-button-background-opacity($background) {
+  $yiq: get-color-yiq($background);
+
+  @if $yiq >= 128 {
+    @return 0.2;
+  } @else {
+    @return 0.1;
+  }
+}

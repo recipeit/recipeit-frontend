@@ -27,7 +27,7 @@ export default {
   line-height: 16px;
   font-weight: 500;
   border-radius: 48px;
-  border: 1px solid #e2e9ed;
+  border: 1px solid $border;
   display: flex;
   max-width: 416px;
 
@@ -42,7 +42,7 @@ export default {
 
   &__quantity {
     margin-left: 12px;
-    color: #90abb9;
+    color: $text-secondary;
   }
 
   &__actions {
