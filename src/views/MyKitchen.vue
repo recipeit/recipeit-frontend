@@ -18,6 +18,10 @@
     <div><BaseButton subtle color="green">Dodaj produkt</BaseButton></div>
     <div><BaseButton subtle color="accent">Dodaj produkt</BaseButton></div>
     <div><BaseButton subtle color="warn">Dodaj produkt</BaseButton></div> -->
+
+    <div class="floating-action-button-container">
+      <BaseButton raised color="primary">Dodaj produkt</BaseButton>
+    </div>
   </div>
 </template>
 
@@ -26,6 +30,7 @@ import { mapState } from 'vuex'
 import KitchenProduct from '@/components/KitchenProduct'
 
 export default {
+  name: 'MyKitchen',
   components: {
     KitchenProduct
   },
@@ -44,9 +49,18 @@ export default {
 .product-list {
   display: flex;
   flex-direction: column;
+  padding: 0;
+  margin: -6px 0;
 
   &__item {
     padding: 6px 0;
   }
+}
+
+.floating-action-button-container {
+  position: fixed;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 </style>

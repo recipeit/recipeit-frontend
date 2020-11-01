@@ -14,6 +14,7 @@ import { mapState } from 'vuex'
 import RecipeBox from '@/components/RecipeBox.vue'
 
 export default {
+  name: 'Recipes',
   components: {
     RecipeBox
   },

@@ -6,7 +6,10 @@
         <ShoppingListProduct :product="product" />
       </li>
     </ul>
-    <BaseButton>Dodaj produkt</BaseButton>
+
+    <div class="floating-action-button-container">
+      <BaseButton raised color="primary">Dodaj produkt</BaseButton>
+    </div>
   </div>
 </template>
 
@@ -15,6 +18,7 @@ import { mapState } from 'vuex'
 import ShoppingListProduct from '@/components/ShoppingListProduct'
 
 export default {
+  name: 'ShoppingList',
   components: {
     ShoppingListProduct
   },
@@ -37,5 +41,12 @@ export default {
   &__item {
     padding: 6px 0;
   }
+}
+
+.floating-action-button-container {
+  position: fixed;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 </style>

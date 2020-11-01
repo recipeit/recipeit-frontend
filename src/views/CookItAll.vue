@@ -1,6 +1,8 @@
 <template>
   <div class="cook-it-layout">
-    <h1>Ugotuj to!</h1>
+    <h1>Pełna lista</h1>
+    <div>Te potrawy możesz przyrządzić z tego co masz w kuchni!</div>
+    <div><BaseButton @click="$router.go(-1)" stroked size="small">Wróć</BaseButton></div>
 
     <div class="filters">
       <div class="filters__button">
@@ -20,30 +22,6 @@
     <div class="recipes-list-block">
       <div class="recipes-list-header">
         <div class="recipes-list-header__total-count">31 przepisów</div>
-        <div class="recipes-list-header__show-all">
-          <router-link :to="{ name: 'cook-it-all' }" class="recipes-list-header__show-all__button">
-            <BaseIcon class="recipes-list-header__show-all__button__icon" icon="arrowRight" /> zobacz wszystkie
-          </router-link>
-        </div>
-      </div>
-      <ul class="recipes-list">
-        <li class="recipes-list__item" v-for="recipe in recipes" :key="recipe.id">
-          <RecipeBox :recipe="recipe" />
-        </li>
-      </ul>
-    </div>
-
-    <div class="recipes-list-block">
-      <div class="recipes-list-title">
-        Dokup brakujący składnik i nie marnuj tych, które już masz!
-      </div>
-      <div class="recipes-list-header">
-        <div class="recipes-list-header__total-count">31 przepisów</div>
-        <div class="recipes-list-header__show-all">
-          <router-link :to="{ name: 'cook-it-all' }" class="recipes-list-header__show-all__button">
-            <BaseIcon class="recipes-list-header__show-all__button__icon" icon="arrowRight" /> zobacz wszystkie
-          </router-link>
-        </div>
       </div>
       <ul class="recipes-list">
         <li class="recipes-list__item" v-for="recipe in recipes" :key="recipe.id">

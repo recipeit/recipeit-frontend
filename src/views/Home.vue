@@ -1,11 +1,13 @@
 <template>
   <div>
-    <h1>Dobry wieczór, Kamil!</h1>
+    <h1><span style="font-weight: 500">Dobry wieczór,</span> Kamil!</h1>
   </div>
 </template>
 
 <script>
-export default {}
+export default {
+  name: 'Home'
+}
 </script>
 
 <style lang="scss" scoped></style>

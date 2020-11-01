@@ -35,8 +35,14 @@ export default {
 
 <style lang="scss" scoped>
 .recipe-box {
+  $root: &;
+
   text-align: left;
   max-width: 192px;
+
+  &:hover &__image-container__image img {
+    transform: scale(1.1);
+  }
 
   &__image-container {
     width: 100%;
@@ -56,6 +62,7 @@ export default {
         width: 100%;
         height: 100%;
         object-fit: cover;
+        transition: transform 0.3s ease;
       }
     }
   }

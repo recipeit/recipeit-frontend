@@ -1,18 +1,23 @@
 <template>
   <div class="layout">
     <div class="layout__page">
-      <router-view />
+      <transition name="page-component-fade" mode="out-in">
+        <router-view />
+      </transition>
     </div>
     <NavigationBar />
   </div>
+  <!-- <SheetModal /> -->
 </template>
 
 <script>
 import NavigationBar from '@/components/NavigationBar'
+// import SheetModal from '@/components/Modal'
 
 export default {
   components: {
     NavigationBar
+    // SheetModal
   }
 }
 </script>
@@ -27,10 +32,27 @@ export default {
   box-shadow: 0 0 64px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
+  width: 100%;
+  flex: 1;
 
   &__page {
     padding: 32px 32px 84px 32px;
     flex: 1;
   }
+}
+
+.page-component-fade-enter-active,
+.page-component-fade-leave-active {
+  transition: all 0.3s ease;
+}
+.page-component-fade-enter-from,
+.page-component-fade-leave-to {
+  opacity: 0;
+}
+.page-component-fade-enter-from {
+  transform: translateX(8px);
+}
+.page-component-fade-leave-to {
+  transform: translateX(-8px);
 }
 </style>

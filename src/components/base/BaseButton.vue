@@ -9,6 +9,9 @@ export default {
     color: {
       type: String
     },
+    size: {
+      type: String
+    },
     stroked: {
       type: Boolean
     },
@@ -29,7 +32,8 @@ export default {
         this.color ? `button--${this.color}` : '',
         this.stroked ? 'button--stroked' : '',
         this.raised ? 'button--raised' : '',
-        this.subtle ? 'button--subtle' : ''
+        this.subtle ? 'button--subtle' : '',
+        this.size === 'small' ? 'button--small' : ''
       ]
     }
   }
@@ -70,6 +74,7 @@ export default {
   height: 48px;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   border: none;
   color: $text-primary;
   padding: 12px 32px;
@@ -80,6 +85,11 @@ export default {
   text-decoration: none;
   transition: all 0.3s ease;
   cursor: pointer;
+
+  &#{ $root }--small {
+    font-weight: 500;
+    height: 40px;
+  }
 
   &#{ $root }--raised {
     @include button-raised($gray-light);
