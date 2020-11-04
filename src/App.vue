@@ -1,9 +1,11 @@
 <template>
   <div class="layout">
     <div class="layout__page">
-      <transition name="page-component-fade" mode="out-in">
-        <router-view />
-      </transition>
+      <router-view v-slot="slotProps">
+        <transition name="page-component-fade" mode="out-in">
+          <component :is="slotProps.Component"></component>
+        </transition>
+      </router-view>
     </div>
     <NavigationBar />
   </div>
@@ -43,7 +45,7 @@ export default {
 
 .page-component-fade-enter-active,
 .page-component-fade-leave-active {
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
 }
 .page-component-fade-enter-from,
 .page-component-fade-leave-to {
