@@ -19,7 +19,16 @@
 
     <div class="recipes-list-block">
       <div class="recipes-list-header">
-        <div class="recipes-list-header__total-count">31 przepisów</div>
+        <div class="recipes-list-header__total-count">
+          {{ allAvailableRecipesCount }}
+          {{
+            allAvailableRecipesCount === 1
+              ? 'przepis'
+              : allAvailableRecipesCount === 0 || allAvailableRecipesCount > 5
+              ? 'przepisów'
+              : 'przepisy'
+          }}
+        </div>
         <div class="recipes-list-header__show-all">
           <router-link :to="{ name: 'cook-it-all' }" class="recipes-list-header__show-all__button">
             <BaseIcon class="recipes-list-header__show-all__button__icon" icon="arrowRight" /> zobacz wszystkie
@@ -27,7 +36,7 @@
         </div>
       </div>
       <ul class="recipes-list">
-        <li class="recipes-list__item" v-for="recipe in recipes" :key="recipe.id">
+        <li class="recipes-list__item" v-for="recipe in availableRecipes" :key="recipe.id">
           <RecipeBox :recipe="recipe" />
         </li>
       </ul>
@@ -38,7 +47,16 @@
         Dokup brakujący składnik i nie marnuj tych, które już masz!
       </div>
       <div class="recipes-list-header">
-        <div class="recipes-list-header__total-count">31 przepisów</div>
+        <div class="recipes-list-header__total-count">
+          {{ allAlmostAvailableRecipesCount }}
+          {{
+            allAvailableRecipesCount === 1
+              ? 'przepis'
+              : allAvailableRecipesCount === 0 || allAvailableRecipesCount > 5
+              ? 'przepisów'
+              : 'przepisy'
+          }}
+        </div>
         <div class="recipes-list-header__show-all">
           <router-link :to="{ name: 'cook-it-all' }" class="recipes-list-header__show-all__button">
             <BaseIcon class="recipes-list-header__show-all__button__icon" icon="arrowRight" /> zobacz wszystkie
@@ -46,7 +64,7 @@
         </div>
       </div>
       <ul class="recipes-list">
-        <li class="recipes-list__item" v-for="recipe in recipes" :key="recipe.id">
+        <li class="recipes-list__item" v-for="recipe in almostAvailableRecipes" :key="recipe.id">
           <RecipeBox :recipe="recipe" />
         </li>
       </ul>
@@ -65,11 +83,15 @@ export default {
   },
   computed: {
     ...mapState({
-      recipes: state => state.recipes.recipes
+      availableRecipes: state => state.recipes.availableRecipes,
+      allAvailableRecipesCount: state => state.recipes.allAvailableRecipesCount,
+      almostAvailableRecipes: state => state.recipes.almostAvailableRecipes,
+      allAlmostAvailableRecipesCount: state => state.recipes.allAlmostAvailableRecipesCount
     })
   },
   created() {
-    this.$store.dispatch('recipes/fetchRecipes')
+    this.$store.dispatch('recipes/fetchAvailableRecipes')
+    this.$store.dispatch('recipes/fetchAlmostAvailableRecipes')
   }
 }
 </script>

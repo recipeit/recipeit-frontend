@@ -1,11 +1,8 @@
 <template>
-  <div class="recipe-box">
+  <div class="recipe-box" @click="showDetails">
     <div class="recipe-box__image-container">
       <div class="recipe-box__image-container__image">
-        <img
-          src="https://www.kwestiasmaku.com/sites/v123.kwestiasmaku.com/files/styles/798x249/public/curry_ciecierzyca_dynia_szpinak.jpg?itok=3AvEBV9a"
-          alt=""
-        />
+        <img :src="recipe.mainImageUrl" :alt="recipe.name" />
       </div>
     </div>
     <div class="recipe-box__name">
@@ -15,6 +12,7 @@
       <Rating :value="recipe.rating" />
     </div>
   </div>
+  {{ details }}
 </template>
 
 <script>
@@ -28,6 +26,13 @@ export default {
     recipe: {
       type: Object,
       required: true
+    }
+  },
+  methods: {
+    showDetails() {
+      this.$store.dispatch('recipes/fetchRecipeDetails', this.recipe.id).then(details => {
+        console.log(details)
+      })
     }
   }
 }
