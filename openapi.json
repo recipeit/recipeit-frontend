@@ -1,0 +1,380 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "RecipeIt API",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://localhost:44388",
+      "description": "Development server"
+    },
+    {
+      "url": "https://recipeit-backend20201105000045.azurewebsites.net",
+      "description": "Production server"
+    }
+  ],
+  "paths": {
+    "/recipes": {
+      "get": {
+        "tags": ["recipes"],
+        "description": "Returns all recipes",
+        "parameters": [
+          {
+            "name": "maxCount",
+            "in": "query",
+            "description": "Max number of returned recipes",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "default": null
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "default": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of recipes.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/recipes/{id}": {
+      "get": {
+        "tags": ["recipes"],
+        "description": "Returns recipes with given id",
+        "responses": {
+          "200": {
+            "description": "Recipe",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/recipes/{id}/details": {
+      "get": {
+        "tags": ["recipes"],
+        "description": "Returns recipe details based on given id",
+        "responses": {
+          "200": {
+            "description": "Recipe",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/recipes/{id}/update-kitchen": {
+      "post": {
+        "tags": ["recipes"],
+        "description": "Update user's kitchen products based on recipe's products. User can change amount of every used product",
+        "responses": {
+          "200": {
+            "description": "Reci[e",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/recipes/available": {
+      "get": {
+        "tags": ["recipes"],
+        "description": "Returns all available recipes based on user's products",
+        "responses": {
+          "200": {
+            "description": "A list of recipes.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/recipes/almost-available": {
+      "get": {
+        "tags": ["recipes"],
+        "description": "Returns all almost available recipes based on user's products where thera are some missing products",
+        "responses": {
+          "200": {
+            "description": "A list of recipes.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/recipes/favourites": {
+      "get": {
+        "tags": ["recipes"],
+        "description": "Returns all user's favourite recipes",
+        "responses": {
+          "200": {
+            "description": "A list of recipes.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["recipes"],
+        "description": "Add recipe to favourites",
+        "responses": {
+          "200": {
+            "description": "Operation success."
+          }
+        }
+      }
+    },
+    "/recipes/favourites/{id}": {
+      "delete": {
+        "tags": ["recipes"],
+        "description": "Remove recipe from favourites",
+        "responses": {
+          "200": {
+            "description": "Operation success."
+          }
+        }
+      }
+    },
+    "/recipes/planned": {
+      "get": {
+        "tags": ["recipes"],
+        "description": "Returns all user's planned recipes",
+        "responses": {
+          "200": {
+            "description": "A list of recipes.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["recipes"],
+        "description": "Add recipe to planned",
+        "responses": {
+          "200": {
+            "description": "Operation success."
+          }
+        }
+      }
+    },
+    "/recipes/planned/{id}": {
+      "delete": {
+        "tags": ["recipes"],
+        "description": "Remove recipe from planned",
+        "responses": {
+          "200": {
+            "description": "Operation success."
+          }
+        }
+      }
+    },
+    "/recipes/suggestions": {
+      "get": {
+        "tags": ["recipes"],
+        "description": "Returns all user's suggested recipes",
+        "responses": {
+          "200": {
+            "description": "A list of recipes.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/my-kitchen/products": {
+      "get": {
+        "tags": ["my kitchen"],
+        "description": "Returns all user's available products",
+        "responses": {
+          "200": {
+            "description": "A list of products.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["my kitchen"],
+        "description": "Add new products to user's kitchen",
+        "responses": {
+          "200": {
+            "description": "operation succes"
+          }
+        }
+      }
+    },
+    "/my-kitchen/products/{id}": {
+      "get": {
+        "tags": ["my kitchen"],
+        "description": "Returns user's available product",
+        "responses": {
+          "200": {
+            "description": "A list of products.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["my kitchen"],
+        "description": "Update product from user's kitchen",
+        "responses": {
+          "200": {
+            "description": "operation succes"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["my kitchen"],
+        "description": "Remove product from user's kitchen",
+        "responses": {
+          "200": {
+            "description": "operation succes"
+          }
+        }
+      }
+    },
+    "/shopping-list/products": {
+      "get": {
+        "tags": ["shopping-list"],
+        "description": "Returns all user's products in shopping list",
+        "responses": {
+          "200": {
+            "description": "A list of products.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["shopping-list"],
+        "description": "Add new products to user's shopping list",
+        "responses": {
+          "200": {
+            "description": "operation succes"
+          }
+        }
+      }
+    },
+    "/shopping-list/purchase": {
+      "post": {
+        "tags": ["shopping-list"],
+        "description": "Purchase product or products in shopping list causing remove them from shopping list and add to user's kitchen",
+        "responses": {
+          "200": {
+            "description": "operation succes"
+          }
+        }
+      }
+    },
+    "/shopping-list/products/{id}": {
+      "get": {
+        "tags": ["shopping-list"],
+        "description": "Returns user's shopping list product",
+        "responses": {
+          "200": {
+            "description": "A list of products.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["shopping-list"],
+        "description": "Update user's shopping list product",
+        "responses": {
+          "200": {
+            "description": "operation succes"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["shopping-list"],
+        "description": "Remove user's shopping list product",
+        "responses": {
+          "200": {
+            "description": "operation succes"
+          }
+        }
+      }
+    }
+  }
+}

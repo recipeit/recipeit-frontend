@@ -1,4 +1,4 @@
-import ShoppingListService from '@/services/ShoppingListService'
+import shoppingListApi from '@/api/shoppingListApi'
 
 export default {
   namespaced: true,
@@ -12,7 +12,7 @@ export default {
   },
   actions: {
     fetchProducts({ commit }) {
-      ShoppingListService.getProducts().then(resp => {
+      shoppingListApi.getProducts().then(resp => {
         commit('SET_PRODUCTS', resp.data)
       })
     }

@@ -1,4 +1,4 @@
-import MyKitchenService from '@/services/MyKitchenService'
+import myKitchenApi from '@/api/myKitchenApi'
 
 export default {
   namespaced: true,
@@ -33,7 +33,7 @@ export default {
   },
   actions: {
     fetchProducts({ commit }) {
-      MyKitchenService.getProducts().then(resp => {
+      myKitchenApi.getProducts().then(resp => {
         commit('SET_PRODUCTS', resp.data)
       })
     }

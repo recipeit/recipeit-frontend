@@ -1,4 +1,4 @@
-import RecipeService from '@/services/RecipeService'
+import recipeApi from '@/api/recipeApi'
 
 export default {
   namespaced: true,
@@ -31,17 +31,17 @@ export default {
   },
   actions: {
     fetchRecipes({ commit }) {
-      RecipeService.getRecipes().then(resp => {
+      recipeApi.getRecipes().then(resp => {
         commit('SET_RECIPES', resp.data)
       })
     },
     fetchAvailableRecipes({ commit }) {
-      RecipeService.getAvailableRecipes().then(resp => {
+      recipeApi.getAvailableRecipes().then(resp => {
         commit('SET_AVAILABLE_RECIPES', resp.data)
       })
     },
     fetchAlmostAvailableRecipes({ commit }) {
-      RecipeService.getAlmostAvailableRecipes().then(resp => {
+      recipeApi.getAlmostAvailableRecipes().then(resp => {
         commit('SET_ALMOST_AVAILABLE_RECIPES', resp.data)
       })
     },
@@ -52,7 +52,8 @@ export default {
         if (recipeDetails) {
           resolve(recipeDetails)
         } else {
-          RecipeService.getRecipe(id)
+          recipeApi
+            .getRecipe(id)
             .then(resp => {
               commit('ADD_RECIPE_DETAILS', resp.data)
               resolve(resp.data)
