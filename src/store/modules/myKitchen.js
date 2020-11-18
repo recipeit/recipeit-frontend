@@ -33,7 +33,7 @@ export default {
   },
   actions: {
     fetchProducts({ commit }) {
-      myKitchenApi.getProducts().then(resp => {
+      myKitchenApi.getProductsFromMyKitchen().then(resp => {
         commit('SET_PRODUCTS', resp.data)
       })
     }

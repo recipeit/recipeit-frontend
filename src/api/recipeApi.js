@@ -30,10 +30,11 @@ export default {
   getFavouriteRecipes() {
     return apiClient.get(`/recipes/favourites`)
   },
+  getFavouriteRecipesIds() {
+    return apiClient.get(`/recipes/favourites/ids`)
+  },
   addRecipeToFavourites(id) {
-    return apiClient.post(`/recipes/favourites`, {
-      params: { id }
-    })
+    return apiClient.post(`/recipes/favourites/${id}`)
   },
   removeRecipeFromFavourites(id) {
     return apiClient.delete(`/recipes/favourites/${id}`)
@@ -42,9 +43,7 @@ export default {
     return apiClient.get(`/recipes/planned`)
   },
   addRecipeToPlanned(id) {
-    return apiClient.post(`/recipes/planned`, {
-      params: { id }
-    })
+    return apiClient.post(`/recipes/planned/${id}`)
   },
   removeRecipeFromPlanned(id) {
     return apiClient.delete(`/recipes/planned/${id}`)

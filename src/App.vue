@@ -20,6 +20,9 @@ export default {
   components: {
     NavigationBar
     // SheetModal
+  },
+  created() {
+    this.$store.dispatch('recipes/fetchFavouriteRecipesIds')
   }
 }
 </script>

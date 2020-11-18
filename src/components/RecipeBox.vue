@@ -1,6 +1,6 @@
 <template>
-  <div class="recipe-box" @click="showDetails">
-    <div class="recipe-box__image-container">
+  <div class="recipe-box">
+    <div class="recipe-box__image-container" @click="showDetails">
       <div class="recipe-box__image-container__image">
         <img :src="recipe.mainImageUrl" :alt="recipe.name" />
       </div>
@@ -10,6 +10,8 @@
     </div>
     <div class="recipe-box__props">
       <Rating :value="recipe.rating" />
+      <span v-if="isFavourite" @click="deleteFromFavourites">❤</span>
+      <span v-else @click="addToFavourites">🤍</span>
     </div>
   </div>
   {{ details }}
@@ -17,6 +19,7 @@
 
 <script>
 import Rating from '@/components/Rating.vue'
+import { mapState } from 'vuex'
 
 export default {
   components: {
@@ -33,6 +36,20 @@ export default {
       this.$store.dispatch('recipes/fetchRecipeDetails', this.recipe.id).then(details => {
         console.log(details)
       })
+    },
+    addToFavourites() {
+      this.$store.dispatch('recipes/addToFavourites', this.recipe.id)
+    },
+    deleteFromFavourites() {
+      this.$store.dispatch('recipes/deleteFromFavourites', this.recipe.id)
+    }
+  },
+  computed: {
+    ...mapState({
+      favouriteRecipesIds: state => state.recipes.favouriteRecipesIds
+    }),
+    isFavourite() {
+      return this.favouriteRecipesIds.find(id => id === this.recipe.id)
     }
   }
 }

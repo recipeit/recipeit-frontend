@@ -12,7 +12,7 @@ export default {
   },
   actions: {
     fetchProducts({ commit }) {
-      shoppingListApi.getProducts().then(resp => {
+      shoppingListApi.getProductsFromShoppingList().then(resp => {
         commit('SET_PRODUCTS', resp.data)
       })
     }

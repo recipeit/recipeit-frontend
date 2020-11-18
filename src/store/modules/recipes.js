@@ -5,6 +5,7 @@ export default {
   state: {
     recipes: null,
     recipesDetails: [],
+    favouriteRecipesIds: [],
     availableRecipes: null,
     almostAvailableRecipes: null,
     allAvailableRecipesCount: null,
@@ -13,6 +14,9 @@ export default {
   mutations: {
     SET_RECIPES(state, recipes) {
       state.recipes = recipes
+    },
+    SET_FAVOURITE_RECIPES_IDS(state, recipesIds) {
+      state.favouriteRecipesIds = recipesIds
     },
     SET_AVAILABLE_RECIPES(state, { recipes, allCount }) {
       state.availableRecipes = recipes
@@ -27,12 +31,27 @@ export default {
     },
     ADD_RECIPE_DETAILS(state, recipeDetails) {
       state.recipesDetails.push(recipeDetails)
+    },
+    ADD_RECIPE_ID_TO_FAVOURITES(state, recipeId) {
+      if (state.favouriteRecipesIds.find(id => id === recipeId)) return
+      state.favouriteRecipesIds.push(recipeId)
+    },
+    REMOVE_RECIPE_ID_FROM_FAVOURITES(state, recipeId) {
+      var recipeIdIndex = state.favouriteRecipesIds.indexOf(recipeId)
+      if (recipeIdIndex >= 0) {
+        state.favouriteRecipesIds.splice(recipeIdIndex, 1)
+      }
     }
   },
   actions: {
     fetchRecipes({ commit }) {
       recipeApi.getRecipes().then(resp => {
-        commit('SET_RECIPES', resp.data)
+        commit('SET_RECIPES', resp.data.recipes)
+      })
+    },
+    fetchFavouriteRecipesIds({ commit }) {
+      recipeApi.getFavouriteRecipesIds().then(resp => {
+        commit('SET_FAVOURITE_RECIPES_IDS', resp.data)
       })
     },
     fetchAvailableRecipes({ commit }) {
@@ -60,6 +79,28 @@ export default {
             })
             .catch(error => reject(error))
         }
+      })
+    },
+    addToFavourites({ commit }, id) {
+      return new Promise((resolve, reject) => {
+        recipeApi
+          .addRecipeToFavourites(id)
+          .then(() => {
+            commit('ADD_RECIPE_ID_TO_FAVOURITES', id)
+            resolve()
+          })
+          .catch(error => reject(error))
+      })
+    },
+    deleteFromFavourites({ commit }, id) {
+      return new Promise((resolve, reject) => {
+        recipeApi
+          .removeRecipeFromFavourites(id)
+          .then(() => {
+            commit('REMOVE_RECIPE_ID_FROM_FAVOURITES', id)
+            resolve()
+          })
+          .catch(error => reject(error))
       })
     }
   },
