@@ -6,6 +6,43 @@
         <KitchenProduct :product="product" />
       </li>
     </ul>
+
+    <div>
+      <h3>Dodaj nowy produkt</h3>
+      <div>
+        <label>
+          Nazwa
+          <input v-model="newProduct.name" type="text" />
+        </label>
+      </div>
+      <div>
+        <label>
+          Ilość
+          <input v-model.number="newProduct.quantity" type="text" />
+        </label>
+      </div>
+      <div>
+        <label>
+          Jednostka
+          <input v-model="newProduct.unit" type="text" />
+        </label>
+      </div>
+    </div>
+
+    <ul>
+      <li>
+        <label>
+          <input v-model="newProduct.templateIngredientId" type="radio" :value="null" />
+          Nic
+        </label>
+      </li>
+      <li v-for="baseIngredient in baseIngredients" :key="baseIngredient.id">
+        <label>
+          <input v-model="newProduct.templateIngredientId" type="radio" :value="baseIngredient.id" />
+          {{ baseIngredient.name }}
+        </label>
+      </li>
+    </ul>
     <!-- <BaseButton :anchorTag="true" href="#" color="accent">Dodaj produkt</BaseButton>
     <BaseButton raised>Dodaj produkt</BaseButton> -->
     <!-- <div><BaseButton raised>Dodaj produkt</BaseButton></div>
@@ -20,7 +57,7 @@
     <div><BaseButton subtle color="warn">Dodaj produkt</BaseButton></div> -->
 
     <div class="floating-action-button-container">
-      <BaseButton raised color="primary">Dodaj produkt</BaseButton>
+      <BaseButton raised color="primary" @click="addProduct">Dodaj produkt</BaseButton>
     </div>
   </div>
 </template>
@@ -31,16 +68,38 @@ import KitchenProduct from '@/components/KitchenProduct'
 
 export default {
   name: 'MyKitchen',
+  data() {
+    return {
+      newProduct: this.emptyProduct()
+    }
+  },
   components: {
     KitchenProduct
   },
   computed: {
     ...mapState({
-      products: state => state.myKitchen.products
+      products: state => state.myKitchen.products,
+      baseIngredients: state => state.ingredients.baseIngredients
     })
   },
   created() {
+    this.$store.dispatch('ingredients/fetchBaseIngredients')
     this.$store.dispatch('myKitchen/fetchProducts')
+  },
+  methods: {
+    emptyProduct() {
+      return {
+        name: '',
+        quantity: 1,
+        templateIngredientId: null,
+        unit: 'Weight.Gram'
+      }
+    },
+    addProduct() {
+      this.$store.dispatch('myKitchen/addProducts', [this.newProduct]).then(() => {
+        this.newProduct = this.emptyProduct()
+      })
+    }
   }
 }
 </script>

@@ -14,7 +14,6 @@
       <span v-else @click="addToFavourites">🤍</span>
     </div>
   </div>
-  {{ details }}
 </template>
 
 <script>

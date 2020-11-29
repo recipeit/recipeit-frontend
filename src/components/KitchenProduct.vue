@@ -1,9 +1,9 @@
 <template>
   <Product :product="product">
     <div class="actions">
-      <div class="actions__remove">usuń</div>
-      <div class="actions__decrement">-</div>
-      <div class="actions__increment">+</div>
+      <div class="actions__remove" @click="deleteProduct">usuń</div>
+      <div class="actions__decrement" @click="decreaseQuantity">-</div>
+      <div class="actions__increment" @click="increaseQuantity">+</div>
     </div>
   </Product>
 </template>
@@ -19,6 +19,25 @@ export default {
     product: {
       type: Object,
       required: true
+    }
+  },
+  methods: {
+    deleteProduct() {
+      this.$store.dispatch('myKitchen/deleteProductFromKitchen', this.product.id)
+    },
+    increaseQuantity() {
+      const quantity = Math.round(this.product.quantity + 1, 5)
+      this.putQuantityChange(quantity)
+    },
+    decreaseQuantity() {
+      if (this.product.quantity <= 1.0) return
+      const quantity = Math.round(this.product.quantity - 1, 5)
+      this.putQuantityChange(quantity)
+    },
+    putQuantityChange(quantity) {
+      var product = JSON.parse(JSON.stringify(this.product))
+      product.quantity = quantity
+      this.$store.dispatch('myKitchen/editProductFromKitchen', product)
     }
   }
 }

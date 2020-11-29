@@ -43,11 +43,11 @@ export default {
   },
   computed: {
     ...mapState({
-      recipes: state => state.recipes.recipes
+      recipes: state => state.recipes.availableRecipes
     })
   },
   created() {
-    this.$store.dispatch('recipes/fetchRecipes')
+    this.$store.dispatch('recipes/fetchAvailableRecipes')
   }
 }
 </script>

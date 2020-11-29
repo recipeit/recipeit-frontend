@@ -72,7 +72,7 @@ export default {
           resolve(recipeDetails)
         } else {
           recipeApi
-            .getRecipe(id)
+            .getRecipeDetails(id)
             .then(resp => {
               commit('ADD_RECIPE_DETAILS', resp.data)
               resolve(resp.data)

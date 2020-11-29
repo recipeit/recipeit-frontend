@@ -7,7 +7,8 @@ export const apiClient = axios.create({
       : 'https://localhost:44388',
   withCredentials: false,
   headers: {
-    Accept: 'application/json',
+    // Accept: 'application/json',
+    Accept: '*/*',
     'Content-Type': 'application/json'
   }
 })
