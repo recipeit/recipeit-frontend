@@ -5,18 +5,28 @@
 </template>
 
 <script>
-import * as icons from './icons'
+import * as iconsRegular from './icons'
+import * as iconsSemiBold from './icons/semiBold'
 
 export default {
   props: {
     icon: {
       type: [String, Object],
       required: true
+    },
+    weight: {
+      type: String,
+      default: 'regular'
     }
   },
   computed: {
     iconObject() {
-      return typeof this.icon === 'string' ? icons[this.icon] : this.icon
+      console.log(this.weight)
+      return typeof this.icon === 'string'
+        ? this.weight === 'semiBold'
+          ? iconsSemiBold[this.icon]
+          : iconsRegular[this.icon]
+        : this.icon
     }
   }
 }

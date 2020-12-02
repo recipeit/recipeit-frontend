@@ -30,7 +30,8 @@ export default {
     }
   },
   actions: {
-    fetchProducts({ commit }) {
+    fetchProducts({ state, commit }) {
+      if (state.products !== null) return
       myKitchenApi.getProductsFromMyKitchen().then(resp => {
         commit('SET_PRODUCTS', resp.data)
       })

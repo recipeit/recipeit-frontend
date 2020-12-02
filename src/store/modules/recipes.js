@@ -29,6 +29,13 @@ export default {
     SET_RECIPE_DETAILS(state, recipeDetails) {
       state.recipeDetails = recipeDetails
     },
+    ADD_RECIPE(state, recipe) {
+      if (state.recipes) {
+        state.recipes.push(recipe)
+      } else {
+        state.recipes = [recipe]
+      }
+    },
     ADD_RECIPE_DETAILS(state, recipeDetails) {
       state.recipesDetails.push(recipeDetails)
     },
@@ -64,13 +71,33 @@ export default {
         commit('SET_ALMOST_AVAILABLE_RECIPES', resp.data)
       })
     },
+    fetchRecipe({ getters, commit }, id) {
+      console.log('id', id)
+      return new Promise((resolve, reject) => {
+        const recipe = getters.getRecipeById(id)
+
+        if (recipe) {
+          resolve(recipe)
+        } else {
+          console.log('bede pobierał fetchRecipe')
+          recipeApi
+            .getRecipe(id)
+            .then(resp => {
+              commit('ADD_RECIPE', resp.data)
+              resolve(resp.data)
+            })
+            .catch(error => reject(error))
+        }
+      })
+    },
     fetchRecipeDetails({ getters, commit }, id) {
       return new Promise((resolve, reject) => {
-        const recipeDetails = getters.getRecipeDetailsById(id)
+        const recipeDetails = getters.getRecipeDetailsByRecipeId(id)
 
         if (recipeDetails) {
           resolve(recipeDetails)
         } else {
+          console.log('bede pobierał fetchRecipeDetails')
           recipeApi
             .getRecipeDetails(id)
             .then(resp => {
@@ -105,8 +132,11 @@ export default {
     }
   },
   getters: {
-    getRecipeDetailsById: state => id => {
-      return state.recipesDetails.find(r => r.id === id)
+    getRecipeDetailsByRecipeId: state => id => {
+      return state.recipesDetails?.find(r => r.recipeId === id)
+    },
+    getRecipeById: state => id => {
+      return state.recipes?.find(r => r.id === id)
     }
   }
 }

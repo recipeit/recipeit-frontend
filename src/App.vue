@@ -43,6 +43,12 @@ export default {
   &__page {
     padding: 32px 32px 84px 32px;
     flex: 1;
+    display: flex;
+    flex-direction: column;
+
+    &__content {
+      flex: 1;
+    }
   }
 }
 
@@ -55,9 +61,9 @@ export default {
   opacity: 0;
 }
 .page-component-fade-enter-from {
-  transform: translateX(8px);
+  // transform: translateX(8px);
 }
 .page-component-fade-leave-to {
-  transform: translateX(-8px);
+  // transform: translateX(-8px);
 }
 </style>

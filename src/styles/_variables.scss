@@ -6,7 +6,10 @@ $white: #fff;
 $red: #e13939;
 $blue: #2c5dff;
 $green: #51d61a;
-$yellow: #ffcc00;
+// $yellow: #ffcc00;
+$yellow: #fdad00;
+
+// $green: #8cca20;
 
 $primary: $yellow;
 $accent: $blue;
@@ -23,5 +26,6 @@ $button-colors: (
   red: $red,
   blue: $blue,
   green: $green,
-  yellow: $yellow
+  yellow: $yellow,
+  black: $black
 );

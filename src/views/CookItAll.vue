@@ -1,33 +1,35 @@
 <template>
-  <div class="cook-it-layout">
-    <h1>Pełna lista</h1>
-    <div>Te potrawy możesz przyrządzić z tego co masz w kuchni!</div>
-    <div><BaseButton @click="$router.go(-1)" stroked size="small">Wróć</BaseButton></div>
+  <div class="layout__page__content">
+    <div class="cook-it-layout">
+      <h1>Pełna lista</h1>
+      <div>Te potrawy możesz przyrządzić z tego co masz w kuchni!</div>
+      <div><BaseButton @click="$router.go(-1)" stroked size="small">Wróć</BaseButton></div>
 
-    <div class="filters">
-      <div class="filters__button">
-        <BaseButton stroked size="small">
-          <BaseIcon icon="filter" class="filters__button__icon" />
-          Filtruj
-        </BaseButton>
+      <div class="filters">
+        <div class="filters__button">
+          <BaseButton stroked size="small">
+            <BaseIcon icon="filter" class="filters__button__icon" />
+            Filtruj
+          </BaseButton>
+        </div>
+        <div class="filters__button">
+          <BaseButton stroked size="small">
+            <BaseIcon icon="sort" class="filters__button__icon" />
+            Sortuj
+          </BaseButton>
+        </div>
       </div>
-      <div class="filters__button">
-        <BaseButton stroked size="small">
-          <BaseIcon icon="sort" class="filters__button__icon" />
-          Sortuj
-        </BaseButton>
-      </div>
-    </div>
 
-    <div class="recipes-list-block">
-      <div class="recipes-list-header">
-        <div class="recipes-list-header__total-count">31 przepisów</div>
+      <div class="recipes-list-block">
+        <div class="recipes-list-header">
+          <div class="recipes-list-header__total-count">31 przepisów</div>
+        </div>
+        <ul class="recipes-list">
+          <li class="recipes-list__item" v-for="recipe in recipes" :key="recipe.id">
+            <RecipeBox :recipe="recipe" />
+          </li>
+        </ul>
       </div>
-      <ul class="recipes-list">
-        <li class="recipes-list__item" v-for="recipe in recipes" :key="recipe.id">
-          <RecipeBox :recipe="recipe" />
-        </li>
-      </ul>
     </div>
   </div>
 </template>

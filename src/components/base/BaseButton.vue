@@ -44,6 +44,7 @@ export default {
 @mixin button-raised($background) {
   background-color: $background;
   color: get-contrast-color($background);
+  box-shadow: 0 12px 32px -16px $background;
 
   &:hover {
     // box-shadow: 0 12px 32px -16px $background;
@@ -79,7 +80,7 @@ export default {
   color: $text-primary;
   padding: 12px 32px;
   font-family: inherit;
-  font-weight: 700;
+  font-weight: 600;
   font-size: 12px;
   box-sizing: border-box;
   text-decoration: none;

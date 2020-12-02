@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="layout__page__content">
     <h1>Lista zakupów</h1>
     <ul class="product-list">
       <li class="product-list__item" v-for="product in products" :key="product.id">
@@ -8,7 +8,10 @@
     </ul>
 
     <div class="floating-action-button-container">
-      <BaseButton raised color="primary">Dodaj produkt</BaseButton>
+      <BaseButton raised color="black">
+        <BaseIcon class="floating-action-button__icon" icon="plus" weight="semiBold" />
+        Dodaj produkt
+      </BaseButton>
     </div>
   </div>
 </template>
@@ -48,5 +51,13 @@ export default {
   bottom: 100px;
   left: 50%;
   transform: translateX(-50%);
+  z-index: 100;
+}
+
+.floating-action-button {
+  &__icon {
+    margin-right: 0.5rem;
+    font-size: 1rem;
+  }
 }
 </style>

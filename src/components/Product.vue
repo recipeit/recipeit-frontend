@@ -3,6 +3,7 @@
     <div class="product__info">
       <div class="product__name">{{ product.name }}</div>
       <div class="product__quantity">{{ product.quantity }}</div>
+      <div class="product__unit">{{ unitTranslations[product.unit] ?? product.unit }}</div>
     </div>
     <div class="product__actions">
       <slot />
@@ -11,11 +12,18 @@
 </template>
 
 <script>
+import { unitTranslations } from '@/constants'
+
 export default {
   props: {
     product: {
       type: Object,
       required: true
+    }
+  },
+  data() {
+    return {
+      unitTranslations
     }
   }
 }
@@ -42,6 +50,11 @@ export default {
 
   &__quantity {
     margin-left: 12px;
+    color: $text-secondary;
+  }
+
+  &__unit {
+    margin-left: 0.25rem;
     color: $text-secondary;
   }
 

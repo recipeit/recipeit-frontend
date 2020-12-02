@@ -1,9 +1,13 @@
 <template>
   <Product :product="product">
     <div class="actions">
-      <div class="actions__remove" @click="deleteProduct">usuń</div>
-      <div class="actions__decrement" @click="decreaseQuantity">-</div>
-      <div class="actions__increment" @click="increaseQuantity">+</div>
+      <a class="action action--remove" @click="deleteProduct">usuń</a>
+      <a class="action action--decrement" @click="decreaseQuantity">
+        <BaseIcon icon="minus" weight="semiBold" />
+      </a>
+      <a class="action action--increment" @click="increaseQuantity">
+        <BaseIcon icon="plus" weight="semiBold" />
+      </a>
     </div>
   </Product>
 </template>
@@ -50,13 +54,14 @@ export default {
   align-items: center;
   padding-right: 15px;
   color: #90abb9;
-
-  &__remove {
-    color: #e13939;
+}
+.action {
+  & + & {
+    margin-left: 16px;
   }
 
-  div + div {
-    margin-left: 16px;
+  &--remove {
+    color: $red;
   }
 }
 </style>

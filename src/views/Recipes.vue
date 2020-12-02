@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="layout__page__content">
     <h1>Przepisy</h1>
     <ul class="recipes-list">
       <li class="recipes-list__item" v-for="recipe in recipes" :key="recipe.id">

@@ -40,7 +40,7 @@ export default {}
   justify-content: space-evenly;
 
   @supports (backdrop-filter: blur(20px)) {
-    background-color: rgba($background, 0.9);
+    background-color: rgba($background, 0.8);
     backdrop-filter: saturate(180%) blur(20px);
   }
 
