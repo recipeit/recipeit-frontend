@@ -33,9 +33,6 @@ export default {
   methods: {
     showDetails() {
       this.$router.push({ name: 'recipe', params: { recipeId: this.recipe.id } })
-      // this.$store.dispatch('recipes/fetchRecipeDetails', this.recipe.id).then(details => {
-      //   console.log(details)
-      // })
     },
     addToFavourites() {
       this.$store.dispatch('recipes/addToFavourites', this.recipe.id)

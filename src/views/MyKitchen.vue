@@ -7,42 +7,6 @@
       </li>
     </ul>
 
-    <div>
-      <h3>Dodaj nowy produkt</h3>
-      <div>
-        <label>
-          Nazwa
-          <input v-model="newProduct.name" type="text" />
-        </label>
-      </div>
-      <div>
-        <label>
-          Ilość
-          <input v-model.number="newProduct.quantity" type="text" />
-        </label>
-      </div>
-      <div>
-        <label>
-          Jednostka
-          <input v-model="newProduct.unit" type="text" />
-        </label>
-      </div>
-    </div>
-
-    <ul>
-      <li>
-        <label>
-          <input v-model="newProduct.templateIngredientId" type="radio" :value="null" />
-          Nic
-        </label>
-      </li>
-      <li v-for="baseIngredient in baseIngredients" :key="baseIngredient.id">
-        <label>
-          <input v-model="newProduct.templateIngredientId" type="radio" :value="baseIngredient.id" />
-          {{ baseIngredient.name }}
-        </label>
-      </li>
-    </ul>
     <!-- <BaseButton :anchorTag="true" href="#" color="accent">Dodaj produkt</BaseButton>
     <BaseButton raised>Dodaj produkt</BaseButton> -->
     <!-- <div><BaseButton raised>Dodaj produkt</BaseButton></div>
@@ -57,7 +21,7 @@
     <div><BaseButton subtle color="warn">Dodaj produkt</BaseButton></div> -->
 
     <div class="floating-action-button-container">
-      <BaseButton raised color="black" @click="addProduct">
+      <BaseButton raised color="black" @click="newProduct">
         <BaseIcon class="floating-action-button__icon" icon="plus" weight="semiBold" />
         Dodaj produkt
       </BaseButton>
@@ -66,23 +30,19 @@
 </template>
 
 <script>
+import { markRaw } from 'vue'
 import { mapState } from 'vuex'
 import KitchenProduct from '@/components/KitchenProduct'
+import NewKitchenProductModal from '@/components/modals/NewKitchenProductModal'
 
 export default {
   name: 'MyKitchen',
-  data() {
-    return {
-      newProduct: this.emptyProduct()
-    }
-  },
   components: {
     KitchenProduct
   },
   computed: {
     ...mapState({
-      products: state => state.myKitchen.products,
-      baseIngredients: state => state.ingredients.baseIngredients
+      products: state => state.myKitchen.products
     })
   },
   created() {
@@ -90,18 +50,8 @@ export default {
     this.$store.dispatch('myKitchen/fetchProducts')
   },
   methods: {
-    emptyProduct() {
-      return {
-        name: '',
-        quantity: 1,
-        templateIngredientId: null,
-        unit: 'Weight.Gram'
-      }
-    },
-    addProduct() {
-      this.$store.dispatch('myKitchen/addProducts', [this.newProduct]).then(() => {
-        this.newProduct = this.emptyProduct()
-      })
+    newProduct() {
+      this.$modal.show(markRaw(NewKitchenProductModal), {}, {})
     }
   }
 }

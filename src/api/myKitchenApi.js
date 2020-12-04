@@ -5,7 +5,6 @@ export default {
     return apiClient.get(`/my-kitchen/products`)
   },
   addProductsToMyKitchen(products) {
-    console.log(products)
     return apiClient.post(`/my-kitchen/products`, products)
   },
   getProductFromMyKitchenById(id) {

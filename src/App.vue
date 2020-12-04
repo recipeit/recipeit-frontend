@@ -1,4 +1,5 @@
 <template>
+  <global-sheet-modal-container />
   <div class="layout">
     <div class="layout__page">
       <router-view v-slot="slotProps">
@@ -9,17 +10,14 @@
     </div>
     <NavigationBar />
   </div>
-  <!-- <SheetModal /> -->
 </template>
 
 <script>
 import NavigationBar from '@/components/NavigationBar'
-// import SheetModal from '@/components/Modal'
 
 export default {
   components: {
     NavigationBar
-    // SheetModal
   },
   created() {
     this.$store.dispatch('recipes/fetchFavouriteRecipesIds')

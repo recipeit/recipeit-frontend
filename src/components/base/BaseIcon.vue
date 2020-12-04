@@ -21,7 +21,6 @@ export default {
   },
   computed: {
     iconObject() {
-      console.log(this.weight)
       return typeof this.icon === 'string'
         ? this.weight === 'semiBold'
           ? iconsSemiBold[this.icon]

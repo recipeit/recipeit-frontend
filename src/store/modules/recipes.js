@@ -72,14 +72,12 @@ export default {
       })
     },
     fetchRecipe({ getters, commit }, id) {
-      console.log('id', id)
       return new Promise((resolve, reject) => {
         const recipe = getters.getRecipeById(id)
 
         if (recipe) {
           resolve(recipe)
         } else {
-          console.log('bede pobierał fetchRecipe')
           recipeApi
             .getRecipe(id)
             .then(resp => {
@@ -97,7 +95,6 @@ export default {
         if (recipeDetails) {
           resolve(recipeDetails)
         } else {
-          console.log('bede pobierał fetchRecipeDetails')
           recipeApi
             .getRecipeDetails(id)
             .then(resp => {
