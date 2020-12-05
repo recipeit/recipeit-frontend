@@ -23,7 +23,7 @@
     </div>
 
     <ul>
-      <li v-for="i in 20" :key="i">
+      <li>
         <label>
           <input v-model="newProduct.templateIngredientId" type="radio" :value="null" />
           Nic

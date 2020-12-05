@@ -1,23 +1,31 @@
 <template>
-  <div style="z-index: 1000">
+  <div class="sheet-modal-instance">
     <div class="sheet-modal-container">
-      <div
-        ref="testt"
-        class="testt"
-        @click="maybeClose"
-        @mousemove="onPointerMove"
-        @mousedown="onPointerDown"
-        @mouseup="onPointerUp"
-        @touchmove="onPointerMove"
-        @touchstart="onPointerDown"
-        @touchend="onPointerUp"
+      <transition
+        name="slide"
+        @before-enter="beforeModalEnter"
+        @after-enter="afterModalEnter"
+        @before-leave="beforeModalLeave"
+        @after-leave="afterModalLeave"
       >
-        <transition name="slide" @after-leave="afterModalTransitionLeave">
-          <div ref="modal" class="sheet-modal" :style="modalStyle" v-if="opened && !modalClosed">
+        <div
+          v-if="opened && !modalClosed"
+          ref="scroller"
+          class="sheet-modal-container__scroller"
+          :style="scrollerStyle"
+          @click="maybeClose"
+          @mousemove="onPointerMove"
+          @mousedown="onPointerDown"
+          @mouseup="onPointerUp"
+          @touchmove="onPointerMove"
+          @touchstart="onPointerDown"
+          @touchend="onPointerUp"
+        >
+          <div ref="modal" class="sheet-modal">
             <slot />
           </div>
-        </transition>
-      </div>
+        </div>
+      </transition>
     </div>
 
     <transition name="fade">
@@ -36,6 +44,8 @@ export default {
   },
   data() {
     return {
+      modalClosing: false,
+      modalOpening: false,
       modalClosed: false,
       isDown: false,
       offset: null,
@@ -44,11 +54,21 @@ export default {
   },
   methods: {
     maybeClose(e) {
-      if (!this.$refs.modal.contains(e.target) && document.hasFocus()) {
+      if (!this.$refs.modal.contains(e.target)) {
         this.$emit('close')
       }
     },
-    afterModalTransitionLeave() {
+    beforeModalEnter() {
+      this.modalOpening = true
+    },
+    afterModalEnter() {
+      this.modalOpening = false
+    },
+    beforeModalLeave() {
+      this.modalClosing = true
+    },
+    afterModalLeave() {
+      this.modalClosing = false
       this.$emit('closed')
     },
     onPointerDown(e) {
@@ -60,7 +80,7 @@ export default {
       }
     },
     onPointerUp() {
-      if (this.transformTop > 128 && this.$refs.testt.scrollTop === 0) {
+      if (this.transformTop > 128 && this.$refs.scroller.scrollTop === 0) {
         this.$nextTick(() => {
           this.$nextTick(() => {
             this.$emit('close')
@@ -83,15 +103,15 @@ export default {
               y: event.clientY
             }
         this.transformTop = mousePosition.y - this.offset[1]
-        if (this.$refs.testt.scrollTop === 0 && this.transformTop >= 0) {
+        if (this.$refs.scroller.scrollTop === 0 && this.transformTop >= 0) {
           event.preventDefault()
         }
       }
     }
   },
   computed: {
-    modalStyle() {
-      if (this.isDown && this.transformTop && this.transformTop >= 0 && this.$refs.testt.scrollTop === 0) {
+    scrollerStyle() {
+      if (this.isDown && this.transformTop && this.transformTop >= 0 && this.$refs.scroller.scrollTop === 0) {
         return {
           transform: `translate3d(0, ${this.transformTop}px, 0)`,
           'transition-duration': '0ms'
@@ -104,27 +124,46 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.sheet-modal-container {
-  position: absolute;
+.sheet-modal-instance {
+  position: fixed;
   left: 0;
   bottom: 0;
   top: 0;
   right: 0;
-  overflow: hidden;
-}
+  z-index: 1000;
 
-.testt {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  top: 0;
-  right: 0;
-  display: flex;
-  justify-content: center;
-  margin-top: auto;
-  overflow: auto;
-  z-index: 11111;
-  padding-top: 32px;
+  .sheet-modal-container {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    top: 0;
+    right: 0;
+    overflow: hidden;
+
+    &__scroller {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      top: 0;
+      right: 0;
+      display: flex;
+      justify-content: center;
+      margin-top: auto;
+      overflow: auto;
+      z-index: 1002;
+      padding-top: 32px;
+    }
+  }
+
+  .sheet-modal-backdrop {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 1001;
+  }
 }
 
 .sheet-modal {
@@ -140,13 +179,9 @@ export default {
   margin-top: auto;
 }
 
-.sheet-modal-backdrop {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.4);
+.slide-enter-active,
+.slide-leave-active {
+  transition: transform 0.3s ease;
 }
 
 .slide-enter-from,

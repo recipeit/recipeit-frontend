@@ -2,6 +2,6 @@
   "name": "RecipeIt",
   "short_name": "RecipeIt",
   "start_url": ".",
-  "theme_color": "#f00",
-  "background_color": "#f00"
+  "theme_color": "#000",
+  "background_color": "#000"
 }
