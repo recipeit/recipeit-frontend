@@ -123,24 +123,26 @@ export default {
       background-color: rgba($text-secondary, 0.1);
     }
 
-    &--available,
-    &--in-shopping-list {
+    &--available {
       color: $green;
-      // background-color: rgba($green, 0.1);
 
-      // &:hover {
-      //   background-color: rgba($green, 0.2);
-      // }
+      &:hover {
+        background-color: rgba($green, 0.2);
+      }
     }
 
-    // &--unavailable,
-    // &--in-shopping-list {
-    // }
+    &--in-shopping-list {
+      color: $green;
+      background-color: rgba($green, 0.1);
+
+      &:hover {
+        background-color: rgba($green, 0.2);
+      }
+    }
 
     &--unavailable {
       color: $accent;
       background-color: rgba($blue, 0.1);
-      // margin-right: -4px;
 
       &:hover {
         background-color: rgba($blue, 0.2);

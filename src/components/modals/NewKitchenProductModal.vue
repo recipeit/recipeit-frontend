@@ -23,7 +23,7 @@
     </div>
 
     <ul>
-      <li>
+      <li v-for="i in 20" :key="i">
         <label>
           <input v-model="newProduct.templateIngredientId" type="radio" :value="null" />
           Nic
@@ -36,6 +36,7 @@
         </label>
       </li>
     </ul>
+    <input type="text" />
     <BaseButton class="submit-button" raised color="black" @click="addProduct">
       <BaseIcon class="submit-button__icon" icon="plus" weight="semiBold" />
       {{ loading ? '...dodawanie' : 'Dodaj produkt' }}

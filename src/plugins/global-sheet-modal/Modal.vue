@@ -97,30 +97,28 @@ export default {
   position: absolute;
   left: 0;
   bottom: 0;
-  width: 100%;
-  height: 100%;
+  top: 0;
+  right: 0;
   overflow: hidden;
 }
 
 .sheet-modal {
   height: auto;
-  // --f7-sheet-bg-color: #fff;
   display: block;
   transform: translate3d(0, 0, 0);
   position: absolute;
   left: 0;
   bottom: 0;
   width: 100%;
-  // height: var(--f7-sheet-height);
-  // display: none;
   box-sizing: border-box;
   transition-property: transform;
-  // transform: translate3d(0, 100%, 0);
   background: #fff;
   border-radius: 32px 32px 0 0;
   z-index: 12500;
   will-change: transform, opacity;
   transition: transform 0.2s ease;
+  max-height: calc(100% - 32px);
+  overflow: auto;
 
   &__inner {
     height: 100%;
