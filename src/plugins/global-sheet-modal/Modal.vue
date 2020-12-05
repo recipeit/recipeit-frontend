@@ -1,24 +1,27 @@
 <template>
   <div style="z-index: 1000">
     <div class="sheet-modal-container">
-      <transition name="slide" @after-leave="afterModalTransitionLeave">
-        <div
-          class="sheet-modal"
-          v-if="opened && !modalClosed"
-          :style="modalStyle"
-          @mousemove="onPointerMove"
-          @mousedown="onPointerDown"
-          @mouseup="onPointerUp"
-          @touchmove="onPointerMove"
-          @touchstart="onPointerDown"
-          @touchend="onPointerUp"
-        >
-          <slot @close="heyy" />
-        </div>
-      </transition>
+      <div
+        ref="testt"
+        class="testt"
+        @click="maybeClose"
+        @mousemove="onPointerMove"
+        @mousedown="onPointerDown"
+        @mouseup="onPointerUp"
+        @touchmove="onPointerMove"
+        @touchstart="onPointerDown"
+        @touchend="onPointerUp"
+      >
+        <transition name="slide" @after-leave="afterModalTransitionLeave">
+          <div ref="modal" class="sheet-modal" :style="modalStyle" v-if="opened && !modalClosed">
+            <slot />
+          </div>
+        </transition>
+      </div>
     </div>
+
     <transition name="fade">
-      <div v-if="opened && !modalClosed" class="sheet-modal-backdrop" @click="this.modalClosed = true"></div>
+      <div v-if="opened && !modalClosed" class="sheet-modal-backdrop"></div>
     </transition>
   </div>
 </template>
@@ -40,8 +43,10 @@ export default {
     }
   },
   methods: {
-    heyy() {
-      alert('fhuihfiru')
+    maybeClose(e) {
+      if (!this.$refs.modal.contains(e.target) && document.hasFocus()) {
+        this.$emit('close')
+      }
     },
     afterModalTransitionLeave() {
       this.$emit('closed')
@@ -55,15 +60,18 @@ export default {
       }
     },
     onPointerUp() {
+      if (this.transformTop > 128 && this.$refs.testt.scrollTop === 0) {
+        this.$nextTick(() => {
+          this.$nextTick(() => {
+            this.$emit('close')
+          })
+        })
+      }
       this.isDown = false
       this.offset = null
       this.transformTop = null
-      // this.$nextTick(() => {
-      //   this.modalClosed = true
-      // })
     },
     onPointerMove(event) {
-      event.preventDefault()
       if (this.isDown && this.offset) {
         let mousePosition = event.changedTouches
           ? {
@@ -75,12 +83,15 @@ export default {
               y: event.clientY
             }
         this.transformTop = mousePosition.y - this.offset[1]
+        if (this.$refs.testt.scrollTop === 0 && this.transformTop >= 0) {
+          event.preventDefault()
+        }
       }
     }
   },
   computed: {
     modalStyle() {
-      if (this.isDown && this.transformTop && this.transformTop >= 0) {
+      if (this.isDown && this.transformTop && this.transformTop >= 0 && this.$refs.testt.scrollTop === 0) {
         return {
           transform: `translate3d(0, ${this.transformTop}px, 0)`,
           'transition-duration': '0ms'
@@ -102,40 +113,33 @@ export default {
   overflow: hidden;
 }
 
-.sheet-modal {
-  height: auto;
-  display: block;
-  transform: translate3d(0, 0, 0);
+.testt {
   position: absolute;
   left: 0;
   bottom: 0;
+  top: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  margin-top: auto;
+  overflow: auto;
+  z-index: 11111;
+  padding-top: 32px;
+}
+
+.sheet-modal {
+  display: block;
+  transform: translate3d(0, 0, 0);
   width: 100%;
+  max-width: 512px;
   box-sizing: border-box;
   transition-property: transform;
-  background: #fff;
-  border-radius: 32px 32px 0 0;
   z-index: 12500;
   will-change: transform, opacity;
   transition: transform 0.2s ease;
-  max-height: calc(100% - 32px);
-  overflow: auto;
-
-  &__inner {
-    height: 100%;
-    position: relative;
-    overflow: hidden;
-
-    &__content {
-      overflow: auto;
-      -webkit-overflow-scrolling: touch;
-      box-sizing: border-box;
-      height: 100%;
-      position: relative;
-      z-index: 1;
-      padding: 32px;
-    }
-  }
+  margin-top: auto;
 }
+
 .sheet-modal-backdrop {
   position: absolute;
   left: 0;

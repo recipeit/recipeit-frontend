@@ -1,27 +1,13 @@
 <template>
-  <Modal v-for="modal in modals" :key="modal.id" :opened="modal.opened" @closed="afterModalTransitionLeave(modal.id)">
+  <Modal
+    v-for="modal in modals"
+    :key="modal.id"
+    :opened="modal.opened"
+    @close="close(modal.id)"
+    @closed="afterModalTransitionLeave(modal.id)"
+  >
     <component :is="modal.component" v-bind="modal.props" v-on="modal.events" @close="close(modal.id)" />
   </Modal>
-  <!-- <div v-for="modal in modals" :key="modal.id">
-    <transition name="modal-fade" mode="out-in" @after-leave="afterModalTransitionLeave(modal.id)">
-      <div
-        v-if="modal.opened"
-        :class="['global-sheet-modal-container', { show: true }]"
-        @mousedown.self="close(modal.id)"
-        @touchstart.self="close(modal.id)"
-      >
-        <div
-          :key="modal.id"
-          v-if="modal"
-          class="global-sheet-modal"
-          @mousedown.self="close(modal.id)"
-          @touchstart.self="close(modal.id)"
-        >
-          <component :is="modal.component" v-bind="modal.props" v-on="modal.events" @close="close" />
-        </div>
-      </div>
-    </transition>
-  </div> -->
 </template>
 
 <script>
