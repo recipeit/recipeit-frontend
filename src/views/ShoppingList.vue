@@ -1,6 +1,6 @@
 <template>
   <div class="layout__page__content">
-    <h1>Lista zakupów</h1>
+    <h1>{{ $t('shoppingList.title') }}</h1>
     <ul class="product-list">
       <li class="product-list__item" v-for="product in products" :key="product.id">
         <ShoppingListProduct :product="product" />
@@ -10,7 +10,7 @@
     <div class="floating-action-button-container">
       <BaseButton raised color="black">
         <BaseIcon class="floating-action-button__icon" icon="plus" weight="semiBold" />
-        Dodaj produkt
+        {{ $t('shared.addProduct') }}
       </BaseButton>
     </div>
   </div>

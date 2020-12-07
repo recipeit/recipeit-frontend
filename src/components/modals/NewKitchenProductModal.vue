@@ -5,6 +5,20 @@
     </BaseModalHeader>
     <BaseModalBody>
       <div>
+        <div class="base-input">
+          <input id="x" v-model="newProduct.name" type="text" />
+          <label for="x">Nazwa</label>
+        </div>
+        <div class="base-input">
+          <input v-model.number="newProduct.quantity" type="text" />
+          <label for="x">Ilość</label>
+        </div>
+        <div class="base-input">
+          <input v-model="newProduct.unit" type="text" />
+          <label for="x">Jednostka</label>
+        </div>
+      </div>
+      <!-- <div>
         <div>
           <label>
             Nazwa
@@ -39,12 +53,12 @@
           </label>
         </li>
       </ul>
-      <input type="text" />
+      <input type="text" /> -->
     </BaseModalBody>
     <BaseModalFooter>
       <BaseButton class="submit-button" raised color="black" @click="addProduct">
         <BaseIcon class="submit-button__icon" icon="plus" weight="semiBold" />
-        {{ loading ? '...dodawanie' : 'Dodaj produkt' }}
+        {{ loading ? '...dodawanie' : $t('shared.addProduct') }}
       </BaseButton>
     </BaseModalFooter>
   </sheet-modal-content>
@@ -91,6 +105,37 @@ export default {
   &__icon {
     margin-right: 0.5rem;
     font-size: 1rem;
+  }
+}
+
+.base-input {
+  position: relative;
+
+  & + & {
+    margin-top: 16px;
+  }
+
+  label {
+    position: absolute;
+    display: flex;
+    top: 0;
+    // height: 100%;
+    align-items: center;
+    user-select: none;
+    font-size: 12px;
+    font-weight: bold;
+  }
+
+  input {
+    display: flex;
+    width: 100%;
+    border: none;
+    border-bottom: 2px solid $border;
+    height: 48px;
+    padding-top: 11px;
+    font-family: inherit;
+    font-weight: inherit;
+    font-size: 16px;
   }
 }
 </style>

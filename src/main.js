@@ -10,6 +10,7 @@ import GlobalSheetModal from './plugins/global-sheet-modal'
 import './registerServiceWorker'
 import router from './router'
 import store from './store'
+import i18n from './i18n'
 
 createApp(App)
   .component('BaseButton', BaseButton)
@@ -21,4 +22,5 @@ createApp(App)
   .use(store)
   .use(GlobalSheetModal)
   .use(router)
+  .use(i18n)
   .mount('#app')

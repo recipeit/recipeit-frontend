@@ -1,19 +1,19 @@
 <template>
   <div class="layout__page__content">
     <div class="cook-it-layout">
-      <h1>Ugotuj to!</h1>
+      <h1>{{ $t('cookIt.title') }}</h1>
 
       <div class="filters">
         <div class="filters__button">
           <BaseButton stroked size="small" @click="openFilterModal">
             <BaseIcon icon="filter" class="filters__button__icon" />
-            Filtruj
+            {{ $t('shared.filter') }}
           </BaseButton>
         </div>
         <div class="filters__button">
           <BaseButton stroked size="small" @click="openSortModal">
             <BaseIcon icon="sort" class="filters__button__icon" />
-            Sortuj
+            {{ $t('shared.sort') }}
           </BaseButton>
         </div>
       </div>
@@ -21,18 +21,11 @@
       <div class="recipes-list-block">
         <div class="recipes-list-header">
           <div class="recipes-list-header__total-count">
-            {{ allAvailableRecipesCount }}
-            {{
-              allAvailableRecipesCount === 1
-                ? 'przepis'
-                : allAvailableRecipesCount === 0 || allAvailableRecipesCount > 5
-                ? 'przepisów'
-                : 'przepisy'
-            }}
+            {{ $tc('shared.recipes', allAvailableRecipesCount) }}
           </div>
           <div class="recipes-list-header__show-all">
             <router-link :to="{ name: 'cook-it-all' }" class="recipes-list-header__show-all__button">
-              <BaseIcon class="recipes-list-header__show-all__button__icon" icon="arrowRight" /> zobacz wszystkie
+              <BaseIcon class="recipes-list-header__show-all__button__icon" icon="arrowRight" /> {{ $t('shared.seeAll') }}
             </router-link>
           </div>
         </div>
@@ -45,22 +38,15 @@
 
       <div class="recipes-list-block">
         <div class="recipes-list-title">
-          Dokup brakujący składnik i nie marnuj tych, które już masz!
+          {{ $t('cookIt.buyMissingIngredient') }}
         </div>
         <div class="recipes-list-header">
           <div class="recipes-list-header__total-count">
-            {{ allAlmostAvailableRecipesCount }}
-            {{
-              allAvailableRecipesCount === 1
-                ? 'przepis'
-                : allAvailableRecipesCount === 0 || allAvailableRecipesCount > 5
-                ? 'przepisów'
-                : 'przepisy'
-            }}
+            {{ $tc('shared.recipes', allAlmostAvailableRecipesCount) }}
           </div>
           <div class="recipes-list-header__show-all">
             <router-link :to="{ name: 'cook-it-all' }" class="recipes-list-header__show-all__button">
-              <BaseIcon class="recipes-list-header__show-all__button__icon" icon="arrowRight" /> zobacz wszystkie
+              <BaseIcon class="recipes-list-header__show-all__button__icon" icon="arrowRight" /> {{ $t('shared.seeAll') }}
             </router-link>
           </div>
         </div>
@@ -106,9 +92,9 @@ export default {
   computed: {
     ...mapState({
       availableRecipes: state => state.recipes.availableRecipes,
-      allAvailableRecipesCount: state => state.recipes.allAvailableRecipesCount,
+      allAvailableRecipesCount: state => state.recipes.allAvailableRecipesCount | 0,
       almostAvailableRecipes: state => state.recipes.almostAvailableRecipes,
-      allAlmostAvailableRecipesCount: state => state.recipes.allAlmostAvailableRecipesCount
+      allAlmostAvailableRecipesCount: state => state.recipes.allAlmostAvailableRecipesCount | 0
     })
   },
   created() {

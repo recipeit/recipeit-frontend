@@ -1,6 +1,6 @@
 <template>
   <div class="layout__page__content">
-    <h1>Przepisy</h1>
+    <h1>{{ $t('recipes.title') }}</h1>
     <ul class="recipes-list">
       <li class="recipes-list__item" v-for="recipe in recipes" :key="recipe.id">
         <RecipeBox :recipe="recipe" />
