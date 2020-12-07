@@ -6,6 +6,8 @@ import { clock } from './clock'
 import { cookbook } from './cookbook'
 import { filter } from './filter'
 import { food } from './food'
+import { heart } from './heart'
+import { heartFull } from './heartFull'
 import { home } from './home'
 import { minus } from './minus'
 import { plus } from './plus'
@@ -23,6 +25,8 @@ export {
   cookbook,
   filter,
   food,
+  heart,
+  heartFull,
   home,
   minus,
   plus,

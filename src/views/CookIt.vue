@@ -5,13 +5,13 @@
 
       <div class="filters">
         <div class="filters__button">
-          <BaseButton stroked size="small">
+          <BaseButton stroked size="small" @click="openFilterModal">
             <BaseIcon icon="filter" class="filters__button__icon" />
             Filtruj
           </BaseButton>
         </div>
         <div class="filters__button">
-          <BaseButton stroked size="small">
+          <BaseButton stroked size="small" @click="openSortModal">
             <BaseIcon icon="sort" class="filters__button__icon" />
             Sortuj
           </BaseButton>
@@ -93,7 +93,10 @@
 
 <script>
 import { mapState } from 'vuex'
-import RecipeBox from '@/components/RecipeBox.vue'
+import { markRaw } from 'vue'
+import RecipeBox from '@/components/RecipeBox'
+import FilterModal from '@/components/modals/FilterModal'
+import SortModal from '@/components/modals/SortModal'
 
 export default {
   name: 'CookIt',
@@ -111,6 +114,14 @@ export default {
   created() {
     this.$store.dispatch('recipes/fetchAvailableRecipes')
     this.$store.dispatch('recipes/fetchAlmostAvailableRecipes')
+  },
+  methods: {
+    openFilterModal() {
+      this.$modal.show(markRaw(FilterModal), {}, {})
+    },
+    openSortModal() {
+      this.$modal.show(markRaw(SortModal), {}, {})
+    }
   }
 }
 </script>

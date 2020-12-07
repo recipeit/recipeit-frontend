@@ -1,47 +1,53 @@
 <template>
-  <global-sheet-modal-content>
-    <div>
-      <h3 style="margin-top: 0">Dodaj nowy produkt</h3>
+  <sheet-modal-content>
+    <BaseModalHeader @close="$emit('close')">
+      <BaseModalTitle>Dodaj nowy produkt</BaseModalTitle>
+    </BaseModalHeader>
+    <BaseModalBody>
       <div>
-        <label>
-          Nazwa
-          <input v-model="newProduct.name" type="text" />
-        </label>
+        <div>
+          <label>
+            Nazwa
+            <input v-model="newProduct.name" type="text" />
+          </label>
+        </div>
+        <div>
+          <label>
+            Ilość
+            <input v-model.number="newProduct.quantity" type="text" />
+          </label>
+        </div>
+        <div>
+          <label>
+            Jednostka
+            <input v-model="newProduct.unit" type="text" />
+          </label>
+        </div>
       </div>
-      <div>
-        <label>
-          Ilość
-          <input v-model.number="newProduct.quantity" type="text" />
-        </label>
-      </div>
-      <div>
-        <label>
-          Jednostka
-          <input v-model="newProduct.unit" type="text" />
-        </label>
-      </div>
-    </div>
 
-    <ul>
-      <li>
-        <label>
-          <input v-model="newProduct.templateIngredientId" type="radio" :value="null" />
-          Nic
-        </label>
-      </li>
-      <li v-for="baseIngredient in baseIngredients" :key="baseIngredient.id">
-        <label>
-          <input v-model="newProduct.templateIngredientId" type="radio" :value="baseIngredient.id" />
-          {{ baseIngredient.name }}
-        </label>
-      </li>
-    </ul>
-    <input type="text" />
-    <BaseButton class="submit-button" raised color="black" @click="addProduct">
-      <BaseIcon class="submit-button__icon" icon="plus" weight="semiBold" />
-      {{ loading ? '...dodawanie' : 'Dodaj produkt' }}
-    </BaseButton>
-  </global-sheet-modal-content>
+      <ul>
+        <li>
+          <label>
+            <input v-model="newProduct.templateIngredientId" type="radio" :value="null" />
+            Nic
+          </label>
+        </li>
+        <li v-for="baseIngredient in baseIngredients" :key="baseIngredient.id">
+          <label>
+            <input v-model="newProduct.templateIngredientId" type="radio" :value="baseIngredient.id" />
+            {{ baseIngredient.name }}
+          </label>
+        </li>
+      </ul>
+      <input type="text" />
+    </BaseModalBody>
+    <BaseModalFooter>
+      <BaseButton class="submit-button" raised color="black" @click="addProduct">
+        <BaseIcon class="submit-button__icon" icon="plus" weight="semiBold" />
+        {{ loading ? '...dodawanie' : 'Dodaj produkt' }}
+      </BaseButton>
+    </BaseModalFooter>
+  </sheet-modal-content>
 </template>
 
 <script>
@@ -80,7 +86,6 @@ export default {
 
 <style lang="scss" scoped>
 .submit-button {
-  margin-top: 24px;
   width: 100%;
 
   &__icon {

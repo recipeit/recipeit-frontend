@@ -2,10 +2,11 @@
   <div class="layout__page__content">
     <div v-if="recipe && recipeDetails" class="recipe">
       <img class="recipe__main-image" :src="recipe.mainImageUrl" alt="" />
-      <h2>{{ recipe.name }}</h2>
-      <div>
-        <span v-if="isFavourite" @click="deleteFromFavourites">❤</span>
-        <span v-else @click="addToFavourites">🤍</span>
+      <div class="recipe__header">
+        <h2 class="recipe__header__title">{{ recipe.name }}</h2>
+        <div class="recipe__header__actions">
+          <FavouriteIcon :isFavourite="isFavourite" @removed="deleteFromFavourites" @added="addToFavourites" />
+        </div>
       </div>
       <div class="recipe__author">
         <span class="recipe__author__name">{{ recipe.author.name }}</span>
@@ -42,6 +43,7 @@
 <script>
 import { mapState } from 'vuex'
 import RecipeIngredient from '@/components/recipe/RecipeIngredient'
+import FavouriteIcon from '@/components/FavouriteIcon'
 
 export default {
   name: 'Recipe',
@@ -52,7 +54,8 @@ export default {
     }
   },
   components: {
-    RecipeIngredient
+    RecipeIngredient,
+    FavouriteIcon
   },
   data() {
     return {
@@ -96,10 +99,35 @@ export default {
     object-fit: cover;
   }
 
+  &__header {
+    margin-top: 16px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    &__title {
+      margin: 0;
+      font-size: 1.25rem;
+      line-height: 1.75rem;
+    }
+
+    &__actions {
+      display: flex;
+      align-items: center;
+      font-size: 24px;
+      height: 1.75rem;
+
+      & {
+        margin-left: 16px;
+      }
+    }
+  }
+
   &__ingredients-list {
   }
 
   &__author {
+    margin-top: 4px;
     color: $text-secondary;
 
     &__name {

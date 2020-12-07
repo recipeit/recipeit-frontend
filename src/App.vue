@@ -32,7 +32,7 @@ export default {
   margin: 0 auto;
   background: $background;
   min-height: 100%;
-  box-shadow: 0 0 64px rgba(0, 0, 0, 0.1);
+  // box-shadow: 0 0 64px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
   width: 100%;

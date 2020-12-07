@@ -10,19 +10,20 @@
     </div>
     <div class="recipe-box__props">
       <Rating :value="recipe.rating" />
-      <span v-if="isFavourite" @click="deleteFromFavourites">❤</span>
-      <span v-else @click="addToFavourites">🤍</span>
+      <FavouriteIcon :isFavourite="isFavourite" @removed="deleteFromFavourites" @added="addToFavourites" />
     </div>
   </div>
 </template>
 
 <script>
-import Rating from '@/components/Rating.vue'
 import { mapState } from 'vuex'
+import Rating from '@/components/Rating'
+import FavouriteIcon from '@/components/FavouriteIcon'
 
 export default {
   components: {
-    Rating
+    Rating,
+    FavouriteIcon
   },
   props: {
     recipe: {
@@ -94,6 +95,8 @@ export default {
 
   &__props {
     margin-top: 8px;
+    display: flex;
+    justify-content: space-between;
   }
 
   &__rating {

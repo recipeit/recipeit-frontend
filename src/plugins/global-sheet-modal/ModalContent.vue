@@ -1,29 +1,38 @@
 <template>
-  <div class="global-sheet-modal-content">
-    <div class="global-sheet-modal-content__inner">
-      <slot />
-    </div>
+  <div class="sheet-modal-content">
+    <slot />
   </div>
 </template>
 
 <script>
 export default {
-  name: 'global-sheet-modal-content'
+  name: 'sheet-modal-content'
 }
 </script>
 
 <style lang="scss">
-.global-sheet-modal-content {
-  background: #fff;
+.sheet-modal-content {
+  background-color: $background;
   border-radius: 32px 32px 0 0;
   position: relative;
 
-  &__inner {
-    -webkit-overflow-scrolling: touch;
-    box-sizing: border-box;
-    position: relative;
-    z-index: 1;
-    padding: 32px;
+  @media (min-width: 720px) {
+    border-radius: 32px;
+  }
+
+  &::before {
+    position: absolute;
+    height: 4px;
+    width: 48px;
+    border-radius: 8px;
+    background-color: $border;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    @media (max-width: 719px) {
+      content: '';
+    }
   }
 }
 </style>

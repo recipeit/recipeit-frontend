@@ -54,7 +54,7 @@ export default {
   },
   methods: {
     maybeClose(e) {
-      if (!this.$refs.modal.contains(e.target)) {
+      if (this.$refs.modal && !this.$refs.modal.contains(e.target)) {
         this.$emit('close')
       }
     },
@@ -152,6 +152,7 @@ export default {
       overflow: auto;
       z-index: 1002;
       padding-top: 32px;
+      transition: transform 0.3s ease, opacity 0.3s ease;
     }
   }
 
@@ -172,21 +173,27 @@ export default {
   width: 100%;
   max-width: 512px;
   box-sizing: border-box;
-  transition-property: transform;
   z-index: 12500;
-  will-change: transform, opacity;
-  transition: transform 0.2s ease;
   margin-top: auto;
+
+  @media (min-width: 720px) {
+    margin-bottom: auto;
+  }
 }
 
 .slide-enter-active,
 .slide-leave-active {
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
 .slide-enter-from,
 .slide-leave-to {
   transform: translate3d(0, 100%, 0);
+
+  @media (min-width: 720px) {
+    transform: scale(0.5);
+    opacity: 0;
+  }
 }
 
 .fade-enter-active,

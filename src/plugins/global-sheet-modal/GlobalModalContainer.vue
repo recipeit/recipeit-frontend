@@ -26,12 +26,18 @@ export default {
   },
   computed: {
     anyModalOpened() {
-      return this.modals && this.modals.filter(m => m.opened).length > 0
+      return this.modals.filter(m => m.opened).length > 0
+    },
+    anyModalOpenedOrClosing() {
+      return this.modals.length > 0
     }
   },
   watch: {
-    anyModalOpened(value) {
-      document.body.style.overflow = value ? 'hidden' : null
+    anyModalOpenedOrClosing(value) {
+      const scrollWidth = window.innerWidth - document.body.offsetWidth
+      const bodyRequireScroll = document.body.scrollHeight > document.body.clientHeight
+      document.body.style.overflowY = value ? 'hidden' : null
+      document.body.style.paddingRight = value && bodyRequireScroll ? `${scrollWidth}px` : null
     }
   },
   methods: {
