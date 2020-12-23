@@ -8,6 +8,9 @@
           <BaseButton stroked size="small" @click="openFilterModal">
             <BaseIcon icon="filter" class="filters__button__icon" />
             {{ $t('shared.filter') }}
+            <transition name="filters-button-count-fade">
+              <span v-if="selectedFiltersCount !== 0" class="filters__button__count">{{ selectedFiltersCount }}</span>
+            </transition>
           </BaseButton>
         </div>
         <div class="filters__button">
@@ -89,13 +92,26 @@ export default {
   components: {
     RecipeBox
   },
+  data() {
+    return {
+      filters: {},
+      sortMethod: null
+    }
+  },
   computed: {
     ...mapState({
       availableRecipes: state => state.recipes.availableRecipes,
       allAvailableRecipesCount: state => state.recipes.allAvailableRecipesCount | 0,
       almostAvailableRecipes: state => state.recipes.almostAvailableRecipes,
       allAlmostAvailableRecipesCount: state => state.recipes.allAlmostAvailableRecipesCount | 0
-    })
+    }),
+    selectedFiltersCount() {
+      console.log(Object.entries(this.filters))
+      var county = Object.entries(this.filters)
+        .map(f => f[1].length)
+        .reduce((a, b) => a + b, 0)
+      return county > 9 ? '9+' : county
+    }
   },
   created() {
     this.$store.dispatch('recipes/fetchAvailableRecipes')
@@ -103,10 +119,35 @@ export default {
   },
   methods: {
     openFilterModal() {
-      this.$modal.show(markRaw(FilterModal), {}, {})
+      this.$modal.show(
+        markRaw(FilterModal),
+        {
+          defaultSelected: this.filters
+        },
+        {
+          close: newFilters => {
+            if (newFilters) {
+              this.filters = newFilters
+            }
+          }
+        }
+      )
     },
     openSortModal() {
-      this.$modal.show(markRaw(SortModal), {}, {})
+      this.$modal.show(
+        markRaw(SortModal),
+        {
+          defaultSelected: this.sortMethod
+        },
+        {
+          close: newSortMethod => {
+            console.log(newSortMethod)
+            if (newSortMethod) {
+              this.sortMethod = newSortMethod
+            }
+          }
+        }
+      )
     }
   }
 }
@@ -135,6 +176,23 @@ export default {
       font-size: 20px;
       color: $primary;
       margin-right: 8px;
+    }
+
+    &__count {
+      $size: 1rem;
+
+      width: $size;
+      height: $size;
+      margin-left: 0.6rem;
+      background-color: $primary;
+      color: #fff;
+      border-radius: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-weight: bold;
+      font-size: 10px;
     }
   }
 }

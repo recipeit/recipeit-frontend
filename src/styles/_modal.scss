@@ -52,6 +52,7 @@
 .modal-footer {
   padding: 32px;
   display: flex;
+  gap: 16px;
 
   &:not(:first-child) {
     padding-top: 24px;

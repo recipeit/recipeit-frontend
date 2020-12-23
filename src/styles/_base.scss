@@ -44,3 +44,24 @@ ul {
 button:focus {
   outline: 0;
 }
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.filters-button-count-fade-enter-active,
+.filters-button-count-fade-leave-active {
+  transition: opacity 0.3s ease, margin-right 0.3s ease;
+}
+
+.filters-button-count-fade-enter-from,
+.filters-button-count-fade-leave-to {
+  margin-right: -1.6rem;
+  opacity: 0;
+}

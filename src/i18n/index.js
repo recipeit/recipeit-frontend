@@ -13,7 +13,7 @@ const pluralizationRules = {
 }
 
 export default new createI18n({
-  locale: 'en',
+  locale: 'pl',
   messages,
   pluralizationRules
 })

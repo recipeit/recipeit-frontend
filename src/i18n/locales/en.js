@@ -13,6 +13,16 @@ export default {
       seeAll: 'see all',
       addProduct: 'Add product'
     },
+    filterModal: {
+      title: 'Available filters',
+      submitButton: 'Filter',
+      cancelButton: 'Cancel'
+    },
+    sortModal: {
+      title: 'Sort by',
+      submitButton: 'Sort',
+      cancelButton: 'Cancel'
+    },
     recipes: {
       title: 'Recipes'
     },

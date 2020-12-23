@@ -6,6 +6,7 @@ import BaseModalHeader from './components/base/BaseModalHeader'
 import BaseModalTitle from './components/base/BaseModalTitle'
 import BaseModalBody from './components/base/BaseModalBody'
 import BaseModalFooter from './components/base/BaseModalFooter'
+import BasePillCheckbox from './components/base/BasePillCheckbox'
 import GlobalSheetModal from './plugins/global-sheet-modal'
 import './registerServiceWorker'
 import router from './router'
@@ -19,6 +20,7 @@ createApp(App)
   .component('BaseModalTitle', BaseModalTitle)
   .component('BaseModalBody', BaseModalBody)
   .component('BaseModalFooter', BaseModalFooter)
+  .component('BasePillCheckbox', BasePillCheckbox)
   .use(store)
   .use(GlobalSheetModal)
   .use(router)

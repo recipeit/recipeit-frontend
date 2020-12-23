@@ -9,3 +9,13 @@ export const unitTranslations = {
   'Whole.Grain': 'ziarna',
   'Whole.Handful': 'garść'
 }
+
+export const recipesSortingMethods = [
+  'name',
+  'nameDescending',
+  'time',
+  'timeDescending',
+  'ingredients',
+  'ingredientsDescending'
+]
+export const defaultRecipesSortingMethod = 'name'

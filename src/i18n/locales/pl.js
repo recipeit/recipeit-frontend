@@ -13,6 +13,16 @@ export default {
       seeAll: 'zobacz wszystkie',
       addProduct: 'Dodaj produkt'
     },
+    filterModal: {
+      title: 'Dostępne filtry',
+      submitButton: 'Filtruj',
+      cancelButton: 'Anuluj'
+    },
+    sortModal: {
+      title: 'Sortuj według',
+      submitButton: 'Sortuj',
+      cancelButton: 'Anuluj'
+    },
     recipes: {
       title: 'Przepisy'
     },
@@ -25,6 +35,14 @@ export default {
     },
     shoppingList: {
       title: 'Lista zakupów'
+    },
+    recipesSortingMethods: {
+      name: 'nazwy: od A do Z',
+      nameDescending: 'nazwy: od Z do A',
+      time: 'czasu przygotowania: rosnąco',
+      timeDescending: 'czasu przygotowania: malejąco',
+      ingredients: 'liczby składników: rosnąco',
+      ingredientsDescending: 'liczby składników: malejąco'
     }
   },
   pluralizationRules(choice, choicesLength) {

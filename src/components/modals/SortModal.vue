@@ -1,20 +1,43 @@
 <template>
   <sheet-modal-content>
     <BaseModalHeader @close="$emit('close')">
-      <BaseModalTitle>Sortowanie</BaseModalTitle>
+      <BaseModalTitle>{{ $t('sortModal.title') }}</BaseModalTitle>
     </BaseModalHeader>
-    <BaseModalFooter>
-      <BaseButton class="submit-button" raised color="black" @click="$emit('close')">
-        Sortuj
-      </BaseButton>
-    </BaseModalFooter>
+    <BaseModalBody>
+      <div class="sort-modal-body">
+        <template v-for="sortingMethod in sortingMethods" :key="sortingMethod">
+          <BaseButton
+            v-if="sortingMethod === selected"
+            class="choice-button"
+            raised
+            color="black"
+            @click="$emit('close', sortingMethod)"
+          >
+            {{ $t(`recipesSortingMethods.${sortingMethod}`) }}
+          </BaseButton>
+          <BaseButton v-else class="choice-button" stroked color="white" @click="$emit('close', sortingMethod)">
+            {{ $t(`recipesSortingMethods.${sortingMethod}`) }}
+          </BaseButton>
+        </template>
+      </div>
+    </BaseModalBody>
   </sheet-modal-content>
 </template>
 
 <script>
+import { recipesSortingMethods, defaultRecipesSortingMethod } from '@/constants'
+
 export default {
+  props: {
+    defaultSelected: {
+      type: String
+    }
+  },
   data() {
-    return {}
+    return {
+      selected: this.defaultSelected || defaultRecipesSortingMethod,
+      sortingMethods: recipesSortingMethods
+    }
   },
   computed: {},
   methods: {}
@@ -22,12 +45,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.submit-button {
+.choice-button {
   width: 100%;
+  justify-content: flex-start;
 
-  &__icon {
-    margin-right: 0.5rem;
-    font-size: 1rem;
+  & + & {
+    margin-top: 16px;
   }
 }
 </style>
