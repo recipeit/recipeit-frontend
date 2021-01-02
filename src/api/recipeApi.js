@@ -13,18 +13,14 @@ export default {
   updateKitchenByRecipe(id) {
     return apiClient.post(`/recipes/${id}/update-kitchen`)
   },
-  getAvailableRecipes() {
+  getAvailableRecipes(queryParams) {
     return apiClient.get(`/recipes/available`, {
-      params: {
-        maxCount: 2
-      }
+      params: queryParams
     })
   },
-  getAlmostAvailableRecipes() {
+  getAlmostAvailableRecipes(queryParams) {
     return apiClient.get(`/recipes/almost-available`, {
-      params: {
-        maxCount: 1
-      }
+      params: queryParams
     })
   },
   getFavouriteRecipes() {

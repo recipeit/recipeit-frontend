@@ -58,22 +58,6 @@
             {{ recipe.missingIngredientsCount }}
             <RecipeBox :recipe="recipe.recipe" />
           </li>
-          <li class="recipes-list__item" v-for="recipe in almostAvailableRecipes" :key="recipe.recipe.id">
-            {{ recipe.missingIngredientsCount }}
-            <RecipeBox :recipe="recipe.recipe" />
-          </li>
-          <li class="recipes-list__item" v-for="recipe in almostAvailableRecipes" :key="recipe.recipe.id">
-            {{ recipe.missingIngredientsCount }}
-            <RecipeBox :recipe="recipe.recipe" />
-          </li>
-          <li class="recipes-list__item" v-for="recipe in almostAvailableRecipes" :key="recipe.recipe.id">
-            {{ recipe.missingIngredientsCount }}
-            <RecipeBox :recipe="recipe.recipe" />
-          </li>
-          <li class="recipes-list__item" v-for="recipe in almostAvailableRecipes" :key="recipe.recipe.id">
-            {{ recipe.missingIngredientsCount }}
-            <RecipeBox :recipe="recipe.recipe" />
-          </li>
         </ul>
       </div>
     </div>
@@ -141,9 +125,16 @@ export default {
         },
         {
           close: newSortMethod => {
-            console.log(newSortMethod)
             if (newSortMethod) {
               this.sortMethod = newSortMethod
+              this.$store.dispatch('recipes/fetchAvailableRecipes', {
+                pageNumber: null,
+                orderMethod: this.sortMethod
+              })
+              this.$store.dispatch('recipes/fetchAlmostAvailableRecipes', {
+                pageNumber: null,
+                orderMethod: this.sortMethod
+              })
             }
           }
         }
@@ -185,7 +176,7 @@ export default {
       height: $size;
       margin-left: 0.6rem;
       background-color: $primary;
-      color: #fff;
+      color: #000;
       border-radius: 48px;
       display: flex;
       align-items: center;

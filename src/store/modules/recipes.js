@@ -1,5 +1,16 @@
 import recipeApi from '@/api/recipeApi'
 
+var almostAvailableRecipes = {
+  fetching: false,
+  pagesFrom: null,
+  pagesTo: null,
+  items: null,
+  totalPages: null,
+  totalCount: null,
+  hasPrevious: null,
+  hasNext: null
+}
+
 export default {
   namespaced: true,
   state: {
@@ -18,13 +29,13 @@ export default {
     SET_FAVOURITE_RECIPES_IDS(state, recipesIds) {
       state.favouriteRecipesIds = recipesIds
     },
-    SET_AVAILABLE_RECIPES(state, { recipes, allCount }) {
+    SET_AVAILABLE_RECIPES(state, { recipes, totalCount }) {
       state.availableRecipes = recipes
-      state.allAvailableRecipesCount = allCount
+      state.allAvailableRecipesCount = totalCount
     },
-    SET_ALMOST_AVAILABLE_RECIPES(state, { recipes, allCount }) {
+    SET_ALMOST_AVAILABLE_RECIPES(state, { recipes, totalCount }) {
       state.almostAvailableRecipes = recipes
-      state.allAlmostAvailableRecipesCount = allCount
+      state.allAlmostAvailableRecipesCount = totalCount
     },
     SET_RECIPE_DETAILS(state, recipeDetails) {
       state.recipeDetails = recipeDetails
@@ -61,13 +72,13 @@ export default {
         commit('SET_FAVOURITE_RECIPES_IDS', resp.data)
       })
     },
-    fetchAvailableRecipes({ commit }) {
-      recipeApi.getAvailableRecipes().then(resp => {
+    fetchAvailableRecipes({ commit }, queryParams) {
+      recipeApi.getAvailableRecipes(queryParams).then(resp => {
         commit('SET_AVAILABLE_RECIPES', resp.data)
       })
     },
-    fetchAlmostAvailableRecipes({ commit }) {
-      recipeApi.getAlmostAvailableRecipes().then(resp => {
+    fetchAlmostAvailableRecipes({ commit }, queryParams) {
+      recipeApi.getAlmostAvailableRecipes(queryParams).then(resp => {
         commit('SET_ALMOST_AVAILABLE_RECIPES', resp.data)
       })
     },

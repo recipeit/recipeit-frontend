@@ -35,6 +35,14 @@ export default {
     },
     shoppingList: {
       title: 'Shopping list'
+    },
+    recipesSortingMethods: {
+      nameAscending: 'name: from A to Z',
+      nameDescending: 'name: from Z to A',
+      timeAscending: 'preparation time : ascending',
+      timeDescending: 'preparation time: descending',
+      ingredientsCountAscending: 'ingredients count: ascending',
+      ingredientsCountDescending: 'ingredients count: descending'
     }
   },
   pluralizationRules: {}

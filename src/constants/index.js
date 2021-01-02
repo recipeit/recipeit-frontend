@@ -11,11 +11,11 @@ export const unitTranslations = {
 }
 
 export const recipesSortingMethods = [
-  'name',
+  'nameAscending',
   'nameDescending',
-  'time',
+  'timeAscending',
   'timeDescending',
-  'ingredients',
-  'ingredientsDescending'
+  'ingredientsCountAscending',
+  'ingredientsCountDescending'
 ]
-export const defaultRecipesSortingMethod = 'name'
+export const defaultRecipesSortingMethod = recipesSortingMethods[0]

@@ -37,12 +37,12 @@ export default {
       title: 'Lista zakupów'
     },
     recipesSortingMethods: {
-      name: 'nazwy: od A do Z',
+      nameAscending: 'nazwy: od A do Z',
       nameDescending: 'nazwy: od Z do A',
-      time: 'czasu przygotowania: rosnąco',
+      timeAscending: 'czasu przygotowania: rosnąco',
       timeDescending: 'czasu przygotowania: malejąco',
-      ingredients: 'liczby składników: rosnąco',
-      ingredientsDescending: 'liczby składników: malejąco'
+      ingredientsCountAscending: 'liczby składników: rosnąco',
+      ingredientsCountDescending: 'liczby składników: malejąco'
     }
   },
   pluralizationRules(choice, choicesLength) {
