@@ -3,9 +3,12 @@
     <h1>{{ $t('shoppingList.title') }}</h1>
     <ul class="product-list">
       <li class="product-list__item" v-for="product in products" :key="product.id">
-        <ShoppingListProduct :product="product" />
+        <ShoppingListProduct :product="product" @purchase="purchase(product.id)" />
       </li>
     </ul>
+    <a v-if="products && products.length > 0" class="purchase-all-button" @click="purchaseAll">
+      <BaseIcon class="purchase-all-button__icon" icon="arrowRight" /> {{ $t('shoppingList.purchaseAllButton') }}
+    </a>
 
     <div class="floating-action-button-container">
       <BaseButton raised color="black">
@@ -17,13 +20,39 @@
 </template>
 
 <script>
+import { markRaw } from 'vue'
 import { mapState } from 'vuex'
 import ShoppingListProduct from '@/components/ShoppingListProduct'
+import Dialog from '@/components/modals/Dialog'
 
 export default {
   name: 'ShoppingList',
   components: {
     ShoppingListProduct
+  },
+  methods: {
+    purchase(id) {
+      this.$store.dispatch('shoppingList/purchaseProduct', id)
+    },
+    purchaseAll() {
+      this.$modal.show(
+        markRaw(Dialog),
+        {
+          title: this.$t('shoppingList.purchaseAllDialogTitle', {
+            products: this.$tc('shared.products', this.products.length)
+          }),
+          secondaryText: this.$t('shared.no'),
+          primaryText: this.$t('shared.yes')
+        },
+        {
+          close: purchase => {
+            if (purchase) {
+              this.$store.dispatch('shoppingList/purchaseAllProducts')
+            }
+          }
+        }
+      )
+    }
   },
   computed: {
     ...mapState({
@@ -43,6 +72,23 @@ export default {
 
   &__item {
     padding: 6px 0;
+  }
+}
+
+.purchase-all-button {
+  margin-top: 8px;
+  justify-content: flex-end;
+  font-size: 12px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: $blue;
+  cursor: pointer;
+
+  &__icon {
+    font-size: 20px;
+    margin-right: 4px;
   }
 }
 

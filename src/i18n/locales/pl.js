@@ -8,10 +8,13 @@ export default {
     shared: {
       recipesBook: 'Przepisy',
       recipes: 'brak przepisów | {n} przepis | {n} przepisy | {n} przepisów',
+      products: 'brak produktów | {n} produkt | {n} produkty | {n} produktów',
       filter: 'Filtruj',
       sort: 'Sortuj',
       seeAll: 'zobacz wszystkie',
-      addProduct: 'Dodaj produkt'
+      addProduct: 'Dodaj produkt',
+      yes: 'Tak',
+      no: 'Nie'
     },
     filterModal: {
       title: 'Dostępne filtry',
@@ -34,7 +37,9 @@ export default {
       title: 'Moja kuchnia'
     },
     shoppingList: {
-      title: 'Lista zakupów'
+      title: 'Lista zakupów',
+      purchaseAllButton: 'przenieś wszystko do Twojej kuchni',
+      purchaseAllDialogTitle: 'Czy na pewno chcesz przenieść {products} do Twojej kuchni?'
     },
     recipesSortingMethods: {
       nameAscending: 'nazwy: od A do Z',

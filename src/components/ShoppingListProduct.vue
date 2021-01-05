@@ -4,7 +4,7 @@
       <!-- <div class="actions__remove" @click="deleteProduct">usuń</div>
       <div class="actions__decrement" @click="decreaseQuantity">-</div>
       <div class="actions__increment" @click="increaseQuantity">+</div> -->
-      <a class="purchase-button" @click="purchase">
+      <a class="purchase-button" @click="$emit('purchase')">
         <BaseIcon icon="check" weight="semiBold" />
       </a>
     </div>
@@ -41,9 +41,6 @@ export default {
       var product = JSON.parse(JSON.stringify(this.product))
       product.quantity = quantity
       this.$store.dispatch('shoppingList/editProductFromShoppingList', product)
-    },
-    purchase() {
-      this.$store.dispatch('shoppingList/purchaseProduct', this.product.id)
     }
   }
 }
