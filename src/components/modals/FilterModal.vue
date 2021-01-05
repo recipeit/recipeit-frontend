@@ -5,7 +5,7 @@
     </BaseModalHeader>
     <BaseModalBody>
       <div class="filters">
-        <div v-for="(group, groupValue) in filterGroups" :key="groupValue" class="filter__group">
+        <div v-for="(group, groupValue) in options" :key="groupValue" class="filter__group">
           <div class="filter__group__title">
             <div class="filter__group__name">{{ group.name }}</div>
             <transition name="fade">
@@ -20,7 +20,7 @@
           </div>
           <div class="filter__group__options">
             <div v-for="option in group.options" :key="option.value">
-              <BasePillCheckbox v-model="selected[groupValue]" :value="option.value">
+              <BasePillCheckbox v-model="selected[groupValue]" :value="option.value" :excluding="group.isExcluding">
                 {{ option.name }}
               </BasePillCheckbox>
             </div>
@@ -42,25 +42,26 @@
 <script>
 export default {
   props: {
+    options: {
+      type: Object,
+      required: true
+    },
     defaultSelected: {
       type: Object
     }
   },
   data() {
     return {
-      selected: {},
-      filterGroups: {}
+      selected: {}
     }
   },
   computed: {},
   methods: {
     submit() {
-      console.log(JSON.parse(JSON.stringify(this.selected)))
       this.$emit('close', this.selected)
     },
-    prepareOptions(options, selected) {
-      this.filterGroups = options
-      this.selected = {
+    prepareSelected(options, selected) {
+      return {
         ...Object.fromEntries(Object.keys(options).map(o => [o, []])),
         ...selected
       }
@@ -70,80 +71,7 @@ export default {
     }
   },
   created() {
-    var options = {
-      type: {
-        name: 'Typ',
-        type: 'checkbox',
-        options: [
-          {
-            value: 'breakfast',
-            name: 'Śniadanie'
-          },
-          {
-            value: 'dinner',
-            name: 'Obiad'
-          },
-          {
-            value: 'supper',
-            name: 'Kolacja'
-          },
-          {
-            value: 'dessert',
-            name: 'Deser'
-          },
-          {
-            value: 'cake',
-            name: 'Ciasto'
-          },
-          {
-            value: 'snack',
-            name: 'Przekąska'
-          }
-        ]
-      },
-      diet: {
-        name: 'Dieta',
-        type: 'checkbox',
-        options: [
-          {
-            value: 'vegan',
-            name: 'Wegańska'
-          },
-          {
-            value: 'vegetarian',
-            name: 'Wegetariańska'
-          }
-        ]
-      },
-      allergens: {
-        name: 'Pomiń dania zawierające',
-        type: 'checkbox',
-        options: [
-          {
-            value: 'dairy',
-            name: 'Nabiał'
-          },
-          {
-            value: 'gluten',
-            name: 'Gluten'
-          },
-          {
-            value: 'eggs',
-            name: 'Jaja'
-          },
-          {
-            value: 'fishes',
-            name: 'Ryby'
-          },
-          {
-            value: 'nuts',
-            name: 'Orzechy'
-          }
-        ]
-      }
-    }
-
-    this.prepareOptions(options, this.defaultSelected)
+    this.selected = this.prepareSelected(this.options, this.defaultSelected)
   }
 }
 </script>
@@ -177,6 +105,7 @@ export default {
 
     &__clear {
       margin-left: 0.5rem;
+      margin-left: auto;
       cursor: pointer;
       color: $blue;
       transition: all 0.2s ease;

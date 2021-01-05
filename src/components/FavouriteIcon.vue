@@ -22,7 +22,7 @@ export default {
 .favourite {
   font-size: 1em;
   line-height: 0;
-  color: $text-secondary;
+  color: rgba($text-primary, 0.35);
   cursor: pointer;
 
   &--active {

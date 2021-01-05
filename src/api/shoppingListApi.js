@@ -10,6 +10,12 @@ export default {
   addProductToShoppingList(product) {
     return apiClient.post(`/shopping-list/product`, product)
   },
+  purchaseProduct(productId) {
+    return apiClient.post(`/shopping-list/purchase/${productId}`)
+  },
+  purchaseAllProducts() {
+    return apiClient.post(`/shopping-list/purchase/all`)
+  },
   getProductFromShoppingListById(id) {
     return apiClient.get(`/shopping-list/products/${id}`)
   },

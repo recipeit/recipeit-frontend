@@ -5,9 +5,9 @@
     </BaseModalHeader>
     <BaseModalBody>
       <div class="sort-modal-body">
-        <template v-for="sortingMethod in sortingMethods" :key="sortingMethod">
+        <template v-for="sortingMethod in options" :key="sortingMethod">
           <BaseButton
-            v-if="sortingMethod === selected"
+            v-if="sortingMethod === defaultSelected"
             class="choice-button"
             raised
             color="black"
@@ -25,22 +25,16 @@
 </template>
 
 <script>
-import { recipesSortingMethods, defaultRecipesSortingMethod } from '@/constants'
-
 export default {
   props: {
+    options: {
+      type: Array,
+      required: true
+    },
     defaultSelected: {
       type: String
     }
-  },
-  data() {
-    return {
-      selected: this.defaultSelected || defaultRecipesSortingMethod,
-      sortingMethods: recipesSortingMethods
-    }
-  },
-  computed: {},
-  methods: {}
+  }
 }
 </script>
 

@@ -21,10 +21,18 @@
         </div>
       </div>
 
-      <div class="recipes-list-block">
+      <div v-if="availableRecipes.totalCount === 0 && !availableRecipes.fetching" class="recipes-list-block">
+        Najpierw dodaj coś do swojej kuchni!
+        <BaseButton raised color="black">Przejdź do kuchni</BaseButton>
+      </div>
+      <div v-else class="recipes-list-block">
         <div class="recipes-list-header">
           <div class="recipes-list-header__total-count">
-            {{ $tc('shared.recipes', allAvailableRecipesCount) }}
+            {{
+              availableRecipes.totalCount !== null && !availableRecipes.fetching
+                ? $tc('shared.recipes', availableRecipes.totalCount)
+                : 'wczytuję'
+            }}
           </div>
           <div class="recipes-list-header__show-all">
             <router-link :to="{ name: 'cook-it-all' }" class="recipes-list-header__show-all__button">
@@ -33,19 +41,27 @@
           </div>
         </div>
         <ul class="recipes-list">
-          <li class="recipes-list__item" v-for="recipe in availableRecipes" :key="recipe.id">
+          <li class="recipes-list__item" v-for="recipe in availableRecipes.items" :key="recipe.id">
             <RecipeBox :recipe="recipe" />
           </li>
+          <template v-if="availableRecipes.fetching">
+            <li class="recipes-list__item" v-for="i in 4" :key="i">O</li>
+          </template>
         </ul>
+        <BaseButton v-if="availableRecipes.hasNext" @click="loadNextAvailable">Wczytaj więcej</BaseButton>
       </div>
 
-      <div class="recipes-list-block">
+      <div class="recipes-list-block" v-if="almostAvailableRecipes.items && almostAvailableRecipes.items.length > 0">
         <div class="recipes-list-title">
           {{ $t('cookIt.buyMissingIngredient') }}
         </div>
         <div class="recipes-list-header">
           <div class="recipes-list-header__total-count">
-            {{ $tc('shared.recipes', allAlmostAvailableRecipesCount) }}
+            {{
+              almostAvailableRecipes.totalCount !== null && !almostAvailableRecipes.fetching
+                ? $tc('shared.recipes', almostAvailableRecipes.totalCount)
+                : 'wczytuję'
+            }}
           </div>
           <div class="recipes-list-header__show-all">
             <router-link :to="{ name: 'cook-it-all' }" class="recipes-list-header__show-all__button">
@@ -54,11 +70,15 @@
           </div>
         </div>
         <ul class="recipes-list">
-          <li class="recipes-list__item" v-for="recipe in almostAvailableRecipes" :key="recipe.recipe.id">
-            {{ recipe.missingIngredientsCount }}
+          <li class="recipes-list__item" v-for="recipe in almostAvailableRecipes.items" :key="recipe.recipe.id">
+            <!-- {{ recipe.missingIngredientsCount }} -->
             <RecipeBox :recipe="recipe.recipe" />
           </li>
+          <template v-if="almostAvailableRecipes.fetching">
+            <li class="recipes-list__item" v-for="i in 4" :key="i">O</li>
+          </template>
         </ul>
+        <BaseButton v-if="almostAvailableRecipes.hasNext" @click="loadNextAlmostAvailable">Wczytaj więcej</BaseButton>
       </div>
     </div>
   </div>
@@ -67,6 +87,7 @@
 <script>
 import { mapState } from 'vuex'
 import { markRaw } from 'vue'
+import { recipesSortingMethods, defaultRecipesSortingMethod, recipesFilterOptions } from '@/constants'
 import RecipeBox from '@/components/RecipeBox'
 import FilterModal from '@/components/modals/FilterModal'
 import SortModal from '@/components/modals/SortModal'
@@ -79,22 +100,24 @@ export default {
   data() {
     return {
       filters: {},
-      sortMethod: null
+      sortMethod: defaultRecipesSortingMethod
     }
   },
   computed: {
     ...mapState({
       availableRecipes: state => state.recipes.availableRecipes,
-      allAvailableRecipesCount: state => state.recipes.allAvailableRecipesCount | 0,
-      almostAvailableRecipes: state => state.recipes.almostAvailableRecipes,
-      allAlmostAvailableRecipesCount: state => state.recipes.allAlmostAvailableRecipesCount | 0
+      almostAvailableRecipes: state => state.recipes.almostAvailableRecipes
     }),
     selectedFiltersCount() {
-      console.log(Object.entries(this.filters))
-      var county = Object.entries(this.filters)
+      return Object.entries(this.filters)
         .map(f => f[1].length)
         .reduce((a, b) => a + b, 0)
-      return county > 9 ? '9+' : county
+    },
+    fetchRecipesQueryParams() {
+      return {
+        pageNumber: null,
+        orderMethod: this.sortMethod
+      }
     }
   },
   created() {
@@ -102,10 +125,17 @@ export default {
     this.$store.dispatch('recipes/fetchAlmostAvailableRecipes')
   },
   methods: {
+    loadNextAvailable() {
+      this.$store.dispatch('recipes/fetchNextAvailableRecipes', this.fetchRecipesQueryParams)
+    },
+    loadNextAlmostAvailable() {
+      this.$store.dispatch('recipes/fetchNextAlmostAvailableRecipes', this.fetchRecipesQueryParams)
+    },
     openFilterModal() {
       this.$modal.show(
         markRaw(FilterModal),
         {
+          options: recipesFilterOptions,
           defaultSelected: this.filters
         },
         {
@@ -121,20 +151,15 @@ export default {
       this.$modal.show(
         markRaw(SortModal),
         {
+          options: recipesSortingMethods,
           defaultSelected: this.sortMethod
         },
         {
           close: newSortMethod => {
             if (newSortMethod) {
               this.sortMethod = newSortMethod
-              this.$store.dispatch('recipes/fetchAvailableRecipes', {
-                pageNumber: null,
-                orderMethod: this.sortMethod
-              })
-              this.$store.dispatch('recipes/fetchAlmostAvailableRecipes', {
-                pageNumber: null,
-                orderMethod: this.sortMethod
-              })
+              this.$store.dispatch('recipes/fetchAvailableRecipes', this.fetchRecipesQueryParams)
+              this.$store.dispatch('recipes/fetchAlmostAvailableRecipes', this.fetchRecipesQueryParams)
             }
           }
         }
@@ -170,20 +195,21 @@ export default {
     }
 
     &__count {
-      $size: 1rem;
+      $size: 1.25rem;
 
-      width: $size;
+      min-width: $size;
+      padding: 0 6px;
       height: $size;
       margin-left: 0.6rem;
-      background-color: $primary;
-      color: #000;
+      background-color: rgba($primary, 0.2);
+      color: $primary;
       border-radius: 48px;
       display: flex;
       align-items: center;
       justify-content: center;
       text-align: center;
       font-weight: bold;
-      font-size: 10px;
+      font-size: 12px;
     }
   }
 }
@@ -213,6 +239,8 @@ export default {
     &__button {
       display: flex;
       align-items: center;
+      text-decoration: none;
+      color: $blue;
 
       &__icon {
         font-size: 20px;

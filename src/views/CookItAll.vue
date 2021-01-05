@@ -25,7 +25,7 @@
           <div class="recipes-list-header__total-count">31 przepisów</div>
         </div>
         <ul class="recipes-list">
-          <li class="recipes-list__item" v-for="recipe in recipes" :key="recipe.id">
+          <li class="recipes-list__item" v-for="recipe in recipes.items" :key="recipe.id">
             <RecipeBox :recipe="recipe" />
           </li>
         </ul>

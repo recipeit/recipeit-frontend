@@ -4,7 +4,7 @@
       <!-- <div class="actions__remove" @click="deleteProduct">usuń</div>
       <div class="actions__decrement" @click="decreaseQuantity">-</div>
       <div class="actions__increment" @click="increaseQuantity">+</div> -->
-      <a class="purchase-button">
+      <a class="purchase-button" @click="purchase">
         <BaseIcon icon="check" weight="semiBold" />
       </a>
     </div>
@@ -41,6 +41,9 @@ export default {
       var product = JSON.parse(JSON.stringify(this.product))
       product.quantity = quantity
       this.$store.dispatch('shoppingList/editProductFromShoppingList', product)
+    },
+    purchase() {
+      this.$store.dispatch('shoppingList/purchaseProduct', this.product.id)
     }
   }
 }
@@ -52,14 +55,13 @@ export default {
   height: 100%;
   align-items: center;
   padding-right: 15px;
-  color: #90abb9;
 }
 .purchase-button {
   width: 32px;
   height: 32px;
   border-radius: 48px;
-  background-color: $primary;
-  color: #000;
+  background-color: rgba($primary, 0.2);
+  color: $primary;
   display: flex;
   align-items: center;
   justify-content: center;

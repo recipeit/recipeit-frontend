@@ -1,7 +1,7 @@
 <template>
-  <div :class="['pill', { 'pill--checked': isChecked }]" @click="updateInput">
-    <!-- <span v-if="isChecked">X </span> -->
-    <BaseIcon class="pill__checked-icon" icon="check" weight="semiBold" />
+  <div :class="['pill', { 'pill--checked': isChecked }, { 'pill--red': excluding }]" @click="updateInput">
+    <BaseIcon v-if="excluding" class="pill__checked-icon" icon="check" weight="semiBold" />
+    <BaseIcon v-else class="pill__checked-icon" icon="check" weight="semiBold" />
     <slot />
   </div>
 </template>
@@ -9,6 +9,7 @@
 <script>
 export default {
   props: {
+    excluding: { type: Boolean },
     value: { type: String },
     modelValue: { default: '' },
     label: { type: String },
@@ -45,6 +46,7 @@ export default {
 
 <style lang="scss" scoped>
 $checked-color: $blue;
+$checked-color--red: $red;
 
 .pill {
   border: 1px solid $border;
@@ -63,14 +65,21 @@ $checked-color: $blue;
   }
 
   &--checked {
-    // border-color: rgba($green, 0.25);
     border-color: transparent;
     background-color: rgba($checked-color, 0.1);
     color: $checked-color;
-    // font-weight: 600;
 
     &:hover {
       background-color: rgba($checked-color, 0.2);
+    }
+  }
+
+  &--checked#{ & }--red {
+    background-color: rgba($checked-color--red, 0.1);
+    color: $checked-color--red;
+
+    &:hover {
+      background-color: rgba($checked-color--red, 0.2);
     }
   }
 
@@ -78,8 +87,11 @@ $checked-color: $blue;
     font-size: 1rem;
     width: 1.5rem;
     color: $checked-color;
-    // @include transition((margin-left, opacity));
     transition: all 0.2s ease;
+  }
+
+  &--red &__checked-icon {
+    color: $checked-color--red;
   }
 
   &:not(&--checked) &__checked-icon {

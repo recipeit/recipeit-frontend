@@ -4,14 +4,19 @@
       <div class="recipe-box__image-container__image">
         <img :src="recipe.mainImageUrl" :alt="recipe.name" />
       </div>
+
+      <div class="recipe-box__props2">
+        <Rating :value="recipe.rating" />
+        <FavouriteIcon :isFavourite="isFavourite" @removed="deleteFromFavourites" @added="addToFavourites" @click.stop />
+      </div>
     </div>
     <div class="recipe-box__name">
       {{ recipe.name }}
     </div>
-    <div class="recipe-box__props">
+    <!-- <div class="recipe-box__props">
       <Rating :value="recipe.rating" />
       <FavouriteIcon :isFavourite="isFavourite" @removed="deleteFromFavourites" @added="addToFavourites" />
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -67,7 +72,9 @@ export default {
   &__image-container {
     width: 100%;
     border-radius: 16px;
+    border-radius: 24px;
     overflow: hidden;
+    position: relative;
 
     &__image {
       position: relative;
@@ -91,12 +98,34 @@ export default {
     margin-top: 12px;
     font-size: 14px;
     font-weight: 500;
+    padding: 0 8px;
   }
 
   &__props {
     margin-top: 8px;
     display: flex;
     justify-content: space-between;
+  }
+
+  &__props2 {
+    margin-top: 8px;
+    display: flex;
+    justify-content: space-between;
+
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: 8px;
+    min-height: 2rem;
+
+    > * {
+      // backdrop-filter: blur(8px) saturate(200%) brightness(150%);
+      // backdrop-filter: blur(8px);
+      padding: 7px 8px;
+      border-radius: 50px;
+      background-color: rgba(#fff, 0.85);
+    }
   }
 
   &__rating {

@@ -19,3 +19,77 @@ export const recipesSortingMethods = [
   'ingredientsCountDescending'
 ]
 export const defaultRecipesSortingMethod = recipesSortingMethods[0]
+
+export const recipesFilterOptions = {
+  type: {
+    name: 'Typ',
+    type: 'checkbox',
+    options: [
+      {
+        value: 'breakfast',
+        name: 'Śniadanie'
+      },
+      {
+        value: 'dinner',
+        name: 'Obiad'
+      },
+      {
+        value: 'supper',
+        name: 'Kolacja'
+      },
+      {
+        value: 'dessert',
+        name: 'Deser'
+      },
+      {
+        value: 'cake',
+        name: 'Ciasto'
+      },
+      {
+        value: 'snack',
+        name: 'Przekąska'
+      }
+    ]
+  },
+  diet: {
+    name: 'Dieta',
+    type: 'checkbox',
+    options: [
+      {
+        value: 'vegan',
+        name: 'Wegańska'
+      },
+      {
+        value: 'vegetarian',
+        name: 'Wegetariańska'
+      }
+    ]
+  },
+  allergens: {
+    name: 'Pomiń dania zawierające',
+    type: 'checkbox',
+    isExcluding: true,
+    options: [
+      {
+        value: 'dairy',
+        name: 'Nabiał'
+      },
+      {
+        value: 'gluten',
+        name: 'Gluten'
+      },
+      {
+        value: 'eggs',
+        name: 'Jaja'
+      },
+      {
+        value: 'fishes',
+        name: 'Ryby'
+      },
+      {
+        value: 'nuts',
+        name: 'Orzechy'
+      }
+    ]
+  }
+}

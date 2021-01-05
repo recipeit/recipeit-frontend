@@ -72,6 +72,28 @@ export default {
           })
           .catch(error => reject(error))
       })
+    },
+    purchaseProduct({ commit }, productId) {
+      return new Promise((resolve, reject) => {
+        shoppingListApi
+          .purchaseProduct(productId)
+          .then(() => {
+            commit('REMOVE_PRODUCT_FROM_SHOPPING_LIST', productId)
+            resolve()
+          })
+          .catch(error => reject(error))
+      })
+    },
+    purchaseAllProducts({ commit }) {
+      return new Promise((resolve, reject) => {
+        shoppingListApi
+          .purchaseAllProducts()
+          .then(() => {
+            commit('SET_PRODUCTS', [])
+            resolve()
+          })
+          .catch(error => reject(error))
+      })
     }
   }
 }
