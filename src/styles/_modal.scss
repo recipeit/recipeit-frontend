@@ -19,10 +19,6 @@
     line-height: 0;
     display: none;
 
-    > * {
-      transform: rotate(45deg);
-    }
-
     @media (hover: hover) and (pointer: fine) {
       display: flex;
     }

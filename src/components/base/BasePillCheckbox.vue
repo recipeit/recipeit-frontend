@@ -1,6 +1,6 @@
 <template>
   <div :class="['pill', { 'pill--checked': isChecked }, { 'pill--red': excluding }]" @click="updateInput">
-    <BaseIcon v-if="excluding" class="pill__checked-icon" icon="check" weight="semiBold" />
+    <BaseIcon v-if="excluding" class="pill__checked-icon" icon="close" weight="semiBold" />
     <BaseIcon v-else class="pill__checked-icon" icon="check" weight="semiBold" />
     <slot />
   </div>
@@ -47,6 +47,9 @@ export default {
 <style lang="scss" scoped>
 $checked-color: $blue;
 $checked-color--red: $red;
+$checked-icon-size: 1rem;
+$checked-icon-margin-right: 0.5rem;
+$checked-icon-width: $checked-icon-size + $checked-icon-margin-right;
 
 .pill {
   border: 1px solid $border;
@@ -84,8 +87,8 @@ $checked-color--red: $red;
   }
 
   &__checked-icon {
-    font-size: 1rem;
-    width: 1.5rem;
+    font-size: $checked-icon-size;
+    width: $checked-icon-width;
     color: $checked-color;
     transition: all 0.2s ease;
   }
@@ -96,7 +99,7 @@ $checked-color--red: $red;
 
   &:not(&--checked) &__checked-icon {
     opacity: 0;
-    margin-left: -1.5rem;
+    margin-left: -$checked-icon-width;
   }
 }
 </style>

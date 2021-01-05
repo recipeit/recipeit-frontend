@@ -3,6 +3,7 @@ import { basket } from './basket'
 import { chefHat } from './chefHat'
 import { check } from './check'
 import { clock } from './clock'
+import { close } from './close'
 import { cookbook } from './cookbook'
 import { filter } from './filter'
 import { food } from './food'
@@ -22,6 +23,7 @@ export {
   chefHat,
   check,
   clock,
+  close,
   cookbook,
   filter,
   food,

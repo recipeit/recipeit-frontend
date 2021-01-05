@@ -5,8 +5,9 @@
 </template>
 
 <script>
-import * as iconsRegular from './icons'
+import * as iconsRegular from './icons/regular'
 import * as iconsSemiBold from './icons/semiBold'
+import * as iconsBold from './icons/bold'
 
 export default {
   props: {
@@ -21,11 +22,20 @@ export default {
   },
   computed: {
     iconObject() {
-      return typeof this.icon === 'string'
-        ? this.weight === 'semiBold'
-          ? iconsSemiBold[this.icon]
-          : iconsRegular[this.icon]
-        : this.icon
+      if (typeof this.icon === 'string') {
+        switch (this.weight) {
+          case 'regular':
+            return iconsRegular[this.icon]
+          case 'semiBold':
+            return iconsSemiBold[this.icon]
+          case 'bold':
+            return iconsBold[this.icon]
+          default:
+            return iconsRegular[this.icon]
+        }
+      } else {
+        return this.icon
+      }
     }
   }
 }
