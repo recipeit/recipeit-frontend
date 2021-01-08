@@ -40,7 +40,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @mixin button-raised($background) {
   background-color: $background;
   color: get-contrast-color($background);
@@ -48,7 +48,13 @@ export default {
 
   &:hover {
     // box-shadow: 0 12px 32px -16px $background;
-    background-color: lighten($background, 5%);
+    background-color: lighten($background, 10);
+    // transform: scale(1.05);
+  }
+
+  &:active {
+    // box-shadow: 0 12px 32px -16px $background;
+    background-color: lighten($background, 20);
     // transform: scale(1.05);
   }
 }
@@ -61,6 +67,10 @@ export default {
 
   &:hover {
     background-color: rgba($background, $base-background-opacity + 0.05);
+  }
+
+  &:active {
+    background-color: rgba($background, $base-background-opacity + 0.1);
   }
 }
 
@@ -119,7 +129,11 @@ export default {
     border: 1px solid $border;
 
     &:hover {
-      border-color: darken($border, 15%);
+      border-color: darken($border, 15);
+    }
+
+    &:active {
+      border-color: darken($border, 30);
     }
 
     @each $color, $value in $button-colors {

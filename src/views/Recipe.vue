@@ -17,7 +17,9 @@
         <div class="section-title">
           <div>Składniki</div>
         </div>
-        <a class="link-with-icon"><BaseIcon class="link-with-icon__icon" icon="plus" weight="semiBold" /> dodaj wszystkie</a>
+        <BaseLink :href="href" @click="navigate" tag="button" color="accent" class="link-with-icon">
+          <BaseIcon class="link-with-icon__icon" icon="plus" weight="semiBold" /> dodaj wszystkie
+        </BaseLink>
       </div>
       <ul class="recipe__ingredients-list">
         <RecipeIngredient v-for="ingredient in recipeDetails.ingredients" :key="ingredient.id" :ingredient="ingredient" />
@@ -166,10 +168,7 @@ export default {
 .link-with-icon {
   display: flex;
   align-items: center;
-  color: $accent;
   font-weight: 600;
-  // font-size: 12px;
-  cursor: pointer;
 
   &__icon {
     margin-right: 4px;

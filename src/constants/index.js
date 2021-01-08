@@ -1,3 +1,15 @@
+export const units = [
+  'Weight.Gram',
+  'Weight.Kilogram',
+  'Volume.Liter',
+  'Volume.Milliliter',
+  'Volume.Tablespoon',
+  'Volume.Teaspoon',
+  'Whole.Piece',
+  'Whole.Grain',
+  'Whole.Handful'
+]
+
 export const unitTranslations = {
   'Weight.Gram': 'g',
   'Weight.Kilogram': 'kg',

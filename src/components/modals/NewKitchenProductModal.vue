@@ -5,18 +5,15 @@
     </BaseModalHeader>
     <BaseModalBody>
       <div>
-        <div class="base-input">
+        <div class="basa-input base-input">
           <input id="x" v-model="newProduct.name" type="text" />
           <label for="x">Nazwa</label>
         </div>
-        <div class="base-input">
+        <div class="basa-input base-input">
           <input v-model.number="newProduct.quantity" type="text" />
           <label for="x">Ilość</label>
         </div>
-        <div class="base-input">
-          <input v-model="newProduct.unit" type="text" />
-          <label for="x">Jednostka</label>
-        </div>
+        <BaseSelect class="basa-input" v-model="newProduct.unit" :options="units"></BaseSelect>
       </div>
       <!-- <div>
         <div>
@@ -65,11 +62,13 @@
 </template>
 
 <script>
+import { units } from '@/constants'
 import { mapState } from 'vuex'
 
 export default {
   data() {
     return {
+      units: units,
       loading: false,
       newProduct: this.emptyProduct()
     }
@@ -108,12 +107,14 @@ export default {
   }
 }
 
-.base-input {
-  position: relative;
-
+.basa-input {
   & + & {
     margin-top: 16px;
   }
+}
+
+.base-input {
+  position: relative;
 
   label {
     position: absolute;

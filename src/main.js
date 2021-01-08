@@ -1,28 +1,31 @@
+import { upperFirst, camelCase } from 'lodash'
 import { createApp } from 'vue'
-import App from './App.vue'
-import BaseButton from './components/base/BaseButton'
-import BaseIcon from './components/base/BaseIcon'
-import BaseModalHeader from './components/base/BaseModalHeader'
-import BaseModalTitle from './components/base/BaseModalTitle'
-import BaseModalBody from './components/base/BaseModalBody'
-import BaseModalFooter from './components/base/BaseModalFooter'
-import BasePillCheckbox from './components/base/BasePillCheckbox'
-import GlobalSheetModal from './plugins/global-sheet-modal'
 import './registerServiceWorker'
+import App from './App'
+import GlobalSheetModal from './plugins/global-sheet-modal'
 import router from './router'
 import store from './store'
 import i18n from './i18n'
 
-createApp(App)
-  .component('BaseButton', BaseButton)
-  .component('BaseIcon', BaseIcon)
-  .component('BaseModalHeader', BaseModalHeader)
-  .component('BaseModalTitle', BaseModalTitle)
-  .component('BaseModalBody', BaseModalBody)
-  .component('BaseModalFooter', BaseModalFooter)
-  .component('BasePillCheckbox', BasePillCheckbox)
-  .use(store)
+const app = createApp(App)
+
+const requireComponent = require.context('./components/base', false, /\w+\.(vue|js)$/)
+requireComponent.keys().forEach(fileName => {
+  const componentConfig = requireComponent(fileName)
+  const componentName = upperFirst(
+    camelCase(
+      fileName
+        .split('/')
+        .pop()
+        .replace(/\.\w+$/, '')
+    )
+  )
+  app.component(componentName, componentConfig.default || componentConfig)
+})
+
+app
   .use(GlobalSheetModal)
   .use(router)
+  .use(store)
   .use(i18n)
   .mount('#app')

@@ -6,9 +6,9 @@
         <ShoppingListProduct :product="product" @purchase="purchase(product.id)" />
       </li>
     </ul>
-    <a v-if="products && products.length > 0" class="purchase-all-button" @click="purchaseAll">
+    <BaseLink v-if="products && products.length > 0" color="accent" class="purchase-all-button" @click="purchaseAll">
       <BaseIcon class="purchase-all-button__icon" icon="arrowRight" /> {{ $t('shoppingList.purchaseAllButton') }}
-    </a>
+    </BaseLink>
 
     <div class="floating-action-button-container">
       <BaseButton raised color="black">
@@ -82,9 +82,6 @@ export default {
   font-weight: bold;
   display: flex;
   align-items: center;
-  text-decoration: none;
-  color: $blue;
-  cursor: pointer;
 
   &__icon {
     font-size: 20px;

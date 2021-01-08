@@ -9,13 +9,15 @@
           <div class="filter__group__title">
             <div class="filter__group__name">{{ group.name }}</div>
             <transition name="fade">
-              <div
+              <BaseLink
+                tag="button"
+                color="accent"
                 class="filter__group__clear"
                 v-if="selected[groupValue] && selected[groupValue].length > 0"
                 @click.stop="clearFilterGroup($event, groupValue)"
               >
                 wyczyść
-              </div>
+              </BaseLink>
             </transition>
           </div>
           <div class="filter__group__options">
@@ -104,19 +106,8 @@ export default {
     }
 
     &__clear {
-      margin-left: 0.5rem;
+      // margin-left: 0.5rem;
       margin-left: auto;
-      cursor: pointer;
-      color: $blue;
-      transition: all 0.2s ease;
-
-      &:hover {
-        color: lighten($blue, 10%);
-      }
-
-      &:active {
-        color: lighten($blue, 20%);
-      }
     }
 
     &__options {

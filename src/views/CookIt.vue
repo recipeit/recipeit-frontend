@@ -35,8 +35,10 @@
             }}
           </div>
           <div class="recipes-list-header__show-all">
-            <router-link :to="{ name: 'cook-it-all' }" class="recipes-list-header__show-all__button">
-              <BaseIcon class="recipes-list-header__show-all__button__icon" icon="arrowRight" /> {{ $t('shared.seeAll') }}
+            <router-link :to="{ name: 'cook-it-all' }" v-slot="{ href, navigate }" custom>
+              <BaseLink :href="href" @click="navigate" color="accent" class="recipes-list-header__show-all__button">
+                <BaseIcon class="recipes-list-header__show-all__button__icon" icon="arrowRight" /> {{ $t('shared.seeAll') }}
+              </BaseLink>
             </router-link>
           </div>
         </div>
@@ -64,8 +66,10 @@
             }}
           </div>
           <div class="recipes-list-header__show-all">
-            <router-link :to="{ name: 'cook-it-all' }" class="recipes-list-header__show-all__button">
-              <BaseIcon class="recipes-list-header__show-all__button__icon" icon="arrowRight" /> {{ $t('shared.seeAll') }}
+            <router-link :to="{ name: 'cook-it-all' }" v-slot="{ href, navigate }" custom>
+              <BaseLink :href="href" @click="navigate" color="accent" class="recipes-list-header__show-all__button">
+                <BaseIcon class="recipes-list-header__show-all__button__icon" icon="arrowRight" /> {{ $t('shared.seeAll') }}
+              </BaseLink>
             </router-link>
           </div>
         </div>
@@ -239,8 +243,6 @@ export default {
     &__button {
       display: flex;
       align-items: center;
-      text-decoration: none;
-      color: $blue;
 
       &__icon {
         font-size: 20px;
