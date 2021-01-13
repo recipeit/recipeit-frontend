@@ -52,7 +52,7 @@ export default {
       favouriteRecipesIds: state => state.recipes.favouriteRecipesIds
     }),
     isFavourite() {
-      return this.favouriteRecipesIds.find(id => id === this.recipe.id) !== null
+      return this.favouriteRecipesIds.find(id => id === this.recipe.id) !== undefined
     }
   }
 }

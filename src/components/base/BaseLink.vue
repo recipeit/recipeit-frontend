@@ -6,7 +6,7 @@
 
 <script>
 const tagOptions = ['a', 'button']
-const colorOptions = [null, 'primary', 'accent', 'dark']
+const colorOptions = [null, 'primary', 'accent', 'text-primary', 'text-secondary']
 
 export default {
   props: {
@@ -51,7 +51,7 @@ export default {
     color: mix($accent, #fff, 50%);
   }
 
-  &--color-dark {
+  &--color-text-primary {
     &:hover,
     &:focus {
       color: mix($text-primary, $text-secondary);
@@ -59,6 +59,19 @@ export default {
 
     &:active {
       color: $text-secondary;
+    }
+  }
+
+  &--color-text-secondary {
+    color: $text-secondary;
+
+    &:hover,
+    &:focus {
+      color: mix($text-secondary, #fff, 75%);
+    }
+
+    &:active {
+      color: mix($text-secondary, #fff, 50%);
     }
   }
 
@@ -85,6 +98,19 @@ export default {
 
     &:active {
       color: mix($primary, #fff, 50%);
+    }
+  }
+
+  &--color-red {
+    color: $red;
+
+    &:hover,
+    &:focus {
+      color: mix($red, #fff, 75%);
+    }
+
+    &:active {
+      color: mix($red, #fff, 50%);
     }
   }
 

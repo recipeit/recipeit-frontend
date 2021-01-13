@@ -103,7 +103,7 @@ export default {
       favouriteRecipesIds: state => state.recipes.favouriteRecipesIds
     }),
     isFavourite() {
-      return this.favouriteRecipesIds.find(id => id === this.recipe.id)
+      return this.favouriteRecipesIds.find(id => id === this.recipe.id) !== undefined
     },
     selectedDirection() {
       const allIndexes = this.recipeDetails.directionsParagraphs.map((element, index) => index)

@@ -16,6 +16,7 @@ import { sort } from './sort'
 import { star } from './star'
 import { stopwatch } from './stopwatch'
 import { tableware } from './tableware'
+import { trash } from './trash'
 
 export {
   arrowRight,
@@ -35,5 +36,6 @@ export {
   sort,
   star,
   stopwatch,
-  tableware
+  tableware,
+  trash
 }

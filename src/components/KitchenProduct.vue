@@ -1,13 +1,15 @@
 <template>
   <Product :product="product">
     <div class="actions">
-      <a class="action action--remove" @click="deleteProduct">usuń</a>
-      <a class="action action--decrement" @click="decreaseQuantity">
+      <BaseLink color="red" class="action action--remove" @click="deleteProduct">
+        <BaseIcon icon="trash" weight="semiBold" />
+      </BaseLink>
+      <BaseLink color="text-secondary" class="action action--decrement" @click="decreaseQuantity">
         <BaseIcon icon="minus" weight="semiBold" />
-      </a>
-      <a class="action action--increment" @click="increaseQuantity">
+      </BaseLink>
+      <BaseLink color="text-secondary" class="action action--increment" @click="increaseQuantity">
         <BaseIcon icon="plus" weight="semiBold" />
-      </a>
+      </BaseLink>
     </div>
   </Product>
 </template>
@@ -54,14 +56,17 @@ export default {
   align-items: center;
   padding-right: 15px;
   color: #90abb9;
+  font-size: 1rem;
+  cursor: pointer;
 }
+
 .action {
   & + & {
     margin-left: 16px;
   }
 
-  &--remove {
-    color: $red;
-  }
+  // &--remove {
+  //   color: $red;
+  // }
 }
 </style>
