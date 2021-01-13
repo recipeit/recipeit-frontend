@@ -8,15 +8,15 @@
     padding-bottom: 24px;
   }
 
-  &__close {
-    font-size: 24px;
-    margin-left: 24px;
+  &__close-container {
     height: 28px;
     width: 28px;
+    font-size: 24px;
+    margin-left: 24px;
     align-items: center;
     justify-content: center;
-    line-height: 0;
     display: none;
+    line-height: 0;
 
     @media (hover: hover) and (pointer: fine) {
       display: flex;

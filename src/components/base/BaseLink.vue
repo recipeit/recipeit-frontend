@@ -6,7 +6,7 @@
 
 <script>
 const tagOptions = ['a', 'button']
-const colorOptions = [null, 'accent', 'dark']
+const colorOptions = [null, 'primary', 'accent', 'dark']
 
 export default {
   props: {
@@ -29,7 +29,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .link {
   @include transition(color);
   text-decoration: none;
@@ -48,7 +48,7 @@ export default {
   }
 
   &:active {
-    color: lighten($accent, 20);
+    color: mix($accent, #fff, 50%);
   }
 
   &--color-dark {
@@ -67,11 +67,24 @@ export default {
 
     &:hover,
     &:focus {
-      color: lighten($accent, 10);
+      color: mix($accent, #fff, 75%);
     }
 
     &:active {
-      color: lighten($accent, 20);
+      color: mix($accent, #fff, 50%);
+    }
+  }
+
+  &--color-primary {
+    color: $primary;
+
+    &:hover,
+    &:focus {
+      color: mix($primary, #fff, 75%);
+    }
+
+    &:active {
+      color: mix($primary, #fff, 50%);
     }
   }
 

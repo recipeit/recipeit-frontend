@@ -45,7 +45,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$checked-color: $blue;
+$checked-color: $green;
 $checked-color--red: $red;
 $checked-icon-size: 1rem;
 $checked-icon-margin-right: 0.5rem;

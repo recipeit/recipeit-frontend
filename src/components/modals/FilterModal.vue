@@ -11,7 +11,7 @@
             <transition name="fade">
               <BaseLink
                 tag="button"
-                color="accent"
+                color="primary"
                 class="filter__group__clear"
                 v-if="selected[groupValue] && selected[groupValue].length > 0"
                 @click.stop="clearFilterGroup($event, groupValue)"

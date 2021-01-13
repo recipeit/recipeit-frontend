@@ -1,8 +1,10 @@
 <template>
   <div class="modal-header">
     <slot />
-    <BaseLink color="dark" class="modal-header__close" @click="$emit('close')">
-      <BaseIcon icon="close" />
-    </BaseLink>
+    <div class="modal-header__close-container">
+      <BaseLink color="dark" @click="$emit('close')">
+        <BaseIcon icon="close" />
+      </BaseLink>
+    </div>
   </div>
 </template>

@@ -3,9 +3,24 @@
     <h1>
       <span style="font-weight: 500">{{ $t(welcomeType) }},</span> Kamil!
     </h1>
-    <!-- <base-link color="accent">Kliknij we mnie</base-link> -->
-    <base-select class="base-select" :searchable="true" v-model="selectModel" :options="selectOptions"></base-select>
-    <base-select class="base-select" v-model="selectModel2" :options="selectOptions"></base-select>
+    <!-- <base-link color="primary">Kliknij we mnie</base-link> -->
+    <base-select
+      placeholder="Wybierz stan"
+      class="base-select"
+      :searchable="true"
+      v-model="selectModel"
+      :options="selectOptions"
+    ></base-select>
+    <base-select placeholder="Wybierz stan" class="base-select" v-model="selectModel2" :options="selectOptions"></base-select>
+    <base-select
+      placeholder="Wybierz stan"
+      class="base-select"
+      v-model="selectModel3"
+      :options="selectOptions3"
+      trackBy="id"
+      label="name"
+    ></base-select>
+    {{ selectModel3 }}
   </div>
 </template>
 
@@ -20,7 +35,13 @@ export default {
       welcomeType,
       selectModel: null,
       selectModel2: null,
-      selectOptions: ['Alaska', 'Alabama', 'Kalifornia']
+      selectModel3: null,
+      selectOptions: ['Alaska', 'Alabama', 'Kalifornia'],
+      selectOptions3: [
+        { id: 1, name: 'Alaska' },
+        { id: 2, name: 'Alabama' },
+        { id: 3, name: 'Kalifornia' }
+      ]
     }
   }
 }

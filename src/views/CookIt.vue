@@ -36,8 +36,8 @@
           </div>
           <div class="recipes-list-header__show-all">
             <router-link :to="{ name: 'cook-it-all' }" v-slot="{ href, navigate }" custom>
-              <BaseLink :href="href" @click="navigate" color="accent" class="recipes-list-header__show-all__button">
-                <BaseIcon class="recipes-list-header__show-all__button__icon" icon="arrowRight" /> {{ $t('shared.seeAll') }}
+              <BaseLink :href="href" @click="navigate" color="primary" class="recipes-list-header__show-all__button">
+                {{ $t('shared.seeAll') }}
               </BaseLink>
             </router-link>
           </div>
@@ -67,8 +67,8 @@
           </div>
           <div class="recipes-list-header__show-all">
             <router-link :to="{ name: 'cook-it-all' }" v-slot="{ href, navigate }" custom>
-              <BaseLink :href="href" @click="navigate" color="accent" class="recipes-list-header__show-all__button">
-                <BaseIcon class="recipes-list-header__show-all__button__icon" icon="arrowRight" /> {{ $t('shared.seeAll') }}
+              <BaseLink :href="href" @click="navigate" color="primary" class="recipes-list-header__show-all__button">
+                {{ $t('shared.seeAll') }}
               </BaseLink>
             </router-link>
           </div>

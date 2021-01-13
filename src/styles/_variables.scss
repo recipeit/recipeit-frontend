@@ -1,4 +1,5 @@
 $black: #000;
+// $black: #1c272c;
 $gray: #90abb9;
 $gray-light: #e2e9ed;
 $white: #fff;
@@ -11,6 +12,10 @@ $yellow: #ffcc00;
 $green: #8cca20;
 $green: #b1dd65;
 $green: #85c515;
+$green: #84e200;
+$green: #71cf32;
+$green: #48b300;
+$green: #54ad19;
 $blue: #3b65f0;
 $yellow: #fdad00;
 $yellow: #ffb71d;
@@ -33,6 +38,13 @@ $button-colors: (
   yellow: $yellow,
   black: $black
 );
+
+:root {
+  --border: #{$gray-light};
+  --background: #{$white};
+  --text-primary: #{$black};
+  --text-secondary: #{$gray};
+}
 
 $transition-base-duration: 0.3s;
 $transition-base-timing-function: ease;

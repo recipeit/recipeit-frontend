@@ -56,7 +56,11 @@ export default {}
     }
 
     &:hover {
-      color: lighten($text-primary, 35%);
+      color: mix($text-primary, $text-secondary);
+    }
+
+    &:active {
+      color: $text-secondary;
     }
 
     &:after {

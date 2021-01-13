@@ -9,48 +9,28 @@
           <input id="x" v-model="newProduct.name" type="text" />
           <label for="x">Nazwa</label>
         </div>
-        <div class="basa-input base-input">
-          <input v-model.number="newProduct.quantity" type="text" />
-          <label for="x">Ilość</label>
-        </div>
-        <BaseSelect class="basa-input" v-model="newProduct.unit" :options="units"></BaseSelect>
-      </div>
-      <!-- <div>
-        <div>
-          <label>
-            Nazwa
-            <input v-model="newProduct.name" type="text" />
-          </label>
-        </div>
-        <div>
-          <label>
-            Ilość
+        <div class="he">
+          <div class="basa-input base-input" style="width: 128px">
             <input v-model.number="newProduct.quantity" type="text" />
-          </label>
-        </div>
-        <div>
-          <label>
-            Jednostka
-            <input v-model="newProduct.unit" type="text" />
-          </label>
+            <label for="x">Ilość</label>
+          </div>
+          <BaseSelect
+            style="flex: 1"
+            placeholder="Jednostka"
+            class="basa-input"
+            v-model="newProduct.unit"
+            :options="units"
+            :searchable="true"
+          >
+            <template v-slot:label="props">
+              {{ $t(`units.${props.option.toLowerCase()}`) }}
+            </template>
+            <template v-slot:option="props">
+              {{ $t(`units.${props.option.toLowerCase()}`) }}
+            </template>
+          </BaseSelect>
         </div>
       </div>
-
-      <ul>
-        <li>
-          <label>
-            <input v-model="newProduct.templateIngredientId" type="radio" :value="null" />
-            Nic
-          </label>
-        </li>
-        <li v-for="baseIngredient in baseIngredients" :key="baseIngredient.id">
-          <label>
-            <input v-model="newProduct.templateIngredientId" type="radio" :value="baseIngredient.id" />
-            {{ baseIngredient.name }}
-          </label>
-        </li>
-      </ul>
-      <input type="text" /> -->
     </BaseModalBody>
     <BaseModalFooter>
       <BaseButton class="submit-button" raised color="black" @click="addProduct">
@@ -82,9 +62,9 @@ export default {
     emptyProduct() {
       return {
         name: '',
-        quantity: 1,
+        quantity: null,
         templateIngredientId: null,
-        unit: 'Weight.Gram'
+        unit: null
       }
     },
     addProduct() {
@@ -110,6 +90,17 @@ export default {
 .basa-input {
   & + & {
     margin-top: 16px;
+  }
+}
+
+.he {
+  display: flex;
+  margin-top: 16px;
+  // align-items: center;
+
+  .basa-input + .basa-input {
+    margin-top: 0;
+    margin-left: 16px;
   }
 }
 

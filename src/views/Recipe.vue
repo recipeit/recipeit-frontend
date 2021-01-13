@@ -2,39 +2,56 @@
   <div class="layout__page__content">
     <div v-if="recipe && recipeDetails" class="recipe">
       <img class="recipe__main-image" :src="recipe.mainImageUrl" alt="" />
-      <div class="recipe__header">
-        <h2 class="recipe__header__title">{{ recipe.name }}</h2>
-        <div class="recipe__header__actions">
-          <FavouriteIcon :isFavourite="isFavourite" @removed="deleteFromFavourites" @added="addToFavourites" />
+      <div class="recipe__main">
+        <div class="recipe__header">
+          <h2 class="recipe__header__title">{{ recipe.name }}</h2>
+          <div class="recipe__header__actions">
+            <FavouriteIcon :isFavourite="isFavourite" @removed="deleteFromFavourites" @added="addToFavourites" />
+          </div>
         </div>
-      </div>
-      <div class="recipe__author">
-        <span class="recipe__author__name">{{ recipe.author.name }}</span>
-        <span class="recipe__author__blog-name">, {{ recipe.author.blog.name }}</span>
-      </div>
-
-      <div class="section-header">
-        <div class="section-title">
-          <div>Składniki</div>
+        <div class="recipe__author">
+          <span class="recipe__author__name">{{ recipe.author.name }}</span>
+          <span class="recipe__author__blog-name">, {{ recipe.author.blog.name }}</span>
         </div>
-        <BaseLink :href="href" @click="navigate" tag="button" color="accent" class="link-with-icon">
-          <BaseIcon class="link-with-icon__icon" icon="plus" weight="semiBold" /> dodaj wszystkie
-        </BaseLink>
-      </div>
-      <ul class="recipe__ingredients-list">
-        <RecipeIngredient v-for="ingredient in recipeDetails.ingredients" :key="ingredient.id" :ingredient="ingredient" />
-      </ul>
 
-      <div class="section-header">
-        <div class="section-title">
-          <div>Przygotowanie</div>
+        <div class="section-header">
+          <div class="section-title">
+            <div>Składniki</div>
+          </div>
+          <BaseLink :href="href" @click="navigate" tag="button" color="primary" class="link-with-icon">
+            dodaj wszystkie <BaseIcon class="link-with-icon__icon" icon="plus" weight="semiBold" />
+          </BaseLink>
         </div>
-      </div>
-      <p v-for="(paragraph, index) in recipeDetails.directionsParagraphs" :key="index">
-        {{ paragraph }}
-      </p>
+        <ul class="recipe__ingredients-list">
+          <RecipeIngredient v-for="ingredient in recipeDetails.ingredients" :key="ingredient.id" :ingredient="ingredient" />
+        </ul>
 
-      <BaseButton> </BaseButton>
+        <div class="section-header">
+          <div class="section-title">
+            <div>Przygotowanie</div>
+          </div>
+        </div>
+        <div class="recipe__directions-list">
+          <div
+            v-for="(paragraph, index) in recipeDetails.directionsParagraphs"
+            :key="index"
+            :class="[
+              'recipe__directions-list__item',
+              { 'recipe__directions-list__item--selected': index === selectedDirection },
+              { 'recipe__directions-list__item--finished': finishedDirections.includes(index) }
+            ]"
+          >
+            <label>
+              <input v-model="finishedDirections" :value="index" type="checkbox" />
+              <div>{{ paragraph }}</div>
+            </label>
+          </div>
+        </div>
+        <BaseButton class="update-button" stroked color="black">Zjedzone! Zaaktualizuj kuchnię</BaseButton>
+        <BaseButton class="plan-button" raised color="black">
+          <BaseIcon class="plan-button__icon" icon="clock" /> Zaplanuj na później
+        </BaseButton>
+      </div>
     </div>
     <div v-else>
       Wczytuję...
@@ -43,6 +60,7 @@
 </template>
 
 <script>
+import _ from 'lodash'
 import { mapState } from 'vuex'
 import RecipeIngredient from '@/components/recipe/RecipeIngredient'
 import FavouriteIcon from '@/components/FavouriteIcon'
@@ -62,7 +80,8 @@ export default {
   data() {
     return {
       recipe: null,
-      recipeDetails: null
+      recipeDetails: null,
+      finishedDirections: []
     }
   },
   created() {
@@ -85,15 +104,39 @@ export default {
     }),
     isFavourite() {
       return this.favouriteRecipesIds.find(id => id === this.recipe.id)
+    },
+    selectedDirection() {
+      const allIndexes = this.recipeDetails.directionsParagraphs.map((element, index) => index)
+      return _.min(_.difference(allIndexes, this.finishedDirections))
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+.plan-button,
+.update-button {
+  width: 100%;
+}
+
+.update-button {
+  margin-top: 32px;
+}
+
+.plan-button {
+  margin-top: 16px;
+
+  &__icon {
+    font-size: 20px;
+    margin-right: 8px;
+  }
+}
+
 .recipe {
   font-size: 0.875rem;
   line-height: 1.5;
+  margin: -32px -32px 0 -32px;
+  overflow: hidden;
 
   &__main-image {
     width: 100%;
@@ -101,8 +144,34 @@ export default {
     object-fit: cover;
   }
 
+  &__main {
+    margin-top: -32px;
+    // z-index: 1;
+    position: relative;
+    background-color: #fff;
+    border-radius: 32px 32px 0 0;
+    box-shadow: 0 0 32px rgba(0, 0, 0, 0.1);
+    padding: 32px;
+
+    &::before {
+      content: '';
+      position: absolute;
+      height: 4px;
+      width: 48px;
+      border-radius: 8px;
+      background-color: $border;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+
+      // @media (max-width: 719px) {
+      //   content: '';
+      // }
+    }
+  }
+
   &__header {
-    margin-top: 16px;
+    // margin-top: 16px;
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
@@ -126,6 +195,34 @@ export default {
   }
 
   &__ingredients-list {
+  }
+
+  &__directions-list {
+    label {
+      display: flex;
+      align-items: flex-start;
+
+      input {
+        margin-right: 16px;
+      }
+    }
+
+    &__item + &__item {
+      margin-top: 16px;
+    }
+
+    &__item {
+      @include transition((color, text-decoration));
+
+      &--finished {
+        color: $text-secondary;
+        text-decoration: line-through;
+      }
+
+      &--selected {
+        font-weight: bold;
+      }
+    }
   }
 
   &__author {
@@ -171,7 +268,7 @@ export default {
   font-weight: 600;
 
   &__icon {
-    margin-right: 4px;
+    margin: 0 4px;
     font-size: 16px;
   }
 }

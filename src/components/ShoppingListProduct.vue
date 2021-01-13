@@ -53,11 +53,12 @@ export default {
   align-items: center;
   padding-right: 15px;
 }
+
 .purchase-button {
   width: 32px;
   height: 32px;
   border-radius: 48px;
-  background-color: rgba($primary, 0.2);
+  background-color: rgba($primary, 0.1);
   color: $primary;
   display: flex;
   align-items: center;
@@ -65,5 +66,14 @@ export default {
   font-size: 16px;
   margin-right: -5px;
   cursor: pointer;
+  @include transition((background-color));
+
+  &:hover {
+    background-color: rgba($primary, 0.2);
+  }
+
+  &:active {
+    background-color: rgba($primary, 0.3);
+  }
 }
 </style>

@@ -6,8 +6,8 @@
         <ShoppingListProduct :product="product" @purchase="purchase(product.id)" />
       </li>
     </ul>
-    <BaseLink v-if="products && products.length > 0" color="accent" class="purchase-all-button" @click="purchaseAll">
-      <BaseIcon class="purchase-all-button__icon" icon="arrowRight" /> {{ $t('shoppingList.purchaseAllButton') }}
+    <BaseLink v-if="products && products.length > 0" color="primary" class="purchase-all-button" @click="purchaseAll">
+      {{ $t('shoppingList.purchaseAllButton') }}
     </BaseLink>
 
     <div class="floating-action-button-container">

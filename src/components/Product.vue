@@ -45,7 +45,7 @@ export default {
   }
 
   &__name {
-    color: #000;
+    color: $text-primary;
   }
 
   &__quantity {

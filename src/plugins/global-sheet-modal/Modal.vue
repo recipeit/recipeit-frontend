@@ -74,7 +74,19 @@ export default {
     onPointerDown(e) {
       this.isDown = true
       if (e.changedTouches) {
-        this.offset = [e.changedTouches[0].clientX, e.changedTouches[0].clientY]
+        let tempElement = e.target
+        let preventScroll = false
+        while (tempElement !== this.$refs.scroller && tempElement.parentElement && this.$refs.scroller) {
+          if (tempElement.scrollHeight > tempElement.clientHeight && tempElement.scrollTop > 0) {
+            preventScroll = true
+            break
+          }
+          tempElement = tempElement.parentElement
+        }
+
+        if (!preventScroll) {
+          this.offset = [e.changedTouches[0].clientX, e.changedTouches[0].clientY]
+        }
       } else {
         this.offset = [e.clientX, e.clientY]
       }
