@@ -1,7 +1,7 @@
 <template>
   <div class="layout__page__content">
     <div v-if="recipe && recipeDetails" class="recipe">
-      <img class="recipe__main-image" :src="recipe.mainImageUrl" alt="" />
+      <img ref="parallaxImage" class="recipe__main-image" :src="recipe.mainImageUrl" alt="" />
       <div class="recipe__main">
         <div class="recipe__header">
           <h2 class="recipe__header__title">{{ recipe.name }}</h2>
@@ -41,10 +41,11 @@
               { 'recipe__directions-list__item--finished': finishedDirections.includes(index) }
             ]"
           >
-            <label>
-              <input v-model="finishedDirections" :value="index" type="checkbox" />
-              <div>{{ paragraph }}</div>
-            </label>
+            <BaseCheckbox v-model="finishedDirections" :value="index">
+              <template v-slot:label>
+                <div>{{ paragraph }}</div>
+              </template>
+            </BaseCheckbox>
           </div>
         </div>
         <BaseButton class="update-button" stroked color="black">Zjedzone! Zaaktualizuj kuchnię</BaseButton>
@@ -60,10 +61,12 @@
 </template>
 
 <script>
+import { markRaw } from 'vue'
 import _ from 'lodash'
 import { mapState } from 'vuex'
 import RecipeIngredient from '@/components/recipe/RecipeIngredient'
 import FavouriteIcon from '@/components/FavouriteIcon'
+import Dialog from '@/components/modals/Dialog'
 
 export default {
   name: 'Recipe',
@@ -90,6 +93,17 @@ export default {
     this.$store.dispatch('myKitchen/fetchProducts')
     this.$store.dispatch('shoppingList/fetchProducts')
   },
+  mounted() {
+    window.addEventListener('scroll', () => {
+      const rect = this.$refs.parallaxImage.getBoundingClientRect()
+      const height = rect.height
+      const visible = rect.height + rect.top
+      const visibleRatio = Math.min(2, Math.max(visible / height, 0)) - 1
+      const visiblePercentage = 50 + visibleRatio * 25
+      // console.log(visiblePercentage)
+      this.$refs.parallaxImage.style.objectPosition = `center ${visiblePercentage}%`
+    })
+  },
   methods: {
     addToFavourites() {
       this.$store.dispatch('recipes/addToFavourites', this.recipe.id)
@@ -105,9 +119,36 @@ export default {
     isFavourite() {
       return this.favouriteRecipesIds.find(id => id === this.recipe.id) !== undefined
     },
+    allIndexes() {
+      return this.recipeDetails.directionsParagraphs.map((element, index) => index)
+    },
     selectedDirection() {
-      const allIndexes = this.recipeDetails.directionsParagraphs.map((element, index) => index)
-      return _.min(_.difference(allIndexes, this.finishedDirections))
+      return _.min(_.difference(this.allIndexes, this.finishedDirections))
+    }
+  },
+  watch: {
+    finishedDirections() {
+      const remaining = _.difference(this.allIndexes, this.finishedDirections)
+
+      if (!remaining || remaining.length === 0) {
+        this.$modal.show(
+          markRaw(Dialog),
+          {
+            title: 'Zrobione!',
+            content: 'Czy chcesz zaaktualizować produkty w swojej kuchni?',
+            secondaryText: this.$t('shared.no'),
+            primaryText: this.$t('shared.yes')
+          },
+          {
+            close: updateKitchen => {
+              if (updateKitchen) {
+                alert('Update kitchen')
+              }
+              this.finishedDirections = []
+            }
+          }
+        )
+      }
     }
   }
 }
