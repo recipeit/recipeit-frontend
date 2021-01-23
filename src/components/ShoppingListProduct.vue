@@ -2,8 +2,8 @@
   <Product :product="product">
     <div class="actions">
       <!-- <div class="actions__remove" @click="deleteProduct">usuń</div>
-      <div class="actions__decrement" @click="decreaseQuantity">-</div>
-      <div class="actions__increment" @click="increaseQuantity">+</div> -->
+      <div class="actions__decrement" @click="decreaseAmount">-</div>
+      <div class="actions__increment" @click="increaseAmount">+</div> -->
       <a class="purchase-button" @click="$emit('purchase')">
         <BaseIcon icon="check" weight="semiBold" />
       </a>
@@ -28,18 +28,18 @@ export default {
     deleteProduct() {
       this.$store.dispatch('shoppingList/deleteProductFromShoppingList', this.product.id)
     },
-    increaseQuantity() {
-      const quantity = Math.round(this.product.quantity + 1, 5)
-      this.putQuantityChange(quantity)
+    increaseAmount() {
+      const amount = Math.round(this.product.amount + 1, 5)
+      this.putAmountChange(amount)
     },
-    decreaseQuantity() {
-      if (this.product.quantity <= 1.0) return
-      const quantity = Math.round(this.product.quantity - 1, 5)
-      this.putQuantityChange(quantity)
+    decreaseAmount() {
+      if (this.product.amount <= 1.0) return
+      const amount = Math.round(this.product.amount - 1, 5)
+      this.putAmountChange(amount)
     },
-    putQuantityChange(quantity) {
+    putAmountChange(amount) {
       var product = JSON.parse(JSON.stringify(this.product))
-      product.quantity = quantity
+      product.amount = amount
       this.$store.dispatch('shoppingList/editProductFromShoppingList', product)
     }
   }

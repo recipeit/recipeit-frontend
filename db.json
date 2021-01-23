@@ -9,7 +9,8 @@
       "id": 2,
       "name": "Spaghetti po bolońsku",
       "rating": 4.5
-    },{
+    },
+    {
       "id": 1,
       "name": "Kurczak po chińsku",
       "rating": 4.3
@@ -24,39 +25,39 @@
     {
       "id": 1,
       "name": "cebula",
-      "quantity": "2 sztuki"
+      "amount": "2 sztuki"
     },
     {
       "id": 2,
       "name": "papryka",
-      "quantity": "3 sztuki"
+      "amount": "3 sztuki"
     },
     {
       "id": 3,
       "name": "czosnek",
-      "quantity": "1 ząbek"
+      "amount": "1 ząbek"
     },
     {
       "id": 4,
       "name": "czosnek",
-      "quantity": "1 ząbek"
+      "amount": "1 ząbek"
     }
   ],
   "shopping-list-products": [
     {
       "id": 1,
       "name": "cebula",
-      "quantity": "2 sztuki"
+      "amount": "2 sztuki"
     },
     {
       "id": 2,
       "name": "papryka",
-      "quantity": "3 sztuki"
+      "amount": "3 sztuki"
     },
     {
       "id": 3,
       "name": "czosnek",
-      "quantity": "1 ząbek"
+      "amount": "1 ząbek"
     }
   ]
 }

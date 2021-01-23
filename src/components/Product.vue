@@ -1,8 +1,8 @@
 <template>
   <div class="product">
     <div class="product__info">
-      <div class="product__name">{{ product.name }}</div>
-      <div class="product__quantity">{{ product.quantity }}</div>
+      <div class="product__name">{{ name }}</div>
+      <div class="product__amount">{{ product.amount }}</div>
       <div class="product__unit">{{ unitTranslations[product.unit] ?? product.unit }}</div>
     </div>
     <div class="product__actions">
@@ -24,6 +24,11 @@ export default {
   data() {
     return {
       unitTranslations
+    }
+  },
+  computed: {
+    name() {
+      return this.product.name ? this.product.name : this.product.baseProductName
     }
   }
 }
@@ -48,7 +53,7 @@ export default {
     color: $text-primary;
   }
 
-  &__quantity {
+  &__amount {
     margin-left: 12px;
     color: $text-secondary;
   }

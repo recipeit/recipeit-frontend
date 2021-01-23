@@ -6,7 +6,7 @@
 
 <script>
 const tagOptions = ['a', 'button']
-const colorOptions = [null, 'primary', 'accent', 'text-primary', 'text-secondary']
+const colorOptions = [null, 'primary', 'accent', 'text-primary', 'text-secondary', 'red']
 
 export default {
   props: {

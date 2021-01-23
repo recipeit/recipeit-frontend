@@ -55,9 +55,9 @@ export default {
       this.$store
         .dispatch('shoppingList/addProduct', {
           name: product.name,
-          quantity: product.amount,
+          amount: product.amount,
           unit: product.unit,
-          templateIngredientId: product.baseIngredientId
+          baseProductId: product.baseProductId
         })
         .then(() => {
           this.loading = false
@@ -73,10 +73,10 @@ export default {
       shoppingListProducts: state => state.shoppingList.products || []
     }),
     isInShoppingList() {
-      return this.shoppingListProducts.find(p => p.templateIngredientId === this.ingredient.baseIngredientId)
+      return this.shoppingListProducts.find(p => p.baseProductId === this.ingredient.baseProductId)
     },
     isInMyKitchen() {
-      return this.myKitchenProducts.find(p => p.templateIngredientId === this.ingredient.baseIngredientId)
+      return this.myKitchenProducts.find(p => p.baseProductId === this.ingredient.baseProductId)
     }
   }
 }

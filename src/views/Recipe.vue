@@ -1,7 +1,17 @@
 <template>
   <div class="layout__page__content">
     <div v-if="recipe && recipeDetails" class="recipe">
-      <img ref="parallaxImage" class="recipe__main-image" :src="recipe.mainImageUrl" alt="" />
+      <div class="recipe__image-container">
+        <div class="recipe__image-container__buttons">
+          <BaseLink class="recipe__image-container__button" :href="href" @click="back" tag="button">
+            <BaseIcon icon="arrowRight" weight="regular" />
+          </BaseLink>
+          <BaseLink class="recipe__image-container__button" :href="href" @click="back" tag="button">
+            <BaseIcon icon="arrowRight" weight="regular" />
+          </BaseLink>
+        </div>
+        <img ref="parallaxImage" class="recipe__main-image" :src="recipe.mainImageUrl" alt="" />
+      </div>
       <div class="recipe__main">
         <div class="recipe__header">
           <h2 class="recipe__header__title">{{ recipe.name }}</h2>
@@ -95,16 +105,18 @@ export default {
   },
   mounted() {
     window.addEventListener('scroll', () => {
-      const rect = this.$refs.parallaxImage.getBoundingClientRect()
-      const height = rect.height
-      const visible = rect.height + rect.top
-      const visibleRatio = Math.min(2, Math.max(visible / height, 0)) - 1
-      const visiblePercentage = 50 + visibleRatio * 25
-      // console.log(visiblePercentage)
-      this.$refs.parallaxImage.style.objectPosition = `center ${visiblePercentage}%`
+      if (this.$refs.parallaxImage) {
+        const rect = this.$refs.parallaxImage.getBoundingClientRect()
+        const height = rect.height
+        const invisible = height - Math.min(Math.max(height + rect.top, 0), height)
+        this.$refs.parallaxImage.style.transform = `translateY(${invisible}px)`
+      }
     })
   },
   methods: {
+    back() {
+      this.$router.go(-1)
+    },
     addToFavourites() {
       this.$store.dispatch('recipes/addToFavourites', this.recipe.id)
     },
@@ -179,9 +191,37 @@ export default {
   margin: -32px -32px 0 -32px;
   overflow: hidden;
 
-  &__main-image {
-    width: 100%;
+  &__image-container {
+    position: relative;
+    padding: 32px;
+    height: 256px;
     max-height: 256px;
+
+    &__buttons {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    &__button {
+      z-index: 100;
+      position: relative;
+      font-size: 1.5rem;
+      padding: 0.5rem;
+      // background: rgba(#fff, 0.75);
+      background-color: #fff;
+      // backdrop-filter: blur(8px);
+      border-radius: 50px;
+      line-height: 0;
+      transform: rotate(180deg); // TODO arrow ikonki
+    }
+  }
+
+  &__main-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
   }
 

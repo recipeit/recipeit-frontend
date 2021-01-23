@@ -237,8 +237,8 @@ export default {
         return this.options.filter(oee => {
           if (typeof oee == 'string' || oee instanceof String) {
             return oee.toLowerCase().includes(this.search.toLowerCase())
-          } else if (this.trackBy) {
-            return oee[this.trackBy] && oee[this.trackBy].toLowerCase().includes(this.search.toLowerCase())
+          } else if (this.label) {
+            return oee[this.label] && oee[this.label].toLowerCase().includes(this.search.toLowerCase())
           }
           return true
         })

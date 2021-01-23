@@ -46,7 +46,7 @@ export default {
     })
   },
   created() {
-    this.$store.dispatch('ingredients/fetchBaseIngredients')
+    this.$store.dispatch('ingredients/fetchBaseProducts')
     this.$store.dispatch('myKitchen/fetchProducts')
   },
   methods: {

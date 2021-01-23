@@ -4,10 +4,10 @@
       <BaseLink color="red" class="action action--remove" @click="deleteProduct">
         <BaseIcon icon="trash" weight="semiBold" />
       </BaseLink>
-      <BaseLink color="text-secondary" class="action action--decrement" @click="decreaseQuantity">
+      <BaseLink color="text-secondary" class="action action--decrement" @click="decreaseAmount">
         <BaseIcon icon="minus" weight="semiBold" />
       </BaseLink>
-      <BaseLink color="text-secondary" class="action action--increment" @click="increaseQuantity">
+      <BaseLink color="text-secondary" class="action action--increment" @click="increaseAmount">
         <BaseIcon icon="plus" weight="semiBold" />
       </BaseLink>
     </div>
@@ -31,18 +31,18 @@ export default {
     deleteProduct() {
       this.$store.dispatch('myKitchen/deleteProductFromKitchen', this.product.id)
     },
-    increaseQuantity() {
-      const quantity = Math.round(this.product.quantity + 1, 5)
-      this.putQuantityChange(quantity)
+    increaseAmount() {
+      const amount = Math.round(this.product.amount + 1, 5)
+      this.putAmountChange(amount)
     },
-    decreaseQuantity() {
-      if (this.product.quantity <= 1.0) return
-      const quantity = Math.round(this.product.quantity - 1, 5)
-      this.putQuantityChange(quantity)
+    decreaseAmount() {
+      if (this.product.amount <= 1.0) return
+      const amount = Math.round(this.product.amount - 1, 5)
+      this.putAmountChange(amount)
     },
-    putQuantityChange(quantity) {
+    putAmountChange(amount) {
       var product = JSON.parse(JSON.stringify(this.product))
-      product.quantity = quantity
+      product.amount = amount
       this.$store.dispatch('myKitchen/editProductFromKitchen', product)
     }
   }

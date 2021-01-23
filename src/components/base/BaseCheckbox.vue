@@ -14,7 +14,7 @@
 <script>
 export default {
   props: {
-    value: { type: String },
+    value: { type: [String, Number] },
     modelValue: { default: '' },
     label: { type: String },
     trueValue: { default: true },

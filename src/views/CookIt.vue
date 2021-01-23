@@ -125,10 +125,24 @@ export default {
     }
   },
   created() {
-    this.$store.dispatch('recipes/fetchAvailableRecipes')
-    this.$store.dispatch('recipes/fetchAlmostAvailableRecipes')
+    if (this.availableRecipes.items === null) {
+      this.reloadAvailable()
+    }
+    if (this.almostAvailableRecipes.items === null) {
+      this.reloadAlmostAvailable()
+    }
   },
   methods: {
+    reloadRecipes() {
+      this.reloadAvailable()
+      this.reloadAlmostAvailable()
+    },
+    reloadAvailable() {
+      this.$store.dispatch('recipes/fetchAvailableRecipes', this.fetchRecipesQueryParams)
+    },
+    reloadAlmostAvailable() {
+      this.$store.dispatch('recipes/fetchAlmostAvailableRecipes', this.fetchRecipesQueryParams)
+    },
     loadNextAvailable() {
       this.$store.dispatch('recipes/fetchNextAvailableRecipes', this.fetchRecipesQueryParams)
     },
@@ -162,12 +176,18 @@ export default {
           close: newSortMethod => {
             if (newSortMethod) {
               this.sortMethod = newSortMethod
-              this.$store.dispatch('recipes/fetchAvailableRecipes', this.fetchRecipesQueryParams)
-              this.$store.dispatch('recipes/fetchAlmostAvailableRecipes', this.fetchRecipesQueryParams)
             }
           }
         }
       )
+    }
+  },
+  watch: {
+    filters() {
+      this.reloadRecipes()
+    },
+    sortMethod() {
+      this.reloadRecipes()
     }
   }
 }

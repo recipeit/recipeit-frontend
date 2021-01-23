@@ -17,6 +17,7 @@
       class="base-select"
       v-model="selectModel3"
       :options="selectOptions3"
+      :searchable="true"
       trackBy="id"
       label="name"
     ></base-select>

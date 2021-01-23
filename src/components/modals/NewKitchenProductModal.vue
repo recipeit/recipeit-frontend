@@ -9,9 +9,27 @@
           <input id="x" v-model="newProduct.name" type="text" />
           <label for="x">Nazwa</label>
         </div>
+
+        <BaseSelect
+          placeholder="Gotowy produkt"
+          class="basa-input"
+          v-model="selectedBaseProduct"
+          trackBy="id"
+          label="name"
+          :options="baseProducts"
+          :searchable="true"
+        >
+          <!-- <template v-slot:label="props">
+            {{ $t(`units.${props.option.toLowerCase()}`) }}
+          </template>
+          <template v-slot:option="props">
+            {{ $t(`units.${props.option.toLowerCase()}`) }}
+          </template> -->
+        </BaseSelect>
+
         <div class="he">
           <div class="basa-input base-input" style="width: 128px">
-            <input v-model.number="newProduct.quantity" type="text" />
+            <input v-model.number="newProduct.amount" type="text" />
             <label for="x">Ilość</label>
           </div>
           <BaseSelect
@@ -50,28 +68,37 @@ export default {
     return {
       units: units,
       loading: false,
-      newProduct: this.emptyProduct()
+      newProduct: this.emptyProduct(),
+      selectedBaseProduct: null
     }
   },
   computed: {
     ...mapState({
-      baseIngredients: state => state.ingredients.baseIngredients
+      baseProducts: state => state.ingredients.baseProducts
     })
   },
   methods: {
     emptyProduct() {
       return {
         name: '',
-        quantity: null,
-        templateIngredientId: null,
+        amount: null,
+        baseProductId: null,
         unit: null
       }
     },
     addProduct() {
       this.$store.dispatch('myKitchen/addProducts', [this.newProduct]).then(() => {
         this.newProduct = this.emptyProduct()
+        this.selectedBaseProduct = null
         this.$emit('close')
       })
+    }
+  },
+  watch: {
+    selectedBaseProduct(newValue) {
+      if (newValue && newValue.id) {
+        this.newProduct.baseProductId = newValue.id
+      }
     }
   }
 }
