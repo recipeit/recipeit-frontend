@@ -49,6 +49,37 @@ export default {
       ingredientsCountAscending: 'liczby składników: rosnąco',
       ingredientsCountDescending: 'liczby składników: malejąco'
     },
+    recipeFilterGroups: {
+      Other: '',
+      Type: 'Typ',
+      Diet: 'Dieta',
+      Allergens: 'Alergeny'
+    },
+    recipeFilterOptions: {
+      Other: {
+        Favourite: 'Ulubione',
+        Planned: 'Zaplanowane'
+      },
+      Type: {
+        Breakfast: 'Śniadanie',
+        Dinner: 'Obiad',
+        Supper: 'Kolacja',
+        Dessert: 'Deser',
+        Cake: 'Ciasto',
+        Snack: 'Przekąska'
+      },
+      Diet: {
+        Vegan: 'Wegańska',
+        Vegetarian: 'Wegetariańska'
+      },
+      Allergens: {
+        Dairy: 'Nabiał',
+        Gluten: 'Gluten',
+        Eggs: 'Jajka',
+        Fishes: 'Ryby',
+        Nuts: 'Orzechy'
+      }
+    },
     units: {
       weight: {
         gram: 'gram',

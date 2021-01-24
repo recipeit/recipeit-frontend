@@ -91,7 +91,7 @@
 <script>
 import { mapState } from 'vuex'
 import { markRaw } from 'vue'
-import { recipesSortingMethods, defaultRecipesSortingMethod, recipesFilterOptions } from '@/constants'
+import { recipesSortingMethods, defaultRecipesSortingMethod } from '@/constants'
 import RecipeBox from '@/components/RecipeBox'
 import FilterModal from '@/components/modals/FilterModal'
 import SortModal from '@/components/modals/SortModal'
@@ -110,21 +110,17 @@ export default {
   computed: {
     ...mapState({
       availableRecipes: state => state.recipes.availableRecipes,
-      almostAvailableRecipes: state => state.recipes.almostAvailableRecipes
+      almostAvailableRecipes: state => state.recipes.almostAvailableRecipes,
+      recipeFilterOptions: state => state.recipes.filterOptions
     }),
     selectedFiltersCount() {
       return Object.entries(this.filters)
         .map(f => f[1].length)
         .reduce((a, b) => a + b, 0)
-    },
-    fetchRecipesQueryParams() {
-      return {
-        pageNumber: null,
-        orderMethod: this.sortMethod
-      }
     }
   },
   created() {
+    this.$store.dispatch('recipes/fetchRecipeFilterOptions')
     if (this.availableRecipes.items === null) {
       this.reloadAvailable()
     }
@@ -137,23 +133,32 @@ export default {
       this.reloadAvailable()
       this.reloadAlmostAvailable()
     },
+    fetchRecipesQueryParams() {
+      return {
+        pageNumber: null,
+        orderMethod: this.sortMethod,
+        filters: Object.values(this.filters)
+          .flat()
+          .join(',')
+      }
+    },
     reloadAvailable() {
-      this.$store.dispatch('recipes/fetchAvailableRecipes', this.fetchRecipesQueryParams)
+      this.$store.dispatch('recipes/fetchAvailableRecipes', this.fetchRecipesQueryParams())
     },
     reloadAlmostAvailable() {
-      this.$store.dispatch('recipes/fetchAlmostAvailableRecipes', this.fetchRecipesQueryParams)
+      this.$store.dispatch('recipes/fetchAlmostAvailableRecipes', this.fetchRecipesQueryParams())
     },
     loadNextAvailable() {
-      this.$store.dispatch('recipes/fetchNextAvailableRecipes', this.fetchRecipesQueryParams)
+      this.$store.dispatch('recipes/fetchNextAvailableRecipes', this.fetchRecipesQueryParams())
     },
     loadNextAlmostAvailable() {
-      this.$store.dispatch('recipes/fetchNextAlmostAvailableRecipes', this.fetchRecipesQueryParams)
+      this.$store.dispatch('recipes/fetchNextAlmostAvailableRecipes', this.fetchRecipesQueryParams())
     },
     openFilterModal() {
       this.$modal.show(
         markRaw(FilterModal),
         {
-          options: recipesFilterOptions,
+          options: this.recipeFilterOptions,
           defaultSelected: this.filters
         },
         {
@@ -184,9 +189,11 @@ export default {
   },
   watch: {
     filters() {
+      console.log('filters()')
       this.reloadRecipes()
     },
     sortMethod() {
+      console.log('sortMethod()')
       this.reloadRecipes()
     }
   }

@@ -33,31 +33,54 @@ export const recipesSortingMethods = [
 export const defaultRecipesSortingMethod = recipesSortingMethods[0]
 
 export const recipesFilterOptions = {
-  type: {
-    name: 'Typ',
-    type: 'checkbox',
+  other: {
+    type: 'any',
+    inputType: 'checkbox',
     options: [
       {
+        key: 0,
+        value: 'favourite',
+        name: 'Ulubione'
+      },
+      {
+        key: 1,
+        value: 'planned',
+        name: 'Zaplanowane'
+      }
+    ]
+  },
+  type: {
+    name: 'Typ',
+    type: 'any',
+    inputType: 'checkbox',
+    options: [
+      {
+        key: 2,
         value: 'breakfast',
         name: 'Śniadanie'
       },
       {
+        key: 3,
         value: 'dinner',
         name: 'Obiad'
       },
       {
+        key: 4,
         value: 'supper',
         name: 'Kolacja'
       },
       {
+        key: 5,
         value: 'dessert',
         name: 'Deser'
       },
       {
+        key: 6,
         value: 'cake',
         name: 'Ciasto'
       },
       {
+        key: 7,
         value: 'snack',
         name: 'Przekąska'
       }
@@ -65,13 +88,16 @@ export const recipesFilterOptions = {
   },
   diet: {
     name: 'Dieta',
-    type: 'checkbox',
+    type: 'any',
+    inputType: 'checkbox',
     options: [
       {
+        key: 8,
         value: 'vegan',
         name: 'Wegańska'
       },
       {
+        key: 9,
         value: 'vegetarian',
         name: 'Wegetariańska'
       }
@@ -79,26 +105,31 @@ export const recipesFilterOptions = {
   },
   allergens: {
     name: 'Pomiń dania zawierające',
-    type: 'checkbox',
-    isExcluding: true,
+    inputType: 'checkbox',
+    type: 'none',
     options: [
       {
+        key: 10,
         value: 'dairy',
         name: 'Nabiał'
       },
       {
+        key: 11,
         value: 'gluten',
         name: 'Gluten'
       },
       {
+        key: 12,
         value: 'eggs',
         name: 'Jaja'
       },
       {
+        key: 13,
         value: 'fishes',
         name: 'Ryby'
       },
       {
+        key: 14,
         value: 'nuts',
         name: 'Orzechy'
       }

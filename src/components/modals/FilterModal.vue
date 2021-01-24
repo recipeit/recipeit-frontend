@@ -7,7 +7,7 @@
       <div class="filters">
         <div v-for="(group, groupValue) in options" :key="groupValue" class="filter__group">
           <div class="filter__group__title">
-            <div class="filter__group__name">{{ group.name }}</div>
+            <div class="filter__group__name">{{ $t(`recipeFilterGroups.${groupValue}`) }}</div>
             <transition name="fade">
               <BaseLink
                 tag="button"
@@ -22,8 +22,8 @@
           </div>
           <div class="filter__group__options">
             <div v-for="option in group.options" :key="option.value">
-              <BasePillCheckbox v-model="selected[groupValue]" :value="option.value" :excluding="group.isExcluding">
-                {{ option.name }}
+              <BasePillCheckbox v-model="selected[groupValue]" :value="option.key" :excluding="group.type === 'None'">
+                {{ $t(`recipeFilterOptions.${groupValue}.${option.value}`) }}
               </BasePillCheckbox>
             </div>
           </div>
@@ -99,6 +99,7 @@ export default {
       font-size: 14px;
       position: relative;
       font-weight: 600;
+      margin-bottom: 12px;
     }
 
     &__name {
@@ -106,12 +107,10 @@ export default {
     }
 
     &__clear {
-      // margin-left: 0.5rem;
       margin-left: auto;
     }
 
     &__options {
-      margin-top: 12px;
       display: flex;
       flex-wrap: wrap;
       gap: 12px;
