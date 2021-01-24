@@ -50,8 +50,8 @@ export default {
       ingredientsCountDescending: 'liczby składników: malejąco'
     },
     recipeFilterGroups: {
-      Other: '',
-      Type: 'Typ',
+      Other: ' ',
+      Category: 'Kategoria',
       Diet: 'Dieta',
       Allergens: 'Alergeny'
     },
@@ -60,7 +60,7 @@ export default {
         Favourite: 'Ulubione',
         Planned: 'Zaplanowane'
       },
-      Type: {
+      Category: {
         Breakfast: 'Śniadanie',
         Dinner: 'Obiad',
         Supper: 'Kolacja',
@@ -79,6 +79,14 @@ export default {
         Fishes: 'Ryby',
         Nuts: 'Orzechy'
       }
+    },
+    recipeCategory: {
+      Breakfast: 'Śniadanie',
+      Dinner: 'Obiad',
+      Supper: 'Kolacja',
+      Dessert: 'Deser',
+      Cake: 'Ciasto',
+      Snack: 'Przekąska'
     },
     units: {
       weight: {

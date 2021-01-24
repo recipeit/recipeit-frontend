@@ -133,13 +133,20 @@ export default {
       this.reloadAvailable()
       this.reloadAlmostAvailable()
     },
+    parseFilters() {
+      let renamedFilters = {}
+      Object.keys(this.filters).forEach(group => {
+        if (this.filters[group] && this.filters[group].length > 0) {
+          renamedFilters[`filters.${group}`] = this.filters[group].join(',')
+        }
+      })
+      return renamedFilters
+    },
     fetchRecipesQueryParams() {
       return {
         pageNumber: null,
         orderMethod: this.sortMethod,
-        filters: Object.values(this.filters)
-          .flat()
-          .join(',')
+        ...this.parseFilters()
       }
     },
     reloadAvailable() {

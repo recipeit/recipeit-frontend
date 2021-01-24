@@ -24,6 +24,15 @@
           <span class="recipe__author__blog-name">, {{ recipe.author.blog.name }}</span>
         </div>
 
+        <div class="recipe__tags">
+          <BaseButton stroked size="small">
+            <Rating :value="recipe.rating" />
+          </BaseButton>
+          <BaseButton subtle color="blue" size="small" v-for="category in recipe.categoryKeys" :key="category">{{
+            $t(`recipeCategory.${category}`)
+          }}</BaseButton>
+        </div>
+
         <div class="section-header">
           <div class="section-title">
             <div>Składniki</div>
@@ -76,6 +85,7 @@ import _ from 'lodash'
 import { mapState } from 'vuex'
 import RecipeIngredient from '@/components/recipe/RecipeIngredient'
 import FavouriteIcon from '@/components/FavouriteIcon'
+import Rating from '@/components/Rating'
 import Dialog from '@/components/modals/Dialog'
 
 export default {
@@ -88,7 +98,8 @@ export default {
   },
   components: {
     RecipeIngredient,
-    FavouriteIcon
+    FavouriteIcon,
+    Rating
   },
   data() {
     return {
@@ -272,6 +283,22 @@ export default {
       & {
         margin-left: 16px;
       }
+    }
+  }
+
+  &__tags {
+    margin-top: 12px;
+    display: flex;
+    flex-wrap: nowrap;
+    overflow: auto;
+    gap: 8px;
+
+    button {
+      text-transform: uppercase;
+      font-size: 0.625rem;
+      font-weight: bold;
+      padding: 0.625rem 1rem;
+      height: 32px;
     }
   }
 
