@@ -70,3 +70,23 @@ export class RecipeList {
     this.filters = filters
   }
 }
+
+export function parseFilters(filters) {
+  let renamedFilters = {}
+  if (typeof filters === 'object' && filters !== null) {
+    Object.keys(filters).forEach(group => {
+      if (filters[group] && filters[group].length > 0) {
+        renamedFilters[`filters.${group}`] = filters[group].join(',')
+      }
+    })
+  }
+  return renamedFilters
+}
+
+export function fetchRecipesQueryParams(orderMethod, filters) {
+  return {
+    pageNumber: null,
+    orderMethod: orderMethod,
+    ...parseFilters(filters)
+  }
+}

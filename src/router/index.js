@@ -24,9 +24,14 @@ const routes = [
     component: () => import(/* webpackChunkName: "cook-it" */ '../views/CookIt.vue')
   },
   {
-    path: '/cook-it/all',
-    name: 'cook-it-all',
-    component: () => import(/* webpackChunkName: "cook-it" */ '../views/CookItAll.vue')
+    path: '/cook-it/available',
+    name: 'available',
+    component: () => import(/* webpackChunkName: "cook-it" */ '../views/CookIt/AvailableRecipes.vue')
+  },
+  {
+    path: '/cook-it/almost-available',
+    name: 'almost-available',
+    component: () => import(/* webpackChunkName: "cook-it" */ '../views/CookIt/AlmostAvailableRecipes.vue')
   },
   {
     path: '/my-kitchen',

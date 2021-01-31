@@ -14,7 +14,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import { recipesSortingMethods, defaultRecipesSortingMethod } from '@/constants'
+import { recipesSortingMethods, defaultRecipesSortingMethod, fetchRecipesQueryParams } from '@/constants'
 import recipeApi from '@/api/recipeApi'
 import GenericRecipesList from '@/components/GenericRecipesList'
 
@@ -31,32 +31,12 @@ export default {
     }
   },
   methods: {
-    fetchRecipesQueryParams(orderMethod, filters) {
-      return {
-        pageNumber: null,
-        orderMethod: orderMethod,
-        ...this.parseFilters(filters)
-      }
-    },
-    parseFilters(filters) {
-      let renamedFilters = {}
-      if (typeof filters === 'object' && filters !== null) {
-        Object.keys(filters).forEach(group => {
-          if (filters[group] && filters[group].length > 0) {
-            renamedFilters[`filters.${group}`] = filters[group].join(',')
-          }
-        })
-      }
-      return renamedFilters
-    },
     loadNextRecipes() {
-      this.$store.dispatch(
-        'recipes/fetchNextRecipes',
-        this.fetchRecipesQueryParams(this.recipes.orderMethod, this.recipes.filters)
-      )
+      const { orderMethod, filters } = this.recipes
+      this.$store.dispatch('recipes/fetchNextRecipes', fetchRecipesQueryParams(orderMethod, filters))
     },
     reloadRecipes({ orderMethod, filters }) {
-      this.$store.dispatch('recipes/fetchRecipes', this.fetchRecipesQueryParams(orderMethod, filters))
+      this.$store.dispatch('recipes/fetchRecipes', fetchRecipesQueryParams(orderMethod, filters))
     }
   },
   computed: {

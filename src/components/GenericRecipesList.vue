@@ -20,13 +20,44 @@
       </div>
     </div>
 
-    <ul class="recipes-list__list">
-      <li class="recipes-list__list__item" v-for="recipe in recipes.items" :key="recipe.id">
-        <RecipeBox :recipe="recipe" />
-      </li>
-    </ul>
+    <template v-if="recipes.totalCount === 0 && !recipes.fetching">
+      <slot v-if="recipes.filters" name="empty-with-filters">
+        Nie znaleziono przepisów dla zadanych filtrów
+      </slot>
 
-    <BaseButton v-if="recipes.hasNext" @click="loadNext">Wczytaj więcej</BaseButton>
+      <slot v-else name="empty-without-filters">
+        <div class="recipes-list-block">
+          Najpierw dodaj coś do swojej kuchni!
+          <BaseButton raised color="black">Przejdź do kuchni</BaseButton>
+        </div>
+      </slot>
+    </template>
+
+    <template v-else>
+      <div class="recipes-list__header">
+        <div class="recipes-list__header__total-count">
+          {{ recipes.totalCount !== null && !recipes.fetching ? $tc('shared.recipes', recipes.totalCount) : 'wczytuję' }}
+        </div>
+        <div v-if="showAllLink" class="recipes-list__header__show-all">
+          <router-link :to="showAllLink" v-slot="{ href, navigate }" custom>
+            <BaseLink :href="href" @click="navigate" color="primary" class="recipes-list__header__show-all__button">
+              {{ $t('shared.seeAll') }}
+            </BaseLink>
+          </router-link>
+        </div>
+      </div>
+
+      <ul class="recipes-list__list">
+        <li class="recipes-list__list__item" v-for="recipe in recipesList" :key="recipe.id">
+          <RecipeBox :recipe="recipe" />
+        </li>
+        <template v-if="recipes.fetching">
+          <li class="recipes-list__list__item" v-for="i in 4" :key="i">O</li>
+        </template>
+      </ul>
+
+      <BaseButton v-if="!limitedItems && recipes.hasNext" @click="loadNext">Wczytaj więcej</BaseButton>
+    </template>
   </div>
 </template>
 
@@ -56,6 +87,13 @@ export default {
     },
     defaultSortingOption: {
       type: String
+    },
+    showAllLink: {
+      type: [String, Object]
+    },
+    limitedItems: {
+      type: Number,
+      default: null
     }
   },
   methods: {
@@ -103,6 +141,9 @@ export default {
           .reduce((a, b) => a + b, 0)
       }
       return 0
+    },
+    recipesList() {
+      return this.limitedItems ? this.recipes.items?.slice(0, this.limitedItems) : this.recipes.items
     }
   }
 }
@@ -148,6 +189,33 @@ export default {
         text-align: center;
         font-weight: bold;
         font-size: 12px;
+      }
+    }
+  }
+
+  &__header {
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    font-weight: bold;
+
+    &__total-count {
+      color: $text-secondary;
+    }
+
+    &__show-all {
+      cursor: pointer;
+
+      &__button {
+        display: flex;
+        align-items: center;
+
+        &__icon {
+          font-size: 20px;
+          margin-right: 4px;
+        }
       }
     }
   }
