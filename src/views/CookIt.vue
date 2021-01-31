@@ -101,12 +101,6 @@ export default {
   components: {
     RecipeBox
   },
-  data() {
-    return {
-      filters: {},
-      sortMethod: defaultRecipesSortingMethod
-    }
-  },
   computed: {
     ...mapState({
       availableRecipes: state => state.recipes.availableRecipes,
@@ -114,9 +108,12 @@ export default {
       recipeFilterOptions: state => state.recipes.filterOptions
     }),
     selectedFiltersCount() {
-      return Object.entries(this.filters)
-        .map(f => f[1].length)
-        .reduce((a, b) => a + b, 0)
+      if (typeof this.availableRecipes.filters === 'object' && this.availableRecipes.filters !== null) {
+        return Object.entries(this.availableRecipes.filters)
+          .map(f => f[1].length)
+          .reduce((a, b) => a + b, 0)
+      }
+      return 0
     }
   },
   created() {
@@ -129,79 +126,79 @@ export default {
     }
   },
   methods: {
-    reloadRecipes() {
-      this.reloadAvailable()
-      this.reloadAlmostAvailable()
+    reloadRecipes(orderMethod, filters) {
+      this.reloadAvailable(orderMethod, filters)
+      this.reloadAlmostAvailable(orderMethod, filters)
     },
-    parseFilters() {
+    parseFilters(filters) {
       let renamedFilters = {}
-      Object.keys(this.filters).forEach(group => {
-        if (this.filters[group] && this.filters[group].length > 0) {
-          renamedFilters[`filters.${group}`] = this.filters[group].join(',')
-        }
-      })
+      if (typeof filters === 'object' && filters !== null) {
+        Object.keys(filters).forEach(group => {
+          if (filters[group] && filters[group].length > 0) {
+            renamedFilters[`filters.${group}`] = filters[group].join(',')
+          }
+        })
+      }
       return renamedFilters
     },
-    fetchRecipesQueryParams() {
+    fetchRecipesQueryParams(orderMethod, filters) {
       return {
         pageNumber: null,
-        orderMethod: this.sortMethod,
-        ...this.parseFilters()
+        orderMethod: orderMethod,
+        ...this.parseFilters(filters)
       }
     },
-    reloadAvailable() {
-      this.$store.dispatch('recipes/fetchAvailableRecipes', this.fetchRecipesQueryParams())
+    reloadAvailable(orderMethod, filters) {
+      this.$store.dispatch('recipes/fetchAvailableRecipes', this.fetchRecipesQueryParams(orderMethod, filters))
     },
-    reloadAlmostAvailable() {
-      this.$store.dispatch('recipes/fetchAlmostAvailableRecipes', this.fetchRecipesQueryParams())
+    reloadAlmostAvailable(orderMethod, filters) {
+      this.$store.dispatch('recipes/fetchAlmostAvailableRecipes', this.fetchRecipesQueryParams(orderMethod, filters))
     },
     loadNextAvailable() {
-      this.$store.dispatch('recipes/fetchNextAvailableRecipes', this.fetchRecipesQueryParams())
+      this.$store.dispatch(
+        'recipes/fetchNextAvailableRecipes',
+        this.fetchRecipesQueryParams(this.availableRecipes.orderMethod, this.availableRecipes.filters)
+      )
     },
     loadNextAlmostAvailable() {
-      this.$store.dispatch('recipes/fetchNextAlmostAvailableRecipes', this.fetchRecipesQueryParams())
+      this.$store.dispatch(
+        'recipes/fetchNextAlmostAvailableRecipes',
+        this.fetchRecipesQueryParams(this.availableRecipes.orderMethod, this.availableRecipes.filters)
+      )
     },
     openFilterModal() {
       this.$modal.show(
         markRaw(FilterModal),
         {
           options: this.recipeFilterOptions,
-          defaultSelected: this.filters
+          defaultSelected: this.availableRecipes.filters
         },
         {
           close: newFilters => {
             if (newFilters) {
-              this.filters = newFilters
+              this.reloadRecipes(this.availableRecipes.orderMethod, newFilters)
             }
           }
         }
       )
     },
     openSortModal() {
+      console.log(this.availableRecipes.orderMethod)
+      console.log(defaultRecipesSortingMethod)
       this.$modal.show(
         markRaw(SortModal),
         {
           options: recipesSortingMethods,
-          defaultSelected: this.sortMethod
+          defaultSelected: this.availableRecipes.orderMethod || defaultRecipesSortingMethod
         },
         {
           close: newSortMethod => {
             if (newSortMethod) {
-              this.sortMethod = newSortMethod
+              this.reloadRecipes(newSortMethod, this.availableRecipes.filters)
             }
           }
         }
       )
-    }
-  },
-  watch: {
-    filters() {
-      console.log('filters()')
-      this.reloadRecipes()
-    },
-    sortMethod() {
-      console.log('sortMethod()')
-      this.reloadRecipes()
     }
   }
 }

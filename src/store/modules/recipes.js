@@ -1,54 +1,43 @@
 import recipeApi from '@/api/recipeApi'
-
-const defaultRecipeListValue = () => {
-  return {
-    fetching: false,
-    pagesTo: null,
-    items: null,
-    totalPages: null,
-    totalCount: null,
-    hasNext: null
-  }
-}
+import { RecipeList } from '@/constants'
 
 export default {
   namespaced: true,
   state: {
-    recipes: null,
+    recipes: new RecipeList(),
     recipesDetails: [],
     favouriteRecipesIds: [],
-    availableRecipes: defaultRecipeListValue(),
-    almostAvailableRecipes: defaultRecipeListValue(),
+    availableRecipes: new RecipeList(),
+    almostAvailableRecipes: new RecipeList(),
     filterOptions: null
   },
   mutations: {
-    SET_RECIPES(state, recipes) {
-      state.recipes = recipes
-    },
     SET_FAVOURITE_RECIPES_IDS(state, recipesIds) {
       state.favouriteRecipesIds = recipesIds
     },
+
+    RESET_RECIPES(state) {
+      state.recipes = new RecipeList()
+    },
     RESET_AVAILABLE_RECIPES(state) {
-      state.availableRecipes = defaultRecipeListValue()
+      state.availableRecipes = new RecipeList()
     },
     RESET_ALMOST_AVAILABLE_RECIPES(state) {
-      state.almostAvailableRecipes = defaultRecipeListValue()
+      state.almostAvailableRecipes = new RecipeList()
     },
-    SET_AVAILABLE_RECIPES(state, { recipes, currentPage, totalCount, totalPages, hasNext }) {
-      state.availableRecipes.fetching = false
-      state.availableRecipes.items = recipes
-      state.availableRecipes.pagesTo = currentPage
-      state.availableRecipes.totalPages = totalPages
-      state.availableRecipes.totalCount = totalCount
-      state.availableRecipes.hasNext = hasNext
+
+    SET_RECIPES(state, recipes) {
+      state.recipes.setFromApi({ ...recipes, fetching: false })
     },
-    SET_ALMOST_AVAILABLE_RECIPES(state, { recipes, currentPage, totalCount, totalPages, hasNext }) {
-      state.almostAvailableRecipes.fetching = false
-      state.almostAvailableRecipes.items = recipes
-      state.almostAvailableRecipes.pagesTo = currentPage
-      state.almostAvailableRecipes.totalPages = totalPages
-      state.almostAvailableRecipes.totalCount = totalCount
-      state.almostAvailableRecipes.hasNext = hasNext
+    SET_AVAILABLE_RECIPES(state, recipes) {
+      state.availableRecipes.setFromApi({ ...recipes, fetching: false })
+    },
+    SET_ALMOST_AVAILABLE_RECIPES(state, recipes) {
+      state.almostAvailableRecipes.setFromApi({ ...recipes, fetching: false })
+    },
+
+    SET_RECIPES_FETCHING_STATUS(state, fetching) {
+      state.recipes.fetching = fetching
     },
     SET_AVAILABLE_RECIPES_FETCHING_STATUS(state, fetching) {
       state.availableRecipes.fetching = fetching
@@ -56,30 +45,17 @@ export default {
     SET_ALMOST_AVAILABLE_RECIPES_FETCHING_STATUS(state, fetching) {
       state.almostAvailableRecipes.fetching = fetching
     },
-    ADD_AVAILABLE_RECIPES(state, { recipes, currentPage, totalCount, totalPages, hasNext }) {
-      if (state.availableRecipes.items !== null) {
-        state.availableRecipes.items.push(...recipes)
-      } else {
-        state.availableRecipes.items = recipes
-      }
-      state.availableRecipes.fetching = false
-      state.availableRecipes.pagesTo = currentPage
-      state.availableRecipes.totalPages = totalPages
-      state.availableRecipes.totalCount = totalCount
-      state.availableRecipes.hasNext = hasNext
+
+    ADD_RECIPES(state, recipes) {
+      state.recipes.addFromApi(recipes)
     },
-    ADD_ALMOST_AVAILABLE_RECIPES(state, { recipes, currentPage, totalCount, totalPages, hasNext }) {
-      if (state.almostAvailableRecipes.items !== null) {
-        state.almostAvailableRecipes.items.push(...recipes)
-      } else {
-        state.almostAvailableRecipes.items = recipes
-      }
-      state.almostAvailableRecipes.fetching = false
-      state.almostAvailableRecipes.pagesTo = currentPage
-      state.almostAvailableRecipes.totalPages = totalPages
-      state.almostAvailableRecipes.totalCount = totalCount
-      state.almostAvailableRecipes.hasNext = hasNext
+    ADD_AVAILABLE_RECIPES(state, recipes) {
+      state.availableRecipes.addFromApi(recipes)
     },
+    ADD_ALMOST_AVAILABLE_RECIPES(state, recipes) {
+      state.almostAvailableRecipes.addFromApi(recipes)
+    },
+
     SET_RECIPE_DETAILS(state, recipeDetails) {
       state.recipeDetails = recipeDetails
     },
@@ -109,17 +85,19 @@ export default {
     }
   },
   actions: {
-    fetchRecipes({ commit }) {
-      recipeApi.getRecipes().then(resp => {
-        commit('SET_RECIPES', resp.data.recipes)
-      })
-    },
     fetchFavouriteRecipesIds({ commit }) {
       recipeApi.getFavouriteRecipesIds().then(resp => {
         commit('SET_FAVOURITE_RECIPES_IDS', resp.data)
       })
     },
 
+    fetchRecipes({ commit }, queryParams) {
+      commit('RESET_RECIPES')
+      commit('SET_RECIPES_FETCHING_STATUS', true)
+      recipeApi.getRecipes(queryParams).then(resp => {
+        commit('SET_RECIPES', resp.data)
+      })
+    },
     fetchAvailableRecipes({ commit }, queryParams) {
       commit('RESET_AVAILABLE_RECIPES')
       commit('SET_AVAILABLE_RECIPES_FETCHING_STATUS', true)
@@ -135,6 +113,18 @@ export default {
       })
     },
 
+    fetchNextRecipes({ state, commit }, queryParams) {
+      if (state.recipes.fetching) return
+      commit('SET_RECIPES_FETCHING_STATUS', true)
+      recipeApi
+        .getRecipes({
+          ...queryParams,
+          pageNumber: state.recipes.pagesTo + 1
+        })
+        .then(resp => {
+          commit('ADD_RECIPES', resp.data)
+        })
+    },
     fetchNextAvailableRecipes({ state, commit }, queryParams) {
       if (state.availableRecipes.fetching) return
       commit('SET_AVAILABLE_RECIPES_FETCHING_STATUS', true)
@@ -240,7 +230,7 @@ export default {
       return state.recipesDetails?.find(r => r.recipeId === id)
     },
     getRecipeById: state => id => {
-      return state.recipes?.find(r => r.id === id)
+      return state.recipes.items?.find(r => r.id === id)
     },
     getRecipeFilterOptions: state => () => {
       return state.filterOptions

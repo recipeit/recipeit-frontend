@@ -1,8 +1,10 @@
 import { apiClient } from './apiClient'
 
 export default {
-  getRecipes() {
-    return apiClient.get(`/recipes`)
+  getRecipes(queryParams) {
+    return apiClient.get(`/recipes`, {
+      params: queryParams
+    })
   },
   getRecipe(id) {
     return apiClient.get(`/recipes/${id}`)

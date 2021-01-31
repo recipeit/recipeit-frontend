@@ -42,12 +42,12 @@ export default {
       purchaseAllDialogTitle: 'Czy na pewno chcesz przenieść {products} do swojej kuchni?'
     },
     recipesSortingMethods: {
-      nameAscending: 'nazwy: od A do Z',
-      nameDescending: 'nazwy: od Z do A',
-      timeAscending: 'czasu przygotowania: rosnąco',
-      timeDescending: 'czasu przygotowania: malejąco',
-      ingredientsCountAscending: 'liczby składników: rosnąco',
-      ingredientsCountDescending: 'liczby składników: malejąco'
+      NameAscending: 'nazwy: od A do Z',
+      NameDescending: 'nazwy: od Z do A',
+      TimeAscending: 'czasu przygotowania: rosnąco',
+      TimeDescending: 'czasu przygotowania: malejąco',
+      IngredientsCountAscending: 'liczby składników: rosnąco',
+      IngredientsCountDescending: 'liczby składników: malejąco'
     },
     recipeFilterGroups: {
       Other: ' ',
