@@ -16,11 +16,9 @@ import { nextId } from './utils'
 
 export default {
   name: 'global-sheet-modal-container',
-  data() {
-    return {
-      modals: []
-    }
-  },
+  data: () => ({
+    modals: []
+  }),
   components: {
     Modal
   },

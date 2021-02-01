@@ -56,7 +56,7 @@
         </template>
       </ul>
 
-      <BaseButton v-if="!limitedItems && recipes.hasNext" @click="loadNext">Wczytaj więcej</BaseButton>
+      <Observer v-if="!limitedItems && recipes.hasNext" @intersect="loadNext"></Observer>
     </template>
   </div>
 </template>
@@ -67,10 +67,12 @@ import { RecipeList } from '@/constants'
 import RecipeBox from '@/components/RecipeBox'
 import FilterModal from '@/components/modals/FilterModal'
 import SortModal from '@/components/modals/SortModal'
+import Observer from './Observer.vue'
 
 export default {
   components: {
-    RecipeBox
+    RecipeBox,
+    Observer
   },
   props: {
     recipes: {
@@ -98,7 +100,9 @@ export default {
   },
   methods: {
     loadNext() {
-      this.$emit('load-next')
+      if (!this.recipes.fetching) {
+        this.$emit('load-next')
+      }
     },
     openFilterModal() {
       this.$modal.show(

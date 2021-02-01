@@ -42,16 +42,14 @@ export default {
       default: false
     }
   },
-  data() {
-    return {
-      modalClosing: false,
-      modalOpening: false,
-      modalClosed: false,
-      isDown: false,
-      offset: null,
-      transformTop: null
-    }
-  },
+  data: () => ({
+    modalClosing: false,
+    modalOpening: false,
+    modalClosed: false,
+    isDown: false,
+    offset: null,
+    transformTop: null
+  }),
   methods: {
     maybeClose(e) {
       if (this.$refs.modal && !this.$refs.modal.contains(e.target)) {

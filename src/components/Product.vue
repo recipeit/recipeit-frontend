@@ -21,11 +21,9 @@ export default {
       required: true
     }
   },
-  data() {
-    return {
-      unitTranslations
-    }
-  },
+  data: () => ({
+    unitTranslations
+  }),
   computed: {
     name() {
       return this.product.name ? this.product.name : this.product.baseProductName

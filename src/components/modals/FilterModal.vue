@@ -52,11 +52,9 @@ export default {
       type: Object
     }
   },
-  data() {
-    return {
-      selected: {}
-    }
-  },
+  data: () => ({
+    selected: {}
+  }),
   computed: {},
   methods: {
     submit() {

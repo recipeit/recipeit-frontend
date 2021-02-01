@@ -101,13 +101,11 @@ export default {
     FavouriteIcon,
     Rating
   },
-  data() {
-    return {
-      recipe: null,
-      recipeDetails: null,
-      finishedDirections: []
-    }
-  },
+  data: () => ({
+    recipe: null,
+    recipeDetails: null,
+    finishedDirections: []
+  }),
   created() {
     this.$store.dispatch('recipes/fetchRecipe', this.recipeId).then(r => (this.recipe = r))
     this.$store.dispatch('recipes/fetchRecipeDetails', this.recipeId).then(rd => (this.recipeDetails = rd))

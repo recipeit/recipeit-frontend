@@ -36,15 +36,13 @@
 
 <script>
 export default {
-  data() {
-    return {
-      modalClosed: false,
-      isDown: false,
-      offset: null,
-      transformTop: null,
-      show: true
-    }
-  },
+  data: () => ({
+    modalClosed: false,
+    isDown: false,
+    offset: null,
+    transformTop: null,
+    show: true
+  }),
   mounted() {
     window.addEventListener('keydown', () => {
       this.modalClosed = false

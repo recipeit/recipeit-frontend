@@ -42,12 +42,10 @@ import GenericRecipesList from '@/components/GenericRecipesList'
 export default {
   components: { GenericRecipesList },
   name: 'CookIt',
-  data() {
-    return {
-      recipesSortingMethods,
-      defaultRecipesSortingMethod
-    }
-  },
+  data: () => ({
+    recipesSortingMethods,
+    defaultRecipesSortingMethod
+  }),
   computed: {
     ...mapState({
       availableRecipes: state => state.recipes.availableRecipes,

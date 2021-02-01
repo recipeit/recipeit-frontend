@@ -96,15 +96,13 @@ export default {
       default: 210
     }
   },
-  data() {
-    return {
-      search: '',
-      opened: false,
-      preferredOpenDirection: 'below',
-      optimizedHeight: this.maxHeight,
-      pointer: null
-    }
-  },
+  data: () => ({
+    search: '',
+    opened: false,
+    preferredOpenDirection: 'below',
+    optimizedHeight: this.maxHeight,
+    pointer: null
+  }),
   methods: {
     addPointerElement() {
       if (this.visibleOptions.length > 0) {

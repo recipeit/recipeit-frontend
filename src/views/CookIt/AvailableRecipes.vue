@@ -24,13 +24,11 @@ export default {
   components: {
     GenericRecipesList
   },
-  data() {
-    return {
-      getRecipesApiEndpoint: recipeApi.getRecipes,
-      recipesSortingMethods,
-      defaultRecipesSortingMethod
-    }
-  },
+  data: () => ({
+    getRecipesApiEndpoint: recipeApi.getRecipes,
+    recipesSortingMethods,
+    defaultRecipesSortingMethod
+  }),
   methods: {
     loadNextRecipes() {
       const { orderMethod, filters } = this.recipes

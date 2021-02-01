@@ -43,12 +43,10 @@ export default {
       required: true
     }
   },
-  data() {
-    return {
-      translations: unitTranslations,
-      loading: false
-    }
-  },
+  data: () => ({
+    translations: unitTranslations,
+    loading: false
+  }),
   methods: {
     addProductToShoppingList(product) {
       this.loading = true

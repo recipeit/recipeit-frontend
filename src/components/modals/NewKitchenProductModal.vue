@@ -64,14 +64,12 @@ import { units } from '@/constants'
 import { mapState } from 'vuex'
 
 export default {
-  data() {
-    return {
-      units: units,
-      loading: false,
-      newProduct: this.emptyProduct(),
-      selectedBaseProduct: null
-    }
-  },
+  data: () => ({
+    units: units,
+    loading: false,
+    newProduct: this.emptyProduct(),
+    selectedBaseProduct: null
+  }),
   computed: {
     ...mapState({
       baseProducts: state => state.ingredients.baseProducts
