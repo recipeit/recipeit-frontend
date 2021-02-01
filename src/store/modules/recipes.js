@@ -5,7 +5,7 @@ export default {
   namespaced: true,
   state: {
     recipes: new RecipeList(),
-    recipesDetails: [],
+    detailedRecipes: [],
     favouriteRecipesIds: [],
     availableRecipes: new RecipeList(),
     almostAvailableRecipes: new RecipeList(),
@@ -66,8 +66,12 @@ export default {
         state.recipes = [recipe]
       }
     },
-    ADD_RECIPE_DETAILS(state, recipeDetails) {
-      state.recipesDetails.push(recipeDetails)
+    ADD_DETAILED_RECIPE(state, recipe) {
+      state.detailedRecipes.push(recipe)
+
+      if (state.detailedRecipes.length > 10) {
+        state.detailedRecipes.shift()
+      }
     },
     ADD_RECIPE_ID_TO_FAVOURITES(state, recipeId) {
       if (state.favouriteRecipesIds.find(id => id === recipeId)) return
@@ -167,18 +171,20 @@ export default {
         }
       })
     },
-    fetchRecipeDetails({ getters, commit }, id) {
+    fetchDetailedRecipe({ getters, commit }, id) {
       return new Promise((resolve, reject) => {
-        const recipeDetails = getters.getRecipeDetailsByRecipeId(id)
+        const recipeDetails = getters.getDetailedRecipeById(id)
 
         if (recipeDetails) {
           resolve(recipeDetails)
         } else {
           recipeApi
-            .getRecipeDetails(id)
+            .getDetailedRecipe(id)
             .then(resp => {
-              commit('ADD_RECIPE_DETAILS', resp.data)
-              resolve(resp.data)
+              let recipe = resp.data.recipe
+              recipe.details = resp.data.details
+              commit('ADD_DETAILED_RECIPE', recipe)
+              resolve(recipe)
             })
             .catch(error => reject(error))
         }
@@ -226,8 +232,8 @@ export default {
     }
   },
   getters: {
-    getRecipeDetailsByRecipeId: state => id => {
-      return state.recipesDetails?.find(r => r.recipeId === id)
+    getDetailedRecipeById: state => id => {
+      return state.detailedRecipes.find(r => r.id === id)
     },
     getRecipeById: state => id => {
       return state.recipes.items?.find(r => r.id === id)

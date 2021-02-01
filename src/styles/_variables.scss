@@ -1,5 +1,4 @@
 $black: #000;
-// $black: #1c272c;
 $gray: #90abb9;
 $gray-light: #e2e9ed;
 $white: #fff;
@@ -40,10 +39,29 @@ $button-colors: (
 );
 
 :root {
-  --border: #{$gray-light};
-  --background: #{$white};
-  --text-primary: #{$black};
-  --text-secondary: #{$gray};
+  --color-red: #{ $red };
+  --color-blue: #{ $blue };
+  --color-green: #{ $green };
+  --color-yellow: #{ $yellow };
+
+  --color-border: #{$gray-light};
+  --color-background: #{$white};
+  --color-background-rgb: #{toRGB($white)};
+  --color-text-primary: #{$black};
+  --color-text-secondary: #{$gray};
+}
+
+[theme=dark] {
+  $border: #3c4b57;
+  $background: #272c30;
+  $text-primary: #6b8397;
+  $text-secondary: #4c5a66;
+
+  --color-border: #{ $border };
+  --color-background: #{ $background };
+  --color-background-rgb: #{ toRGB( $background ) };
+  --color-text-primary: #{ $text-primary };
+  --color-text-secondary: #{ $text-secondary };
 }
 
 $transition-base-duration: 0.3s;

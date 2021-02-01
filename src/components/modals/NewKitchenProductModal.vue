@@ -64,10 +64,10 @@ import { units } from '@/constants'
 import { mapState } from 'vuex'
 
 export default {
-  data: () => ({
+  data: component => ({
     units: units,
     loading: false,
-    newProduct: this.emptyProduct(),
+    newProduct: component.emptyProduct(),
     selectedBaseProduct: null
   }),
   computed: {

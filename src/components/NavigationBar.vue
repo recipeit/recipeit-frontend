@@ -35,12 +35,12 @@ export default {}
   right: 0;
   bottom: 0;
   padding: 28px 0;
-  background-color: rgba($background, 0.95);
+  background-color: rgba(var(--color-background-rgb), 0.95);
   display: flex;
   justify-content: space-evenly;
 
   @supports (backdrop-filter: blur(20px)) {
-    background-color: rgba($background, 0.8);
+    background-color: rgba(var(--color-background-rgb), 0.8);
     backdrop-filter: saturate(180%) blur(20px);
   }
 

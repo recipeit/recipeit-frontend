@@ -1,6 +1,6 @@
 <template>
   <div class="layout__page__content">
-    <div v-if="recipe && recipeDetails" class="recipe">
+    <div v-if="recipe && recipe.details" class="recipe">
       <div class="recipe__image-container">
         <div class="recipe__image-container__buttons">
           <BaseLink class="recipe__image-container__button" :href="href" @click="back" tag="button">
@@ -42,7 +42,7 @@
           </BaseLink>
         </div>
         <ul class="recipe__ingredients-list">
-          <RecipeIngredient v-for="ingredient in recipeDetails.ingredients" :key="ingredient.id" :ingredient="ingredient" />
+          <RecipeIngredient v-for="ingredient in recipe.details.ingredients" :key="ingredient.id" :ingredient="ingredient" />
         </ul>
 
         <div class="section-header">
@@ -52,7 +52,7 @@
         </div>
         <div class="recipe__directions-list">
           <div
-            v-for="(paragraph, index) in recipeDetails.directionsParagraphs"
+            v-for="(paragraph, index) in recipe.details.directionsParagraphs"
             :key="index"
             :class="[
               'recipe__directions-list__item',
@@ -103,12 +103,12 @@ export default {
   },
   data: () => ({
     recipe: null,
-    recipeDetails: null,
+    // recipeDetails: null,
     finishedDirections: []
   }),
   created() {
-    this.$store.dispatch('recipes/fetchRecipe', this.recipeId).then(r => (this.recipe = r))
-    this.$store.dispatch('recipes/fetchRecipeDetails', this.recipeId).then(rd => (this.recipeDetails = rd))
+    // this.$store.dispatch('recipes/fetchRecipe', this.recipeId).then(r => (this.recipe = r))
+    this.$store.dispatch('recipes/fetchDetailedRecipe', this.recipeId).then(rd => (this.recipe = rd))
     this.$store.dispatch('myKitchen/fetchProducts')
     this.$store.dispatch('shoppingList/fetchProducts')
   },
@@ -141,7 +141,7 @@ export default {
       return this.favouriteRecipesIds.find(id => id === this.recipe.id) !== undefined
     },
     allIndexes() {
-      return this.recipeDetails.directionsParagraphs.map((element, index) => index)
+      return this.recipe.details.directionsParagraphs.map((element, index) => index)
     },
     selectedDirection() {
       return _.min(_.difference(this.allIndexes, this.finishedDirections))
@@ -203,8 +203,8 @@ export default {
   &__image-container {
     position: relative;
     padding: 32px;
-    height: 256px;
-    max-height: 256px;
+    height: 320px;
+    max-height: 320px;
 
     &__buttons {
       display: flex;

@@ -27,3 +27,11 @@
     @return 0.1;
   }
 }
+
+@function toRGB($color) {
+  $r: red($color);
+  $g: green($color);
+  $b: blue($color);
+
+  @return $r + "," + $g + "," + $b;
+}

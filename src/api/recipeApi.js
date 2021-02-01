@@ -9,6 +9,9 @@ export default {
   getRecipe(id) {
     return apiClient.get(`/recipes/${id}`)
   },
+  getDetailedRecipe(id) {
+    return apiClient.get(`/recipes/${id}/detailed`)
+  },
   getRecipeDetails(id) {
     return apiClient.get(`/recipes/${id}/details`)
   },

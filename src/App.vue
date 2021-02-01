@@ -30,7 +30,7 @@ export default {
   max-width: 460px;
   box-sizing: border-box;
   margin: 0 auto;
-  background: $background;
+  background: var(--color-background);
   min-height: 100%;
   // box-shadow: 0 0 64px rgba(0, 0, 0, 0.1);
   display: flex;

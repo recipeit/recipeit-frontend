@@ -1,7 +1,7 @@
 <template>
   <div class="layout__page__content">
     <h1>Pełna lista</h1>
-    <div>Te potrawy możesz przyrządzić po drobnych zakupach!</div>
+    <div class="recipes-list-title">Te potrawy możesz przyrządzić po drobnych zakupach!</div>
     <GenericRecipesList
       :recipes="recipes"
       :filterOptions="recipeFilterOptions"
@@ -55,4 +55,10 @@ export default {
 }
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+.recipes-list-title {
+  font-size: 14px;
+  margin-bottom: 16px;
+  font-weight: bold;
+}
+</style>

@@ -1,4 +1,4 @@
-import { createStore } from 'vuex'
+import { createLogger, createStore } from 'vuex'
 import ingredients from './modules/ingredients'
 import myKitchen from './modules/myKitchen'
 import recipes from './modules/recipes'
@@ -12,5 +12,6 @@ export default createStore({
     recipes,
     shoppingList,
     user
-  }
+  },
+  plugins: [createLogger()]
 })

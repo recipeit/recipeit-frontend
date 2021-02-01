@@ -56,7 +56,7 @@
         </template>
       </ul>
 
-      <Observer v-if="!limitedItems && recipes.hasNext" @intersect="loadNext"></Observer>
+      <Observer v-if="!limitedItems && recipes.hasNext" @intersect="loadNext" :options="{ rootMargin: '256px' }"></Observer>
     </template>
   </div>
 </template>

@@ -12,7 +12,7 @@ export default {
 
 <style lang="scss">
 .sheet-modal-content {
-  background-color: $background;
+  background-color: var(--color-background);
   border-radius: 32px 32px 0 0;
   position: relative;
 
@@ -25,7 +25,7 @@ export default {
     height: 4px;
     width: 48px;
     border-radius: 8px;
-    background-color: $border;
+    background-color: var(--border);
     top: 12px;
     left: 50%;
     transform: translateX(-50%);

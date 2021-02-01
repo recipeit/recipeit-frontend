@@ -1,6 +1,6 @@
 <template>
   <li class="ingredient">
-    {{ ingredient.name }}
+    {{ ingredient.name || ingredient.baseProduct?.name }}
     <template v-if="ingredient.amount > 0">
       <span class="ingredient__amount">{{ ingredient.amount }}</span>
       <span class="ingredient__unit"> {{ translations[ingredient.unit] || ingredient.unit }}</span>

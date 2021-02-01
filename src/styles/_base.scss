@@ -6,7 +6,7 @@ html {
 }
 
 html {
-  background: $background;
+  background: var(--color-background);
   scrollbar-width: thin;
   scrollbar-color: $border transparent;
 }

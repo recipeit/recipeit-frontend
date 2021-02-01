@@ -96,11 +96,11 @@ export default {
       default: 210
     }
   },
-  data: () => ({
+  data: component => ({
     search: '',
     opened: false,
     preferredOpenDirection: 'below',
-    optimizedHeight: this.maxHeight,
+    optimizedHeight: component.maxHeight,
     pointer: null
   }),
   methods: {
@@ -181,6 +181,8 @@ export default {
 
       if (this.searchable) {
         this.$nextTick(() => this.$refs.search && this.$refs.search.focus())
+        console.log('this.$refs', this.$refs)
+        console.log('this.$refs.dupsko', this.$refs.dupsko)
       } else {
         this.$el.focus()
       }
