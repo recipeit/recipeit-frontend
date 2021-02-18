@@ -51,8 +51,5 @@ export default {
   },
   getSuggestedRecipes() {
     return apiClient.get(`/recipes/suggestions`)
-  },
-  getRecipeFilterOptions() {
-    return apiClient.get(`/recipes/filter-options`)
   }
 }

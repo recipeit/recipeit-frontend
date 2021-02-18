@@ -118,7 +118,7 @@ export default {
         const rect = this.$refs.parallaxImage.getBoundingClientRect()
         const height = rect.height
         const invisible = height - Math.min(Math.max(height + rect.top, 0), height)
-        this.$refs.parallaxImage.style.transform = `translateY(${invisible}px)`
+        this.$refs.parallaxImage.style.paddingTop = `${invisible}px`
       }
     })
   },

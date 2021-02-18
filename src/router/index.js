@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '../views/Home.vue'
+import Home from '@/views/Home.vue'
 
 const routes = [
   {
@@ -11,37 +11,37 @@ const routes = [
     path: '/recipe/:recipeId',
     name: 'recipe',
     props: true,
-    component: () => import(/* webpackChunkName: "recipe" */ '../views/Recipe.vue')
+    component: () => import(/* webpackChunkName: "recipe" */ '@/views/Recipe.vue')
   },
   {
     path: '/recipes',
     name: 'recipes',
-    component: () => import(/* webpackChunkName: "recipes" */ '../views/Recipes.vue')
+    component: () => import(/* webpackChunkName: "recipes" */ '@/views/Recipes.vue')
   },
   {
     path: '/cook-it',
     name: 'cook-it',
-    component: () => import(/* webpackChunkName: "cook-it" */ '../views/CookIt.vue')
+    component: () => import(/* webpackChunkName: "cook-it" */ '@/views/CookIt.vue')
   },
   {
     path: '/cook-it/available',
     name: 'available',
-    component: () => import(/* webpackChunkName: "cook-it" */ '../views/CookIt/AvailableRecipes.vue')
+    component: () => import(/* webpackChunkName: "cook-it" */ '@/views/CookIt/AvailableRecipes.vue')
   },
   {
     path: '/cook-it/almost-available',
     name: 'almost-available',
-    component: () => import(/* webpackChunkName: "cook-it" */ '../views/CookIt/AlmostAvailableRecipes.vue')
+    component: () => import(/* webpackChunkName: "cook-it" */ '@/views/CookIt/AlmostAvailableRecipes.vue')
   },
   {
     path: '/my-kitchen',
     name: 'my-kitchen',
-    component: () => import(/* webpackChunkName: "my-kitchen" */ '../views/MyKitchen.vue')
+    component: () => import(/* webpackChunkName: "my-kitchen" */ '@/views/MyKitchen.vue')
   },
   {
     path: '/shopping-list',
     name: 'shopping-list',
-    component: () => import(/* webpackChunkName: "shopping-list" */ '../views/ShoppingList.vue')
+    component: () => import(/* webpackChunkName: "shopping-list" */ '@/views/ShoppingList.vue')
   }
 ]
 

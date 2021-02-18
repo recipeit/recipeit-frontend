@@ -81,15 +81,6 @@ export default {
     apiEndpoint: {
       type: Function
     },
-    filterOptions: {
-      type: Object
-    },
-    sortingOptions: {
-      type: Array
-    },
-    defaultSortingOption: {
-      type: String
-    },
     showAllLink: {
       type: [String, Object]
     },
@@ -108,7 +99,7 @@ export default {
       this.$modal.show(
         markRaw(FilterModal),
         {
-          options: this.filterOptions,
+          options: this.recipes.filterOptions,
           defaultSelected: this.recipes.filters
         },
         {
@@ -124,8 +115,8 @@ export default {
       this.$modal.show(
         markRaw(SortModal),
         {
-          options: this.sortingOptions,
-          defaultSelected: this.recipes.orderMethod || this.defaultSortingOption
+          options: this.recipes.orderMethodOptions,
+          defaultSelected: this.recipes.orderMethod || this.recipes.defaultOrderMethod
         },
         {
           close: newSortMethod => {

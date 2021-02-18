@@ -8,8 +8,7 @@ export default {
     detailedRecipes: [],
     favouriteRecipesIds: [],
     availableRecipes: new RecipeList(),
-    almostAvailableRecipes: new RecipeList(),
-    filterOptions: null
+    almostAvailableRecipes: new RecipeList()
   },
   mutations: {
     SET_FAVOURITE_RECIPES_IDS(state, recipesIds) {
@@ -82,10 +81,6 @@ export default {
       if (recipeIdIndex >= 0) {
         state.favouriteRecipesIds.splice(recipeIdIndex, 1)
       }
-    },
-
-    SET_FILTER_OPTIONS(state, filterOptions) {
-      state.filterOptions = filterOptions
     }
   },
   actions: {
@@ -211,24 +206,6 @@ export default {
           })
           .catch(error => reject(error))
       })
-    },
-
-    fetchRecipeFilterOptions({ getters, commit }, id) {
-      return new Promise((resolve, reject) => {
-        const options = getters.getRecipeFilterOptions()
-
-        if (options) {
-          resolve(options)
-        } else {
-          recipeApi
-            .getRecipeFilterOptions(id)
-            .then(resp => {
-              commit('SET_FILTER_OPTIONS', resp.data)
-              resolve(resp.data)
-            })
-            .catch(error => reject(error))
-        }
-      })
     }
   },
   getters: {
@@ -237,9 +214,6 @@ export default {
     },
     getRecipeById: state => id => {
       return state.recipes.items?.find(r => r.id === id)
-    },
-    getRecipeFilterOptions: state => () => {
-      return state.filterOptions
     }
   }
 }

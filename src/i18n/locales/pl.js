@@ -44,10 +44,12 @@ export default {
     recipesSortingMethods: {
       NameAscending: 'nazwy: od A do Z',
       NameDescending: 'nazwy: od Z do A',
-      TimeAscending: 'czasu przygotowania: rosnąco',
-      TimeDescending: 'czasu przygotowania: malejąco',
+      TimePreparingAscending: 'czasu przygotowania: rosnąco',
+      TimePreparingDescending: 'czasu przygotowania: malejąco',
       IngredientsCountAscending: 'liczby składników: rosnąco',
-      IngredientsCountDescending: 'liczby składników: malejąco'
+      IngredientsCountDescending: 'liczby składników: malejąco',
+      MissingIngredientsAscending: 'liczby brakujących składników: rosnąco',
+      MissingIngredientsDescending: 'liczby brakujących składników: malejąco'
     },
     recipeFilterGroups: {
       Other: ' ',

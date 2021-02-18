@@ -6,9 +6,6 @@
       <div>
         <GenericRecipesList
           :recipes="availableRecipes"
-          :filterOptions="recipeFilterOptions"
-          :sortingOptions="recipesSortingMethods"
-          :defaultSortingOption="defaultRecipesSortingMethod"
           :showAllLink="{ name: 'available' }"
           :limitedItems="4"
           @reload="reloadAvailable"
@@ -22,9 +19,6 @@
 
         <GenericRecipesList
           :recipes="almostAvailableRecipes"
-          :filterOptions="recipeFilterOptions"
-          :sortingOptions="recipesSortingMethods"
-          :defaultSortingOption="defaultRecipesSortingMethod"
           :showAllLink="{ name: 'almost-available' }"
           :limitedItems="4"
           @reload="reloadAlmostAvailable"
@@ -36,25 +30,19 @@
 
 <script>
 import { mapState } from 'vuex'
-import { recipesSortingMethods, defaultRecipesSortingMethod, fetchRecipesQueryParams } from '@/constants'
+import { fetchRecipesQueryParams } from '@/constants'
 import GenericRecipesList from '@/components/GenericRecipesList'
 
 export default {
   components: { GenericRecipesList },
   name: 'CookIt',
-  data: () => ({
-    recipesSortingMethods,
-    defaultRecipesSortingMethod
-  }),
   computed: {
     ...mapState({
       availableRecipes: state => state.recipes.availableRecipes,
-      almostAvailableRecipes: state => state.recipes.almostAvailableRecipes,
-      recipeFilterOptions: state => state.recipes.filterOptions
+      almostAvailableRecipes: state => state.recipes.almostAvailableRecipes
     })
   },
   created() {
-    this.$store.dispatch('recipes/fetchRecipeFilterOptions')
     if (this.availableRecipes.items === null) {
       this.reloadAvailable({})
     }

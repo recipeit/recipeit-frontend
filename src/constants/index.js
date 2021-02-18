@@ -42,9 +42,24 @@ export class RecipeList {
     this.hasNext = null
     this.filters = {}
     this.orderMethod = null
+    this.filterOptions = null
+    this.orderMethodOptions = null
+    this.defaultOrderMethod = null
   }
 
-  setFromApi({ fetching, recipes, currentPage, totalPages, totalCount, hasNext, orderMethod, filters }) {
+  setFromApi({
+    fetching,
+    recipes,
+    currentPage,
+    totalPages,
+    totalCount,
+    hasNext,
+    orderMethod,
+    filters,
+    orderMethodOptions,
+    filterOptions,
+    defaultOrderMethod
+  }) {
     this.fetching = fetching
     this.items = recipes
     this.pagesTo = currentPage
@@ -53,9 +68,24 @@ export class RecipeList {
     this.hasNext = hasNext
     this.orderMethod = orderMethod
     this.filters = filters
+    this.orderMethodOptions = orderMethodOptions
+    this.filterOptions = filterOptions
+    this.defaultOrderMethod = defaultOrderMethod
   }
 
-  addFromApi({ fetching, recipes, currentPage, totalPages, totalCount, hasNext, orderMethod, filters }) {
+  addFromApi({
+    fetching,
+    recipes,
+    currentPage,
+    totalPages,
+    totalCount,
+    hasNext,
+    orderMethod,
+    filters,
+    orderMethodOptions,
+    filterOptions,
+    defaultOrderMethod
+  }) {
     if (this.items !== null) {
       this.items.push(...recipes)
     } else {
@@ -68,6 +98,9 @@ export class RecipeList {
     this.hasNext = hasNext
     this.orderMethod = orderMethod
     this.filters = filters
+    this.orderMethodOptions = orderMethodOptions
+    this.filterOptions = filterOptions
+    this.defaultOrderMethod = defaultOrderMethod
   }
 }
 

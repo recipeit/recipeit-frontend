@@ -5,5 +5,8 @@ module.exports = {
         prependData: `@import '@/styles/styles.scss';`
       }
     }
+  },
+  configureWebpack: {
+    devtool: 'source-map'
   }
 }

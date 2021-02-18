@@ -1,6 +1,6 @@
 <template>
-  <Product :product="product">
-    <div class="actions">
+  <Product :product="product" @click="openEditModal">
+    <div class="actions" @click.stop>
       <BaseLink color="red" class="action action--remove" @click="deleteProduct">
         <BaseIcon icon="trash" weight="semiBold" />
       </BaseLink>
@@ -15,7 +15,9 @@
 </template>
 
 <script>
+import { markRaw } from 'vue'
 import Product from '@/components/Product'
+import EditKitchenProductModal from './modals/EditKitchenProductModal'
 
 export default {
   components: {
@@ -28,6 +30,17 @@ export default {
     }
   },
   methods: {
+    openEditModal() {
+      this.$modal.show(
+        markRaw(EditKitchenProductModal),
+        {
+          product: this.product
+        },
+        {
+          product: this.product
+        }
+      )
+    },
     deleteProduct() {
       this.$store.dispatch('myKitchen/deleteProductFromKitchen', this.product.id)
     },

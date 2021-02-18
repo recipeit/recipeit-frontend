@@ -1,7 +1,7 @@
 <template>
   <sheet-modal-content>
     <BaseModalHeader @close="$emit('close')">
-      <BaseModalTitle>Dodaj nowy produkt</BaseModalTitle>
+      <BaseModalTitle>Edytuj produkt</BaseModalTitle>
     </BaseModalHeader>
     <BaseModalBody>
       <div>
@@ -45,9 +45,11 @@
       </div>
     </BaseModalBody>
     <BaseModalFooter>
-      <BaseButton class="submit-button" raised color="black" @click="addProduct">
-        <BaseIcon class="submit-button__icon" icon="plus" weight="semiBold" />
-        {{ loading ? '...dodawanie' : $t('shared.addProduct') }}
+      <BaseButton class="submit-button" stroked @click="$emit('close')">
+        Anuluj
+      </BaseButton>
+      <BaseButton class="submit-button" raised color="black" @click="editProduct">
+        {{ loading ? '...edytowanie' : 'Edytuj' }}
       </BaseButton>
     </BaseModalFooter>
   </sheet-modal-content>
@@ -55,42 +57,49 @@
 
 <script>
 import { units } from '@/constants'
-import { mapState } from 'vuex'
+import { useStore } from 'vuex'
+import { computed, reactive, watch, toRefs } from 'vue'
 
 export default {
-  data: component => ({
-    units: units,
-    loading: false,
-    newProduct: component.emptyProduct(),
-    selectedBaseProduct: null
-  }),
-  computed: {
-    ...mapState({
-      baseProducts: state => state.ingredients.baseProducts
-    })
-  },
-  methods: {
-    emptyProduct() {
-      return {
-        name: '',
-        amount: null,
-        baseProductId: null,
-        unit: null
-      }
-    },
-    addProduct() {
-      this.$store.dispatch('myKitchen/addProducts', [this.newProduct]).then(() => {
-        this.newProduct = this.emptyProduct()
-        this.selectedBaseProduct = null
-        this.$emit('close')
-      })
+  props: {
+    product: {
+      type: Object,
+      required: true
     }
   },
-  watch: {
-    selectedBaseProduct(newValue) {
-      if (newValue && newValue.id) {
-        this.newProduct.baseProductId = newValue.id
+  setup(props, { emit }) {
+    const store = useStore()
+
+    const data = reactive({
+      loading: false,
+      newProduct: JSON.parse(JSON.stringify(props.product)),
+      selectedBaseProduct: null,
+      baseProducts: computed(() => store.state.ingredients.baseProducts)
+    })
+
+    function editProduct() {
+      store.dispatch('myKitchen/editProductFromKitchen', { id: props.product.id, product: data.newProduct }).then(() => {
+        emit('close')
+      })
+    }
+
+    if (data.baseProducts && props.product.baseProductId) {
+      data.selectedBaseProduct = data.baseProducts.find(p => p.id === props.product.baseProductId)
+    }
+
+    watch(
+      () => data.selectedBaseProduct,
+      newValue => {
+        if (newValue && newValue.id) {
+          data.newProduct.baseProductId = newValue.id
+        }
       }
+    )
+
+    return {
+      units,
+      ...toRefs(data),
+      editProduct
     }
   }
 }

@@ -47,10 +47,10 @@ export default {
           .catch(error => reject(error))
       })
     },
-    editProductFromKitchen({ commit }, product) {
+    editProductFromKitchen({ commit }, { id, product }) {
       return new Promise((resolve, reject) => {
         myKitchenApi
-          .updateProductFromMyKitchen(product)
+          .updateProductFromMyKitchen(id, product)
           .then(resp => {
             commit('UPDATE_PRODUCT_FROM_KITCHEN', resp.data)
             resolve()

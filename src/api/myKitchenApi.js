@@ -10,8 +10,8 @@ export default {
   getProductFromMyKitchenById(id) {
     return apiClient.get(`/my-kitchen/products/${id}`)
   },
-  updateProductFromMyKitchen(product) {
-    return apiClient.put(`/my-kitchen/products/${product.id}`, product)
+  updateProductFromMyKitchen(productId, product) {
+    return apiClient.put(`/my-kitchen/products/${productId}`, product)
   },
   removeProductFromMyKitchenById(id) {
     return apiClient.delete(`/my-kitchen/products/${id}`)
