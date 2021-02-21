@@ -173,7 +173,7 @@ export default {
       this.search = query
     },
     open() {
-      console.log('open requested')
+      // console.log('open requested')
       if (this.opened) return
 
       this.opened = true
@@ -181,14 +181,14 @@ export default {
 
       if (this.searchable) {
         this.$nextTick(() => this.$refs.search && this.$refs.search.focus())
-        console.log('this.$refs', this.$refs)
-        console.log('this.$refs.dupsko', this.$refs.dupsko)
+        // console.log('this.$refs', this.$refs)
+        // console.log('this.$refs.dupsko', this.$refs.dupsko)
       } else {
         this.$el.focus()
       }
     },
     hide() {
-      console.log(document.activeElement)
+      // console.log(document.activeElement)
       if (!this.opened) return
 
       this.opened = false
@@ -199,7 +199,7 @@ export default {
       } else {
         this.$el.blur()
       }
-      console.log(document.activeElement)
+      // console.log(document.activeElement)
     },
     selectOption(newValue) {
       this.$emit('update:modelValue', newValue === this.modelValue ? null : newValue)

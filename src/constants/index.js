@@ -40,6 +40,7 @@ export class RecipeList {
     this.totalPages = null
     this.totalCount = null
     this.hasNext = null
+    this.search = null
     this.filters = {}
     this.orderMethod = null
     this.filterOptions = null
@@ -54,6 +55,7 @@ export class RecipeList {
     totalPages,
     totalCount,
     hasNext,
+    search,
     orderMethod,
     filters,
     orderMethodOptions,
@@ -66,6 +68,7 @@ export class RecipeList {
     this.totalPages = totalPages
     this.totalCount = totalCount
     this.hasNext = hasNext
+    this.search = search
     this.orderMethod = orderMethod
     this.filters = filters
     this.orderMethodOptions = orderMethodOptions
@@ -80,6 +83,7 @@ export class RecipeList {
     totalPages,
     totalCount,
     hasNext,
+    search,
     orderMethod,
     filters,
     orderMethodOptions,
@@ -96,6 +100,7 @@ export class RecipeList {
     this.totalPages = totalPages
     this.totalCount = totalCount
     this.hasNext = hasNext
+    this.search = search
     this.orderMethod = orderMethod
     this.filters = filters
     this.orderMethodOptions = orderMethodOptions
@@ -116,10 +121,14 @@ export function parseFilters(filters) {
   return renamedFilters
 }
 
-export function fetchRecipesQueryParams(orderMethod, filters) {
+export function fetchRecipesQueryParams(orderMethod, filters, search) {
   return {
     pageNumber: null,
+    search: search,
     orderMethod: orderMethod,
     ...parseFilters(filters)
   }
 }
+
+export const STORAGE_TOKEN = 'token'
+export const STORAGE_REFRESH_TOKEN = 'refreshToken'

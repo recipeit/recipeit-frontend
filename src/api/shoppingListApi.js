@@ -1,28 +1,44 @@
-import { apiClient } from './apiClient'
+import CLIENT from './apiClient'
 
 export default {
   getProductsFromShoppingList() {
-    return apiClient.get(`/shopping-list/products`)
+    return CLIENT.apiClient.get(`/shopping-list/products`, {
+      headers: CLIENT.authHeader()
+    })
   },
   addProductsToShoppingList(products) {
-    return apiClient.post(`/shopping-list/products`, products)
+    return CLIENT.apiClient.post(`/shopping-list/products`, products, {
+      headers: CLIENT.authHeader()
+    })
   },
   addProductToShoppingList(product) {
-    return apiClient.post(`/shopping-list/product`, product)
+    return CLIENT.apiClient.post(`/shopping-list/product`, product, {
+      headers: CLIENT.authHeader()
+    })
   },
   purchaseProduct(productId) {
-    return apiClient.post(`/shopping-list/purchase/${productId}`)
+    return CLIENT.apiClient.post(`/shopping-list/purchase/${productId}`, null, {
+      headers: CLIENT.authHeader()
+    })
   },
   purchaseAllProducts() {
-    return apiClient.post(`/shopping-list/purchase/all`)
+    return CLIENT.apiClient.post(`/shopping-list/purchase/all`, null, {
+      headers: CLIENT.authHeader()
+    })
   },
   getProductFromShoppingListById(id) {
-    return apiClient.get(`/shopping-list/products/${id}`)
+    return CLIENT.apiClient.get(`/shopping-list/products/${id}`, {
+      headers: CLIENT.authHeader()
+    })
   },
   updateProductFromShoppingList(product) {
-    return apiClient.put(`/shopping-list/product/${product.id}`, product)
+    return CLIENT.apiClient.put(`/shopping-list/product/${product.id}`, product, {
+      headers: CLIENT.authHeader()
+    })
   },
   removeProductFromShoppingListById(id) {
-    return apiClient.delete(`/shopping-list/product/${id}`)
+    return CLIENT.apiClient.delete(`/shopping-list/product/${id}`, {
+      headers: CLIENT.authHeader()
+    })
   }
 }

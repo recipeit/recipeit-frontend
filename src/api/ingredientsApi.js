@@ -1,7 +1,7 @@
-import { apiClient } from './apiClient'
+import CLIENT from './apiClient'
 
 export default {
   getAllBaseProducts() {
-    return apiClient.get(`/ingredients/base-ingredients`)
+    return CLIENT.apiClient.get(`/ingredients/base-ingredients`)
   }
 }

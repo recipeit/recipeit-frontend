@@ -1,6 +1,6 @@
 <template>
   <div class="recipes-list">
-    <div class="recipes-list__filters">
+    <div v-if="showFilterButtons" class="recipes-list__filters">
       <div class="recipes-list__filters__button">
         <BaseButton stroked size="small" @click="openFilterModal">
           <BaseIcon icon="filter" class="recipes-list__filters__button__icon" />
@@ -87,6 +87,10 @@ export default {
     limitedItems: {
       type: Number,
       default: null
+    },
+    showFilterButtons: {
+      type: Boolean,
+      default: true
     }
   },
   methods: {

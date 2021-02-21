@@ -2,13 +2,15 @@
   <div class="layout__page__content">
     <div class="cook-it-layout">
       <h1>{{ $t('cookIt.title') }}</h1>
+      <input v-model="searchValue" />
+      <button @click="search">Szukaj</button>
 
       <div>
         <GenericRecipesList
           :recipes="availableRecipes"
           :showAllLink="{ name: 'available' }"
           :limitedItems="4"
-          @reload="reloadAvailable"
+          @reload="reloadRecipes"
         ></GenericRecipesList>
       </div>
 
@@ -21,7 +23,7 @@
           :recipes="almostAvailableRecipes"
           :showAllLink="{ name: 'almost-available' }"
           :limitedItems="4"
-          @reload="reloadAlmostAvailable"
+          :showFilterButtons="false"
         ></GenericRecipesList>
       </div>
     </div>
@@ -36,6 +38,9 @@ import GenericRecipesList from '@/components/GenericRecipesList'
 export default {
   components: { GenericRecipesList },
   name: 'CookIt',
+  data: () => ({
+    searchValue: null
+  }),
   computed: {
     ...mapState({
       availableRecipes: state => state.recipes.availableRecipes,
@@ -43,19 +48,21 @@ export default {
     })
   },
   created() {
-    if (this.availableRecipes.items === null) {
-      this.reloadAvailable({})
-    }
-    if (this.almostAvailableRecipes.items === null) {
-      this.reloadAlmostAvailable({})
+    if (this.availableRecipes.items === null || this.almostAvailableRecipes.items === null) {
+      this.fetchRecipes()
     }
   },
   methods: {
-    reloadAvailable({ orderMethod, filters }) {
-      this.$store.dispatch('recipes/fetchAvailableRecipes', fetchRecipesQueryParams(orderMethod, filters))
+    reloadRecipes({ orderMethod, filters }) {
+      this.fetchRecipes(orderMethod, filters, this.searchValue)
     },
-    reloadAlmostAvailable({ orderMethod, filters }) {
-      this.$store.dispatch('recipes/fetchAlmostAvailableRecipes', fetchRecipesQueryParams(orderMethod, filters))
+    search() {
+      this.fetchRecipes(this.availableRecipes.orderMethod, this.availableRecipes.filters, this.searchValue)
+    },
+    fetchRecipes(orderMethod, filters, search) {
+      const queryParams = fetchRecipesQueryParams(orderMethod, filters, search)
+      this.$store.dispatch('recipes/fetchAvailableRecipes', queryParams)
+      this.$store.dispatch('recipes/fetchAlmostAvailableRecipes', queryParams)
     }
   }
 }

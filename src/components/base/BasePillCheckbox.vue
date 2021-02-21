@@ -10,7 +10,7 @@
 export default {
   props: {
     excluding: { type: Boolean },
-    value: { type: String },
+    value: { type: [String, Number] },
     modelValue: { default: '' },
     label: { type: String },
     trueValue: { default: true },
