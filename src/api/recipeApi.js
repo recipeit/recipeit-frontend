@@ -1,76 +1,55 @@
-import CLIENT from './apiClient'
+import apiClient from './apiClient'
 
 export default {
   getRecipes(queryParams) {
-    return CLIENT.apiClient.get(`/recipes`, {
-      params: queryParams,
-      headers: CLIENT.authHeader()
+    return apiClient.get(`/recipes`, {
+      params: queryParams
     })
   },
   getRecipe(id) {
-    return CLIENT.apiClient.get(`/recipes/${id}`)
+    return apiClient.get(`/recipes/${id}`)
   },
   getDetailedRecipe(id) {
-    return CLIENT.apiClient.get(`/recipes/${id}/detailed`)
+    return apiClient.get(`/recipes/${id}/detailed`)
   },
   getRecipeDetails(id) {
-    return CLIENT.apiClient.get(`/recipes/${id}/details`)
+    return apiClient.get(`/recipes/${id}/details`)
   },
   updateKitchenByRecipe(id) {
-    return CLIENT.apiClient.post(`/recipes/${id}/update-kitchen`, null, {
-      headers: CLIENT.authHeader()
-    })
+    return apiClient.post(`/recipes/${id}/update-kitchen`, null)
   },
   getAvailableRecipes(queryParams) {
-    return CLIENT.apiClient.get(`/recipes/available`, {
-      params: queryParams,
-      headers: CLIENT.authHeader()
+    return apiClient.get(`/recipes/available`, {
+      params: queryParams
     })
   },
   getAlmostAvailableRecipes(queryParams) {
-    return CLIENT.apiClient.get(`/recipes/almost-available`, {
-      params: queryParams,
-      headers: CLIENT.authHeader()
+    return apiClient.get(`/recipes/almost-available`, {
+      params: queryParams
     })
   },
   getFavouriteRecipes() {
-    return CLIENT.apiClient.get(`/recipes/favourites`, {
-      headers: CLIENT.authHeader()
-    })
+    return apiClient.get(`/recipes/favourites`)
   },
   getFavouriteRecipesIds() {
-    return CLIENT.apiClient.get(`/recipes/favourites/ids`, {
-      headers: CLIENT.authHeader()
-    })
+    return apiClient.get(`/recipes/favourites/ids`)
   },
   addRecipeToFavourites(id) {
-    return CLIENT.apiClient.post(`/recipes/favourites/${id}`, null, {
-      headers: CLIENT.authHeader()
-    })
+    return apiClient.post(`/recipes/favourites/${id}`, null)
   },
   removeRecipeFromFavourites(id) {
-    return CLIENT.apiClient.delete(`/recipes/favourites/${id}`, {
-      headers: CLIENT.authHeader()
-    })
+    return apiClient.delete(`/recipes/favourites/${id}`)
   },
   getPlannedRecipes() {
-    return CLIENT.apiClient.get(`/recipes/planned`, {
-      headers: CLIENT.authHeader()
-    })
+    return apiClient.get(`/recipes/planned`)
   },
   addRecipeToPlanned(id) {
-    return CLIENT.apiClient.post(`/recipes/planned/${id}`, null, {
-      headers: CLIENT.authHeader()
-    })
+    return apiClient.post(`/recipes/planned/${id}`, null)
   },
   removeRecipeFromPlanned(id) {
-    return CLIENT.apiClient.delete(`/recipes/planned/${id}`, {
-      headers: CLIENT.authHeader()
-    })
+    return apiClient.delete(`/recipes/planned/${id}`)
   },
   getSuggestedRecipes() {
-    return CLIENT.apiClient.get(`/recipes/suggestions`, {
-      headers: CLIENT.authHeader()
-    })
+    return apiClient.get(`/recipes/suggestions`)
   }
 }

@@ -1,72 +1,67 @@
 import { STORAGE_TOKEN } from '@/constants'
 import axios from 'axios'
-import IdentityService from '@/services/identity'
-// import identityApi from './identityApi'
+import store from '@/store'
 
-// const baseURL = 'https://localhost:44388'
-const baseURL = 'https://recipeit-backend20201105000045.azurewebsites.net'
+// process.env.NODE_ENV === 'production'
+const baseURL = 'https://localhost:44388'
+// const baseURL = 'https://recipeit-backend20201105000045.azurewebsites.net'
 
 const apiClient = axios.create({
   baseURL,
-  // process.env.NODE_ENV === 'production'
   withCredentials: false,
   headers: {
-    // Accept: 'application/json',
-    Accept: '*/*',
+    Accept: 'application/json',
     'Content-Type': 'application/json'
   }
 })
 
+let isRefreshing = false
+let subscribers = []
+
+apiClient.interceptors.request.use(request => {
+  request.headers = {
+    ...authHeader(),
+    ...request.headers
+  }
+  return request
+})
+
 apiClient.interceptors.response.use(
   response => response,
-  async error => {
-    // console.log('error', error)
+  error => {
     const originalRequest = error.config
-    // console.log('originalRequest', originalRequest)
 
     // Prevent infinite loops
-    if (error.response.status === 401 && originalRequest.url === baseURL + '/identity/refresh/') {
-      // console.log('Prevent infinite')
-      // window.location.href = '/login/'
+    if (error.response.status === 401 && originalRequest.url.includes('/identity/refresh')) {
       return Promise.reject(error)
     }
 
-    if (error.response.status === 401 && error.response.statusText === 'Unauthorized') {
-      try {
-        // console.log('bedzie refresh')
-        var refreshed = await IdentityService.refresh()
-
-        if (!refreshed) {
-          // console.log('to ja sobie poczekam', originalRequest)
-          await new Promise(r => setTimeout(r, 500))
-        }
-        const token = localStorage.getItem(STORAGE_TOKEN)
-        originalRequest.headers['Authorization'] = 'Bearer ' + token
-        return apiClient(originalRequest)
-      } catch (error) {
-        console.error(error)
+    if (error.response.status === 401) {
+      if (!isRefreshing) {
+        isRefreshing = true
+        store
+          .dispatch('user/refresh')
+          .then(({ status }) => {
+            if (status === 200 || status == 204) {
+              isRefreshing = false
+              onRefreshed()
+            }
+            subscribers = []
+          })
+          .catch(() => {
+            store.dispatch('user/logout')
+          })
       }
 
-      // if (refreshToken) {
-      //   console.log('refreshToken')
-      //   return apiClient
-      //     .post('identity/refresh', { token, refreshToken })
-      //     .then(response => {
-      //       const { token, refreshToken } = response.data
-      //       localStorage.setItem(STORAGE_TOKEN, token)
-      //       localStorage.setItem(STORAGE_REFRESH_TOKEN, refreshToken)
-      //       // apiClient.defaults.headers['Authorization'] = 'JWT ' + response.data.access
-      //       originalRequest.headers['Authorization'] = 'Bearer ' + response.data.access
-      //       return apiClient(originalRequest)
-      //     })
-      //     .catch(err => {
-      //       console.log(err)
-      //     })
-      // } else {
-      //   console.log('NOT refreshToken')
-      //   // console.log('Refresh token not available.')
-      //   // window.location.href = '/login/'
-      // }
+      return new Promise(resolve => {
+        subscribeTokenRefresh(() => {
+          originalRequest.headers = {
+            ...originalRequest.headers,
+            ...authHeader()
+          }
+          resolve(apiClient(originalRequest))
+        })
+      })
     }
 
     // specific error handling done elsewhere
@@ -74,15 +69,22 @@ apiClient.interceptors.response.use(
   }
 )
 
-export default {
-  apiClient,
-  authHeader: function() {
-    const token = localStorage.getItem(STORAGE_TOKEN)
+function subscribeTokenRefresh(cb) {
+  subscribers.push(cb)
+}
 
-    if (token) {
-      return { Authorization: 'Bearer ' + token }
-    } else {
-      return {}
-    }
+function onRefreshed() {
+  subscribers.map(cb => cb())
+}
+
+function authHeader() {
+  const token = localStorage.getItem(STORAGE_TOKEN)
+
+  if (token) {
+    return { Authorization: 'Bearer ' + token }
+  } else {
+    return {}
   }
 }
+
+export default apiClient

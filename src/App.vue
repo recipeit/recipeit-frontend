@@ -20,6 +20,7 @@ export default {
     NavigationBar
   },
   created() {
+    this.$store.dispatch('user/fetchUserProfile')
     this.$store.dispatch('recipes/fetchFavouriteRecipesIds')
   }
 }

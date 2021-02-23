@@ -1,10 +1,9 @@
 <template>
   <div class="layout__page__content">
     <h1>
-      <span style="font-weight: 500">{{ $t(welcomeType) }},</span> Kamil!
+      <span style="font-weight: 500">{{ $t(welcomeType) }}</span
+      ><span v-if="userProfile && userProfile.username">, {{ userProfile.username }}</span>
     </h1>
-    <div>{{ userProfile || 'nie ma' }}</div>
-    <!-- <base-link color="primary">Kliknij we mnie</base-link> -->
     <base-select
       placeholder="Wybierz stan"
       class="base-select"
@@ -25,21 +24,28 @@
     {{ selectModel3 }}
     <br />
     <br />
-    <input type="text" v-model="userLogin.email" />
-    <input type="password" v-model="userLogin.password" />
-    <button @click="login">Login</button>
+    <template v-if="!isAuthenticated">
+      <input type="text" v-model="userLogin.email" />
+      <input type="password" v-model="userLogin.password" />
+      <button @click="login">Zaloguj</button>
+    </template>
+    <template v-else>
+      <button @click="logout">Wyloguj</button>
+    </template>
   </div>
 </template>
 
 <script>
-import identityService from '@/services/identity'
-import { mapState } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 
 export default {
   name: 'Home',
   computed: {
     ...mapState({
       userProfile: state => state.user.userProfile
+    }),
+    ...mapGetters({
+      isAuthenticated: 'user/isAuthenticated'
     })
   },
   data() {
@@ -65,7 +71,10 @@ export default {
   },
   methods: {
     login() {
-      identityService.login(this.userLogin, this.$store.dispatch)
+      this.$store.dispatch('user/login', this.userLogin)
+    },
+    logout() {
+      this.$store.dispatch('user/logout')
     }
   }
 }

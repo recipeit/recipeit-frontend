@@ -1,6 +1,32 @@
 import recipeApi from '@/api/recipeApi'
 import { RecipeList } from '@/constants'
 
+export const MUTATIONS = {
+  SET_FAVOURITE_RECIPES_IDS: 'SET_FAVOURITE_RECIPES_IDS',
+
+  RESET_RECIPES: 'RESET_RECIPES',
+  RESET_AVAILABLE_RECIPES: 'RESET_AVAILABLE_RECIPES',
+  RESET_ALMOST_AVAILABLE_RECIPES: 'RESET_ALMOST_AVAILABLE_RECIPES',
+
+  SET_RECIPES: 'SET_RECIPES',
+  SET_AVAILABLE_RECIPES: 'SET_AVAILABLE_RECIPES',
+  SET_ALMOST_AVAILABLE_RECIPES: 'SET_ALMOST_AVAILABLE_RECIPES',
+
+  SET_RECIPES_FETCHING_STATUS: 'SET_RECIPES_FETCHING_STATUS',
+  SET_AVAILABLE_RECIPES_FETCHING_STATUS: 'SET_AVAILABLE_RECIPES_FETCHING_STATUS',
+  SET_ALMOST_AVAILABLE_RECIPES_FETCHING_STATUS: 'SET_ALMOST_AVAILABLE_RECIPES_FETCHING_STATUS',
+
+  ADD_RECIPES: 'ADD_RECIPES',
+  ADD_AVAILABLE_RECIPES: 'ADD_AVAILABLE_RECIPES',
+  ADD_ALMOST_AVAILABLE_RECIPES: 'ADD_ALMOST_AVAILABLE_RECIPES',
+
+  SET_RECIPE_DETAILS: 'SET_RECIPE_DETAILS',
+  ADD_RECIPE: 'ADD_RECIPE',
+  ADD_DETAILED_RECIPE: 'ADD_DETAILED_RECIPE',
+  ADD_RECIPE_ID_TO_FAVOURITES: 'ADD_RECIPE_ID_TO_FAVOURITES',
+  REMOVE_RECIPE_ID_FROM_FAVOURITES: 'REMOVE_RECIPE_ID_FROM_FAVOURITES'
+}
+
 export default {
   namespaced: true,
   state: {
@@ -11,72 +37,72 @@ export default {
     almostAvailableRecipes: new RecipeList()
   },
   mutations: {
-    SET_FAVOURITE_RECIPES_IDS(state, recipesIds) {
+    [MUTATIONS.SET_FAVOURITE_RECIPES_IDS](state, recipesIds) {
       state.favouriteRecipesIds = recipesIds
     },
 
-    RESET_RECIPES(state) {
+    [MUTATIONS.RESET_RECIPES](state) {
       state.recipes = new RecipeList()
     },
-    RESET_AVAILABLE_RECIPES(state) {
+    [MUTATIONS.RESET_AVAILABLE_RECIPES](state) {
       state.availableRecipes = new RecipeList()
     },
-    RESET_ALMOST_AVAILABLE_RECIPES(state) {
+    [MUTATIONS.RESET_ALMOST_AVAILABLE_RECIPES](state) {
       state.almostAvailableRecipes = new RecipeList()
     },
 
-    SET_RECIPES(state, recipes) {
+    [MUTATIONS.SET_RECIPES](state, recipes) {
       state.recipes.setFromApi({ ...recipes, fetching: false })
     },
-    SET_AVAILABLE_RECIPES(state, recipes) {
+    [MUTATIONS.SET_AVAILABLE_RECIPES](state, recipes) {
       state.availableRecipes.setFromApi({ ...recipes, fetching: false })
     },
-    SET_ALMOST_AVAILABLE_RECIPES(state, recipes) {
+    [MUTATIONS.SET_ALMOST_AVAILABLE_RECIPES](state, recipes) {
       state.almostAvailableRecipes.setFromApi({ ...recipes, fetching: false })
     },
 
-    SET_RECIPES_FETCHING_STATUS(state, fetching) {
+    [MUTATIONS.SET_RECIPES_FETCHING_STATUS](state, fetching) {
       state.recipes.fetching = fetching
     },
-    SET_AVAILABLE_RECIPES_FETCHING_STATUS(state, fetching) {
+    [MUTATIONS.SET_AVAILABLE_RECIPES_FETCHING_STATUS](state, fetching) {
       state.availableRecipes.fetching = fetching
     },
-    SET_ALMOST_AVAILABLE_RECIPES_FETCHING_STATUS(state, fetching) {
+    [MUTATIONS.SET_ALMOST_AVAILABLE_RECIPES_FETCHING_STATUS](state, fetching) {
       state.almostAvailableRecipes.fetching = fetching
     },
 
-    ADD_RECIPES(state, recipes) {
+    [MUTATIONS.ADD_RECIPES](state, recipes) {
       state.recipes.addFromApi(recipes)
     },
-    ADD_AVAILABLE_RECIPES(state, recipes) {
+    [MUTATIONS.ADD_AVAILABLE_RECIPES](state, recipes) {
       state.availableRecipes.addFromApi(recipes)
     },
-    ADD_ALMOST_AVAILABLE_RECIPES(state, recipes) {
+    [MUTATIONS.ADD_ALMOST_AVAILABLE_RECIPES](state, recipes) {
       state.almostAvailableRecipes.addFromApi(recipes)
     },
 
-    SET_RECIPE_DETAILS(state, recipeDetails) {
+    [MUTATIONS.SET_RECIPE_DETAILS](state, recipeDetails) {
       state.recipeDetails = recipeDetails
     },
-    ADD_RECIPE(state, recipe) {
+    [MUTATIONS.ADD_RECIPE](state, recipe) {
       if (state.recipes) {
         state.recipes.push(recipe)
       } else {
         state.recipes = [recipe]
       }
     },
-    ADD_DETAILED_RECIPE(state, recipe) {
+    [MUTATIONS.ADD_DETAILED_RECIPE](state, recipe) {
       state.detailedRecipes.push(recipe)
 
       if (state.detailedRecipes.length > 10) {
         state.detailedRecipes.shift()
       }
     },
-    ADD_RECIPE_ID_TO_FAVOURITES(state, recipeId) {
+    [MUTATIONS.ADD_RECIPE_ID_TO_FAVOURITES](state, recipeId) {
       if (state.favouriteRecipesIds.find(id => id === recipeId)) return
       state.favouriteRecipesIds.push(recipeId)
     },
-    REMOVE_RECIPE_ID_FROM_FAVOURITES(state, recipeId) {
+    [MUTATIONS.REMOVE_RECIPE_ID_FROM_FAVOURITES](state, recipeId) {
       var recipeIdIndex = state.favouriteRecipesIds.indexOf(recipeId)
       if (recipeIdIndex >= 0) {
         state.favouriteRecipesIds.splice(recipeIdIndex, 1)
@@ -86,66 +112,66 @@ export default {
   actions: {
     fetchFavouriteRecipesIds({ commit }) {
       recipeApi.getFavouriteRecipesIds().then(resp => {
-        commit('SET_FAVOURITE_RECIPES_IDS', resp.data)
+        commit(MUTATIONS.SET_FAVOURITE_RECIPES_IDS, resp.data)
       })
     },
 
     fetchRecipes({ commit }, queryParams) {
-      commit('RESET_RECIPES')
-      commit('SET_RECIPES_FETCHING_STATUS', true)
+      commit(MUTATIONS.RESET_RECIPES)
+      commit(MUTATIONS.SET_RECIPES_FETCHING_STATUS, true)
       recipeApi.getRecipes(queryParams).then(resp => {
-        commit('SET_RECIPES', resp.data)
+        commit(MUTATIONS.SET_RECIPES, resp.data)
       })
     },
     fetchAvailableRecipes({ commit }, queryParams) {
-      commit('RESET_AVAILABLE_RECIPES')
-      commit('SET_AVAILABLE_RECIPES_FETCHING_STATUS', true)
+      commit(MUTATIONS.RESET_AVAILABLE_RECIPES)
+      commit(MUTATIONS.SET_AVAILABLE_RECIPES_FETCHING_STATUS, true)
       recipeApi.getAvailableRecipes(queryParams).then(resp => {
-        commit('SET_AVAILABLE_RECIPES', resp.data)
+        commit(MUTATIONS.SET_AVAILABLE_RECIPES, resp.data)
       })
     },
     fetchAlmostAvailableRecipes({ commit }, queryParams) {
-      commit('RESET_ALMOST_AVAILABLE_RECIPES')
-      commit('SET_ALMOST_AVAILABLE_RECIPES_FETCHING_STATUS', true)
+      commit(MUTATIONS.RESET_ALMOST_AVAILABLE_RECIPES)
+      commit(MUTATIONS.SET_ALMOST_AVAILABLE_RECIPES_FETCHING_STATUS, true)
       recipeApi.getAlmostAvailableRecipes(queryParams).then(resp => {
-        commit('SET_ALMOST_AVAILABLE_RECIPES', resp.data)
+        commit(MUTATIONS.SET_ALMOST_AVAILABLE_RECIPES, resp.data)
       })
     },
 
     fetchNextRecipes({ state, commit }, queryParams) {
       if (state.recipes.fetching) return
-      commit('SET_RECIPES_FETCHING_STATUS', true)
+      commit(MUTATIONS.SET_RECIPES_FETCHING_STATUS, true)
       recipeApi
         .getRecipes({
           ...queryParams,
           pageNumber: state.recipes.pagesTo + 1
         })
         .then(resp => {
-          commit('ADD_RECIPES', resp.data)
+          commit(MUTATIONS.ADD_RECIPES, resp.data)
         })
     },
     fetchNextAvailableRecipes({ state, commit }, queryParams) {
       if (state.availableRecipes.fetching) return
-      commit('SET_AVAILABLE_RECIPES_FETCHING_STATUS', true)
+      commit(MUTATIONS.SET_AVAILABLE_RECIPES_FETCHING_STATUS, true)
       recipeApi
         .getAvailableRecipes({
           ...queryParams,
           pageNumber: state.availableRecipes.pagesTo + 1
         })
         .then(resp => {
-          commit('ADD_AVAILABLE_RECIPES', resp.data)
+          commit(MUTATIONS.ADD_AVAILABLE_RECIPES, resp.data)
         })
     },
     fetchNextAlmostAvailableRecipes({ state, commit }, queryParams) {
       if (state.almostAvailableRecipes.fetching) return
-      commit('SET_ALMOST_AVAILABLE_RECIPES_FETCHING_STATUS', true)
+      commit(MUTATIONS.SET_ALMOST_AVAILABLE_RECIPES_FETCHING_STATUS, true)
       recipeApi
         .getAlmostAvailableRecipes({
           ...queryParams,
           pageNumber: state.almostAvailableRecipes.pagesTo + 1
         })
         .then(resp => {
-          commit('ADD_ALMOST_AVAILABLE_RECIPES', resp.data)
+          commit(MUTATIONS.ADD_ALMOST_AVAILABLE_RECIPES, resp.data)
         })
     },
 
@@ -178,7 +204,7 @@ export default {
             .then(resp => {
               let recipe = resp.data.recipe
               recipe.details = resp.data.details
-              commit('ADD_DETAILED_RECIPE', recipe)
+              commit(MUTATIONS.ADD_DETAILED_RECIPE, recipe)
               resolve(recipe)
             })
             .catch(error => reject(error))
@@ -190,7 +216,7 @@ export default {
         recipeApi
           .addRecipeToFavourites(id)
           .then(() => {
-            commit('ADD_RECIPE_ID_TO_FAVOURITES', id)
+            commit(MUTATIONS.ADD_RECIPE_ID_TO_FAVOURITES, id)
             resolve()
           })
           .catch(error => reject(error))
@@ -201,11 +227,16 @@ export default {
         recipeApi
           .removeRecipeFromFavourites(id)
           .then(() => {
-            commit('REMOVE_RECIPE_ID_FROM_FAVOURITES', id)
+            commit(MUTATIONS.REMOVE_RECIPE_ID_FROM_FAVOURITES, id)
             resolve()
           })
           .catch(error => reject(error))
       })
+    },
+    resetUserData({ commit }) {
+      commit(MUTATIONS.SET_FAVOURITE_RECIPES_IDS, [])
+      commit(MUTATIONS.RESET_ALMOST_AVAILABLE_RECIPES)
+      commit(MUTATIONS.RESET_AVAILABLE_RECIPES)
     }
   },
   getters: {

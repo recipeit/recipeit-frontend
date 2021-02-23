@@ -1,29 +1,19 @@
-import CLIENT from './apiClient'
+import apiClient from './apiClient'
 
 export default {
   getProductsFromMyKitchen() {
-    return CLIENT.apiClient.get(`/my-kitchen/products`, {
-      headers: CLIENT.authHeader()
-    })
+    return apiClient.get(`/my-kitchen/products`)
   },
   addProductsToMyKitchen(products) {
-    return CLIENT.apiClient.post(`/my-kitchen/products`, products, {
-      headers: CLIENT.authHeader()
-    })
+    return apiClient.post(`/my-kitchen/products`, products)
   },
   getProductFromMyKitchenById(id) {
-    return CLIENT.apiClient.get(`/my-kitchen/products/${id}`, {
-      headers: CLIENT.authHeader()
-    })
+    return apiClient.get(`/my-kitchen/products/${id}`)
   },
   updateProductFromMyKitchen(productId, product) {
-    return CLIENT.apiClient.put(`/my-kitchen/products/${productId}`, product, {
-      headers: CLIENT.authHeader()
-    })
+    return apiClient.put(`/my-kitchen/products/${productId}`, product)
   },
   removeProductFromMyKitchenById(id) {
-    return CLIENT.apiClient.delete(`/my-kitchen/products/${id}`, {
-      headers: CLIENT.authHeader()
-    })
+    return apiClient.delete(`/my-kitchen/products/${id}`)
   }
 }

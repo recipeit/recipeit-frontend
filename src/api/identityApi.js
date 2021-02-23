@@ -1,15 +1,18 @@
-import CLIENT from './apiClient'
+import apiClient from './apiClient'
 
 const route = 'identity'
 
 export default {
   register(userData) {
-    return CLIENT.apiClient.post(`/${route}/register`, userData)
+    return apiClient.post(`/${route}/register`, userData)
   },
   login(userData) {
-    return CLIENT.apiClient.post(`/${route}/login`, userData)
+    return apiClient.post(`/${route}/login`, userData)
   },
   refresh(tokenData) {
-    return CLIENT.apiClient.post(`/${route}/refresh`, tokenData)
+    return apiClient.post(`/${route}/refresh`, tokenData)
+  },
+  profile() {
+    return apiClient.get(`/${route}/profile`)
   }
 }

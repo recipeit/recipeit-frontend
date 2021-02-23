@@ -1,12 +1,16 @@
 import ingredientsApi from '@/api/ingredientsApi'
 
+export const MUTATIONS = {
+  SET_BASE_INGREDIENTS: 'SET_BASE_INGREDIENTS'
+}
+
 export default {
   namespaced: true,
   state: {
     baseProducts: null
   },
   mutations: {
-    SET_BASE_INGREDIENTS(state, baseProducts) {
+    [MUTATIONS.SET_BASE_INGREDIENTS](state, baseProducts) {
       state.baseProducts = baseProducts
     }
   },
@@ -15,7 +19,7 @@ export default {
       if (state.baseProducts) return
 
       ingredientsApi.getAllBaseProducts().then(resp => {
-        commit('SET_BASE_INGREDIENTS', resp.data)
+        commit(MUTATIONS.SET_BASE_INGREDIENTS, resp.data)
       })
     }
   }

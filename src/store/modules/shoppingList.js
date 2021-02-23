@@ -1,22 +1,29 @@
 import shoppingListApi from '@/api/shoppingListApi'
 
+export const MUTATIONS = {
+  SET_PRODUCTS: 'SET_PRODUCTS',
+  ADD_PRODUCT: 'ADD_PRODUCT',
+  UPDATE_PRODUCT_FROM_SHOPPING_LIST: 'UPDATE_PRODUCT_FROM_SHOPPING_LIST',
+  REMOVE_PRODUCT_FROM_SHOPPING_LIST: 'REMOVE_PRODUCT_FROM_SHOPPING_LIST'
+}
+
 export default {
   namespaced: true,
   state: {
     products: null
   },
   mutations: {
-    SET_PRODUCTS(state, products) {
+    [MUTATIONS.SET_PRODUCTS](state, products) {
       state.products = products
     },
-    ADD_PRODUCT(state, product) {
+    [MUTATIONS.ADD_PRODUCT](state, product) {
       if (!state.products) {
         state.products = [product]
       } else {
         state.products.push(product)
       }
     },
-    UPDATE_PRODUCT_FROM_SHOPPING_LIST(state, product) {
+    [MUTATIONS.UPDATE_PRODUCT_FROM_SHOPPING_LIST](state, product) {
       var productIndex = state.products.findIndex(p => p.id === product.id)
       if (productIndex >= 0) {
         for (var prop in product) {
@@ -26,7 +33,7 @@ export default {
         }
       }
     },
-    REMOVE_PRODUCT_FROM_SHOPPING_LIST(state, id) {
+    [MUTATIONS.REMOVE_PRODUCT_FROM_SHOPPING_LIST](state, id) {
       var productIndex = state.products.findIndex(p => p.id === id)
       if (productIndex >= 0) {
         state.products.splice(productIndex, 1)
@@ -37,7 +44,7 @@ export default {
     fetchProducts({ state, commit }) {
       if (state.products !== null) return
       shoppingListApi.getProductsFromShoppingList().then(resp => {
-        commit('SET_PRODUCTS', resp.data)
+        commit(MUTATIONS.SET_PRODUCTS, resp.data)
       })
     },
     addProduct({ commit }, product) {
@@ -45,7 +52,7 @@ export default {
         shoppingListApi
           .addProductToShoppingList(product)
           .then(resp => {
-            commit('ADD_PRODUCT', resp.data)
+            commit(MUTATIONS.ADD_PRODUCT, resp.data)
             resolve()
           })
           .catch(error => reject(error))
@@ -56,7 +63,7 @@ export default {
         shoppingListApi
           .updateProductFromShoppingList(product)
           .then(resp => {
-            commit('UPDATE_PRODUCT_FROM_SHOPPING_LIST', resp.data)
+            commit(MUTATIONS.UPDATE_PRODUCT_FROM_SHOPPING_LIST, resp.data)
             resolve()
           })
           .catch(error => reject(error))
@@ -67,7 +74,7 @@ export default {
         shoppingListApi
           .removeProductFromShoppingListById(id)
           .then(() => {
-            commit('REMOVE_PRODUCT_FROM_SHOPPING_LIST', id)
+            commit(MUTATIONS.REMOVE_PRODUCT_FROM_SHOPPING_LIST, id)
             resolve()
           })
           .catch(error => reject(error))
@@ -78,7 +85,7 @@ export default {
         shoppingListApi
           .purchaseProduct(productId)
           .then(() => {
-            commit('REMOVE_PRODUCT_FROM_SHOPPING_LIST', productId)
+            commit(MUTATIONS.REMOVE_PRODUCT_FROM_SHOPPING_LIST, productId)
             resolve()
           })
           .catch(error => reject(error))
@@ -89,11 +96,14 @@ export default {
         shoppingListApi
           .purchaseAllProducts()
           .then(() => {
-            commit('SET_PRODUCTS', [])
+            commit(MUTATIONS.SET_PRODUCTS, [])
             resolve()
           })
           .catch(error => reject(error))
       })
+    },
+    resetUserData({ commit }) {
+      commit(MUTATIONS.SET_PRODUCTS, [])
     }
   }
 }
