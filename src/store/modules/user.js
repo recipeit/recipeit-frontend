@@ -19,12 +19,15 @@ export default {
     setUserProfile({ commit }, profile) {
       commit(MUTATIONS.SET_USER_PROFILE, profile)
     },
-    fetchUserProfile({ commit }) {
+    fetchUserProfile({ commit, dispatch }, { getInitUserData }) {
       identityApi
         .profile()
         .then(response => {
           const { userProfile } = response.data
           commit(MUTATIONS.SET_USER_PROFILE, userProfile)
+          if (getInitUserData) {
+            dispatch('getInitUserData')
+          }
         })
         .catch(error => {
           console.error(error)
@@ -42,7 +45,7 @@ export default {
           console.error(error)
         })
     },
-    login({ commit }, { email, password }) {
+    login({ commit, dispatch }, { email, password }) {
       identityApi
         .login({ email, password })
         .then(response => {
@@ -50,6 +53,7 @@ export default {
           localStorage.setItem(STORAGE_TOKEN, token)
           localStorage.setItem(STORAGE_REFRESH_TOKEN, refreshToken)
           commit(MUTATIONS.SET_USER_PROFILE, userProfile)
+          dispatch('getInitUserData')
         })
         .catch(error => {
           console.error(error)
@@ -83,6 +87,10 @@ export default {
       dispatch('shoppingList/resetUserData', {}, { root: true })
       dispatch('myKitchen/resetUserData', {}, { root: true })
       dispatch('recipes/resetUserData', {}, { root: true })
+    },
+    getInitUserData({ dispatch }) {
+      console
+      dispatch('recipes/fetchFavouriteRecipesIds', {}, { root: true })
     }
   },
   getters: {

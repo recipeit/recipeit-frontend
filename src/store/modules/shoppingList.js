@@ -103,7 +103,7 @@ export default {
       })
     },
     resetUserData({ commit }) {
-      commit(MUTATIONS.SET_PRODUCTS, [])
+      commit(MUTATIONS.SET_PRODUCTS, null)
     }
   }
 }

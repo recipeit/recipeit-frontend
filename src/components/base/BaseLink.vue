@@ -38,9 +38,6 @@ export default {
   padding: 0;
   background-color: transparent;
   border: none;
-  font-family: inherit;
-  font-size: inherit;
-  font-weight: inherit;
 
   &:hover,
   &:focus {

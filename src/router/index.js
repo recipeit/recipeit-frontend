@@ -42,6 +42,34 @@ const routes = [
     path: '/shopping-list',
     name: 'shopping-list',
     component: () => import(/* webpackChunkName: "shopping-list" */ '@/views/ShoppingList.vue')
+  },
+  {
+    path: '/account',
+    name: 'account',
+    component: () => import(/* webpackChunkName: "account" */ '@/views/Account.vue')
+  },
+  {
+    path: '/help',
+    name: 'help',
+    component: () => import(/* webpackChunkName: "help" */ '@/views/Help.vue')
+  },
+  {
+    path: '/auth',
+    name: 'auth',
+    component: () => import(/* webpackChunkName: "auth" */ '@/views/Auth.vue'),
+    children: [
+      {
+        path: '',
+        alias: 'login',
+        name: 'login',
+        component: () => import(/* webpackChunkName: "auth" */ '@/views/auth/Login.vue')
+      },
+      {
+        path: 'register',
+        name: 'register',
+        component: () => import(/* webpackChunkName: "auth" */ '@/views/auth/Register.vue')
+      }
+    ]
   }
 ]
 

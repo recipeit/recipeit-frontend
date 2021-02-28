@@ -20,13 +20,14 @@ export default {
     NavigationBar
   },
   created() {
-    this.$store.dispatch('user/fetchUserProfile')
-    this.$store.dispatch('recipes/fetchFavouriteRecipesIds')
+    this.$store.dispatch('user/fetchUserProfile', { getInitUserData: true })
   }
 }
 </script>
 
 <style lang="scss">
+@import './styles/rendered';
+
 .layout {
   max-width: 460px;
   box-sizing: border-box;

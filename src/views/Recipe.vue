@@ -6,9 +6,21 @@
           <BaseLink class="recipe__image-container__button" :href="href" @click="back" tag="button">
             <BaseIcon icon="arrowRight" weight="regular" />
           </BaseLink>
-          <BaseLink class="recipe__image-container__button" :href="href" @click="back" tag="button">
-            <BaseIcon icon="arrowRight" weight="regular" />
-          </BaseLink>
+          <BaseMenu>
+            <template v-slot:toggle>
+              <BaseButton size="small" class="recipe__image-container__button">
+                <BaseIcon icon="arrowRight" weight="regular" />
+              </BaseButton>
+            </template>
+            <template v-slot:dropdown>
+              <BaseMenuList>
+                <BaseMenuLink>Ukryj przepis</BaseMenuLink>
+                <BaseMenuLink>Ukryj ten blog</BaseMenuLink>
+                <BaseMenuSeparator></BaseMenuSeparator>
+                <BaseMenuLink>Skopiuj link do przepisu</BaseMenuLink>
+              </BaseMenuList>
+            </template>
+          </BaseMenu>
         </div>
         <img ref="parallaxImage" class="recipe__main-image" :src="recipe.mainImageUrl" alt="" />
       </div>
@@ -194,6 +206,15 @@ export default {
   }
 }
 
+.header-dropdown {
+  white-space: nowrap;
+  margin: 8px 0;
+
+  li {
+    padding: 8px 16px;
+  }
+}
+
 .recipe {
   font-size: 0.875rem;
   line-height: 1.5;
@@ -217,7 +238,8 @@ export default {
       font-size: 1.5rem;
       padding: 0.5rem;
       // background: rgba(#fff, 0.75);
-      background-color: #fff;
+      background-color: rgba(#222, 0.75);
+      color: #fff;
       // backdrop-filter: blur(8px);
       border-radius: 50px;
       line-height: 0;

@@ -1,6 +1,7 @@
 <template>
   <div class="layout__page__content">
-    <h1>{{ $t('myKitchen.title') }}</h1>
+    <PageHeader :title="$t('myKitchen.title')"></PageHeader>
+
     <ul class="product-list">
       <li class="product-list__item" v-for="product in products" :key="product.id">
         <KitchenProduct :product="product" />
@@ -34,18 +35,20 @@ import { markRaw } from 'vue'
 import { mapState } from 'vuex'
 import KitchenProduct from '@/components/KitchenProduct'
 import NewKitchenProductModal from '@/components/modals/NewKitchenProductModal'
+import PageHeader from '@/components/PageHeader.vue'
 
 export default {
   name: 'MyKitchen',
   components: {
-    KitchenProduct
+    KitchenProduct,
+    PageHeader
   },
   computed: {
     ...mapState({
       products: state => state.myKitchen.products
     })
   },
-  created() {
+  beforeMount() {
     this.$store.dispatch('ingredients/fetchBaseProducts')
     this.$store.dispatch('myKitchen/fetchProducts')
   },

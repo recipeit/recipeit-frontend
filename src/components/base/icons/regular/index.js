@@ -12,6 +12,7 @@ import { heartFull } from './heartFull'
 import { home } from './home'
 import { minus } from './minus'
 import { plus } from './plus'
+import { search } from './search'
 import { sort } from './sort'
 import { star } from './star'
 import { stopwatch } from './stopwatch'
@@ -33,6 +34,7 @@ export {
   home,
   minus,
   plus,
+  search,
   sort,
   star,
   stopwatch,

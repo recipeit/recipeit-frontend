@@ -17,6 +17,7 @@ export const unitTranslations = {
   'Volume.Milliliter': 'ml',
   'Volume.Tablespoon': 'łyżka',
   'Volume.Teaspoon': 'łyżeczka',
+  'Volume.Cup': 'szklanka',
   'Whole.Piece': 'szt.',
   'Whole.Grain': 'ziarna',
   'Whole.Handful': 'garść'

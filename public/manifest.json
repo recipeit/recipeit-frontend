@@ -3,5 +3,18 @@
   "short_name": "RecipeIt",
   "start_url": ".",
   "theme_color": "#000",
-  "background_color": "#000"
+  "background_color": "#000",
+  "display": "standalone",
+  "icons": [
+    {
+      "src": "/img/icons/favicon-192x192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/img/icons/favicon-512x512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ]
 }

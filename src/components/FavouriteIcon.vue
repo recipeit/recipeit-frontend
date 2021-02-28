@@ -26,7 +26,7 @@ export default {
   cursor: pointer;
 
   &--active {
-    color: $red;
+    color: $red !important;
   }
 }
 </style>

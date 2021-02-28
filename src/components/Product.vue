@@ -3,7 +3,7 @@
     <div class="product__info">
       <div class="product__name">{{ name }}</div>
       <div class="product__amount">{{ product.amount }}</div>
-      <div class="product__unit">{{ unitTranslations[product.unit] ?? product.unit }}</div>
+      <div class="product__unit">{{ $tc(`unitsShort.${product.unit}`, product.amount) }}</div>
     </div>
     <div class="product__actions">
       <slot />

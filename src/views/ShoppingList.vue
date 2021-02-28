@@ -1,6 +1,7 @@
 <template>
   <div class="layout__page__content">
-    <h1>{{ $t('shoppingList.title') }}</h1>
+    <PageHeader :title="$t('shoppingList.title')"></PageHeader>
+
     <ul class="product-list">
       <li class="product-list__item" v-for="product in products" :key="product.id">
         <ShoppingListProduct :product="product" @purchase="purchase(product.id)" />
@@ -24,11 +25,13 @@ import { markRaw } from 'vue'
 import { mapState } from 'vuex'
 import ShoppingListProduct from '@/components/ShoppingListProduct'
 import Dialog from '@/components/modals/Dialog'
+import PageHeader from '@/components/PageHeader.vue'
 
 export default {
   name: 'ShoppingList',
   components: {
-    ShoppingListProduct
+    ShoppingListProduct,
+    PageHeader
   },
   methods: {
     purchase(id) {
@@ -59,7 +62,7 @@ export default {
       products: state => state.shoppingList.products
     })
   },
-  created() {
+  beforeMount() {
     this.$store.dispatch('shoppingList/fetchProducts')
   }
 }

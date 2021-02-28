@@ -55,7 +55,7 @@ export default {
       Other: ' ',
       Category: 'Kategoria',
       Diet: 'Dieta',
-      Allergens: 'Alergeny'
+      Allergens: 'Wyklucz alergeny'
     },
     recipeFilterOptions: {
       Other: {
@@ -90,21 +90,22 @@ export default {
       Cake: 'Ciasto',
       Snack: 'Przekąska'
     },
-    units: {
-      weight: {
-        gram: 'gram',
-        kilogram: 'kilogram'
+    unitsShort: {
+      Weight: {
+        Gram: 'g',
+        Kilogram: 'kg'
       },
-      volume: {
-        liter: 'litr',
-        milliliter: 'mililitr',
-        tablespoon: 'łyżka',
-        teaspoon: 'łyżeczka'
+      Volume: {
+        Liter: 'l',
+        Milliliter: 'ml',
+        Tablespoon: 'brak łyżek | łyżka | łyżki | łyżek',
+        Teaspoon: 'brak łyżeczek | łyżeczka | łyżeczki | łyżeczek',
+        Cup: 'brak szklanek | szklanka | szklanki | szklanek'
       },
-      whole: {
-        piece: 'sztuka',
-        grain: 'ziarno',
-        handful: 'garść'
+      Whole: {
+        Piece: 'szt.',
+        Grain: 'brak ziaren | ziarno | ziarna | ziaren',
+        Handful: 'brak garści | garść | garście | garści'
       }
     }
   },
@@ -122,7 +123,8 @@ export default {
     }
 
     const teen = choice > 10 && choice < 20
-    if (!teen && choice % 10 >= 2 && choice % 10 <= 4) {
+    // at first, there was ... % 10 >= 2, but there was problem with float numbers, eg. 1.5
+    if (!teen && choice % 10 > 1 && choice % 10 <= 4) {
       return 2
     }
 

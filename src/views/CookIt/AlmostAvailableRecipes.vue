@@ -1,6 +1,6 @@
 <template>
   <div class="layout__page__content">
-    <h1>Pełna lista</h1>
+    <PageHeader title="Pełna lista" :backButton="true" :search="true"></PageHeader>
     <div class="recipes-list-title">Te potrawy możesz przyrządzić po drobnych zakupach!</div>
     <GenericRecipesList :recipes="recipes" @load-next="loadNextRecipes" @reload="reloadRecipes"></GenericRecipesList>
   </div>
@@ -11,11 +11,13 @@ import { mapState } from 'vuex'
 import { fetchRecipesQueryParams } from '@/constants'
 import recipeApi from '@/api/recipeApi'
 import GenericRecipesList from '@/components/GenericRecipesList'
+import PageHeader from '@/components/PageHeader.vue'
 
 export default {
   name: 'AlmostAvailableRecipes',
   components: {
-    GenericRecipesList
+    GenericRecipesList,
+    PageHeader
   },
   data: () => ({
     getRecipesApiEndpoint: recipeApi.getRecipes

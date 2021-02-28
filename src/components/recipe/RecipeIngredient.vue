@@ -3,7 +3,7 @@
     {{ ingredient.name || ingredient.baseProduct?.name }}
     <template v-if="ingredient.amount > 0">
       <span class="ingredient__amount">{{ ingredient.amount }}</span>
-      <span class="ingredient__unit"> {{ translations[ingredient.unit] || ingredient.unit }}</span>
+      <span class="ingredient__unit"> {{ $tc(`unitsShort.${ingredient.unit}`, ingredient.amount) }}</span>
     </template>
     <div class="ingredient__action-container">
       <a v-if="loading" class="ingredient__action ingredient__action--loading">

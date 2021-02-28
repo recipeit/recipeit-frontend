@@ -22,12 +22,13 @@ export default {
   align-items: center;
 
   &__icon {
+    font-size: 16px;
     color: $yellow;
     margin-right: 4px;
   }
 
   &__value {
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 700;
   }
 }

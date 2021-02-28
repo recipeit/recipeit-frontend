@@ -1,9 +1,13 @@
 <template>
   <div class="layout__page__content">
     <div class="cook-it-layout">
-      <h1>{{ $t('cookIt.title') }}</h1>
-      <input v-model="searchValue" />
-      <button @click="search">Szukaj</button>
+      <PageHeader
+        class="cook-it-page__header"
+        v-model="searchValue"
+        :search="true"
+        :title="$t('cookIt.title')"
+        @search="forceSearch()"
+      ></PageHeader>
 
       <div>
         <GenericRecipesList
@@ -34,12 +38,14 @@
 import { mapState } from 'vuex'
 import { fetchRecipesQueryParams } from '@/constants'
 import GenericRecipesList from '@/components/GenericRecipesList'
+import PageHeader from '@/components/PageHeader.vue'
 
 export default {
-  components: { GenericRecipesList },
+  components: { GenericRecipesList, PageHeader },
   name: 'CookIt',
   data: () => ({
-    searchValue: null
+    searchValue: null,
+    searchTimeoutCallback: null
   }),
   computed: {
     ...mapState({
@@ -47,7 +53,7 @@ export default {
       almostAvailableRecipes: state => state.recipes.almostAvailableRecipes
     })
   },
-  created() {
+  beforeMount() {
     if (this.availableRecipes.items === null || this.almostAvailableRecipes.items === null) {
       this.fetchRecipes()
     }
@@ -63,6 +69,23 @@ export default {
       const queryParams = fetchRecipesQueryParams(orderMethod, filters, search)
       this.$store.dispatch('recipes/fetchAvailableRecipes', queryParams)
       this.$store.dispatch('recipes/fetchAlmostAvailableRecipes', queryParams)
+    },
+    forceSearch() {
+      if (this.searchTimeoutCallback) {
+        clearTimeout(this.searchTimeoutCallback)
+        this.searchTimeoutCallback = null
+      }
+      this.search()
+    }
+  },
+  watch: {
+    searchValue() {
+      if (this.searchTimeoutCallback) {
+        clearTimeout(this.searchTimeoutCallback)
+      }
+      this.searchTimeoutCallback = setTimeout(() => {
+        this.search()
+      }, 750)
     }
   }
 }
@@ -72,6 +95,12 @@ export default {
 .cook-it-layout {
   display: flex;
   flex-direction: column;
+}
+
+.cook-it-page {
+  &__header {
+    margin-bottom: 16px;
+  }
 }
 
 .recipes-list-title {

@@ -3,8 +3,8 @@ import axios from 'axios'
 import store from '@/store'
 
 // process.env.NODE_ENV === 'production'
-const baseURL = 'https://localhost:44388'
-// const baseURL = 'https://recipeit-backend20201105000045.azurewebsites.net'
+// const baseURL = 'https://localhost:44388'
+const baseURL = 'https://recipeit-backend20201105000045.azurewebsites.net'
 
 const apiClient = axios.create({
   baseURL,

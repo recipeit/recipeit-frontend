@@ -335,7 +335,7 @@ export default {
     position: absolute;
     left: 0;
     right: 0;
-    background: white;
+    background-color: white;
     box-shadow: 0 4px 32px rgba(0, 0, 0, 0.2);
     z-index: 1000;
     overflow: hidden;
@@ -345,6 +345,7 @@ export default {
 
     &__list {
       margin: 8px 0;
+
       &__item {
         padding: 8px 16px;
         cursor: pointer;

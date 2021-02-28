@@ -118,13 +118,20 @@ export default {
     right: 0;
     margin: 8px;
     min-height: 2rem;
+    color: #fff;
+
+    > *:first-child {
+      padding-left: 10px;
+      padding-right: 12px;
+    }
 
     > * {
       // backdrop-filter: blur(8px) saturate(200%) brightness(150%);
       // backdrop-filter: blur(8px);
       padding: 7px 8px;
       border-radius: 50px;
-      background-color: rgba(#fff, 0.85);
+      background-color: rgba(#222, 0.75);
+      color: #fff;
     }
   }
 
