@@ -9,24 +9,14 @@
       <template v-slot:dropdown>
         <BaseMenuList>
           <template v-if="!isAuthenticated">
-            <router-link :to="{ name: 'login' }" v-slot="{ href, navigate }" custom>
-              <BaseMenuLink :href="href" @click="navigate">Zaloguj się</BaseMenuLink>
-            </router-link>
-            <router-link :to="{ name: 'register' }" v-slot="{ href, navigate }" custom>
-              <BaseMenuLink :href="href" @click="navigate">Utwórz konto</BaseMenuLink>
-            </router-link>
+            <BaseMenuRouterLink :to="{ name: 'login' }">Zaloguj się</BaseMenuRouterLink>
+            <BaseMenuRouterLink :to="{ name: 'register' }">Utwórz konto</BaseMenuRouterLink>
             <BaseMenuSeparator></BaseMenuSeparator>
-            <router-link :to="{ name: 'help' }" v-slot="{ href, navigate }" custom>
-              <BaseMenuLink :href="href" @click="navigate">Pomoc</BaseMenuLink>
-            </router-link>
+            <BaseMenuRouterLink :to="{ name: 'help' }">Pomoc</BaseMenuRouterLink>
           </template>
           <template v-else>
-            <router-link :to="{ name: 'account' }" v-slot="{ href, navigate }" custom>
-              <BaseMenuLink :href="href" @click="navigate">Moje konto</BaseMenuLink>
-            </router-link>
-            <router-link :to="{ name: 'help' }" v-slot="{ href, navigate }" custom>
-              <BaseMenuLink :href="href" @click="navigate">Pomoc</BaseMenuLink>
-            </router-link>
+            <BaseMenuRouterLink :to="{ name: 'account' }">Moje konto</BaseMenuRouterLink>
+            <BaseMenuRouterLink :to="{ name: 'help' }">Pomoc</BaseMenuRouterLink>
             <BaseMenuSeparator></BaseMenuSeparator>
             <BaseMenuLink color="red" @click="logout">Wyloguj się</BaseMenuLink>
           </template>
@@ -37,35 +27,13 @@
 </template>
 
 <script>
-import AuthModal from '@/components/modals/AuthModal'
 import { mapGetters } from 'vuex'
-import { markRaw } from 'vue'
 
 export default {
-  data: () => ({
-    userLogin: {
-      email: '',
-      password: ''
-    }
-  }),
   computed: {
     ...mapGetters({
       isAuthenticated: 'user/isAuthenticated'
     })
-  },
-  methods: {
-    login() {
-      this.$store.dispatch('user/login', this.userLogin)
-    },
-    logout() {
-      this.$store.dispatch('user/logout')
-    },
-    showLoginModal() {
-      this.$modal.show(markRaw(AuthModal), {}, {})
-    },
-    showRegisterModal() {
-      this.$modal.show(markRaw(AuthModal), {}, {})
-    }
   }
 }
 </script>

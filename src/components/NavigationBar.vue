@@ -76,7 +76,7 @@ export default {}
       transition: all 0.3s ease;
     }
 
-    &.router-link-active {
+    &.router-link-exact-active {
       color: $primary;
       // filter: drop-shadow(0 0 4px #fff);
 

@@ -48,8 +48,11 @@ apiClient.interceptors.response.use(
             }
             subscribers = []
           })
-          .catch(() => {
-            store.dispatch('user/logout')
+          .catch(error => {
+            // todo logout only when api error, not when there is no token
+            if (error) {
+              store.dispatch('user/logout')
+            }
           })
       }
 

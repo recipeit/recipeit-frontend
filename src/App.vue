@@ -1,23 +1,20 @@
 <template>
   <global-sheet-modal-container />
   <div class="layout">
-    <div class="layout__page">
-      <router-view v-slot="slotProps">
-        <transition name="page-component-fade" mode="out-in">
-          <component :is="slotProps.Component"></component>
-        </transition>
-      </router-view>
-    </div>
-    <NavigationBar />
+    <dashboard v-if="isAuthenticated !== undefined" />
   </div>
 </template>
 
 <script>
-import NavigationBar from '@/components/NavigationBar'
+import { mapGetters } from 'vuex'
+import Dashboard from './views/Dashboard'
 
 export default {
-  components: {
-    NavigationBar
+  components: { Dashboard },
+  computed: {
+    ...mapGetters({
+      isAuthenticated: 'user/isAuthenticated'
+    })
   },
   created() {
     this.$store.dispatch('user/fetchUserProfile', { getInitUserData: true })

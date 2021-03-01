@@ -1,5 +1,6 @@
 import identityApi from '@/api/identityApi'
 import { STORAGE_REFRESH_TOKEN, STORAGE_TOKEN } from '@/constants'
+import router from '@/router'
 
 export const MUTATIONS = {
   SET_USER_PROFILE: 'SET_USER_PROFILE'
@@ -8,7 +9,7 @@ export const MUTATIONS = {
 export default {
   namespaced: true,
   state: {
-    userProfile: null
+    userProfile: undefined
   },
   mutations: {
     [MUTATIONS.SET_USER_PROFILE](state, profile) {
@@ -40,6 +41,7 @@ export default {
           const { token, refreshToken } = response.data
           localStorage.setItem(STORAGE_TOKEN, token)
           localStorage.setItem(STORAGE_REFRESH_TOKEN, refreshToken)
+          router.push({ name: 'home' })
         })
         .catch(error => {
           console.error(error)
@@ -54,6 +56,7 @@ export default {
           localStorage.setItem(STORAGE_REFRESH_TOKEN, refreshToken)
           commit(MUTATIONS.SET_USER_PROFILE, userProfile)
           dispatch('getInitUserData')
+          router.push({ name: 'home' })
         })
         .catch(error => {
           console.error(error)
@@ -64,36 +67,43 @@ export default {
       const currentRefreshToken = localStorage.getItem(STORAGE_REFRESH_TOKEN)
 
       return new Promise((resolve, reject) => {
-        identityApi
-          .refresh({ token: currentToken, refreshToken: currentRefreshToken })
-          .then(response => {
-            const {
-              data: { token, refreshToken, userProfile }
-            } = response
-            localStorage.setItem(STORAGE_TOKEN, token)
-            localStorage.setItem(STORAGE_REFRESH_TOKEN, refreshToken)
-            commit(MUTATIONS.SET_USER_PROFILE, userProfile)
-            resolve(response)
-          })
-          .catch(error => {
-            reject(error)
-          })
+        if (!currentToken || !currentRefreshToken) {
+          reject()
+        } else {
+          identityApi
+            .refresh({ token: currentToken, refreshToken: currentRefreshToken })
+            .then(response => {
+              const {
+                data: { token, refreshToken, userProfile }
+              } = response
+              localStorage.setItem(STORAGE_TOKEN, token)
+              localStorage.setItem(STORAGE_REFRESH_TOKEN, refreshToken)
+              commit(MUTATIONS.SET_USER_PROFILE, userProfile)
+              resolve(response)
+            })
+            .catch(error => {
+              reject(error)
+            })
+        }
       })
     },
     logout({ commit, dispatch }) {
       localStorage.removeItem(STORAGE_TOKEN)
       localStorage.removeItem(STORAGE_REFRESH_TOKEN)
+
       commit(MUTATIONS.SET_USER_PROFILE, null)
+
+      router.push({ name: 'login' })
+
       dispatch('shoppingList/resetUserData', {}, { root: true })
       dispatch('myKitchen/resetUserData', {}, { root: true })
       dispatch('recipes/resetUserData', {}, { root: true })
     },
     getInitUserData({ dispatch }) {
-      console
       dispatch('recipes/fetchFavouriteRecipesIds', {}, { root: true })
     }
   },
   getters: {
-    isAuthenticated: state => state.userProfile !== null
+    isAuthenticated: state => state.userProfile !== null && state.userProfile !== undefined
   }
 }

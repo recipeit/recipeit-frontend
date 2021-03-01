@@ -35,10 +35,10 @@
             :searchable="true"
           >
             <template v-slot:label="{ option }">
-              {{ $t(`units.${option.toLowerCase()}`) }}
+              {{ $t(`unitsShort.${option}`) }}
             </template>
             <template v-slot:option="{ option }">
-              {{ $t(`units.${option.toLowerCase()}`) }}
+              {{ $t(`unitsShort.${option}`) }}
             </template>
           </BaseSelect>
         </div>

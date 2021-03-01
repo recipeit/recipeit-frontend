@@ -1,11 +1,28 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '@/views/Home.vue'
+import store from '@/store'
+
+const onlyAnonymousGuard = (to, from, next) => {
+  console.log('onlyAnonymousGuard')
+  if (!store.getters['user/isAuthenticated']) {
+    next()
+  } else {
+    next({ name: 'home' })
+  }
+}
+
+// const ifAuthenticated = (to, from, next) => {
+//   if (store.getters['user/isAuthenticated']) {
+//     next()
+//   } else {
+//     next({ name: 'auth' })
+//   }
+// }
 
 const routes = [
   {
     path: '/',
     name: 'home',
-    component: Home
+    component: () => import(/* webpackChunkName: "home" */ '@/views/Home.vue')
   },
   {
     path: '/recipe/:recipeId',
@@ -56,6 +73,7 @@ const routes = [
   {
     path: '/auth',
     name: 'auth',
+    beforeEnter: onlyAnonymousGuard,
     component: () => import(/* webpackChunkName: "auth" */ '@/views/Auth.vue'),
     children: [
       {
@@ -77,5 +95,10 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
 })
+
+// router.beforeEach((to, from, next) => {
+//   if (to.name !== 'Login' && !store.getters['user/isAuthenticated']) next({ name: 'Login' })
+//   else next()
+// })
 
 export default router
