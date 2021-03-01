@@ -2,9 +2,12 @@
   <div class="page-header-user">
     <BaseMenu :hideOnClick="isAuthenticated">
       <template v-slot:toggle="{ focused }">
-        <div :class="['page-header-user__avatar', { 'page-header-user__avatar--focused': focused }]">
+        <div v-if="isAuthenticated" :class="['page-header-user__avatar', { 'page-header-user__avatar--focused': focused }]">
           <img src="@/assets/avatar.jpg" alt="profile picture" />
         </div>
+        <BaseLink v-else color="text-primary" class="page-header-user__anonymous-avatar">
+          <BaseIcon icon="user" weight="semiBold"></BaseIcon>
+        </BaseLink>
       </template>
       <template v-slot:dropdown>
         <BaseMenuList>
@@ -68,6 +71,16 @@ export default {
       margin-top: 16px;
       width: 100%;
     }
+  }
+
+  &__anonymous-avatar {
+    width: $header-height;
+    height: $header-height;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    cursor: pointer;
   }
 }
 </style>
