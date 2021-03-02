@@ -21,7 +21,7 @@
             <BaseMenuRouterLink :to="{ name: 'account' }">Moje konto</BaseMenuRouterLink>
             <BaseMenuRouterLink :to="{ name: 'help' }">Pomoc</BaseMenuRouterLink>
             <BaseMenuSeparator></BaseMenuSeparator>
-            <BaseMenuLink color="red" @click="logout">Wyloguj się</BaseMenuLink>
+            <BaseMenuLink color="red" @click="logout()">Wyloguj się</BaseMenuLink>
           </template>
         </BaseMenuList>
       </template>
@@ -37,6 +37,11 @@ export default {
     ...mapGetters({
       isAuthenticated: 'user/isAuthenticated'
     })
+  },
+  methods: {
+    logout() {
+      this.$store.dispatch('user/logout')
+    }
   }
 }
 </script>
