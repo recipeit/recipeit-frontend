@@ -98,14 +98,32 @@ export default {
       Volume: {
         Liter: 'l',
         Milliliter: 'ml',
-        Tablespoon: 'brak łyżek | łyżka | łyżki | łyżek',
-        Teaspoon: 'brak łyżeczek | łyżeczka | łyżeczki | łyżeczek',
-        Cup: 'brak szklanek | szklanka | szklanki | szklanek'
+        Tablespoon: 'łyżek | łyżka | łyżki | łyżek',
+        Teaspoon: 'łyżeczek | łyżeczka | łyżeczki | łyżeczek',
+        Cup: 'szklanek | szklanka | szklanki | szklanek'
       },
       Whole: {
         Piece: 'szt.',
-        Grain: 'brak ziaren | ziarno | ziarna | ziaren',
-        Handful: 'brak garści | garść | garście | garści'
+        Grain: 'ziaren | ziarno | ziarna | ziaren',
+        Handful: 'garści | garść | garście | garści'
+      }
+    },
+    units: {
+      Weight: {
+        Gram: 'gram | gram | gramy | gram',
+        Kilogram: 'kilogramów | kilogram | kilogramy | kilogramów'
+      },
+      Volume: {
+        Liter: 'litrów | litr | litry | litrów',
+        Milliliter: 'mililitrów | mililitr | mililitry | mililitrów',
+        Tablespoon: 'łyżek | łyżka | łyżki | łyżek',
+        Teaspoon: 'łyżeczek | łyżeczka | łyżeczki | łyżeczek',
+        Cup: 'szklanek | szklanka | szklanki | szklanek'
+      },
+      Whole: {
+        Piece: 'sztuk | sztuka | sztuki | sztuk',
+        Grain: 'ziaren | ziarno | ziarna | ziaren',
+        Handful: 'garści | garść | garście | garści'
       }
     }
   },

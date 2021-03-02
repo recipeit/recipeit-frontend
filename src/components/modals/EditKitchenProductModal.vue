@@ -20,12 +20,8 @@
         <div class="form-row form-columns">
           <BaseInput class="amount-input" label="Ilość" type="text" v-model="newProduct.amount"></BaseInput>
           <BaseSelect placeholder="Jednostka" v-model="newProduct.unit" :options="units" :searchable="true">
-            <template v-slot:label="{ option }">
-              {{ $t(`unitsShort.${option}`) }}
-            </template>
-            <template v-slot:option="{ option }">
-              {{ $t(`unitsShort.${option}`) }}
-            </template>
+            <template v-slot:label="{ option }">{{ $tc(`units.${option}`, unitLabelAmount) }}</template>
+            <template v-slot:option="{ option }">{{ $tc(`units.${option}`, unitLabelAmount) }}</template>
           </BaseSelect>
         </div>
       </div>
@@ -53,7 +49,7 @@ export default {
       required: true
     }
   },
-  setup(props, { emit }) {
+  setup(props, component) {
     const store = useStore()
 
     const data = reactive({
@@ -63,9 +59,11 @@ export default {
       baseProducts: computed(() => store.state.ingredients.baseProducts)
     })
 
+    const unitLabelAmount = computed(() => parseFloat(data.newProduct.amount) || 2)
+
     function editProduct() {
       store.dispatch('myKitchen/editProductFromKitchen', { id: props.product.id, product: data.newProduct }).then(() => {
-        emit('close')
+        component.emit('close')
       })
     }
 
@@ -85,6 +83,7 @@ export default {
     return {
       units,
       ...toRefs(data),
+      unitLabelAmount,
       editProduct
     }
   }

@@ -20,12 +20,8 @@
         <div class="form-row form-columns">
           <BaseInput class="amount-input" label="Ilość" type="text" v-model="newProduct.amount"></BaseInput>
           <BaseSelect placeholder="Jednostka" v-model="newProduct.unit" :options="units" :searchable="true">
-            <template v-slot:label="{ option }">
-              {{ $t(`unitsShort.${option}`) }}
-            </template>
-            <template v-slot:option="{ option }">
-              {{ $t(`unitsShort.${option}`) }}
-            </template>
+            <template v-slot:label="{ option }">{{ $tc(`units.${option}`, unitLabelAmount) }}</template>
+            <template v-slot:option="{ option }">{{ $tc(`units.${option}`, unitLabelAmount) }}</template>
           </BaseSelect>
         </div>
       </div>
@@ -53,7 +49,10 @@ export default {
   computed: {
     ...mapState({
       baseProducts: state => state.ingredients.baseProducts
-    })
+    }),
+    unitLabelAmount() {
+      return parseFloat(this.newProduct.amount) || 2
+    }
   },
   methods: {
     emptyProduct() {

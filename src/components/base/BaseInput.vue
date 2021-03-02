@@ -27,7 +27,7 @@
 <script>
 export default {
   props: {
-    modelValue: String,
+    modelValue: [String, Number],
     errors: Array,
     placeholder: String,
     label: String,
