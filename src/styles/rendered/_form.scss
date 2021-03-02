@@ -1,0 +1,17 @@
+.form-row {
+  & + & {
+    margin-top: 16px;
+  }
+}
+
+.form-columns {
+  display: flex;
+
+  > * {
+    flex: 1;
+  }
+
+  > * + * {
+    margin-left: 1rem;
+  }
+}

@@ -1,7 +1,7 @@
 <template>
   <div
-    class="select"
-    :tabindex="searchable ? -1 : 1"
+    :class="['base-select', { 'base-select--focus': opened }]"
+    :tabindex="searchable ? -1 : 0"
     @focus="open()"
     @blur="searchable ? false : hide()"
     @keyup.esc.stop="hide()"
@@ -9,15 +9,15 @@
     @keydown.self.up.prevent="pointerBackward()"
     @keypress.enter.tab.stop.self="addPointerElement()"
   >
-    <div :class="['select__field', { 'select__field--selected': modelValue !== null }]">
-      <span :class="['select__field__placeholder', { 'select__field__placeholder--small': placeholderAsLabel }]">
+    <div :class="['base-select__field', { 'base-select__field--selected': modelValue !== null }]">
+      <span :class="['base-select__field__placeholder', { 'base-select__field__placeholder--small': placeholderAsLabel }]">
         {{ placeholder }}
       </span>
       <template v-if="searchable">
         <input
           v-show="opened"
           :value="search"
-          class="select__field__input"
+          class="base-select__field__input"
           ref="search"
           tabindex="1"
           @input="updateSearch($event.target.value)"
@@ -29,7 +29,7 @@
           @keypress.enter.prevent.stop.self="addPointerElement()"
         />
       </template>
-      <span v-if="showSelectedValue" class="select__field__value">
+      <span v-if="showSelectedValue" class="base-select__field__value">
         <slot name="label" :option="modelValue">
           {{ label ? modelValue[label] : modelValue }}
         </slot>
@@ -39,17 +39,17 @@
       <div
         v-show="opened"
         @mousedown.prevent
-        :class="['select__options', { 'select__options--above': isAbove }]"
+        :class="['base-select__options', { 'base-select__options--above': isAbove }]"
         :style="{ maxHeight: optimizedHeight + 'px' }"
       >
-        <ul class="select__options__list" v-if="visibleOptions && visibleOptions.length > 0">
+        <ul class="base-select__options__list" v-if="visibleOptions && visibleOptions.length > 0">
           <li
             v-for="(option, index) in visibleOptions"
             :key="option"
             :class="[
-              'select__options__list__item',
-              { 'select__options__list__item--selected': option === modelValue },
-              { 'select__options__list__item--highlight': index === pointer }
+              'base-select__options__list__item',
+              { 'base-select__options__list__item--selected': option === modelValue },
+              { 'base-select__options__list__item--highlight': index === pointer }
             ]"
             @mouseenter.self="pointerSet(index)"
             @click="selectOption(option)"
@@ -59,7 +59,7 @@
             </slot>
           </li>
         </ul>
-        <div v-else class="select__options__empty">
+        <div v-else class="base-select__options__empty">
           Brak pasujących elementów
         </div>
       </div>
@@ -72,7 +72,7 @@ export default {
   props: {
     searchable: {
       type: Boolean,
-      default: false
+      default: true
     },
     limit: {
       type: Number
@@ -266,7 +266,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.select {
+.base-select {
+  $root: &;
+
   position: relative;
 
   &__field {
@@ -274,7 +276,17 @@ export default {
     height: 48px;
     border-bottom: 2px solid $border;
     overflow: hidden;
+    font-size: 0.875rem;
     cursor: pointer;
+    @include transition((border-color));
+
+    &:hover {
+      border-color: darken($border, 20%);
+    }
+
+    #{ $root }--focus & {
+      border-color: $primary;
+    }
 
     &__placeholder {
       position: absolute;

@@ -5,35 +5,21 @@
     </BaseModalHeader>
     <BaseModalBody>
       <div>
-        <div class="basa-input base-input">
-          <input id="x" v-model="newProduct.name" type="text" />
-          <label for="x">Nazwa</label>
-        </div>
+        <BaseInput class="form-row" label="Nazwa" type="text" v-model="newProduct.name"></BaseInput>
 
         <BaseSelect
           placeholder="Gotowy produkt"
-          class="basa-input"
+          class="form-row"
           v-model="selectedBaseProduct"
           trackBy="id"
           label="name"
           :options="baseProducts"
           :searchable="true"
-        >
-        </BaseSelect>
+        ></BaseSelect>
 
-        <div class="he">
-          <div class="basa-input base-input" style="width: 128px">
-            <input v-model.number="newProduct.amount" type="text" />
-            <label for="x">Ilość</label>
-          </div>
-          <BaseSelect
-            style="flex: 1"
-            placeholder="Jednostka"
-            class="basa-input"
-            v-model="newProduct.unit"
-            :options="units"
-            :searchable="true"
-          >
+        <div class="form-row form-columns">
+          <BaseInput class="amount-input" label="Ilość" type="text" v-model="newProduct.amount"></BaseInput>
+          <BaseSelect placeholder="Jednostka" v-model="newProduct.unit" :options="units" :searchable="true">
             <template v-slot:label="{ option }">
               {{ $t(`unitsShort.${option}`) }}
             </template>
@@ -115,47 +101,8 @@ export default {
   }
 }
 
-.basa-input {
-  & + & {
-    margin-top: 16px;
-  }
-}
-
-.he {
-  display: flex;
-  margin-top: 16px;
-  // align-items: center;
-
-  .basa-input + .basa-input {
-    margin-top: 0;
-    margin-left: 16px;
-  }
-}
-
-.base-input {
-  position: relative;
-
-  label {
-    position: absolute;
-    display: flex;
-    top: 0;
-    // height: 100%;
-    align-items: center;
-    user-select: none;
-    font-size: 12px;
-    font-weight: bold;
-  }
-
-  input {
-    display: flex;
-    width: 100%;
-    border: none;
-    border-bottom: 2px solid $border;
-    height: 48px;
-    padding-top: 11px;
-    font-family: inherit;
-    font-weight: inherit;
-    font-size: 16px;
-  }
+.amount-input {
+  width: 128px;
+  flex: unset;
 }
 </style>
