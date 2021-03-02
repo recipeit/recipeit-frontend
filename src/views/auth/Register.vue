@@ -7,17 +7,10 @@
     <p>lub za pomocą adresu email</p>
 
     <form @submit.prevent="register()">
-      <div>
-        <input type="text" v-model="userData.email" placeholder="email" />
-      </div>
-      <div>
-        <input type="password" v-model="userData.password" placeholder="hasło" />
-      </div>
-      <div>
-        <input type="password" v-model="userData.confirmPassword" placeholder="potwierdź hasło" />
-      </div>
-
-      <BaseButton class="auth-page__content__submit" raised color="black" type="submit">Zarejestruj się</BaseButton>
+      <BaseInput class="form-row" label="Email" type="text" v-model="userData.email"></BaseInput>
+      <BaseInput class="form-row" label="Hasło" type="password" v-model="userData.password"></BaseInput>
+      <BaseInput class="form-row" label="Potwierdź hasło" type="password" v-model="userData.confirmPassword"></BaseInput>
+      <BaseButton class="form-row auth-page__content__submit" raised color="black" type="submit">Zarejestruj się</BaseButton>
     </form>
 
     <p>
@@ -52,3 +45,9 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+form {
+  margin-bottom: 24px;
+}
+</style>
