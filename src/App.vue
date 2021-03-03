@@ -16,6 +16,12 @@ export default {
       isAuthenticated: 'user/isAuthenticated'
     })
   },
+  beforeCreate() {
+    const currentTheme = localStorage.getItem('theme')
+    if (currentTheme) {
+      document.documentElement.setAttribute('theme', currentTheme)
+    }
+  },
   created() {
     this.$store.dispatch('user/fetchUserProfile', { getInitUserData: true })
   }
