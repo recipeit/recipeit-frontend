@@ -13,10 +13,13 @@
     <!-- <h5>Wygląd (dark|light|system)</h5> -->
     <div class="settings-row">
       <div class="settings-row__name">
-        Wygląd
+        {{ $t('theme') }}
       </div>
       <div class="settings-row__value settings-row__value--theme">
-        <BaseSelect :options="themes" :modelValue="selectedTheme" @update:modelValue="updateTheme($event)" :searchable="false"></BaseSelect>
+        <BaseSelect :options="themes" :modelValue="selectedTheme" @update:modelValue="updateTheme($event)" :searchable="false">
+          <template v-slot:label="{ option }">{{ $t(`themes.${option}`) }}</template>
+          <template v-slot:option="{ option }">{{ $t(`themes.${option}`) }}</template>
+        </BaseSelect>
       </div>
     </div>
 

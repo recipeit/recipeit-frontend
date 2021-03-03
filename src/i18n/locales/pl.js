@@ -125,6 +125,12 @@ export default {
         Grain: 'ziaren | ziarno | ziarna | ziaren',
         Handful: 'garści | garść | garście | garści'
       }
+    },
+    theme: 'Motyw',
+    themes: {
+      dark: 'ciemny',
+      light: 'jasny',
+      system: 'systemowy'
     }
   },
   pluralizationRules(choice, choicesLength) {

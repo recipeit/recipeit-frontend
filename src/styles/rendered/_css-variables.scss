@@ -26,13 +26,24 @@
 
 @each $theme, $map in $color-themes {
   @if $theme == light {
-    :root {
+    :root,
+    :root[theme='#{ $theme }'] {
       @each $key, $submap in $map {
         --color-#{ $key }: #{$submap};
       }
     }
   } @else {
     :root[theme='#{ $theme }'] {
+      @each $key, $submap in $map {
+        --color-#{ $key }: #{$submap};
+      }
+    }
+  }
+}
+
+:root[theme='system'] {
+  @each $theme, $map in $color-themes {
+    @media (prefers-color-scheme: $theme) {
       @each $key, $submap in $map {
         --color-#{ $key }: #{$submap};
       }
