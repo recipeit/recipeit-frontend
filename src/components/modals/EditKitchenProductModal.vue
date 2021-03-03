@@ -30,7 +30,7 @@
       <BaseButton class="submit-button" stroked @click="$emit('close')">
         Anuluj
       </BaseButton>
-      <BaseButton class="submit-button" raised color="black" @click="editProduct">
+      <BaseButton class="submit-button" raised color="contrast" @click="editProduct">
         {{ loading ? '...edytowanie' : 'Edytuj' }}
       </BaseButton>
     </BaseModalFooter>

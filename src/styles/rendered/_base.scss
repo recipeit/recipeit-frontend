@@ -6,9 +6,10 @@ html {
 }
 
 html {
-  background: var(--color-background);
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
   scrollbar-width: thin;
-  scrollbar-color: $border transparent;
+  scrollbar-color: var(--color-border) transparent;
 }
 
 body {
@@ -35,6 +36,11 @@ body {
     background-color: rgba($text-primary, 0.2);
   }
 }
+
+// * {
+//   transition: color $transition-base-duration $transition-base-timing-function,
+//     background-color $transition-base-duration $transition-base-timing-function;
+// }
 
 #app {
   font-family: 'Montserrat', Helvetica, Arial, sans-serif;

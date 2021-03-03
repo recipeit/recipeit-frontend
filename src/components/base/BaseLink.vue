@@ -33,7 +33,7 @@ export default {
 .link {
   @include transition(color);
   text-decoration: none;
-  color: $text-primary;
+  color: var(--color-text-primary);
   outline: 0;
   padding: 0;
   background-color: transparent;
@@ -41,7 +41,7 @@ export default {
 
   &:hover,
   &:focus {
-    color: $accent;
+    color: var(--color-accent);
   }
 
   &:active {
@@ -55,12 +55,12 @@ export default {
     }
 
     &:active {
-      color: $text-secondary;
+      color: var(--color-text-secondary);
     }
   }
 
   &--color-text-secondary {
-    color: $text-secondary;
+    color: var(--color-text-secondary);
 
     &:hover,
     &:focus {
@@ -73,7 +73,7 @@ export default {
   }
 
   &--color-accent {
-    color: $accent;
+    color: var(--color-accent);
 
     &:hover,
     &:focus {
@@ -86,7 +86,7 @@ export default {
   }
 
   &--color-primary {
-    color: $primary;
+    color: var(--color-primary);
 
     &:hover,
     &:focus {

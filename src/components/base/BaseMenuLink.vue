@@ -23,7 +23,7 @@ export default {
   @include transition((color, background-color));
 
   &:hover {
-    // background-color: $border;
+    // background-color: var(--color-border);
   }
 }
 </style>

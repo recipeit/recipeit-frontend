@@ -23,7 +23,7 @@ export default {
 
   &__icon {
     font-size: 16px;
-    color: $yellow;
+    color: var(--color-yellow);
     margin-right: 4px;
   }
 

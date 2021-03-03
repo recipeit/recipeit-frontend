@@ -22,7 +22,7 @@
     <div><BaseButton subtle color="warn">Dodaj produkt</BaseButton></div> -->
 
     <div class="floating-action-button-container">
-      <BaseButton raised color="black" @click="newProduct">
+      <BaseButton raised color="contrast" @click="newProduct">
         <BaseIcon class="floating-action-button__icon" icon="plus" weight="semiBold" />
         {{ $t('shared.addProduct') }}
       </BaseButton>

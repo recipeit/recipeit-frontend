@@ -46,7 +46,7 @@ export default {}
 
   &__item {
     font-size: 1.75rem;
-    color: $text-primary;
+    color: var(--color-text-primary);
     transition: color 0.3s ease;
     position: relative;
     line-height: 0;
@@ -77,11 +77,11 @@ export default {}
     }
 
     &.router-link-exact-active {
-      color: $primary;
+      color: var(--color-primary);
       // filter: drop-shadow(0 0 4px #fff);
 
       &:after {
-        background-color: $primary;
+        background-color: var(--color-primary);
         left: 0;
         right: 0;
       }

@@ -11,6 +11,8 @@
         </h1>
       </template>
     </PageHeader>
+    <button @click="theme('light')">light</button>
+    <button @click="theme('dark')">dark</button>
   </div>
 </template>
 
@@ -41,6 +43,22 @@ export default {
         { id: 2, name: 'Alabama' },
         { id: 3, name: 'Kalifornia' }
       ]
+    }
+  },
+  created() {
+    document.addEventListener('keydown', e => {
+      if (e.key == '1') {
+        this.theme('light')
+      }
+      if (e.key == '2') {
+        this.theme('dark')
+      }
+    })
+  },
+  methods: {
+    theme(theme) {
+      var rootElement = document.documentElement
+      rootElement.setAttribute('theme', theme)
     }
   }
 }

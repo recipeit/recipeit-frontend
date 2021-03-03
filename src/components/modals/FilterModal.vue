@@ -34,7 +34,7 @@
       <BaseButton class="submit-button" stroked color="white" @click="$emit('close')">
         {{ $t('filterModal.cancelButton') }}
       </BaseButton>
-      <BaseButton class="submit-button" raised color="black" @click="submit">
+      <BaseButton class="submit-button" raised color="contrast" @click="submit">
         {{ $t('filterModal.submitButton') }}
       </BaseButton>
     </BaseModalFooter>
@@ -101,7 +101,7 @@ export default {
     }
 
     &__name {
-      color: $text-secondary;
+      color: var(--color-text-secondary);
     }
 
     &__clear {

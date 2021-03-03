@@ -52,7 +52,7 @@ $checked-icon-margin-right: 0.5rem;
 $checked-icon-width: $checked-icon-size + $checked-icon-margin-right;
 
 .pill {
-  border: 1px solid $border;
+  border: 1px solid var(--color-border);
   border-radius: 48px;
   padding: 4px 16px;
   height: 40px;

@@ -52,7 +52,7 @@ export default {
     height: $header-height;
     width: $header-height;
     border-radius: $header-height;
-    background-color: $border;
+    background-color: var(--color-border);
     overflow: hidden;
     box-shadow: 0 0 0 transparent;
     cursor: pointer;

@@ -70,14 +70,14 @@ export default {
       top: 0;
       position: absolute;
       line-height: 46px;
-      color: $text-secondary;
+      color: var(--color-text-secondary);
       pointer-events: none;
       @include transition((color, line-height, font-weight, font-size));
 
       &.label-up {
         line-height: 12px;
         font-size: 12px;
-        color: $text-primary;
+        color: var(--color-text-primary);
         font-weight: bold;
       }
     }
@@ -86,13 +86,15 @@ export default {
       height: 48px;
       border: none;
       padding: 8px 0 0 0;
-      border-bottom: 2px solid $border;
+      border-bottom: 2px solid var(--color-border);
       outline: none;
+      color: inherit;
       font-size: inherit;
       font-family: inherit;
       font-weight: inherit;
       width: 100%;
       min-width: 0;
+      background: transparent;
       @include transition((border-color));
 
       &:hover {
@@ -100,7 +102,7 @@ export default {
       }
 
       #{ $root }--focus & {
-        border-color: $primary;
+        border-color: var(--color-primary);
       }
     }
   }

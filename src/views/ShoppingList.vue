@@ -12,7 +12,7 @@
     </BaseLink>
 
     <div class="floating-action-button-container">
-      <BaseButton raised color="black">
+      <BaseButton raised color="contrast">
         <BaseIcon class="floating-action-button__icon" icon="plus" weight="semiBold" />
         {{ $t('shared.addProduct') }}
       </BaseButton>

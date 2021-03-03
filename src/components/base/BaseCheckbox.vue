@@ -62,7 +62,7 @@ export default {
     font-size: 16px;
     margin: 3px 0;
     margin-right: 16px;
-    border: 2px solid $border;
+    border: 2px solid var(--color-border);
     color: transparent;
     border-radius: 4px;
     display: flex;
@@ -79,8 +79,8 @@ export default {
     }
 
     #{ $root }--checked & {
-      border-color: $primary;
-      color: $primary;
+      border-color: var(--color-primary);
+      color: var(--color-primary);
     }
 
     #{ $root }--checked:hover & {

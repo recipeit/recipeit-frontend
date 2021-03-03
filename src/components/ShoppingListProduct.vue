@@ -59,7 +59,7 @@ export default {
   height: 32px;
   border-radius: 48px;
   background-color: rgba($primary, 0.1);
-  color: $primary;
+  color: var(--color-primary);
   display: flex;
   align-items: center;
   justify-content: center;

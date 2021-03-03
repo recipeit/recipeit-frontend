@@ -97,7 +97,7 @@ export default {
 
   &__amount,
   &__unit {
-    color: $text-secondary;
+    color: var(--color-text-secondary);
   }
 
   &__action-container {
@@ -117,7 +117,7 @@ export default {
     justify-content: center;
 
     &--loading {
-      color: $text-secondary;
+      color: var(--color-text-secondary);
       background-color: rgba($text-secondary, 0.1);
     }
 
@@ -139,7 +139,7 @@ export default {
     }
 
     &--unavailable {
-      color: $accent;
+      color: var(--color-accent);
       background-color: rgba($blue, 0.1);
 
       &:hover {

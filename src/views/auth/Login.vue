@@ -9,7 +9,7 @@
     <form @submit.prevent="login()">
       <BaseInput class="form-row" label="Email" type="text" v-model="userData.email"></BaseInput>
       <BaseInput class="form-row" label="Hasło" type="password" v-model="userData.password"></BaseInput>
-      <BaseButton class="form-row auth-page__content__submit" raised color="black" type="submit">Zaloguj się</BaseButton>
+      <BaseButton class="form-row auth-page__content__submit" raised color="contrast" type="submit">Zaloguj się</BaseButton>
     </form>
 
     <p>

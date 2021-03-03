@@ -38,7 +38,7 @@ export default {
   line-height: 16px;
   font-weight: 500;
   border-radius: 48px;
-  border: 1px solid $border;
+  border: 1px solid var(--color-border);
   display: flex;
   max-width: 416px;
 
@@ -48,17 +48,17 @@ export default {
   }
 
   &__name {
-    color: $text-primary;
+    color: var(--color-text-primary);
   }
 
   &__amount {
     margin-left: 12px;
-    color: $text-secondary;
+    color: var(--color-text-secondary);
   }
 
   &__unit {
     margin-left: 0.25rem;
-    color: $text-secondary;
+    color: var(--color-text-secondary);
   }
 
   &__actions {

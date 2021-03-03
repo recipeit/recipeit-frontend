@@ -274,7 +274,7 @@ export default {
   &__field {
     position: relative;
     height: 48px;
-    border-bottom: 2px solid $border;
+    border-bottom: 2px solid var(--color-border);
     overflow: hidden;
     font-size: 0.875rem;
     cursor: pointer;
@@ -285,7 +285,7 @@ export default {
     }
 
     #{ $root }--focus & {
-      border-color: $primary;
+      border-color: var(--color-primary);
     }
 
     &__placeholder {
@@ -293,14 +293,14 @@ export default {
       height: 48px;
       display: flex;
       align-items: center;
-      color: $text-secondary;
+      color: var(--color-text-secondary);
       // transform-origin: top left;
       @include transition((height, font-size, color));
 
       &--small {
         height: 12px;
         font-size: 12px;
-        color: $text-primary;
+        color: var(--color-text-primary);
         font-weight: bold;
         // transform: scale(0.75);
       }
@@ -313,6 +313,7 @@ export default {
       align-items: center;
       // margin-top: 6px;
       border: none;
+      color: inherit;
       font-size: inherit;
       font-family: inherit;
       font-weight: inherit;
@@ -321,6 +322,7 @@ export default {
       width: 100%;
       box-sizing: border-box;
       outline: none;
+      background: transparent;
     }
 
     &__value {
@@ -337,7 +339,7 @@ export default {
     // &--selected &__placeholder {
     //   height: 12px;
     //   font-size: 12px;
-    //   color: $text-primary;
+    //   color: var(--color-text-primary);
     //   font-weight: bold;
     //   // transform: scale(0.75);
     // }
@@ -347,7 +349,7 @@ export default {
     position: absolute;
     left: 0;
     right: 0;
-    background-color: white;
+    background-color: var(--color-background-flyout);
     box-shadow: 0 4px 32px rgba(0, 0, 0, 0.2);
     z-index: 1000;
     overflow: hidden;
@@ -364,16 +366,16 @@ export default {
         @include transition((background-color));
 
         &--highlight {
-          // color: $primary;
+          // color: var(--color-primary);
           background-color: rgba($black, 0.05);
         }
 
         &--selected {
           font-weight: bold;
-          color: $primary;
+          color: var(--color-primary);
 
           &:hover {
-            // color: $primary;
+            // color: var(--color-primary);
             background-color: rgba($primary, 0.1);
           }
         }
@@ -392,7 +394,7 @@ export default {
 
     &__empty {
       padding: 16px;
-      color: $text-secondary;
+      color: var(--color-text-secondary);
     }
   }
 }

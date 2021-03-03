@@ -28,7 +28,7 @@
       <slot v-else name="empty-without-filters">
         <div class="recipes-list-block">
           Najpierw dodaj coś do swojej kuchni!
-          <BaseButton raised color="black">Przejdź do kuchni</BaseButton>
+          <BaseButton raised color="contrast">Przejdź do kuchni</BaseButton>
         </div>
       </slot>
     </template>
@@ -168,7 +168,7 @@ export default {
 
       &__icon {
         font-size: 20px;
-        color: $primary;
+        color: var(--color-primary);
         margin-right: 8px;
       }
 
@@ -180,7 +180,7 @@ export default {
         height: $size;
         margin-left: 0.6rem;
         background-color: rgba($primary, 0.2);
-        color: $primary;
+        color: var(--color-primary);
         border-radius: 48px;
         display: flex;
         align-items: center;
@@ -201,7 +201,7 @@ export default {
     font-weight: bold;
 
     &__total-count {
-      color: $text-secondary;
+      color: var(--color-text-secondary);
     }
 
     &__show-all {

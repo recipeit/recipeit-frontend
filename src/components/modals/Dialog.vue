@@ -8,7 +8,7 @@
       <BaseButton class="submit-button" stroked color="white" @click="secondaryClick">
         {{ secondaryText }}
       </BaseButton>
-      <BaseButton class="submit-button" raised color="black" @click="primaryClick">
+      <BaseButton class="submit-button" raised color="contrast" @click="primaryClick">
         {{ primaryText }}
       </BaseButton>
     </BaseModalFooter>

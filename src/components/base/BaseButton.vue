@@ -87,7 +87,7 @@ export default {
   align-items: center;
   justify-content: center;
   border: none;
-  color: $text-primary;
+  color: var(--color-text-primary);
   padding: 12px 32px;
   font-family: inherit;
   font-weight: 600;
@@ -110,11 +110,20 @@ export default {
         @include button-raised($value);
       }
     }
+
+    :root[theme='dark'] & {
+      @each $color, $value in $button-colors-dark {
+        &#{ $root }--#{ $color } {
+          @include button-raised($value);
+          box-shadow: none;
+        }
+      }
+    }
   }
 
   &#{ $root }--subtle {
     @include button-subtle($gray-light);
-    color: $text-primary;
+    color: var(--color-text-primary);
 
     @each $color, $value in $button-colors {
       &#{ $root }--#{ $color } {
@@ -124,9 +133,9 @@ export default {
   }
 
   &#{ $root }--stroked {
-    @include button-stroked($text-primary);
+    @include button-stroked(var(--color-text-primary));
     background-color: transparent;
-    border: 1px solid $border;
+    border: 1px solid var(--color-border);
 
     &:hover {
       border-color: darken($border, 15);

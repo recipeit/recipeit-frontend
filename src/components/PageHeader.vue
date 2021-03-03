@@ -129,7 +129,7 @@ export default {
 
   &__search {
     $margin-fix: ($header-height - $header-search-height) / 2;
-    // border: 1px solid $border;
+    // border: 1px solid var(--color-border);
     position: absolute;
     top: $margin-fix;
     left: $margin-fix;
@@ -141,10 +141,11 @@ export default {
     display: flex;
     align-items: center;
     line-height: 1rem;
+    background-color: var(--color-background-flyout);
     box-shadow: 0 24px 48px -8px rgba(0, 0, 0, 0.3);
 
     &__search-icon {
-      color: $text-secondary;
+      color: var(--color-text-secondary);
     }
 
     input {
@@ -152,12 +153,13 @@ export default {
       height: 100%;
       padding: 0 12px;
       flex: 1;
+      color: inherit;
       font-family: inherit;
       outline: none;
       background: transparent;
 
       &::placeholder {
-        color: $text-secondary;
+        color: var(--color-text-secondary);
       }
     }
   }

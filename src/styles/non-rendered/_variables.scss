@@ -35,7 +35,76 @@ $button-colors: (
   blue: $blue,
   green: $green,
   yellow: $yellow,
-  black: $black
+  contrast: $black
+);
+
+$button-colors-dark: (
+  primary: $primary,
+  accent: $accent,
+  warn: $red,
+  red: $red,
+  blue: $blue,
+  green: $green,
+  yellow: $yellow,
+  contrast: #8fa0ad
+);
+
+$light-colors: (
+  'black': #000,
+  'gray': #90abb9,
+  'gray-light': #e2e9ed,
+  'white': #fff,
+  'red': #ff4b4b,
+  'blue': #3b65f0,
+  'green': #54ad19,
+  'yellow': #ffb71d
+);
+
+$dark-colors: (
+  'black': #000,
+  'gray': #90abb9,
+  'gray-light': #e2e9ed,
+  'white': #fff,
+  'red': #ff4b4b,
+  'blue': #587df3,
+  'green': #8dcf60,
+  'yellow': #ffb71d
+);
+
+// $border: #3c4b57;
+// $background: #272c30;
+// $text-primary: #6b8397;
+// $text-secondary: #4c5a66;
+
+$color-themes: (
+  light: (
+    primary: #{map-get($light-colors, 'green')},
+    accent: #{map-get($light-colors, 'blue')},
+    background: #{map-get($light-colors, 'white')},
+    background-flyout: #{map-get($light-colors, 'white')},
+    background-rgb: #{toRGB(map-get($light-colors, 'white'))},
+    border: #{map-get($light-colors, 'gray-light')},
+    text-primary: #{map-get($light-colors, 'black')},
+    text-secondary: #{map-get($light-colors, 'gray')},
+    green: #{map-get($light-colors, 'green')},
+    blue: #{map-get($light-colors, 'blue')},
+    yellow: #{map-get($light-colors, 'yellow')},
+    red: #{map-get($light-colors, 'red')}
+  ),
+  dark: (
+    primary: #{map-get($dark-colors, 'green')},
+    accent: #{map-get($dark-colors, 'blue')},
+    background: darken(#272c30, 5),
+    background-flyout: #272c30,
+    background-rgb: #{toRGB(darken(#272c30, 5))},
+    border: #343d44,
+    text-primary: #8fa0ad,
+    text-secondary: #556674,
+    green: #{map-get($dark-colors, 'green')},
+    blue: #{map-get($dark-colors, 'blue')},
+    yellow: #{map-get($dark-colors, 'yellow')},
+    red: #{map-get($dark-colors, 'red')}
+  )
 );
 
 $transition-base-duration: 0.3s;

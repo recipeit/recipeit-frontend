@@ -79,8 +79,8 @@
             </BaseCheckbox>
           </div>
         </div>
-        <BaseButton class="update-button" stroked color="black">Zjedzone! Zaaktualizuj kuchnię</BaseButton>
-        <BaseButton class="plan-button" raised color="black">
+        <BaseButton class="update-button" stroked color="contrast">Zjedzone! Zaaktualizuj kuchnię</BaseButton>
+        <BaseButton class="plan-button" raised color="contrast">
           <BaseIcon class="plan-button__icon" icon="clock" /> Zaplanuj na później
         </BaseButton>
       </div>
@@ -260,7 +260,7 @@ export default {
     margin-top: -32px;
     // z-index: 1;
     position: relative;
-    background-color: #fff;
+    background-color: var(--color-background);
     border-radius: 32px 32px 0 0;
     box-shadow: 0 0 32px rgba(0, 0, 0, 0.1);
     padding: 32px;
@@ -271,7 +271,7 @@ export default {
       height: 4px;
       width: 48px;
       border-radius: 8px;
-      background-color: $border;
+      background-color: var(--color-border);
       top: 12px;
       left: 50%;
       transform: translateX(-50%);
@@ -343,7 +343,7 @@ export default {
       @include transition((color, text-decoration));
 
       &--finished {
-        color: $text-secondary;
+        color: var(--color-text-secondary);
         text-decoration: line-through;
       }
 
@@ -355,7 +355,7 @@ export default {
 
   &__author {
     margin-top: 4px;
-    color: $text-secondary;
+    color: var(--color-text-secondary);
 
     &__name {
       font-weight: 700;

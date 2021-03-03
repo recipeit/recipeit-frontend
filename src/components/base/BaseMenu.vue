@@ -98,11 +98,12 @@ export default {
     position: absolute;
     top: calc(100% + 12px);
     right: 0;
-    background-color: white;
+    background-color: var(--color-background-flyout);
     // padding: 12px 16px;
     box-shadow: 0 8px 32px -8px rgba(0, 0, 0, 0.2);
     border-radius: 16px;
     border-top-right-radius: 8px;
+
     z-index: 1000;
     overflow: hidden;
   }
