@@ -35,3 +35,35 @@
 
   @return $r + "," + $g + "," + $b;
 }
+
+@function colorPalette($middleValue) {
+  $map: (
+    '50':  #{adjust-color($middleValue, $lightness: 45%)},
+    '100': #{adjust-color($middleValue, $lightness: 40%)},
+    '200': #{adjust-color($middleValue, $lightness: 30%)},
+    '300': #{adjust-color($middleValue, $lightness: 20%)},
+    '400': #{adjust-color($middleValue, $lightness: 10%)},
+    '500': #{$middleValue},
+    '600': #{adjust-color($middleValue, $lightness: -10%)},
+    '700': #{adjust-color($middleValue, $lightness: -20%)},
+    '800': #{adjust-color($middleValue, $lightness: -30%)},
+    '900': #{adjust-color($middleValue, $lightness: -40%)}
+  );
+  @return $map;
+}
+
+@function colorPalette2($value) {
+  $map: (
+    '50':  #{change-color($value, $lightness: 95%)},
+    '100': #{change-color($value, $lightness: 90%)},
+    '200': #{change-color($value, $lightness: 80%)},
+    '300': #{change-color($value, $lightness: 70%)},
+    '400': #{change-color($value, $lightness: 60%)},
+    '500': #{change-color($value, $lightness: 50%)},
+    '600': #{change-color($value, $lightness: 40%)},
+    '700': #{change-color($value, $lightness: 30%)},
+    '800': #{change-color($value, $lightness: 20%)},
+    '900': #{change-color($value, $lightness: 10%)}
+  );
+  @return $map;
+}

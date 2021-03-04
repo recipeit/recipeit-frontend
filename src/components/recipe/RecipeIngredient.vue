@@ -117,33 +117,33 @@ export default {
     justify-content: center;
 
     &--loading {
-      color: var(--color-text-secondary);
-      background-color: rgba($text-secondary, 0.1);
+      color: var(--color-button-subtle-contrast-color);
+      background-color: var(--color-button-subtle-contrast-background-hover);
     }
 
     &--available {
-      color: $green;
+      color: var(--color-button-subtle-primary-color);
 
       &:hover {
-        background-color: rgba($green, 0.2);
+        background-color: var(--color-button-subtle-primary-background-hover);
       }
     }
 
     &--in-shopping-list {
-      color: $green;
-      background-color: rgba($green, 0.1);
+      color: var(--color-button-subtle-primary-color);
+      background-color: var(--color-button-subtle-primary-background);
 
       &:hover {
-        background-color: rgba($green, 0.2);
+        background-color: var(--color-button-subtle-primary-background-hover);
       }
     }
 
     &--unavailable {
-      color: var(--color-accent);
-      background-color: rgba($blue, 0.1);
+      color: var(--color-button-subtle-accent-color);
+      background-color: var(--color-button-subtle-accent-background);
 
       &:hover {
-        background-color: rgba($blue, 0.2);
+        background-color: var(--color-button-subtle-accent-background-hover);
       }
     }
 

@@ -1,5 +1,12 @@
 <template>
-  <div :class="['checkbox', { 'checkbox--checked': checked }]" @click="updateInput">
+  <div
+    :tabindex="tabindex"
+    :class="['checkbox', { 'checkbox--checked': checked, 'checkbox--focus': focused }]"
+    @click="updateInput()"
+    @focus="setFocus()"
+    @blur="setBlur()"
+    @keypress.enter.prevent.stop.self="updateInput()"
+  >
     <div class="checkbox__input">
       <BaseIcon icon="checkSmall" weight="bold" />
     </div>
@@ -14,12 +21,19 @@
 <script>
 export default {
   props: {
-    value: { type: [String, Number] },
+    value: [String, Number],
     modelValue: { default: '' },
     label: { type: String },
     trueValue: { default: true },
-    falseValue: { default: false }
+    falseValue: { default: false },
+    tabindex: {
+      type: Number,
+      default: 0
+    }
   },
+  data: () => ({
+    focused: false
+  }),
   computed: {
     checked() {
       if (this.modelValue instanceof Array) {
@@ -29,6 +43,14 @@ export default {
     }
   },
   methods: {
+    setFocus() {
+      if (this.focused) return
+      this.focused = true
+    },
+    setBlur() {
+      if (!this.focused) return
+      this.focused = false
+    },
     updateInput() {
       let checked = !this.checked
       if (this.modelValue instanceof Array) {
@@ -52,6 +74,7 @@ export default {
   $root: &;
 
   display: flex;
+  outline: none;
   cursor: pointer;
 
   &__input {
@@ -70,7 +93,8 @@ export default {
     justify-content: center;
     @include transition((border-color, color));
 
-    #{ $root }:hover & {
+    #{ $root }:hover &,
+    #{ $root }--focus & {
       border-color: var(--color-border-hover);
     }
 
@@ -83,7 +107,8 @@ export default {
       color: var(--color-primary);
     }
 
-    #{ $root }--checked:hover & {
+    #{ $root }--checked:hover &,
+    #{ $root }--checked#{ $root }--focus & {
       border-color: var(--color-primary-lighter);
       color: var(--color-primary-lighter);
     }

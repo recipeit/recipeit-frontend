@@ -40,7 +40,7 @@
           <BaseButton stroked size="small">
             <Rating :value="recipe.rating" />
           </BaseButton>
-          <BaseButton subtle color="blue" size="small" v-for="category in recipe.categoryKeys" :key="category">{{
+          <BaseButton subtle color="accent" size="small" v-for="category in recipe.categoryKeys" :key="category">{{
             $t(`recipeCategory.${category}`)
           }}</BaseButton>
         </div>

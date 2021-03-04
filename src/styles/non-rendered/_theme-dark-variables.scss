@@ -1,8 +1,16 @@
-$black: #000;
-$gray: #90abb9;
-$gray-light: #e2e9ed;
-$white: #fff;
-$red: #ff4b4b;
+@use './functions' as functions;
+
+$grayscale-min: #1c1f22;
+$grayscale-middle: #3f4d55;
+$grayscale-max: #aebfcc;
+
+$red: #ff6464;
 $blue: #587df3;
 $green: #8dcf60;
 $yellow: #ffb71d;
+
+$gray-palette: functions.colorPalette($grayscale-middle);
+$red-palette: functions.colorPalette2($red);
+$blue-palette: functions.colorPalette2($blue);
+$green-palette: functions.colorPalette2($green);
+$yellow-palette: functions.colorPalette2($yellow);

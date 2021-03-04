@@ -1,62 +1,26 @@
-// :root {
-//   --color-red: #{$red};
-//   --color-blue: #{$blue};
-//   --color-green: #{$green};
-//   --color-yellow: #{$yellow};
-
-//   --color-border: #{$gray-light};
-//   --color-background: #{$white};
-//   --color-background-rgb: #{toRGB($white)};
-//   --color-text-primary: #{$black};
-//   --color-text-secondary: #{$gray};
-// }
-
-// [theme='dark'] {
-//   $border: #3c4b57;
-//   $background: #272c30;
-//   $text-primary: #6b8397;
-//   $text-secondary: #4c5a66;
-
-//   --color-border: #{$border};
-//   --color-background: #{$background};
-//   --color-background-rgb: #{toRGB($background)};
-//   --color-text-primary: #{$text-primary};
-//   --color-text-secondary: #{$text-secondary};
-// }
+@mixin recc($prefix, $map) {
+  @each $key, $value in $map {
+    @if (type-of($value) == 'map') {
+      @include recc(#{$prefix}-#{$key}, $value);
+    } @else {
+      @if ($key == 'DEFAULT') {
+        #{ $prefix }: #{$value};
+      } @else {
+        #{ $prefix }-#{ $key }: #{$value};
+      }
+    }
+  }
+}
 
 @each $theme, $map in $color-themes {
   @if $theme == light {
     :root,
     :root[theme='#{ $theme }'] {
-      @each $key, $value in $map {
-        @if (type-of($value) == 'map') {
-          @each $subkey, $subvalue in $value {
-            @if ($subkey == 'DEFAULT') {
-              --color-#{ $key }: #{$subvalue};
-            } @else {
-              --color-#{ $key }-#{ $subkey }: #{$subvalue};
-            }
-          }
-        } @else {
-          --color-#{ $key }: #{$value};
-        }
-      }
+      @include recc('--color', $map);
     }
   } @else {
     :root[theme='#{ $theme }'] {
-      @each $key, $value in $map {
-        @if (type-of($value) == 'map') {
-          @each $subkey, $subvalue in $value {
-            @if ($subkey == 'DEFAULT') {
-              --color-#{ $key }: #{$subvalue};
-            } @else {
-              --color-#{ $key }-#{ $subkey }: #{$subvalue};
-            }
-          }
-        } @else {
-          --color-#{ $key }: #{$value};
-        }
-      }
+      @include recc('--color', $map);
     }
   }
 }
@@ -64,19 +28,7 @@
 :root[theme='system'] {
   @each $theme, $map in $color-themes {
     @media (prefers-color-scheme: $theme) {
-      @each $key, $value in $map {
-        @if (type-of($value) == 'map') {
-          @each $subkey, $subvalue in $value {
-            @if ($subkey == 'DEFAULT') {
-              --color-#{ $key }: #{$subvalue};
-            } @else {
-              --color-#{ $key }-#{ $subkey }: #{$subvalue};
-            }
-          }
-        } @else {
-          --color-#{ $key }: #{$value};
-        }
-      }
+      @include recc('--color', $map);
     }
   }
 }

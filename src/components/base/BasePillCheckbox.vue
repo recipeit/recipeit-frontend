@@ -64,37 +64,49 @@ $checked-icon-width: $checked-icon-size + $checked-icon-margin-right;
   overflow: hidden;
 
   &:not(&--checked):hover {
-    border-color: darken($border, 15%);
+    border-color: var(--color-border-hover);
+  }
+
+  &:not(&--checked):active {
+    border-color: var(--color-border-active);
   }
 
   &--checked {
     border-color: transparent;
-    background-color: rgba($checked-color, 0.1);
-    color: $checked-color;
+    background-color: var(--color-button-subtle-primary-background);
+    color: var(--color-button-subtle-primary-color);
 
     &:hover {
-      background-color: rgba($checked-color, 0.2);
+      background-color: var(--color-button-subtle-primary-background-hover);
+    }
+
+    &:active {
+      background-color: var(--color-button-subtle-primary-background-active);
     }
   }
 
   &--checked#{ & }--red {
-    background-color: rgba($checked-color--red, 0.1);
-    color: $checked-color--red;
+    background-color: var(--color-button-subtle-danger-background);
+    color: var(--color-button-subtle-danger-color);
 
     &:hover {
-      background-color: rgba($checked-color--red, 0.2);
+      background-color: var(--color-button-subtle-danger-background-hover);
+    }
+
+    &:active {
+      background-color: var(--color-button-subtle-danger-background-active);
     }
   }
 
   &__checked-icon {
     font-size: $checked-icon-size;
     width: $checked-icon-width;
-    color: $checked-color;
+    color: var(--color-button-subtle-primary-color);
     transition: all 0.2s ease;
   }
 
   &--red &__checked-icon {
-    color: $checked-color--red;
+    color: var(--color-button-subtle-danger-color);
   }
 
   &:not(&--checked) &__checked-icon {

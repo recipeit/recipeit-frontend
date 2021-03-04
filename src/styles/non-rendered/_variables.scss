@@ -41,20 +41,97 @@ $button-colors: (
   'contrast': $black
 );
 
-$button-colors-dark: (
-  'primary': $primary,
-  'accent': $accent,
-  'warn': $red,
-  'red': $red,
-  'blue': $blue,
-  'green': $green,
-  'yellow': $yellow,
-  'contrast': #8fa0ad
+@function buttonStrokedVariables($color) {
+  $map: (
+    'color': #{$color},
+    // 'color-hover': #{lighten($color, 10)},
+      // 'color-active': #{lighten($color, 20)}
+  );
+  @return $map;
+}
+
+@function buttonStrokedColorMap($color) {
+  $map: (
+    'color': var(--color-button-subtle-#{$color}-color),
+    //'color-hover': var(--color-button-subtle-#{$color}-color-hover),
+    //'color-active': var(--color-button-subtle-#{$color}-color-active)
+  );
+  @return $map;
+}
+
+$button-stroked-variables: (
+  'primary': buttonSubtleColorMap('primary'),
+  'accent': buttonSubtleColorMap('accent'),
+  'warning': buttonSubtleColorMap('warning'),
+  'danger': buttonSubtleColorMap('danger'),
+  'contrast': buttonSubtleColorMap('contrast')
 );
 
-// @mixin dupa($color) {
-//   ${$color}-darker:
-// }
+@function buttonSubtleVariables($background, $color: $background) {
+  $map: (
+    'background': #{rgba($background, 0.1)},
+    'background-hover': #{rgba($background, 0.15)},
+    'background-active': #{rgba($background, 0.2)},
+    'color': #{$color}
+  );
+  @return $map;
+}
+
+@function buttonSubtleColorMap($color) {
+  $map: (
+    'background': var(--color-button-subtle-#{$color}-background),
+    'background-hover': var(--color-button-subtle-#{$color}-background-hover),
+    'background-active': var(--color-button-subtle-#{$color}-background-active),
+    'color': var(--color-button-subtle-#{$color}-color)
+  );
+  @return $map;
+}
+
+$button-subtle-variables: (
+  'primary': buttonSubtleColorMap('primary'),
+  'accent': buttonSubtleColorMap('accent'),
+  'warning': buttonSubtleColorMap('warning'),
+  'danger': buttonSubtleColorMap('danger'),
+  'contrast': buttonSubtleColorMap('contrast')
+);
+
+@function buttonRaisedVariablesDark($background, $color: get-contrast-color($background)) {
+  $map: (
+    'background': #{$background},
+    'background-hover': #{lighten($background, 10%)},
+    'background-active': #{lighten($background, 20%)},
+    'color': #{$color}
+  );
+  @return $map;
+}
+
+@function buttonRaisedVariablesLight($background, $color) {
+  $map: (
+    'background': #{$background},
+    'background-hover': #{lighten($background, 10%)},
+    'background-active': #{lighten($background, 20%)},
+    'color': #{$color}
+  );
+  @return $map;
+}
+
+@function buttonRaisedColorMap($color) {
+  $map: (
+    'background': var(--color-button-raised-#{$color}-background),
+    'background-hover': var(--color-button-raised-#{$color}-background-hover),
+    'background-active': var(--color-button-raised-#{$color}-background-active),
+    'color': var(--color-button-raised-#{$color}-color)
+  );
+  @return $map;
+}
+
+$button-raised-variables: (
+  'primary': buttonRaisedColorMap('primary'),
+  'accent': buttonRaisedColorMap('accent'),
+  'warning': buttonRaisedColorMap('warning'),
+  'danger': buttonRaisedColorMap('danger'),
+  'contrast': buttonRaisedColorMap('contrast')
+);
 
 @function colorMap($value) {
   $map: (
@@ -84,7 +161,30 @@ $color-themes: (
     'green': colorMap(lightVariables.$green),
     'blue': colorMap(lightVariables.$blue),
     'yellow': colorMap(lightVariables.$yellow),
-    'red': colorMap(lightVariables.$red)
+    'red': colorMap(lightVariables.$red),
+    'button': (
+      'raised': (
+        'primary': buttonRaisedVariablesLight(lightVariables.$green, lightVariables.$white),
+        'accent': buttonRaisedVariablesDark(lightVariables.$blue, lightVariables.$white),
+        'warning': buttonRaisedVariablesDark(lightVariables.$yellow, lightVariables.$white),
+        'danger': buttonRaisedVariablesDark(lightVariables.$red, lightVariables.$white),
+        'contrast': buttonRaisedVariablesLight(lightVariables.$black, lightVariables.$white)
+      ),
+      'subtle': (
+        'primary': buttonSubtleVariables(lightVariables.$green),
+        'accent': buttonSubtleVariables(lightVariables.$blue),
+        'warning': buttonSubtleVariables(lightVariables.$yellow),
+        'danger': buttonSubtleVariables(lightVariables.$red),
+        'contrast': buttonSubtleVariables(lightVariables.$black)
+      ),
+      'stroked': (
+        'primary': buttonStrokedVariables(lightVariables.$green),
+        'accent': buttonStrokedVariables(lightVariables.$blue),
+        'warning': buttonStrokedVariables(lightVariables.$yellow),
+        'danger': buttonStrokedVariables(lightVariables.$red),
+        'contrast': buttonStrokedVariables(lightVariables.$black)
+      )
+    )
   ),
   dark: (
     'primary': colorMap(darkVariables.$green),
@@ -102,7 +202,30 @@ $color-themes: (
     'green': colorMap(darkVariables.$green),
     'blue': colorMap(darkVariables.$blue),
     'yellow': colorMap(darkVariables.$yellow),
-    'red': colorMap(darkVariables.$red)
+    'red': colorMap(darkVariables.$red),
+    'button': (
+      'raised': (
+        'primary': buttonRaisedVariablesDark(darkVariables.$green, darken(#272c30, 5)),
+        'accent': buttonRaisedVariablesDark(darkVariables.$blue, darken(#272c30, 5)),
+        'warning': buttonRaisedVariablesDark(darkVariables.$yellow, darken(#272c30, 5)),
+        'danger': buttonRaisedVariablesDark(darkVariables.$red, darken(#272c30, 5)),
+        'contrast': buttonRaisedVariablesDark(#8fa0ad, darken(#272c30, 5))
+      ),
+      'subtle': (
+        'primary': buttonSubtleVariables(darkVariables.$green),
+        'accent': buttonSubtleVariables(darkVariables.$blue),
+        'warning': buttonSubtleVariables(darkVariables.$yellow),
+        'danger': buttonSubtleVariables(darkVariables.$red),
+        'contrast': buttonSubtleVariables(#8fa0ad)
+      ),
+      'stroked': (
+        'primary': buttonStrokedVariables(darkVariables.$green),
+        'accent': buttonStrokedVariables(darkVariables.$blue),
+        'warning': buttonStrokedVariables(darkVariables.$yellow),
+        'danger': buttonStrokedVariables(darkVariables.$red),
+        'contrast': buttonStrokedVariables(#8fa0ad)
+      )
+    )
   )
 );
 

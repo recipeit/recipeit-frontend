@@ -22,11 +22,11 @@ export default {
 .favourite {
   font-size: 1em;
   line-height: 0;
-  color: rgba($text-primary, 0.35);
+  color: var(--color-text-secondary);
   cursor: pointer;
 
   &--active {
-    color: $red !important;
+    color: var(--color-red) !important;
   }
 }
 </style>

@@ -41,36 +41,45 @@ export default {
 </script>
 
 <style lang="scss">
-@mixin button-raised($background) {
+@mixin button-raised($colorsMap) {
+  $background: #{map-get($colorsMap, 'background')};
+  $background-hover: #{map-get($colorsMap, 'background-hover')};
+  $background-active: #{map-get($colorsMap, 'background-active')};
+  $color: #{map-get($colorsMap, 'color')};
+
   background-color: $background;
-  color: get-contrast-color($background);
-  box-shadow: 0 12px 32px -16px $background;
+  color: $color;
+  // box-shadow: 0 12px 32px -16px $background;
 
   &:hover {
     // box-shadow: 0 12px 32px -16px $background;
-    background-color: lighten($background, 10);
+    background-color: $background-hover;
     // transform: scale(1.05);
   }
 
   &:active {
     // box-shadow: 0 12px 32px -16px $background;
-    background-color: lighten($background, 20);
+    background-color: $background-active;
     // transform: scale(1.05);
   }
 }
 
-@mixin button-subtle($background) {
-  $base-background-opacity: subtle-button-background-opacity($background);
+@mixin button-subtle($colorsMap) {
+  // $base-background-opacity: subtle-button-background-opacity($background);
+  $background: #{map-get($colorsMap, 'background')};
+  $background-hover: #{map-get($colorsMap, 'background-hover')};
+  $background-active: #{map-get($colorsMap, 'background-active')};
+  $color: #{map-get($colorsMap, 'color')};
 
-  background-color: rgba($background, $base-background-opacity);
-  color: $background;
+  background-color: $background;
+  color: $color;
 
   &:hover {
-    background-color: rgba($background, $base-background-opacity + 0.05);
+    background-color: $background-hover;
   }
 
   &:active {
-    background-color: rgba($background, $base-background-opacity + 0.1);
+    background-color: $background-active;
   }
 }
 
@@ -103,29 +112,40 @@ export default {
   }
 
   &#{ $root }--raised {
-    @include button-raised($gray-light);
+    background-color: var(--color-button-contrast);
+    color: var(--color-button-contrast-text);
 
-    @each $color, $value in $button-colors {
+    &:hover {
+      background-color: var(--color-button-contrast-hover);
+    }
+
+    &:active {
+      background-color: var(--color-button-contrast-active);
+    }
+    // box-shadow: 0 12px 32px -16px $background;
+    // @include button-raised($gray-light);
+
+    @each $color, $value in $button-raised-variables {
       &#{ $root }--#{ $color } {
         @include button-raised($value);
       }
     }
 
-    :root[theme='dark'] & {
-      @each $color, $value in $button-colors-dark {
-        &#{ $root }--#{ $color } {
-          @include button-raised($value);
-          box-shadow: none;
-        }
-      }
-    }
+    // :root[theme='dark'] & {
+    //   @each $color, $value in $button-colors-dark {
+    //     &#{ $root }--#{ $color } {
+    //       @include button-raised($value);
+    //       box-shadow: none;
+    //     }
+    //   }
+    // }
   }
 
   &#{ $root }--subtle {
-    @include button-subtle($gray-light);
+    // @include button-subtle($gray-light);
     color: var(--color-text-primary);
 
-    @each $color, $value in $button-colors {
+    @each $color, $value in $button-subtle-variables {
       &#{ $root }--#{ $color } {
         @include button-subtle($value);
       }
@@ -145,7 +165,7 @@ export default {
       border-color: var(--color-border-active);
     }
 
-    @each $color, $value in $button-colors {
+    @each $color, $value in $button-stroked-variables {
       &#{ $root }--#{ $color } {
         @include button-stroked($value);
       }
