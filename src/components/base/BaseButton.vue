@@ -138,11 +138,11 @@ export default {
     border: 1px solid var(--color-border);
 
     &:hover {
-      border-color: darken($border, 15);
+      border-color: var(--color-border-hover);
     }
 
     &:active {
-      border-color: darken($border, 30);
+      border-color: var(--color-border-active);
     }
 
     @each $color, $value in $button-colors {

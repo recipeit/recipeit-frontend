@@ -28,14 +28,34 @@
   @if $theme == light {
     :root,
     :root[theme='#{ $theme }'] {
-      @each $key, $submap in $map {
-        --color-#{ $key }: #{$submap};
+      @each $key, $value in $map {
+        @if (type-of($value) == 'map') {
+          @each $subkey, $subvalue in $value {
+            @if ($subkey == 'DEFAULT') {
+              --color-#{ $key }: #{$subvalue};
+            } @else {
+              --color-#{ $key }-#{ $subkey }: #{$subvalue};
+            }
+          }
+        } @else {
+          --color-#{ $key }: #{$value};
+        }
       }
     }
   } @else {
     :root[theme='#{ $theme }'] {
-      @each $key, $submap in $map {
-        --color-#{ $key }: #{$submap};
+      @each $key, $value in $map {
+        @if (type-of($value) == 'map') {
+          @each $subkey, $subvalue in $value {
+            @if ($subkey == 'DEFAULT') {
+              --color-#{ $key }: #{$subvalue};
+            } @else {
+              --color-#{ $key }-#{ $subkey }: #{$subvalue};
+            }
+          }
+        } @else {
+          --color-#{ $key }: #{$value};
+        }
       }
     }
   }
@@ -44,8 +64,18 @@
 :root[theme='system'] {
   @each $theme, $map in $color-themes {
     @media (prefers-color-scheme: $theme) {
-      @each $key, $submap in $map {
-        --color-#{ $key }: #{$submap};
+      @each $key, $value in $map {
+        @if (type-of($value) == 'map') {
+          @each $subkey, $subvalue in $value {
+            @if ($subkey == 'DEFAULT') {
+              --color-#{ $key }: #{$subvalue};
+            } @else {
+              --color-#{ $key }-#{ $subkey }: #{$subvalue};
+            }
+          }
+        } @else {
+          --color-#{ $key }: #{$value};
+        }
       }
     }
   }

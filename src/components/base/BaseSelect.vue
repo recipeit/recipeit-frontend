@@ -19,7 +19,7 @@
           :value="search"
           class="base-select__field__input"
           ref="search"
-          tabindex="1"
+          tabindex="0"
           @input="updateSearch($event.target.value)"
           @focus.prevent="open()"
           @blur.prevent="hide()"
@@ -270,6 +270,7 @@ export default {
   $root: &;
 
   position: relative;
+  outline: none;
 
   &__field {
     position: relative;
@@ -281,7 +282,7 @@ export default {
     @include transition((border-color));
 
     &:hover {
-      border-color: darken($border, 20%);
+      border-color: var(--color-border-hover);
     }
 
     #{ $root }--focus & {
@@ -323,6 +324,7 @@ export default {
       box-sizing: border-box;
       outline: none;
       background: transparent;
+      outline: none;
     }
 
     &__value {

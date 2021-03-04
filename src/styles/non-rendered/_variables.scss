@@ -52,34 +52,57 @@ $button-colors-dark: (
   'contrast': #8fa0ad
 );
 
+// @mixin dupa($color) {
+//   ${$color}-darker:
+// }
+
+@function colorMap($value) {
+  $map: (
+    'darkest': #{darken($value, 20%)},
+    'darker': #{darken($value, 10%)},
+    'DEFAULT': $value,
+    'lighter': #{lighten($value, 10%)},
+    'lightest': #{lighten($value, 20%)}
+  );
+  @return $map;
+}
+
 $color-themes: (
   light: (
-    'primary': lightVariables.$green,
-    'accent': lightVariables.$blue,
+    'primary': colorMap(lightVariables.$green),
+    'accent': colorMap(lightVariables.$blue),
     'background': lightVariables.$white,
     'background-flyout': lightVariables.$white,
     'background-rgb': toRGB(lightVariables.$white),
-    'border': lightVariables.$gray-light,
+    'border': (
+      'DEFAULT': $gray-light,
+      'hover': darken($gray-light, 15%),
+      'active': darken($gray-light, 30%)
+    ),
     'text-primary': lightVariables.$black,
     'text-secondary': lightVariables.$gray,
-    'green': lightVariables.$green,
-    'blue': lightVariables.$blue,
-    'yellow': lightVariables.$yellow,
-    'red': lightVariables.$red
+    'green': colorMap(lightVariables.$green),
+    'blue': colorMap(lightVariables.$blue),
+    'yellow': colorMap(lightVariables.$yellow),
+    'red': colorMap(lightVariables.$red)
   ),
   dark: (
-    'primary': darkVariables.$green,
-    'accent': darkVariables.$blue,
+    'primary': colorMap(darkVariables.$green),
+    'accent': colorMap(darkVariables.$blue),
     'background': darken(#272c30, 5),
     'background-flyout': #272c30,
     'background-rgb': #{toRGB(darken(#272c30, 5))},
-    'border': #343d44,
+    'border': (
+      'DEFAULT': #343d44,
+      'hover': lighten(#343d44, 10%),
+      'active': lighten(#343d44, 20%)
+    ),
     'text-primary': #8fa0ad,
     'text-secondary': #556674,
-    'green': darkVariables.$green,
-    'blue': darkVariables.$blue,
-    'yellow': darkVariables.$yellow,
-    'red': darkVariables.$red
+    'green': colorMap(darkVariables.$green),
+    'blue': colorMap(darkVariables.$blue),
+    'yellow': colorMap(darkVariables.$yellow),
+    'red': colorMap(darkVariables.$red)
   )
 );
 

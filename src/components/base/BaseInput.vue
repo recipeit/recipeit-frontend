@@ -98,7 +98,7 @@ export default {
       @include transition((border-color));
 
       &:hover {
-        border-color: darken($border, 20%);
+        border-color: var(--color-border-hover);
       }
 
       #{ $root }--focus & {

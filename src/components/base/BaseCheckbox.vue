@@ -71,11 +71,11 @@ export default {
     @include transition((border-color, color));
 
     #{ $root }:hover & {
-      border-color: darken($border, 10);
+      border-color: var(--color-border-hover);
     }
 
     #{ $root }:active & {
-      border-color: darken($border, 20);
+      border-color: var(--color-border-active);
     }
 
     #{ $root }--checked & {
@@ -84,13 +84,13 @@ export default {
     }
 
     #{ $root }--checked:hover & {
-      border-color: mix($primary, #fff, 75%);
-      color: mix($primary, #fff, 75%);
+      border-color: var(--color-primary-lighter);
+      color: var(--color-primary-lighter);
     }
 
     #{ $root }--checked:active & {
-      border-color: mix($primary, #fff, 50%);
-      color: mix($primary, #fff, 50%);
+      border-color: var(--color-primary-lightest);
+      color: var(--color-primary-lightest);
     }
   }
 

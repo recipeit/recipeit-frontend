@@ -90,11 +90,11 @@ export default {
 
     &:hover,
     &:focus {
-      color: mix($primary, #fff, 75%);
+      color: var(--color-primary-lighter);
     }
 
     &:active {
-      color: mix($primary, #fff, 50%);
+      color: var(--color-primary-lightest);
     }
   }
 
