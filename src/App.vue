@@ -31,10 +31,10 @@ export default {
     this.$store.dispatch('user/fetchUserProfile', { getInitUserData: true })
   },
   mounted() {
-    document.addEventListener('click', this.blurOnClick)
+    // document.addEventListener('click', this.blurOnClick)
   },
   beforeUnmount() {
-    document.removeEventListener('click', this.blurOnClick)
+    // document.removeEventListener('click', this.blurOnClick)
   }
 }
 </script>
