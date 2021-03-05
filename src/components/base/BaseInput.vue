@@ -87,7 +87,6 @@ export default {
       border: none;
       padding: 8px 0 0 0;
       border-bottom: 2px solid var(--color-border);
-      outline: none;
       color: inherit;
       font-size: inherit;
       font-family: inherit;

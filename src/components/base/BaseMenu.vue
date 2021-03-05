@@ -88,11 +88,10 @@ export default {
 <style lang="scss" scoped>
 .menu {
   position: relative;
-  outline: none;
 
-  &__toggle-container {
-    outline: none;
-  }
+  // &__toggle-container {
+  //   outline: none;
+  // }
 
   &__dropdown-container {
     position: absolute;

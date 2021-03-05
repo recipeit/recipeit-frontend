@@ -270,7 +270,6 @@ export default {
   $root: &;
 
   position: relative;
-  outline: none;
 
   &__field {
     position: relative;
@@ -322,9 +321,7 @@ export default {
       padding-top: 6px;
       width: 100%;
       box-sizing: border-box;
-      outline: none;
       background: transparent;
-      outline: none;
     }
 
     &__value {

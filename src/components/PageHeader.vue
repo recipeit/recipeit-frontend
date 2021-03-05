@@ -155,7 +155,6 @@ export default {
       flex: 1;
       color: inherit;
       font-family: inherit;
-      outline: none;
       background: transparent;
 
       &::placeholder {

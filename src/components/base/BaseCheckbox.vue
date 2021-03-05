@@ -75,7 +75,6 @@ export default {
   $root: &;
 
   display: flex;
-  outline: none;
   cursor: pointer;
 
   &__input {
