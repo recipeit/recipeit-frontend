@@ -197,8 +197,8 @@ $color-themes: (
       'hover': lighten(#343d44, 10%),
       'active': lighten(#343d44, 20%)
     ),
-    'text-primary': #8fa0ad,
-    'text-secondary': #556674,
+    'text-primary': #b1c1ce,
+    'text-secondary': #657786,
     'green': colorMap(darkVariables.$green),
     'blue': colorMap(darkVariables.$blue),
     'yellow': colorMap(darkVariables.$yellow),
@@ -209,21 +209,21 @@ $color-themes: (
         'accent': buttonRaisedVariablesDark(darkVariables.$blue, darken(#272c30, 5)),
         'warning': buttonRaisedVariablesDark(darkVariables.$yellow, darken(#272c30, 5)),
         'danger': buttonRaisedVariablesDark(darkVariables.$red, darken(#272c30, 5)),
-        'contrast': buttonRaisedVariablesDark(#8fa0ad, darken(#272c30, 5))
+        'contrast': buttonRaisedVariablesDark(#b1c1ce, darken(#272c30, 5))
       ),
       'subtle': (
         'primary': buttonSubtleVariables(darkVariables.$green),
         'accent': buttonSubtleVariables(darkVariables.$blue),
         'warning': buttonSubtleVariables(darkVariables.$yellow),
         'danger': buttonSubtleVariables(darkVariables.$red),
-        'contrast': buttonSubtleVariables(#8fa0ad)
+        'contrast': buttonSubtleVariables(#b1c1ce)
       ),
       'stroked': (
         'primary': buttonStrokedVariables(darkVariables.$green),
         'accent': buttonStrokedVariables(darkVariables.$blue),
         'warning': buttonStrokedVariables(darkVariables.$yellow),
         'danger': buttonStrokedVariables(darkVariables.$red),
-        'contrast': buttonStrokedVariables(#8fa0ad)
+        'contrast': buttonStrokedVariables(#b1c1ce)
       )
     )
   )
