@@ -45,7 +45,7 @@ export default {
   }
 
   &:active {
-    color: mix($accent, #fff, 50%);
+    color: var(--color-accent-lighter);
   }
 
   &--color-text-primary {
@@ -77,11 +77,11 @@ export default {
 
     &:hover,
     &:focus {
-      color: mix($accent, #fff, 75%);
+      color: var(--color-accent-lighter);
     }
 
     &:active {
-      color: mix($accent, #fff, 50%);
+      color: var(--color-accent-lightest);
     }
   }
 
@@ -99,15 +99,15 @@ export default {
   }
 
   &--color-red {
-    color: $red;
+    color: var(--color-red);
 
     &:hover,
     &:focus {
-      color: mix($red, #fff, 75%);
+      color: var(--color-red-lighter);
     }
 
     &:active {
-      color: mix($red, #fff, 50%);
+      color: var(--color-red-lightest);
     }
   }
 

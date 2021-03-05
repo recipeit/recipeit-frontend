@@ -16,6 +16,11 @@ export default {
       isAuthenticated: 'user/isAuthenticated'
     })
   },
+  methods: {
+    blurOnClick() {
+      document.activeElement.blur()
+    }
+  },
   beforeCreate() {
     const currentTheme = localStorage.getItem('theme')
     if (currentTheme) {
@@ -24,6 +29,12 @@ export default {
   },
   created() {
     this.$store.dispatch('user/fetchUserProfile', { getInitUserData: true })
+  },
+  mounted() {
+    document.addEventListener('click', this.blurOnClick)
+  },
+  beforeUnmount() {
+    document.removeEventListener('click', this.blurOnClick)
   }
 }
 </script>

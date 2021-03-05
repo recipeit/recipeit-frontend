@@ -58,8 +58,8 @@ export default {
   width: 32px;
   height: 32px;
   border-radius: 48px;
-  background-color: rgba($primary, 0.1);
-  color: var(--color-primary);
+  background-color: var(--color-button-subtle-primary-background);
+  color: var(--color-button-subtle-primary-color);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -69,11 +69,11 @@ export default {
   @include transition((background-color));
 
   &:hover {
-    background-color: rgba($primary, 0.2);
+    background-color: var(--color-button-subtle-primary-background-hover);
   }
 
   &:active {
-    background-color: rgba($primary, 0.3);
+    background-color: var(--color-button-subtle-primary-background-active);
   }
 }
 </style>
