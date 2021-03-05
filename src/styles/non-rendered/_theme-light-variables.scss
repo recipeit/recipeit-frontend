@@ -23,7 +23,7 @@ $yellow-palette: functions.colorPalette2($yellow);
 
 $color-theme: (
   'primary': functions.colorVariables($green),
-  'accent': functions.colorVariables($blue),
+  'accent': $blue,
   'background': $white,
   'background-flyout': $white,
   'background-rgb': functions.toRGB($white),
@@ -34,10 +34,10 @@ $color-theme: (
   ),
   'text-primary': $black,
   'text-secondary': $gray,
-  'green': functions.colorVariables($green),
-  'blue': functions.colorVariables($blue),
-  'yellow': functions.colorVariables($yellow),
-  'red': functions.colorVariables($red),
+  'green': $green,
+  'blue': $blue,
+  'yellow': $yellow,
+  'red': $red,
   'link': (
     'DEFAULT': (
       'color': $black,
