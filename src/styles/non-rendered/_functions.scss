@@ -116,7 +116,7 @@
   @return $map;
 }
 
-@function colorMap($value) {
+@function colorVariables($value) {
   $map: (
     'darkest': #{darken($value, 20%)},
     'darker': #{darken($value, 10%)},

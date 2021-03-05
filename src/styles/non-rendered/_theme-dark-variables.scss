@@ -16,8 +16,8 @@ $green-palette: functions.colorPalette2($green);
 $yellow-palette: functions.colorPalette2($yellow);
 
 $color-theme: (
-  'primary': functions.colorMap($green),
-  'accent': functions.colorMap($blue),
+  'primary': functions.colorVariables($green),
+  'accent': functions.colorVariables($blue),
   'background': darken(#272c30, 5),
   'background-flyout': #272c30,
   'background-rgb': #{functions.toRGB(darken(#272c30, 5))},
@@ -28,10 +28,10 @@ $color-theme: (
   ),
   'text-primary': #b1c1ce,
   'text-secondary': #657786,
-  'green': functions.colorMap($green),
-  'blue': functions.colorMap($blue),
-  'yellow': functions.colorMap($yellow),
-  'red': functions.colorMap($red),
+  'green': functions.colorVariables($green),
+  'blue': functions.colorVariables($blue),
+  'yellow': functions.colorVariables($yellow),
+  'red': functions.colorVariables($red),
   'link': (
     'DEFAULT': (
       'color': #b1c1ce,
