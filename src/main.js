@@ -6,6 +6,7 @@ import GlobalSheetModal from './plugins/global-sheet-modal'
 import router from './router'
 import store from './store'
 import i18n from './i18n'
+import blurOnClick from './directives/blurOnClick'
 
 const app = createApp(App)
 
@@ -28,4 +29,5 @@ app
   .use(router)
   .use(store)
   .use(i18n)
+  .directive('blur-on-click', blurOnClick)
   .mount('#app')

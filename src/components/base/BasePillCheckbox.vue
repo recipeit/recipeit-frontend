@@ -1,5 +1,5 @@
 <template>
-  <div :class="['pill', { 'pill--checked': isChecked }, { 'pill--red': excluding }]" @click="updateInput">
+  <div v-blur-on-click :class="['pill', { 'pill--checked': isChecked }, { 'pill--red': excluding }]" @click="updateInput">
     <BaseIcon v-if="excluding" class="pill__checked-icon" icon="close" weight="semiBold" />
     <BaseIcon v-else class="pill__checked-icon" icon="check" weight="semiBold" />
     <slot />

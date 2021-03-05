@@ -1,5 +1,6 @@
 <template>
   <div
+    v-blur-on-click
     :tabindex="tabindex"
     :class="['checkbox', { 'checkbox--checked': checked, 'checkbox--focus': focused }]"
     @click="updateInput()"

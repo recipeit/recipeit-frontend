@@ -1,6 +1,6 @@
 <template>
-  <button v-if="!anchorTag" class="button" :class="classList"><slot /></button>
-  <a v-else class="button" :class="classList"><slot /></a>
+  <button v-if="!anchorTag" v-blur-on-click class="button" :class="classList"><slot /></button>
+  <a v-else v-blur-on-click class="button" :class="classList"><slot /></a>
 </template>
 
 <script>
