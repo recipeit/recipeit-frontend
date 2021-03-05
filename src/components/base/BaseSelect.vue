@@ -366,7 +366,8 @@ export default {
 
         &--highlight {
           // color: var(--color-primary);
-          background-color: rgba($black, 0.05);
+          // background-color: rgba($black, 0.05); //TODO
+          background-color: var(--color-button-subtle-contrast-background);
         }
 
         &--selected {
@@ -375,7 +376,7 @@ export default {
 
           &:hover {
             // color: var(--color-primary);
-            background-color: rgba($primary, 0.1);
+            background-color: var(--color-button-subtle-primary-background);
           }
         }
       }

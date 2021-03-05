@@ -46,7 +46,7 @@ export default {}
 
   &__item {
     font-size: 1.75rem;
-    color: var(--color-text-primary);
+    color: var(--color-link-text-primary-color);
     transition: color 0.3s ease;
     position: relative;
     line-height: 0;
@@ -56,11 +56,11 @@ export default {}
     }
 
     &:hover {
-      color: mix($text-primary, $text-secondary);
+      color: var(--color-link-text-primary-color-hover);
     }
 
     &:active {
-      color: $text-secondary;
+      color: var(--color-link-text-primary-color-active);
     }
 
     &:after {

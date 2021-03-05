@@ -33,7 +33,7 @@ export default {
 .link {
   @include transition(color);
   text-decoration: none;
-  color: var(--color-text-primary);
+  color: var(--color-link-color);
   outline: 0;
   padding: 0;
   background-color: transparent;
@@ -41,73 +41,75 @@ export default {
 
   &:hover,
   &:focus {
-    color: var(--color-accent);
+    color: var(--color-link-color-hover);
   }
 
   &:active {
-    color: var(--color-accent-lighter);
+    color: var(--color-link-color-active);
   }
 
   &--color-text-primary {
+    color: var(--color-link-text-primary-color);
+
     &:hover,
     &:focus {
-      color: mix($text-primary, $text-secondary);
+      color: var(--color-link-text-primary-color-hover);
     }
 
     &:active {
-      color: var(--color-text-secondary);
+      color: var(--color-link-text-primary-color-active);
     }
   }
 
   &--color-text-secondary {
-    color: var(--color-text-secondary);
+    color: var(--color-link-text-secondary-color);
 
     &:hover,
     &:focus {
-      color: mix($text-secondary, #fff, 75%);
+      color: var(--color-link-text-secondary-color-hover);
     }
 
     &:active {
-      color: mix($text-secondary, #fff, 50%);
+      color: var(--color-link-text-secondary-color-active);
     }
   }
 
   &--color-accent {
-    color: var(--color-accent);
+    color: var(--color-link-accent-color);
 
     &:hover,
     &:focus {
-      color: var(--color-accent-lighter);
+      color: var(--color-link-accent-color-hover);
     }
 
     &:active {
-      color: var(--color-accent-lightest);
+      color: var(--color-link-accent-color-active);
     }
   }
 
   &--color-primary {
-    color: var(--color-primary);
+    color: var(--color-link-primary-color);
 
     &:hover,
     &:focus {
-      color: var(--color-primary-lighter);
+      color: var(--color-link-primary-color-hover);
     }
 
     &:active {
-      color: var(--color-primary-lightest);
+      color: var(--color-link-primary-color-active);
     }
   }
 
   &--color-red {
-    color: var(--color-red);
+    color: var(--color-link-danger-color);
 
     &:hover,
     &:focus {
-      color: var(--color-red-lighter);
+      color: var(--color-link-danger-color-hover);
     }
 
     &:active {
-      color: var(--color-red-lightest);
+      color: var(--color-link-danger-color-active);
     }
   }
 

@@ -1,7 +1,11 @@
 @mixin recc($prefix, $map) {
   @each $key, $value in $map {
     @if (type-of($value) == 'map') {
-      @include recc(#{$prefix}-#{$key}, $value);
+      @if ($key == 'DEFAULT') {
+        @include recc(#{$prefix}, $value);
+      } @else {
+        @include recc(#{$prefix}-#{$key}, $value);
+      }
     } @else {
       @if ($key == 'DEFAULT') {
         #{ $prefix }: #{$value};

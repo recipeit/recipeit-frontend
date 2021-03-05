@@ -179,8 +179,8 @@ export default {
         padding: 0 6px;
         height: $size;
         margin-left: 0.6rem;
-        background-color: rgba($primary, 0.2);
-        color: var(--color-primary);
+        background-color: var(--color-button-subtle-primary-background);
+        color: var(--color-button-subtle-primary-color);
         border-radius: 48px;
         display: flex;
         align-items: center;

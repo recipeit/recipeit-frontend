@@ -33,12 +33,12 @@
   $g: green($color);
   $b: blue($color);
 
-  @return $r + "," + $g + "," + $b;
+  @return $r + ',' + $g + ',' + $b;
 }
 
 @function colorPalette($middleValue) {
   $map: (
-    '50':  #{adjust-color($middleValue, $lightness: 45%)},
+    '50': #{adjust-color($middleValue, $lightness: 45%)},
     '100': #{adjust-color($middleValue, $lightness: 40%)},
     '200': #{adjust-color($middleValue, $lightness: 30%)},
     '300': #{adjust-color($middleValue, $lightness: 20%)},
@@ -54,7 +54,7 @@
 
 @function colorPalette2($value) {
   $map: (
-    '50':  #{change-color($value, $lightness: 95%)},
+    '50': #{change-color($value, $lightness: 95%)},
     '100': #{change-color($value, $lightness: 90%)},
     '200': #{change-color($value, $lightness: 80%)},
     '300': #{change-color($value, $lightness: 70%)},
@@ -64,6 +64,65 @@
     '700': #{change-color($value, $lightness: 30%)},
     '800': #{change-color($value, $lightness: 20%)},
     '900': #{change-color($value, $lightness: 10%)}
+  );
+  @return $map;
+}
+
+@function linkVariables($color) {
+  $map: (
+    'color': #{$color},
+    'color-hover': #{lighten($color, 10)},
+    'color-active': #{lighten($color, 20)}
+  );
+  @return $map;
+}
+
+@function buttonStrokedVariables($color) {
+  $map: (
+    'color': #{$color},
+    // 'color-hover': #{lighten($color, 10)},
+      // 'color-active': #{lighten($color, 20)}
+  );
+  @return $map;
+}
+
+@function buttonSubtleVariables($background, $color: $background) {
+  $map: (
+    'background': #{rgba($background, 0.1)},
+    'background-hover': #{rgba($background, 0.15)},
+    'background-active': #{rgba($background, 0.2)},
+    'color': #{$color}
+  );
+  @return $map;
+}
+
+@function buttonRaisedVariablesDark($background, $color: get-contrast-color($background)) {
+  $map: (
+    'background': #{$background},
+    'background-hover': #{lighten($background, 10%)},
+    'background-active': #{lighten($background, 20%)},
+    'color': #{$color}
+  );
+  @return $map;
+}
+
+@function buttonRaisedVariablesLight($background, $color) {
+  $map: (
+    'background': #{$background},
+    'background-hover': #{lighten($background, 10%)},
+    'background-active': #{lighten($background, 20%)},
+    'color': #{$color}
+  );
+  @return $map;
+}
+
+@function colorMap($value) {
+  $map: (
+    'darkest': #{darken($value, 20%)},
+    'darker': #{darken($value, 10%)},
+    'DEFAULT': $value,
+    'lighter': #{lighten($value, 10%)},
+    'lightest': #{lighten($value, 20%)}
   );
   @return $map;
 }

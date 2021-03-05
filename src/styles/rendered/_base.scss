@@ -31,13 +31,13 @@ body {
 
   /* Handle */
   &::-webkit-scrollbar-thumb {
-    background-color: rgba($text-primary, 0.1);
+    background-color: var(--color-scrollbar-thumb);
     border-radius: 8px;
   }
 
   /* Handle on hover */
   &::-webkit-scrollbar-thumb:hover {
-    background-color: rgba($text-primary, 0.2);
+    background-color: var(--color-scrollbar-thumb-hover);
   }
 }
 
