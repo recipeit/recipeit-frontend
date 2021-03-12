@@ -48,23 +48,18 @@
         <div class="section-header">
           <div class="section-title">
             <div>
-              Składniki dla <b class="servings-count">{{ servings }}</b> porcji
-              <!-- <BaseLink color="primary" @click="servings = Math.max(servings - 1, 1)">
+              Składniki dla
+              <BaseButton class="servings-button" subtle color="primary" v-bind:disabled="servings <= 0.5" @click="decreaseServings()">
                 <BaseIcon icon="minus" weight="semiBold" />
-              </BaseLink>
-              <BaseLink color="primary" @click="servings++">
+              </BaseButton>
+              <b class="servings-count">{{ servings }}</b>
+              <BaseButton class="servings-button" subtle color="primary" @click="increaseServings()">
                 <BaseIcon icon="plus" weight="semiBold" />
-              </BaseLink> -->
+              </BaseButton>
+              porcji
             </div>
           </div>
-          <div>
-            <BaseLink tag="button" class="servings-button" color="primary" v-bind:disabled="servings <= 0.5" @click="decreaseServings()">
-              <BaseIcon icon="minus" weight="semiBold" />
-            </BaseLink>
-            <BaseLink tag="button" class="servings-button" color="primary" @click="increaseServings()">
-              <BaseIcon icon="plus" weight="semiBold" />
-            </BaseLink>
-          </div>
+          <!-- <div></div> -->
         </div>
         <ul class="recipe__ingredients-list">
           <RecipeIngredient
@@ -232,18 +227,22 @@ export default {
 
 .servings-count {
   color: var(--color-primary);
+  width: 32px;
+  display: inline-block;
+  text-align: center;
 }
 
 .servings-button {
   display: inline-flex;
   width: 32px;
+  padding: 0;
   height: 32px;
   align-items: center;
   justify-content: center;
-
-  &:last-child {
-    margin-right: -4px;
-  }
+  margin: 0 8px;
+  font-size: 16px;
+  vertical-align: middle;
+  line-height: 1;
 }
 
 .update-button {
