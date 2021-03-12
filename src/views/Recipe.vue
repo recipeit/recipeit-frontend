@@ -140,12 +140,15 @@ export default {
   data: () => ({
     recipe: null,
     // recipeDetails: null,
-    servings: 2,
+    servings: 1,
     finishedDirections: []
   }),
   created() {
     // this.$store.dispatch('recipes/fetchRecipe', this.recipeId).then(r => (this.recipe = r))
-    this.$store.dispatch('recipes/fetchDetailedRecipe', this.recipeId).then(rd => (this.recipe = rd))
+    this.$store.dispatch('recipes/fetchDetailedRecipe', this.recipeId).then(rd => {
+      this.recipe = rd
+      this.servings = rd.details.servings
+    })
     this.$store.dispatch('myKitchen/fetchProducts')
     this.$store.dispatch('shoppingList/fetchProducts')
   },
