@@ -67,14 +67,14 @@
           </div>
           <!-- <div></div> -->
         </div>
-        <ul class="recipe__ingredients-list">
-          <RecipeIngredient
-            v-for="ingredient in recipe.details.ingredients"
-            :key="ingredient.id"
-            :amountFactor="amountFactor"
-            :ingredient="ingredient"
-          />
-        </ul>
+        <div class="recipe__ingredient-groups">
+          <div class="recipe__ingredient-group" v-for="(list, groupName) in recipe.details.ingredientGroups" :key="groupName">
+            <div v-if="groupName" class="recipe__ingredient-group-name">{{ groupName }}</div>
+            <ul class="recipe__ingredients-list">
+              <RecipeIngredient v-for="ingredient in list" :key="ingredient.id" :amountFactor="amountFactor" :ingredient="ingredient" />
+            </ul>
+          </div>
+        </div>
         <!-- <div class="recipe__ingredients-button-container">
           <BaseLink :href="href" @click="navigate" tag="button" color="primary" class="link-with-icon">
             dodaj wszystkie <BaseIcon class="link-with-icon__icon" icon="plus" weight="semiBold" />
@@ -397,6 +397,28 @@ export default {
   &__ingredients-list {
   }
 
+  &__ingredient-groups {
+  }
+
+  &__ingredient-group {
+  }
+
+  &__ingredient-group-name {
+    margin-top: 0.5rem;
+    display: flex;
+    align-items: center;
+    min-height: 2rem;
+    font-weight: bold;
+    gap: 1rem;
+
+    &:before,
+    &:after {
+      content: '';
+      height: 1px;
+      flex: 1;
+      background: var(--color-border);
+    }
+  }
   // &__ingredients-button-container {
   //   margin-top: 16px;
 
