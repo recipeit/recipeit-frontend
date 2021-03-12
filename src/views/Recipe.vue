@@ -47,15 +47,38 @@
 
         <div class="section-header">
           <div class="section-title">
-            <div>Składniki</div>
+            <div>
+              Składniki dla <b class="servings-count">{{ servings }}</b> porcji
+              <!-- <BaseLink color="primary" @click="servings = Math.max(servings - 1, 1)">
+                <BaseIcon icon="minus" weight="semiBold" />
+              </BaseLink>
+              <BaseLink color="primary" @click="servings++">
+                <BaseIcon icon="plus" weight="semiBold" />
+              </BaseLink> -->
+            </div>
           </div>
+          <div>
+            <BaseLink tag="button" class="servings-button" color="primary" v-bind:disabled="servings <= 0.5" @click="decreaseServings()">
+              <BaseIcon icon="minus" weight="semiBold" />
+            </BaseLink>
+            <BaseLink tag="button" class="servings-button" color="primary" @click="increaseServings()">
+              <BaseIcon icon="plus" weight="semiBold" />
+            </BaseLink>
+          </div>
+        </div>
+        <ul class="recipe__ingredients-list">
+          <RecipeIngredient
+            v-for="ingredient in recipe.details.ingredients"
+            :key="ingredient.id"
+            :amountFactor="amountFactor"
+            :ingredient="ingredient"
+          />
+        </ul>
+        <!-- <div class="recipe__ingredients-button-container">
           <BaseLink :href="href" @click="navigate" tag="button" color="primary" class="link-with-icon">
             dodaj wszystkie <BaseIcon class="link-with-icon__icon" icon="plus" weight="semiBold" />
           </BaseLink>
-        </div>
-        <ul class="recipe__ingredients-list">
-          <RecipeIngredient v-for="ingredient in recipe.details.ingredients" :key="ingredient.id" :ingredient="ingredient" />
-        </ul>
+        </div> -->
 
         <div class="section-header">
           <div class="section-title">
@@ -116,6 +139,7 @@ export default {
   data: () => ({
     recipe: null,
     // recipeDetails: null,
+    servings: 2,
     finishedDirections: []
   }),
   created() {
@@ -143,12 +167,25 @@ export default {
     },
     deleteFromFavourites() {
       this.$store.dispatch('recipes/deleteFromFavourites', this.recipe.id)
+    },
+    decreaseServings() {
+      if (this.servings > 0.5) {
+        this.servings -= 0.5
+      } else {
+        this.servings = 0.5
+      }
+    },
+    increaseServings() {
+      this.servings += 0.5
     }
   },
   computed: {
     ...mapState({
       favouriteRecipesIds: state => state.recipes.favouriteRecipesIds
     }),
+    amountFactor() {
+      return this.servings / 2
+    },
     isFavourite() {
       return this.favouriteRecipesIds.find(id => id === this.recipe.id) !== undefined
     },
@@ -191,6 +228,22 @@ export default {
 .plan-button,
 .update-button {
   width: 100%;
+}
+
+.servings-count {
+  color: var(--color-primary);
+}
+
+.servings-button {
+  display: inline-flex;
+  width: 32px;
+  height: 32px;
+  align-items: center;
+  justify-content: center;
+
+  &:last-child {
+    margin-right: -4px;
+  }
 }
 
 .update-button {
@@ -324,6 +377,14 @@ export default {
 
   &__ingredients-list {
   }
+
+  // &__ingredients-button-container {
+  //   margin-top: 16px;
+
+  //   button {
+  //     margin-left: auto;
+  //   }
+  // }
 
   &__directions-list {
     label {

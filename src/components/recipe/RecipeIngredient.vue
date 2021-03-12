@@ -2,8 +2,8 @@
   <li class="ingredient">
     {{ ingredient.name || ingredient.baseProduct?.name }}
     <template v-if="ingredient.amount > 0">
-      <span class="ingredient__amount">{{ ingredient.amount }}</span>
-      <span class="ingredient__unit"> {{ $tc(`unitsShort.${ingredient.unit}`, ingredient.amount) }}</span>
+      <span class="ingredient__amount">{{ computedAmount }}</span>
+      <span class="ingredient__unit"> {{ $tc(`unitsShort.${ingredient.unit}`, computedAmount) }}</span>
     </template>
     <div class="ingredient__action-container">
       <a v-if="loading" class="ingredient__action ingredient__action--loading">
@@ -41,6 +41,10 @@ export default {
     ingredient: {
       type: Object,
       required: true
+    },
+    amountFactor: {
+      type: Number,
+      default: 1
     }
   },
   data: () => ({
@@ -75,6 +79,9 @@ export default {
     },
     isInMyKitchen() {
       return this.myKitchenProducts.find(p => p.baseProductId === this.ingredient.baseProductId)
+    },
+    computedAmount() {
+      return this.ingredient.amount * this.amountFactor
     }
   }
 }

@@ -1,10 +1,18 @@
 <template>
   <div class="auth-page__content">
-    <h1>Zarejestruj się w RecipeIt</h1>
+    <h1>Zarejestruj się</h1>
 
-    <AuthSocialList />
+    <p>
+      lub
+      <router-link :to="{ name: 'login' }" v-slot="{ href, navigate }" custom>
+        <BaseLink :href="href" @click="navigate" color="primary">
+          zaloguj się na swoje konto
+        </BaseLink>
+      </router-link>
+    </p>
+    <!-- <AuthSocialList /> -->
 
-    <p>lub za pomocą adresu email</p>
+    <!-- <p>lub za pomocą adresu email</p> -->
 
     <form @submit.prevent="register()">
       <BaseInput class="form-row" label="Email" type="text" v-model="userData.email"></BaseInput>
@@ -13,14 +21,7 @@
       <BaseButton class="form-row auth-page__content__submit" raised color="contrast" type="submit">Zarejestruj się</BaseButton>
     </form>
 
-    <p>
-      Masz już konto?
-      <router-link :to="{ name: 'login' }" v-slot="{ href, navigate }" custom>
-        <BaseLink :href="href" @click="navigate" color="primary">
-          Zaloguj się
-        </BaseLink>
-      </router-link>
-    </p>
+    <AuthSocialList />
   </div>
 </template>
 
@@ -49,5 +50,8 @@ export default {
 <style lang="scss" scoped>
 form {
   margin-bottom: 24px;
+}
+h1 {
+  margin-bottom: 8px;
 }
 </style>

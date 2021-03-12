@@ -31,7 +31,7 @@ export default {
 
 <style lang="scss" scoped>
 .link {
-  @include transition(color);
+  @include transition((color, opacity));
   text-decoration: none;
   color: var(--color-link-color);
   outline: 0;
@@ -113,8 +113,12 @@ export default {
     }
   }
 
-  &:not(:disabled) {
+  &:not([disabled]) {
     cursor: pointer;
+  }
+
+  &[disabled] {
+    opacity: 0.5;
   }
 }
 </style>

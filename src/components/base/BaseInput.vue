@@ -107,7 +107,13 @@ export default {
   }
   &__errors {
     &__list {
+      margin-top: 6px;
+      font-size: 0.75rem;
+      text-align: left;
+      color: var(--color-red);
+
       li {
+        padding: 2px 0;
       }
     }
   }
