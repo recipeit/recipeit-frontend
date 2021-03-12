@@ -51,13 +51,13 @@ export default {
   color: $color;
   // box-shadow: 0 12px 32px -16px $background;
 
-  &:hover {
+  &:not([disabled]):hover {
     // box-shadow: 0 12px 32px -16px $background;
     background-color: $background-hover;
     // transform: scale(1.05);
   }
 
-  &:active {
+  &:not([disabled]):active {
     // box-shadow: 0 12px 32px -16px $background;
     background-color: $background-active;
     // transform: scale(1.05);
@@ -74,11 +74,11 @@ export default {
   background-color: $background;
   color: $color;
 
-  &:hover {
+  &:not([disabled]):hover {
     background-color: $background-hover;
   }
 
-  &:active {
+  &:not([disabled]):active {
     background-color: $background-active;
   }
 }
@@ -103,8 +103,11 @@ export default {
   font-size: 12px;
   box-sizing: border-box;
   text-decoration: none;
-  transition: all 0.3s ease;
-  cursor: pointer;
+  @include transition(all);
+
+  &:not([disabled]) {
+    cursor: pointer;
+  }
 
   &#{ $root }--small {
     font-weight: 500;
@@ -115,11 +118,11 @@ export default {
     background-color: var(--color-button-contrast);
     color: var(--color-button-contrast-text);
 
-    &:hover {
+    &:not([disabled]):hover {
       background-color: var(--color-button-contrast-hover);
     }
 
-    &:active {
+    &:not([disabled]):active {
       background-color: var(--color-button-contrast-active);
     }
     // box-shadow: 0 12px 32px -16px $background;
@@ -157,11 +160,11 @@ export default {
     background-color: transparent;
     border: 1px solid var(--color-border);
 
-    &:hover {
+    &:not([disabled]):hover {
       border-color: var(--color-border-hover);
     }
 
-    &:active {
+    &:not([disabled]):active {
       border-color: var(--color-border-active);
     }
 
@@ -170,6 +173,10 @@ export default {
         @include button-stroked($value);
       }
     }
+  }
+
+  &[disabled] {
+    opacity: 0.5;
   }
 }
 </style>

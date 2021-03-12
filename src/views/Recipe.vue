@@ -47,12 +47,12 @@
 
         <div class="section-header">
           <div class="section-title">
-            <div>
+            <div class="servings-title">
               Składniki dla
               <BaseButton class="servings-button" subtle color="primary" v-bind:disabled="servings <= 0.5" @click="decreaseServings()">
                 <BaseIcon icon="minus" weight="semiBold" />
               </BaseButton>
-              <b class="servings-count">{{ servings }}</b>
+              <span class="servings-count">{{ servings }}</span>
               <BaseButton class="servings-button" subtle color="primary" @click="increaseServings()">
                 <BaseIcon icon="plus" weight="semiBold" />
               </BaseButton>
@@ -223,6 +223,12 @@ export default {
 .plan-button,
 .update-button {
   width: 100%;
+}
+
+.servings-title {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
 .servings-count {
