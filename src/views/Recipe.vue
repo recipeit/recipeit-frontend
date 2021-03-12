@@ -49,11 +49,17 @@
           <div class="section-title">
             <div class="servings-title">
               Składniki dla
-              <BaseButton class="servings-button" subtle color="primary" v-bind:disabled="servings <= 0.5" @click="decreaseServings()">
+              <BaseButton
+                class="servings-button servings-button--left"
+                subtle
+                color="primary"
+                v-bind:disabled="servings <= 1"
+                @click="decreaseServings()"
+              >
                 <BaseIcon icon="minus" weight="semiBold" />
               </BaseButton>
               <span class="servings-count">{{ servings }}</span>
-              <BaseButton class="servings-button" subtle color="primary" @click="increaseServings()">
+              <BaseButton class="servings-button servings-button--right" subtle color="primary" @click="increaseServings()">
                 <BaseIcon icon="plus" weight="semiBold" />
               </BaseButton>
               porcji
@@ -164,14 +170,14 @@ export default {
       this.$store.dispatch('recipes/deleteFromFavourites', this.recipe.id)
     },
     decreaseServings() {
-      if (this.servings > 0.5) {
-        this.servings -= 0.5
+      if (this.servings > 1) {
+        this.servings -= 1
       } else {
-        this.servings = 0.5
+        this.servings = 1
       }
     },
     increaseServings() {
-      this.servings += 0.5
+      this.servings += 1
     }
   },
   computed: {
@@ -233,7 +239,8 @@ export default {
 
 .servings-count {
   color: var(--color-primary);
-  width: 32px;
+  min-width: 36px;
+  padding: 0 6px;
   display: inline-block;
   text-align: center;
 }
@@ -245,10 +252,17 @@ export default {
   height: 32px;
   align-items: center;
   justify-content: center;
-  margin: 0 8px;
   font-size: 16px;
   vertical-align: middle;
   line-height: 1;
+
+  &--left {
+    margin-left: 12px;
+  }
+
+  &--right {
+    margin-right: 12px;
+  }
 }
 
 .update-button {
