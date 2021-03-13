@@ -25,6 +25,16 @@
         <img ref="parallaxImage" class="recipe__main-image" :src="recipe.mainImageUrl" alt="" />
       </div>
       <div class="recipe__main">
+        <div class="recipe__header-pills">
+          <div v-if="cookingHours" class="recipe__header-pill">
+            <BaseIcon class="recipe__header-pill__icon" icon="clock"></BaseIcon>
+            {{ cookingHours }} h
+          </div>
+          <div v-if="recipe.details.servings" class="recipe__header-pill">
+            <BaseIcon class="recipe__header-pill__icon" icon="user" weight="semiBold"></BaseIcon>
+            {{ recipe.details.servings }} porcje
+          </div>
+        </div>
         <div class="recipe__header">
           <h2 class="recipe__header__title">{{ recipe.name }}</h2>
           <div class="recipe__header__actions">
@@ -116,6 +126,8 @@
 </template>
 
 <script>
+import dayjs from 'dayjs'
+import duration from 'dayjs/plugin/duration'
 import { markRaw } from 'vue'
 import _ from 'lodash'
 import { mapState } from 'vuex'
@@ -123,6 +135,8 @@ import RecipeIngredient from '@/components/recipe/RecipeIngredient'
 import FavouriteIcon from '@/components/FavouriteIcon'
 import Rating from '@/components/Rating'
 import Dialog from '@/components/modals/Dialog'
+
+dayjs.extend(duration)
 
 export default {
   name: 'Recipe',
@@ -187,6 +201,12 @@ export default {
     ...mapState({
       favouriteRecipesIds: state => state.recipes.favouriteRecipesIds
     }),
+    cookingHours() {
+      if (this.recipe && this.recipe.cookingMinutes) {
+        return dayjs.duration(this.recipe.cookingMinutes, 'minutes').format('HH:mm')
+      }
+      return null
+    },
     amountFactor() {
       return this.servings / 2
     },
@@ -340,20 +360,43 @@ export default {
     box-shadow: 0 0 32px rgba(0, 0, 0, 0.1);
     padding: 32px;
 
-    &::before {
-      content: '';
-      position: absolute;
-      height: 4px;
-      width: 48px;
-      border-radius: 8px;
-      background-color: var(--color-border);
-      top: 12px;
-      left: 50%;
-      transform: translateX(-50%);
+    // &::before {
+    //   content: '';
+    //   position: absolute;
+    //   height: 4px;
+    //   width: 48px;
+    //   border-radius: 8px;
+    //   background-color: var(--color-border);
+    //   top: 12px;
+    //   left: 50%;
+    //   transform: translateX(-50%);
 
-      // @media (max-width: 719px) {
-      //   content: '';
-      // }
+    //   // @media (max-width: 719px) {
+    //   //   content: '';
+    //   // }
+    // }
+  }
+
+  &__header-pills {
+    display: flex;
+    gap: 8px;
+    position: absolute;
+    top: 0;
+    transform: translateY(-50%);
+  }
+
+  &__header-pill {
+    background-color: var(--color-background-flyout);
+    box-shadow: 0 24px 48px -8px rgba(0, 0, 0, 0.3);
+    padding: 8px 12px;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    &__icon {
+      color: var(--color-text-secondary);
+      font-size: 16px;
     }
   }
 
