@@ -9,6 +9,7 @@ export default {
       recipesBook: 'Przepisy',
       recipes: 'brak przepisów | {n} przepis | {n} przepisy | {n} przepisów',
       products: 'brak produktów | {n} produkt | {n} produkty | {n} produktów',
+      servings: 'brak porcji | {n} porcja | {n} porcje | {n} porcji',
       filter: 'Filtruj',
       sort: 'Sortuj',
       seeAll: 'zobacz wszystkie',
