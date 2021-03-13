@@ -7,7 +7,13 @@
 
       <div class="recipe-box__props2">
         <Rating :value="recipe.rating" />
-        <FavouriteIcon :isFavourite="isFavourite" @removed="deleteFromFavourites" @added="addToFavourites" @click.stop />
+        <FavouriteIcon
+          :isFavourite="isFavourite"
+          @removed="deleteFromFavourites"
+          @added="addToFavourites"
+          @click.stop
+          color="text-primary"
+        />
       </div>
     </div>
     <div class="recipe-box__name">
@@ -118,7 +124,6 @@ export default {
     right: 0;
     margin: 8px;
     min-height: 2rem;
-    color: #fff;
 
     > *:first-child {
       padding-left: 10px;
@@ -130,8 +135,8 @@ export default {
       // backdrop-filter: blur(8px);
       padding: 7px 8px;
       border-radius: 50px;
-      background-color: rgba(#222, 0.75);
-      color: #fff;
+      background-color: rgba(var(--color-background-rgb), 0.95);
+      // color: #fff;
     }
   }
 

@@ -18,7 +18,7 @@ export default {
       no: 'Nie'
     },
     filterModal: {
-      title: 'Dostępne filtry',
+      title: 'Filtry',
       submitButton: 'Filtruj',
       cancelButton: 'Anuluj'
     },
@@ -53,7 +53,7 @@ export default {
       MissingIngredientsDescending: 'liczby brakujących składników: malejąco'
     },
     recipeFilterGroups: {
-      Other: ' ',
+      Other: 'Ogólne',
       Category: 'Kategoria',
       Diet: 'Dieta',
       Allergens: 'Wyklucz alergeny'

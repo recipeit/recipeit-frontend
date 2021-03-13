@@ -12,9 +12,9 @@
           </slot>
         </div>
 
-        <BaseLink class="page-header__search-icon" color="text-primary" @click="openSearch()">
+        <!-- <BaseLink class="page-header__search-icon" color="text-primary" @click="openSearch()">
           <BaseIcon icon="search" weight="semiBold" />
-        </BaseLink>
+        </BaseLink> -->
 
         <PageHeaderUser />
       </div>

@@ -1,10 +1,13 @@
 <template>
-  <span v-if="isFavourite" class="favourite favourite--active" @click="$emit('removed')">
+  <!-- <span v-if="isFavourite" class="favourite favourite--active" @click="$emit('removed')">
     <BaseIcon icon="heartFull" />
   </span>
   <span class="favourite" v-else @click="$emit('added')">
     <BaseIcon icon="heart" />
-  </span>
+  </span> -->
+  <BaseLink class="favourite" tag="button" @click="onClick()" :color="isFavourite ? 'red' : color">
+    <BaseIcon :icon="isFavourite ? 'heartFull' : 'heart'" />
+  </BaseLink>
 </template>
 
 <script>
@@ -13,6 +16,19 @@ export default {
     isFavourite: {
       type: Boolean,
       default: false
+    },
+    color: {
+      type: String,
+      default: 'text-secondary'
+    }
+  },
+  methods: {
+    onClick() {
+      if (this.isFavourite) {
+        this.$emit('removed')
+      } else {
+        this.$emit('added')
+      }
     }
   }
 }
@@ -22,11 +38,5 @@ export default {
 .favourite {
   font-size: 1em;
   line-height: 0;
-  color: var(--color-text-secondary);
-  cursor: pointer;
-
-  &--active {
-    color: var(--color-red) !important;
-  }
 }
 </style>

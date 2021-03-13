@@ -75,7 +75,6 @@
               porcji
             </div>
           </div>
-          <!-- <div></div> -->
         </div>
         <div class="recipe__ingredient-groups">
           <div class="recipe__ingredient-group" v-for="(list, groupName) in recipe.details.ingredientGroups" :key="groupName">
@@ -85,11 +84,12 @@
             </ul>
           </div>
         </div>
-        <!-- <div class="recipe__ingredients-button-container">
-          <BaseLink :href="href" @click="navigate" tag="button" color="primary" class="link-with-icon">
-            dodaj wszystkie <BaseIcon class="link-with-icon__icon" icon="plus" weight="semiBold" />
+        <div class="recipe__ingredients-button-container">
+          <BaseLink :href="href" @click="navigate" tag="button" color="primary" class="all-to-shopping-list-button link-with-icon">
+            dodaj wszystkie brakujące do zakupów
+            <!-- <BaseIcon class="link-with-icon__icon" icon="plus" weight="semiBold" /> -->
           </BaseLink>
-        </div> -->
+        </div>
 
         <div class="section-header">
           <div class="section-title">
@@ -203,7 +203,7 @@ export default {
     }),
     cookingHours() {
       if (this.recipe && this.recipe.cookingMinutes) {
-        return dayjs.duration(this.recipe.cookingMinutes, 'minutes').format('HH:mm')
+        return dayjs.duration(this.recipe.cookingMinutes, 'minutes').format('H:mm')
       }
       return null
     },
@@ -392,6 +392,8 @@ export default {
     background-color: var(--color-background-flyout);
     box-shadow: 0 24px 48px -8px rgba(0, 0, 0, 0.3);
     padding: 8px 12px;
+    font-size: 0.75rem;
+    font-weight: bold;
     border-radius: 50px;
     display: flex;
     align-items: center;
@@ -468,13 +470,14 @@ export default {
       background: var(--color-border);
     }
   }
-  // &__ingredients-button-container {
-  //   margin-top: 16px;
+  &__ingredients-button-container {
+    margin-top: 16px;
 
-  //   button {
-  //     margin-left: auto;
-  //   }
-  // }
+    button {
+      margin-left: auto;
+      font-size: 0.75rem;
+    }
+  }
 
   &__directions-list {
     label {

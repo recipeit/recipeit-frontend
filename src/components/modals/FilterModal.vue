@@ -5,6 +5,12 @@
     </BaseModalHeader>
     <BaseModalBody>
       <div class="filters">
+        <div class="filter__group">
+          <BaseSelect placeholder="Sortuj wg." class="form-row" v-model="orderSelected" :options="orderOptions">
+            <template v-slot:label="{ option }">{{ $t(`recipesSortingMethods.${option}`) }}</template>
+            <template v-slot:option="{ option }">{{ $t(`recipesSortingMethods.${option}`) }}</template>
+          </BaseSelect>
+        </div>
         <div v-for="(group, groupValue) in options" :key="groupValue" class="filter__group">
           <div class="filter__group__title">
             <div class="filter__group__name">{{ $t(`recipeFilterGroups.${groupValue}`) }}</div>
@@ -48,17 +54,28 @@ export default {
       type: Object,
       required: true
     },
+    orderOptions: {
+      type: Object,
+      required: true
+    },
     defaultSelected: {
+      type: Object
+    },
+    defaultOrderSelected: {
       type: Object
     }
   },
-  data: () => ({
-    selected: {}
+  data: component => ({
+    selected: {},
+    orderSelected: component.defaultOrderSelected
   }),
   computed: {},
   methods: {
     submit() {
-      this.$emit('close', this.selected)
+      this.$emit('close', {
+        selected: this.selected,
+        orderSelected: this.orderSelected
+      })
     },
     prepareSelected(options, selected) {
       return {
@@ -94,14 +111,14 @@ export default {
 
     &__title {
       display: flex;
-      font-size: 14px;
+      font-size: 12px;
       position: relative;
       font-weight: 600;
       margin-bottom: 12px;
     }
 
     &__name {
-      color: var(--color-text-secondary);
+      color: var(--color-text-primary);
     }
 
     &__clear {

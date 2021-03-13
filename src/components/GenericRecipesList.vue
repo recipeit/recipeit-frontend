@@ -1,7 +1,23 @@
 <template>
   <div class="recipes-list">
     <div v-if="showFilterButtons" class="recipes-list__filters">
-      <div class="recipes-list__filters__button">
+      <div class="recipes-list-search">
+        <BaseLink class="recipes-list-search__search-button" color="text-secondary" @click="openSearch()">
+          <BaseIcon icon="search" weight="semiBold" />
+        </BaseLink>
+        <input type="text" class="recipes-list-search__input" placeholder="Szukaj przepisu" />
+
+        <BaseButton class="recipes-list-search__filter-button" size="small" raised color="contrast" @click="openFilterModal">
+          <!-- <BaseIcon icon="filter" /> -->
+          <span>Filtruj</span>
+          <transition name="filters-button-count-fade">
+            <span v-if="selectedFiltersCount !== 0" class="recipes-list-search__filter-button__count">
+              {{ selectedFiltersCount }}
+            </span>
+          </transition>
+        </BaseButton>
+      </div>
+      <!-- <div class="recipes-list__filters__button">
         <BaseButton stroked size="small" @click="openFilterModal">
           <BaseIcon icon="filter" class="recipes-list__filters__button__icon" />
           {{ $t('shared.filter') }}
@@ -17,7 +33,7 @@
           <BaseIcon icon="sort" class="recipes-list__filters__button__icon" />
           {{ $t('shared.sort') }}
         </BaseButton>
-      </div>
+      </div> -->
     </div>
 
     <template v-if="recipes.totalCount === 0 && !recipes.fetching">
@@ -104,12 +120,14 @@ export default {
         markRaw(FilterModal),
         {
           options: this.recipes.filterOptions,
-          defaultSelected: this.recipes.filters
+          defaultSelected: this.recipes.filters,
+          orderOptions: this.recipes.orderMethodOptions,
+          defaultOrderSelected: this.recipes.orderMethod || this.recipes.defaultOrderMethod
         },
         {
-          close: newFilters => {
-            if (newFilters) {
-              this.$emit('reload', { orderMethod: this.recipes.orderMethod, filters: newFilters })
+          close: ({ selected, orderSelected }) => {
+            if (selected || orderSelected) {
+              this.$emit('reload', { orderMethod: orderSelected, filters: selected })
             }
           }
         }
@@ -149,14 +167,77 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.recipes-list-search {
+  $root: &;
+
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 48px;
+  padding: 7px;
+  border-radius: 48px;
+  border: 1px solid var(--color-border);
+  @include transition((border-color));
+
+  &:hover {
+    border-color: var(--color-border-hover);
+  }
+
+  #{ $root }--focus & {
+    border-color: var(--color-primary);
+  }
+
+  &__input {
+    height: 100%;
+    padding: 8px;
+    padding-left: 2px;
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-weight: inherit;
+    font-family: inherit;
+    font-size: 12px;
+    color: var(--color-text-primary);
+
+    &::placeholder {
+      color: var(--color-text-secondary);
+    }
+  }
+
+  &__search-button {
+    padding: 0 8px;
+    font-size: 1rem;
+    height: 1rem;
+    line-height: 1;
+  }
+
+  &__filter-button {
+    font-size: 1rem;
+    padding: 0 12px;
+    height: 32px;
+    min-width: 32px;
+
+    &__count {
+      opacity: 0.75;
+    }
+
+    span {
+      padding: 0 4px;
+      font-size: 10px;
+      // text-transform: uppercase;
+      font-weight: bold;
+    }
+  }
+}
+
 .recipes-list {
   display: flex;
   flex-direction: column;
 
   &__filters {
-    margin: -8px;
-    display: flex;
-    margin-bottom: 8px;
+    // margin: -8px;
+    // display: flex;
+    margin-bottom: 16px;
 
     &__button {
       padding: 8px;
