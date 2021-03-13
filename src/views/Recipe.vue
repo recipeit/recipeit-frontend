@@ -208,7 +208,10 @@ export default {
       return null
     },
     amountFactor() {
-      return this.servings / 2
+      if (this.recipe) {
+        return this.servings / this.recipe.details.servings
+      }
+      return this.servings
     },
     isFavourite() {
       return this.favouriteRecipesIds.find(id => id === this.recipe.id) !== undefined
