@@ -32,7 +32,7 @@
           </div>
           <div v-if="recipe.details.servings" class="recipe__header-pill">
             <BaseIcon class="recipe__header-pill__icon" icon="user" weight="semiBold"></BaseIcon>
-            {{ recipe.details.servings }} porcje
+            {{ $tc('shared.servings', recipe.details.servings) }}
           </div>
         </div>
         <div class="recipe__header">
