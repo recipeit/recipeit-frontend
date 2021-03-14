@@ -1,13 +1,7 @@
 <template>
   <div class="layout__page__content">
     <div class="cook-it-layout">
-      <PageHeader
-        class="cook-it-page__header"
-        v-model="searchValue"
-        :search="true"
-        :title="$t('cookIt.title')"
-        @search="forceSearch()"
-      ></PageHeader>
+      <PageHeader class="cook-it-page__header" :title="$t('cookIt.title')"></PageHeader>
 
       <div>
         <GenericRecipesList
@@ -43,10 +37,6 @@ import PageHeader from '@/components/PageHeader.vue'
 export default {
   components: { GenericRecipesList, PageHeader },
   name: 'CookIt',
-  data: () => ({
-    searchValue: null,
-    searchTimeoutCallback: null
-  }),
   computed: {
     ...mapState({
       availableRecipes: state => state.recipes.availableRecipes,
@@ -59,33 +49,13 @@ export default {
     }
   },
   methods: {
-    reloadRecipes({ orderMethod, filters }) {
-      this.fetchRecipes(orderMethod, filters, this.searchValue)
-    },
-    search() {
-      this.fetchRecipes(this.availableRecipes.orderMethod, this.availableRecipes.filters, this.searchValue)
+    reloadRecipes({ orderMethod, filters, search }) {
+      this.fetchRecipes(orderMethod, filters, search)
     },
     fetchRecipes(orderMethod, filters, search) {
       const queryParams = fetchRecipesQueryParams(orderMethod, filters, search)
       this.$store.dispatch('recipes/fetchAvailableRecipes', queryParams)
       this.$store.dispatch('recipes/fetchAlmostAvailableRecipes', queryParams)
-    },
-    forceSearch() {
-      if (this.searchTimeoutCallback) {
-        clearTimeout(this.searchTimeoutCallback)
-        this.searchTimeoutCallback = null
-      }
-      this.search()
-    }
-  },
-  watch: {
-    searchValue() {
-      if (this.searchTimeoutCallback) {
-        clearTimeout(this.searchTimeoutCallback)
-      }
-      this.searchTimeoutCallback = setTimeout(() => {
-        this.search()
-      }, 750)
     }
   }
 }

@@ -1,12 +1,6 @@
 <template>
   <div class="layout__page__content">
-    <PageHeader
-      class="recipes-page__header"
-      v-model="searchValue"
-      :search="true"
-      :title="$t('recipes.title')"
-      @search="forceSearch()"
-    ></PageHeader>
+    <PageHeader class="recipes-page__header" :title="$t('recipes.title')"></PageHeader>
     <GenericRecipesList :recipes="recipes" @load-next="loadNextRecipes" @reload="reloadRecipes"></GenericRecipesList>
   </div>
 </template>
@@ -25,33 +19,24 @@ export default {
     PageHeader
   },
   data: () => ({
-    getRecipesApiEndpoint: recipeApi.getRecipes,
-    searchValue: null,
-    searchTimeoutCallback: null
+    getRecipesApiEndpoint: recipeApi.getRecipes
   }),
   methods: {
     loadNextRecipes() {
-      const { orderMethod, filters } = this.recipes
-      this.fetchNextRecipes(orderMethod, filters, this.searchValue)
+      const { orderMethod, filters, search } = this.recipes
+      this.fetchNextRecipes(orderMethod, filters, search)
     },
-    reloadRecipes({ orderMethod, filters }) {
-      this.fetchRecipes(orderMethod, filters, this.searchValue)
+    reloadRecipes({ orderMethod, filters, search }) {
+      this.fetchRecipes(orderMethod, filters, search)
     },
     search() {
-      this.fetchRecipes(this.recipes.orderMethod, this.recipes.filters, this.searchValue)
+      this.fetchRecipes(this.recipes.orderMethod, this.recipes.filters, this.recipes.search)
     },
     fetchNextRecipes(orderMethod, filters, search) {
       this.$store.dispatch('recipes/fetchNextRecipes', fetchRecipesQueryParams(orderMethod, filters, search))
     },
     fetchRecipes(orderMethod, filters, search) {
       this.$store.dispatch('recipes/fetchRecipes', fetchRecipesQueryParams(orderMethod, filters, search))
-    },
-    forceSearch() {
-      if (this.searchTimeoutCallback) {
-        clearTimeout(this.searchTimeoutCallback)
-        this.searchTimeoutCallback = null
-      }
-      this.search()
     }
   },
   computed: {
@@ -60,21 +45,8 @@ export default {
     })
   },
   beforeMount() {
-    if (this.recipes.search) {
-      this.searchValue = this.recipes.search
-    }
     if (this.recipes.items === null) {
       this.$store.dispatch('recipes/fetchRecipes')
-    }
-  },
-  watch: {
-    searchValue() {
-      if (this.searchTimeoutCallback) {
-        clearTimeout(this.searchTimeoutCallback)
-      }
-      this.searchTimeoutCallback = setTimeout(() => {
-        this.search()
-      }, 750)
     }
   }
 }

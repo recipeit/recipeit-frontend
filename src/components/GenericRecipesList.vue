@@ -2,12 +2,22 @@
   <div class="recipes-list">
     <div v-if="showFilterButtons" class="recipes-list__filters">
       <div class="recipes-list-search">
-        <BaseLink class="recipes-list-search__search-button" color="text-secondary" @click="openSearch()">
+        <BaseLink class="recipes-list-search__search-button" color="text-secondary" @click="searchNow()">
           <BaseIcon icon="search" weight="semiBold" />
         </BaseLink>
-        <input type="text" class="recipes-list-search__input" placeholder="Szukaj przepisu" />
+        <input
+          :value="searchString"
+          @input="onSearchInput($event.target.value)"
+          @keydown.enter.self="searchNow()"
+          type="text"
+          class="recipes-list-search__input"
+          placeholder="Szukaj przepisu"
+        />
 
-        <BaseButton class="recipes-list-search__filter-button" size="small" raised color="contrast" @click="openFilterModal">
+        <BaseLink v-if="searchString" class="recipes-list-search__clear-button" color="text-secondary" @click="onSearchInput(null)">
+          <BaseIcon icon="close" weight="semiBold" />
+        </BaseLink>
+        <BaseButton class="recipes-list-search__filter-button" size="small" raised color="contrast" @click="openFilterModal()">
           <!-- <BaseIcon icon="filter" /> -->
           <span>Filtruj</span>
           <transition name="filters-button-count-fade">
@@ -82,7 +92,7 @@ import { markRaw } from 'vue'
 import { RecipeList } from '@/constants'
 import RecipeBox from '@/components/RecipeBox'
 import FilterModal from '@/components/modals/FilterModal'
-import SortModal from '@/components/modals/SortModal'
+// import SortModal from '@/components/modals/SortModal'
 import Observer from './Observer.vue'
 
 export default {
@@ -109,6 +119,10 @@ export default {
       default: true
     }
   },
+  data: component => ({
+    searchString: component.recipes.search,
+    searchTimeoutCallback: null
+  }),
   methods: {
     loadNext() {
       if (!this.recipes.fetching) {
@@ -125,30 +139,49 @@ export default {
           defaultOrderSelected: this.recipes.orderMethod || this.recipes.defaultOrderMethod
         },
         {
-          close: ({ selected, orderSelected }) => {
-            if (selected || orderSelected) {
-              this.$emit('reload', { orderMethod: orderSelected, filters: selected })
+          close: result => {
+            if (result?.selected || result?.orderSelected) {
+              this.$emit('reload', { orderMethod: result.orderSelected, filters: result.selected })
             }
           }
         }
       )
     },
-    openSortModal() {
-      this.$modal.show(
-        markRaw(SortModal),
-        {
-          options: this.recipes.orderMethodOptions,
-          defaultSelected: this.recipes.orderMethod || this.recipes.defaultOrderMethod
-        },
-        {
-          close: newSortMethod => {
-            if (newSortMethod) {
-              this.$emit('reload', { orderMethod: newSortMethod, filters: this.recipes.filters })
-            }
-          }
-        }
-      )
+    onSearchInput(newValue) {
+      this.searchString = newValue
+      if (this.searchTimeoutCallback) {
+        clearTimeout(this.searchTimeoutCallback)
+      }
+      this.searchTimeoutCallback = setTimeout(() => {
+        this.search()
+      }, 750)
+    },
+    searchNow() {
+      if (this.searchTimeoutCallback) {
+        clearTimeout(this.searchTimeoutCallback)
+        this.searchTimeoutCallback = null
+      }
+      this.search()
+    },
+    search() {
+      this.$emit('reload', { orderMethod: this.recipes.orderMethod, filters: this.recipes.filters, search: this.searchString })
     }
+    // openSortModal() {
+    //   this.$modal.show(
+    //     markRaw(SortModal),
+    //     {
+    //       options: this.recipes.orderMethodOptions,
+    //       defaultSelected: this.recipes.orderMethod || this.recipes.defaultOrderMethod
+    //     },
+    //     {
+    //       close: newSortMethod => {
+    //         if (newSortMethod) {
+    //           this.$emit('reload', { orderMethod: newSortMethod, filters: this.recipes.filters })
+    //         }
+    //       }
+    //     }
+    //   )
+    // }
   },
   computed: {
     selectedFiltersCount() {
@@ -204,10 +237,11 @@ export default {
     }
   }
 
-  &__search-button {
-    padding: 0 8px;
+  &__search-button,
+  &__clear-button {
+    padding: 0.5rem;
     font-size: 1rem;
-    height: 1rem;
+    height: 2rem;
     line-height: 1;
   }
 

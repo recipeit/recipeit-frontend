@@ -1,44 +1,5 @@
 <template>
-  <header v-if="search" class="page-header">
-    <transition name="fahade">
-      <div v-show="!opened" class="page-header__content">
-        <BaseLink v-if="backButton" class="page-header__back-icon" color="text-primary" @click="$router.go(-1)">
-          <BaseIcon icon="arrowLeft" weight="semiBold" />
-        </BaseLink>
-
-        <div class="page-header__title-container">
-          <slot name="title">
-            <h1>{{ title }}</h1>
-          </slot>
-        </div>
-
-        <!-- <BaseLink class="page-header__search-icon" color="text-primary" @click="openSearch()">
-          <BaseIcon icon="search" weight="semiBold" />
-        </BaseLink> -->
-
-        <PageHeaderUser />
-      </div>
-    </transition>
-
-    <transition name="fahade">
-      <div v-show="opened" class="page-header__search">
-        <BaseIcon class="page-header__search__search-icon" icon="search" weight="semiBold" />
-
-        <input
-          ref="searchInput"
-          placeholder="Szukaj przepisów"
-          :value="searchValue"
-          @input="updateSearch($event.target.value)"
-          @blur="opened = false"
-        />
-
-        <BaseLink v-if="searchValue" class="page-header__search__clear-icon" color="text-primary" @click="searchValue = ''">
-          <BaseIcon icon="close" weight="semiBold" />
-        </BaseLink>
-      </div>
-    </transition>
-  </header>
-  <header v-else class="page-header">
+  <header class="page-header">
     <div class="page-header__content">
       <div class="page-header__title-container">
         <slot name="title">
@@ -55,39 +16,12 @@
 import PageHeaderUser from './PageHeaderUser.vue'
 export default {
   components: { PageHeaderUser },
-  emits: ['update:modelValue'],
   props: {
     backButton: {
       type: Boolean,
       default: false
     },
-    search: {
-      type: Boolean,
-      default: false
-    },
-    title: String,
-    modelValue: String
-  },
-  data: component => ({
-    opened: false,
-    searchValue: component.modelValue
-  }),
-  methods: {
-    openSearch() {
-      if (this.opened) return
-      this.opened = true
-      this.$nextTick(() => {
-        this.$refs.searchInput?.focus()
-      })
-    },
-    updateSearch(newValue) {
-      this.$emit('update:modelValue', newValue)
-    }
-  },
-  watch: {
-    modelValue(newValue) {
-      this.searchValue = newValue
-    }
+    title: String
   }
 }
 </script>

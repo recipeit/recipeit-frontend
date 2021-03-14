@@ -24,11 +24,11 @@ export default {
   }),
   methods: {
     loadNextRecipes() {
-      const { orderMethod, filters } = this.recipes
-      this.$store.dispatch('recipes/fetchNextAlmostAvailableRecipes', fetchRecipesQueryParams(orderMethod, filters))
+      const { orderMethod, filters, search } = this.recipes
+      this.$store.dispatch('recipes/fetchNextAlmostAvailableRecipes', fetchRecipesQueryParams(orderMethod, filters, search))
     },
-    reloadRecipes({ orderMethod, filters }) {
-      this.$store.dispatch('recipes/fetchAlmostAvailableRecipes', fetchRecipesQueryParams(orderMethod, filters))
+    reloadRecipes({ orderMethod, filters, search }) {
+      this.$store.dispatch('recipes/fetchAlmostAvailableRecipes', fetchRecipesQueryParams(orderMethod, filters, search))
     }
   },
   computed: {
