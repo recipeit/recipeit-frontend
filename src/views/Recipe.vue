@@ -86,7 +86,7 @@
         </div>
         <div class="recipe__ingredients-button-container">
           <BaseLink :href="href" @click="navigate" tag="button" color="primary" class="all-to-shopping-list-button link-with-icon">
-            dodaj wszystkie brakujące do zakupów
+            dodaj brakujące składniki do zakupów
             <!-- <BaseIcon class="link-with-icon__icon" icon="plus" weight="semiBold" /> -->
           </BaseLink>
         </div>
