@@ -60,7 +60,8 @@ $color-theme: (
       'accent': functions.buttonSubtleVariables($blue),
       'warning': functions.buttonSubtleVariables($yellow),
       'danger': functions.buttonSubtleVariables($red),
-      'contrast': functions.buttonSubtleVariables(#b1c1ce)
+      'contrast': functions.buttonSubtleVariables(#b1c1ce),
+      'disabled': functions.buttonSubtleVariables(#b1c1ce)
     ),
     'stroked': (
       'primary': functions.buttonStrokedVariables($green),

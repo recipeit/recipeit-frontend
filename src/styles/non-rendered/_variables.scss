@@ -91,7 +91,8 @@ $button-subtle-variables: (
   'accent': buttonSubtleColorMap('accent'),
   'warning': buttonSubtleColorMap('warning'),
   'danger': buttonSubtleColorMap('danger'),
-  'contrast': buttonSubtleColorMap('contrast')
+  'contrast': buttonSubtleColorMap('contrast'),
+  'disabled': buttonSubtleColorMap('disabled')
 );
 
 @function buttonRaisedColorMap($color) {

@@ -149,8 +149,14 @@ export default {
     color: var(--color-text-primary);
 
     @each $color, $value in $button-subtle-variables {
-      &#{ $root }--#{ $color } {
-        @include button-subtle($value);
+      @if ($color == 'disabled') {
+        &[disabled] {
+          @include button-subtle($value);
+        }
+      } @else {
+        &#{ $root }--#{ $color } {
+          @include button-subtle($value);
+        }
       }
     }
   }
