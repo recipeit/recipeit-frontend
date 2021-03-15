@@ -12,6 +12,7 @@
 
 <script>
 export default {
+  emits: ['added', 'removed'],
   props: {
     isFavourite: {
       type: Boolean,

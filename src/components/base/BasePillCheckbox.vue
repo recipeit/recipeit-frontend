@@ -8,6 +8,7 @@
 
 <script>
 export default {
+  emits: ['update:modelValue'],
   props: {
     excluding: { type: Boolean },
     value: { type: [String, Number] },

@@ -8,3 +8,9 @@
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  emits: ['close']
+}
+</script>

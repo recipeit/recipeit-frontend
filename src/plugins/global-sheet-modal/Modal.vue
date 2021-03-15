@@ -36,6 +36,7 @@
 
 <script>
 export default {
+  emits: ['close', 'closed'],
   props: {
     opened: {
       type: Boolean,

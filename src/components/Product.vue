@@ -2,8 +2,10 @@
   <div class="product">
     <div class="product__info">
       <div class="product__name">{{ name }}</div>
-      <div class="product__amount">{{ product.amount }}</div>
-      <div class="product__unit">{{ $tc(`unitsShort.${product.unit}`, product.amount) }}</div>
+      <div v-if="product.amount && product.amount > 0" class="product__amount">{{ product.amount }}</div>
+      <div v-if="product.amount && product.amount > 0 && product.unit" class="product__unit">
+        {{ $tc(`unitsShort.${product.unit}`, product.amount) }}
+      </div>
     </div>
     <div class="product__actions">
       <slot />

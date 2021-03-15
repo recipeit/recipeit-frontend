@@ -40,6 +40,7 @@ import { units } from '@/constants'
 import { mapState } from 'vuex'
 
 export default {
+  emits: ['close'],
   data: component => ({
     units: units,
     loading: false,

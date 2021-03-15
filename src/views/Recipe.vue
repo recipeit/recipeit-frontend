@@ -3,7 +3,7 @@
     <div v-if="recipe && recipe.details" class="recipe">
       <div class="recipe__image-container">
         <div class="recipe__image-container__buttons">
-          <BaseLink class="recipe__image-container__button" :href="href" @click="back" tag="button">
+          <BaseLink class="recipe__image-container__button" @click="back()" tag="button">
             <BaseIcon icon="arrowRight" weight="regular" />
           </BaseLink>
           <BaseMenu>
@@ -85,7 +85,7 @@
           </div>
         </div>
         <div class="recipe__ingredients-button-container">
-          <BaseLink :href="href" @click="navigate" tag="button" color="primary" class="all-to-shopping-list-button link-with-icon">
+          <BaseLink tag="button" color="primary" class="all-to-shopping-list-button link-with-icon">
             dodaj brakujące składniki do zakupów
             <!-- <BaseIcon class="link-with-icon__icon" icon="plus" weight="semiBold" /> -->
           </BaseLink>

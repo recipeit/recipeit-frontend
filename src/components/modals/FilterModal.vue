@@ -49,6 +49,7 @@
 
 <script>
 export default {
+  emits: ['close'],
   props: {
     options: {
       type: Object,
@@ -62,7 +63,7 @@ export default {
       type: Object
     },
     defaultOrderSelected: {
-      type: Object
+      type: String
     }
   },
   data: component => ({

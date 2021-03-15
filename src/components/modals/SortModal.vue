@@ -26,6 +26,7 @@
 
 <script>
 export default {
+  emits: ['close'],
   props: {
     options: {
       type: Array,

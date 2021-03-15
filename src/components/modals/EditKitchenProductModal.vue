@@ -43,6 +43,7 @@ import { useStore } from 'vuex'
 import { computed, reactive, watch, toRefs } from 'vue'
 
 export default {
+  emits: ['close'],
   props: {
     product: {
       type: Object,

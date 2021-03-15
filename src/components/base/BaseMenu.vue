@@ -53,29 +53,21 @@ export default {
     open(event) {
       if (this.opened) return
       event.stopPropagation()
-      console.log('open this', this)
       window.addEventListener('click', this.onClick)
       this.opened = true
     },
     hide() {
-      // console.log('hide')
       if (!this.opened) return
       window.removeEventListener('click', this.onClick)
       this.opened = false
     },
     onClick(event) {
-      // console.log('onClick')
-
       let tempEl = event?.target
-      // console.log(tempEl)
       while (tempEl !== this.$refs.dropdownContainer && tempEl.parentElement) {
         tempEl = tempEl.parentElement
       }
-      // console.log(tempEl)
 
       const clickInside = tempEl === this.$refs.dropdownContainer
-      // console.log('clickInside', clickInside)
-      // console.log('onClick this', this)
 
       if (this.hideOnClick || !clickInside) {
         this.hide()

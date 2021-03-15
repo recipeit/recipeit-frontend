@@ -15,6 +15,7 @@
 import Product from '@/components/Product'
 
 export default {
+  emits: ['purchase'],
   components: {
     Product
   },

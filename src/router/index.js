@@ -3,7 +3,6 @@ import modalPlugin from '@/plugins/global-sheet-modal'
 import store from '@/store'
 
 const onlyAnonymousGuard = (to, from, next) => {
-  console.log('onlyAnonymousGuard')
   if (!store.getters['user/isAuthenticated']) {
     next()
   } else {

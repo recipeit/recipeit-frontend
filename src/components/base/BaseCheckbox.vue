@@ -21,6 +21,7 @@
 
 <script>
 export default {
+  emits: ['update:modelValue'],
   props: {
     value: [String, Number],
     modelValue: { default: '' },

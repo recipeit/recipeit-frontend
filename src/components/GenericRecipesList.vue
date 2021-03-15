@@ -96,6 +96,7 @@ import FilterModal from '@/components/modals/FilterModal'
 import Observer from './Observer.vue'
 
 export default {
+  emits: ['reload', 'load-next'],
   components: {
     RecipeBox,
     Observer

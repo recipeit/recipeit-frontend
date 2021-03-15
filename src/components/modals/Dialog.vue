@@ -17,6 +17,7 @@
 
 <script>
 export default {
+  emits: ['close'],
   props: {
     title: {
       type: String
