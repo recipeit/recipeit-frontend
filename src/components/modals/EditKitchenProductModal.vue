@@ -24,6 +24,27 @@
             <template v-slot:option="{ option }">{{ $tc(`units.${option}`, unitLabelAmount) }}</template>
           </BaseSelect>
         </div>
+
+        <div class="form-row">
+          <BaseLink color="primary">
+            <BaseIcon icon="plus"></BaseIcon>
+            {{ expirationDates && expirationDates.length > 0 ? 'dodaj kolejną datę ważności' : 'dodaj datę ważności' }}
+          </BaseLink>
+        </div>
+
+        <div class="form-row">
+          <ul v-if="expirationDates === null">
+            <li>...</li>
+          </ul>
+          <ul>
+            <li v-for="expirationDate in expirationDates" :key="expirationDate">
+              {{ expirationDate }}
+              <BaseLink tag="button" color="red">
+                <BaseIcon icon="close"></BaseIcon>
+              </BaseLink>
+            </li>
+          </ul>
+        </div>
       </div>
     </BaseModalBody>
     <BaseModalFooter>
@@ -41,6 +62,7 @@
 import { units } from '@/constants'
 import { useStore } from 'vuex'
 import { computed, reactive, watch, toRefs } from 'vue'
+import myKitchenApi from '@/api/myKitchenApi'
 
 export default {
   emits: ['close'],
@@ -57,15 +79,22 @@ export default {
       loading: false,
       newProduct: JSON.parse(JSON.stringify(props.product)),
       selectedBaseProduct: null,
-      baseProducts: computed(() => store.state.ingredients.baseProducts)
+      baseProducts: computed(() => store.state.ingredients.baseProducts),
+      expirationDates: null
     })
 
     const unitLabelAmount = computed(() => parseFloat(data.newProduct.amount) || 2)
 
     function editProduct() {
-      store.dispatch('myKitchen/editProductFromKitchen', { id: props.product.id, product: data.newProduct }).then(() => {
-        component.emit('close')
-      })
+      store
+        .dispatch('myKitchen/editProductFromKitchen', {
+          id: props.product.id,
+          product: data.newProduct,
+          expirationDates: data.expirationDates
+        })
+        .then(() => {
+          component.emit('close')
+        })
     }
 
     if (data.baseProducts && props.product.baseProductId) {
@@ -80,6 +109,10 @@ export default {
         }
       }
     )
+
+    myKitchenApi.getProductExpirationDates(props.product.id).then(response => {
+      data.expirationDates = response.data
+    })
 
     return {
       units,
