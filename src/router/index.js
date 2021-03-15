@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import modalPlugin from '@/plugins/global-sheet-modal'
 import store from '@/store'
 
 const onlyAnonymousGuard = (to, from, next) => {
@@ -96,9 +97,23 @@ const router = createRouter({
   routes
 })
 
-// router.beforeEach((to, from, next) => {
-//   if (to.name !== 'Login' && !store.getters['user/isAuthenticated']) next({ name: 'Login' })
-//   else next()
+// this.$router.beforeEach((to, from, next) => {
+//   // Do stuff
+
+//   // Then
+//   next() // move on to the next hook in the pipeline. If no hooks are left, the navigation is confirmed.
+//   next(false) // abort the current navigation.
+//   next('/') // redirect to a different location.
 // })
+
+router.beforeEach((to, from, next) => {
+  if (modalPlugin.modal && modalPlugin.modal.anyModalOpened()) {
+    modalPlugin.modal.hideLast()
+  } else {
+    next()
+  }
+  // if (to.name !== 'Login' && !store.getters['user/isAuthenticated']) next({ name: 'Login' })
+  // else next()
+})
 
 export default router

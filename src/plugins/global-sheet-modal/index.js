@@ -6,6 +6,7 @@ const defaultOptions = {
 }
 
 const Plugin = {
+  modal: null,
   install: (app, options = {}) => {
     var usedOptions = {
       ...defaultOptions,
@@ -29,12 +30,32 @@ const Plugin = {
         } else {
           usedOptions.globalModalContainer.remove(id)
         }
+      },
+      anyModalOpened() {
+        if (usedOptions.globalModalContainer == null) {
+          return false
+        } else {
+          return usedOptions.globalModalContainer.anyModalOpened
+        }
+      },
+      hideLast() {
+        if (usedOptions.globalModalContainer == null) {
+          console.warn('[global-sheet-modal] Global modal container is not present')
+        } else {
+          const openedModals = usedOptions.globalModalContainer.modals.filter(m => m.opened)
+          if (openedModals && openedModals.length > 0) {
+            const lastModal = openedModals[openedModals.length - 1]
+            usedOptions.globalModalContainer.remove(lastModal.id)
+          }
+        }
       }
     }
     app.config.globalProperties.$modal = $modal
 
     app.component(GlobalModalContainer.name, GlobalModalContainer)
     app.component(ModalContent.name, ModalContent)
+
+    Plugin.modal = $modal
   }
 }
 

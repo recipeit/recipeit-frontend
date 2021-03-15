@@ -9,7 +9,7 @@
           <BaseMenu>
             <template v-slot:toggle>
               <BaseLink class="recipe__image-container__button" tag="button">
-                <BaseIcon icon="arrowRight" weight="regular" />
+                <BaseIcon icon="dotsHorizontal" weight="regular" />
               </BaseLink>
             </template>
             <template v-slot:dropdown>
@@ -27,7 +27,7 @@
       <div class="recipe__main">
         <div class="recipe__header-pills">
           <div v-if="cookingHours" class="recipe__header-pill">
-            <BaseIcon class="recipe__header-pill__icon" icon="clock"></BaseIcon>
+            <BaseIcon class="recipe__header-pill__icon" icon="clock" weight="semiBold"></BaseIcon>
             {{ cookingHours }} h
           </div>
           <div v-if="recipe.details.servings" class="recipe__header-pill">

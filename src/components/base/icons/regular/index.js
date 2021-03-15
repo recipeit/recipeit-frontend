@@ -5,6 +5,7 @@ import { check } from './check'
 import { clock } from './clock'
 import { close } from './close'
 import { cookbook } from './cookbook'
+import { dotsHorizontal } from './dotsHorizontal'
 import { filter } from './filter'
 import { food } from './food'
 import { heart } from './heart'
@@ -27,6 +28,7 @@ export {
   clock,
   close,
   cookbook,
+  dotsHorizontal,
   filter,
   food,
   heart,
