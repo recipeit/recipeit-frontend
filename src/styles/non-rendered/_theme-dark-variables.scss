@@ -17,6 +17,9 @@ $blue-palette: functions.colorPalette2($blue);
 $green-palette: functions.colorPalette2($green);
 $yellow-palette: functions.colorPalette2($yellow);
 
+$text-primary: #b1c1ce;
+$text-primary: #cedeeb;
+
 $color-theme: (
   'primary': functions.colorVariables($green),
   'accent': $blue,
@@ -28,7 +31,7 @@ $color-theme: (
     'hover': lighten(#343d44, 10%),
     'active': lighten(#343d44, 20%)
   ),
-  'text-primary': #b1c1ce,
+  'text-primary': $text-primary,
   'text-secondary': #657786,
   'green': $green,
   'blue': $blue,
@@ -36,11 +39,11 @@ $color-theme: (
   'red': $red,
   'link': (
     'DEFAULT': (
-      'color': #b1c1ce,
+      'color': $text-primary,
       'color-hover': $green,
       'color-active': lighten($green, 10)
     ),
-    'text-primary': functions.linkVariables(#b1c1ce),
+    'text-primary': functions.linkVariables($text-primary),
     'text-secondary': functions.linkVariables(#657786),
     'primary': functions.linkVariables($green),
     'accent': functions.linkVariables($blue),
@@ -53,24 +56,24 @@ $color-theme: (
       'accent': functions.buttonRaisedVariablesDark($blue, darken(#272c30, 5)),
       'warning': functions.buttonRaisedVariablesDark($yellow, darken(#272c30, 5)),
       'danger': functions.buttonRaisedVariablesDark($red, darken(#272c30, 5)),
-      'contrast': functions.buttonRaisedVariablesDark(#b1c1ce, darken(#272c30, 5))
+      'contrast': functions.buttonRaisedVariablesDark($text-primary, darken(#272c30, 5))
     ),
     'subtle': (
       'primary': functions.buttonSubtleVariables($green),
       'accent': functions.buttonSubtleVariables($blue),
       'warning': functions.buttonSubtleVariables($yellow),
       'danger': functions.buttonSubtleVariables($red),
-      'contrast': functions.buttonSubtleVariables(#b1c1ce),
-      'disabled': functions.buttonSubtleVariables(#b1c1ce)
+      'contrast': functions.buttonSubtleVariables($text-primary),
+      'disabled': functions.buttonSubtleVariables($text-primary)
     ),
     'stroked': (
       'primary': functions.buttonStrokedVariables($green),
       'accent': functions.buttonStrokedVariables($blue),
       'warning': functions.buttonStrokedVariables($yellow),
       'danger': functions.buttonStrokedVariables($red),
-      'contrast': functions.buttonStrokedVariables(#b1c1ce)
+      'contrast': functions.buttonStrokedVariables($text-primary)
     )
   ),
-  'scrollbar-thumb': rgba(#b1c1ce, 0.1),
-  'scrollbar-thumb-hover': rgba(#b1c1ce, 0.2)
+  'scrollbar-thumb': rgba($text-primary, 0.1),
+  'scrollbar-thumb-hover': rgba($text-primary, 0.2)
 );
