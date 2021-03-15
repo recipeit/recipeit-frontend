@@ -8,9 +8,9 @@
           </BaseLink>
           <BaseMenu>
             <template v-slot:toggle>
-              <BaseButton size="small" class="recipe__image-container__button">
+              <BaseLink class="recipe__image-container__button" tag="button">
                 <BaseIcon icon="arrowRight" weight="regular" />
-              </BaseButton>
+              </BaseLink>
             </template>
             <template v-slot:dropdown>
               <BaseMenuList>
@@ -336,8 +336,9 @@ export default {
       font-size: 1.5rem;
       padding: 0.5rem;
       // background: rgba(#fff, 0.75);
-      background-color: rgba(#222, 0.75);
-      color: #fff;
+      // background-color: rgba(#222, 0.75);
+      background-color: rgba(var(--color-background-rgb), 0.95);
+      color: var(--color-text-primary);
       // backdrop-filter: blur(8px);
       border-radius: 50px;
       line-height: 0;
