@@ -5,7 +5,7 @@
     </BaseModalHeader>
     <BaseModalBody>
       <div>
-        <BaseInput class="form-row" label="Nazwa" type="text" v-model="newProduct.name"></BaseInput>
+        <BaseInput :autofocus="true" class="form-row" label="Nazwa" type="text" v-model="newProduct.name"></BaseInput>
 
         <BaseSelect
           placeholder="Gotowy produkt"

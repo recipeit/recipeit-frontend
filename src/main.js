@@ -7,6 +7,7 @@ import router from './router'
 import store from './store'
 import i18n from './i18n'
 import blurOnClick from './directives/blurOnClick'
+import autofocus from './directives/autofocus'
 
 const app = createApp(App)
 
@@ -30,4 +31,5 @@ app
   .use(store)
   .use(i18n)
   .directive('blur-on-click', blurOnClick)
+  .directive('autofocus', autofocus)
   .mount('#app')

@@ -9,6 +9,7 @@
         :tabindex="tabindex"
         :placeholder="placeholder"
         :value="modelValue"
+        v-autofocus="autofocus"
         @input="valueChanged($event)"
         @focus="setFocus()"
         @blur="setBlur()"
@@ -39,6 +40,10 @@ export default {
     tabindex: {
       type: Number,
       default: 0
+    },
+    autofocus: {
+      type: Boolean,
+      default: false
     }
   },
   data: () => ({
