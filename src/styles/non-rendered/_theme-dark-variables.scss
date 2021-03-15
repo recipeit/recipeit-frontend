@@ -5,7 +5,9 @@ $grayscale-middle: #3f4d55;
 $grayscale-max: #aebfcc;
 
 $red: #ff6464;
-$blue: #587df3;
+// $blue: #587df3;
+$blue-dark: #0058ff;
+$blue: #00ABFF;
 // $green: #8dcf60;
 $green: #0dd173;
 // $green: #28da84;
@@ -19,6 +21,8 @@ $yellow-palette: functions.colorPalette2($yellow);
 
 $text-primary: #b1c1ce;
 $text-primary: #cedeeb;
+$text-secondary: #657786;
+$text-secondary: #657786;
 
 $color-theme: (
   'primary': functions.colorVariables($green),
@@ -32,7 +36,7 @@ $color-theme: (
     'active': lighten(#343d44, 20%)
   ),
   'text-primary': $text-primary,
-  'text-secondary': #657786,
+  'text-secondary': $text-secondary,
   'green': $green,
   'blue': $blue,
   'yellow': $yellow,
@@ -44,7 +48,7 @@ $color-theme: (
       'color-active': lighten($green, 10)
     ),
     'text-primary': functions.linkVariables($text-primary),
-    'text-secondary': functions.linkVariables(#657786),
+    'text-secondary': functions.linkVariables($text-secondary),
     'primary': functions.linkVariables($green),
     'accent': functions.linkVariables($blue),
     'warning': functions.linkVariables($yellow),
@@ -60,7 +64,7 @@ $color-theme: (
     ),
     'subtle': (
       'primary': functions.buttonSubtleVariables($green),
-      'accent': functions.buttonSubtleVariables($blue),
+      'accent': functions.buttonSubtleVariables($blue-dark, $blue),
       'warning': functions.buttonSubtleVariables($yellow),
       'danger': functions.buttonSubtleVariables($red),
       'contrast': functions.buttonSubtleVariables($text-primary),
