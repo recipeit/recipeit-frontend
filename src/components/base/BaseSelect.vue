@@ -296,8 +296,8 @@ export default {
       &--small {
         height: 12px;
         font-size: 12px;
-        color: var(--color-text-primary);
-        font-weight: bold;
+        // color: var(--color-text-primary);
+        // font-weight: bold;
         // transform: scale(0.75);
       }
     }

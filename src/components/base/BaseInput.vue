@@ -83,8 +83,8 @@ export default {
       &.label-up {
         line-height: 12px;
         font-size: 12px;
-        color: var(--color-text-primary);
-        font-weight: bold;
+        // color: var(--color-text-primary);
+        // font-weight: bold;
       }
     }
 

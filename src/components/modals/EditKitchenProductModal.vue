@@ -26,24 +26,32 @@
         </div>
 
         <div class="form-row">
-          <BaseLink color="primary">
-            <BaseIcon icon="plus"></BaseIcon>
-            {{ expirationDates && expirationDates.length > 0 ? 'dodaj kolejną datę ważności' : 'dodaj datę ważności' }}
-          </BaseLink>
+          <div class="expiration-date-title">Daty ważności</div>
+        </div>
+        <div v-if="!(expirationDates && expirationDates.length === 0)" class="form-row">
+          <div v-if="expirationDates === null" class="expiration-date-list">
+            <BaseButton class="expiration-date-list__item" subtle color="primary" size="small" v-for="i in 3" :key="i"></BaseButton>
+          </div>
+          <div v-else class="expiration-date-list">
+            <BaseButton
+              class="expiration-date-list__item"
+              subtle
+              color="contrast"
+              size="small"
+              v-for="expirationDate in expirationDates"
+              :key="expirationDate"
+            >
+              {{ expirationDate }}
+              <BaseIcon class="expiration-date-list__item__icon" icon="close" weight="semiBold"></BaseIcon>
+            </BaseButton>
+          </div>
         </div>
 
         <div class="form-row">
-          <ul v-if="expirationDates === null">
-            <li>...</li>
-          </ul>
-          <ul>
-            <li v-for="expirationDate in expirationDates" :key="expirationDate">
-              {{ expirationDate }}
-              <BaseLink tag="button" color="red">
-                <BaseIcon icon="close"></BaseIcon>
-              </BaseLink>
-            </li>
-          </ul>
+          <BaseLink tag="button" color="primary" class="add-expiration-date-button">
+            <BaseIcon class="add-expiration-date-button__icon" icon="plus" weight="semiBold"></BaseIcon>
+            {{ expirationDates && expirationDates.length > 0 ? 'dodaj kolejną datę ważności' : 'dodaj datę ważności' }}
+          </BaseLink>
         </div>
       </div>
     </BaseModalBody>
@@ -137,5 +145,40 @@ export default {
 .amount-input {
   width: 128px;
   flex: unset;
+}
+
+.expiration-date-title {
+  color: var(--color-text-secondary);
+  font-size: 12px;
+  // margin-bottom: -8px;
+}
+
+.add-expiration-date-button {
+  font-size: 12px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+
+  &__icon {
+    margin-right: 4px;
+  }
+}
+
+.expiration-date-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+
+  &__item {
+    font-weight: bold;
+    padding: 0.625rem 1rem;
+    height: 32px;
+
+    &__icon {
+      font-size: 1rem;
+      margin-left: 4px;
+      margin-right: -6px;
+    }
+  }
 }
 </style>
