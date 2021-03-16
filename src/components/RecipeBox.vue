@@ -1,29 +1,27 @@
 <template>
-  <div class="recipe-box">
-    <div class="recipe-box__image-container" @click="showDetails">
-      <div class="recipe-box__image-container__image">
-        <img :src="recipe.mainImageUrl" :alt="recipe.name" />
-      </div>
+  <router-link :to="{ name: 'recipe', params: { recipeId: recipe.id } }" v-slot="{ href, navigate }" custom>
+    <a :href="href" @click="navigate" class="recipe-box">
+      <div class="recipe-box__image-container">
+        <div class="recipe-box__image-container__image">
+          <img :src="recipe.mainImageUrl" :alt="recipe.name" />
+        </div>
 
-      <div class="recipe-box__props2">
-        <Rating :value="recipe.rating" />
-        <FavouriteIcon
-          :isFavourite="isFavourite"
-          @removed="deleteFromFavourites"
-          @added="addToFavourites"
-          @click.stop
-          color="text-primary"
-        />
+        <div class="recipe-box__props2">
+          <Rating :value="recipe.rating" />
+          <FavouriteIcon
+            :isFavourite="isFavourite"
+            @removed="deleteFromFavourites"
+            @added="addToFavourites"
+            @click.prevent
+            color="text-primary"
+          />
+        </div>
       </div>
-    </div>
-    <div class="recipe-box__name">
-      {{ recipe.name }}
-    </div>
-    <!-- <div class="recipe-box__props">
-      <Rating :value="recipe.rating" />
-      <FavouriteIcon :isFavourite="isFavourite" @removed="deleteFromFavourites" @added="addToFavourites" />
-    </div> -->
-  </div>
+      <div class="recipe-box__name">
+        {{ recipe.name }}
+      </div>
+    </a>
+  </router-link>
 </template>
 
 <script>
@@ -70,6 +68,8 @@ export default {
 
   text-align: left;
   max-width: 192px;
+  text-decoration: none;
+  color: inherit;
 
   &:hover &__image-container__image img {
     transform: scale(1.1);
