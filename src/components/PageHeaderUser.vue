@@ -3,7 +3,7 @@
     <BaseMenu :hideOnClick="isAuthenticated">
       <template v-slot:toggle="{ focused }">
         <div v-if="isAuthenticated" :class="['page-header-user__avatar', { 'page-header-user__avatar--focused': focused }]">
-          <img src="@/assets/avatar.jpg" alt="profile picture" />
+          <img :src="userProfile?.imageUrl || 'https://sprm.org.pl/wp-content/uploads/2018/04/User-icon.png'" alt="profile picture" />
         </div>
         <BaseLink v-else color="text-primary" class="page-header-user__anonymous-avatar">
           <BaseIcon icon="user" weight="semiBold"></BaseIcon>
@@ -30,12 +30,15 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 
 export default {
   computed: {
     ...mapGetters({
       isAuthenticated: 'user/isAuthenticated'
+    }),
+    ...mapState({
+      userProfile: state => state.user.userProfile
     })
   },
   methods: {

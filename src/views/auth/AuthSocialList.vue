@@ -10,7 +10,21 @@
 export default {
   methods: {
     loginFacebook() {
-      alert('login facebook')
+      // eslint-disable-next-line no-undef
+      FB.login(
+        ({ authResponse }) => {
+          if (authResponse) {
+            // console.log(authResponse)
+            // identityApi.facebookAuth(authResponse.accessToken)
+            this.$store.dispatch('user/facebookAuth', authResponse.accessToken)
+            // resolve()
+            // accountService.apiAuthenticate(authResponse.accessToken).then(resolve)
+          } else {
+            // resolve()
+          }
+        },
+        { scope: 'email,public_profile' }
+      )
     },
     loginGoogle() {
       alert('login google')

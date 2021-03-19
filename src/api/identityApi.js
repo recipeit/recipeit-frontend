@@ -9,6 +9,9 @@ export default {
   login(userData) {
     return apiClient.post(`/${route}/login`, userData)
   },
+  facebookAuth(accessToken) {
+    return apiClient.post(`/${route}/social/facebook`, { accessToken })
+  },
   refresh(tokenData) {
     return apiClient.post(`/${route}/refresh`, tokenData)
   },
