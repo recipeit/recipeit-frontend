@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import { initFacebookSdk } from '@/services/facebook'
+import { initFacebookSdk } from '@/services/facebookAuth'
 import { mapGetters } from 'vuex'
 import Dashboard from './views/Dashboard'
 

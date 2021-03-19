@@ -45,7 +45,7 @@ export default {
 
 <style lang="scss" scoped>
 form {
-  margin-bottom: 24px;
+  // margin-bottom: 16px;
 }
 h1 {
   margin-bottom: 8px;
