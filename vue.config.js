@@ -7,7 +7,12 @@ module.exports = {
     }
   },
   configureWebpack: {
-    title: 'Recipeit',
     devtool: 'source-map'
+  },
+  pages: {
+    index: {
+      entry: 'src/main.js',
+      title: 'Recipeit'
+    }
   }
 }
