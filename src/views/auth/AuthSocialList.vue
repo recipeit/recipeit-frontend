@@ -3,11 +3,11 @@
   <div class="auth-social-list">
     <BaseButton class="form-row auth-social-list__button" stroked color="contrast" @click="loginFacebook()">
       <img src="@/assets/logos/facebook.svg" alt="logo" />
-      Zaloguj się z Facebook
+      {{ buttonPrefix }} Facebook
     </BaseButton>
     <BaseButton class="form-row auth-social-list__button" stroked color="contrast" @click="loginGoogle()">
       <img src="@/assets/logos/google.svg" alt="logo" />
-      Zaloguj się z Google
+      {{ buttonPrefix }} Google
     </BaseButton>
 
     <!-- <BaseButton stroked @click="loginFacebook()">f</BaseButton> -->
@@ -20,6 +20,9 @@
 // import { google } from 'googleapis'
 
 export default {
+  props: {
+    buttonPrefix: String
+  },
   data: () => ({
     googleAuth2: null
   }),

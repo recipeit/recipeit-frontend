@@ -6,7 +6,7 @@
       lub
       <router-link :to="{ name: 'login' }" v-slot="{ href, navigate }" custom>
         <BaseLink :href="href" @click="navigate" color="primary">
-          zaloguj się na swoje konto
+          zaloguj na swoje konto
         </BaseLink>
       </router-link>
     </p>
@@ -21,7 +21,12 @@
       <BaseButton class="form-row auth-page__content__submit" raised color="contrast" type="submit">Zarejestruj się</BaseButton>
     </form>
 
-    <AuthSocialList />
+    <AuthSocialList buttonPrefix="Zarejestruj się z" />
+
+    <div class="auth-page__content__terms">
+      Rejestrując się akceptujesz
+      <BaseLink class="auth-page__content__terms__link" color="primary">warunki korzystania z Recipeit</BaseLink>
+    </div>
   </div>
 </template>
 
@@ -48,9 +53,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-form {
-  // margin-bottom: 16px;
-}
+// form {
+// margin-bottom: 16px;
+// }
 h1 {
   margin-bottom: 8px;
 }

@@ -20,7 +20,7 @@ export default {}
 
   &__content {
     text-align: center;
-    font-size: 0.875rem;
+    font-size: 0.75rem;
     max-width: 350px;
     width: 100%;
 
@@ -40,8 +40,29 @@ export default {}
       width: 100%;
     }
 
+    &__reset-password {
+      display: inline-block;
+      margin-top: 1rem;
+    }
+
+    &__terms {
+      margin-top: 1rem;
+      font-size: 0.625rem;
+      // font-size: 0.75rem;
+      color: var(--color-text-secondary);
+      line-height: 1.5;
+
+      &__link {
+        // font-weight: bold;
+      }
+    }
+
     p:last-child {
       margin-bottom: 0;
+    }
+
+    p {
+      margin: 0.5rem 0;
     }
   }
 }
