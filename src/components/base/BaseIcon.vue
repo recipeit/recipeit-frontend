@@ -8,6 +8,7 @@
 import * as iconsRegular from './icons/regular'
 import * as iconsSemiBold from './icons/semiBold'
 import * as iconsBold from './icons/bold'
+import * as iconsBrands from './icons/brands'
 
 export default {
   props: {
@@ -30,6 +31,8 @@ export default {
             return iconsSemiBold[this.icon]
           case 'bold':
             return iconsBold[this.icon]
+          case 'brands':
+            return iconsBrands[this.icon]
           default:
             return iconsRegular[this.icon]
         }

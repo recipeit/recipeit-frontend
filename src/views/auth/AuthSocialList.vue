@@ -9,10 +9,10 @@
       <img src="@/assets/logos/google.svg" alt="logo" />
       {{ buttonPrefix }} Google
     </BaseButton>
-
-    <!-- <BaseButton stroked @click="loginFacebook()">f</BaseButton> -->
-    <!-- <BaseButton stroked @click="loginGoogle()">G</BaseButton> -->
-    <!-- <BaseButton stroked @click="loginTwitter()">t</BaseButton> -->
+    <BaseButton class="form-row auth-social-list__button" stroked color="contrast" @click="loginGoogle()">
+      <BaseIcon class="auth-social-list__button__icon auth-social-list__button__icon--apple" weight="brands" icon="apple" />
+      {{ buttonPrefix }} Apple
+    </BaseButton>
   </div>
 </template>
 
@@ -100,9 +100,19 @@ export default {
   &__button {
     width: 100%;
 
+    &__icon {
+      font-size: 1rem;
+      margin-right: 0.5rem;
+
+      &--apple {
+        font-size: 1.25rem;
+        color: var(--color-max-contrast);
+      }
+    }
+
     img {
-      height: 16px;
-      margin-right: 8px;
+      height: 1rem;
+      margin-right: 0.5rem;
     }
   }
 }
