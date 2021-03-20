@@ -12,7 +12,7 @@ module.exports = {
   pages: {
     index: {
       entry: 'src/main.js',
-      title: 'Recipeit'
+      title: 'Recipeit - Znajdź przepis z tego co masz!'
     }
   }
 }
