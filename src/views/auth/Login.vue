@@ -44,9 +44,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-form {
-  // margin-bottom: 16px;
-}
+// form {
+// margin-bottom: 16px;
+// }
 h1 {
   margin-bottom: 8px;
 }

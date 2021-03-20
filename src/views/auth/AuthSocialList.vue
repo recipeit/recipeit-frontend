@@ -17,7 +17,21 @@
 </template>
 
 <script>
+// import { google } from 'googleapis'
+
 export default {
+  data: () => ({
+    googleAuth2: null
+  }),
+  created() {
+    // eslint-disable-next-line no-undef
+    gapi.load('auth2', () => {
+      // eslint-disable-next-line no-undef
+      this.googleAuth2 = gapi.auth2.init({
+        client_id: '1077700069274-3ff9jj9d6c6e3kg6a0rd63mv7m9cin67.apps.googleusercontent.com'
+      })
+    })
+  },
   methods: {
     loginFacebook() {
       // eslint-disable-next-line no-undef
@@ -37,7 +51,18 @@ export default {
       )
     },
     loginGoogle() {
-      alert('login google')
+      if (this.googleAuth2)
+        this.googleAuth2
+          .signIn({
+            scope: 'profile email'
+          })
+          .then(resp => {
+            console.log(resp)
+            const idToken = resp?.uc?.id_token
+            if (idToken) {
+              this.$store.dispatch('user/googleAuth', idToken)
+            }
+          })
     }
     // loginTwitter() {
     //   alert('login twitter')

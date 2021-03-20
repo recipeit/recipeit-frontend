@@ -77,6 +77,21 @@ export default {
           console.error(error)
         })
     },
+    googleAuth({ commit, dispatch }, idToken) {
+      identityApi
+        .googleAuth(idToken)
+        .then(response => {
+          const { token, refreshToken, userProfile } = response.data
+          localStorage.setItem(STORAGE_TOKEN, token)
+          localStorage.setItem(STORAGE_REFRESH_TOKEN, refreshToken)
+          commit(MUTATIONS.SET_USER_PROFILE, userProfile)
+          dispatch('getInitUserData')
+          router.push({ name: 'home' })
+        })
+        .catch(error => {
+          console.error(error)
+        })
+    },
     refresh({ commit }) {
       const currentToken = localStorage.getItem(STORAGE_TOKEN)
       const currentRefreshToken = localStorage.getItem(STORAGE_REFRESH_TOKEN)

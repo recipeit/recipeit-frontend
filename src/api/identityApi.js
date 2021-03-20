@@ -12,6 +12,9 @@ export default {
   facebookAuth(accessToken) {
     return apiClient.post(`/${route}/social/facebook`, { accessToken })
   },
+  googleAuth(idToken) {
+    return apiClient.post(`/${route}/social/google`, { idToken })
+  },
   refresh(tokenData) {
     return apiClient.post(`/${route}/refresh`, tokenData)
   },
