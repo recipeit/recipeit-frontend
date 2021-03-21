@@ -20,5 +20,11 @@ export default {
   },
   profile() {
     return apiClient.get(`/${route}/profile`)
+  },
+  confirmEmail(data) {
+    return apiClient.post(`/${route}/confirm-email`, data)
+  },
+  sendConfirmationEmail(email) {
+    return apiClient.post(`/${route}/send-confirmation-email`, { email })
   }
 }

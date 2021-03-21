@@ -88,9 +88,20 @@ const routes = [
         component: () => import(/* webpackChunkName: "auth" */ '@/views/auth/Register.vue')
       },
       {
+        path: 'register-success',
+        name: 'register-success',
+        props: true,
+        component: () => import(/* webpackChunkName: "auth" */ '@/views/auth/RegisterSuccess.vue')
+      },
+      {
         path: 'reset-password',
         name: 'reset-password',
         component: () => import(/* webpackChunkName: "auth" */ '@/views/auth/ResetPassword.vue')
+      },
+      {
+        path: 'confirm-email',
+        name: 'confirm-email',
+        component: () => import(/* webpackChunkName: "auth" */ '@/views/auth/ConfirmEmail.vue')
       }
     ]
   }

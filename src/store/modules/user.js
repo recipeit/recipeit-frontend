@@ -38,10 +38,22 @@ export default {
       identityApi
         .register({ email, password, confirmPassword })
         .then(response => {
-          const { token, refreshToken } = response.data
-          localStorage.setItem(STORAGE_TOKEN, token)
-          localStorage.setItem(STORAGE_REFRESH_TOKEN, refreshToken)
-          router.push({ name: 'home' })
+          const { success } = response.data
+
+          if (success) {
+            router.push({
+              name: 'register-success',
+              params: {
+                email
+              }
+            })
+          } else {
+            console.log('error')
+          }
+          // const { token, refreshToken } = response.data
+          // localStorage.setItem(STORAGE_TOKEN, token)
+          // localStorage.setItem(STORAGE_REFRESH_TOKEN, refreshToken)
+          // router.push({ name: 'home' })
         })
         .catch(error => {
           console.error(error)
@@ -51,12 +63,21 @@ export default {
       identityApi
         .login({ email, password })
         .then(response => {
-          const { token, refreshToken, userProfile } = response.data
-          localStorage.setItem(STORAGE_TOKEN, token)
-          localStorage.setItem(STORAGE_REFRESH_TOKEN, refreshToken)
-          commit(MUTATIONS.SET_USER_PROFILE, userProfile)
-          dispatch('getInitUserData')
-          router.push({ name: 'home' })
+          if (response.data.emailUnconfirmed) {
+            router.push({
+              name: 'register-success',
+              params: {
+                email
+              }
+            })
+          } else {
+            const { token, refreshToken, userProfile } = response.data
+            localStorage.setItem(STORAGE_TOKEN, token)
+            localStorage.setItem(STORAGE_REFRESH_TOKEN, refreshToken)
+            commit(MUTATIONS.SET_USER_PROFILE, userProfile)
+            dispatch('getInitUserData')
+            router.push({ name: 'home' })
+          }
         })
         .catch(error => {
           console.error(error)

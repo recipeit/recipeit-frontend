@@ -1,18 +1,15 @@
 <template>
-  <!-- <div class="auth-social-list-title">lub użyj</div> -->
-  <div class="auth-social-list">
-    <BaseButton class="auth-social-list__button" stroked color="contrast" @click="loginFacebook()">
+  <div class="auth-social-list-pills-title">lub {{ buttonPrefix }}</div>
+  <div class="auth-social-list-pills">
+    <BaseButton class="auth-social-list-pills__button" stroked color="contrast" @click="loginFacebook()">
       <img src="@/assets/logos/facebook.svg" alt="logo" />
-      {{ buttonPrefix }} Facebook
     </BaseButton>
-    <BaseButton class="auth-social-list__button" stroked color="contrast" @click="loginGoogle()">
+    <BaseButton class="auth-social-list-pills__button" stroked color="contrast" @click="loginGoogle()">
       <img src="@/assets/logos/google.svg" alt="logo" />
-      {{ buttonPrefix }} Google
     </BaseButton>
-    <!-- <BaseButton class="auth-social-list__button" stroked color="contrast" @click="loginGoogle()">
-      <BaseIcon class="auth-social-list__button__icon auth-social-list__button__icon--apple" weight="brands" icon="apple" />
-      {{ buttonPrefix }} Apple
-    </BaseButton> -->
+    <BaseButton class="auth-social-list-pills__button" stroked color="contrast" @click="loginGoogle()">
+      <BaseIcon class="auth-social-list-pills__button__icon auth-social-list-pills__button__icon--apple" weight="brands" icon="apple" />
+    </BaseButton>
   </div>
 </template>
 
@@ -75,8 +72,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.auth-social-list-title {
-  margin: 1.5rem 0;
+.auth-social-list-pills-title {
+  margin: 1rem 0;
   display: flex;
   align-items: center;
   // min-height: 2rem;
@@ -94,19 +91,15 @@ export default {
     background: var(--color-border);
   }
 }
-.auth-social-list {
+.auth-social-list-pills {
   margin-top: 1rem;
+  display: flex;
 
   &__button {
-    width: 100%;
-
-    & + & {
-      margin-top: 1rem;
-    }
+    flex: 1;
 
     &__icon {
       font-size: 1rem;
-      margin-right: 0.5rem;
 
       &--apple {
         font-size: 1.25rem;
@@ -116,8 +109,11 @@ export default {
 
     img {
       height: 1rem;
-      margin-right: 0.5rem;
     }
+  }
+
+  &__button + &__button {
+    margin-left: 1rem;
   }
 }
 </style>
