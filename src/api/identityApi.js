@@ -24,8 +24,11 @@ export default {
   confirmEmail(data) {
     return apiClient.post(`/${route}/confirm-email`, data)
   },
-  resetPassword(email) {
-    return apiClient.post(`/${route}/reset-password`, { email })
+  requestPasswordReset(email) {
+    return apiClient.post(`/${route}/request-password-reset`, { email })
+  },
+  resetPassword(data) {
+    return apiClient.post(`/${route}/reset-password`, data)
   },
   sendConfirmationEmail(email) {
     return apiClient.post(`/${route}/send-confirmation-email`, { email })

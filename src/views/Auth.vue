@@ -40,7 +40,7 @@ export default {}
       width: 100%;
     }
 
-    &__reset-password {
+    &__request-password-reset {
       display: inline-block;
       margin-top: 1rem;
     }

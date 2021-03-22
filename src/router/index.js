@@ -94,6 +94,11 @@ const routes = [
         component: () => import(/* webpackChunkName: "auth" */ '@/views/auth/RegisterSuccess.vue')
       },
       {
+        path: 'request-password-reset',
+        name: 'request-password-reset',
+        component: () => import(/* webpackChunkName: "auth" */ '@/views/auth/RequestPasswordReset.vue')
+      },
+      {
         path: 'reset-password',
         name: 'reset-password',
         component: () => import(/* webpackChunkName: "auth" */ '@/views/auth/ResetPassword.vue')

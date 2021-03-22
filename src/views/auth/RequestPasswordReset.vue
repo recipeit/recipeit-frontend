@@ -1,13 +1,11 @@
 <template>
   <div class="auth-page__content">
-    <h1>Zmiana hasła</h1>
+    <h1>Nie pamiętasz hasła?</h1>
 
     <template v-if="state === 'BEFORE'">
-      <p>
-        Wprowadź nowe hasło dla konta <b>{{ email }}</b>
-      </p>
+      <p>Wpisz adres e-mail, aby zresetować hasło. Może być konieczne sprawdzenie folderu ze spamem.</p>
 
-      <form @submit.prevent="resetPassword()">
+      <form @submit.prevent="requestPasswordReset()">
         <BaseInput class="form-row" label="Email" type="text" v-model="userData.email"></BaseInput>
         <BaseButton class="form-row auth-page__content__submit" raised color="contrast" type="submit">Prześlij</BaseButton>
       </form>
@@ -32,34 +30,27 @@ import identityApi from '@/api/identityApi'
 
 export default {
   data: () => ({
-    state: 'LOADING',
-    email: null
+    userData: {
+      email: ''
+    },
+    state: 'BEFORE'
   }),
   beforeMount() {
-    this.state = 'LOADING'
-
-    console.log(this.$route.query)
-    const { email, token } = this.$route.query
-    this.email = email
-
-    if (email && token) {
-      identityApi
-        .resetPassword({
-          email,
-          token
-        })
-        .then(resp => {
-          if (resp.data.success) {
-            this.state = 'SUCCESS'
-          } else {
+    this.state = 'BEFORE'
+  },
+  methods: {
+    requestPasswordReset() {
+      if (this.userData.email) {
+        this.state = 'SENDING'
+        identityApi
+          .requestPasswordReset(this.userData.email)
+          .then(() => {
+            this.state = 'SENT'
+          })
+          .catch(() => {
             this.state = 'ERROR'
-          }
-        })
-        .catch(() => {
-          this.state = 'ERROR'
-        })
-    } else {
-      this.state = 'ERROR'
+          })
+      }
     }
   }
 }

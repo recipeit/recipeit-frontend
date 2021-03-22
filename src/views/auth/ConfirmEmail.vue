@@ -28,6 +28,7 @@
 
 <script>
 import identityApi from '@/api/identityApi'
+
 export default {
   data: () => ({
     state: 'LOADING'

@@ -18,8 +18,8 @@
       <BaseButton class="form-row auth-page__content__submit" raised color="contrast" type="submit">Zaloguj się</BaseButton>
     </form>
 
-    <router-link :to="{ name: 'reset-password' }" v-slot="{ href, navigate }" custom>
-      <BaseLink class="auth-page__content__reset-password" :href="href" @click="navigate" color="primary">
+    <router-link :to="{ name: 'request-password-reset' }" v-slot="{ href, navigate }" custom>
+      <BaseLink class="auth-page__content__request-password-reset" :href="href" @click="navigate" color="primary">
         Nie pamiętasz hasła?
       </BaseLink>
     </router-link>
