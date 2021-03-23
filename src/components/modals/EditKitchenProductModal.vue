@@ -38,8 +38,9 @@
               subtle
               color="contrast"
               size="small"
-              v-for="expirationDate in expirationDates"
-              :key="expirationDate"
+              v-for="(expirationDate, index) in expirationDates"
+              :key="index"
+              @click.stop="deleteExpirationDateAt(index)"
             >
               {{ formattedExpirationDate(expirationDate) }}
               <BaseIcon class="expiration-date-list__item__icon" icon="close" weight="semi-bold"></BaseIcon>
@@ -139,6 +140,9 @@ export default {
   methods: {
     formattedExpirationDate(date) {
       return dayjs(date).format('D MMMM YYYY')
+    },
+    deleteExpirationDateAt(index) {
+      this.expirationDates.splice(index, 1)
     },
     openNewExpirationDateModal() {
       const self = this
