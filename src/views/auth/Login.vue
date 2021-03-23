@@ -53,10 +53,6 @@ export default {
   methods: {
     login() {
       this.errors = null
-      Object.keys(this.userDataErrors).map(key => {
-        this.userDataErrors[key] = null
-      })
-
       this.userDataErrors.email = this.validateEmail()
       this.userDataErrors.password = this.validatePassword()
 
@@ -67,7 +63,9 @@ export default {
       })
     },
     validateEmail() {
-      if (!this.userData.email) return ['REQUIRED']
+      const { email } = this.userData
+      if (!email) return ['REQUIRED']
+      if (!this.validateEmail(email)) return ['INVALID_EMAIL']
       return null
     },
     validatePassword() {

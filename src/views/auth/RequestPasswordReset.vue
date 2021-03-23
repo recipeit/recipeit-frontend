@@ -6,7 +6,7 @@
       <p>Wpisz adres e-mail, aby zresetować hasło. Może być konieczne sprawdzenie folderu ze spamem.</p>
 
       <form @submit.prevent="requestPasswordReset()">
-        <BaseInput class="form-row" label="Email" type="text" v-model="userData.email"></BaseInput>
+        <BaseInput class="form-row" label="Email" type="email" v-model="userData.email" :errors="userDataErrors.email"></BaseInput>
         <BaseButton class="form-row auth-page__content__submit" raised color="contrast" type="submit">Prześlij</BaseButton>
       </form>
     </template>
@@ -27,11 +27,15 @@
 
 <script>
 import identityApi from '@/api/identityApi'
+import { validateEmail } from '@/functions/validators'
 
 export default {
   data: () => ({
     userData: {
       email: ''
+    },
+    userDataErrors: {
+      email: null
     },
     state: 'BEFORE'
   }),
@@ -40,17 +44,29 @@ export default {
   },
   methods: {
     requestPasswordReset() {
-      if (this.userData.email) {
-        this.state = 'SENDING'
-        identityApi
-          .requestPasswordReset(this.userData.email)
-          .then(() => {
-            this.state = 'SUCCESS'
-          })
-          .catch(() => {
-            this.state = 'ERROR'
-          })
-      }
+      this.userDataErrors.email = this.validateEmail()
+
+      if (Object.values(this.userDataErrors).some(v => v !== null)) return
+
+      this.state = 'SENDING'
+      identityApi
+        .requestPasswordReset(this.userData.email)
+        .then(() => {
+          this.state = 'SUCCESS'
+        })
+        .catch(() => {
+          this.state = 'ERROR'
+        })
+    },
+    validateEmail() {
+      const { email } = this.userData
+      if (!email) return ['REQUIRED']
+      if (!validateEmail(email)) return ['INVALID_EMAIL']
+      return null
+    },
+    validatePassword() {
+      if (!this.userData.password) return ['REQUIRED']
+      return null
     }
   }
 }

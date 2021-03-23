@@ -62,6 +62,18 @@ export default {
     errors: null
   }),
   methods: {
+    register() {
+      this.errors = null
+      this.userDataErrors.email = this.validateEmail()
+      this.userDataErrors.password = this.validatePassword()
+      this.userDataErrors.confirmPassword = this.validateConfirmPassword()
+
+      if (Object.values(this.userDataErrors).some(v => v !== null)) return
+
+      this.$store.dispatch('user/register', this.userData).catch(errors => {
+        this.errors = errors
+      })
+    },
     validateEmail() {
       const { email } = this.userData
       if (!email) return ['REQUIRED']
@@ -94,22 +106,6 @@ export default {
       }
 
       return null
-    },
-    register() {
-      this.errors = null
-      Object.keys(this.userDataErrors).map(key => {
-        this.userDataErrors[key] = null
-      })
-
-      this.userDataErrors.email = this.validateEmail()
-      this.userDataErrors.password = this.validatePassword()
-      this.userDataErrors.confirmPassword = this.validateConfirmPassword()
-
-      if (Object.values(this.userDataErrors).some(v => v !== null)) return
-
-      this.$store.dispatch('user/register', this.userData).catch(errors => {
-        this.errors = errors
-      })
     }
   }
 }

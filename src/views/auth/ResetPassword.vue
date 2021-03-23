@@ -8,8 +8,14 @@
       </p>
 
       <form @submit.prevent="resetPassword()">
-        <BaseInput class="form-row" label="Hasło" type="password" v-model="userData.password"></BaseInput>
-        <BaseInput class="form-row" label="Potwierdź hasło" type="password" v-model="userData.confirmPassword"></BaseInput>
+        <BaseInput class="form-row" label="Hasło" type="password" v-model="userData.password" :errors="userDataErrors.password"></BaseInput>
+        <BaseInput
+          class="form-row"
+          label="Potwierdź hasło"
+          type="password"
+          v-model="userData.confirmPassword"
+          :errors="userDataErrors.confirmPassword"
+        ></BaseInput>
         <BaseButton class="form-row auth-page__content__submit" raised color="contrast" type="submit">Zmień hasło</BaseButton>
       </form>
     </template>
@@ -39,6 +45,10 @@ export default {
     userData: {
       password: '',
       confirmPassword: ''
+    },
+    userDataErrors: {
+      password: null,
+      confirmPassword: null
     }
   }),
   beforeMount() {
@@ -54,6 +64,11 @@ export default {
   },
   methods: {
     resetPassword() {
+      this.userDataErrors.password = this.validatePassword()
+      this.userDataErrors.confirmPassword = this.validateConfirmPassword()
+
+      if (Object.values(this.userDataErrors).some(v => v !== null)) return
+
       this.state = 'SENDING'
       identityApi
         .resetPassword({
@@ -72,6 +87,33 @@ export default {
         .catch(() => {
           this.state = 'ERROR'
         })
+    },
+    validatePassword() {
+      const { password } = this.userData
+      if (!password) return ['REQUIRED']
+
+      let passwordPolicies = []
+
+      if (password.length <= 6) passwordPolicies.push('REQUIRED_AT_LEAST_6_CHAR')
+      if (!/[a-z]/.test(password)) passwordPolicies.push('REQUIRED_AT_LEAST_ONE_LOWER')
+      if (!/[A-Z]/.test(password)) passwordPolicies.push('REQUIRED_AT_LEAST_ONE_UPPER')
+      if (!/\d/.test(password)) passwordPolicies.push('REQUIRED_AT_LEAST_ONE_DIGIT')
+      if (/^[a-z0-9]+$/i.test(password.toLowerCase())) passwordPolicies.push('REQUIRED_AT_LEAST_ONE_NON_ALPHANUM')
+
+      if (passwordPolicies.length > 0) return passwordPolicies
+
+      return null
+    },
+    validateConfirmPassword() {
+      if (!this.userData.confirmPassword) {
+        return ['REQUIRED']
+      }
+
+      if (this.userData.email !== this.userData.confirmPassword) {
+        return ['WRONG_PASSWORD_COMBINATION']
+      }
+
+      return null
     }
   }
 }
