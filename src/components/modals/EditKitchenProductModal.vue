@@ -25,35 +25,7 @@
           </BaseSelect>
         </div>
 
-        <div class="form-row">
-          <div class="expiration-date-title">Daty ważności</div>
-        </div>
-        <div v-if="!(expirationDates && expirationDates.length === 0)" class="form-row">
-          <div v-if="expirationDates === null" class="expiration-date-list">
-            <BaseButton class="expiration-date-list__item" subtle color="primary" size="small" v-for="i in 3" :key="i"></BaseButton>
-          </div>
-          <div v-else class="expiration-date-list">
-            <BaseButton
-              class="expiration-date-list__item"
-              subtle
-              :color="isExpiredDate(expirationDate) ? 'danger' : 'contrast'"
-              size="small"
-              v-for="(expirationDate, index) in expirationDateObjects"
-              :key="index"
-              @click.stop="deleteExpirationDateAt(index)"
-            >
-              {{ formattedExpirationDate(expirationDate) }}
-              <BaseIcon class="expiration-date-list__item__icon" icon="close" weight="semi-bold"></BaseIcon>
-            </BaseButton>
-          </div>
-        </div>
-
-        <div class="form-row">
-          <BaseLink tag="button" color="primary" class="add-expiration-date-button" @click="openNewExpirationDateModal()">
-            <BaseIcon class="add-expiration-date-button__icon" icon="plus" weight="semi-bold"></BaseIcon>
-            {{ expirationDates && expirationDates.length > 0 ? 'dodaj kolejną datę ważności' : 'dodaj datę ważności' }}
-          </BaseLink>
-        </div>
+        <ExpirationDatesFormSection :productId="product.id" v-model="expirationDates"></ExpirationDatesFormSection>
       </div>
     </BaseModalBody>
     <BaseModalFooter>
@@ -68,19 +40,13 @@
 </template>
 
 <script>
-import dayjs from 'dayjs'
-import 'dayjs/locale/pl'
-
-import { markRaw } from 'vue'
 import { units } from '@/constants'
 import { useStore } from 'vuex'
 import { computed, reactive, watch, toRefs } from 'vue'
-import myKitchenApi from '@/api/myKitchenApi'
-import NewExpirationDateModal from './NewExpirationDateModal'
-
-dayjs.locale('pl')
+import ExpirationDatesFormSection from './ExpirationDatesFormSection'
 
 export default {
+  components: { ExpirationDatesFormSection },
   emits: ['close'],
   props: {
     product: {
@@ -126,46 +92,15 @@ export default {
       }
     )
 
-    myKitchenApi.getProductExpirationDates(props.product.id).then(response => {
-      data.expirationDates = response.data
-    })
+    // myKitchenApi.getProductExpirationDates(props.product.id).then(response => {
+    //   data.expirationDates = response.data
+    // })
 
     return {
       units,
       ...toRefs(data),
       unitLabelAmount,
       editProduct
-    }
-  },
-  computed: {
-    expirationDateObjects() {
-      return this.expirationDates.map(date => dayjs(date)).sort((a, b) => (a.isAfter(b) ? 1 : -1))
-    }
-  },
-  methods: {
-    isExpiredDate(date) {
-      return date.isBefore(dayjs(), 'day')
-    },
-    formattedExpirationDate(date) {
-      return date.format('D MMMM YYYY')
-    },
-    deleteExpirationDateAt(index) {
-      this.expirationDates.splice(index, 1)
-    },
-    openNewExpirationDateModal() {
-      const self = this
-
-      this.$modal.show(
-        markRaw(NewExpirationDateModal),
-        {},
-        {
-          close: date => {
-            if (!date) return
-            const { year, month, day } = date
-            self.expirationDates.push(`${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`)
-          }
-        }
-      )
     }
   }
 }
@@ -184,40 +119,5 @@ export default {
 .amount-input {
   width: 128px;
   flex: unset;
-}
-
-.expiration-date-title {
-  color: var(--color-text-secondary);
-  font-size: 12px;
-  // margin-bottom: -8px;
-}
-
-.add-expiration-date-button {
-  font-size: 12px;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-
-  &__icon {
-    margin-right: 4px;
-  }
-}
-
-.expiration-date-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-
-  &__item {
-    font-weight: bold;
-    padding: 0.625rem 1rem;
-    height: 32px;
-
-    &__icon {
-      font-size: 1rem;
-      margin-left: 4px;
-      margin-right: -6px;
-    }
-  }
 }
 </style>

@@ -24,6 +24,8 @@
             <template v-slot:option="{ option }">{{ $tc(`units.${option}`, unitLabelAmount) }}</template>
           </BaseSelect>
         </div>
+
+        <!-- <ExpirationDatesFormSection v-model="expirationDates"></ExpirationDatesFormSection> -->
       </form>
     </BaseModalBody>
     <BaseModalFooter>
@@ -39,15 +41,18 @@
 import { units } from '@/constants'
 import { mapState } from 'vuex'
 import uniqueID from '@/functions/uniqueID'
+// import ExpirationDatesFormSection from './ExpirationDatesFormSection'
 
 export default {
   emits: ['close'],
+  // components: { ExpirationDatesFormSection },
   data: component => ({
     units: units,
     loading: false,
     newProduct: component.emptyProduct(),
     selectedBaseProduct: null,
     formID: 'form-' + uniqueID().getID()
+    // expirationDates: []
   }),
   computed: {
     ...mapState({
