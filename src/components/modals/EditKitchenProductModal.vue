@@ -68,12 +68,16 @@
 
 <script>
 import dayjs from 'dayjs'
+import 'dayjs/locale/pl'
+
 import { markRaw } from 'vue'
 import { units } from '@/constants'
 import { useStore } from 'vuex'
 import { computed, reactive, watch, toRefs } from 'vue'
 import myKitchenApi from '@/api/myKitchenApi'
 import NewExpirationDateModal from './NewExpirationDateModal'
+
+dayjs.locale('pl')
 
 export default {
   emits: ['close'],
@@ -134,7 +138,7 @@ export default {
   },
   methods: {
     formattedExpirationDate(date) {
-      return dayjs(date).format('YYYY-MM-DD')
+      return dayjs(date).format('D MMMM YYYY')
     },
     openNewExpirationDateModal() {
       const self = this
