@@ -13,8 +13,8 @@
     <!-- <p>lub za pomocą adresu email</p> -->
 
     <form @submit.prevent="login()">
-      <BaseInput class="form-row" label="Email" type="email" v-model="userData.email"></BaseInput>
-      <BaseInput class="form-row" label="Hasło" type="password" v-model="userData.password"></BaseInput>
+      <BaseInput class="form-row" label="Email" type="email" v-model="userData.email" :errors="userDataErrors.email"></BaseInput>
+      <BaseInput class="form-row" label="Hasło" type="password" v-model="userData.password" :errors="userDataErrors.password"></BaseInput>
       <BaseButton class="form-row auth-page__content__submit" raised color="contrast" type="submit">Zaloguj się</BaseButton>
     </form>
 
@@ -44,14 +44,35 @@ export default {
       email: '',
       password: ''
     },
+    userDataErrors: {
+      email: null,
+      password: null
+    },
     errors: null
   }),
   methods: {
     login() {
       this.errors = null
+      Object.keys(this.userDataErrors).map(key => {
+        this.userDataErrors[key] = null
+      })
+
+      this.userDataErrors.email = this.validateEmail()
+      this.userDataErrors.password = this.validatePassword()
+
+      if (Object.values(this.userDataErrors).some(v => v !== null)) return
+
       this.$store.dispatch('user/login', this.userData).catch(errors => {
         this.errors = errors
       })
+    },
+    validateEmail() {
+      if (!this.userData.email) return ['REQUIRED']
+      return null
+    },
+    validatePassword() {
+      if (!this.userData.password) return ['REQUIRED']
+      return null
     }
   }
 }

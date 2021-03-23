@@ -41,6 +41,7 @@ export default {}
     }
 
     &__errors {
+      margin-top: 1rem;
       color: var(--color-red);
     }
 

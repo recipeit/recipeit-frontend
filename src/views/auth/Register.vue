@@ -96,7 +96,6 @@ export default {
       return null
     },
     register() {
-      // let anyErrors = false
       this.errors = null
       Object.keys(this.userDataErrors).map(key => {
         this.userDataErrors[key] = null
@@ -106,9 +105,7 @@ export default {
       this.userDataErrors.password = this.validatePassword()
       this.userDataErrors.confirmPassword = this.validateConfirmPassword()
 
-      if (Object.keys(this.userDataErrors).some(v => v !== null)) return
-
-      // if (anyErrors) return
+      if (Object.values(this.userDataErrors).some(v => v !== null)) return
 
       this.$store.dispatch('user/register', this.userData).catch(errors => {
         this.errors = errors
