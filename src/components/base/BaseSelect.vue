@@ -256,6 +256,11 @@ export default {
   watch: {
     visibleOptions() {
       this.pointerAdjust()
+    },
+    options() {
+      if (this.modelValue && !this.options.includes(this.modelValue)) {
+        this.selectOption(null)
+      }
     }
   }
 }

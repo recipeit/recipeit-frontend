@@ -9,6 +9,9 @@
         <BaseSelect :searchable="false" placeholder="Miesiąc" v-model="date.month" :options="months"></BaseSelect>
         <BaseSelect :searchable="false" placeholder="Dzień" v-model="date.day" :options="days"></BaseSelect>
       </form>
+      <div v-if="error" class="error">
+        {{ error }}
+      </div>
     </BaseModalBody>
     <BaseModalFooter>
       <BaseButton class="submit-button" raised color="contrast" type="submit" :form="formID">
@@ -37,7 +40,8 @@ export default {
     },
     formID: 'form-' + uniqueID().getID(),
     years: Array.from({ length: 15 }, (_, i) => i + currentYear),
-    months: Array.from({ length: 12 }, (_, i) => i + 1)
+    months: Array.from({ length: 12 }, (_, i) => i + 1),
+    error: null
   }),
   beforeMount() {
     this.date.year = currentYear
@@ -54,9 +58,15 @@ export default {
   methods: {
     addExpirationDate() {
       let date = { ...this.date }
+      if (!date.year || !date.month) {
+        this.error = 'rok i miesiąc są wymagane'
+        return
+      }
+      this.error = null
+
       if (!date.day) date.day = 1
 
-      this.$emit('close', this.date)
+      this.$emit('close', date)
     }
   }
 }
@@ -75,5 +85,11 @@ export default {
 .amount-input {
   width: 128px;
   flex: unset;
+}
+
+.error {
+  margin-top: 1rem;
+  font-size: 0.75rem;
+  color: var(--color-red);
 }
 </style>
