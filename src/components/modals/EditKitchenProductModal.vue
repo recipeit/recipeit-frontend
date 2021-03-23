@@ -36,9 +36,9 @@
             <BaseButton
               class="expiration-date-list__item"
               subtle
-              color="contrast"
+              :color="isExpiredDate(expirationDate) ? 'danger' : 'contrast'"
               size="small"
-              v-for="(expirationDate, index) in expirationDates"
+              v-for="(expirationDate, index) in expirationDateObjects"
               :key="index"
               @click.stop="deleteExpirationDateAt(index)"
             >
@@ -137,9 +137,17 @@ export default {
       editProduct
     }
   },
+  computed: {
+    expirationDateObjects() {
+      return this.expirationDates.map(date => dayjs(date)).sort((a, b) => (a.isAfter(b) ? 1 : -1))
+    }
+  },
   methods: {
+    isExpiredDate(date) {
+      return date.isBefore(dayjs(), 'day')
+    },
     formattedExpirationDate(date) {
-      return dayjs(date).format('D MMMM YYYY')
+      return date.format('D MMMM YYYY')
     },
     deleteExpirationDateAt(index) {
       this.expirationDates.splice(index, 1)
