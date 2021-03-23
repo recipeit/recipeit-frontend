@@ -41,14 +41,14 @@
               v-for="expirationDate in expirationDates"
               :key="expirationDate"
             >
-              {{ expirationDate }}
+              {{ formattedExpirationDate(expirationDate) }}
               <BaseIcon class="expiration-date-list__item__icon" icon="close" weight="semi-bold"></BaseIcon>
             </BaseButton>
           </div>
         </div>
 
         <div class="form-row">
-          <BaseLink tag="button" color="primary" class="add-expiration-date-button">
+          <BaseLink tag="button" color="primary" class="add-expiration-date-button" @click="openNewExpirationDateModal()">
             <BaseIcon class="add-expiration-date-button__icon" icon="plus" weight="semi-bold"></BaseIcon>
             {{ expirationDates && expirationDates.length > 0 ? 'dodaj kolejną datę ważności' : 'dodaj datę ważności' }}
           </BaseLink>
@@ -67,10 +67,13 @@
 </template>
 
 <script>
+import dayjs from 'dayjs'
+import { markRaw } from 'vue'
 import { units } from '@/constants'
 import { useStore } from 'vuex'
 import { computed, reactive, watch, toRefs } from 'vue'
 import myKitchenApi from '@/api/myKitchenApi'
+import NewExpirationDateModal from './NewExpirationDateModal'
 
 export default {
   emits: ['close'],
@@ -127,6 +130,34 @@ export default {
       ...toRefs(data),
       unitLabelAmount,
       editProduct
+    }
+  },
+  methods: {
+    formattedExpirationDate(date) {
+      return dayjs(date).format('YYYY-MM-DD')
+    },
+    openNewExpirationDateModal() {
+      const self = this
+
+      this.$modal.show(
+        markRaw(NewExpirationDateModal),
+        {},
+        {
+          close: date => {
+            if (!date) return
+
+            const { year, month, day } = date
+            let dateString = year
+
+            if (month) dateString += `-${month}`
+            if (day) dateString += `-${day}`
+
+            if (dateString) {
+              self.expirationDates.push(dateString)
+            }
+          }
+        }
+      )
     }
   }
 }

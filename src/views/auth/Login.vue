@@ -19,7 +19,7 @@
     </form>
 
     <ul v-if="errors" class="auth-page__content__errors">
-      <li v-for="(error, index) in errors" :key="index">{{ $t(`identityErrorCode.${error}`) }}</li>
+      <li v-for="(error, index) in errors" :key="index">{{ $t(`errorCode.${error}`) }}</li>
     </ul>
 
     <router-link :to="{ name: 'request-password-reset' }" v-slot="{ href, navigate }" custom>

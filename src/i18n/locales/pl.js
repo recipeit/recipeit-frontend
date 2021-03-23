@@ -1,3 +1,5 @@
+import errorCodes from '@/constants/errorCodes'
+
 export default {
   messages: {
     welcome: {
@@ -14,6 +16,7 @@ export default {
       sort: 'Sortuj',
       seeAll: 'zobacz wszystkie',
       addProduct: 'Dodaj produkt',
+      addExpirationDate: 'Dodaj datę ważności',
       yes: 'Tak',
       no: 'Nie'
     },
@@ -133,23 +136,19 @@ export default {
       light: 'jasny',
       system: 'systemowy'
     },
-    identityErrorCode: {
-      ERROR: 'coś poszło nie tak',
-      WEAK_PASSWORD: 'użyj silniejszego hasła',
-      WRONG_PASSWORD_COMBINATION: 'wprowadzone hasła nie są takie same',
-      WRONG_USER_PASSWORD_COMBINATION: 'nieprawidłowy adres email lub hasło',
-      UNSUPPORTED_EMAIL_ADDRESS: 'niepoprawny adres email',
-      EMAIL_ALREADY_USED: 'ten email jest już w użyciu'
-    },
     errorCode: {
-      REQUIRED: 'to pole jest wymagane',
-      INVALID_EMAIL: 'niepoprawny adres email',
-      REQUIRED_AT_LEAST_6_CHAR: 'wymagane co najmniej 6 znaków',
-      REQUIRED_AT_LEAST_ONE_LOWER: 'wymagana co najmniej jedna mała litera',
-      REQUIRED_AT_LEAST_ONE_UPPER: 'wymagana co najmniej jedna duża litera',
-      REQUIRED_AT_LEAST_ONE_DIGIT: 'wymagana co najmniej jedna cyfra',
-      REQUIRED_AT_LEAST_ONE_NON_ALPHANUM: 'wymagany co najmniej jeden znak specjalny',
-      WRONG_PASSWORD_COMBINATION: 'wprowadzone hasła nie są takie same'
+      [errorCodes.ERROR]: 'coś poszło nie tak',
+      [errorCodes.WEAK_PASSWORD]: 'użyj silniejszego hasła',
+      [errorCodes.WRONG_USER_PASSWORD_COMBINATION]: 'nieprawidłowy adres email lub hasło',
+      [errorCodes.EMAIL_ALREADY_USED]: 'ten email jest już w użyciu',
+      [errorCodes.REQUIRED]: 'to pole jest wymagane',
+      [errorCodes.INVALID_EMAIL]: 'niepoprawny adres email',
+      [errorCodes.REQUIRED_AT_LEAST_6_CHAR]: 'wymagane co najmniej 6 znaków',
+      [errorCodes.REQUIRED_AT_LEAST_ONE_LOWER]: 'wymagana co najmniej jedna mała litera',
+      [errorCodes.REQUIRED_AT_LEAST_ONE_UPPER]: 'wymagana co najmniej jedna duża litera',
+      [errorCodes.REQUIRED_AT_LEAST_ONE_DIGIT]: 'wymagana co najmniej jedna cyfra',
+      [errorCodes.REQUIRED_AT_LEAST_ONE_NON_ALPHANUM]: 'wymagany co najmniej jeden znak specjalny',
+      [errorCodes.WRONG_PASSWORD_COMBINATION]: 'wprowadzone hasła nie są takie same'
     }
   },
   pluralizationRules(choice, choicesLength) {
