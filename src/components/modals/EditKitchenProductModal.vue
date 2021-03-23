@@ -153,16 +153,8 @@ export default {
         {
           close: date => {
             if (!date) return
-
             const { year, month, day } = date
-            let dateString = year
-
-            if (month) dateString += `-${month}`
-            if (day) dateString += `-${day}`
-
-            if (dateString) {
-              self.expirationDates.push(dateString)
-            }
+            self.expirationDates.push(`${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`)
           }
         }
       )

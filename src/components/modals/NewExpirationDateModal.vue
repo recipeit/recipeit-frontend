@@ -53,6 +53,9 @@ export default {
   },
   methods: {
     addExpirationDate() {
+      let date = { ...this.date }
+      if (!date.day) date.day = 1
+
       this.$emit('close', this.date)
     }
   }
