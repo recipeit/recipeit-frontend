@@ -35,8 +35,6 @@ export default {
   }),
   mounted() {
     this.state = 'LOADING'
-
-    console.log(this.$route.query)
     const { email, token } = this.$route.query
 
     if (email && token) {

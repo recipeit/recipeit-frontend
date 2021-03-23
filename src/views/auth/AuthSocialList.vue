@@ -60,7 +60,6 @@ export default {
             scope: 'profile email'
           })
           .then(resp => {
-            console.log(resp)
             const idToken = resp?.uc?.id_token
             if (idToken) {
               this.$store.dispatch('user/googleAuth', idToken)

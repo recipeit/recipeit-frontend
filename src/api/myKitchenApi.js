@@ -14,7 +14,6 @@ export default {
     return apiClient.get(`/my-kitchen/products/${id}`)
   },
   updateProductFromMyKitchen(productId, product, expirationDates) {
-    console.log(expirationDates)
     return apiClient.put(`/my-kitchen/products/${productId}`, { product, expirationDates })
   },
   removeProductFromMyKitchenById(id) {
