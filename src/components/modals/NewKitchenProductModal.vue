@@ -4,7 +4,7 @@
       <BaseModalTitle>Dodaj nowy produkt</BaseModalTitle>
     </BaseModalHeader>
     <BaseModalBody>
-      <div>
+      <form :id="formID" @submit.prevent="addProduct()">
         <BaseInput :autofocus="true" class="form-row" label="Nazwa" type="text" v-model="newProduct.name"></BaseInput>
 
         <BaseSelect
@@ -24,10 +24,10 @@
             <template v-slot:option="{ option }">{{ $tc(`units.${option}`, unitLabelAmount) }}</template>
           </BaseSelect>
         </div>
-      </div>
+      </form>
     </BaseModalBody>
     <BaseModalFooter>
-      <BaseButton class="submit-button" raised color="contrast" @click="addProduct">
+      <BaseButton class="submit-button" raised color="contrast" type="submit" :form="formID">
         <BaseIcon class="submit-button__icon" icon="plus" weight="semiBold" />
         {{ loading ? '...dodawanie' : $t('shared.addProduct') }}
       </BaseButton>
@@ -38,6 +38,7 @@
 <script>
 import { units } from '@/constants'
 import { mapState } from 'vuex'
+import uniqueID from '@/functions/uniqueID'
 
 export default {
   emits: ['close'],
@@ -45,7 +46,8 @@ export default {
     units: units,
     loading: false,
     newProduct: component.emptyProduct(),
-    selectedBaseProduct: null
+    selectedBaseProduct: null,
+    formID: 'form-' + uniqueID().getID()
   }),
   computed: {
     ...mapState({

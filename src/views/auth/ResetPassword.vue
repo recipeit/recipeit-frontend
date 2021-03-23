@@ -8,8 +8,9 @@
       </p>
 
       <form @submit.prevent="resetPassword()">
-        <BaseInput class="form-row" label="Email" type="text" v-model="userData.email"></BaseInput>
-        <BaseButton class="form-row auth-page__content__submit" raised color="contrast" type="submit">Prześlij</BaseButton>
+        <BaseInput class="form-row" label="Hasło" type="password" v-model="userData.password"></BaseInput>
+        <BaseInput class="form-row" label="Potwierdź hasło" type="password" v-model="userData.confirmPassword"></BaseInput>
+        <BaseButton class="form-row auth-page__content__submit" raised color="contrast" type="submit">Zmień hasło</BaseButton>
       </form>
     </template>
 
@@ -17,8 +18,8 @@
       ...czekaj
     </template>
 
-    <template v-else-if="state === 'SENT'">
-      Sprawdź swoją skrzynkę pocztową!
+    <template v-else-if="state === 'SUCCESS'">
+      Hasło zostało zmienione
     </template>
 
     <template v-else>
@@ -32,21 +33,34 @@ import identityApi from '@/api/identityApi'
 
 export default {
   data: () => ({
-    state: 'LOADING',
-    email: null
+    state: 'BEFORE',
+    email: null,
+    token: null,
+    userData: {
+      password: '',
+      confirmPassword: ''
+    }
   }),
   beforeMount() {
-    this.state = 'LOADING'
+    this.state = 'BEFORE'
 
-    console.log(this.$route.query)
     const { email, token } = this.$route.query
     this.email = email
+    this.token = token
 
-    if (email && token) {
+    if (!email || !token) {
+      this.state = 'ERROR'
+    }
+  },
+  methods: {
+    resetPassword() {
+      this.state = 'SENDING'
       identityApi
         .resetPassword({
-          email,
-          token
+          email: this.email,
+          token: this.token,
+          password: this.userData.password,
+          confirmPassword: this.userData.confirmPassword
         })
         .then(resp => {
           if (resp.data.success) {
@@ -58,8 +72,6 @@ export default {
         .catch(() => {
           this.state = 'ERROR'
         })
-    } else {
-      this.state = 'ERROR'
     }
   }
 }

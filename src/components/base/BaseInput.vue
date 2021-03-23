@@ -1,24 +1,27 @@
 <template>
-  <div :class="['base-input', { 'base-input--focus': focused }]">
+  <div :class="['base-input', { 'base-input--focus': focused, 'base-input--invalid': errors }]">
     <div class="base-input__control">
-      <label :class="[{ 'label-up': modelValue || focused }]">
+      <label :for="id" :class="[{ 'label-up': modelValue || focused }]">
         <slot name="label">{{ label }}</slot>
       </label>
       <input
+        :id="id"
         :type="type"
         :tabindex="tabindex"
         :placeholder="placeholder"
         :value="modelValue"
+        :aria-describedby="errors ? erorrsID : null"
+        :aria-invalid="errors ? true : null"
         v-autofocus="autofocus"
         @input="valueChanged($event)"
         @focus="setFocus()"
         @blur="setBlur()"
       />
     </div>
-    <div class="base-input__errors">
+    <div v-if="errors" class="base-input__errors">
       <slot name="errors">
-        <ul class="base-input__errors__list">
-          <li v-for="(error, i) in errors" :key="i">{{ error }}</li>
+        <ul class="base-input__errors__list" :id="erorrsID">
+          <li v-for="(error, i) in errors" :key="i">{{ $t(`errorCode.${error}`) }}</li>
         </ul>
       </slot>
     </div>
@@ -26,6 +29,8 @@
 </template>
 
 <script>
+import uniqueID from '@/functions/uniqueID'
+
 export default {
   emits: ['update:modelValue'],
   props: {
@@ -48,7 +53,8 @@ export default {
     }
   },
   data: () => ({
-    focused: false
+    focused: false,
+    id: 'base-input-' + uniqueID().getID()
   }),
   methods: {
     valueChanged(event) {
@@ -59,6 +65,11 @@ export default {
     },
     setBlur() {
       this.focused = false
+    }
+  },
+  computed: {
+    erorrsID() {
+      return `${this.id}-errors`
     }
   }
 }
@@ -108,6 +119,10 @@ export default {
 
       #{ $root }--focus & {
         border-color: var(--color-primary);
+      }
+
+      #{ $root }--invalid & {
+        border-color: var(--color-red);
       }
     }
   }

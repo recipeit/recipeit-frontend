@@ -35,53 +35,55 @@ export default {
         })
     },
     register(_, { email, password, confirmPassword }) {
-      identityApi
-        .register({ email, password, confirmPassword })
-        .then(response => {
-          const { success } = response.data
+      return new Promise((resolve, reject) => {
+        identityApi
+          .register({ email, password, confirmPassword })
+          .then(response => {
+            const { success, errors } = response.data
 
-          if (success) {
-            router.push({
-              name: 'register-success',
-              params: {
-                email
-              }
-            })
-          } else {
-            console.log('error')
-          }
-          // const { token, refreshToken } = response.data
-          // localStorage.setItem(STORAGE_TOKEN, token)
-          // localStorage.setItem(STORAGE_REFRESH_TOKEN, refreshToken)
-          // router.push({ name: 'home' })
-        })
-        .catch(error => {
-          console.error(error)
-        })
+            if (success) {
+              router.push({
+                name: 'register-success',
+                params: {
+                  email
+                }
+              })
+              resolve()
+            } else {
+              reject(errors)
+            }
+          })
+          .catch(error => {
+            reject(error.response?.data?.errors)
+          })
+      })
     },
     login({ commit, dispatch }, { email, password }) {
-      identityApi
-        .login({ email, password })
-        .then(response => {
-          if (response.data.emailUnconfirmed) {
-            router.push({
-              name: 'register-success',
-              params: {
-                email
-              }
-            })
-          } else {
-            const { token, refreshToken, userProfile } = response.data
-            localStorage.setItem(STORAGE_TOKEN, token)
-            localStorage.setItem(STORAGE_REFRESH_TOKEN, refreshToken)
-            commit(MUTATIONS.SET_USER_PROFILE, userProfile)
-            dispatch('getInitUserData')
-            router.push({ name: 'home' })
-          }
-        })
-        .catch(error => {
-          console.error(error)
-        })
+      return new Promise((resolve, reject) => {
+        identityApi
+          .login({ email, password })
+          .then(response => {
+            if (response.data.emailUnconfirmed) {
+              router.push({
+                name: 'register-success',
+                params: {
+                  email
+                }
+              })
+            } else {
+              const { token, refreshToken, userProfile } = response.data
+              localStorage.setItem(STORAGE_TOKEN, token)
+              localStorage.setItem(STORAGE_REFRESH_TOKEN, refreshToken)
+              commit(MUTATIONS.SET_USER_PROFILE, userProfile)
+              dispatch('getInitUserData')
+              router.push({ name: 'home' })
+            }
+            resolve()
+          })
+          .catch(error => {
+            reject(error.response?.data?.errors)
+          })
+      })
     },
     facebookAuth({ commit, dispatch }, accessToken) {
       identityApi

@@ -40,6 +40,10 @@ export default {}
       width: 100%;
     }
 
+    &__errors {
+      color: var(--color-red);
+    }
+
     &__request-password-reset {
       display: inline-block;
       margin-top: 1rem;

@@ -15,7 +15,7 @@
       ...czekaj
     </template>
 
-    <template v-else-if="state === 'SENT'">
+    <template v-else-if="state === 'SUCCESS'">
       Sprawdź swoją skrzynkę pocztową!
     </template>
 
@@ -45,7 +45,7 @@ export default {
         identityApi
           .requestPasswordReset(this.userData.email)
           .then(() => {
-            this.state = 'SENT'
+            this.state = 'SUCCESS'
           })
           .catch(() => {
             this.state = 'ERROR'
