@@ -42,14 +42,14 @@
               :key="expirationDate"
             >
               {{ expirationDate }}
-              <BaseIcon class="expiration-date-list__item__icon" icon="close" weight="semiBold"></BaseIcon>
+              <BaseIcon class="expiration-date-list__item__icon" icon="close" weight="semi-bold"></BaseIcon>
             </BaseButton>
           </div>
         </div>
 
         <div class="form-row">
           <BaseLink tag="button" color="primary" class="add-expiration-date-button">
-            <BaseIcon class="add-expiration-date-button__icon" icon="plus" weight="semiBold"></BaseIcon>
+            <BaseIcon class="add-expiration-date-button__icon" icon="plus" weight="semi-bold"></BaseIcon>
             {{ expirationDates && expirationDates.length > 0 ? 'dodaj kolejną datę ważności' : 'dodaj datę ważności' }}
           </BaseLink>
         </div>

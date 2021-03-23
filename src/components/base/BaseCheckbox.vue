@@ -9,7 +9,7 @@
     @keypress.enter.prevent.stop.self="updateInput()"
   >
     <div class="checkbox__input">
-      <BaseIcon icon="checkSmall" weight="bold" />
+      <BaseIcon icon="check-small" weight="bold" />
     </div>
     <div class="checkbox__label">
       <slot name="label">

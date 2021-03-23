@@ -1,12 +1,12 @@
 <template>
   <!-- <span v-if="isFavourite" class="favourite favourite--active" @click="$emit('removed')">
-    <BaseIcon icon="heartFull" />
+    <BaseIcon icon="heart-full" />
   </span>
   <span class="favourite" v-else @click="$emit('added')">
     <BaseIcon icon="heart" />
   </span> -->
   <BaseLink class="favourite" tag="button" @click="onClick()" :color="isFavourite ? 'red' : color">
-    <BaseIcon :icon="isFavourite ? 'heartFull' : 'heart'" />
+    <BaseIcon :icon="isFavourite ? 'heart-full' : 'heart'" />
   </BaseLink>
 </template>
 

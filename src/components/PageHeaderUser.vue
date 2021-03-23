@@ -6,7 +6,7 @@
           <img :src="userProfile?.imageUrl || 'https://sprm.org.pl/wp-content/uploads/2018/04/User-icon.png'" alt="profile picture" />
         </div>
         <BaseLink v-else color="text-primary" class="page-header-user__anonymous-avatar">
-          <BaseIcon icon="user" weight="semiBold"></BaseIcon>
+          <BaseIcon icon="user" weight="semi-bold"></BaseIcon>
         </BaseLink>
       </template>
       <template v-slot:dropdown>

@@ -4,12 +4,12 @@
       <div class="recipe__image-container">
         <div class="recipe__image-container__buttons">
           <BaseLink class="recipe__image-container__button" @click="back()" tag="button">
-            <BaseIcon icon="arrowRight" weight="regular" />
+            <BaseIcon icon="arrow-right" weight="regular" />
           </BaseLink>
           <BaseMenu>
             <template v-slot:toggle>
               <BaseLink class="recipe__image-container__button" tag="button">
-                <BaseIcon icon="dotsHorizontal" weight="regular" />
+                <BaseIcon icon="dots-horizontal" weight="regular" />
               </BaseLink>
             </template>
             <template v-slot:dropdown>
@@ -27,11 +27,11 @@
       <div class="recipe__main">
         <div class="recipe__header-pills">
           <div v-if="cookingHours" class="recipe__header-pill">
-            <BaseIcon class="recipe__header-pill__icon" icon="clock" weight="semiBold"></BaseIcon>
+            <BaseIcon class="recipe__header-pill__icon" icon="clock" weight="semi-bold"></BaseIcon>
             {{ cookingHours }} h
           </div>
           <div v-if="recipe.details.servings" class="recipe__header-pill">
-            <BaseIcon class="recipe__header-pill__icon" icon="user" weight="semiBold"></BaseIcon>
+            <BaseIcon class="recipe__header-pill__icon" icon="user" weight="semi-bold"></BaseIcon>
             {{ $tc('shared.servings', recipe.details.servings) }}
           </div>
         </div>
@@ -66,11 +66,11 @@
                 v-bind:disabled="servings <= 1"
                 @click="decreaseServings()"
               >
-                <BaseIcon icon="minus" weight="semiBold" />
+                <BaseIcon icon="minus" weight="semi-bold" />
               </BaseButton>
               <span class="servings-count">{{ servings }}</span>
               <BaseButton class="servings-button servings-button--right" subtle color="primary" @click="increaseServings()">
-                <BaseIcon icon="plus" weight="semiBold" />
+                <BaseIcon icon="plus" weight="semi-bold" />
               </BaseButton>
               porcji
             </div>
@@ -87,7 +87,7 @@
         <div class="recipe__ingredients-button-container">
           <BaseLink tag="button" color="primary" class="all-to-shopping-list-button link-with-icon">
             dodaj brakujące składniki do zakupów
-            <!-- <BaseIcon class="link-with-icon__icon" icon="plus" weight="semiBold" /> -->
+            <!-- <BaseIcon class="link-with-icon__icon" icon="plus" weight="semi-bold" /> -->
           </BaseLink>
         </div>
 

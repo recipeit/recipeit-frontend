@@ -5,7 +5,7 @@
       <div class="actions__decrement" @click="decreaseAmount">-</div>
       <div class="actions__increment" @click="increaseAmount">+</div> -->
       <a class="purchase-button" @click="$emit('purchase')">
-        <BaseIcon icon="check" weight="semiBold" />
+        <BaseIcon icon="check" weight="semi-bold" />
       </a>
     </div>
   </Product>

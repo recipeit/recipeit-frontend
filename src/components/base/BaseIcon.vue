@@ -1,19 +1,14 @@
 <template>
-  <div class="icon-wrapper" v-if="iconObject">
-    <svg version="1.1" :viewBox="iconObject.viewBox" :innerHTML="iconObject.content"></svg>
-  </div>
+  <div class="base-icon-wrapper" v-html="iconObject"></div>
 </template>
 
 <script>
-import * as iconsRegular from './icons/regular'
-import * as iconsSemiBold from './icons/semiBold'
-import * as iconsBold from './icons/bold'
-import * as iconsBrands from './icons/brands'
+import icons from './icons'
 
 export default {
   props: {
     icon: {
-      type: [String, Object],
+      type: String,
       required: true
     },
     weight: {
@@ -23,35 +18,25 @@ export default {
   },
   computed: {
     iconObject() {
-      if (typeof this.icon === 'string') {
-        switch (this.weight) {
-          case 'regular':
-            return iconsRegular[this.icon]
-          case 'semiBold':
-            return iconsSemiBold[this.icon]
-          case 'bold':
-            return iconsBold[this.icon]
-          case 'brands':
-            return iconsBrands[this.icon]
-          default:
-            return iconsRegular[this.icon]
-        }
-      } else {
-        return this.icon
-      }
+      // if (typeof this.icon === 'string') {
+      const set = icons[this.weight]
+      return set ? set[this.icon] : null
+      // } else {
+      //   return this.icon
+      // }
     }
   }
 }
 </script>
 
-<style lang="scss" scoped>
-.icon-wrapper {
+<style lang="scss">
+.base-icon-wrapper {
   display: inline-flex;
-}
 
-svg {
-  width: 1em;
-  height: 1em;
-  fill: currentColor;
+  svg {
+    width: 1em;
+    height: 1em;
+    fill: currentColor;
+  }
 }
 </style>

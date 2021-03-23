@@ -3,7 +3,7 @@
     <div v-if="showFilterButtons" class="recipes-list__filters">
       <div class="recipes-list-search">
         <BaseLink class="recipes-list-search__search-button" color="text-secondary" @click="searchNow()">
-          <BaseIcon icon="search" weight="semiBold" />
+          <BaseIcon icon="search" weight="semi-bold" />
         </BaseLink>
         <input
           :value="searchString"
@@ -15,7 +15,7 @@
         />
 
         <BaseLink v-if="searchString" class="recipes-list-search__clear-button" color="text-secondary" @click="onSearchInput(null)">
-          <BaseIcon icon="close" weight="semiBold" />
+          <BaseIcon icon="close" weight="semi-bold" />
         </BaseLink>
         <BaseButton class="recipes-list-search__filter-button" size="small" raised color="contrast" @click="openFilterModal()">
           <!-- <BaseIcon icon="filter" /> -->

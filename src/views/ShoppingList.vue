@@ -13,7 +13,7 @@
 
     <div class="floating-action-button-container">
       <BaseButton raised color="contrast">
-        <BaseIcon class="floating-action-button__icon" icon="plus" weight="semiBold" />
+        <BaseIcon class="floating-action-button__icon" icon="plus" weight="semi-bold" />
         {{ $t('shared.addProduct') }}
       </BaseButton>
     </div>

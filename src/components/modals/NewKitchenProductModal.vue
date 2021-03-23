@@ -28,7 +28,7 @@
     </BaseModalBody>
     <BaseModalFooter>
       <BaseButton class="submit-button" raised color="contrast" type="submit" :form="formID">
-        <BaseIcon class="submit-button__icon" icon="plus" weight="semiBold" />
+        <BaseIcon class="submit-button__icon" icon="plus" weight="semi-bold" />
         {{ loading ? '...dodawanie' : $t('shared.addProduct') }}
       </BaseButton>
     </BaseModalFooter>

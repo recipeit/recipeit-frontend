@@ -14,18 +14,18 @@
         <BaseIcon
           class="ingredient__action__icon ingredient__action__icon--small ingredient__action__icon--less-space"
           icon="check"
-          weight="semiBold"
+          weight="semi-bold"
         />
       </a>
       <a v-else-if="isInMyKitchen" class="ingredient__action ingredient__action--available">
-        <BaseIcon class="ingredient__action__icon ingredient__action__icon--small" icon="check" weight="semiBold" />
+        <BaseIcon class="ingredient__action__icon ingredient__action__icon--small" icon="check" weight="semi-bold" />
       </a>
       <a v-else class="ingredient__action ingredient__action--unavailable" @click="addProductToShoppingList(ingredient)">
         <BaseIcon class="ingredient__action__icon" icon="basket" />
         <BaseIcon
           class="ingredient__action__icon ingredient__action__icon--small ingredient__action__icon--less-space"
           icon="plus"
-          weight="semiBold"
+          weight="semi-bold"
         />
       </a>
     </div>

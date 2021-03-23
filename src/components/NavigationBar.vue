@@ -9,7 +9,7 @@
       <span>Przepisy</span>
     </router-link>
     <router-link :to="{ name: 'cook-it' }" class="navigation-bar__item">
-      <BaseIcon icon="chefHat" />
+      <BaseIcon icon="chef-hat" />
       <span>Ugotuj to!</span>
     </router-link>
     <router-link :to="{ name: 'my-kitchen' }" class="navigation-bar__item">

@@ -2,13 +2,13 @@
   <Product :product="product" @click="openEditModal">
     <div class="actions" @click.stop>
       <BaseLink color="red" class="action action--remove" @click="deleteProduct">
-        <BaseIcon icon="trash" weight="semiBold" />
+        <BaseIcon icon="trash" weight="semi-bold" />
       </BaseLink>
       <BaseLink color="text-secondary" class="action action--decrement" @click="decreaseAmount">
-        <BaseIcon icon="minus" weight="semiBold" />
+        <BaseIcon icon="minus" weight="semi-bold" />
       </BaseLink>
       <BaseLink color="text-secondary" class="action action--increment" @click="increaseAmount">
-        <BaseIcon icon="plus" weight="semiBold" />
+        <BaseIcon icon="plus" weight="semi-bold" />
       </BaseLink>
     </div>
   </Product>
