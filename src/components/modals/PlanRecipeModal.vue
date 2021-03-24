@@ -29,8 +29,6 @@ import uniqueID from '@/functions/uniqueID'
 import dayjs from '@/functions/dayjs'
 import timesOfDay from '@/constants/timesOfDay'
 
-const today = dayjs()
-
 export default {
   emits: ['close'],
   data: () => ({
@@ -39,8 +37,8 @@ export default {
       timeOfDay: null
     },
     formID: 'form-' + uniqueID().getID(),
-    days: Array.from({ length: 7 }, (_, i) => today.add(i, 'days').calendar()),
     timesOfDay: Object.keys(timesOfDay),
+    days: null,
     error: null
   }),
   methods: {
@@ -53,6 +51,12 @@ export default {
       this.error = null
       // this.$emit('close', date)
     }
+  },
+  beforeMount() {
+    const today = dayjs()
+    this.days = Array.from({ length: 7 }, (_, i) => today.add(i, 'days').calendar())
+    this.formData.day = this.days[0]
+    this.formData.timeOfDay = this.timesOfDay[0]
   }
 }
 </script>
