@@ -45,13 +45,12 @@ export default {
   }),
   methods: {
     planRecipe() {
-      // let date = { ...this.date }
-      // if (!date.year || !date.month) {
-      //   this.error = 'rok i miesiąc są wymagane'
-      //   return
-      // }
-      // this.error = null
-      // if (!date.day) date.day = 1
+      const { formData } = this
+      if (!formData.day || !formData.timeOfDay) {
+        this.error = 'oba pola są wymagane'
+        return
+      }
+      this.error = null
       // this.$emit('close', date)
     }
   }
