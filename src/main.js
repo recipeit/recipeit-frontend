@@ -3,6 +3,7 @@ import { createApp } from 'vue'
 import './registerServiceWorker'
 import App from './App'
 import GlobalSheetModal from './plugins/global-sheet-modal'
+import Toast from './plugins/toast'
 import router from './router'
 import store from './store'
 import i18n from './i18n'
@@ -27,6 +28,7 @@ requireComponent.keys().forEach(fileName => {
 
 app
   .use(GlobalSheetModal)
+  .use(Toast)
   .use(router)
   .use(store)
   .use(i18n)

@@ -14,7 +14,7 @@ $red: #ff4b4b;
 $blue: #3b65f0;
 $green: #54ad19;
 $green: #0dd173;
-$green: #0BB161;
+$green: #0bb161;
 $yellow: #ffb71d;
 $gray-500: #6c8693;
 
@@ -42,6 +42,26 @@ $color-theme: (
   'blue': $blue,
   'yellow': $yellow,
   'red': $red,
+  'toast': (
+    'background': rgba($gray-light, 0.95),
+    'color': $black,
+    'icon': (
+      'background': $blue,
+      'color': $white,
+      'success': (
+        'background': $green,
+        'color': $white
+      ),
+      'warning': (
+        'background': $yellow,
+        'color': $white
+      ),
+      'danger': (
+        'background': $red,
+        'color': $white
+      )
+    )
+  ),
   'link': (
     'DEFAULT': (
       'color': $black,

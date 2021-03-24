@@ -1,5 +1,6 @@
 <template>
   <global-sheet-modal-container />
+  <toasts-container />
   <div class="layout">
     <dashboard v-if="isAuthenticated !== undefined" />
   </div>

@@ -17,7 +17,7 @@
                 <BaseMenuLink>Ukryj przepis</BaseMenuLink>
                 <BaseMenuLink>Ukryj ten blog</BaseMenuLink>
                 <BaseMenuSeparator></BaseMenuSeparator>
-                <BaseMenuLink>Skopiuj link do przepisu</BaseMenuLink>
+                <BaseMenuLink @click="copyLinkToClipboard()">Skopiuj link do przepisu</BaseMenuLink>
               </BaseMenuList>
             </template>
           </BaseMenu>
@@ -135,6 +135,7 @@ import RecipeIngredient from '@/components/recipe/RecipeIngredient'
 import FavouriteIcon from '@/components/FavouriteIcon'
 import Rating from '@/components/Rating'
 import Dialog from '@/components/modals/Dialog'
+import { ToastType } from '@/plugins/toast/toastType'
 
 dayjs.extend(duration)
 
@@ -195,6 +196,9 @@ export default {
     },
     increaseServings() {
       this.servings += 1
+    },
+    copyLinkToClipboard() {
+      this.$toast.show('Skopiowano do schowka', ToastType.SUCCESS)
     }
   },
   computed: {

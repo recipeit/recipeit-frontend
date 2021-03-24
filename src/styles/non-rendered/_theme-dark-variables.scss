@@ -7,7 +7,7 @@ $grayscale-max: #aebfcc;
 $red: #ff6464;
 // $blue: #587df3;
 $blue-dark: #0058ff;
-$blue: #00ABFF;
+$blue: #00abff;
 // $green: #8dcf60;
 $green: #0dd173;
 // $green: #28da84;
@@ -42,6 +42,26 @@ $color-theme: (
   'blue': $blue,
   'yellow': $yellow,
   'red': $red,
+  'toast': (
+    'background': rgba(#272c30, 0.95),
+    'color': $text-primary,
+    'icon': (
+      'background': $blue,
+      'color': darken(#272c30, 5),
+      'success': (
+        'background': $green,
+        'color': darken(#272c30, 5)
+      ),
+      'warning': (
+        'background': $yellow,
+        'color': darken(#272c30, 5)
+      ),
+      'danger': (
+        'background': $red,
+        'color': darken(#272c30, 5)
+      )
+    )
+  ),
   'link': (
     'DEFAULT': (
       'color': $text-primary,

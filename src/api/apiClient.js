@@ -1,6 +1,8 @@
 import { STORAGE_TOKEN } from '@/constants'
 import axios from 'axios'
 import store from '@/store'
+import toastPlugin from '@/plugins/toast'
+import { ToastType } from '@/plugins/toast/toastType'
 
 // process.env.NODE_ENV === 'production'
 // const baseURL = 'https://localhost:44388'
@@ -32,11 +34,11 @@ apiClient.interceptors.response.use(
     const originalRequest = error.config
 
     // Prevent infinite loops
-    if (error.response.status === 401 && originalRequest.url.includes('/identity/refresh')) {
+    if (error.response?.status === 401 && originalRequest.url.includes('/identity/refresh')) {
       return Promise.reject(error)
     }
 
-    if (error.response.status === 401) {
+    if (error.response?.status === 401) {
       if (!isRefreshing) {
         isRefreshing = true
         store
@@ -51,6 +53,7 @@ apiClient.interceptors.response.use(
           .catch(error => {
             // todo logout only when api error, not when there is no token
             if (error) {
+              toastPlugin.toast.show('Wystąpił nieoczekiwany błąd', ToastType.DANGER)
               store.dispatch('user/logout')
             }
           })
@@ -68,6 +71,7 @@ apiClient.interceptors.response.use(
     }
 
     // specific error handling done elsewhere
+    toastPlugin.toast.show('Wystąpił nieoczekiwany błąd', ToastType.DANGER)
     return Promise.reject(error)
   }
 )
