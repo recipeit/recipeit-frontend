@@ -198,8 +198,14 @@ export default {
       this.servings += 1
     },
     copyLinkToClipboard() {
-      if (this.$clipboard(this.recipe.url)) {
+      const { url } = this.recipe
+
+      if (!url) {
+        this.$toast.show('Nie udało się skopiować do schowka', ToastType.DANGER)
+      } else if (this.$clipboard(url)) {
         this.$toast.show('Skopiowano do schowka', ToastType.SUCCESS)
+      } else {
+        this.$toast.show('Nie udało się skopiować do schowka', ToastType.DANGER)
       }
     }
   },
