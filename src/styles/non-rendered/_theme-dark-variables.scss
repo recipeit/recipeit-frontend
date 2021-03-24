@@ -46,19 +46,19 @@ $color-theme: (
     'background': rgba(#272c30, 0.95),
     'color': $text-primary,
     'icon': (
-      'background': $blue,
-      'color': darken(#272c30, 5),
+      'background': rgba($blue, 0.1),
+      'color': $blue,
       'success': (
-        'background': $green,
-        'color': darken(#272c30, 5)
+        'background': rgba($green, 0.1),
+        'color': $green
       ),
       'warning': (
-        'background': $yellow,
-        'color': darken(#272c30, 5)
+        'background': rgba($yellow, 0.1),
+        'color': $yellow
       ),
       'danger': (
-        'background': $red,
-        'color': darken(#272c30, 5)
+        'background': rgba($red, 0.1),
+        'color': $red
       )
     )
   ),
