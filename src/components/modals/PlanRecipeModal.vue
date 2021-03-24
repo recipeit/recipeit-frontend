@@ -17,7 +17,7 @@
     </BaseModalBody>
     <BaseModalFooter>
       <BaseButton class="submit-button" raised color="contrast" type="submit" :form="formID">
-        <BaseIcon class="submit-button__icon" icon="plus" weight="semi-bold" />
+        <BaseIcon class="submit-button__icon" icon="clock" weight="semi-bold" />
         {{ $t('shared.planRecipe') }}
       </BaseButton>
     </BaseModalFooter>
