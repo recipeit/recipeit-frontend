@@ -198,7 +198,9 @@ export default {
       this.servings += 1
     },
     copyLinkToClipboard() {
-      this.$toast.show('Skopiowano do schowka', ToastType.SUCCESS)
+      if (this.$clipboard(this.recipe.url)) {
+        this.$toast.show('Skopiowano do schowka', ToastType.SUCCESS)
+      }
     }
   },
   computed: {
