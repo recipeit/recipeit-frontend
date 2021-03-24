@@ -61,7 +61,7 @@ export default {
       const { type } = this
       if (type === ToastType.SUCCESS) return 'small-check'
       if (type === ToastType.WARNING) return 'warning'
-      if (type === ToastType.DANGER) return 'warning'
+      if (type === ToastType.DANGER) return 'small-close'
       return 'info'
     }
   },
