@@ -1,4 +1,5 @@
 import errorCodes from '@/constants/errorCodes'
+import timesOfDay from '@/constants/timesOfDay'
 
 export default {
   messages: {
@@ -17,6 +18,7 @@ export default {
       seeAll: 'zobacz wszystkie',
       addProduct: 'Dodaj produkt',
       addExpirationDate: 'Dodaj datę ważności',
+      planRecipe: 'Zaplanuj przepis',
       yes: 'Tak',
       no: 'Nie'
     },
@@ -149,6 +151,13 @@ export default {
       [errorCodes.REQUIRED_AT_LEAST_ONE_DIGIT]: 'wymagana co najmniej jedna cyfra',
       [errorCodes.REQUIRED_AT_LEAST_ONE_NON_ALPHANUM]: 'wymagany co najmniej jeden znak specjalny',
       [errorCodes.WRONG_PASSWORD_COMBINATION]: 'wprowadzone hasła nie są takie same'
+    },
+    timeOfDay: {
+      [timesOfDay.BREAKFAST]: 'śniadanie',
+      [timesOfDay.ELEVENSES]: 'drugie śniadanie',
+      [timesOfDay.DINNER]: 'obiad',
+      [timesOfDay.SUPPER]: 'kolacja',
+      [timesOfDay.SNACK]: 'przekąska'
     }
   },
   pluralizationRules(choice, choicesLength) {

@@ -114,7 +114,7 @@
           </div>
         </div>
         <BaseButton class="update-button" stroked color="contrast">Zjedzone! Zaaktualizuj kuchnię</BaseButton>
-        <BaseButton class="plan-button" raised color="contrast">
+        <BaseButton class="plan-button" raised color="contrast" @click="openPlanRecipeModal()">
           <BaseIcon class="plan-button__icon" icon="clock" /> Zaplanuj na później
         </BaseButton>
       </div>
@@ -126,8 +126,7 @@
 </template>
 
 <script>
-import dayjs from 'dayjs'
-import duration from 'dayjs/plugin/duration'
+import dayjs from '@/functions/dayjs'
 import { markRaw } from 'vue'
 import _ from 'lodash'
 import { mapState } from 'vuex'
@@ -136,8 +135,7 @@ import FavouriteIcon from '@/components/FavouriteIcon'
 import Rating from '@/components/Rating'
 import Dialog from '@/components/modals/Dialog'
 import { ToastType } from '@/plugins/toast/toastType'
-
-dayjs.extend(duration)
+import PlanRecipeModal from '@/components/modals/PlanRecipeModal'
 
 export default {
   name: 'Recipe',
@@ -207,6 +205,9 @@ export default {
       } else {
         this.$toast.show('Nie udało się skopiować do schowka', ToastType.DANGER)
       }
+    },
+    openPlanRecipeModal() {
+      this.$modal.show(markRaw(PlanRecipeModal), {}, {})
     }
   },
   computed: {

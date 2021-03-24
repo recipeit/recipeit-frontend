@@ -31,14 +31,11 @@
 </template>
 
 <script>
-import dayjs from 'dayjs'
-import 'dayjs/locale/pl'
+import dayjs from '@/functions/dayjs'
 
 import { markRaw } from 'vue'
 import myKitchenApi from '@/api/myKitchenApi'
 import NewExpirationDateModal from './NewExpirationDateModal'
-
-dayjs.locale('pl')
 
 export default {
   // emits: [update:],

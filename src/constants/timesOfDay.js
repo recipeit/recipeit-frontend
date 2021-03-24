@@ -1,0 +1,7 @@
+export default {
+  BREAKFAST: 'BREAKFAST',
+  ELEVENSES: 'ELEVENSES',
+  DINNER: 'DINNER',
+  SUPPER: 'SUPPER',
+  SNACK: 'SNACK'
+}

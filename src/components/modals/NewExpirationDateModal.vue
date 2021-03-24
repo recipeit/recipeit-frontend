@@ -23,9 +23,7 @@
 </template>
 
 <script>
-import dayjs from 'dayjs'
-// import { units } from '@/constants'
-// import { mapState } from 'vuex'
+import dayjs from '@/functions/dayjs'
 import uniqueID from '@/functions/uniqueID'
 
 const currentYear = dayjs().year()
