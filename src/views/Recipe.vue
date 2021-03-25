@@ -14,8 +14,12 @@
             </template>
             <template v-slot:dropdown>
               <BaseMenuList>
-                <BaseMenuLink>Ukryj przepis</BaseMenuLink>
-                <BaseMenuLink>Ukryj ten blog</BaseMenuLink>
+                <BaseMenuLink v-if="!hiddenRecipe" @click="hideRecipeInLists()">Ukryj ten przepis</BaseMenuLink>
+                <BaseMenuLink v-else @click="unhideRecipeInLists()">Pokazuj ten przepis</BaseMenuLink>
+
+                <BaseMenuLink v-if="!hiddenBlog" @click="hideBlogInLists()">Ukryj ten blog</BaseMenuLink>
+                <BaseMenuLink v-else @click="unhideBlogInLists()">Pokazuj ten blog</BaseMenuLink>
+
                 <BaseMenuSeparator></BaseMenuSeparator>
                 <BaseMenuLink @click="copyLinkToClipboard()">Skopiuj link do przepisu</BaseMenuLink>
               </BaseMenuList>
@@ -154,7 +158,9 @@ export default {
     recipe: null,
     // recipeDetails: null,
     servings: 1,
-    finishedDirections: []
+    finishedDirections: [],
+    hiddenRecipe: false, //temporary!!!! TODO
+    hiddenBlog: false //temporary!!!! TODO
   }),
   created() {
     // this.$store.dispatch('recipes/fetchRecipe', this.recipeId).then(r => (this.recipe = r))
@@ -207,7 +213,31 @@ export default {
       }
     },
     openPlanRecipeModal() {
-      this.$modal.show(markRaw(PlanRecipeModal), {}, {})
+      this.$modal.show(markRaw(PlanRecipeModal), { recipeId: this.recipeId }, {})
+    },
+    hideRecipeInLists() {
+      if (this.hiddenRecipe) return
+      this.hiddenRecipe = true
+      // this.$store.dispatch('user/hideRecipe', this.recipe.id)
+      this.$toast.show('Przepis został ukryty', ToastType.SUCCESS)
+    },
+    unhideRecipeInLists() {
+      if (!this.hiddenRecipe) return
+      this.hiddenRecipe = false
+      // this.$store.dispatch('user/unhideRecipe', this.recipe.id)
+      this.$toast.show('Przepis został odkryty. Od teraz będzie pojawiał się w wynikach wyszukiwania', ToastType.SUCCESS)
+    },
+    hideBlogInLists() {
+      if (this.hiddenBlog) return
+      this.hiddenBlog = true
+      // this.$store.dispatch('user/hideBlog', this.recipe.id)
+      this.$toast.show('Blog został ukryty', ToastType.SUCCESS)
+    },
+    unhideBlogInLists() {
+      if (!this.hiddenBlog) return
+      this.hiddenBlog = false
+      // this.$store.dispatch('user/unhideBlog', this.recipe.id)
+      this.$toast.show('Blog został odkryty. Od teraz przepisy tego twórcy będą pojawiać się w wynikach wyszukiwania', ToastType.SUCCESS)
     }
   },
   computed: {

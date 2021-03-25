@@ -43,8 +43,8 @@ export default {
   getPlannedRecipes() {
     return apiClient.get(`/recipes/planned`)
   },
-  addRecipeToPlanned(id) {
-    return apiClient.post(`/recipes/planned/${id}`, null)
+  addRecipeToPlanned(id, data) {
+    return apiClient.post(`/recipes/planned/${id}`, data)
   },
   removeRecipeFromPlanned(id) {
     return apiClient.delete(`/recipes/planned/${id}`)

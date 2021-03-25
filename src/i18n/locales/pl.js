@@ -155,6 +155,7 @@ export default {
     timeOfDay: {
       [timesOfDay.BREAKFAST]: 'śniadanie',
       [timesOfDay.ELEVENSES]: 'drugie śniadanie',
+      [timesOfDay.LUNCH]: 'lunch',
       [timesOfDay.DINNER]: 'obiad',
       [timesOfDay.SUPPER]: 'kolacja',
       [timesOfDay.SNACK]: 'przekąska'

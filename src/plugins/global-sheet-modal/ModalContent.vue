@@ -25,7 +25,7 @@ export default {
     height: 4px;
     width: 48px;
     border-radius: 8px;
-    background-color: var(--border);
+    background-color: var(--color-border);
     top: 12px;
     left: 50%;
     transform: translateX(-50%);

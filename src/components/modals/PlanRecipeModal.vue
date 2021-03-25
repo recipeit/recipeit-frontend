@@ -5,7 +5,14 @@
     </BaseModalHeader>
     <BaseModalBody>
       <form :id="formID" @submit.prevent="planRecipe()" class="form-columns">
-        <BaseSelect :searchable="false" placeholder="Dzień" v-model="formData.day" :options="days"></BaseSelect>
+        <BaseSelect
+          :searchable="false"
+          placeholder="Dzień"
+          v-model="formData.day"
+          :options="days"
+          trackBy="value"
+          label="label"
+        ></BaseSelect>
         <BaseSelect :searchable="false" placeholder="Pora dnia" v-model="formData.timeOfDay" :options="timesOfDay">
           <template v-slot:label="{ option }">{{ $t(`timeOfDay.${option}`) }}</template>
           <template v-slot:option="{ option }">{{ $t(`timeOfDay.${option}`) }}</template>
@@ -31,6 +38,12 @@ import timesOfDay from '@/constants/timesOfDay'
 
 export default {
   emits: ['close'],
+  props: {
+    recipeId: {
+      type: String,
+      required: true
+    }
+  },
   data: () => ({
     formData: {
       day: null,
@@ -49,12 +62,34 @@ export default {
         return
       }
       this.error = null
-      // this.$emit('close', date)
+      const preparedData = {
+        recipeId: this.recipeId,
+        day: formData.day.value,
+        timeOfDay: formData.timeOfDay
+      }
+      this.$store
+        .dispatch('recipes/addRecipeToPlanned', preparedData)
+        .then(response => {
+          if (response?.data) {
+            this.$emit('close')
+          } else {
+            this.error = 'coś poszło nie tak'
+          }
+        })
+        .catch(() => {
+          this.error = 'coś poszło nie tak'
+        })
     }
   },
   beforeMount() {
     const today = dayjs()
-    this.days = Array.from({ length: 7 }, (_, i) => today.add(i, 'days').calendar())
+    this.days = Array.from({ length: 7 }, (_, i) => {
+      const day = today.add(i, 'days')
+      return {
+        value: day.format('YYYY-MM-DD'),
+        label: day.calendar()
+      }
+    })
     this.formData.day = this.days[0]
     this.formData.timeOfDay = this.timesOfDay[0]
   }

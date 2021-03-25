@@ -233,6 +233,20 @@ export default {
           .catch(error => reject(error))
       })
     },
+
+    addRecipeToPlanned(_, { recipeId, day, timeOfDay }) {
+      return new Promise((resolve, reject) => {
+        recipeApi
+          .addRecipeToPlanned(recipeId, { day, timeOfDay })
+          .then(response => {
+            console.log(response)
+            // commit(MUTATIONS.ADD_RECIPE_ID_TO_FAVOURITES, id)
+            resolve(response)
+          })
+          .catch(error => reject(error))
+      })
+    },
+
     resetUserData({ commit }) {
       commit(MUTATIONS.SET_FAVOURITE_RECIPES_IDS, [])
       commit(MUTATIONS.RESET_ALMOST_AVAILABLE_RECIPES)
