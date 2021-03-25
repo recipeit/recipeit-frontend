@@ -4,21 +4,34 @@
       <BaseLink class="day-plan__header__button" @click="previousDay()">
         <BaseIcon icon="arrow-left" weight="semi-bold"></BaseIcon>
       </BaseLink>
-      <span class="day-plan__header__title">{{ currentDay.calendar() }}</span>
+      <span class="day-plan__header__title">
+        <transition name="fade" mode="out-in">
+          <span :key="currentDay.key">{{ currentDay.name }}</span>
+        </transition>
+      </span>
       <BaseLink class="day-plan__header__button" @click="nextDay()">
         <BaseIcon icon="arrow-right" weight="semi-bold"></BaseIcon>
       </BaseLink>
     </div>
-    <div class="day-plan__times-of-day">
-      <div class="time-of-day" v-for="(recipes, key) in currentDayPlan" :key="key">
-        <div class="time-of-day__title">{{ $t(`timeOfDay.${key}`) }}</div>
-        <div class="time-of-day__recipes">
-          <BaseLink href="#" class="time-of-day__recipe" v-for="recipe in recipes" :key="recipe.id">
-            {{ recipe.name }}
-          </BaseLink>
+    <transition name="fade" mode="out-in">
+      <div :key="currentDay.key" class="day-plan__times-of-day">
+        <div class="time-of-day" v-for="(recipes, key) in currentDayPlan" :key="key">
+          <div class="time-of-day__title">{{ $t(`timeOfDay.${key}`) }}</div>
+          <div class="time-of-day__recipes">
+            <div href="#" class="time-of-day__recipe" v-for="recipe in recipes" :key="recipe.id">
+              <router-link :to="{ name: 'recipe', params: { recipeId: recipe.recipeId } }" v-slot="{ href, navigate }" custom>
+                <BaseLink :href="href" @click="navigate" class="time-of-day__recipe__link">
+                  {{ recipe.name }}
+                </BaseLink>
+              </router-link>
+              <BaseLink tag="button" color="text-secondary" class="time-of-day__recipe__remove" @click="removePlannedRecipe(recipe.id)">
+                <BaseIcon icon="close" weight="semi-bold"></BaseIcon>
+              </BaseLink>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+    </transition>
   </div>
 </template>
 
@@ -29,16 +42,31 @@ export default {
   data() {
     return {
       currentDay: null,
-      currentDayPlan: {
+      currentDayPlan: null
+    }
+  },
+  beforeMount() {
+    this.setDay(dayjs().startOf('day'))
+  },
+  methods: {
+    setDay(day) {
+      this.currentDay = {
+        dayjs: day,
+        key: day.format('YYYY-MM-DD'),
+        name: day.calendar()
+      }
+      this.currentDayPlan = {
         BREAKFAST: [
           {
-            id: '8918255a-78c1-4ebc-af6a-c083b521b7bf',
+            id: '1',
+            recipeId: '8918255a-78c1-4ebc-af6a-c083b521b7bf',
             name: 'Naleśniki po bolońsku',
             authorName: 'aliszjaw',
             blogName: 'Kwestia Smaku'
           },
           {
-            id: '2b290e8d-ba83-4ef0-aac9-3d5d11aad358',
+            id: '2',
+            recipeId: '2b290e8d-ba83-4ef0-aac9-3d5d11aad358',
             name: 'Ciasto marchewkowe z orzechami',
             authorName: 'Alicja',
             blogName: 'czekoladowa muffinka'
@@ -48,7 +76,8 @@ export default {
         LUNCH: [],
         DINNER: [
           {
-            id: 'b9785b32-c4a0-4d13-adfe-cde5b2eecf7d',
+            id: '3',
+            recipeId: 'b9785b32-c4a0-4d13-adfe-cde5b2eecf7d',
             name: 'Quesadilla z batatami i chorizo',
             authorName: 'Marta',
             blogName: 'Kuchnia Marty'
@@ -57,20 +86,15 @@ export default {
         SUPPER: [],
         SNACK: []
       }
-    }
-  },
-  beforeMount() {
-    this.setDay(dayjs().startOf('day'))
-  },
-  methods: {
-    setDay(day) {
-      this.currentDay = day
     },
     previousDay() {
-      this.currentDay = this.currentDay.subtract(1, 'day')
+      this.setDay(this.currentDay.dayjs.subtract(1, 'day'))
     },
     nextDay() {
-      this.currentDay = this.currentDay.add(1, 'day')
+      this.setDay(this.currentDay.dayjs.add(1, 'day'))
+    },
+    removePlannedRecipe(id) {
+      console.log('removing planned recipe with id ', id)
     }
   }
 }
@@ -114,15 +138,28 @@ export default {
 
   &__recipes {
     background-color: var(--color-background-flyout);
-    border-radius: 0.5rem;
+    border-radius: 1rem;
     min-height: 2.5rem;
+    padding: 0.25rem 0;
   }
 
   &__recipe {
-    font-size: 0.875rem;
-    line-height: 1;
-    padding: (2.5rem - 0.875rem)/2 1rem;
-    display: block;
+    display: flex;
+
+    &__link {
+      display: block;
+      padding: #{(2.5rem - 0.875rem) / 2 - 0.25rem} 1rem;
+      font-size: 0.875rem;
+      line-height: 1;
+      flex: 1;
+    }
+
+    &__remove {
+      padding: 0.5rem 0.75rem;
+      font-size: 1rem;
+      line-height: 1;
+      height: 1rem;
+    }
   }
 }
 </style>
