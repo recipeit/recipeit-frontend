@@ -40,8 +40,8 @@ export default {
   removeRecipeFromFavourites(id) {
     return apiClient.delete(`/recipes/favourites/${id}`)
   },
-  getPlannedRecipes() {
-    return apiClient.get(`/recipes/planned`)
+  getPlannedRecipes(day) {
+    return apiClient.get(`/recipes/planned/${day}`)
   },
   addRecipeToPlanned(id, data) {
     return apiClient.post(`/recipes/planned/${id}`, data)

@@ -1,5 +1,5 @@
 <template>
-  <div class="day-plan">
+  <div class="day-plan" v-if="currentDay">
     <div class="day-plan__header">
       <BaseLink class="day-plan__header__button" @click="previousDay()">
         <BaseIcon icon="arrow-left" weight="semi-bold"></BaseIcon>
@@ -14,7 +14,7 @@
       </BaseLink>
     </div>
     <transition name="fade" mode="out-in">
-      <div :key="currentDay.key" class="day-plan__times-of-day">
+      <div v-if="currentDayPlan" :key="currentDay.key" class="day-plan__times-of-day">
         <div class="time-of-day" v-for="(recipes, key) in currentDayPlan" :key="key">
           <div class="time-of-day__title">{{ $t(`timeOfDay.${key}`) }}</div>
           <div class="time-of-day__recipes">
@@ -37,6 +37,7 @@
 
 <script>
 import dayjs from '@/functions/dayjs'
+import recipeApi from '@/api/recipeApi'
 
 export default {
   data() {
@@ -55,37 +56,10 @@ export default {
         key: day.format('YYYY-MM-DD'),
         name: day.calendar()
       }
-      this.currentDayPlan = {
-        BREAKFAST: [
-          {
-            id: '1',
-            recipeId: '8918255a-78c1-4ebc-af6a-c083b521b7bf',
-            name: 'Naleśniki po bolońsku',
-            authorName: 'aliszjaw',
-            blogName: 'Kwestia Smaku'
-          },
-          {
-            id: '2',
-            recipeId: '2b290e8d-ba83-4ef0-aac9-3d5d11aad358',
-            name: 'Ciasto marchewkowe z orzechami',
-            authorName: 'Alicja',
-            blogName: 'czekoladowa muffinka'
-          }
-        ],
-        ELEVENSES: [],
-        LUNCH: [],
-        DINNER: [
-          {
-            id: '3',
-            recipeId: 'b9785b32-c4a0-4d13-adfe-cde5b2eecf7d',
-            name: 'Quesadilla z batatami i chorizo',
-            authorName: 'Marta',
-            blogName: 'Kuchnia Marty'
-          }
-        ],
-        SUPPER: [],
-        SNACK: []
-      }
+      recipeApi.getPlannedRecipes(this.currentDay.key).then(resp => {
+        console.log(resp)
+        this.currentDayPlan = resp.data.dayPlan
+      })
     },
     previousDay() {
       this.setDay(this.currentDay.dayjs.subtract(1, 'day'))
