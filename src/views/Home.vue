@@ -11,17 +11,19 @@
         </h1>
       </template>
     </PageHeader>
-    <button @click="theme('light')">light</button>
-    <button @click="theme('dark')">dark</button>
+    <!-- <button @click="theme('light')">light</button>
+    <button @click="theme('dark')">dark</button> -->
+    <DayPlan></DayPlan>
   </div>
 </template>
 
 <script>
-import PageHeader from '@/components/PageHeader.vue'
+import PageHeader from '@/components/PageHeader'
+import DayPlan from '@/components/DayPlan'
 import { mapState } from 'vuex'
 
 export default {
-  components: { PageHeader },
+  components: { PageHeader, DayPlan },
   name: 'Home',
   computed: {
     ...mapState({
@@ -74,7 +76,7 @@ export default {
     margin: 0;
 
     &__sub {
-      font-size: 1.25rem;
+      font-size: 1rem;
       font-weight: 500;
       display: block;
     }
