@@ -52,7 +52,7 @@ export default {
   display: flex;
   height: 100%;
   align-items: center;
-  padding-right: 15px;
+  // padding-right: 15px;
 }
 
 .purchase-button {

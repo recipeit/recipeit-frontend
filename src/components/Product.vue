@@ -2,9 +2,11 @@
   <div class="product">
     <div class="product__info">
       <div class="product__name">{{ name }}</div>
-      <div v-if="product.amount && product.amount > 0" class="product__amount">{{ product.amount }}</div>
-      <div v-if="product.amount && product.amount > 0 && product.unit" class="product__unit">
-        {{ $tc(`unitsShort.${product.unit}`, product.amount) }}
+      <div class="product__subname">
+        <span v-if="product.amount && product.amount > 0" class="product__amount">{{ product.amount }}</span>
+        <span v-if="product.amount && product.amount > 0 && product.unit" class="product__unit">
+          {{ $tc(`unitsShort.${product.unit}`, product.amount) }}
+        </span>
       </div>
     </div>
     <div class="product__actions">
@@ -40,21 +42,24 @@ export default {
   line-height: 16px;
   font-weight: 500;
   border-radius: 48px;
-  border: 1px solid var(--color-border);
+  // border: 1px solid var(--color-border);
+  // background: var(--color-background-flyout);
   display: flex;
   max-width: 416px;
 
   &__info {
-    padding: 15px;
+    padding: 12px 12px 12px 0;
     display: flex;
+    flex-direction: column;
   }
 
   &__name {
+    font-weight: bold;
     color: var(--color-text-primary);
   }
 
   &__amount {
-    margin-left: 12px;
+    // margin-left: 12px;
     color: var(--color-text-secondary);
   }
 

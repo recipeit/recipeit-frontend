@@ -110,10 +110,10 @@ export default {
   display: flex;
   flex-direction: column;
   padding: 0;
-  margin: -6px 0;
+  // margin: -6px 0;
 
   &__item {
-    padding: 6px 0;
+    // padding: 6px 0;
   }
 }
 
