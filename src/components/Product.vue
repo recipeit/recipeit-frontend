@@ -36,7 +36,7 @@ export default {
 
 <style lang="scss" scoped>
 .product {
-  font-size: 14px;
+  font-size: 12px;
   line-height: 16px;
   font-weight: 500;
   border-radius: 48px;

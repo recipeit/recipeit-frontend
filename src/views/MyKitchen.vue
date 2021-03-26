@@ -2,9 +2,19 @@
   <div class="layout__page__content">
     <PageHeader :title="$t('myKitchen.title')"></PageHeader>
 
-    <ul class="product-list">
-      <li class="product-list__item" v-for="product in products" :key="product.id">
-        <KitchenProduct :product="product" />
+    <ul class="product-list-groups">
+      <li class="product-list-group" v-for="(products, key) in groupedProducts" :key="key">
+        <div class="product-list-group__title">
+          <BaseIcon class="product-list-group__title__icon" icon="food"></BaseIcon>
+          <div class="product-list-group__title__name">
+            {{ $t(`productCategory.${key}`) }}
+          </div>
+        </div>
+        <ul class="product-list">
+          <li class="product-list__item" v-for="product in products" :key="product.id">
+            <KitchenProduct :product="product" />
+          </li>
+        </ul>
       </li>
     </ul>
 
@@ -33,6 +43,7 @@
 <script>
 import { markRaw } from 'vue'
 import { mapState } from 'vuex'
+import { groupBy } from 'lodash'
 import KitchenProduct from '@/components/KitchenProduct'
 import NewKitchenProductModal from '@/components/modals/NewKitchenProductModal'
 import PageHeader from '@/components/PageHeader.vue'
@@ -46,7 +57,13 @@ export default {
   computed: {
     ...mapState({
       products: state => state.myKitchen.products
-    })
+    }),
+    groupedProducts() {
+      if (!this.products) return null
+      return groupBy(this.products, 'category')
+      // groupBy
+      // return this.products?.groupBy(p => p.category)
+    }
   },
   beforeMount() {
     this.$store.dispatch('ingredients/fetchBaseProducts')
@@ -61,6 +78,34 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.product-list-groups {
+}
+
+.product-list-group {
+  &__title {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+
+    &__icon {
+      margin-right: 0.5rem;
+      color: var(--color-primary);
+      font-size: 1.5rem;
+    }
+
+    &__name {
+      padding-top: 4px;
+      font-size: 0.875rem;
+      font-weight: bold;
+      // color: var(--color-text-secondary);
+    }
+  }
+
+  & + & {
+    margin-top: 1.5rem;
+  }
+}
+
 .product-list {
   display: flex;
   flex-direction: column;

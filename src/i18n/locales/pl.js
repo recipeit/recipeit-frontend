@@ -159,6 +159,27 @@ export default {
       [timesOfDay.DINNER]: 'obiad',
       [timesOfDay.SUPPER]: 'kolacja',
       [timesOfDay.SNACK]: 'przekąska'
+    },
+    productCategory: {
+      Others: 'Inne',
+      Dairy: 'Nabiał',
+      Vegetables: 'Warzywa',
+      Fruits: 'Owoce',
+      BakingAndGrains: 'Zboża i pieczywo',
+      Sweeteners: 'Słodziki',
+      Spices: 'Przyprawy',
+      Meats: 'Mięso',
+      Fishes: 'Ryby',
+      Seafoods: 'Owoce morza',
+      Oils: 'Oleje',
+      Sauces: 'Sosy',
+      Legumes: 'Rośliny strączkowe',
+      Alcohol: 'Alkohol',
+      Soup: 'Zupy',
+      Nuts: 'Orzechy',
+      DairyAlternatives: 'Zamienniki nabiału',
+      DessertsAndSnacks: 'Desery i przekąski',
+      Beverages: 'Napoje'
     }
   },
   pluralizationRules(choice, choicesLength) {

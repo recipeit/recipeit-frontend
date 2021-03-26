@@ -191,6 +191,7 @@ export default {
 
   &__recipes {
     background-color: var(--color-background-flyout);
+    box-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.1);
     border-radius: 1rem;
     min-height: 3rem;
     padding: 0.25rem 0;
