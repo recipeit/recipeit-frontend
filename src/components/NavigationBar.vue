@@ -9,6 +9,7 @@
       <span>Przepisy</span>
     </router-link>
     <router-link :to="{ name: 'cook-it' }" class="navigation-bar__item">
+      <!-- <BaseIcon icon="chef-hat" weight="fill" /> -->
       <BaseIcon icon="chef-hat" />
       <span>Ugotuj to!</span>
     </router-link>
@@ -45,11 +46,12 @@ export default {}
   }
 
   &__item {
-    font-size: 1.75rem;
+    font-size: 1.5rem;
     color: var(--color-link-text-primary-color);
-    transition: color 0.3s ease;
+    // transition: color 0.3s ease;
     position: relative;
     line-height: 0;
+    @include transition((color, transform));
 
     span {
       display: none;
@@ -63,21 +65,22 @@ export default {}
       color: var(--color-link-text-primary-color-active);
     }
 
-    &:after {
-      content: '';
-      height: 2px;
-      background-color: transparent;
-      bottom: -10px;
-      margin: auto;
-      left: 50%;
-      right: 50%;
-      border-radius: 10px;
-      position: absolute;
-      transition: all 0.3s ease;
-    }
+    // &:after {
+    //   content: '';
+    //   height: 2px;
+    //   background-color: transparent;
+    //   bottom: -10px;
+    //   margin: auto;
+    //   left: 50%;
+    //   right: 50%;
+    //   border-radius: 10px;
+    //   position: absolute;
+    //   transition: all 0.3s ease;
+    // }
 
     &.router-link-exact-active {
       color: var(--color-primary);
+      transform: scale(1.5);
       // filter: drop-shadow(0 0 4px #fff);
 
       &:after {
