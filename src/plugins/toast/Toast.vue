@@ -4,8 +4,11 @@
     <div class="toast__message">
       {{ message }}
     </div>
-    <BaseLink class="toast__close" color="text-secondary" @click="hide()">
+    <BaseLink v-if="!cancellable" tag="button" class="toast__close" color="text-secondary" @click="hide()">
       <BaseIcon icon="close" weight="semi-bold" />
+    </BaseLink>
+    <BaseLink tag="button" v-else class="toast__cancel" color="primary" @click="cancel()">
+      cofnij
     </BaseLink>
   </div>
 </template>
@@ -31,7 +34,9 @@ export default {
     seconds: {
       type: Number,
       default: 5
-    }
+    },
+    cancellable: Boolean,
+    cancelCallback: Function
   },
   data() {
     return {
@@ -48,12 +53,18 @@ export default {
       }
 
       this.timer = setTimeout(() => {
-        this.$emit('hide')
+        this.hide()
       }, this.seconds * 1000)
     },
     resetTimer() {
       clearTimeout(this.timer)
       this.timer = null
+    },
+    cancel() {
+      if (this.cancelCallback) {
+        this.cancelCallback()
+      }
+      this.hide()
     }
   },
   computed: {
@@ -61,7 +72,7 @@ export default {
       const { type } = this
       if (type === ToastType.SUCCESS) return 'small-check'
       if (type === ToastType.WARNING) return 'warning'
-      if (type === ToastType.DANGER) return 'small-close'
+      if (type === ToastType.ERROR) return 'small-close'
       return 'info'
     }
   },
@@ -88,8 +99,17 @@ export default {
   margin-left: auto;
 
   &__message {
-    padding-top: 2px;
     flex: 1;
+  }
+
+  &__cancel {
+    padding-right: 0.5rem !important;
+    height: 22px;
+  }
+
+  &__message,
+  &__cancel {
+    padding-top: 2px !important;
   }
 
   &__icon,
@@ -119,9 +139,9 @@ export default {
       background-color: var(--color-toast-icon-warning-background);
     }
 
-    #{$root}--danger & {
-      color: var(--color-toast-icon-danger-color);
-      background-color: var(--color-toast-icon-danger-background);
+    #{$root}--error & {
+      color: var(--color-toast-icon-error-color);
+      background-color: var(--color-toast-icon-error-background);
     }
   }
 }

@@ -9,11 +9,18 @@ const Plugin = {
       _setGlobalToastsContainer(container) {
         globalToastsContainer = container
       },
-      show(message, type = 'info', seconds) {
+      show(message, type, seconds) {
         if (!globalToastsContainer) {
           console.warn('[toasts-container] Global Toasts Container is not present')
         } else {
           globalToastsContainer.appendToast(message, type, seconds)
+        }
+      },
+      showCancellable(message, cancelCallback, type, seconds) {
+        if (!globalToastsContainer) {
+          console.warn('[toasts-container] Global Toasts Container is not present')
+        } else {
+          globalToastsContainer.appendCancellableToast(message, type, seconds, cancelCallback)
         }
       },
       hide(id) {

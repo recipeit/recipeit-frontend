@@ -4,11 +4,13 @@
       <BaseLink class="day-plan__header__button" @click="previousDay()">
         <BaseIcon icon="arrow-left" weight="semi-bold"></BaseIcon>
       </BaseLink>
-      <span class="day-plan__header__title">
+      <div class="day-plan__header__title-container">
         <transition :name="`day-plan-slide-${currendDaySlideType}`" mode="out-in">
-          <span :key="currentDay.key">{{ currentDay.name }}</span>
+          <div :class="['day-plan__header__title', { 'day-plan__header__title--today': currentDay.isToday }]" :key="currentDay.key">
+            {{ currentDay.name }}
+          </div>
         </transition>
-      </span>
+      </div>
       <BaseLink class="day-plan__header__button" @click="nextDay()">
         <BaseIcon icon="arrow-right" weight="semi-bold"></BaseIcon>
       </BaseLink>
@@ -24,7 +26,12 @@
                   {{ recipe.name }}
                 </BaseLink>
               </router-link>
-              <BaseLink tag="button" color="text-secondary" class="time-of-day__recipe__remove" @click="removePlannedRecipe(recipe.id)">
+              <BaseLink
+                tag="button"
+                color="text-secondary"
+                class="time-of-day__recipe__remove"
+                @click="removePlannedRecipe(recipe.id, key)"
+              >
                 <BaseIcon icon="close" weight="semi-bold"></BaseIcon>
               </BaseLink>
             </div>
@@ -38,6 +45,7 @@
 <script>
 import dayjs from '@/functions/dayjs'
 import recipeApi from '@/api/recipeApi'
+import { ToastType } from '@/plugins/toast/toastType'
 
 const SlideType = {
   PREVIOUS: 'previous',
@@ -61,7 +69,8 @@ export default {
       this.currentDay = {
         dayjs: day,
         key: day.format('YYYY-MM-DD'),
-        name: day.calendar()
+        name: day.calendar(),
+        isToday: day.isToday()
       }
       recipeApi.getPlannedRecipes(this.currentDay.key).then(resp => {
         console.log(resp)
@@ -74,8 +83,24 @@ export default {
     nextDay() {
       this.setDay(this.currentDay.dayjs.add(1, 'day'), SlideType.NEXT)
     },
-    removePlannedRecipe(id) {
-      console.log('removing planned recipe with id ', id)
+    removePlannedRecipe(id, timeOfDay) {
+      // console.log('removing planned recipe with id ', id)
+      // this.$toast.show('usunięto zaplanowany przepis')
+      recipeApi.removeRecipeFromPlanned(id).then(resp => {
+        if (resp.data) {
+          this.$toast.show('Usunięto zaplanowany przepis')
+
+          const set = this.currentDayPlan[timeOfDay]
+          if (set) {
+            const index = set.findIndex(v => v.id === id)
+            if (index > -1) {
+              this.currentDayPlan[timeOfDay].splice(index, 1)
+            }
+          }
+        } else {
+          this.$toast.show('Wystąpił błąd podczas usuwania', ToastType.ERROR)
+        }
+      })
     }
   }
 }
@@ -138,14 +163,17 @@ export default {
       justify-content: center;
     }
 
-    &__title {
+    &__title-container {
       flex: 1;
+    }
+
+    &__title {
       text-align: center;
       font-size: 0.875rem;
-      display: block;
 
-      span {
-        display: block;
+      &--today {
+        font-weight: bold;
+        color: var(--color-primary);
       }
     }
   }

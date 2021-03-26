@@ -205,11 +205,11 @@ export default {
       const { url } = this.recipe
 
       if (!url) {
-        this.$toast.show('Nie udało się skopiować do schowka', ToastType.DANGER)
+        this.$toast.show('Nie udało się skopiować do schowka', ToastType.ERROR)
       } else if (this.$clipboard(url)) {
         this.$toast.show('Skopiowano do schowka', ToastType.SUCCESS)
       } else {
-        this.$toast.show('Nie udało się skopiować do schowka', ToastType.DANGER)
+        this.$toast.show('Nie udało się skopiować do schowka', ToastType.ERROR)
       }
     },
     openPlanRecipeModal() {

@@ -14,6 +14,12 @@
     <!-- <button @click="theme('light')">light</button>
     <button @click="theme('dark')">dark</button> -->
     <DayPlan></DayPlan>
+    <div>
+      Ulubione
+    </div>
+    <div>
+      Przepisy według kategorii
+    </div>
   </div>
 </template>
 
