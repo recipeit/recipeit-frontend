@@ -187,14 +187,15 @@ export default {
     font-size: 0.75rem;
     color: var(--color-text-secondary);
     margin-bottom: 0.5rem;
+    margin-left: 1.5rem;
   }
 
   &__recipes {
     background-color: var(--color-background-flyout);
     box-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.1);
-    border-radius: 1rem;
-    min-height: 3rem;
-    padding: 0.25rem 0;
+    border-radius: 1.5rem;
+    min-height: 3.5rem;
+    padding: 0.5rem 0;
   }
 
   &__recipe {
@@ -202,8 +203,10 @@ export default {
 
     &__link {
       display: block;
-      padding: #{(2.5rem - 0.875rem) / 2} 1rem;
-      font-size: 0.875rem;
+      padding: #{(3.5rem - 1rem - 0.75rem) / 2} 1.5rem;
+      padding-right: 0;
+      font-size: 0.75rem;
+      font-weight: bold;
       line-height: 1;
       flex: 1;
       overflow: hidden;
@@ -213,9 +216,10 @@ export default {
 
     &__remove {
       padding: 0.75rem;
+      padding-right: 1.5rem;
       font-size: 1rem;
       line-height: 1;
-      height: 1rem;
+      height: 2.5rem;
     }
   }
 }
