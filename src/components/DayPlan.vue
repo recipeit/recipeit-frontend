@@ -164,7 +164,7 @@ export default {
   &__recipes {
     background-color: var(--color-background-flyout);
     border-radius: 1rem;
-    min-height: 2.5rem;
+    min-height: 3rem;
     padding: 0.25rem 0;
   }
 
@@ -173,14 +173,17 @@ export default {
 
     &__link {
       display: block;
-      padding: #{(2.5rem - 0.875rem) / 2 - 0.25rem} 1rem;
+      padding: #{(2.5rem - 0.875rem) / 2} 1rem;
       font-size: 0.875rem;
       line-height: 1;
       flex: 1;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
     }
 
     &__remove {
-      padding: 0.5rem 0.75rem;
+      padding: 0.75rem;
       font-size: 1rem;
       line-height: 1;
       height: 1rem;
