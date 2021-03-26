@@ -18,19 +18,6 @@
       </li>
     </ul>
 
-    <!-- <BaseButton :anchorTag="true" href="#" color="accent">Dodaj produkt</BaseButton>
-    <BaseButton raised>Dodaj produkt</BaseButton> -->
-    <!-- <div><BaseButton raised>Dodaj produkt</BaseButton></div>
-    <div><BaseButton raised color="primary">Dodaj produkt</BaseButton></div>
-    <div><BaseButton raised color="accent">Dodaj produkt</BaseButton></div>
-    <div><BaseButton raised color="warn">Dodaj produkt</BaseButton></div>
-    ___
-
-    <div><BaseButton subtle>Dodaj produkt</BaseButton></div>
-    <div><BaseButton subtle color="green">Dodaj produkt</BaseButton></div>
-    <div><BaseButton subtle color="accent">Dodaj produkt</BaseButton></div>
-    <div><BaseButton subtle color="warn">Dodaj produkt</BaseButton></div> -->
-
     <div class="floating-action-button-container">
       <BaseButton raised color="contrast" @click="newProduct">
         <BaseIcon class="floating-action-button__icon" icon="plus" weight="semi-bold" />
@@ -61,8 +48,6 @@ export default {
     groupedProducts() {
       if (!this.products) return null
       return groupBy(this.products, 'category')
-      // groupBy
-      // return this.products?.groupBy(p => p.category)
     }
   },
   beforeMount() {
@@ -78,7 +63,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.product-list-groups {
+.layout__page__content {
+  margin-bottom: 96px;
 }
 
 .product-list-group {

@@ -46,11 +46,13 @@ export default {
   // background: var(--color-background-flyout);
   display: flex;
   max-width: 416px;
+  min-height: 56px;
 
   &__info {
     padding: 12px 12px 12px 0;
     display: flex;
     flex-direction: column;
+    justify-content: center;
   }
 
   &__name {

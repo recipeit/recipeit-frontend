@@ -2,11 +2,27 @@
   <div class="layout__page__content">
     <PageHeader :title="$t('shoppingList.title')"></PageHeader>
 
-    <ul class="product-list">
+    <!-- <ul class="product-list">
       <li class="product-list__item" v-for="product in products" :key="product.id">
         <ShoppingListProduct :product="product" @purchase="purchase(product.id)" />
       </li>
+    </ul> -->
+    <ul class="product-list-groups">
+      <li class="product-list-group" v-for="(products, key) in groupedProducts" :key="key">
+        <div class="product-list-group__title">
+          <BaseIcon class="product-list-group__title__icon" icon="food"></BaseIcon>
+          <div class="product-list-group__title__name">
+            {{ $t(`productCategory.${key}`) }}
+          </div>
+        </div>
+        <ul class="product-list">
+          <li class="product-list__item" v-for="product in products" :key="product.id">
+            <ShoppingListProduct :product="product" @purchase="purchase(product.id)" />
+          </li>
+        </ul>
+      </li>
     </ul>
+
     <BaseLink v-if="products && products.length > 0" color="primary" class="purchase-all-button" @click="purchaseAll">
       {{ $t('shoppingList.purchaseAllButton') }}
     </BaseLink>
@@ -23,6 +39,7 @@
 <script>
 import { markRaw } from 'vue'
 import { mapState } from 'vuex'
+import { groupBy } from 'lodash'
 import ShoppingListProduct from '@/components/ShoppingListProduct'
 import Dialog from '@/components/modals/Dialog'
 import PageHeader from '@/components/PageHeader.vue'
@@ -60,7 +77,11 @@ export default {
   computed: {
     ...mapState({
       products: state => state.shoppingList.products
-    })
+    }),
+    groupedProducts() {
+      if (!this.products) return null
+      return groupBy(this.products, 'category')
+    }
   },
   beforeMount() {
     this.$store.dispatch('shoppingList/fetchProducts')
@@ -69,17 +90,53 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.layout__page__content {
+  margin-bottom: 96px;
+}
+
+.product-list-group {
+  &__title {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+
+    &__icon {
+      margin-right: 0.5rem;
+      color: var(--color-primary);
+      font-size: 1.5rem;
+    }
+
+    &__name {
+      padding-top: 4px;
+      font-size: 0.875rem;
+      font-weight: bold;
+      // color: var(--color-text-secondary);
+    }
+  }
+
+  & + & {
+    margin-top: 1.5rem;
+  }
+}
+
 .product-list {
   display: flex;
   flex-direction: column;
+  padding: 0;
+  // margin: -6px 0;
+  background: var(--color-background-flyout);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border-radius: 1.5rem;
+  padding: 0.5rem 1.5rem;
 
   &__item {
-    padding: 6px 0;
+    // padding: 6px 0;
+    cursor: pointer;
   }
 }
 
 .purchase-all-button {
-  margin-top: 8px;
+  margin-top: 1.5rem;
   justify-content: flex-end;
   font-size: 12px;
   font-weight: bold;
