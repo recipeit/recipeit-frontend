@@ -5,7 +5,7 @@
         <BaseIcon icon="arrow-left" weight="semi-bold"></BaseIcon>
       </BaseLink>
       <span class="day-plan__header__title">
-        <transition name="fade" mode="out-in">
+        <transition :name="`day-plan-slide-${currendDaySlideType}`" mode="out-in">
           <span :key="currentDay.key">{{ currentDay.name }}</span>
         </transition>
       </span>
@@ -13,7 +13,7 @@
         <BaseIcon icon="arrow-right" weight="semi-bold"></BaseIcon>
       </BaseLink>
     </div>
-    <transition name="fade" mode="out-in">
+    <transition :name="`day-plan-slide-${currendDaySlideType}`" mode="out-in">
       <div v-if="currentDayPlan" :key="currentDay.key" class="day-plan__times-of-day">
         <div class="time-of-day" v-for="(recipes, key) in currentDayPlan" :key="key">
           <div class="time-of-day__title">{{ $t(`timeOfDay.${key}`) }}</div>
@@ -39,18 +39,25 @@
 import dayjs from '@/functions/dayjs'
 import recipeApi from '@/api/recipeApi'
 
+const SlideType = {
+  PREVIOUS: 'previous',
+  NEXT: 'next'
+}
+
 export default {
   data() {
     return {
       currentDay: null,
-      currentDayPlan: null
+      currentDayPlan: null,
+      currendDaySlideType: null
     }
   },
   beforeMount() {
-    this.setDay(dayjs().startOf('day'))
+    this.setDay(dayjs().startOf('day'), SlideType.NEXT)
   },
   methods: {
-    setDay(day) {
+    setDay(day, slideType) {
+      this.currendDaySlideType = slideType
       this.currentDay = {
         dayjs: day,
         key: day.format('YYYY-MM-DD'),
@@ -62,10 +69,10 @@ export default {
       })
     },
     previousDay() {
-      this.setDay(this.currentDay.dayjs.subtract(1, 'day'))
+      this.setDay(this.currentDay.dayjs.subtract(1, 'day'), SlideType.PREVIOUS)
     },
     nextDay() {
-      this.setDay(this.currentDay.dayjs.add(1, 'day'))
+      this.setDay(this.currentDay.dayjs.add(1, 'day'), SlideType.NEXT)
     },
     removePlannedRecipe(id) {
       console.log('removing planned recipe with id ', id)
@@ -76,6 +83,45 @@ export default {
 
 <style lang="scss" scoped>
 .day-plan {
+  &-slide-previous,
+  &-slide-next {
+    // &-enter-active,
+    // &-leave-active {
+    //   @include transition((opacity, transform));
+    // }
+    &-enter-active {
+      @include transition((opacity, transform), 0.2s, ease-out);
+    }
+    &-leave-active {
+      @include transition((opacity, transform), 0.2s, ease-in);
+    }
+
+    &-enter-from,
+    &-leave-to {
+      opacity: 0;
+    }
+  }
+
+  $transform-size: 3rem;
+
+  &-slide-previous {
+    &-enter-from {
+      transform: translateX(-$transform-size);
+    }
+    &-leave-to {
+      transform: translateX($transform-size);
+    }
+  }
+
+  &-slide-next {
+    &-enter-from {
+      transform: translateX($transform-size);
+    }
+    &-leave-to {
+      transform: translateX(-$transform-size);
+    }
+  }
+
   &__header {
     display: flex;
     align-items: center;
@@ -96,6 +142,11 @@ export default {
       flex: 1;
       text-align: center;
       font-size: 0.875rem;
+      display: block;
+
+      span {
+        display: block;
+      }
     }
   }
 }
