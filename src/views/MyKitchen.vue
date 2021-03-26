@@ -111,9 +111,14 @@ export default {
   flex-direction: column;
   padding: 0;
   // margin: -6px 0;
+  background: var(--color-background-flyout);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border-radius: 1.5rem;
+  padding: 0.5rem 1.5rem;
 
   &__item {
     // padding: 6px 0;
+    cursor: pointer;
   }
 }
 
