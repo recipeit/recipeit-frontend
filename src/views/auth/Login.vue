@@ -13,9 +13,26 @@
     <!-- <p>lub za pomocą adresu email</p> -->
 
     <form @submit.prevent="login()">
-      <BaseInput class="form-row" label="Email" type="email" v-model="userData.email" :errors="userDataErrors.email"></BaseInput>
-      <BaseInput class="form-row" label="Hasło" type="password" v-model="userData.password" :errors="userDataErrors.password"></BaseInput>
-      <BaseButton class="form-row auth-page__content__submit" raised color="contrast" type="submit">Zaloguj się</BaseButton>
+      <BaseInput
+        class="form-row"
+        label="Email"
+        type="email"
+        v-model="userData.email"
+        :errors="userDataErrors.email"
+        :disabled="anySending"
+      ></BaseInput>
+      <BaseInput
+        class="form-row"
+        label="Hasło"
+        type="password"
+        v-model="userData.password"
+        :errors="userDataErrors.password"
+        :disabled="anySending"
+      ></BaseInput>
+      <BaseButton class="form-row auth-page__content__submit" raised color="contrast" type="submit" :disabled="anySending">
+        <Spinner :show="sending" />
+        Zaloguj się
+      </BaseButton>
     </form>
 
     <ul v-if="errors" class="auth-page__content__errors">
@@ -28,16 +45,19 @@
       </BaseLink>
     </router-link>
 
-    <AuthSocialList buttonPrefix="Zaloguj się z" />
+    <AuthSocialList buttonPrefix="Zaloguj się z" @lockInputs="socialSending = true" @unlockInputs="socialSending = false" />
   </div>
 </template>
 
 <script>
+import Spinner from '@/components/Spinner'
 import AuthSocialList from './AuthSocialList'
+import { validateEmail } from '@/functions/validators'
 
 export default {
   components: {
-    AuthSocialList
+    AuthSocialList,
+    Spinner
   },
   data: () => ({
     userData: {
@@ -48,7 +68,9 @@ export default {
       email: null,
       password: null
     },
-    errors: null
+    errors: null,
+    sending: false,
+    socialSending: false
   }),
   methods: {
     login() {
@@ -58,19 +80,30 @@ export default {
 
       if (Object.values(this.userDataErrors).some(v => v !== null)) return
 
-      this.$store.dispatch('user/login', this.userData).catch(errors => {
-        this.errors = errors
-      })
+      this.sending = true
+      this.$store
+        .dispatch('user/login', this.userData)
+        .catch(errors => {
+          this.errors = errors
+        })
+        .finally(() => {
+          this.sending = null
+        })
     },
     validateEmail() {
       const { email } = this.userData
       if (!email) return ['REQUIRED']
-      if (!this.validateEmail(email)) return ['INVALID_EMAIL']
+      if (!validateEmail(email)) return ['INVALID_EMAIL']
       return null
     },
     validatePassword() {
       if (!this.userData.password) return ['REQUIRED']
       return null
+    }
+  },
+  computed: {
+    anySending() {
+      return this.sending || this.socialSending
     }
   }
 }

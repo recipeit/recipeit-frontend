@@ -1,11 +1,13 @@
 <template>
   <!-- <div class="auth-social-list-title">lub użyj</div> -->
   <div class="auth-social-list">
-    <BaseButton class="auth-social-list__button" stroked color="contrast" @click="loginFacebook()">
+    <BaseButton class="auth-social-list__button" stroked color="contrast" @click="loginFacebook()" :disabled="anySending ? true : null">
+      <Spinner :show="facebookSending" color="text-primary" />
       <img src="@/assets/logos/facebook.svg" alt="logo" />
       {{ buttonPrefix }} Facebook
     </BaseButton>
-    <BaseButton class="auth-social-list__button" stroked color="contrast" @click="loginGoogle()">
+    <BaseButton class="auth-social-list__button" stroked color="contrast" @click="loginGoogle()" :disabled="anySending ? true : null">
+      <Spinner :show="googleSending" color="text-primary" />
       <img src="@/assets/logos/google.svg" alt="logo" />
       {{ buttonPrefix }} Google
     </BaseButton>
@@ -17,14 +19,20 @@
 </template>
 
 <script>
+import Spinner from '@/components/Spinner'
+import { ToastType } from '@/plugins/toast/toastType'
 // import { google } from 'googleapis'
 
 export default {
+  emits: ['lockInputs', 'unlockInputs'],
+  components: { Spinner },
   props: {
     buttonPrefix: String
   },
   data: () => ({
-    googleAuth2: null
+    googleAuth2: null,
+    facebookSending: false,
+    googleSending: false
   }),
   created() {
     // eslint-disable-next-line no-undef
@@ -38,37 +46,64 @@ export default {
   methods: {
     loginFacebook() {
       // eslint-disable-next-line no-undef
-      FB.login(
-        ({ authResponse }) => {
-          if (authResponse) {
-            // console.log(authResponse)
-            // identityApi.facebookAuth(authResponse.accessToken)
-            this.$store.dispatch('user/facebookAuth', authResponse.accessToken)
-            // resolve()
-            // accountService.apiAuthenticate(authResponse.accessToken).then(resolve)
-          } else {
-            // resolve()
-          }
-        },
-        { scope: 'email,public_profile' }
-      )
+      if (typeof FB != 'undefined' && FB != null) {
+        this.facebookSending = true
+        // eslint-disable-next-line no-undef
+        FB.login(
+          ({ authResponse }) => {
+            this.facebookSending = false
+            if (authResponse) {
+              // console.log(authResponse)
+              // identityApi.facebookAuth(authResponse.accessToken)
+              this.$store.dispatch('user/facebookAuth', authResponse.accessToken)
+              // resolve()
+              // accountService.apiAuthenticate(authResponse.accessToken).then(resolve)
+            } else {
+              // resolve()
+            }
+          },
+          { scope: 'email,public_profile' }
+        )
+      } else {
+        this.$toast.show('Wystąpił problem podczas próby logowania', ToastType.ERROR)
+      }
     },
     loginGoogle() {
-      if (this.googleAuth2)
+      if (this.googleAuth2) {
+        this.googleSending = true
         this.googleAuth2
           .signIn({
             scope: 'profile email'
           })
           .then(resp => {
-            const idToken = resp?.uc?.id_token
+            this.googleSending = false
+            const idToken = resp.getAuthResponse()?.id_token
             if (idToken) {
               this.$store.dispatch('user/googleAuth', idToken)
             }
           })
+          .catch(() => {
+            this.googleSending = false
+          })
+      }
     }
     // loginTwitter() {
     //   alert('login twitter')
     // }
+  },
+  computed: {
+    anySending() {
+      return this.facebookSending || this.googleSending
+    }
+  },
+  watch: {
+    anySending(anySending) {
+      if (anySending) {
+        this.$emit('lockInputs')
+      } else {
+        this.$emit('unlockInputs')
+      }
+    }
   }
 }
 </script>

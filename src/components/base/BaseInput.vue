@@ -1,5 +1,5 @@
 <template>
-  <div :class="['base-input', { 'base-input--focus': focused, 'base-input--invalid': errors }]">
+  <div :class="['base-input', { 'base-input--focus': focused, 'base-input--invalid': errors, 'base-input--disabled': disabled }]">
     <div class="base-input__control">
       <label :for="id" :class="[{ 'label-up': modelValue || focused }]">
         <slot name="label">{{ label }}</slot>
@@ -10,6 +10,7 @@
         :tabindex="tabindex"
         :placeholder="placeholder"
         :value="modelValue"
+        :disabled="disabled"
         :aria-describedby="errors ? erorrsID : null"
         :aria-invalid="errors ? true : null"
         v-autofocus="autofocus"
@@ -48,6 +49,10 @@ export default {
       default: 0
     },
     autofocus: {
+      type: Boolean,
+      default: false
+    },
+    disabled: {
       type: Boolean,
       default: false
     }
@@ -113,11 +118,11 @@ export default {
       background: transparent;
       @include transition((border-color));
 
-      &:hover {
+      #{ $root }:not(#{ $root }--disabled) &:hover {
         border-color: var(--color-border-hover);
       }
 
-      #{ $root }--focus & {
+      #{ $root }--focus:not(#{ $root }--disabled) & {
         border-color: var(--color-primary);
       }
 
