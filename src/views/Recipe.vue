@@ -29,7 +29,7 @@
         <!-- <RecipeParallaxImage class="recipe__image-container__parallax">
           <img :src="recipe.mainImageUrl" />
         </RecipeParallaxImage> -->
-        <RecipeParallaxGallery></RecipeParallaxGallery>
+        <RecipeParallaxGallery :images="images"></RecipeParallaxGallery>
       </div>
       <div class="recipe__main">
         <div class="recipe__header-pills">
@@ -259,6 +259,22 @@ export default {
     },
     selectedDirection() {
       return _.min(_.difference(this.allIndexes, this.finishedDirections))
+    },
+    images() {
+      return [
+        {
+          src: this.recipe.mainImageUrl
+        },
+        {
+          src: 'https://www.kwestiasmaku.com/sites/v123.kwestiasmaku.com/files/makaron_stir_fry_01.jpg'
+        },
+        {
+          src: 'https://www.kwestiasmaku.com/sites/v123.kwestiasmaku.com/files/stirfry_wolowina_brokul_01.jpg'
+        },
+        {
+          src: 'https://www.kwestiasmaku.com/sites/v123.kwestiasmaku.com/files/nalesniki-po-bolonsku-01.jpg'
+        }
+      ]
     }
   },
   watch: {

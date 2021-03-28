@@ -3,7 +3,7 @@
     <div class="recipe-parallax-gallery__controls">
       <span
         :class="['recipe-parallax-gallery__control', { 'recipe-parallax-gallery__control--current': currentImageIndex === index }]"
-        v-for="(_, index) in images"
+        v-for="(_, index) in imageObjects"
         :key="index"
       ></span>
     </div>
@@ -20,7 +20,7 @@
       <img
         :id="image.id"
         :class="imageClasses(index)"
-        v-for="(image, index) in images"
+        v-for="(image, index) in imageObjects"
         :src="image.src"
         :key="index"
         @click="move(index)"
@@ -31,7 +31,14 @@
 
 <script>
 import uniqueID from '@/functions/uniqueID'
+
 export default {
+  props: {
+    images: {
+      type: Array,
+      required: true
+    }
+  },
   data() {
     return {
       changingCurrentIndex: false,
@@ -39,21 +46,7 @@ export default {
       isPointerDown: false,
       offset: null,
       movement: 0,
-      currentImageIndex: 0,
-      images: [
-        {
-          id: `parallax-image-${uniqueID().getID()}`,
-          src: 'https://www.kwestiasmaku.com/sites/v123.kwestiasmaku.com/files/makaron_stir_fry_01.jpg'
-        },
-        {
-          id: `parallax-image-${uniqueID().getID()}`,
-          src: 'https://www.kwestiasmaku.com/sites/v123.kwestiasmaku.com/files/stirfry_wolowina_brokul_01.jpg'
-        },
-        {
-          id: `parallax-image-${uniqueID().getID()}`,
-          src: 'https://www.kwestiasmaku.com/sites/v123.kwestiasmaku.com/files/nalesniki-po-bolonsku-01.jpg'
-        }
-      ]
+      currentImageIndex: 0
     }
   },
   beforeMount() {
@@ -132,7 +125,7 @@ export default {
         }
         if (this.currentImageIndex === 0 && this.movement.value > 0) {
           this.movement.value = 0
-        } else if (this.currentImageIndex + 1 === this.images.length && this.movement.value < 0) {
+        } else if (this.currentImageIndex + 1 === this.imageObjects.length && this.movement.value < 0) {
           this.movement.value = 0
         }
         // if (this.$refs.scroller.scrollTop === 0 && this.transformTop >= 0) {
@@ -141,7 +134,7 @@ export default {
       }
     },
     transitionEndPrevHandler(e) {
-      if (e.target.id === this.images[this.currentImageIndex - 1]?.id) {
+      if (e.target.id === this.imageObjects[this.currentImageIndex - 1]?.id) {
         this.changingCurrentIndex = true
         this.$refs.images.removeEventListener('transitionend', this.transitionEndPrevHandler, false)
         this.currentImageIndex--
@@ -153,7 +146,7 @@ export default {
       }
     },
     transitionEndNextHandler(e) {
-      if (e.target.id === this.images[this.currentImageIndex + 1]?.id) {
+      if (e.target.id === this.imageObjects[this.currentImageIndex + 1]?.id) {
         this.changingCurrentIndex = true
         this.$refs.images.removeEventListener('transitionend', this.transitionEndNextHandler, false)
         this.currentImageIndex++
@@ -198,6 +191,14 @@ export default {
       return {
         '--recipe-parallax-gallery-movement': '0px'
       }
+    },
+    imageObjects() {
+      return this.images.map(i => {
+        return {
+          id: `parallax-image-${uniqueID().getID()}`,
+          ...i
+        }
+      })
     }
   }
 }
