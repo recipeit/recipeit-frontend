@@ -1,0 +1,279 @@
+<template>
+  <div ref="block" :class="globalClasses" :style="globalStyles">
+    <div class="recipe-parallax-gallery__controls">
+      <span
+        :class="['recipe-parallax-gallery__control', { 'recipe-parallax-gallery__control--current': currentImageIndex === index }]"
+        v-for="(_, index) in images"
+        :key="index"
+      ></span>
+    </div>
+    <div
+      class="recipe-parallax-gallery__images"
+      ref="images"
+      @mousemove="onPointerMove"
+      @mousedown="onPointerDown"
+      @mouseup="onPointerUp"
+      @touchmove="onPointerMove"
+      @touchstart="onPointerDown"
+      @touchend="onPointerUp"
+    >
+      <img
+        :id="image.id"
+        :class="imageClasses(index)"
+        v-for="(image, index) in images"
+        :src="image.src"
+        :key="index"
+        @click="move(index)"
+      />
+    </div>
+  </div>
+</template>
+
+<script>
+import uniqueID from '@/functions/uniqueID'
+export default {
+  data() {
+    return {
+      changingCurrentIndex: false,
+      preparingChangingCurrentIndex: false,
+      isPointerDown: false,
+      offset: null,
+      movement: 0,
+      currentImageIndex: 0,
+      images: [
+        {
+          id: `parallax-image-${uniqueID().getID()}`,
+          src: 'https://www.kwestiasmaku.com/sites/v123.kwestiasmaku.com/files/makaron_stir_fry_01.jpg'
+        },
+        {
+          id: `parallax-image-${uniqueID().getID()}`,
+          src: 'https://www.kwestiasmaku.com/sites/v123.kwestiasmaku.com/files/stirfry_wolowina_brokul_01.jpg'
+        },
+        {
+          id: `parallax-image-${uniqueID().getID()}`,
+          src: 'https://www.kwestiasmaku.com/sites/v123.kwestiasmaku.com/files/nalesniki-po-bolonsku-01.jpg'
+        }
+      ]
+    }
+  },
+  beforeMount() {
+    window.addEventListener('scroll', this.scrollHandler, false)
+  },
+  mounted() {
+    this.scrollHandler()
+  },
+  beforeUnmount() {
+    window.removeEventListener('scroll', this.scrollHandler, false)
+  },
+  methods: {
+    scrollHandler() {
+      const parentHeight = this.$refs.block.offsetHeight
+      const scrollFactor = Math.max(0, Math.min(window.pageYOffset / parentHeight, 1))
+      const transformValue = (scrollFactor * parentHeight) / 2
+      this.$refs.images.style.transform = `translate3d(0, ${transformValue}px ,0)`
+    },
+    imageClasses(index) {
+      return [
+        'recipe-parallax-gallery__image',
+        {
+          'recipe-parallax-gallery__image--current': this.currentImageIndex === index,
+          'recipe-parallax-gallery__image--previous': this.currentImageIndex - 1 === index,
+          'recipe-parallax-gallery__image--next': this.currentImageIndex + 1 === index
+        }
+      ]
+    },
+    onPointerDown(e) {
+      if (this.preparingChangingCurrentIndex) return
+      this.isPointerDown = true
+      if (e.changedTouches) {
+        // let tempElement = e.target
+        // let preventScroll = false
+        // while (tempElement !== this.$refs.scroller && tempElement.parentElement && this.$refs.scroller) {
+        //   if (tempElement.scrollHeight > tempElement.clientHeight && tempElement.scrollTop > 0) {
+        //     preventScroll = true
+        //     break
+        //   }
+        //   tempElement = tempElement.parentElement
+        // }
+
+        // if (!preventScroll) {
+        this.offset = [e.changedTouches[0].clientX, e.changedTouches[0].clientY]
+        // }
+      } else {
+        this.offset = [e.clientX, e.clientY]
+      }
+    },
+    onPointerUp() {
+      if (this.movement.value > 128) {
+        this.changeCurrentToPrevious()
+      } else if (this.movement.value < -128) {
+        this.changeCurrentToNext()
+      } else {
+        this.movement = null
+      }
+      this.isPointerDown = false
+      this.offset = null
+    },
+    onPointerMove(event) {
+      if (this.isPointerDown && this.offset) {
+        event.preventDefault()
+        let mousePosition = event.changedTouches
+          ? {
+              x: event.changedTouches[0].clientX,
+              y: event.changedTouches[0].clientY
+            }
+          : {
+              x: event.clientX,
+              y: event.clientY
+            }
+        this.movement = {
+          value: mousePosition.x - this.offset[0],
+          unit: 'px'
+        }
+        if (this.currentImageIndex === 0 && this.movement.value > 0) {
+          this.movement.value = 0
+        } else if (this.currentImageIndex + 1 === this.images.length && this.movement.value < 0) {
+          this.movement.value = 0
+        }
+        // if (this.$refs.scroller.scrollTop === 0 && this.transformTop >= 0) {
+        //   event.preventDefault()
+        // }
+      }
+    },
+    transitionEndPrevHandler(e) {
+      if (e.target.id === this.images[this.currentImageIndex - 1]?.id) {
+        this.changingCurrentIndex = true
+        this.$refs.images.removeEventListener('transitionend', this.transitionEndPrevHandler, false)
+        this.currentImageIndex--
+        this.movement = null
+        setTimeout(() => {
+          this.changingCurrentIndex = false
+          this.preparingChangingCurrentIndex = false
+        }, 0)
+      }
+    },
+    transitionEndNextHandler(e) {
+      if (e.target.id === this.images[this.currentImageIndex + 1]?.id) {
+        this.changingCurrentIndex = true
+        this.$refs.images.removeEventListener('transitionend', this.transitionEndNextHandler, false)
+        this.currentImageIndex++
+        this.movement = null
+        setTimeout(() => {
+          this.changingCurrentIndex = false
+          this.preparingChangingCurrentIndex = false
+        }, 0)
+      }
+    },
+    changeCurrentToPrevious() {
+      this.$refs.images.addEventListener('transitionend', this.transitionEndPrevHandler, false)
+      this.preparingChangingCurrentIndex = true
+      this.movement = {
+        value: 100,
+        unit: '%'
+      }
+    },
+    changeCurrentToNext() {
+      this.$refs.images.addEventListener('transitionend', this.transitionEndNextHandler, false)
+      this.preparingChangingCurrentIndex = true
+      this.movement = {
+        value: -100,
+        unit: '%'
+      }
+    }
+  },
+  computed: {
+    globalClasses() {
+      return [
+        'recipe-parallax-gallery',
+        { 'recipe-parallax-gallery--pointer-down': this.isPointerDown },
+        { 'recipe-parallax-gallery--changing-current-index': this.changingCurrentIndex }
+      ]
+    },
+    globalStyles() {
+      if (this.movement) {
+        return {
+          '--recipe-parallax-gallery-movement': `${this.movement.value}${this.movement.unit}`
+        }
+      }
+      return {
+        '--recipe-parallax-gallery-movement': '0px'
+      }
+    }
+  }
+}
+</script>
+
+<style lang="scss">
+.recipe-parallax-gallery {
+  $root: &;
+
+  height: 320px;
+  position: relative;
+  overflow: hidden;
+
+  &__controls {
+    position: absolute;
+    bottom: 3rem;
+    z-index: 1;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  &__control {
+    display: inline-block;
+    // background: red;
+    width: 0.75rem;
+    height: 0.75rem;
+    margin: 0.25rem;
+    background-color: rgba(var(--color-background-rgb), 0.5);
+    border-radius: 50px;
+    @include transition(background-color);
+
+    &--current {
+      background-color: rgba(var(--color-background-rgb), 0.95);
+    }
+  }
+
+  &__images {
+    width: 100%;
+    height: 100%;
+    transform: translate3d(0, 0, 0);
+    transform-style: preserve-3d;
+  }
+
+  &__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: none;
+
+    &--previous,
+    &--current,
+    &--next {
+      display: block;
+      transform: translate3d(var(--recipe-parallax-gallery-movement), 0, 0);
+      @include transition(transform, 0.15s, ease);
+
+      #{ $root }--pointer-down &,
+      #{ $root }--changing-current-index & {
+        transition-duration: 0s;
+      }
+    }
+
+    &--previous,
+    &--next {
+      position: absolute;
+    }
+
+    &--previous {
+      top: 0;
+      right: 100%;
+    }
+
+    &--next {
+      top: 0;
+      left: 100%;
+    }
+  }
+}
+</style>

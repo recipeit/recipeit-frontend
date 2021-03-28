@@ -26,9 +26,10 @@
             </template>
           </BaseMenu>
         </div>
-        <RecipeParallaxImage class="recipe__image-container__parallax">
+        <!-- <RecipeParallaxImage class="recipe__image-container__parallax">
           <img :src="recipe.mainImageUrl" />
-        </RecipeParallaxImage>
+        </RecipeParallaxImage> -->
+        <RecipeParallaxGallery></RecipeParallaxGallery>
       </div>
       <div class="recipe__main">
         <div class="recipe__header-pills">
@@ -132,7 +133,7 @@
 </template>
 
 <script>
-import RecipeParallaxImage from '@/components/RecipeParallaxImage'
+import RecipeParallaxGallery from '@/components/RecipeParallaxGallery'
 import dayjs from '@/functions/dayjs'
 import { markRaw } from 'vue'
 import _ from 'lodash'
@@ -155,7 +156,7 @@ export default {
   components: {
     RecipeIngredient,
     FavouriteIcon,
-    RecipeParallaxImage,
+    RecipeParallaxGallery,
     Rating
   },
   data: () => ({
