@@ -26,7 +26,9 @@
             </template>
           </BaseMenu>
         </div>
-        <img ref="parallaxImage" class="recipe__main-image" :src="recipe.mainImageUrl" alt="" />
+        <RecipeParallaxImage class="recipe__image-container__parallax">
+          <img :src="recipe.mainImageUrl" />
+        </RecipeParallaxImage>
       </div>
       <div class="recipe__main">
         <div class="recipe__header-pills">
@@ -130,6 +132,7 @@
 </template>
 
 <script>
+import RecipeParallaxImage from '@/components/RecipeParallaxImage'
 import dayjs from '@/functions/dayjs'
 import { markRaw } from 'vue'
 import _ from 'lodash'
@@ -152,6 +155,7 @@ export default {
   components: {
     RecipeIngredient,
     FavouriteIcon,
+    RecipeParallaxImage,
     Rating
   },
   data: () => ({
@@ -170,16 +174,6 @@ export default {
     })
     this.$store.dispatch('myKitchen/fetchProducts')
     this.$store.dispatch('shoppingList/fetchProducts')
-  },
-  mounted() {
-    window.addEventListener('scroll', () => {
-      if (this.$refs.parallaxImage) {
-        const rect = this.$refs.parallaxImage.getBoundingClientRect()
-        const height = rect.height
-        const invisible = height - Math.min(Math.max(height + rect.top, 0), height)
-        this.$refs.parallaxImage.style.paddingTop = `${invisible}px`
-      }
-    })
   },
   methods: {
     back() {
@@ -364,13 +358,15 @@ export default {
 
   &__image-container {
     position: relative;
-    padding: 32px;
-    height: 320px;
-    max-height: 320px;
 
     &__buttons {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
       display: flex;
       justify-content: space-between;
+      padding: 32px;
     }
 
     &__button {
@@ -387,15 +383,11 @@ export default {
       line-height: 0;
       transform: rotate(180deg); // TODO arrow ikonki
     }
-  }
 
-  &__main-image {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    &__parallax {
+      height: 320px;
+      max-height: 320px;
+    }
   }
 
   &__main {

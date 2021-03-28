@@ -1,8 +1,8 @@
 import { STORAGE_TOKEN } from '@/constants'
 import axios from 'axios'
 import store from '@/store'
-import toastPlugin from '@/plugins/toast'
-import { ToastType } from '@/plugins/toast/toastType'
+// import toastPlugin from '@/plugins/toast'
+// import { ToastType } from '@/plugins/toast/toastType'
 
 // process.env.NODE_ENV === 'production'
 // const baseURL = 'https://localhost:44388'
@@ -53,7 +53,7 @@ apiClient.interceptors.response.use(
           .catch(error => {
             // todo logout only when api error, not when there is no token
             if (error) {
-              toastPlugin.toast.show('Wystąpił nieoczekiwany błąd', ToastType.DANGER)
+              // toastPlugin.toast.show('Wystąpił nieoczekiwany błąd', ToastType.ERROR)
               store.dispatch('user/logout')
             }
           })
@@ -71,7 +71,7 @@ apiClient.interceptors.response.use(
     }
 
     // specific error handling done elsewhere
-    toastPlugin.toast.show('Wystąpił nieoczekiwany błąd', ToastType.DANGER)
+    // toastPlugin.toast.show('Wystąpił nieoczekiwany błąd', ToastType.ERROR)
     return Promise.reject(error)
   }
 )
