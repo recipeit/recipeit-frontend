@@ -2,7 +2,7 @@
   <div class="day-plan" v-if="currentDay">
     <div class="day-plan__header">
       <BaseLink class="day-plan__header__button" @click="previousDay()">
-        <BaseIcon icon="arrow-left" weight="semi-bold"></BaseIcon>
+        <BaseIcon icon="angle-left" weight="semi-bold"></BaseIcon>
       </BaseLink>
       <div class="day-plan__header__title-container">
         <transition :name="`day-plan-slide-${currendDaySlideType}`" mode="out-in">
@@ -12,7 +12,7 @@
         </transition>
       </div>
       <BaseLink class="day-plan__header__button" @click="nextDay()">
-        <BaseIcon icon="arrow-right" weight="semi-bold"></BaseIcon>
+        <BaseIcon icon="angle-right" weight="semi-bold"></BaseIcon>
       </BaseLink>
     </div>
     <transition :name="`day-plan-slide-${currendDaySlideType}`" mode="out-in">

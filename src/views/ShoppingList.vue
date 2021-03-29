@@ -8,15 +8,15 @@
       </li>
     </ul> -->
     <ul class="product-list-groups">
-      <li class="product-list-group" v-for="(products, key) in groupedProducts" :key="key">
+      <li class="product-list-group" v-for="products in groupedProducts" :key="products[0]">
         <div class="product-list-group__title">
           <BaseIcon class="product-list-group__title__icon" icon="food"></BaseIcon>
           <div class="product-list-group__title__name">
-            {{ $t(`productCategory.${key}`) }}
+            {{ $t(`productCategory.${products[0]}`) }}
           </div>
         </div>
         <ul class="product-list">
-          <li class="product-list__item" v-for="product in products" :key="product.id">
+          <li class="product-list__item" v-for="product in products[1]" :key="product.id">
             <ShoppingListProduct :product="product" @purchase="purchase(product.id)" />
           </li>
         </ul>
@@ -39,7 +39,7 @@
 <script>
 import { markRaw } from 'vue'
 import { mapState } from 'vuex'
-import { groupBy } from 'lodash'
+import _ from 'lodash'
 import ShoppingListProduct from '@/components/ShoppingListProduct'
 import Dialog from '@/components/modals/Dialog'
 import PageHeader from '@/components/PageHeader.vue'
@@ -80,7 +80,12 @@ export default {
     }),
     groupedProducts() {
       if (!this.products) return null
-      return groupBy(this.products, 'category')
+      return _(this.products)
+        .sortBy(item => item.baseProductName)
+        .groupBy(item => item.category)
+        .toPairs()
+        .sortBy(group => this.$t(`productCategory.${group[0]}`))
+        .value()
     }
   },
   beforeMount() {

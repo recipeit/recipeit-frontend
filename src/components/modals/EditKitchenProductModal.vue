@@ -5,10 +5,8 @@
     </BaseModalHeader>
     <BaseModalBody>
       <div>
-        <BaseInput class="form-row" label="Nazwa" type="text" v-model="newProduct.name"></BaseInput>
-
         <BaseSelect
-          placeholder="Gotowy produkt"
+          placeholder="Produkt"
           class="form-row"
           v-model="selectedBaseProduct"
           trackBy="id"
@@ -24,6 +22,8 @@
             <template v-slot:option="{ option }">{{ $tc(`units.${option}`, unitLabelAmount) }}</template>
           </BaseSelect>
         </div>
+
+        <!-- <BaseInput class="form-row" label="Dodatkowa nazwa" type="text" v-model="newProduct.name"></BaseInput> -->
 
         <ExpirationDatesFormSection :productId="product.id" v-model="expirationDates"></ExpirationDatesFormSection>
       </div>

@@ -1,7 +1,7 @@
 <template>
   <div class="product">
     <div class="product__info">
-      <div class="product__name">{{ name }}</div>
+      <div class="product__name">{{ product.baseProductName }}</div>
       <div class="product__subname">
         <span v-if="product.amount && product.amount > 0" class="product__amount">{{ product.amount }}</span>
         <span v-if="product.amount && product.amount > 0 && product.unit" class="product__unit">
@@ -27,12 +27,12 @@ export default {
   },
   data: () => ({
     unitTranslations
-  }),
-  computed: {
-    name() {
-      return this.product.name ? this.product.name : this.product.baseProductName
-    }
-  }
+  })
+  // computed: {
+  // name() {
+  // return this.product.name ? this.product.name : this.product.baseProductName
+  // }
+  // }
 }
 </script>
 

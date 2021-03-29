@@ -5,12 +5,11 @@
     </BaseModalHeader>
     <BaseModalBody>
       <form :id="formID" @submit.prevent="addProduct()">
-        <BaseInput :autofocus="true" class="form-row" label="Nazwa" type="text" v-model="newProduct.name"></BaseInput>
-
         <BaseSelect
-          placeholder="Gotowy produkt"
+          placeholder="Produkt"
           class="form-row"
           v-model="selectedBaseProduct"
+          v-autofocus
           trackBy="id"
           label="name"
           :options="baseProducts"
@@ -25,6 +24,7 @@
           </BaseSelect>
         </div>
 
+        <!-- <BaseInput class="form-row" label="Dodatkowa nazwa" type="text" v-model="newProduct.name"></BaseInput> -->
         <!-- <ExpirationDatesFormSection v-model="expirationDates"></ExpirationDatesFormSection> -->
       </form>
     </BaseModalBody>

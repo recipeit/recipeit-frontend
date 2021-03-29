@@ -26,9 +26,6 @@
             </template>
           </BaseMenu>
         </div>
-        <!-- <RecipeParallaxImage class="recipe__image-container__parallax">
-          <img :src="recipe.mainImageUrl" />
-        </RecipeParallaxImage> -->
         <RecipeParallaxGallery :images="images"></RecipeParallaxGallery>
       </div>
       <div class="recipe__main">

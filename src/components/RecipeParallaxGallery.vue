@@ -1,8 +1,24 @@
 <template>
   <div ref="block" :class="globalClasses" :style="globalStyles">
     <div class="recipe-parallax-gallery__controls">
+      <button
+        class="recipe-parallax-gallery__controls__left"
+        @click.prevent="changeCurrentToPrevious()"
+        :disabled="isCurrentImageFirst ? true : null"
+      >
+        <BaseIcon icon="angle-left" />
+      </button>
+      <button
+        class="recipe-parallax-gallery__controls__right"
+        @click.prevent="changeCurrentToNext()"
+        :disabled="isCurrentImageLast ? true : null"
+      >
+        <BaseIcon icon="angle-right" />
+      </button>
+    </div>
+    <div class="recipe-parallax-gallery__indicators">
       <span
-        :class="['recipe-parallax-gallery__control', { 'recipe-parallax-gallery__control--current': currentImageIndex === index }]"
+        :class="['recipe-parallax-gallery__indicator', { 'recipe-parallax-gallery__indicator--current': currentImageIndex === index }]"
         v-for="(_, index) in imageObjects"
         :key="index"
       ></span>
@@ -79,19 +95,7 @@ export default {
       if (this.preparingChangingCurrentIndex) return
       this.isPointerDown = true
       if (e.changedTouches) {
-        // let tempElement = e.target
-        // let preventScroll = false
-        // while (tempElement !== this.$refs.scroller && tempElement.parentElement && this.$refs.scroller) {
-        //   if (tempElement.scrollHeight > tempElement.clientHeight && tempElement.scrollTop > 0) {
-        //     preventScroll = true
-        //     break
-        //   }
-        //   tempElement = tempElement.parentElement
-        // }
-
-        // if (!preventScroll) {
         this.offset = [e.changedTouches[0].clientX, e.changedTouches[0].clientY]
-        // }
       } else {
         this.offset = [e.clientX, e.clientY]
       }
@@ -123,9 +127,9 @@ export default {
           value: mousePosition.x - this.offset[0],
           unit: 'px'
         }
-        if (this.currentImageIndex === 0 && this.movement.value > 0) {
+        if (this.isCurrentImageFirst && this.movement.value > 0) {
           this.movement.value = 0
-        } else if (this.currentImageIndex + 1 === this.imageObjects.length && this.movement.value < 0) {
+        } else if (this.isCurrentImageLast && this.movement.value < 0) {
           this.movement.value = 0
         }
         // if (this.$refs.scroller.scrollTop === 0 && this.transformTop >= 0) {
@@ -158,6 +162,7 @@ export default {
       }
     },
     changeCurrentToPrevious() {
+      if (this.isCurrentImageFirst) return
       this.$refs.images.addEventListener('transitionend', this.transitionEndPrevHandler, false)
       this.preparingChangingCurrentIndex = true
       this.movement = {
@@ -166,6 +171,7 @@ export default {
       }
     },
     changeCurrentToNext() {
+      if (this.isCurrentImageLast) return
       this.$refs.images.addEventListener('transitionend', this.transitionEndNextHandler, false)
       this.preparingChangingCurrentIndex = true
       this.movement = {
@@ -199,6 +205,12 @@ export default {
           ...i
         }
       })
+    },
+    isCurrentImageLast() {
+      return this.currentImageIndex + 1 === this.imageObjects.length
+    },
+    isCurrentImageFirst() {
+      return this.currentImageIndex === 0
     }
   }
 }
@@ -213,6 +225,33 @@ export default {
   overflow: hidden;
 
   &__controls {
+    display: none;
+    // position: absolute;
+    // top: 50%;
+    // left: 0;
+    // right: 0;
+    // dis
+    @media (hover: hover) and (pointer: fine) {
+      display: initial;
+    }
+
+    &__left,
+    &__right {
+      position: absolute;
+      top: 50%;
+      z-index: 10;
+    }
+
+    &__left {
+      left: 32px;
+    }
+
+    &__right {
+      right: 32px;
+    }
+  }
+
+  &__indicators {
     position: absolute;
     bottom: 3rem;
     z-index: 1;
@@ -220,7 +259,7 @@ export default {
     transform: translateX(-50%);
   }
 
-  &__control {
+  &__indicator {
     display: inline-block;
     // background: red;
     width: 0.75rem;
