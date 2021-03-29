@@ -240,6 +240,29 @@ export default {
       position: absolute;
       top: 50%;
       z-index: 10;
+      height: 3rem;
+      width: 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      transform: translateY(-25%);
+      opacity: 0.5;
+      background: transparent;
+      border: none;
+      @include transition(opacity);
+
+      &:not(:disabled) {
+        cursor: pointer;
+      }
+
+      &:hover {
+        opacity: 1;
+      }
+
+      &:disabled {
+        opacity: 0;
+      }
     }
 
     &__left {
