@@ -24,14 +24,14 @@
       ></span>
     </div>
     <div
-      class="recipe-parallax-gallery__images"
       ref="images"
-      @mousemove="onPointerMove"
-      @mousedown="onPointerDown"
-      @mouseup="onPointerUp"
-      @touchmove="onPointerMove"
-      @touchstart="onPointerDown"
-      @touchend="onPointerUp"
+      class="recipe-parallax-gallery__images"
+      @mousedown="mouseDownHandler($event)"
+      @mousemove="mouseMoveHandler($event)"
+      @mouseup="mouseUpHandler()"
+      @touchstart="touchStartHanlder($event)"
+      @touchmove="touchMoveHandler($event)"
+      @touchend="touchEndHandler()"
     >
       <img
         :id="image.id"
@@ -91,13 +91,49 @@ export default {
         }
       ]
     },
-    onPointerDown(e) {
+    mouseDownHandler(event) {
       if (this.preparingChangingCurrentIndex) return
       this.isPointerDown = true
-      if (e.changedTouches) {
-        this.offset = [e.changedTouches[0].clientX, e.changedTouches[0].clientY]
-      } else {
-        this.offset = [e.clientX, e.clientY]
+      this.offset = [event.clientX, event.clientY]
+    },
+    mouseMoveHandler(event) {
+      if (this.isPointerDown && this.offset) {
+        event.preventDefault()
+        this.onPointerMove({
+          x: event.clientX,
+          y: event.clientY
+        })
+      }
+    },
+    mouseUpHandler() {
+      this.onPointerUp()
+    },
+    touchStartHanlder(event) {
+      if (this.preparingChangingCurrentIndex) return
+      this.isPointerDown = true
+      this.offset = [event.changedTouches[0].clientX, event.changedTouches[0].clientY]
+    },
+    touchMoveHandler(event) {
+      if (this.isPointerDown && this.offset) {
+        event.preventDefault()
+        this.onPointerMove({
+          x: event.changedTouches[0].clientX,
+          y: event.changedTouches[0].clientY
+        })
+      }
+    },
+    touchEndHandler() {
+      this.onPointerUp()
+    },
+    onPointerMove(mousePosition) {
+      this.movement = {
+        value: mousePosition.x - this.offset[0],
+        unit: 'px'
+      }
+      if (this.isCurrentImageFirst && this.movement.value > 0) {
+        this.movement.value = 0
+      } else if (this.isCurrentImageLast && this.movement.value < 0) {
+        this.movement.value = 0
       }
     },
     onPointerUp() {
@@ -110,32 +146,6 @@ export default {
       }
       this.isPointerDown = false
       this.offset = null
-    },
-    onPointerMove(event) {
-      if (this.isPointerDown && this.offset) {
-        event.preventDefault()
-        let mousePosition = event.changedTouches
-          ? {
-              x: event.changedTouches[0].clientX,
-              y: event.changedTouches[0].clientY
-            }
-          : {
-              x: event.clientX,
-              y: event.clientY
-            }
-        this.movement = {
-          value: mousePosition.x - this.offset[0],
-          unit: 'px'
-        }
-        if (this.isCurrentImageFirst && this.movement.value > 0) {
-          this.movement.value = 0
-        } else if (this.isCurrentImageLast && this.movement.value < 0) {
-          this.movement.value = 0
-        }
-        // if (this.$refs.scroller.scrollTop === 0 && this.transformTop >= 0) {
-        //   event.preventDefault()
-        // }
-      }
     },
     transitionEndPrevHandler(e) {
       if (e.target.id === this.imageObjects[this.currentImageIndex - 1]?.id) {
@@ -226,11 +236,7 @@ export default {
 
   &__controls {
     display: none;
-    // position: absolute;
-    // top: 50%;
-    // left: 0;
-    // right: 0;
-    // dis
+
     @media (hover: hover) and (pointer: fine) {
       display: initial;
     }
@@ -284,7 +290,6 @@ export default {
 
   &__indicator {
     display: inline-block;
-    // background: red;
     width: 0.75rem;
     height: 0.75rem;
     margin: 0.25rem;
