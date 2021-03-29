@@ -134,3 +134,25 @@ export function fetchRecipesQueryParams(orderMethod, filters, search) {
 export const STORAGE_TOKEN = 'token'
 export const STORAGE_REFRESH_TOKEN = 'refreshToken'
 export const FacebookAppId = '189490352689451'
+
+export const PRODUCT_GROUP_ICONS = {
+  Others: 'food',
+  Dairy: 'dairy-2',
+  Vegetables: 'vegetables',
+  Fruits: 'food',
+  BakingAndGrains: 'grains',
+  Sweeteners: 'sweeteners-2',
+  Spices: 'spices-2',
+  Meats: 'food',
+  Fishes: 'food',
+  Seafoods: 'food',
+  Oils: 'oils-2',
+  Sauces: 'food',
+  Legumes: 'food',
+  Alcohol: 'food',
+  Soup: 'food',
+  Nuts: 'nuts',
+  DairyAlternatives: 'food',
+  DessertsAndSnacks: 'dessert',
+  Beverages: 'food'
+}

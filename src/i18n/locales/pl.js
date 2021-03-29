@@ -167,7 +167,7 @@ export default {
       Fruits: 'Owoce',
       BakingAndGrains: 'Zboża i pieczywo',
       Sweeteners: 'Słodziki',
-      Spices: 'Przyprawy',
+      Spices: 'Zioła i przyprawy',
       Meats: 'Mięso',
       Fishes: 'Ryby',
       Seafoods: 'Owoce morza',

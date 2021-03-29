@@ -5,7 +5,10 @@
     <ul class="product-list-groups">
       <li class="product-list-group" v-for="products in groupedProducts" :key="products[0]">
         <div class="product-list-group__title">
-          <BaseIcon class="product-list-group__title__icon" icon="food"></BaseIcon>
+          <BaseIcon
+            :class="['product-list-group__title__icon', `product-list-group__title__icon--${products[0].toLowerCase()}`]"
+            :icon="PRODUCT_GROUP_ICONS[products[0]]"
+          ></BaseIcon>
           <div class="product-list-group__title__name">
             {{ $t(`productCategory.${products[0]}`) }}
           </div>
@@ -35,12 +38,18 @@ import _ from 'lodash'
 import KitchenProduct from '@/components/KitchenProduct'
 import NewKitchenProductModal from '@/components/modals/NewKitchenProductModal'
 import PageHeader from '@/components/PageHeader.vue'
+import { PRODUCT_GROUP_ICONS } from '@/constants'
 
 export default {
   name: 'MyKitchen',
   components: {
     KitchenProduct,
     PageHeader
+  },
+  setup() {
+    return {
+      PRODUCT_GROUP_ICONS
+    }
   },
   computed: {
     ...mapState({
@@ -83,10 +92,38 @@ export default {
       margin-right: 0.5rem;
       color: var(--color-primary);
       font-size: 1.5rem;
+
+      &--dairy {
+        color: var(--color-product-dairy);
+      }
+
+      &--sweeteners {
+        color: var(--color-product-sweeteners);
+      }
+
+      &--vegetables {
+        color: var(--color-product-vegetables);
+      }
+
+      &--bakingandgrains {
+        color: var(--color-product-bakingandgrains);
+      }
+
+      &--nuts {
+        color: var(--color-product-nuts);
+      }
+
+      &--dessertsandsnacks {
+        color: var(--color-product-dessertsandsnacks);
+      }
+
+      &--oils {
+        color: var(--color-product-oils);
+      }
     }
 
     &__name {
-      padding-top: 4px;
+      // padding-top: 4px;
       font-size: 0.875rem;
       font-weight: bold;
       // color: var(--color-text-secondary);

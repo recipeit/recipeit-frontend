@@ -12,6 +12,8 @@ $blue: #00abff;
 $green: #0dd173;
 // $green: #28da84;
 $yellow: #ffb71d;
+$darkYellow: #ffb71d;
+$orange: #ff701d;
 
 $gray-palette: functions.colorPalette($grayscale-middle);
 $red-palette: functions.colorPalette2($red);
@@ -42,6 +44,15 @@ $color-theme: (
   'blue': $blue,
   'yellow': $yellow,
   'red': $red,
+  'product': (
+    'dairy': $yellow,
+    'sweeteners': $darkYellow,
+    'vegetables': $orange,
+    'bakingandgrains': #c2a267,
+    'nuts': #7a6234,
+    'dessertsandsnacks': #ad6eff,
+    'oils': #2fccc4
+  ),
   'toast': (
     'background': rgba(#272c30, 0.95),
     'color': $text-primary,
