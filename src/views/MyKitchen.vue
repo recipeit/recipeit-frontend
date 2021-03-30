@@ -131,6 +131,10 @@ export default {
       &--oils {
         color: var(--color-product-oils);
       }
+
+      &--meats {
+        color: var(--color-product-meats);
+      }
     }
 
     &__name {

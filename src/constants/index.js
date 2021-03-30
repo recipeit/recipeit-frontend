@@ -143,16 +143,16 @@ export const PRODUCT_GROUP_ICONS = {
   BakingAndGrains: 'grains',
   Sweeteners: 'sweeteners-2',
   Spices: 'spices-2',
-  Meats: 'food',
-  Fishes: 'food',
-  Seafoods: 'food',
+  Meats: 'meats',
+  Fishes: 'fishes',
+  Seafoods: 'seafoods',
   Oils: 'oils-2',
   Sauces: 'food',
   Legumes: 'food',
-  Alcohol: 'food',
-  Soup: 'food',
+  Alcohol: 'alcohol',
+  Soup: 'soup',
   Nuts: 'nuts',
   DairyAlternatives: 'food',
   DessertsAndSnacks: 'dessert',
-  Beverages: 'food'
+  Beverages: 'beverages'
 }
