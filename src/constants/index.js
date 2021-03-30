@@ -138,7 +138,7 @@ export const FacebookAppId = '189490352689451'
 export const PRODUCT_GROUP_ICONS = {
   Others: 'food',
   Dairy: 'dairy-2',
-  Vegetables: 'sauces',
+  Vegetables: 'vegetables',
   Fruits: 'food',
   BakingAndGrains: 'grains',
   Sweeteners: 'sweeteners-2',
