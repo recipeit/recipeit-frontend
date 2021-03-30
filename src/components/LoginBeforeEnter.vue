@@ -3,10 +3,11 @@
     <p>
       Zaloguj się, aby zobaczyć co tu na Ciebie czeka!
     </p>
-    <BaseButton class="login-before-enter__button" raised color="contrast" type="submit" :disabled="anySending">
-      <Spinner :show="sending" />
-      Zaloguj się
-    </BaseButton>
+    <router-link :to="{ name: 'login' }" v-slot="{ href, navigate }" custom>
+      <BaseButton :anchorTag="true" :href="href" @click="navigate" class="login-before-enter__button" raised color="contrast">
+        Zaloguj się
+      </BaseButton>
+    </router-link>
   </div>
 </template>
 
