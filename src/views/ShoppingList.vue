@@ -7,52 +7,58 @@
         <ShoppingListProduct :product="product" @purchase="purchase(product.id)" />
       </li>
     </ul> -->
-    <ul class="product-list-groups">
-      <li class="product-list-group" v-for="products in groupedProducts" :key="products[0]">
-        <div class="product-list-group__title">
-          <BaseIcon
-            :class="['product-list-group__title__icon', `product-list-group__title__icon--${products[0].toLowerCase()}`]"
-            :icon="PRODUCT_GROUP_ICONS[products[0]]"
-          ></BaseIcon>
-          <div class="product-list-group__title__name">
-            {{ $t(`productCategory.${products[0]}`) }}
+    <template v-if="isAuthenticated">
+      <ul class="product-list-groups">
+        <li class="product-list-group" v-for="products in groupedProducts" :key="products[0]">
+          <div class="product-list-group__title">
+            <BaseIcon
+              :class="['product-list-group__title__icon', `product-list-group__title__icon--${products[0].toLowerCase()}`]"
+              :icon="PRODUCT_GROUP_ICONS[products[0]]"
+            ></BaseIcon>
+            <div class="product-list-group__title__name">
+              {{ $t(`productCategory.${products[0]}`) }}
+            </div>
           </div>
-        </div>
-        <ul class="product-list">
-          <li class="product-list__item" v-for="product in products[1]" :key="product.id">
-            <ShoppingListProduct :product="product" @purchase="purchase(product.id)" />
-          </li>
-        </ul>
-      </li>
-    </ul>
+          <ul class="product-list">
+            <li class="product-list__item" v-for="product in products[1]" :key="product.id">
+              <ShoppingListProduct :product="product" @purchase="purchase(product.id)" />
+            </li>
+          </ul>
+        </li>
+      </ul>
 
-    <BaseLink v-if="products && products.length > 0" color="primary" class="purchase-all-button" @click="purchaseAll">
-      {{ $t('shoppingList.purchaseAllButton') }}
-    </BaseLink>
+      <BaseLink v-if="products && products.length > 0" color="primary" class="purchase-all-button" @click="purchaseAll">
+        {{ $t('shoppingList.purchaseAllButton') }}
+      </BaseLink>
 
-    <div class="floating-action-button-container">
-      <BaseButton raised color="contrast">
-        <BaseIcon class="floating-action-button__icon" icon="plus" weight="semi-bold" />
-        {{ $t('shared.addProduct') }}
-      </BaseButton>
-    </div>
+      <div class="floating-action-button-container">
+        <BaseButton raised color="contrast">
+          <BaseIcon class="floating-action-button__icon" icon="plus" weight="semi-bold" />
+          {{ $t('shared.addProduct') }}
+        </BaseButton>
+      </div>
+    </template>
+
+    <LoginBeforeEnter v-else></LoginBeforeEnter>
   </div>
 </template>
 
 <script>
 import { markRaw } from 'vue'
-import { mapState } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 import _ from 'lodash'
 import ShoppingListProduct from '@/components/ShoppingListProduct'
 import Dialog from '@/components/modals/Dialog'
 import PageHeader from '@/components/PageHeader.vue'
+import LoginBeforeEnter from '@/components/LoginBeforeEnter'
 import { PRODUCT_GROUP_ICONS } from '@/constants'
 
 export default {
   name: 'ShoppingList',
   components: {
     ShoppingListProduct,
-    PageHeader
+    PageHeader,
+    LoginBeforeEnter
   },
   setup() {
     return {
@@ -84,6 +90,9 @@ export default {
     }
   },
   computed: {
+    ...mapGetters({
+      isAuthenticated: 'user/isAuthenticated'
+    }),
     ...mapState({
       products: state => state.shoppingList.products
     }),

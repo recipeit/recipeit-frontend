@@ -134,7 +134,7 @@ import RecipeParallaxGallery from '@/components/RecipeParallaxGallery'
 import dayjs from '@/functions/dayjs'
 import { markRaw } from 'vue'
 import _ from 'lodash'
-import { mapState } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 import RecipeIngredient from '@/components/recipe/RecipeIngredient'
 import FavouriteIcon from '@/components/FavouriteIcon'
 import Rating from '@/components/Rating'
@@ -170,14 +170,20 @@ export default {
       this.recipe = rd
       this.servings = rd.details.servings
     })
-    this.$store.dispatch('myKitchen/fetchProducts')
-    this.$store.dispatch('shoppingList/fetchProducts')
+    if (this.isAuthenticated) {
+      this.$store.dispatch('myKitchen/fetchProducts')
+      this.$store.dispatch('shoppingList/fetchProducts')
+    }
   },
   methods: {
     back() {
       this.$router.go(-1)
     },
     addToFavourites() {
+      if (!this.isAuthenticated) {
+        alert('Zaloguj się')
+        return
+      }
       this.$store.dispatch('recipes/addToFavourites', this.recipe.id)
     },
     deleteFromFavourites() {
@@ -205,9 +211,17 @@ export default {
       }
     },
     openPlanRecipeModal() {
+      if (!this.isAuthenticated) {
+        alert('Zaloguj się')
+        return
+      }
       this.$modal.show(markRaw(PlanRecipeModal), { recipeId: this.recipeId }, {})
     },
     hideRecipeInLists() {
+      if (!this.isAuthenticated) {
+        alert('Zaloguj się')
+        return
+      }
       if (this.hiddenRecipe) return
       this.hiddenRecipe = true
       // this.$store.dispatch('user/hideRecipe', this.recipe.id)
@@ -220,6 +234,10 @@ export default {
       this.$toast.show('Przepis został odkryty. Od teraz będzie pojawiał się w wynikach wyszukiwania', ToastType.SUCCESS)
     },
     hideBlogInLists() {
+      if (!this.isAuthenticated) {
+        alert('Zaloguj się')
+        return
+      }
       if (this.hiddenBlog) return
       this.hiddenBlog = true
       // this.$store.dispatch('user/hideBlog', this.recipe.id)
@@ -233,6 +251,9 @@ export default {
     }
   },
   computed: {
+    ...mapGetters({
+      isAuthenticated: 'user/isAuthenticated'
+    }),
     ...mapState({
       favouriteRecipesIds: state => state.recipes.favouriteRecipesIds
     }),

@@ -251,6 +251,7 @@ export default {
       commit(MUTATIONS.SET_FAVOURITE_RECIPES_IDS, [])
       commit(MUTATIONS.RESET_ALMOST_AVAILABLE_RECIPES)
       commit(MUTATIONS.RESET_AVAILABLE_RECIPES)
+      commit(MUTATIONS.RESET_RECIPES)
     }
   },
   getters: {

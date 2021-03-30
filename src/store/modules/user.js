@@ -59,6 +59,8 @@ export default {
       })
     },
     login({ commit, dispatch }, { email, password }) {
+      dispatch('recipes/resetUserData', {}, { root: true })
+
       return new Promise((resolve, reject) => {
         identityApi
           .login({ email, password })
@@ -86,6 +88,8 @@ export default {
       })
     },
     facebookAuth({ commit, dispatch }, accessToken) {
+      dispatch('recipes/resetUserData', {}, { root: true })
+
       identityApi
         .facebookAuth(accessToken)
         .then(response => {
@@ -101,6 +105,8 @@ export default {
         })
     },
     googleAuth({ commit, dispatch }, idToken) {
+      dispatch('recipes/resetUserData', {}, { root: true })
+
       identityApi
         .googleAuth(idToken)
         .then(response => {

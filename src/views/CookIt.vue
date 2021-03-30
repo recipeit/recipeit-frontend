@@ -3,41 +3,48 @@
     <div class="cook-it-layout">
       <PageHeader class="cook-it-page__header" :title="$t('cookIt.title')"></PageHeader>
 
-      <div>
-        <GenericRecipesList
-          :recipes="availableRecipes"
-          :showAllLink="{ name: 'available' }"
-          :limitedItems="4"
-          @reload="reloadRecipes"
-        ></GenericRecipesList>
-      </div>
-
-      <div v-if="almostAvailableRecipes.items?.length > 0 || almostAvailableRecipes.filters">
-        <div class="recipes-list-title">
-          {{ $t('cookIt.buyMissingIngredient') }}
+      <template v-if="isAuthenticated">
+        <div>
+          <GenericRecipesList
+            :recipes="availableRecipes"
+            :showAllLink="{ name: 'available' }"
+            :limitedItems="4"
+            @reload="reloadRecipes"
+          ></GenericRecipesList>
         </div>
 
-        <GenericRecipesList
-          :recipes="almostAvailableRecipes"
-          :showAllLink="{ name: 'almost-available' }"
-          :limitedItems="4"
-          :showFilterButtons="false"
-        ></GenericRecipesList>
-      </div>
+        <div v-if="almostAvailableRecipes.items?.length > 0 || almostAvailableRecipes.filters">
+          <div class="recipes-list-title">
+            {{ $t('cookIt.buyMissingIngredient') }}
+          </div>
+
+          <GenericRecipesList
+            :recipes="almostAvailableRecipes"
+            :showAllLink="{ name: 'almost-available' }"
+            :limitedItems="4"
+            :showFilterButtons="false"
+          ></GenericRecipesList>
+        </div>
+      </template>
+      <LoginBeforeEnter v-else></LoginBeforeEnter>
     </div>
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 import { fetchRecipesQueryParams } from '@/constants'
 import GenericRecipesList from '@/components/GenericRecipesList'
 import PageHeader from '@/components/PageHeader.vue'
+import LoginBeforeEnter from '@/components/LoginBeforeEnter'
 
 export default {
-  components: { GenericRecipesList, PageHeader },
+  components: { GenericRecipesList, PageHeader, LoginBeforeEnter },
   name: 'CookIt',
   computed: {
+    ...mapGetters({
+      isAuthenticated: 'user/isAuthenticated'
+    }),
     ...mapState({
       availableRecipes: state => state.recipes.availableRecipes,
       almostAvailableRecipes: state => state.recipes.almostAvailableRecipes

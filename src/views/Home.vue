@@ -13,25 +13,33 @@
     </PageHeader>
     <!-- <button @click="theme('light')">light</button>
     <button @click="theme('dark')">dark</button> -->
-    <DayPlan></DayPlan>
-    <div>
-      Ulubione
-    </div>
-    <div>
-      Przepisy według kategorii
-    </div>
+    <template v-if="isAuthenticated">
+      <DayPlan></DayPlan>
+      <div>
+        Ulubione
+      </div>
+      <div>
+        Przepisy według kategorii
+      </div>
+    </template>
+
+    <LoginBeforeEnter v-else></LoginBeforeEnter>
   </div>
 </template>
 
 <script>
 import PageHeader from '@/components/PageHeader'
 import DayPlan from '@/components/DayPlan'
-import { mapState } from 'vuex'
+import LoginBeforeEnter from '@/components/LoginBeforeEnter'
+import { mapGetters, mapState } from 'vuex'
 
 export default {
-  components: { PageHeader, DayPlan },
+  components: { PageHeader, DayPlan, LoginBeforeEnter },
   name: 'Home',
   computed: {
+    ...mapGetters({
+      isAuthenticated: 'user/isAuthenticated'
+    }),
     ...mapState({
       userProfile: state => state.user.userProfile
     })
