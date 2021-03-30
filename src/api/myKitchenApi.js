@@ -7,8 +7,11 @@ export default {
   getProductExpirationDates(id) {
     return apiClient.get(`/my-kitchen/products/${id}/expiration-dates`)
   },
-  addProductsToMyKitchen(products) {
-    return apiClient.post(`/my-kitchen/products`, products)
+  // addProductsToMyKitchen(products) {
+  //   return apiClient.post(`/my-kitchen/products`, products)
+  // },
+  addProductToMyKitchen(product, expirationDates) {
+    return apiClient.post(`/my-kitchen/products`, { product, expirationDates })
   },
   getProductFromMyKitchenById(id) {
     return apiClient.get(`/my-kitchen/products/${id}`)

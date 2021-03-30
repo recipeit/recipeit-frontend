@@ -25,7 +25,7 @@
 
         <!-- <BaseInput class="form-row" label="Dodatkowa nazwa" type="text" v-model="newProduct.name"></BaseInput> -->
 
-        <ExpirationDatesFormSection :productId="product.id" v-model="expirationDates"></ExpirationDatesFormSection>
+        <ExpirationDatesFormSection :productId="product.id" v-model="expirationDatesForm"></ExpirationDatesFormSection>
       </div>
     </BaseModalBody>
     <BaseModalFooter>
@@ -52,7 +52,8 @@ export default {
     product: {
       type: Object,
       required: true
-    }
+    },
+    expirationDates: [Array, null]
   },
   setup(props, component) {
     const store = useStore()
@@ -62,7 +63,7 @@ export default {
       newProduct: JSON.parse(JSON.stringify(props.product)),
       selectedBaseProduct: null,
       baseProducts: computed(() => store.state.ingredients.baseProducts),
-      expirationDates: null
+      expirationDatesForm: props.expirationDates
     })
 
     const unitLabelAmount = computed(() => parseFloat(data.newProduct.amount) || 2)
@@ -72,7 +73,7 @@ export default {
         .dispatch('myKitchen/editProductFromKitchen', {
           id: props.product.id,
           product: data.newProduct,
-          expirationDates: data.expirationDates
+          expirationDates: data.expirationDatesForm
         })
         .then(() => {
           component.emit('close')

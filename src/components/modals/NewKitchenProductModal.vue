@@ -25,7 +25,7 @@
         </div>
 
         <!-- <BaseInput class="form-row" label="Dodatkowa nazwa" type="text" v-model="newProduct.name"></BaseInput> -->
-        <!-- <ExpirationDatesFormSection v-model="expirationDates"></ExpirationDatesFormSection> -->
+        <ExpirationDatesFormSection v-model="expirationDatesForm"></ExpirationDatesFormSection>
       </form>
     </BaseModalBody>
     <BaseModalFooter>
@@ -41,18 +41,18 @@
 import { units } from '@/constants'
 import { mapState } from 'vuex'
 import uniqueID from '@/functions/uniqueID'
-// import ExpirationDatesFormSection from './ExpirationDatesFormSection'
+import ExpirationDatesFormSection from './ExpirationDatesFormSection'
 
 export default {
   emits: ['close'],
-  // components: { ExpirationDatesFormSection },
+  components: { ExpirationDatesFormSection },
   data: component => ({
     units: units,
     loading: false,
     newProduct: component.emptyProduct(),
     selectedBaseProduct: null,
-    formID: 'form-' + uniqueID().getID()
-    // expirationDates: []
+    formID: 'form-' + uniqueID().getID(),
+    expirationDatesForm: []
   }),
   computed: {
     ...mapState({
@@ -72,11 +72,17 @@ export default {
       }
     },
     addProduct() {
-      this.$store.dispatch('myKitchen/addProducts', [this.newProduct]).then(() => {
-        this.newProduct = this.emptyProduct()
-        this.selectedBaseProduct = null
-        this.$emit('close')
-      })
+      this.$store
+        .dispatch('myKitchen/addProduct', {
+          product: this.newProduct,
+          expirationDates: this.expirationDatesForm
+        })
+        .then(() => {
+          this.$emit('close')
+          this.newProduct = this.emptyProduct()
+          this.expirationDates = []
+          this.selectedBaseProduct = null
+        })
     }
   },
   watch: {

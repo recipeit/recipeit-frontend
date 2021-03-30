@@ -23,7 +23,7 @@
   </div>
 
   <div class="form-row">
-    <BaseLink tag="button" color="primary" class="add-expiration-date-button" @click="openNewExpirationDateModal()">
+    <BaseLink tag="button" color="primary" class="add-expiration-date-button" @click.prevent="openNewExpirationDateModal()">
       <BaseIcon class="add-expiration-date-button__icon" icon="plus" weight="semi-bold"></BaseIcon>
       {{ expirationDateObjects && expirationDateObjects.length > 0 ? 'dodaj kolejną datę ważności' : 'dodaj datę ważności' }}
     </BaseLink>
@@ -34,26 +34,22 @@
 import dayjs from '@/functions/dayjs'
 
 import { markRaw } from 'vue'
-import myKitchenApi from '@/api/myKitchenApi'
+// import myKitchenApi from '@/api/myKitchenApi'
 import NewExpirationDateModal from './NewExpirationDateModal'
 
 export default {
   // emits: [update:],
   props: {
-    productId: {
-      type: String
-    },
-    modelValue: {
-      type: [Array, null]
-    }
+    productId: String,
+    modelValue: [Array, null]
   },
-  beforeMount() {
-    if (this.productId) {
-      myKitchenApi.getProductExpirationDates(this.productId).then(response => {
-        this.$emit('update:modelValue', response.data)
-      })
-    }
-  },
+  // beforeMount() {
+  //   if (this.productId) {
+  //     myKitchenApi.getProductExpirationDates(this.productId).then(response => {
+  //       this.$emit('update:modelValue', response.data)
+  //     })
+  //   }
+  // },
   computed: {
     expirationDateObjects() {
       return this.modelValue?.map(date => dayjs(date)).sort((a, b) => (a.isAfter(b) ? 1 : -1))

@@ -54,6 +54,17 @@ export default {
           .catch(error => reject(error))
       })
     },
+    addProduct({ commit }, { product, expirationDates }) {
+      return new Promise((resolve, reject) => {
+        myKitchenApi
+          .addProductToMyKitchen(product, expirationDates)
+          .then(resp => {
+            commit(MUTATIONS.ADD_PRODUCTS, resp.data)
+            resolve()
+          })
+          .catch(error => reject(error))
+      })
+    },
     editProductFromKitchen({ commit }, { id, product, expirationDates }) {
       return new Promise((resolve, reject) => {
         myKitchenApi

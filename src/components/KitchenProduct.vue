@@ -18,6 +18,7 @@
 import { markRaw } from 'vue'
 import Product from '@/components/Product'
 import EditKitchenProductModal from './modals/EditKitchenProductModal'
+import myKitchenApi from '@/api/myKitchenApi'
 
 export default {
   components: {
@@ -30,11 +31,24 @@ export default {
     }
   },
   methods: {
-    openEditModal() {
+    async openEditModal() {
+      let expirationDates
+      try {
+        const { data } = await myKitchenApi.getProductExpirationDates(this.product.id)
+        if (data) {
+          expirationDates = data
+        }
+      } catch (e) {
+        console.log(e)
+      }
+      // myKitchenApi.getProductExpirationDates(this.productId).then(response => {
+      //   this.$emit('update:modelValue', response.data)
+      // })
       this.$modal.show(
         markRaw(EditKitchenProductModal),
         {
-          product: this.product
+          product: this.product,
+          expirationDates: expirationDates
         },
         {
           product: this.product
