@@ -107,7 +107,9 @@ export default {
     }
   },
   beforeMount() {
-    this.$store.dispatch('shoppingList/fetchProducts')
+    if (this.isAuthenticated) {
+      this.$store.dispatch('shoppingList/fetchProducts')
+    }
   }
 }
 </script>

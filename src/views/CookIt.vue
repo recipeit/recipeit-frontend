@@ -51,7 +51,7 @@ export default {
     })
   },
   beforeMount() {
-    if (this.availableRecipes.items === null || this.almostAvailableRecipes.items === null) {
+    if (this.isAuthenticated && (this.availableRecipes.items === null || this.almostAvailableRecipes.items === null)) {
       this.fetchRecipes()
     }
   },

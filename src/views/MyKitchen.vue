@@ -75,8 +75,10 @@ export default {
     }
   },
   beforeMount() {
-    this.$store.dispatch('ingredients/fetchBaseProducts')
-    this.$store.dispatch('myKitchen/fetchProducts')
+    if (this.isAuthenticated) {
+      this.$store.dispatch('ingredients/fetchBaseProducts')
+      this.$store.dispatch('myKitchen/fetchProducts')
+    }
   },
   methods: {
     newProduct() {
