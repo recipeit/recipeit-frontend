@@ -138,7 +138,7 @@ export const FacebookAppId = '189490352689451'
 export const PRODUCT_GROUP_ICONS = {
   Others: 'food',
   Dairy: 'dairy-2',
-  Vegetables: 'vegetables',
+  Vegetables: 'sauces',
   Fruits: 'food',
   BakingAndGrains: 'grains',
   Sweeteners: 'sweeteners-2',
@@ -147,12 +147,12 @@ export const PRODUCT_GROUP_ICONS = {
   Fishes: 'fishes',
   Seafoods: 'seafoods',
   Oils: 'oils-2',
-  Sauces: 'food',
-  Legumes: 'food',
+  Sauces: 'sauces',
+  Legumes: 'legumes',
   Alcohol: 'alcohol',
   Soup: 'soup',
   Nuts: 'nuts',
-  DairyAlternatives: 'food',
+  DairyAlternatives: 'dairy-alternatives',
   DessertsAndSnacks: 'dessert',
   Beverages: 'beverages'
 }
