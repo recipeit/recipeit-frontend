@@ -42,21 +42,26 @@
         :class="['base-select__options', { 'base-select__options--above': isAbove }]"
         :style="{ maxHeight: optimizedHeight + 'px' }"
       >
-        <ul class="base-select__options__list" v-if="visibleOptions && visibleOptions.length > 0">
+        <ul class="base-select__options__list" v-if="filteredOptions && filteredOptions.length > 0">
           <li
-            v-for="(option, index) in visibleOptions"
+            v-for="(option, index) in filteredOptions"
             :key="option"
             :class="[
               'base-select__options__list__item',
               { 'base-select__options__list__item--selected': option === modelValue },
               { 'base-select__options__list__item--highlight': index === pointer }
             ]"
-            @mouseenter.self="pointerSet(index)"
-            @click="selectOption(option)"
           >
-            <slot name="option" :option="option" :search="search" :index="index">
-              {{ label ? option[label] : option }}
-            </slot>
+            <div class="base-select__options__list__group-label" v-if="option.isLabel">
+              <slot name="groupLabel" :label="option['groupLabel']">
+                {{ option['groupLabel'] }}
+              </slot>
+            </div>
+            <div v-else @mouseenter.self="pointerSet(index)" @click="selectOption(option)">
+              <slot name="option" :option="option" :search="search" :index="index">
+                {{ label ? option[label] : option }}
+              </slot>
+            </div>
           </li>
         </ul>
         <div v-else class="base-select__options__empty">
@@ -83,6 +88,8 @@ export default {
       type: Array,
       required: true
     },
+    groupLabel: String,
+    groupValues: String,
     trackBy: {
       type: String
     },
@@ -106,16 +113,21 @@ export default {
   }),
   methods: {
     addPointerElement() {
-      if (this.visibleOptions.length > 0) {
-        this.selectOption(this.visibleOptions[this.pointer])
+      if (this.filteredOptions.length > 0) {
+        this.selectOption(this.filteredOptions[this.pointer])
       }
       this.hide()
     },
     pointerForward() {
-      if (this.pointer !== null && this.pointer < this.visibleOptions.length - 1) {
+      if (this.pointer !== null && this.pointer < this.filteredOptions.length - 1) {
         this.pointer++
       } else {
         this.pointer = 0
+      }
+
+      //RISKY TODO
+      if (this.filteredOptions[this.pointer].isLabel) {
+        this.pointer++
       }
       // /* istanbul ignore else */
       // if (this.pointer < this.filteredOptions.length - 1) {
@@ -134,7 +146,16 @@ export default {
       if (this.pointer !== null && this.pointer > 0) {
         this.pointer--
       } else {
-        this.pointer = this.visibleOptions.length - 1
+        this.pointer = this.filteredOptions.length - 1
+      }
+
+      //RISKY TODO
+      if (this.filteredOptions[this.pointer].isLabel) {
+        this.pointer--
+
+        if (this.pointer < 0) {
+          this.pointer = this.filteredOptions.length - 1
+        }
       }
       // if (this.pointer > 0) {
       //   this.pointer--
@@ -165,8 +186,8 @@ export default {
       this.pointer = index
     },
     pointerAdjust() {
-      if (this.pointer >= this.visibleOptions.length - 1) {
-        this.pointer = this.visibleOptions.length ? this.visibleOptions.length - 1 : 0
+      if (this.pointer >= this.filteredOptions.length - 1) {
+        this.pointer = this.filteredOptions.length ? this.filteredOptions.length - 1 : 0
       }
     },
 
@@ -218,26 +239,53 @@ export default {
         this.preferredOpenDirection = 'above'
         this.optimizedHeight = Math.min(spaceAbove - 40, this.maxHeight)
       }
+    },
+
+    plainOptions(options) {
+      console.log('plainOptions')
+      // if (this.isGrouped) {
+      return options.flatMap(group =>
+        group[this.groupValues]?.length > 0 ? [{ groupLabel: group[this.groupLabel], isLabel: true }, ...group[this.groupValues]] : []
+      )
+      // }
+      // return options
+    },
+    filterOptions(options) {
+      return options.filter(oee => {
+        if (typeof oee == 'string' || oee instanceof String) {
+          return oee.toLowerCase().includes(this.search.toLowerCase())
+        } else if (this.label) {
+          return oee[this.label] && oee[this.label].toLowerCase().includes(this.search.toLowerCase())
+        }
+        return true
+      })
     }
   },
   computed: {
+    isGrouped() {
+      return this.groupLabel && this.groupValues
+    },
     placeholderAsLabel() {
       return this.searchable ? this.opened || this.modelValue !== null : this.modelValue !== null
     },
     showSelectedValue() {
       return this.searchable ? !this.opened && this.modelValue !== null : this.modelValue !== null
     },
-    visibleOptions() {
-      if (!this.searchable || !this.search) return this.options
-      else {
-        return this.options.filter(oee => {
-          if (typeof oee == 'string' || oee instanceof String) {
-            return oee.toLowerCase().includes(this.search.toLowerCase())
-          } else if (this.label) {
-            return oee[this.label] && oee[this.label].toLowerCase().includes(this.search.toLowerCase())
-          }
-          return true
+    filteredOptions() {
+      if (!this.searchable || !this.search) return this.isGrouped ? this.plainOptions(this.options) : this.options
+      else if (this.isGrouped) {
+        const filteredGroups = this.options.map(group => {
+          const filteredValues = this.filterOptions(group[this.groupValues])
+          return filteredValues.length > 0
+            ? {
+                [this.groupLabel]: group[this.groupLabel],
+                [this.groupValues]: filteredValues
+              }
+            : []
         })
+        return this.plainOptions(filteredGroups)
+      } else {
+        return this.filterOptions(this.options)
       }
     },
     isAbove() {
@@ -254,7 +302,7 @@ export default {
     }
   },
   watch: {
-    visibleOptions() {
+    filteredOptions() {
       this.pointerAdjust()
     },
     options() {
@@ -380,6 +428,13 @@ export default {
             background-color: var(--color-button-subtle-primary-background);
           }
         }
+      }
+
+      &__group-label {
+        font-size: 0.75rem;
+        font-weight: bold;
+        color: var(--color-text-secondary);
+        margin-top: 0.25rem;
       }
     }
 

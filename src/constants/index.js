@@ -1,13 +1,16 @@
 export const units = [
-  'Weight.Gram',
-  'Weight.Kilogram',
-  'Volume.Liter',
-  'Volume.Milliliter',
-  'Volume.Tablespoon',
-  'Volume.Teaspoon',
-  'Whole.Piece',
-  'Whole.Grain',
-  'Whole.Handful'
+  {
+    groupKey: 'weight',
+    groupValues: ['Weight.Milligram', 'Weight.Gram', 'Weight.Kilogram', 'Weight.Dekagram']
+  },
+  {
+    groupKey: 'volume',
+    groupValues: ['Volume.Cup', 'Volume.Milliliter', 'Volume.Deciliter', 'Volume.Liter', 'Volume.Tablespoon', 'Volume.Teaspoon']
+  },
+  {
+    groupKey: 'other',
+    groupValues: ['Whole.Piece', 'Whole.Grain', 'Whole.Package', 'Whole.Pinch', 'Whole.Handful']
+  }
 ]
 
 export const unitTranslations = {

@@ -116,21 +116,31 @@ export default {
     },
     units: {
       Weight: {
+        Milligram: 'miligramów | miligram | miligramy | miligramów',
         Gram: 'gram | gram | gramy | gram',
-        Kilogram: 'kilogramów | kilogram | kilogramy | kilogramów'
+        Kilogram: 'kilogramów | kilogram | kilogramy | kilogramów',
+        Dekagram: 'dekagramów | dekagram | dekagramy | dekagramów'
       },
       Volume: {
-        Liter: 'litrów | litr | litry | litrów',
+        Cup: 'szklanek | szklanka | szklanki | szklanek',
         Milliliter: 'mililitrów | mililitr | mililitry | mililitrów',
+        Deciliter: 'decylitrów | decylitr | decylitry | decylitrów',
+        Liter: 'litrów | litr | litry | litrów',
         Tablespoon: 'łyżek | łyżka | łyżki | łyżek',
-        Teaspoon: 'łyżeczek | łyżeczka | łyżeczki | łyżeczek',
-        Cup: 'szklanek | szklanka | szklanki | szklanek'
+        Teaspoon: 'łyżeczek | łyżeczka | łyżeczki | łyżeczek'
       },
       Whole: {
         Piece: 'sztuk | sztuka | sztuki | sztuk',
         Grain: 'ziaren | ziarno | ziarna | ziaren',
+        Package: 'opakowań | opakowanie | opakowania | opakowań',
+        Pinch: 'szczypt | szczypta | szczypty | szczypt',
         Handful: 'garści | garść | garście | garści'
       }
+    },
+    unitGroups: {
+      weight: 'waga',
+      volume: 'objętość',
+      other: 'inne'
     },
     theme: 'Motyw',
     themes: {
