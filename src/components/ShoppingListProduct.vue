@@ -1,5 +1,5 @@
 <template>
-  <Product :product="product">
+  <Product :product="product" @click="openEditModal()">
     <div class="actions">
       <!-- <div class="actions__remove" @click="deleteProduct">usuń</div>
       <div class="actions__decrement" @click="decreaseAmount">-</div>
@@ -15,7 +15,9 @@
 </template>
 
 <script>
+import { markRaw } from 'vue'
 import Product from '@/components/Product'
+import EditShoppingListProductModal from './modals/EditShoppingListProductModal'
 
 export default {
   emits: ['purchase'],
@@ -45,6 +47,17 @@ export default {
       var product = JSON.parse(JSON.stringify(this.product))
       product.amount = amount
       this.$store.dispatch('shoppingList/editProductFromShoppingList', product)
+    },
+    async openEditModal() {
+      this.$modal.show(
+        markRaw(EditShoppingListProductModal),
+        {
+          product: this.product
+        },
+        {
+          product: this.product
+        }
+      )
     }
   }
 }

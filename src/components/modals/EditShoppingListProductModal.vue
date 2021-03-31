@@ -12,8 +12,6 @@
         ></ProductModalForm>
 
         <!-- <BaseInput class="form-row" label="Dodatkowa nazwa" type="text" v-model="editedProduct.name"></BaseInput> -->
-
-        <ExpirationDatesFormSection :productId="product.id" v-model="expirationDatesForm"></ExpirationDatesFormSection>
       </form>
     </BaseModalBody>
     <BaseModalFooter>
@@ -30,12 +28,11 @@
 <script>
 import { useStore } from 'vuex'
 import { reactive, toRefs } from 'vue'
-import ExpirationDatesFormSection from './ExpirationDatesFormSection'
 import ProductModalForm from '@/components/ProductModalForm'
 import uniqueID from '@/functions/uniqueID'
 
 export default {
-  components: { ExpirationDatesFormSection, ProductModalForm },
+  components: { ProductModalForm },
   emits: ['close'],
   props: {
     product: {
@@ -49,16 +46,14 @@ export default {
     const formID = 'form-' + uniqueID().getID()
     const data = reactive({
       loading: false,
-      editedProduct: JSON.parse(JSON.stringify(props.product)),
-      expirationDatesForm: props.expirationDates
+      editedProduct: JSON.parse(JSON.stringify(props.product))
     })
 
     function editProduct() {
       store
-        .dispatch('myKitchen/editProductFromKitchen', {
-          id: props.product.id,
-          product: data.editedProduct,
-          expirationDates: data.expirationDatesForm
+        .dispatch('shoppingList/editProductFromShoppingList', {
+          ...data.editedProduct,
+          id: props.product.id
         })
         .then(() => {
           component.emit('close')
