@@ -435,6 +435,7 @@ export default {
         font-weight: bold;
         color: var(--color-text-secondary);
         margin-top: 0.25rem;
+        cursor: initial;
       }
     }
 
