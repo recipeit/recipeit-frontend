@@ -1,5 +1,5 @@
 <template>
-  <BaseIcon :class="['product-group-icon', `product-group-icon--${kebabCase(group)}`]" :icon="iconsSet[group]"></BaseIcon>
+  <BaseIcon :class="['product-group-icon', `product-group-icon--${kebabCase(group)}`]" :icon="PRODUCT_GROUP_ICONS[group]"></BaseIcon>
 </template>
 
 <script>
@@ -15,7 +15,7 @@ export default {
   },
   setup() {
     return {
-      iconsSet: PRODUCT_GROUP_ICONS,
+      PRODUCT_GROUP_ICONS,
       kebabCase
     }
   }
@@ -24,6 +24,8 @@ export default {
 
 <style lang="scss" scoped>
 .product-group-icon {
+  color: var(--color-text-secondary);
+
   @each $color, $value in $product-group-icon-color-variables {
     &--#{ $color } {
       color: $value;
