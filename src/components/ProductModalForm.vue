@@ -12,7 +12,7 @@
 
   <div class="form-row form-columns">
     <BaseInput class="amount-input" label="Ilość" type="text" v-model="localProduct.amount"></BaseInput>
-    <BaseSelect placeholder="Jednostka" v-model="localProduct.unit" :options="units" :searchable="true">
+    <BaseSelect placeholder="Jednostka" v-model="localProduct.unit" :options="units" :searchable="false">
       <template v-slot:label="{ option }">{{ $tc(`units.${option}`, unitLabelAmount) }}</template>
       <template v-slot:option="{ option }">{{ $tc(`units.${option}`, unitLabelAmount) }}</template>
     </BaseSelect>

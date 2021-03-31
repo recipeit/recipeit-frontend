@@ -123,3 +123,29 @@ $transition-base-timing-function: ease;
 
 $header-height: 2.5rem;
 $header-search-height: 3rem;
+
+@function productGroupIconColorVariable($group) {
+  @return var(--color-product-group-icon-#{$group});
+}
+
+$product-group-icon-color-variables: (
+  'others': productGroupIconColorVariable('others'),
+  'dairy': productGroupIconColorVariable('dairy'),
+  'vegetables': productGroupIconColorVariable('vegetables'),
+  'fruits': productGroupIconColorVariable('fruits'),
+  'baking-and-grains': productGroupIconColorVariable('baking-and-grains'),
+  'sweeteners': productGroupIconColorVariable('sweeteners'),
+  'spices': productGroupIconColorVariable('spices'),
+  'meats': productGroupIconColorVariable('meats'),
+  'fishes': productGroupIconColorVariable('fishes'),
+  'seafoods': productGroupIconColorVariable('seafoods'),
+  'oils': productGroupIconColorVariable('oils'),
+  'sauces': productGroupIconColorVariable('sauces'),
+  'legumes': productGroupIconColorVariable('legumes'),
+  'alcohol': productGroupIconColorVariable('alcohol'),
+  'soup': productGroupIconColorVariable('soup'),
+  'nuts': productGroupIconColorVariable('nuts'),
+  'dairy-alternatives': productGroupIconColorVariable('dairy-alternatives'),
+  'desserts-and-snacks': productGroupIconColorVariable('desserts-and-snacks'),
+  'beverages': productGroupIconColorVariable('beverages')
+);

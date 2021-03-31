@@ -26,6 +26,26 @@ $text-primary: #cedeeb;
 $text-secondary: #657786;
 $text-secondary: #657786;
 
+$product-color-others: $text-secondary;
+$product-color-dairy: $yellow;
+$product-color-vegetables: $orange;
+$product-color-fruits: $green;
+$product-color-baking-and-grains: #c2a267;
+$product-color-sweeteners: $darkYellow;
+$product-color-spices: $green;
+$product-color-meats: $red;
+$product-color-fishes: $text-secondary;
+$product-color-seafoods: $text-secondary;
+$product-color-oils: #2fccc4;
+$product-color-sauces: $text-secondary;
+$product-color-legumes: $text-secondary;
+$product-color-alcohol: $text-secondary;
+$product-color-soup: $text-secondary;
+$product-color-nuts: #7a6234;
+$product-color-dairy-alternatives: $text-secondary;
+$product-color-desserts-and-snacks: #ad6eff;
+$product-color-beverages: $text-secondary;
+
 $color-theme: (
   'primary': functions.colorVariables($green),
   'accent': $blue,
@@ -44,15 +64,26 @@ $color-theme: (
   'blue': $blue,
   'yellow': $yellow,
   'red': $red,
-  'product': (
-    'dairy': $yellow,
-    'sweeteners': $darkYellow,
-    'vegetables': $orange,
-    'bakingandgrains': #c2a267,
-    'nuts': #7a6234,
-    'dessertsandsnacks': #ad6eff,
-    'oils': #2fccc4,
-    'meats': $red
+  'product-group-icon': (
+    'others': $product-color-others,
+    'dairy': $product-color-dairy,
+    'vegetables': $product-color-vegetables,
+    'fruits': $product-color-fruits,
+    'baking-and-grains': $product-color-baking-and-grains,
+    'sweeteners': $product-color-sweeteners,
+    'spices': $product-color-spices,
+    'meats': $product-color-meats,
+    'fishes': $product-color-fishes,
+    'seafoods': $product-color-seafoods,
+    'oils': $product-color-oils,
+    'sauces': $product-color-sauces,
+    'legumes': $product-color-legumes,
+    'alcohol': $product-color-alcohol,
+    'soup': $product-color-soup,
+    'nuts': $product-color-nuts,
+    'dairy-alternatives': $product-color-dairy-alternatives,
+    'desserts-and-snacks': $product-color-desserts-and-snacks,
+    'beverages': $product-color-beverages
   ),
   'toast': (
     'background': rgba(#272c30, 0.95),
