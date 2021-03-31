@@ -13,8 +13,6 @@
         ></ProductModalForm>
 
         <!-- <BaseInput class="form-row" label="Dodatkowa nazwa" type="text" v-model="newProduct.name"></BaseInput> -->
-
-        <ExpirationDatesFormSection v-model="expirationDatesForm"></ExpirationDatesFormSection>
       </form>
     </BaseModalBody>
     <BaseModalFooter>
@@ -28,17 +26,15 @@
 
 <script>
 import uniqueID from '@/functions/uniqueID'
-import ExpirationDatesFormSection from './ExpirationDatesFormSection'
 import ProductModalForm from '@/components/ProductModalForm'
 
 export default {
   emits: ['close'],
-  components: { ExpirationDatesFormSection, ProductModalForm },
+  components: { ProductModalForm },
   data: component => ({
     loading: false,
     newProduct: component.emptyProduct(),
-    formID: 'form-' + uniqueID().getID(),
-    expirationDatesForm: []
+    formID: 'form-' + uniqueID().getID()
   }),
   methods: {
     emptyProduct() {
@@ -50,17 +46,11 @@ export default {
       }
     },
     addProduct() {
-      this.$store
-        .dispatch('myKitchen/addProduct', {
-          product: this.newProduct,
-          expirationDates: this.expirationDatesForm
-        })
-        .then(() => {
-          this.$emit('close')
-          this.newProduct = this.emptyProduct()
-          this.expirationDates = []
-          this.selectedBaseProduct = null
-        })
+      this.$store.dispatch('shoppingList/addProduct', this.newProduct).then(() => {
+        this.$emit('close')
+        this.newProduct = this.emptyProduct()
+        this.selectedBaseProduct = null
+      })
     }
   }
 }

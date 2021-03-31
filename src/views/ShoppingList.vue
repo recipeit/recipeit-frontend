@@ -32,7 +32,7 @@
       </BaseLink>
 
       <div class="floating-action-button-container">
-        <BaseButton raised color="contrast">
+        <BaseButton raised color="contrast" @click="newProduct()">
           <BaseIcon class="floating-action-button__icon" icon="plus" weight="semi-bold" />
           {{ $t('shared.addProduct') }}
         </BaseButton>
@@ -52,6 +52,7 @@ import Dialog from '@/components/modals/Dialog'
 import PageHeader from '@/components/PageHeader.vue'
 import LoginBeforeEnter from '@/components/LoginBeforeEnter'
 import { PRODUCT_GROUP_ICONS } from '@/constants'
+import NewShoppingListProduct from '@/components/modals/NewShoppingListProduct'
 
 export default {
   name: 'ShoppingList',
@@ -66,6 +67,9 @@ export default {
     }
   },
   methods: {
+    newProduct() {
+      this.$modal.show(markRaw(NewShoppingListProduct), {}, {})
+    },
     purchase(id) {
       this.$store.dispatch('shoppingList/purchaseProduct', id)
     },

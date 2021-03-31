@@ -4,6 +4,9 @@
       <!-- <div class="actions__remove" @click="deleteProduct">usuń</div>
       <div class="actions__decrement" @click="decreaseAmount">-</div>
       <div class="actions__increment" @click="increaseAmount">+</div> -->
+      <a class="remove-button" @click="deleteProduct()">
+        <BaseIcon icon="trash" weight="semi-bold" />
+      </a>
       <a class="purchase-button" @click="$emit('purchase')">
         <BaseIcon icon="check" weight="semi-bold" />
       </a>
@@ -75,6 +78,29 @@ export default {
 
   &:active {
     background-color: var(--color-button-subtle-primary-background-active);
+  }
+}
+
+.remove-button {
+  width: 32px;
+  height: 32px;
+  border-radius: 48px;
+  background-color: var(--color-button-subtle-danger-background);
+  color: var(--color-button-subtle-danger-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  margin-right: 8px;
+  cursor: pointer;
+  @include transition((background-color));
+
+  &:hover {
+    background-color: var(--color-button-subtle-danger-background-hover);
+  }
+
+  &:active {
+    background-color: var(--color-button-subtle-danger-background-active);
   }
 }
 </style>
