@@ -136,7 +136,6 @@ export function fetchRecipesQueryParams(orderMethod, filters, search) {
 
 export const STORAGE_TOKEN = 'token'
 export const STORAGE_REFRESH_TOKEN = 'refreshToken'
-export const FacebookAppId = '189490352689451'
 
 export const PRODUCT_GROUP_ICONS = {
   Others: 'food',

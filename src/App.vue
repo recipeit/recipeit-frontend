@@ -7,7 +7,6 @@
 </template>
 
 <script>
-import { initFacebookSdk } from '@/services/facebookAuth'
 import { mapGetters } from 'vuex'
 import Dashboard from './views/Dashboard'
 
@@ -30,7 +29,6 @@ export default {
     }
   },
   created() {
-    initFacebookSdk()
     this.$store.dispatch('user/fetchUserProfile', { getInitUserData: true })
   },
   mounted() {

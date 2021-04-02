@@ -14,59 +14,13 @@
 </template>
 
 <script>
-// import { google } from 'googleapis'
+import authSocialMixin from './mixins/authSocialMixin'
 
 export default {
   props: {
     buttonPrefix: String
   },
-  data: () => ({
-    googleAuth2: null
-  }),
-  created() {
-    // eslint-disable-next-line no-undef
-    gapi.load('auth2', () => {
-      // eslint-disable-next-line no-undef
-      this.googleAuth2 = gapi.auth2.init({
-        client_id: '1077700069274-3ff9jj9d6c6e3kg6a0rd63mv7m9cin67.apps.googleusercontent.com'
-      })
-    })
-  },
-  methods: {
-    loginFacebook() {
-      // eslint-disable-next-line no-undef
-      FB.login(
-        ({ authResponse }) => {
-          if (authResponse) {
-            // console.log(authResponse)
-            // identityApi.facebookAuth(authResponse.accessToken)
-            this.$store.dispatch('user/facebookAuth', authResponse.accessToken)
-            // resolve()
-            // accountService.apiAuthenticate(authResponse.accessToken).then(resolve)
-          } else {
-            // resolve()
-          }
-        },
-        { scope: 'email,public_profile' }
-      )
-    },
-    loginGoogle() {
-      if (this.googleAuth2)
-        this.googleAuth2
-          .signIn({
-            scope: 'profile email'
-          })
-          .then(resp => {
-            const idToken = resp?.uc?.id_token
-            if (idToken) {
-              this.$store.dispatch('user/googleAuth', idToken)
-            }
-          })
-    }
-    // loginTwitter() {
-    //   alert('login twitter')
-    // }
-  }
+  mixins: [authSocialMixin]
 }
 </script>
 
