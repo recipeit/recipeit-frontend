@@ -5,5 +5,6 @@ export const GOOGLE_AUTH_INIT_PARAMS = {
   client_id: GOOGLE_CLIENT_ID
 }
 export const GOOGLE_AUTH_SIGN_IN_PARAMS = {
-  scope: GOOGLE_SIGN_IN_SCOPE
+  scope: GOOGLE_SIGN_IN_SCOPE,
+  prompt: 'select_account'
 }

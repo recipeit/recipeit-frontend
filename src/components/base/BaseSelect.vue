@@ -34,6 +34,7 @@
           {{ label ? modelValue[label] : modelValue }}
         </slot>
       </span>
+      <BaseIcon class="base-select__field__open-indicator" icon="angle-left" weight="semi-bold" />
     </div>
     <transition name="fade">
       <div
@@ -382,6 +383,27 @@ export default {
       align-items: center;
       padding-top: 6px;
       // margin-top: 6px;
+    }
+
+    &__open-indicator {
+      position: absolute;
+      right: 0;
+      top: 0;
+      height: 100%;
+      width: 1rem;
+      color: var(--color-text-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      &::v-deep svg {
+        transform: rotate(-90deg);
+        @include transition(transform);
+
+        #{ $root }--focus & {
+          transform: rotate(90deg);
+        }
+      }
     }
 
     // &--selected &__placeholder {

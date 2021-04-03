@@ -5,8 +5,8 @@ export const FACEBOOK_LOGIN_SCOPE = 'email,public_profile'
 export const FACEBOOK_INIT_PARAMS = {
   version: FACEBOOK_SDK_VERSION,
   appId: FACEBOOK_APP_ID,
-  cookie: true,
-  xfbml: true
+  cookie: false,
+  xfbml: false
 }
 export const FACEBOOK_LOGIN_PARAMS = {
   scope: FACEBOOK_LOGIN_SCOPE
