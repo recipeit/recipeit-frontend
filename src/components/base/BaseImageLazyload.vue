@@ -75,7 +75,7 @@ export default {
   &--loaded,
   &--error {
     & img {
-      opacity: 100%;
+      opacity: 1;
     }
   }
 }
