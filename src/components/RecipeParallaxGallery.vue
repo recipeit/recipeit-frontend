@@ -33,7 +33,7 @@
       @touchmove="touchMoveHandler($event)"
       @touchend="touchEndHandler()"
     >
-      <img
+      <BaseImageLazyload
         :id="image.id"
         :class="imageClasses(index)"
         v-for="(image, index) in imageObjects"
@@ -307,13 +307,19 @@ export default {
     height: 100%;
     transform: translate3d(0, 0, 0);
     transform-style: preserve-3d;
+    background-color: var(--color-image-background);
   }
 
   &__image {
     width: 100%;
     height: 100%;
-    object-fit: cover;
     display: none;
+
+    img {
+      object-fit: cover;
+      width: 100%;
+      height: 100%;
+    }
 
     &--previous,
     &--current,

@@ -3,7 +3,7 @@
     <a :href="href" @click="navigate" class="recipe-box">
       <div class="recipe-box__image-container">
         <div class="recipe-box__image-container__image">
-          <img :src="recipe.mainImageUrl" :alt="recipe.name" />
+          <BaseImageLazyload :src="recipe.mainImageUrl" :alt="recipe.name" />
         </div>
 
         <div class="recipe-box__props2">
@@ -81,7 +81,7 @@ export default {
   text-decoration: none;
   color: inherit;
 
-  &:hover &__image-container__image img {
+  &:hover &__image-container__image ::v-deep(img) {
     transform: scale(1.1);
   }
 
@@ -97,15 +97,16 @@ export default {
       width: 100%;
       height: 0;
       padding-bottom: 100%;
+      background-color: var(--color-image-background);
 
-      img {
+      ::v-deep(img) {
         top: 0;
         left: 0;
         position: absolute;
         width: 100%;
         height: 100%;
         object-fit: cover;
-        transition: transform 0.3s ease;
+        @include transition((opacity, transform));
       }
     }
   }
