@@ -74,6 +74,23 @@
 </template>
 
 <script>
+function isEmpty(opt) {
+  if (opt === 0) return false
+  if (Array.isArray(opt) && opt.length === 0) return true
+  return !opt
+}
+
+function includes(str, query) {
+  /* istanbul ignore else */
+  if (!query) return true
+  return str.toLowerCase().includes(query.toLowerCase())
+  // if (str === undefined) str = 'undefined'
+  // if (str === null) str = 'null'
+  // if (str === false) str = 'false'
+  // const text = str.toString().toLowerCase()
+  // return text.indexOf(query.trim()) !== -1
+}
+
 export default {
   emits: ['update:modelValue'],
   props: {
@@ -103,6 +120,13 @@ export default {
     maxHeight: {
       type: Number,
       default: 210
+    },
+    customLabel: {
+      type: Function,
+      default(option, label) {
+        if (isEmpty(option)) return ''
+        return label ? option[label] : option
+      }
     }
   },
   data: component => ({
@@ -252,14 +276,15 @@ export default {
       // return options
     },
     filterOptions(options) {
-      return options.filter(oee => {
-        if (typeof oee == 'string' || oee instanceof String) {
-          return oee.toLowerCase().includes(this.search.toLowerCase())
-        } else if (this.label) {
-          return oee[this.label] && oee[this.label].toLowerCase().includes(this.search.toLowerCase())
-        }
-        return true
-      })
+      // return options.filter(oee => {
+      //   if (typeof oee == 'string' || oee instanceof String) {
+      //     return oee.toLowerCase().includes(this.search.toLowerCase())
+      //   } else if (this.label) {
+      //     return oee[this.label] && oee[this.label].toLowerCase().includes(this.search.toLowerCase())
+      //   }
+      //   return true
+      // })
+      return options.filter(option => includes(this.customLabel(option, this.label), this.search))
     }
   },
   computed: {

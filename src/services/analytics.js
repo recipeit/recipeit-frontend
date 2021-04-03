@@ -1,4 +1,4 @@
-import { ANALYTICS_ID, ANALYTICS_URL } from '@/configs/analytics'
+import { ANALYTICS_ID, ANALYTICS_URL, GTM_URL } from '@/configs/analytics'
 import loadScript from '@/functions/loadScript'
 
 export default {
@@ -14,5 +14,8 @@ export default {
     window.dataLayer = window.dataLayer || []
     this.gtag('js', new Date())
     this.gtag('config', ANALYTICS_ID)
+
+    this.gtag({ 'gtm.start': new Date().getTime(), event: 'gtm.js' })
+    await loadScript(GTM_URL)
   }
 }

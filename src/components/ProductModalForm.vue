@@ -17,6 +17,7 @@
       v-model="localProduct.unit"
       :options="units"
       :searchable="true"
+      :custom-label="unitCustomLabel"
       groupLabel="groupKey"
       groupValues="groupValues"
     >
@@ -52,6 +53,10 @@ export default {
 
     const unitLabelAmount = computed(() => parseFloat(localProduct.amount) || 2)
 
+    function unitCustomLabel(value) {
+      return this.$tc(`units.${value}`, unitLabelAmount.value)
+    }
+
     watch(
       () => localProduct.selectedBaseProduct,
       newValue => {
@@ -75,7 +80,8 @@ export default {
       localProduct,
       units,
       baseProducts,
-      unitLabelAmount
+      unitLabelAmount,
+      unitCustomLabel
     }
   }
 }
