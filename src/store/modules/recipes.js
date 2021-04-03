@@ -24,7 +24,9 @@ export const MUTATIONS = {
   ADD_RECIPE: 'ADD_RECIPE',
   ADD_DETAILED_RECIPE: 'ADD_DETAILED_RECIPE',
   ADD_RECIPE_ID_TO_FAVOURITES: 'ADD_RECIPE_ID_TO_FAVOURITES',
-  REMOVE_RECIPE_ID_FROM_FAVOURITES: 'REMOVE_RECIPE_ID_FROM_FAVOURITES'
+  REMOVE_RECIPE_ID_FROM_FAVOURITES: 'REMOVE_RECIPE_ID_FROM_FAVOURITES',
+
+  SET_FINISHED_DIRECTIONS_FOR_RECIPE: 'SET_FINISHED_DIRECTIONS_FOR_RECIPE'
 }
 
 export default {
@@ -34,7 +36,8 @@ export default {
     detailedRecipes: [],
     favouriteRecipesIds: [],
     availableRecipes: new RecipeList(),
-    almostAvailableRecipes: new RecipeList()
+    almostAvailableRecipes: new RecipeList(),
+    recipesFinishedDirections: {}
   },
   mutations: {
     [MUTATIONS.SET_FAVOURITE_RECIPES_IDS](state, recipesIds) {
@@ -107,6 +110,10 @@ export default {
       if (recipeIdIndex >= 0) {
         state.favouriteRecipesIds.splice(recipeIdIndex, 1)
       }
+    },
+
+    [MUTATIONS.SET_FINISHED_DIRECTIONS_FOR_RECIPE](state, { recipeId, finishedDirections }) {
+      state.recipesFinishedDirections[recipeId] = finishedDirections
     }
   },
   actions: {
@@ -252,14 +259,15 @@ export default {
       commit(MUTATIONS.RESET_ALMOST_AVAILABLE_RECIPES)
       commit(MUTATIONS.RESET_AVAILABLE_RECIPES)
       commit(MUTATIONS.RESET_RECIPES)
+    },
+
+    setFinishedDirectionsForRecipe({ commit }, { recipeId, finishedDirections }) {
+      commit(MUTATIONS.SET_FINISHED_DIRECTIONS_FOR_RECIPE, { recipeId, finishedDirections })
     }
   },
   getters: {
-    getDetailedRecipeById: state => id => {
-      return state.detailedRecipes.find(r => r.id === id)
-    },
-    getRecipeById: state => id => {
-      return state.recipes.items?.find(r => r.id === id)
-    }
+    getDetailedRecipeById: state => id => state.detailedRecipes.find(r => r.id === id),
+    getRecipeById: state => id => state.recipes.items?.find(r => r.id === id),
+    getFinishedDirectionsForRecipe: state => recipeId => state.recipesFinishedDirections[recipeId]
   }
 }

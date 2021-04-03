@@ -121,6 +121,7 @@
         <BaseButton class="plan-button" raised color="contrast" @click="openPlanRecipeModal()">
           <BaseIcon class="plan-button__icon" icon="clock" /> Zaplanuj na później
         </BaseButton>
+        <!-- <BaseAdSenseAd /> -->
       </div>
     </div>
     <div v-else>
@@ -142,8 +143,18 @@ import Dialog from '@/components/modals/Dialog'
 import { ToastType } from '@/plugins/toast/toastType'
 import PlanRecipeModal from '@/components/modals/PlanRecipeModal'
 
+// import { useMeta } from 'vue-meta'
+
 export default {
   name: 'Recipe',
+  // metaInfo: {
+  //   title: 'My Example App',
+  //   titleTemplate: '%s - Yay!',
+  //   htmlAttrs: {
+  //     lang: 'en',
+  //     amp: true
+  //   }
+  // },
   props: {
     recipeId: {
       type: String,
@@ -156,14 +167,23 @@ export default {
     RecipeParallaxGallery,
     Rating
   },
-  data: () => ({
+  data: component => ({
     recipe: null,
     // recipeDetails: null,
     servings: 1,
-    finishedDirections: [],
+    finishedDirections: component.$store.getters['recipes/getFinishedDirectionsForRecipe'](component.recipeId) ?? [],
     hiddenRecipe: false, //temporary!!!! TODO
     hiddenBlog: false //temporary!!!! TODO
   }),
+  // setup() {
+  //   useMeta({
+  //     title: 'My Example App',
+  //     htmlAttrs: {
+  //       lang: 'en',
+  //       amp: true
+  //     }
+  //   })
+  // },
   created() {
     // this.$store.dispatch('recipes/fetchRecipe', this.recipeId).then(r => (this.recipe = r))
     this.$store.dispatch('recipes/fetchDetailedRecipe', this.recipeId).then(rd => {
@@ -296,8 +316,9 @@ export default {
     }
   },
   watch: {
-    finishedDirections() {
-      const remaining = _.difference(this.allIndexes, this.finishedDirections)
+    finishedDirections(finishedDirections) {
+      this.$store.dispatch('recipes/setFinishedDirectionsForRecipe', { recipeId: this.recipeId, finishedDirections })
+      const remaining = _.difference(this.allIndexes, finishedDirections)
 
       if (!remaining || remaining.length === 0) {
         this.$modal.show(
