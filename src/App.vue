@@ -9,6 +9,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import Dashboard from './views/Dashboard'
+import AnalyticsService from '@/services/analytics'
 
 export default {
   components: { Dashboard },
@@ -30,6 +31,7 @@ export default {
   },
   created() {
     this.$store.dispatch('user/fetchUserProfile', { getInitUserData: true })
+    AnalyticsService.init()
   },
   mounted() {
     // document.addEventListener('click', this.blurOnClick)
