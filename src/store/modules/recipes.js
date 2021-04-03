@@ -29,6 +29,9 @@ export const MUTATIONS = {
   SET_FINISHED_DIRECTIONS_FOR_RECIPE: 'SET_FINISHED_DIRECTIONS_FOR_RECIPE'
 }
 
+const storageFinishedDirections = localStorage.getItem('finishedDirections')
+const parsedStorageFinishedDirections = storageFinishedDirections ? JSON.parse(storageFinishedDirections) : {}
+
 export default {
   namespaced: true,
   state: {
@@ -37,7 +40,7 @@ export default {
     favouriteRecipesIds: [],
     availableRecipes: new RecipeList(),
     almostAvailableRecipes: new RecipeList(),
-    recipesFinishedDirections: {}
+    recipesFinishedDirections: parsedStorageFinishedDirections
   },
   mutations: {
     [MUTATIONS.SET_FAVOURITE_RECIPES_IDS](state, recipesIds) {
@@ -263,6 +266,10 @@ export default {
 
     setFinishedDirectionsForRecipe({ commit }, { recipeId, finishedDirections }) {
       commit(MUTATIONS.SET_FINISHED_DIRECTIONS_FOR_RECIPE, { recipeId, finishedDirections })
+      const existedLocalStorageItem = localStorage.getItem('finishedDirections')
+      const parsedLocalStorage = existedLocalStorageItem ? JSON.parse(existedLocalStorageItem) : {}
+      parsedLocalStorage[recipeId] = finishedDirections
+      localStorage.setItem('finishedDirections', JSON.stringify(parsedLocalStorage))
     }
   },
   getters: {

@@ -171,7 +171,7 @@ export default {
     recipe: null,
     // recipeDetails: null,
     servings: 1,
-    finishedDirections: component.$store.getters['recipes/getFinishedDirectionsForRecipe'](component.recipeId) ?? [],
+    finishedDirections: component.$store.getters['recipes/getFinishedDirectionsForRecipe'](component.recipeId) || [],
     hiddenRecipe: false, //temporary!!!! TODO
     hiddenBlog: false //temporary!!!! TODO
   }),
