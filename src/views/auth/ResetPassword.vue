@@ -109,7 +109,7 @@ export default {
         return ['REQUIRED']
       }
 
-      if (this.userData.email !== this.userData.confirmPassword) {
+      if (this.userData.password !== this.userData.confirmPassword) {
         return ['WRONG_PASSWORD_COMBINATION']
       }
 
