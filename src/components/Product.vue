@@ -16,18 +16,13 @@
 </template>
 
 <script>
-import { unitTranslations } from '@/constants'
-
 export default {
   props: {
     product: {
       type: Object,
       required: true
     }
-  },
-  data: () => ({
-    unitTranslations
-  })
+  }
   // computed: {
   // name() {
   // return this.product.name ? this.product.name : this.product.baseProductName

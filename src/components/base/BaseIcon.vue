@@ -29,11 +29,11 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .base-icon-wrapper {
   display: inline-flex;
 
-  svg {
+  ::v-deep(svg) {
     width: 1em;
     height: 1em;
     fill: currentColor;

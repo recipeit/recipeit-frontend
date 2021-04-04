@@ -1,7 +1,7 @@
 <template>
   <div class="day-plan" v-if="currentDay">
     <div class="day-plan__header">
-      <BaseLink class="day-plan__header__button" @click="previousDay()">
+      <BaseLink tag="button" class="day-plan__header__button" @click="previousDay()">
         <BaseIcon icon="angle-left" weight="semi-bold"></BaseIcon>
       </BaseLink>
       <div class="day-plan__header__title-container">
@@ -11,7 +11,7 @@
           </div>
         </transition>
       </div>
-      <BaseLink class="day-plan__header__button" @click="nextDay()">
+      <BaseLink tag="button" class="day-plan__header__button" @click="nextDay()">
         <BaseIcon icon="angle-right" weight="semi-bold"></BaseIcon>
       </BaseLink>
     </div>
@@ -154,6 +154,7 @@ export default {
     border-radius: 2rem;
     height: 3rem;
     padding: 0 0.25rem;
+    user-select: none;
 
     &__button {
       height: 2.5rem;

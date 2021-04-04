@@ -34,7 +34,6 @@
 
 <script>
 import { mapGetters, mapState } from 'vuex'
-import { unitTranslations } from '@/constants'
 
 export default {
   props: {
@@ -48,7 +47,6 @@ export default {
     }
   },
   data: () => ({
-    translations: unitTranslations,
     loading: false
   }),
   methods: {

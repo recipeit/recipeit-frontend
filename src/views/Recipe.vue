@@ -38,6 +38,10 @@
             <BaseIcon class="recipe__header-pill__icon" icon="user" weight="semi-bold"></BaseIcon>
             {{ $tc('shared.servings', recipe.details.servings) }}
           </div>
+          <BaseButton class="recipe__header-pill-button" color="primary" raised @click="openPlanRecipeModal()">
+            <BaseIcon class="recipe__header-pill-button__icon" icon="stop-watch"></BaseIcon>
+            Zaplanuj
+          </BaseButton>
         </div>
         <div class="recipe__header">
           <h2 class="recipe__header__title">{{ recipe.name }}</h2>
@@ -474,9 +478,12 @@ export default {
 
   &__header-pills {
     display: flex;
+    // width: 100%;
     gap: 8px;
     position: absolute;
     top: 0;
+    right: 32px;
+    left: 32px;
     transform: translateY(-50%);
   }
 
@@ -497,8 +504,20 @@ export default {
     }
   }
 
+  &__header-pill-button {
+    margin-left: auto;
+    padding: 8px 12px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    height: auto;
+    gap: 6px;
+
+    &__icon {
+      font-size: 16px;
+    }
+  }
+
   &__header {
-    // margin-top: 16px;
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
