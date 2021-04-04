@@ -1,7 +1,7 @@
 <template>
   <div :class="['base-input', { 'base-input--focus': focused, 'base-input--invalid': errors, 'base-input--disabled': disabled }]">
     <div class="base-input__control">
-      <label :for="id" :class="[{ 'label-up': modelValue || focused }]">
+      <label :for="id" :class="[{ 'label-up': hasValue || focused }]">
         <slot name="label">{{ label }}</slot>
       </label>
       <input
@@ -75,6 +75,13 @@ export default {
   computed: {
     erorrsID() {
       return `${this.id}-errors`
+    },
+    hasValue() {
+      const stringValue = this.modelValue?.toString()
+      if (stringValue === null) return false
+      if (stringValue === undefined) return false
+      if (stringValue === '') return false
+      return true
     }
   }
 }
