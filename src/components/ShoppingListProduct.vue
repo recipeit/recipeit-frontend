@@ -4,10 +4,10 @@
       <!-- <div class="actions__remove" @click="deleteProduct">usuń</div>
       <div class="actions__decrement" @click="decreaseAmount">-</div>
       <div class="actions__increment" @click="increaseAmount">+</div> -->
-      <a class="remove-button" @click="deleteProduct()">
+      <a class="remove-button" @click.prevent.stop="deleteProduct()">
         <BaseIcon icon="trash" weight="semi-bold" />
       </a>
-      <a class="purchase-button" @click="$emit('purchase')">
+      <a class="purchase-button" @click.prevent.stop="$emit('purchase')">
         <BaseIcon icon="check" weight="semi-bold" />
       </a>
     </div>

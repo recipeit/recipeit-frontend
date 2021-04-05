@@ -9,6 +9,9 @@
       <a v-if="loading" class="ingredient__action ingredient__action--loading">
         <BaseIcon class="ingredient__action__icon" icon="clock" />
       </a>
+      <a v-else-if="isInMyKitchen" class="ingredient__action ingredient__action--available">
+        <BaseIcon class="ingredient__action__icon ingredient__action__icon--small" icon="check" weight="semi-bold" />
+      </a>
       <a v-else-if="isInShoppingList" class="ingredient__action ingredient__action--in-shopping-list">
         <BaseIcon class="ingredient__action__icon" icon="basket" />
         <BaseIcon
@@ -16,9 +19,6 @@
           icon="check"
           weight="semi-bold"
         />
-      </a>
-      <a v-else-if="isInMyKitchen" class="ingredient__action ingredient__action--available">
-        <BaseIcon class="ingredient__action__icon ingredient__action__icon--small" icon="check" weight="semi-bold" />
       </a>
       <a v-else class="ingredient__action ingredient__action--unavailable" @click="addProductToShoppingList(ingredient)">
         <BaseIcon class="ingredient__action__icon" icon="basket" />
