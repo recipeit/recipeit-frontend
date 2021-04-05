@@ -1,16 +1,10 @@
-// import { STORAGE_TOKEN } from '@/constants'
 import axios from 'axios'
 import store from '@/store'
 import identityApi from './identityApi'
-// import toastPlugin from '@/plugins/toast'
-// import { ToastType } from '@/plugins/toast/toastType'
-
-// process.env.NODE_ENV === 'production'
-// const baseURL = 'https://localhost:44388'
-const baseURL = 'https://recipeit-backend20201105000045.azurewebsites.net'
+import { API_DEV_BASE_URL, API_PROD_BASE_URL } from '@/configs/api'
 
 const apiClient = axios.create({
-  baseURL,
+  baseURL: process.env.NODE_ENV === 'production' ? API_PROD_BASE_URL : API_DEV_BASE_URL,
   withCredentials: true,
   headers: {
     Accept: 'application/json',
