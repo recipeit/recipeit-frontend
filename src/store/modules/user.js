@@ -3,17 +3,22 @@ import { STORAGE_REFRESH_TOKEN, STORAGE_TOKEN } from '@/constants'
 import router from '@/router'
 
 export const MUTATIONS = {
-  SET_USER_PROFILE: 'SET_USER_PROFILE'
+  SET_USER_PROFILE: 'SET_USER_PROFILE',
+  SET_USER_TOKEN_REFRESHING: 'SET_USER_TOKEN_REFRESHING'
 }
 
 export default {
   namespaced: true,
   state: {
-    userProfile: undefined
+    userProfile: undefined,
+    userTokenRefreshing: false
   },
   mutations: {
     [MUTATIONS.SET_USER_PROFILE](state, profile) {
       state.userProfile = profile
+    },
+    [MUTATIONS.SET_USER_TOKEN_REFRESHING](state, refreshing) {
+      state.userTokenRefreshing = refreshing
     }
   },
   actions: {
@@ -121,6 +126,9 @@ export default {
           console.error(error)
         })
     },
+    setTokenRefreshing({ commit }, refreshing) {
+      commit(MUTATIONS.SET_USER_TOKEN_REFRESHING, refreshing)
+    },
     refresh({ commit }) {
       const currentToken = localStorage.getItem(STORAGE_TOKEN)
       const currentRefreshToken = localStorage.getItem(STORAGE_REFRESH_TOKEN)
@@ -163,6 +171,7 @@ export default {
     }
   },
   getters: {
-    isAuthenticated: state => state.userProfile !== null && state.userProfile !== undefined
+    isAuthenticated: state => state.userProfile !== null && state.userProfile !== undefined,
+    isUserTokenRefreshing: state => state.userTokenRefreshing
   }
 }

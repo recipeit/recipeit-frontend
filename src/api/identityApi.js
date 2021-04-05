@@ -18,6 +18,9 @@ export default {
   refresh(tokenData) {
     return apiClient.post(`/${route}/refresh`, tokenData)
   },
+  refreshCookie() {
+    return apiClient.post(`/${route}/refresh-cookie`)
+  },
   profile() {
     return apiClient.get(`/${route}/profile`)
   },
