@@ -265,25 +265,12 @@ export default {
         this.optimizedHeight = Math.min(spaceAbove - 40, this.maxHeight)
       }
     },
-
     plainOptions(options) {
-      console.log('plainOptions')
-      // if (this.isGrouped) {
       return options.flatMap(group =>
         group[this.groupValues]?.length > 0 ? [{ groupLabel: group[this.groupLabel], isLabel: true }, ...group[this.groupValues]] : []
       )
-      // }
-      // return options
     },
     filterOptions(options) {
-      // return options.filter(oee => {
-      //   if (typeof oee == 'string' || oee instanceof String) {
-      //     return oee.toLowerCase().includes(this.search.toLowerCase())
-      //   } else if (this.label) {
-      //     return oee[this.label] && oee[this.label].toLowerCase().includes(this.search.toLowerCase())
-      //   }
-      //   return true
-      // })
       return options.filter(option => includes(this.customLabel(option, this.label), this.search))
     }
   },

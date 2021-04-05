@@ -73,7 +73,6 @@ export default {
         isToday: day.isToday()
       }
       recipeApi.getPlannedRecipes(this.currentDay.key).then(resp => {
-        console.log(resp)
         this.currentDayPlan = resp.data.dayPlan
       })
     },
@@ -84,8 +83,6 @@ export default {
       this.setDay(this.currentDay.dayjs.add(1, 'day'), SlideType.NEXT)
     },
     removePlannedRecipe(id, timeOfDay) {
-      // console.log('removing planned recipe with id ', id)
-      // this.$toast.show('usunięto zaplanowany przepis')
       recipeApi.removeRecipeFromPlanned(id).then(resp => {
         if (resp.data) {
           this.$toast.show('Usunięto zaplanowany przepis')

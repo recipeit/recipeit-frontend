@@ -19,6 +19,7 @@ import { markRaw } from 'vue'
 import Product from '@/components/Product'
 import EditKitchenProductModal from './modals/EditKitchenProductModal'
 import myKitchenApi from '@/api/myKitchenApi'
+import { ToastType } from '@/plugins/toast/toastType'
 
 export default {
   components: {
@@ -39,11 +40,9 @@ export default {
           expirationDates = data
         }
       } catch (e) {
-        console.log(e)
+        this.$toast.show('Wystąpił błąd podczas pobierania danych', ToastType.ERROR)
       }
-      // myKitchenApi.getProductExpirationDates(this.productId).then(response => {
-      //   this.$emit('update:modelValue', response.data)
-      // })
+
       this.$modal.show(
         markRaw(EditKitchenProductModal),
         {

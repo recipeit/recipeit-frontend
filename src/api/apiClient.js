@@ -20,14 +20,6 @@ const apiClient = axios.create({
 
 let subscribers = []
 
-apiClient.interceptors.request.use(request => {
-  request.headers = {
-    // ...authHeader(),
-    ...request.headers
-  }
-  return request
-})
-
 apiClient.interceptors.response.use(
   response => response,
   error => {
@@ -39,7 +31,6 @@ apiClient.interceptors.response.use(
     }
 
     if (error.response?.status === 401) {
-      console.log(store)
       if (!store.getters['user/isUserTokenRefreshing']) {
         store.dispatch('user/setTokenRefreshing', true)
         identityApi
@@ -59,23 +50,6 @@ apiClient.interceptors.response.use(
           .finally(() => {
             store.dispatch('user/setTokenRefreshing', false)
           })
-
-        // store
-        //   .dispatch('user/refresh')
-        //   .then(({ status }) => {
-        //     if (status === 200 || status == 204) {
-        //       isRefreshing = false
-        //       onRefreshed()
-        //     }
-        //     subscribers = []
-        //   })
-        //   .catch(error => {
-        //     // todo logout only when api error, not when there is no token
-        //     if (error) {
-        //       // toastPlugin.toast.show('Wystąpił nieoczekiwany błąd', ToastType.ERROR)
-        //       store.dispatch('user/logout')
-        //     }
-        //   })
       }
 
       return new Promise(resolve => {
@@ -90,7 +64,6 @@ apiClient.interceptors.response.use(
     }
 
     // specific error handling done elsewhere
-    // toastPlugin.toast.show('Wystąpił nieoczekiwany błąd', ToastType.ERROR)
     return Promise.reject(error)
   }
 )
@@ -102,15 +75,5 @@ function subscribeTokenRefresh(cb) {
 function onRefreshed() {
   subscribers.map(cb => cb())
 }
-
-// function authHeader() {
-//   const token = localStorage.getItem(STORAGE_TOKEN)
-
-//   if (token) {
-//     return { Authorization: 'Bearer ' + token }
-//   } else {
-//     return {}
-//   }
-// }
 
 export default apiClient
