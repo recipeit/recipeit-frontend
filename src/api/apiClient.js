@@ -1,10 +1,10 @@
 import axios from 'axios'
 import store from '@/store'
 import identityApi from './identityApi'
-import { API_DEV_BASE_URL, API_PROD_BASE_URL } from '@/configs/api'
+import { API_DEV_BASE_URL_SSL, API_PROD_BASE_URL } from '@/configs/api'
 
 const apiClient = axios.create({
-  baseURL: process.env.NODE_ENV === 'production' ? API_PROD_BASE_URL : API_DEV_BASE_URL,
+  baseURL: process.env.NODE_ENV === 'production' ? API_PROD_BASE_URL : API_DEV_BASE_URL_SSL,
   withCredentials: true,
   headers: {
     Accept: 'application/json',
@@ -48,10 +48,6 @@ apiClient.interceptors.response.use(
 
       return new Promise(resolve => {
         subscribeTokenRefresh(() => {
-          originalRequest.headers = {
-            ...originalRequest.headers
-            // ...authHeader()
-          }
           resolve(apiClient(originalRequest))
         })
       })

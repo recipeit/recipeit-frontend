@@ -95,68 +95,44 @@ export default {
     facebookAuth({ commit, dispatch }, accessToken) {
       dispatch('recipes/resetUserData', {}, { root: true })
 
-      identityApi
-        .facebookAuth(accessToken)
-        .then(response => {
-          const { token, refreshToken, userProfile } = response.data
-          localStorage.setItem(STORAGE_TOKEN, token)
-          localStorage.setItem(STORAGE_REFRESH_TOKEN, refreshToken)
-          commit(MUTATIONS.SET_USER_PROFILE, userProfile)
-          dispatch('getInitUserData')
-          router.push({ name: 'home' })
-        })
-        .catch(error => {
-          console.error(error)
-        })
+      return new Promise((resolve, reject) => {
+        identityApi
+          .facebookAuth(accessToken)
+          .then(response => {
+            const { userProfile } = response.data
+            commit(MUTATIONS.SET_USER_PROFILE, userProfile)
+            dispatch('getInitUserData')
+            router.push({ name: 'home' })
+            resolve()
+          })
+          .catch(error => {
+            reject(error.response?.data?.errors)
+          })
+      })
     },
     googleAuth({ commit, dispatch }, idToken) {
       dispatch('recipes/resetUserData', {}, { root: true })
 
-      identityApi
-        .googleAuth(idToken)
-        .then(response => {
-          const { token, refreshToken, userProfile } = response.data
-          localStorage.setItem(STORAGE_TOKEN, token)
-          localStorage.setItem(STORAGE_REFRESH_TOKEN, refreshToken)
-          commit(MUTATIONS.SET_USER_PROFILE, userProfile)
-          dispatch('getInitUserData')
-          router.push({ name: 'home' })
-        })
-        .catch(error => {
-          console.error(error)
-        })
+      return new Promise((resolve, reject) => {
+        identityApi
+          .googleAuth(idToken)
+          .then(response => {
+            const { userProfile } = response.data
+            commit(MUTATIONS.SET_USER_PROFILE, userProfile)
+            dispatch('getInitUserData')
+            router.push({ name: 'home' })
+            resolve()
+          })
+          .catch(error => {
+            reject(error.response?.data?.errors)
+          })
+      })
     },
     setTokenRefreshing({ commit }, refreshing) {
       commit(MUTATIONS.SET_USER_TOKEN_REFRESHING, refreshing)
     },
-    refresh({ commit }) {
-      const currentToken = localStorage.getItem(STORAGE_TOKEN)
-      const currentRefreshToken = localStorage.getItem(STORAGE_REFRESH_TOKEN)
-
-      return new Promise((resolve, reject) => {
-        if (!currentToken || !currentRefreshToken) {
-          reject()
-        } else {
-          identityApi
-            .refresh({ token: currentToken, refreshToken: currentRefreshToken })
-            .then(response => {
-              const {
-                data: { token, refreshToken, userProfile }
-              } = response
-              localStorage.setItem(STORAGE_TOKEN, token)
-              localStorage.setItem(STORAGE_REFRESH_TOKEN, refreshToken)
-              commit(MUTATIONS.SET_USER_PROFILE, userProfile)
-              resolve(response)
-            })
-            .catch(error => {
-              reject(error)
-            })
-        }
-      })
-    },
-    logout({ commit, dispatch }) {
-      localStorage.removeItem(STORAGE_TOKEN)
-      localStorage.removeItem(STORAGE_REFRESH_TOKEN)
+    async logout({ commit, dispatch }) {
+      await identityApi.logout()
 
       commit(MUTATIONS.SET_USER_PROFILE, null)
 

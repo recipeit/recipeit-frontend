@@ -16,7 +16,7 @@ export default {
       this.facebookSending = true
       try {
         const accessToken = await FacebookService.login()
-        this.$store.dispatch('user/facebookAuth', accessToken)
+        await this.$store.dispatch('user/facebookAuth', accessToken)
       } catch (e) {
         this.$toast.show('Wystąpił problem podczas próby logowania', ToastType.ERROR)
       } finally {
@@ -27,7 +27,7 @@ export default {
       this.googleSending = true
       try {
         const accessToken = await GoogleService.login()
-        this.$store.dispatch('user/googleAuth', accessToken)
+        await this.$store.dispatch('user/googleAuth', accessToken)
       } catch (e) {
         this.$toast.show('Wystąpił problem podczas próby logowania', ToastType.ERROR)
       } finally {

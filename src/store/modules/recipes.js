@@ -1,6 +1,7 @@
 import recipeApi from '@/api/recipeApi'
 import { RecipeList } from '@/constants'
 import { ToastType } from '@/plugins/toast/toastType'
+import toastPlugin from '@/plugins/toast'
 
 export const MUTATIONS = {
   SET_FAVOURITE_RECIPES_IDS: 'SET_FAVOURITE_RECIPES_IDS',
@@ -250,8 +251,8 @@ export default {
         recipeApi
           .addRecipeToPlanned(recipeId, { day, timeOfDay })
           .then(response => {
-            this.$toast.show('Przepis zaplanowany!', ToastType.SUCCESS)
             resolve(response)
+            toastPlugin.toast.show('Przepis zaplanowany!', ToastType.SUCCESS)
           })
           .catch(error => reject(error))
       })

@@ -51,5 +51,11 @@ export default {
   },
   getSuggestedRecipes() {
     return apiClient.get(`/recipes/suggestions`)
+  },
+  changeRecipeVisibility(recipeId, visible) {
+    return apiClient.post(`/recipes/${recipeId}/visibility`, { visible })
+  },
+  changeBlogVisibility(blogId, visible) {
+    return apiClient.post(`/recipes/blogs/${blogId}/visibility`, { visible })
   }
 }

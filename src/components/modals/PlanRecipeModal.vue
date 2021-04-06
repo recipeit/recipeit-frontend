@@ -18,7 +18,7 @@
           <template v-slot:option="{ option }">{{ $t(`timeOfDay.${option}`) }}</template>
         </BaseSelect>
       </form>
-      <div v-if="error" class="error">
+      <div v-for="(error, i) in errors" :key="i" class="error">
         {{ error }}
       </div>
     </BaseModalBody>
@@ -52,16 +52,16 @@ export default {
     formID: 'form-' + uniqueID().getID(),
     timesOfDay: Object.keys(timesOfDay),
     days: null,
-    error: null
+    errors: null
   }),
   methods: {
     planRecipe() {
       const { formData } = this
       if (!formData.day || !formData.timeOfDay) {
-        this.error = 'oba pola są wymagane'
+        this.errors = ['oba pola są wymagane']
         return
       }
-      this.error = null
+      this.errors = null
       const preparedData = {
         recipeId: this.recipeId,
         day: formData.day.value,
@@ -69,15 +69,16 @@ export default {
       }
       this.$store
         .dispatch('recipes/addRecipeToPlanned', preparedData)
-        .then(response => {
-          if (response?.data) {
+        .then(({ data }) => {
+          if (data.success) {
             this.$emit('close')
           } else {
-            this.error = 'coś poszło nie tak'
+            this.errors = data.errors || ['coś poszło nie tak']
           }
         })
-        .catch(() => {
-          this.error = 'coś poszło nie tak'
+        .catch(error => {
+          const responseErrors = error.response?.data?.errors
+          this.errors = responseErrors || ['coś poszło nie tak']
         })
     }
   },
