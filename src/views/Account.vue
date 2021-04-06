@@ -26,12 +26,16 @@
     <h3>Ukryta zawartość</h3>
     <h5>Ukryte blogi (zarządzaj)</h5>
     <h5>Ukryte przepisy (zarządzaj)</h5>
+    <ul>
+      <li v-for="recipe in hiddenRecipes" :key="recipe.id">{{ recipe.id }} - {{ recipe.name }}</li>
+    </ul>
   </div>
 </template>
 
 <script>
 import PageHeader from '@/components/PageHeader'
 import { ref } from 'vue'
+import userApi from '@/api/userApi'
 
 const themes = ['dark', 'light', 'system']
 
@@ -43,10 +47,14 @@ export default {
     if (currentTheme) {
       this.selectedTheme = currentTheme
     }
+    userApi.getHiddenRecipes().then(({ data }) => {
+      this.hiddenRecipes = data.recipes
+    })
   },
   setup() {
     const currentTheme = localStorage.getItem('theme') || 'system'
     const selectedTheme = ref(currentTheme)
+    const hiddenRecipes = ref([])
     function updateTheme(value) {
       if (value && themes.includes(value)) {
         selectedTheme.value = value
@@ -55,6 +63,7 @@ export default {
       }
     }
     return {
+      hiddenRecipes,
       selectedTheme,
       updateTheme,
       themes

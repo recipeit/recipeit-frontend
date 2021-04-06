@@ -1,28 +1,30 @@
 import apiClient from './apiClient'
 
+const route = 'shopping-list'
+
 export default {
   getProductsFromShoppingList() {
-    return apiClient.get(`/shopping-list/products`)
+    return apiClient.get(`/${route}/products`)
   },
   addProductsToShoppingList(products) {
-    return apiClient.post(`/shopping-list/products`, products)
+    return apiClient.post(`/${route}/products`, products)
   },
   addProductToShoppingList(product) {
-    return apiClient.post(`/shopping-list/product`, product)
+    return apiClient.post(`/${route}/product`, product)
   },
   purchaseProduct(productId) {
-    return apiClient.post(`/shopping-list/purchase/${productId}`, null)
+    return apiClient.post(`/${route}/purchase/${productId}`, null)
   },
   purchaseAllProducts() {
-    return apiClient.post(`/shopping-list/purchase/all`, null)
+    return apiClient.post(`/${route}/purchase/all`, null)
   },
   getProductFromShoppingListById(id) {
-    return apiClient.get(`/shopping-list/products/${id}`)
+    return apiClient.get(`/${route}/products/${id}`)
   },
   updateProductFromShoppingList(product) {
-    return apiClient.put(`/shopping-list/product/${product.id}`, product)
+    return apiClient.put(`/${route}/product/${product.id}`, product)
   },
   removeProductFromShoppingListById(id) {
-    return apiClient.delete(`/shopping-list/product/${id}`)
+    return apiClient.delete(`/${route}/product/${id}`)
   }
 }

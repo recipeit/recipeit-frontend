@@ -1,7 +1,9 @@
 import apiClient from './apiClient'
 
+const route = 'ingredients'
+
 export default {
   getAllBaseProducts() {
-    return apiClient.get(`/ingredients/base-ingredients`)
+    return apiClient.get(`/${route}/base-ingredients`)
   }
 }

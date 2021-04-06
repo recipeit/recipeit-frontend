@@ -1,4 +1,5 @@
 import recipeApi from '@/api/recipeApi'
+import userApi from '@/api/userApi'
 import { RecipeList } from '@/constants'
 import { ToastType } from '@/plugins/toast/toastType'
 import toastPlugin from '@/plugins/toast'
@@ -123,7 +124,7 @@ export default {
   },
   actions: {
     fetchFavouriteRecipesIds({ commit }) {
-      recipeApi.getFavouriteRecipesIds().then(resp => {
+      userApi.getFavouriteRecipesIds().then(resp => {
         commit(MUTATIONS.SET_FAVOURITE_RECIPES_IDS, resp.data)
       })
     },
@@ -138,14 +139,14 @@ export default {
     fetchAvailableRecipes({ commit }, queryParams) {
       commit(MUTATIONS.RESET_AVAILABLE_RECIPES)
       commit(MUTATIONS.SET_AVAILABLE_RECIPES_FETCHING_STATUS, true)
-      recipeApi.getAvailableRecipes(queryParams).then(resp => {
+      userApi.getAvailableRecipes(queryParams).then(resp => {
         commit(MUTATIONS.SET_AVAILABLE_RECIPES, resp.data)
       })
     },
     fetchAlmostAvailableRecipes({ commit }, queryParams) {
       commit(MUTATIONS.RESET_ALMOST_AVAILABLE_RECIPES)
       commit(MUTATIONS.SET_ALMOST_AVAILABLE_RECIPES_FETCHING_STATUS, true)
-      recipeApi.getAlmostAvailableRecipes(queryParams).then(resp => {
+      userApi.getAlmostAvailableRecipes(queryParams).then(resp => {
         commit(MUTATIONS.SET_ALMOST_AVAILABLE_RECIPES, resp.data)
       })
     },
@@ -165,7 +166,7 @@ export default {
     fetchNextAvailableRecipes({ state, commit }, queryParams) {
       if (state.availableRecipes.fetching) return
       commit(MUTATIONS.SET_AVAILABLE_RECIPES_FETCHING_STATUS, true)
-      recipeApi
+      userApi
         .getAvailableRecipes({
           ...queryParams,
           pageNumber: state.availableRecipes.pagesTo + 1
@@ -177,7 +178,7 @@ export default {
     fetchNextAlmostAvailableRecipes({ state, commit }, queryParams) {
       if (state.almostAvailableRecipes.fetching) return
       commit(MUTATIONS.SET_ALMOST_AVAILABLE_RECIPES_FETCHING_STATUS, true)
-      recipeApi
+      userApi
         .getAlmostAvailableRecipes({
           ...queryParams,
           pageNumber: state.almostAvailableRecipes.pagesTo + 1
@@ -225,7 +226,7 @@ export default {
     },
     addToFavourites({ commit }, id) {
       return new Promise((resolve, reject) => {
-        recipeApi
+        userApi
           .addRecipeToFavourites(id)
           .then(() => {
             commit(MUTATIONS.ADD_RECIPE_ID_TO_FAVOURITES, id)
@@ -236,7 +237,7 @@ export default {
     },
     deleteFromFavourites({ commit }, id) {
       return new Promise((resolve, reject) => {
-        recipeApi
+        userApi
           .removeRecipeFromFavourites(id)
           .then(() => {
             commit(MUTATIONS.REMOVE_RECIPE_ID_FROM_FAVOURITES, id)
@@ -248,7 +249,7 @@ export default {
 
     addRecipeToPlanned(_, { recipeId, day, timeOfDay }) {
       return new Promise((resolve, reject) => {
-        recipeApi
+        userApi
           .addRecipeToPlanned(recipeId, { day, timeOfDay })
           .then(response => {
             resolve(response)

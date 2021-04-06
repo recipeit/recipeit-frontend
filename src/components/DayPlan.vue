@@ -44,7 +44,7 @@
 
 <script>
 import dayjs from '@/functions/dayjs'
-import recipeApi from '@/api/recipeApi'
+import userApi from '@/api/userApi'
 import { ToastType } from '@/plugins/toast/toastType'
 
 const SlideType = {
@@ -72,7 +72,7 @@ export default {
         name: day.calendar(),
         isToday: day.isToday()
       }
-      recipeApi.getPlannedRecipes(this.currentDay.key).then(resp => {
+      userApi.getPlannedRecipes(this.currentDay.key).then(resp => {
         this.currentDayPlan = resp.data.dayPlan
       })
     },
@@ -83,7 +83,7 @@ export default {
       this.setDay(this.currentDay.dayjs.add(1, 'day'), SlideType.NEXT)
     },
     removePlannedRecipe(id, timeOfDay) {
-      recipeApi.removeRecipeFromPlanned(id).then(resp => {
+      userApi.removeRecipeFromPlanned(id).then(resp => {
         if (resp.data) {
           this.$toast.show('Usunięto zaplanowany przepis')
 

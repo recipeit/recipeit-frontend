@@ -1,0 +1,55 @@
+import apiClient from './apiClient'
+
+const route = 'user'
+
+export default {
+  // updateKitchenByRecipe(id) {
+  //   return apiClient.post(`/${route}/${id}/update-kitchen`, null)
+  // },
+  getAvailableRecipes(queryParams) {
+    return apiClient.get(`/${route}/available-recipes`, {
+      params: queryParams
+    })
+  },
+  getAlmostAvailableRecipes(queryParams) {
+    return apiClient.get(`/${route}/almost-available-recipes`, {
+      params: queryParams
+    })
+  },
+  getFavouriteRecipes() {
+    return apiClient.get(`/${route}/favourite-recipes`)
+  },
+  getFavouriteRecipesIds() {
+    return apiClient.get(`/${route}/favourite-recipes/ids`)
+  },
+  addRecipeToFavourites(id) {
+    return apiClient.post(`/${route}/favourite-recipes/${id}`, null)
+  },
+  removeRecipeFromFavourites(id) {
+    return apiClient.delete(`/${route}/favourite-recipes/${id}`)
+  },
+  getPlannedRecipes(day) {
+    return apiClient.get(`/${route}/planned-recipes/${day}`)
+  },
+  addRecipeToPlanned(id, data) {
+    return apiClient.post(`/${route}/planned-recipes/${id}`, data)
+  },
+  removeRecipeFromPlanned(id) {
+    return apiClient.delete(`/${route}/planned-recipes/${id}`)
+  },
+  getSuggestedRecipes() {
+    return apiClient.get(`/${route}/suggested-recipes`)
+  },
+  changeRecipeVisibility(recipeId, visible) {
+    return apiClient.post(`/${route}/recipe-visibility/${recipeId}`, { visible })
+  },
+  changeBlogVisibility(blogId, visible) {
+    return apiClient.post(`/${route}/blog-visibility/${blogId}`, { visible })
+  },
+  getHiddenRecipes() {
+    return apiClient.get(`/${route}/hidden-recipes`)
+  },
+  getHiddenBlogs() {
+    return apiClient.get(`/${route}/hidden-blogs`)
+  }
+}

@@ -146,6 +146,7 @@ import Rating from '@/components/Rating'
 import Dialog from '@/components/modals/Dialog'
 import { ToastType } from '@/plugins/toast/toastType'
 import PlanRecipeModal from '@/components/modals/PlanRecipeModal'
+import userApi from '@/api/userApi'
 
 // import { useMeta } from 'vue-meta'
 
@@ -246,16 +247,35 @@ export default {
         alert('Zaloguj się')
         return
       }
-      if (this.hiddenRecipe) return
-      this.hiddenRecipe = true
-      // this.$store.dispatch('user/hideRecipe', this.recipe.id)
-      this.$toast.show('Przepis został ukryty', ToastType.SUCCESS)
+
+      userApi
+        .changeRecipeVisibility(this.recipeId, false)
+        .then(({ data }) => {
+          if (data.success) {
+            this.hiddenRecipe = true
+            this.$toast.show('Przepis został ukryty', ToastType.SUCCESS)
+          } else {
+            this.$toast.show('Nie udało się ukryć przepisu. Spróbuj ponownie', ToastType.ERROR)
+          }
+        })
+        .catch(() => {
+          this.$toast.show('Nie udało się ukryć przepisu. Spróbuj ponownie', ToastType.ERROR)
+        })
     },
     unhideRecipeInLists() {
-      if (!this.hiddenRecipe) return
-      this.hiddenRecipe = false
-      // this.$store.dispatch('user/unhideRecipe', this.recipe.id)
-      this.$toast.show('Przepis został odkryty. Od teraz będzie pojawiał się w wynikach wyszukiwania', ToastType.SUCCESS)
+      userApi
+        .changeRecipeVisibility(this.recipeId, true)
+        .then(({ data }) => {
+          if (data.success) {
+            this.hiddenRecipe = false
+            this.$toast.show('Przepis został odkryty. Od teraz będzie pojawiał się w wynikach wyszukiwania', ToastType.SUCCESS)
+          } else {
+            this.$toast.show('Nie udało się odkryć przepisu. Spróbuj ponownie', ToastType.ERROR)
+          }
+        })
+        .catch(() => {
+          this.$toast.show('Nie udało się odkryć przepisu. Spróbuj ponownie', ToastType.ERROR)
+        })
     },
     hideBlogInLists() {
       if (!this.isAuthenticated) {

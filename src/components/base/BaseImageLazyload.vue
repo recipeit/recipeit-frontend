@@ -6,6 +6,7 @@
 
 <script>
 export default {
+  emits: ['load', 'error'],
   props: {
     src: {
       type: String,
