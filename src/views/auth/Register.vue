@@ -35,7 +35,11 @@
 
     <div class="auth-page__content__terms">
       Rejestrując się akceptujesz
-      <BaseLink class="auth-page__content__terms__link" color="primary">warunki korzystania z Recipeit</BaseLink>
+      <router-link :to="{ name: 'terms' }" v-slot="{ href, navigate }" custom>
+        <BaseLink class="auth-page__content__terms__link" :href="href" @click="navigate" color="primary">
+          warunki korzystania z Recipeit
+        </BaseLink>
+      </router-link>
     </div>
   </div>
 </template>

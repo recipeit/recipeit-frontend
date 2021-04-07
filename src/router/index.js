@@ -21,54 +21,72 @@ const onlyAnonymousGuard = (to, from, next) => {
 const routes = [
   {
     path: '/',
-    name: 'home',
-    component: () => import(/* webpackChunkName: "home" */ '@/views/Home.vue')
+    name: 'landing-page',
+    component: () => import(/* webpackChunkName: "home" */ '@/views/LandingPage.vue')
   },
   {
-    path: '/recipe/:recipeId',
-    name: 'recipe',
-    props: true,
-    component: () => import(/* webpackChunkName: "recipe" */ '@/views/Recipe.vue')
+    path: '/terms',
+    name: 'terms',
+    component: () => import(/* webpackChunkName: "home" */ '@/views/Terms.vue')
   },
   {
-    path: '/recipes',
-    name: 'recipes',
-    component: () => import(/* webpackChunkName: "recipes" */ '@/views/Recipes.vue')
-  },
-  {
-    path: '/cook-it',
-    name: 'cook-it',
-    component: () => import(/* webpackChunkName: "cook-it" */ '@/views/CookIt.vue')
-  },
-  {
-    path: '/cook-it/available',
-    name: 'available',
-    component: () => import(/* webpackChunkName: "cook-it" */ '@/views/CookIt/AvailableRecipes.vue')
-  },
-  {
-    path: '/cook-it/almost-available',
-    name: 'almost-available',
-    component: () => import(/* webpackChunkName: "cook-it" */ '@/views/CookIt/AlmostAvailableRecipes.vue')
-  },
-  {
-    path: '/my-kitchen',
-    name: 'my-kitchen',
-    component: () => import(/* webpackChunkName: "my-kitchen" */ '@/views/MyKitchen.vue')
-  },
-  {
-    path: '/shopping-list',
-    name: 'shopping-list',
-    component: () => import(/* webpackChunkName: "shopping-list" */ '@/views/ShoppingList.vue')
-  },
-  {
-    path: '/account',
-    name: 'account',
-    component: () => import(/* webpackChunkName: "account" */ '@/views/Account.vue')
-  },
-  {
-    path: '/help',
-    name: 'help',
-    component: () => import(/* webpackChunkName: "help" */ '@/views/Help.vue')
+    path: '/app',
+    name: 'app',
+    component: () => import(/* webpackChunkName: "auth" */ '@/views/App.vue'),
+    children: [
+      {
+        path: '',
+        alias: 'home',
+        name: 'home',
+        component: () => import(/* webpackChunkName: "home" */ '@/views/app/Home.vue')
+      },
+      {
+        path: 'recipe/:recipeId',
+        name: 'recipe',
+        props: true,
+        component: () => import(/* webpackChunkName: "recipe" */ '@/views/app/Recipe.vue')
+      },
+      {
+        path: 'recipes',
+        name: 'recipes',
+        component: () => import(/* webpackChunkName: "recipes" */ '@/views/app/Recipes.vue')
+      },
+      {
+        path: 'cook-it',
+        name: 'cook-it',
+        component: () => import(/* webpackChunkName: "cook-it" */ '@/views/app/CookIt.vue')
+      },
+      {
+        path: 'cook-it/available',
+        name: 'available',
+        component: () => import(/* webpackChunkName: "cook-it" */ '@/views/app/cook-it/AvailableRecipes.vue')
+      },
+      {
+        path: 'cook-it/almost-available',
+        name: 'almost-available',
+        component: () => import(/* webpackChunkName: "cook-it" */ '@/views/app/cook-it/AlmostAvailableRecipes.vue')
+      },
+      {
+        path: 'my-kitchen',
+        name: 'my-kitchen',
+        component: () => import(/* webpackChunkName: "my-kitchen" */ '@/views/app/MyKitchen.vue')
+      },
+      {
+        path: 'shopping-list',
+        name: 'shopping-list',
+        component: () => import(/* webpackChunkName: "shopping-list" */ '@/views/app/ShoppingList.vue')
+      },
+      {
+        path: 'account',
+        name: 'account',
+        component: () => import(/* webpackChunkName: "account" */ '@/views/app/Account.vue')
+      },
+      {
+        path: 'help',
+        name: 'help',
+        component: () => import(/* webpackChunkName: "help" */ '@/views/app/Help.vue')
+      }
+    ]
   },
   {
     path: '/auth',

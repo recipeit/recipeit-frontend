@@ -1,10 +1,14 @@
 <template>
-  <div class="layout__page__content auth-page">
-    <router-view v-slot="{ Component }">
-      <transition name="page-component-fade" mode="out-in">
-        <component :is="Component"></component>
-      </transition>
-    </router-view>
+  <div class="auth-layout">
+    <router-link :to="{ name: 'landing-page' }">Recipeit</router-link>
+
+    <div class="auth-page">
+      <router-view v-slot="{ Component }">
+        <transition name="page-component-fade" mode="out-in">
+          <component :is="Component"></component>
+        </transition>
+      </router-view>
+    </div>
   </div>
 </template>
 
@@ -13,10 +17,25 @@ export default {}
 </script>
 
 <style lang="scss">
+.auth-layout {
+  max-width: 460px;
+  box-sizing: border-box;
+  margin: 0 auto;
+  background: var(--color-background);
+  min-height: 100%;
+  // box-shadow: 0 0 64px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  flex: 1;
+}
+
 .auth-page {
+  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 32px 32px 84px 32px;
 
   &__content {
     text-align: center;

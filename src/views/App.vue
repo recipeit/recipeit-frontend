@@ -1,0 +1,48 @@
+<template>
+  <div class="layout">
+    <div class="layout__page">
+      <router-view v-slot="{ Component }">
+        <transition name="page-component-fade" mode="out-in">
+          <component :is="Component"></component>
+        </transition>
+      </router-view>
+    </div>
+    <NavigationBar />
+  </div>
+</template>
+
+<script>
+import NavigationBar from '@/components/NavigationBar'
+
+export default {
+  components: {
+    NavigationBar
+  }
+}
+</script>
+
+<style lang="scss">
+.layout {
+  max-width: 460px;
+  box-sizing: border-box;
+  margin: 0 auto;
+  background: var(--color-background);
+  min-height: 100%;
+  // box-shadow: 0 0 64px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  flex: 1;
+
+  &__page {
+    padding: 32px 32px 84px 32px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+
+    &__content {
+      flex: 1;
+    }
+  }
+}
+</style>

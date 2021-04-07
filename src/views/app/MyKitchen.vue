@@ -2,7 +2,7 @@
   <div class="layout__page__content">
     <PageHeader :title="$t('myKitchen.title')"></PageHeader>
 
-    <template v-if="isAuthenticated">
+    <template v-if="currentUserAuthState === 'USER_LOGGED_IN'">
       <ul class="product-list-groups">
         <li class="product-list-group" v-for="products in groupedProducts" :key="products[0]">
           <div class="product-list-group__title">
@@ -27,7 +27,11 @@
       </div>
     </template>
 
-    <LoginBeforeEnter v-else></LoginBeforeEnter>
+    <template v-else-if="currentUserAuthState === 'USER_FETCHING'">
+      Czekaj...
+    </template>
+
+    <LoginBeforeEnter v-else-if="currentUserAuthState === 'USER_LOGGED_OUT'"></LoginBeforeEnter>
   </div>
 </template>
 
@@ -55,7 +59,8 @@ export default {
   }),
   computed: {
     ...mapGetters({
-      isAuthenticated: 'user/isAuthenticated'
+      isAuthenticated: 'user/isAuthenticated',
+      currentUserAuthState: 'user/currentUserAuthState'
     }),
     ...mapState({
       products: state => state.myKitchen.products
@@ -71,6 +76,7 @@ export default {
     }
   },
   beforeMount() {
+    console.log(this.$router)
     this.tryFetchInitialData()
   },
   watch: {
