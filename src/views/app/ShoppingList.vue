@@ -48,7 +48,7 @@ import LoginBeforeEnter from '@/components/LoginBeforeEnter'
 import { PRODUCT_GROUP_ICONS } from '@/constants'
 import NewShoppingListProduct from '@/components/modals/NewShoppingListProduct'
 import ProductIcon from '@/components/ProductIcon'
-import SearchWithFilter from '@/components/SearchWithFilter'
+// import SearchWithFilter from '@/components/SearchWithFilter'
 
 export default {
   name: 'ShoppingList',
@@ -56,8 +56,8 @@ export default {
     ShoppingListProduct,
     PageHeader,
     LoginBeforeEnter,
-    ProductIcon,
-    SearchWithFilter
+    ProductIcon
+    // SearchWithFilter
   },
   setup() {
     const fetchedData = ref(false)
