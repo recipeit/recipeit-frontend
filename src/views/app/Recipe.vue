@@ -14,10 +14,10 @@
             </template>
             <template v-slot:dropdown>
               <BaseMenuList>
-                <BaseMenuLink v-if="!hiddenRecipe" @click="hideRecipeInLists()">Ukryj ten przepis</BaseMenuLink>
+                <BaseMenuLink v-if="!isRecipeHidden" @click="hideRecipeInLists()">Ukryj ten przepis</BaseMenuLink>
                 <BaseMenuLink v-else @click="unhideRecipeInLists()">Pokazuj ten przepis</BaseMenuLink>
 
-                <BaseMenuLink v-if="!hiddenBlog" @click="hideBlogInLists()">Ukryj ten blog</BaseMenuLink>
+                <BaseMenuLink v-if="!isBlogHidden" @click="hideBlogInLists()">Ukryj ten blog</BaseMenuLink>
                 <BaseMenuLink v-else @click="unhideBlogInLists()">Pokazuj ten blog</BaseMenuLink>
 
                 <BaseMenuSeparator></BaseMenuSeparator>
@@ -53,6 +53,9 @@
           <span class="recipe__author__name">{{ recipe.author.name }}</span>
           <span class="recipe__author__blog-name">, {{ recipe.author.blog.name }}</span>
         </div>
+
+        <div>Recipe hidden: {{ isRecipeHidden }}</div>
+        <div>Blog hidden: {{ isBlogHidden }}</div>
 
         <div class="recipe__tags">
           <BaseButton stroked size="small">
@@ -293,11 +296,22 @@ export default {
   },
   computed: {
     ...mapGetters({
-      isAuthenticated: 'user/isAuthenticated'
+      isAuthenticated: 'user/isAuthenticated',
+      isRecipeHiddenGetter: 'user/isRecipeHidden',
+      isBlogHiddenGetter: 'user/isBlogHidden'
     }),
     ...mapState({
       favouriteRecipesIds: state => state.recipes.favouriteRecipesIds
     }),
+    isRecipeHidden() {
+      return this.isRecipeHiddenGetter(this.recipeId)
+    },
+    isBlogHidden() {
+      if (this.recipe?.blogId) {
+        return this.isBlogHiddenGetter(this.recipe.blogId)
+      }
+      return false
+    },
     cookingHours() {
       if (this.recipe && this.recipe.cookingMinutes) {
         return dayjs.duration(this.recipe.cookingMinutes, 'minutes').format('H:mm')

@@ -1,10 +1,6 @@
 import identityApi from '@/api/identityApi'
+import userApi from '@/api/userApi'
 import router from '@/router'
-
-export const MUTATIONS = {
-  SET_USER_PROFILE: 'SET_USER_PROFILE',
-  SET_USER_AUTH_STATE: 'SET_USER_AUTH_STATE'
-}
 
 export const USER_AUTH_STATE = {
   USER_LOGGED_IN: 'USER_LOGGED_IN',
@@ -12,11 +8,26 @@ export const USER_AUTH_STATE = {
   USER_LOGGED_OUT: 'USER_LOGGED_OUT'
 }
 
+export const MUTATIONS = {
+  SET_USER_PROFILE: 'SET_USER_PROFILE',
+  SET_USER_AUTH_STATE: 'SET_USER_AUTH_STATE',
+
+  SET_HIDDEN_RECIPE_IDS: 'SET_HIDDEN_RECIPE_IDS',
+  ADD_TO_HIDDEN_RECIPE_IDS: 'ADD_TO_HIDDEN_RECIPE_IDS',
+  REMOVE_FROM_HIDDEN_RECIPE_IDS: 'REMOVE_FROM_HIDDEN_RECIPE_IDS',
+
+  SET_HIDDEN_BLOG_IDS: 'SET_HIDDEN_BLOG_IDS',
+  ADD_TO_HIDDEN_BLOG_IDS: 'ADD_TO_HIDDEN_BLOG_IDS',
+  REMOVE_FROM_HIDDEN_BLOG_IDS: 'REMOVE_FROM_HIDDEN_BLOG_IDS'
+}
+
 export default {
   namespaced: true,
   state: {
     userProfile: undefined,
-    userAuthState: USER_AUTH_STATE.USER_LOGGED_OUT
+    userAuthState: USER_AUTH_STATE.USER_LOGGED_OUT,
+    hiddenRecipeIds: null,
+    hiddenBlogIds: null
     // userTokenRefreshing: false
   },
   mutations: {
@@ -25,6 +36,32 @@ export default {
     },
     [MUTATIONS.SET_USER_AUTH_STATE](state, userAuthState) {
       state.userAuthState = userAuthState
+    },
+
+    [MUTATIONS.SET_HIDDEN_RECIPE_IDS](state, hiddenRecipeIds) {
+      state.hiddenRecipeIds = hiddenRecipeIds
+    },
+    [MUTATIONS.ADD_TO_HIDDEN_RECIPE_IDS](state, newHiddenRecipeId) {
+      state.hiddenRecipeIds.push(newHiddenRecipeId)
+    },
+    [MUTATIONS.REMOVE_FROM_HIDDEN_RECIPE_IDS](state, removedHiddenRecipeId) {
+      var recipeIndex = state.hiddenRecipeIds.indexOf(removedHiddenRecipeId)
+      if (recipeIndex >= 0) {
+        state.hiddenRecipeIds.splice(recipeIndex, 1)
+      }
+    },
+
+    [MUTATIONS.SET_HIDDEN_BLOG_IDS](state, hiddenBlogIds) {
+      state.hiddenBlogIds = hiddenBlogIds
+    },
+    [MUTATIONS.ADD_TO_HIDDEN_BLOG_IDS](state, newHiddenBlogId) {
+      state.hiddenBlogIds.push(newHiddenBlogId)
+    },
+    [MUTATIONS.REMOVE_FROM_HIDDEN_BLOG_IDS](state, removedHiddenBlogId) {
+      var blogIndex = state.hiddenBlogIds.indexOf(removedHiddenBlogId)
+      if (blogIndex >= 0) {
+        state.hiddenBlogIds.splice(blogIndex, 1)
+      }
     }
   },
   actions: {
@@ -174,13 +211,32 @@ export default {
       dispatch('shoppingList/resetUserData', {}, { root: true })
       dispatch('myKitchen/resetUserData', {}, { root: true })
       dispatch('recipes/resetUserData', {}, { root: true })
+      dispatch('user/resetUserData', {}, { root: true })
     },
     getInitUserData({ dispatch }) {
       dispatch('recipes/fetchFavouriteRecipesIds', {}, { root: true })
+      dispatch('user/fetchHiddenRecipeIds', {}, { root: true })
+      dispatch('user/fetchHiddenBlogIds', {}, { root: true })
+    },
+    fetchHiddenRecipeIds({ commit }) {
+      userApi.getHiddenRecipes().then(({ data }) => {
+        commit(MUTATIONS.SET_HIDDEN_RECIPE_IDS, data.recipeIds)
+      })
+    },
+    fetchHiddenBlogIds({ commit }) {
+      userApi.getHiddenBlogs().then(({ data }) => {
+        commit(MUTATIONS.SET_HIDDEN_BLOG_IDS, data.blogIds)
+      })
+    },
+    resetUserData({ commit }) {
+      commit(MUTATIONS.SET_HIDDEN_BLOG_IDS, null)
+      commit(MUTATIONS.SET_HIDDEN_RECIPE_IDS, null)
     }
   },
   getters: {
     isAuthenticated: state => state.userProfile !== null && state.userAuthState === USER_AUTH_STATE.USER_LOGGED_IN,
-    currentUserAuthState: state => state.userAuthState
+    currentUserAuthState: state => state.userAuthState,
+    isRecipeHidden: state => id => state.hiddenRecipeIds?.includes(id),
+    isBlogHidden: state => id => state.hiddenBlogIds?.includes(id)
   }
 }

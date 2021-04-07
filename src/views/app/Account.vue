@@ -27,7 +27,7 @@
     <h5>Ukryte blogi (zarządzaj)</h5>
     <h5>Ukryte przepisy (zarządzaj)</h5>
     <ul>
-      <li v-for="recipe in hiddenRecipes" :key="recipe.id">{{ recipe.id }} - {{ recipe.name }}</li>
+      <li v-for="recipeId in hiddenRecipes" :key="recipeId">{{ recipeId }}</li>
     </ul>
   </div>
 </template>
@@ -48,7 +48,7 @@ export default {
       this.selectedTheme = currentTheme
     }
     userApi.getHiddenRecipes().then(({ data }) => {
-      this.hiddenRecipes = data.recipes
+      this.hiddenRecipes = data.recipeIds
     })
   },
   setup() {
