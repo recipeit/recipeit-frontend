@@ -1,7 +1,7 @@
 <template>
   <div class="layout__page__content">
     <div class="cook-it-layout">
-      <PageHeader class="cook-it-page__header" :title="$t('cookIt.title')"></PageHeader>
+      <PageHeader :title="$t('cookIt.title')"></PageHeader>
 
       <template v-if="isAuthenticated">
         <div>
@@ -88,12 +88,6 @@ export default {
 .cook-it-layout {
   display: flex;
   flex-direction: column;
-}
-
-.cook-it-page {
-  &__header {
-    margin-bottom: 16px;
-  }
 }
 
 .recipes-list-title {

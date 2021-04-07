@@ -2,11 +2,6 @@
   <div class="layout__page__content">
     <PageHeader :title="$t('shoppingList.title')"></PageHeader>
 
-    <!-- <ul class="product-list">
-      <li class="product-list__item" v-for="product in products" :key="product.id">
-        <ShoppingListProduct :product="product" @purchase="purchase(product.id)" />
-      </li>
-    </ul> -->
     <template v-if="isAuthenticated">
       <SearchWithFilter class="product-list-filter" placeholder="Szukaj produktu" @search="onSearch($event)" />
 
@@ -138,10 +133,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.layout__page__content {
-  margin-bottom: 96px;
-}
-
 .product-list-filter {
   margin-bottom: 1.5rem;
 }

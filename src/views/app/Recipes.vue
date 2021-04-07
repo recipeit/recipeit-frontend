@@ -1,6 +1,6 @@
 <template>
   <div class="layout__page__content">
-    <PageHeader class="recipes-page__header" :title="$t('recipes.title')"></PageHeader>
+    <PageHeader :title="$t('recipes.title')"></PageHeader>
     <GenericRecipesList :recipes="recipes" @load-next="loadNextRecipes" @reload="reloadRecipes"></GenericRecipesList>
   </div>
 </template>
@@ -52,10 +52,4 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-.recipes-page {
-  &__header {
-    margin-bottom: 16px;
-  }
-}
-</style>
+<style lang="scss" scoped></style>
