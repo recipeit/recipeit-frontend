@@ -59,7 +59,8 @@ export default {
     SearchWithFilter
   },
   data: () => ({
-    fetchedData: false
+    fetchedData: false,
+    searchString: null
   }),
   computed: {
     ...mapGetters({
@@ -69,9 +70,15 @@ export default {
     ...mapState({
       products: state => state.myKitchen.products
     }),
-    groupedProducts() {
+    filteredProducts() {
       if (!this.products) return null
-      return _(this.products)
+      if (!this.searchString) return this.products
+
+      return this.products.filter(p => p.baseProductName.toLowerCase().includes(this.searchString.toLowerCase()))
+    },
+    groupedProducts() {
+      if (!this.filteredProducts) return null
+      return _(this.filteredProducts)
         .sortBy(item => item.baseProductName)
         .groupBy(item => item.category)
         .toPairs()
@@ -102,6 +109,9 @@ export default {
     },
     newProduct() {
       this.$modal.show(markRaw(NewKitchenProductModal), {}, {})
+    },
+    onSearch({ search }) {
+      this.searchString = search
     }
   }
 }

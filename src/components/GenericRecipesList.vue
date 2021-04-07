@@ -4,6 +4,7 @@
       v-if="showFilterButtons"
       class="recipes-list__filter"
       placeholder="Szukaj przepisu"
+      :showFilterButton="true"
       :search="recipes.search"
       :filters="recipes.filterOptions"
       :sortings="recipes.orderMethodOptions"

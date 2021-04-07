@@ -15,7 +15,14 @@
     <BaseLink v-if="searchString" class="recipes-list-search__clear-button" color="text-secondary" @click="onSearchInput(null)">
       <BaseIcon icon="close" weight="semi-bold" />
     </BaseLink>
-    <BaseButton class="recipes-list-search__filter-button" size="small" raised color="contrast" @click="openFilterModal()">
+    <BaseButton
+      v-if="showFilterButton"
+      class="recipes-list-search__filter-button"
+      size="small"
+      raised
+      color="contrast"
+      @click="openFilterModal()"
+    >
       <!-- <BaseIcon class="recipes-list-search__filter-button__icon" icon="filter" /> -->
       <span>Filtruj</span>
       <transition name="filters-button-count-fade">
@@ -43,7 +50,8 @@ export default {
     filters: Object,
     appliedSorting: String,
     appliedFilters: Object,
-    defaultSorting: String
+    defaultSorting: String,
+    showFilterButton: Boolean
   },
   data: component => ({
     searchString: component.search,

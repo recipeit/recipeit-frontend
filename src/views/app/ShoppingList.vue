@@ -3,7 +3,7 @@
     <PageHeader :title="$t('shoppingList.title')"></PageHeader>
 
     <template v-if="isAuthenticated">
-      <SearchWithFilter class="product-list-filter" placeholder="Szukaj produktu" @search="onSearch($event)" />
+      <!-- <SearchWithFilter class="product-list-filter" placeholder="Szukaj produktu" @search="onSearch($event)" /> -->
 
       <ul class="product-list-groups">
         <li class="product-list-group" v-for="products in groupedProducts" :key="products[0]">
@@ -61,9 +61,11 @@ export default {
   },
   setup() {
     const fetchedData = ref(false)
+    const searchString = ref(null)
 
     return {
       fetchedData,
+      searchString,
       PRODUCT_GROUP_ICONS
     }
   },
@@ -100,6 +102,9 @@ export default {
           }
         }
       )
+    },
+    onSearch({ search }) {
+      this.searchString = search
     }
   },
   computed: {
@@ -109,9 +114,15 @@ export default {
     ...mapState({
       products: state => state.shoppingList.products
     }),
-    groupedProducts() {
+    filteredProducts() {
       if (!this.products) return null
-      return _(this.products)
+      if (!this.searchString) return this.products
+
+      return this.products.filter(p => p.baseProductName.toLowerCase().includes(this.searchString.toLowerCase()))
+    },
+    groupedProducts() {
+      if (!this.filteredProducts) return null
+      return _(this.filteredProducts)
         .sortBy(item => item.baseProductName)
         .groupBy(item => item.category)
         .toPairs()
