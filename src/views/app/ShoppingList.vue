@@ -8,6 +8,8 @@
       </li>
     </ul> -->
     <template v-if="isAuthenticated">
+      <SearchWithFilter class="product-list-filter" placeholder="Szukaj produktu" @search="onSearch($event)" />
+
       <ul class="product-list-groups">
         <li class="product-list-group" v-for="products in groupedProducts" :key="products[0]">
           <div class="product-list-group__title">
@@ -51,6 +53,7 @@ import LoginBeforeEnter from '@/components/LoginBeforeEnter'
 import { PRODUCT_GROUP_ICONS } from '@/constants'
 import NewShoppingListProduct from '@/components/modals/NewShoppingListProduct'
 import ProductIcon from '@/components/ProductIcon'
+import SearchWithFilter from '@/components/SearchWithFilter'
 
 export default {
   name: 'ShoppingList',
@@ -58,7 +61,8 @@ export default {
     ShoppingListProduct,
     PageHeader,
     LoginBeforeEnter,
-    ProductIcon
+    ProductIcon,
+    SearchWithFilter
   },
   setup() {
     const fetchedData = ref(false)
@@ -136,6 +140,10 @@ export default {
 <style lang="scss" scoped>
 .layout__page__content {
   margin-bottom: 96px;
+}
+
+.product-list-filter {
+  margin-bottom: 1.5rem;
 }
 
 .product-list-group {

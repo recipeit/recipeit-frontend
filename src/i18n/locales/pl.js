@@ -33,7 +33,7 @@ export default {
       cancelButton: 'Anuluj'
     },
     recipes: {
-      title: 'Przepisy'
+      title: 'Baza przepisów'
     },
     cookIt: {
       title: 'Ugotuj to!',
