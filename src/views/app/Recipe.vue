@@ -14,11 +14,11 @@
             </template>
             <template v-slot:dropdown>
               <BaseMenuList>
-                <BaseMenuLink v-if="!isRecipeHidden" @click="hideRecipeInLists()">Ukryj ten przepis</BaseMenuLink>
-                <BaseMenuLink v-else @click="unhideRecipeInLists()">Pokazuj ten przepis</BaseMenuLink>
+                <BaseMenuLink v-if="!isRecipeHidden" @click="changeRecipeVisibility(false)">Ukryj ten przepis</BaseMenuLink>
+                <BaseMenuLink v-else @click="changeRecipeVisibility(true)">Pokazuj ten przepis</BaseMenuLink>
 
-                <BaseMenuLink v-if="!isBlogHidden" @click="hideBlogInLists()">Ukryj ten blog</BaseMenuLink>
-                <BaseMenuLink v-else @click="unhideBlogInLists()">Pokazuj ten blog</BaseMenuLink>
+                <BaseMenuLink v-if="!isBlogHidden" @click="changeBlogVisibility(false)">Ukryj ten blog</BaseMenuLink>
+                <BaseMenuLink v-else @click="changeBlogVisibility(true)">Pokazuj ten blog</BaseMenuLink>
 
                 <BaseMenuSeparator></BaseMenuSeparator>
                 <BaseMenuLink @click="copyLinkToClipboard()">Skopiuj link do przepisu</BaseMenuLink>
@@ -54,8 +54,7 @@
           <span class="recipe__author__blog-name">, {{ recipe.author.blog.name }}</span>
         </div>
 
-        <div>Recipe hidden: {{ isRecipeHidden }}</div>
-        <div>Blog hidden: {{ isBlogHidden }}</div>
+        <div v-if="isRecipeHidden || isBlogHidden">Ten przepis jest ukryty</div>
 
         <div class="recipe__tags">
           <BaseButton stroked size="small">
@@ -149,7 +148,7 @@ import Rating from '@/components/Rating'
 import Dialog from '@/components/modals/Dialog'
 import { ToastType } from '@/plugins/toast/toastType'
 import PlanRecipeModal from '@/components/modals/PlanRecipeModal'
-import userApi from '@/api/userApi'
+// import userApi from '@/api/userApi'
 
 // import { useMeta } from 'vue-meta'
 
@@ -242,56 +241,19 @@ export default {
       }
       this.$modal.show(markRaw(PlanRecipeModal), { recipeId: this.recipeId }, {})
     },
-    hideRecipeInLists() {
+    changeRecipeVisibility(visible) {
       if (!this.isAuthenticated) {
         alert('Zaloguj się')
         return
       }
-
-      userApi
-        .changeRecipeVisibility(this.recipeId, false)
-        .then(({ data }) => {
-          if (data.success) {
-            this.hiddenRecipe = true
-            this.$toast.show('Przepis został ukryty', ToastType.SUCCESS)
-          } else {
-            this.$toast.show('Nie udało się ukryć przepisu. Spróbuj ponownie', ToastType.ERROR)
-          }
-        })
-        .catch(() => {
-          this.$toast.show('Nie udało się ukryć przepisu. Spróbuj ponownie', ToastType.ERROR)
-        })
+      this.$store.dispatch('user/changeRecipeVisibility', { recipeId: this.recipeId, visible })
     },
-    unhideRecipeInLists() {
-      userApi
-        .changeRecipeVisibility(this.recipeId, true)
-        .then(({ data }) => {
-          if (data.success) {
-            this.hiddenRecipe = false
-            this.$toast.show('Przepis został odkryty. Od teraz będzie pojawiał się w wynikach wyszukiwania', ToastType.SUCCESS)
-          } else {
-            this.$toast.show('Nie udało się odkryć przepisu. Spróbuj ponownie', ToastType.ERROR)
-          }
-        })
-        .catch(() => {
-          this.$toast.show('Nie udało się odkryć przepisu. Spróbuj ponownie', ToastType.ERROR)
-        })
-    },
-    hideBlogInLists() {
+    changeBlogVisibility(visible) {
       if (!this.isAuthenticated) {
         alert('Zaloguj się')
         return
       }
-      if (this.hiddenBlog) return
-      this.hiddenBlog = true
-      // this.$store.dispatch('user/hideBlog', this.recipe.id)
-      this.$toast.show('Blog został ukryty', ToastType.SUCCESS)
-    },
-    unhideBlogInLists() {
-      if (!this.hiddenBlog) return
-      this.hiddenBlog = false
-      // this.$store.dispatch('user/unhideBlog', this.recipe.id)
-      this.$toast.show('Blog został odkryty. Od teraz przepisy tego twórcy będą pojawiać się w wynikach wyszukiwania', ToastType.SUCCESS)
+      this.$store.dispatch('user/changeBlogVisibility', { blogId: this.recipe.author.blogId, visible })
     }
   },
   computed: {
@@ -307,8 +269,8 @@ export default {
       return this.isRecipeHiddenGetter(this.recipeId)
     },
     isBlogHidden() {
-      if (this.recipe?.blogId) {
-        return this.isBlogHiddenGetter(this.recipe.blogId)
+      if (this.recipe) {
+        return this.isBlogHiddenGetter(this.recipe.author.blogId)
       }
       return false
     },

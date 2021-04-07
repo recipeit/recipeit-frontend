@@ -1,5 +1,7 @@
 import identityApi from '@/api/identityApi'
 import userApi from '@/api/userApi'
+import { ToastType } from '@/plugins/toast/toastType'
+import toastPlugin from '@/plugins/toast'
 import router from '@/router'
 
 export const USER_AUTH_STATE = {
@@ -227,6 +229,41 @@ export default {
       userApi.getHiddenBlogs().then(({ data }) => {
         commit(MUTATIONS.SET_HIDDEN_BLOG_IDS, data.blogIds)
       })
+    },
+    changeRecipeVisibility({ commit }, { recipeId, visible }) {
+      userApi
+        .changeRecipeVisibility(recipeId, visible)
+        .then(({ data }) => {
+          if (data.success) {
+            commit(visible ? MUTATIONS.REMOVE_FROM_HIDDEN_RECIPE_IDS : MUTATIONS.ADD_TO_HIDDEN_RECIPE_IDS, recipeId)
+            toastPlugin.toast.show(visible ? 'Przepis został odkryty' : 'Przepis nie będzie już widoczny', ToastType.SUCCESS)
+          } else {
+            toastPlugin.toast.show('Wystapił błąd. Spróbuj ponownie', ToastType.ERROR)
+            // this.$toast.show('Nie udało się ukryć przepisu. Spróbuj ponownie', ToastType.ERROR)
+          }
+        })
+        .catch(() => {
+          toastPlugin.toast.show('Wystapił błąd. Spróbuj ponownie', ToastType.ERROR)
+        })
+    },
+    changeBlogVisibility({ commit }, { blogId, visible }) {
+      userApi
+        .changeBlogVisibility(blogId, visible)
+        .then(({ data }) => {
+          if (data.success) {
+            commit(visible ? MUTATIONS.REMOVE_FROM_HIDDEN_BLOG_IDS : MUTATIONS.ADD_TO_HIDDEN_BLOG_IDS, blogId)
+            toastPlugin.toast.show(
+              visible ? 'Przepisy z tego blogu zostały odkryte' : 'Przepisy z tego blogu nie będą już widoczne',
+              ToastType.SUCCESS
+            )
+          } else {
+            toastPlugin.toast.show('Wystapił błąd. Spróbuj ponownie', ToastType.ERROR)
+            // this.$toast.show('Nie udało się ukryć przepisu. Spróbuj ponownie', ToastType.ERROR)
+          }
+        })
+        .catch(() => {
+          toastPlugin.toast.show('Wystapił błąd. Spróbuj ponownie', ToastType.ERROR)
+        })
     },
     resetUserData({ commit }) {
       commit(MUTATIONS.SET_HIDDEN_BLOG_IDS, null)

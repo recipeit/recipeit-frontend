@@ -25,6 +25,10 @@
 
     <h3>Ukryta zawartość</h3>
     <h5>Ukryte blogi (zarządzaj)</h5>
+    <ul>
+      <li v-for="blogId in hiddenBlogs" :key="blogId">{{ blogId }}</li>
+    </ul>
+
     <h5>Ukryte przepisy (zarządzaj)</h5>
     <ul>
       <li v-for="recipeId in hiddenRecipes" :key="recipeId">{{ recipeId }}</li>
@@ -50,11 +54,15 @@ export default {
     userApi.getHiddenRecipes().then(({ data }) => {
       this.hiddenRecipes = data.recipeIds
     })
+    userApi.getHiddenBlogs().then(({ data }) => {
+      this.hiddenBlogs = data.blogIds
+    })
   },
   setup() {
     const currentTheme = localStorage.getItem('theme') || 'system'
     const selectedTheme = ref(currentTheme)
     const hiddenRecipes = ref([])
+    const hiddenBlogs = ref([])
     function updateTheme(value) {
       if (value && themes.includes(value)) {
         selectedTheme.value = value
@@ -64,6 +72,7 @@ export default {
     }
     return {
       hiddenRecipes,
+      hiddenBlogs,
       selectedTheme,
       updateTheme,
       themes
