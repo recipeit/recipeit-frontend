@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import { markRaw } from 'vue'
+import { markRaw, ref } from 'vue'
 import { mapGetters, mapState } from 'vuex'
 import _ from 'lodash'
 import ShoppingListProduct from '@/components/ShoppingListProduct'
@@ -61,11 +61,22 @@ export default {
     ProductIcon
   },
   setup() {
+    const fetchedData = ref(false)
+
     return {
+      fetchedData,
       PRODUCT_GROUP_ICONS
     }
   },
   methods: {
+    tryFetchInitialData() {
+      if (this.fetchedData) return
+
+      if (this.isAuthenticated) {
+        this.$store.dispatch('shoppingList/fetchProducts')
+        this.fetchedData = true
+      }
+    },
     newProduct() {
       this.$modal.show(markRaw(NewShoppingListProduct), {}, {})
     },
@@ -110,8 +121,13 @@ export default {
     }
   },
   beforeMount() {
-    if (this.isAuthenticated) {
-      this.$store.dispatch('shoppingList/fetchProducts')
+    this.tryFetchInitialData()
+  },
+  watch: {
+    isAuthenticated(newValue) {
+      if (newValue && !this.fetchedData) {
+        this.tryFetchInitialData()
+      }
     }
   }
 }

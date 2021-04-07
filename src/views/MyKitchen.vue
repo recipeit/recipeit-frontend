@@ -50,6 +50,9 @@ export default {
     LoginBeforeEnter,
     ProductIcon
   },
+  data: () => ({
+    fetchedData: false
+  }),
   computed: {
     ...mapGetters({
       isAuthenticated: 'user/isAuthenticated'
@@ -68,12 +71,25 @@ export default {
     }
   },
   beforeMount() {
-    if (this.isAuthenticated) {
-      this.$store.dispatch('ingredients/fetchBaseProducts')
-      this.$store.dispatch('myKitchen/fetchProducts')
+    this.tryFetchInitialData()
+  },
+  watch: {
+    isAuthenticated(newValue) {
+      if (newValue && !this.fetchedData) {
+        this.tryFetchInitialData()
+      }
     }
   },
   methods: {
+    tryFetchInitialData() {
+      if (this.fetchedData) return
+
+      if (this.isAuthenticated) {
+        this.$store.dispatch('ingredients/fetchBaseProducts')
+        this.$store.dispatch('myKitchen/fetchProducts')
+        this.fetchedData = true
+      }
+    },
     newProduct() {
       this.$modal.show(markRaw(NewKitchenProductModal), {}, {})
     }

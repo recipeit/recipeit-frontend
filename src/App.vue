@@ -2,22 +2,22 @@
   <global-sheet-modal-container />
   <toasts-container />
   <div class="layout">
-    <dashboard v-if="isAuthenticated !== undefined" />
+    <dashboard />
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+// import { mapGetters } from 'vuex'
 import Dashboard from './views/Dashboard'
 import AnalyticsService from '@/services/analytics'
 
 export default {
   components: { Dashboard },
-  computed: {
-    ...mapGetters({
-      isAuthenticated: 'user/isAuthenticated'
-    })
-  },
+  // computed: {
+  //   ...mapGetters({
+  //     isAuthenticated: 'user/isAuthenticated'
+  //   })
+  // },
   methods: {
     blurOnClick() {
       document.activeElement.blur()

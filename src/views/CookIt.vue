@@ -41,6 +41,9 @@ import LoginBeforeEnter from '@/components/LoginBeforeEnter'
 export default {
   components: { GenericRecipesList, PageHeader, LoginBeforeEnter },
   name: 'CookIt',
+  data: () => ({
+    fetchedData: false
+  }),
   computed: {
     ...mapGetters({
       isAuthenticated: 'user/isAuthenticated'
@@ -51,11 +54,24 @@ export default {
     })
   },
   beforeMount() {
-    if (this.isAuthenticated && (this.availableRecipes.items === null || this.almostAvailableRecipes.items === null)) {
-      this.fetchRecipes()
+    this.tryFetchInitialData()
+  },
+  watch: {
+    isAuthenticated(newValue) {
+      if (newValue && !this.fetchedData) {
+        this.tryFetchInitialData()
+      }
     }
   },
   methods: {
+    tryFetchInitialData() {
+      if (this.fetchedData) return
+
+      if (this.isAuthenticated && (this.availableRecipes.items === null || this.almostAvailableRecipes.items === null)) {
+        this.fetchRecipes()
+        this.fetchedData = true
+      }
+    },
     reloadRecipes({ orderMethod, filters, search }) {
       this.fetchRecipes(orderMethod, filters, search)
     },

@@ -1,36 +1,40 @@
 import identityApi from '@/api/identityApi'
-import { STORAGE_REFRESH_TOKEN, STORAGE_TOKEN } from '@/constants'
 import router from '@/router'
 
 export const MUTATIONS = {
   SET_USER_PROFILE: 'SET_USER_PROFILE',
-  SET_USER_TOKEN_REFRESHING: 'SET_USER_TOKEN_REFRESHING'
+  SET_USER_AUTH_STATE: 'SET_USER_AUTH_STATE'
+}
+
+export const USER_AUTH_STATE = {
+  USER_LOGGED_IN: 'USER_LOGGED_IN',
+  USER_FETCHING: 'USER_FETCHING',
+  USER_LOGGED_OUT: 'USER_LOGGED_OUT'
 }
 
 export default {
   namespaced: true,
   state: {
     userProfile: undefined,
-    userTokenRefreshing: false
+    userAuthState: USER_AUTH_STATE.USER_LOGGED_OUT
+    // userTokenRefreshing: false
   },
   mutations: {
     [MUTATIONS.SET_USER_PROFILE](state, profile) {
       state.userProfile = profile
     },
-    [MUTATIONS.SET_USER_TOKEN_REFRESHING](state, refreshing) {
-      state.userTokenRefreshing = refreshing
+    [MUTATIONS.SET_USER_AUTH_STATE](state, userAuthState) {
+      state.userAuthState = userAuthState
     }
   },
   actions: {
-    setUserProfile({ commit }, profile) {
-      commit(MUTATIONS.SET_USER_PROFILE, profile)
-    },
     fetchUserProfile({ commit, dispatch }, { getInitUserData }) {
       identityApi
         .profile()
         .then(response => {
           const { userProfile } = response.data
           commit(MUTATIONS.SET_USER_PROFILE, userProfile)
+          commit(MUTATIONS.SET_USER_AUTH_STATE, USER_AUTH_STATE.USER_LOGGED_IN)
           if (getInitUserData) {
             dispatch('getInitUserData')
           }
@@ -78,10 +82,9 @@ export default {
                 }
               })
             } else {
-              const { token, refreshToken, userProfile } = response.data
-              localStorage.setItem(STORAGE_TOKEN, token)
-              localStorage.setItem(STORAGE_REFRESH_TOKEN, refreshToken)
+              const { userProfile } = response.data
               commit(MUTATIONS.SET_USER_PROFILE, userProfile)
+              commit(MUTATIONS.SET_USER_AUTH_STATE, USER_AUTH_STATE.USER_LOGGED_IN)
               dispatch('getInitUserData')
               router.push({ name: 'home' })
             }
@@ -101,6 +104,7 @@ export default {
           .then(response => {
             const { userProfile } = response.data
             commit(MUTATIONS.SET_USER_PROFILE, userProfile)
+            commit(MUTATIONS.SET_USER_AUTH_STATE, USER_AUTH_STATE.USER_LOGGED_IN)
             dispatch('getInitUserData')
             router.push({ name: 'home' })
             resolve()
@@ -119,6 +123,7 @@ export default {
           .then(response => {
             const { userProfile } = response.data
             commit(MUTATIONS.SET_USER_PROFILE, userProfile)
+            commit(MUTATIONS.SET_USER_AUTH_STATE, USER_AUTH_STATE.USER_LOGGED_IN)
             dispatch('getInitUserData')
             router.push({ name: 'home' })
             resolve()
@@ -128,8 +133,36 @@ export default {
           })
       })
     },
-    setTokenRefreshing({ commit }, refreshing) {
-      commit(MUTATIONS.SET_USER_TOKEN_REFRESHING, refreshing)
+    refreshCookie({ commit, dispatch, state }) {
+      return new Promise((resolve, reject) => {
+        if (state.userAuthState === USER_AUTH_STATE.USER_FETCHING) {
+          reject({ isFetching: true })
+          return
+        }
+
+        commit(MUTATIONS.SET_USER_AUTH_STATE, USER_AUTH_STATE.USER_FETCHING)
+
+        identityApi
+          .refreshCookie()
+          .then(({ status, data }) => {
+            if (status === 200) {
+              if (data.userProfile) {
+                commit(MUTATIONS.SET_USER_PROFILE, data.userProfile)
+              }
+              commit(MUTATIONS.SET_USER_AUTH_STATE, USER_AUTH_STATE.USER_LOGGED_IN)
+              resolve()
+            } else {
+              commit(MUTATIONS.SET_USER_AUTH_STATE, USER_AUTH_STATE.USER_LOGGED_OUT)
+              dispatch('logout')
+              reject()
+            }
+          })
+          .catch(() => {
+            commit(MUTATIONS.SET_USER_AUTH_STATE, USER_AUTH_STATE.USER_LOGGED_OUT)
+            dispatch('logout')
+            reject()
+          })
+      })
     },
     async logout({ commit, dispatch }) {
       await identityApi.logout()
@@ -147,7 +180,7 @@ export default {
     }
   },
   getters: {
-    isAuthenticated: state => state.userProfile !== null && state.userProfile !== undefined,
-    isUserTokenRefreshing: state => state.userTokenRefreshing
+    isAuthenticated: state => state.userProfile !== null && state.userAuthState === USER_AUTH_STATE.USER_LOGGED_IN,
+    currentUserAuthState: state => state.userAuthState
   }
 }

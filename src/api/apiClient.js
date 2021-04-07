@@ -1,6 +1,5 @@
 import axios from 'axios'
 import store from '@/store'
-import identityApi from './identityApi'
 import { API_DEV_BASE_URL_SSL, API_PROD_BASE_URL } from '@/configs/api'
 
 const apiClient = axios.create({
@@ -25,26 +24,30 @@ apiClient.interceptors.response.use(
     }
 
     if (error.response?.status === 401) {
-      if (!store.getters['user/isUserTokenRefreshing']) {
-        store.dispatch('user/setTokenRefreshing', true)
-        identityApi
-          .refreshCookie()
-          .then(({ status }) => {
-            if (status === 200 || status == 204) {
-              onRefreshed()
-            }
-            subscribers = []
-          })
-          .catch(error => {
-            // todo logout only when api error, not when there is no token
-            if (error) {
-              store.dispatch('user/logout')
-            }
-          })
-          .finally(() => {
-            store.dispatch('user/setTokenRefreshing', false)
-          })
-      }
+      store.dispatch('user/refreshCookie').then(() => {
+        onRefreshed()
+        subscribers = []
+      })
+      // if (!store.getters['user/isUserTokenRefreshing']) {
+      //   store.dispatch('user/setTokenRefreshing', true)
+      //   identityApi
+      //     .refreshCookie()
+      //     .then(({ status }) => {
+      //       if (status === 200 || status == 204) {
+      //         onRefreshed()
+      //       }
+      //       subscribers = []
+      //     })
+      //     .catch(error => {
+      //       // todo logout only when api error, not when there is no token
+      //       if (error) {
+      //         store.dispatch('user/logout')
+      //       }
+      //     })
+      //     .finally(() => {
+      //       store.dispatch('user/setTokenRefreshing', false)
+      //     })
+      // }
 
       return new Promise(resolve => {
         subscribeTokenRefresh(() => {

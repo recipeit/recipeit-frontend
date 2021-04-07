@@ -173,6 +173,7 @@ export default {
     Rating
   },
   data: component => ({
+    fetchedData: false,
     recipe: null,
     // recipeDetails: null,
     servings: 1,
@@ -180,27 +181,23 @@ export default {
     hiddenRecipe: false, //temporary!!!! TODO
     hiddenBlog: false //temporary!!!! TODO
   }),
-  // setup() {
-  //   useMeta({
-  //     title: 'My Example App',
-  //     htmlAttrs: {
-  //       lang: 'en',
-  //       amp: true
-  //     }
-  //   })
-  // },
   created() {
-    // this.$store.dispatch('recipes/fetchRecipe', this.recipeId).then(r => (this.recipe = r))
     this.$store.dispatch('recipes/fetchDetailedRecipe', this.recipeId).then(rd => {
       this.recipe = rd
       this.servings = rd.details.servings
     })
-    if (this.isAuthenticated) {
-      this.$store.dispatch('myKitchen/fetchProducts')
-      this.$store.dispatch('shoppingList/fetchProducts')
-    }
+    this.tryFetchInitialData()
   },
   methods: {
+    tryFetchInitialData() {
+      if (this.fetchedData) return
+
+      if (this.isAuthenticated) {
+        this.$store.dispatch('myKitchen/fetchProducts')
+        this.$store.dispatch('shoppingList/fetchProducts')
+        this.fetchedData = true
+      }
+    },
     back() {
       this.$router.go(-1)
     },
@@ -340,6 +337,11 @@ export default {
     }
   },
   watch: {
+    isAuthenticated(newValue) {
+      if (newValue && !this.fetchedData) {
+        this.tryFetchInitialData()
+      }
+    },
     finishedDirections(finishedDirections) {
       this.$store.dispatch('recipes/setFinishedDirectionsForRecipe', { recipeId: this.recipeId, finishedDirections })
       const remaining = _.difference(this.allIndexes, finishedDirections)
