@@ -44,7 +44,8 @@
           </BaseButton>
         </div>
 
-        <BaseLink tag="button" class="recipe__hidden-bar" v-if="isHidden" color="text-secondary">
+        <BaseLink tag="button" class="recipe__hidden-bar" v-if="isHidden" color="red">
+          <BaseIcon class="recipe__hidden-bar__icon" icon="invisible" weight="bold" />
           Ten przepis jest ukryty
         </BaseLink>
 
@@ -457,10 +458,19 @@ export default {
   }
 
   &__hidden-bar {
-    font-size: 0.75rem;
+    font-size: 0.875rem;
     font-weight: bold;
-    text-transform: uppercase;
+    // text-transform: uppercase;
     padding: 0.5rem 0 1rem 0;
+    line-height: 1rem;
+    display: flex;
+    align-items: center;
+
+    &__icon {
+      font-size: 1rem;
+      line-height: inherit;
+      margin-right: 0.75rem;
+    }
   }
 
   &__main {
