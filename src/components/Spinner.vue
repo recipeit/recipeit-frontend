@@ -63,6 +63,11 @@ export default {
     border-color: var(--color-text-secondary);
     border-top-color: var(--color-text-primary);
   }
+
+  &--color-primary {
+    border-color: transparent;
+    border-top-color: var(--color-primary);
+  }
 }
 
 @keyframes load8 {

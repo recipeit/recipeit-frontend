@@ -33,12 +33,17 @@ apiClient.interceptors.response.use(
           }
         })
         .catch(() => {
+          onRefreshed(false)
           subscribers = []
         })
 
-      return new Promise(resolve => {
-        subscribeTokenRefresh(() => {
-          resolve(apiClient(originalRequest))
+      return new Promise((resolve, reject) => {
+        subscribeTokenRefresh(success => {
+          if (success) {
+            resolve(apiClient(originalRequest))
+          } else {
+            reject()
+          }
         })
       })
     }
@@ -52,8 +57,8 @@ function subscribeTokenRefresh(cb) {
   subscribers.push(cb)
 }
 
-function onRefreshed() {
-  subscribers.map(cb => cb())
+function onRefreshed(success) {
+  subscribers.map(cb => cb(success))
 }
 
 export default apiClient

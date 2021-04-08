@@ -1,20 +1,23 @@
 <template>
   <global-sheet-modal-container />
   <toasts-container />
-  <router-view v-if="fetchedInitialUserProfile" />
-  <div v-else>
-    Recipeit wczytuję
-    <Spinner :show="true" />
-  </div>
+  <transition name="page-component-fade" mode="out-in">
+    <router-view key="loaded-app" v-if="fetchedInitialUserProfile" v-slot="{ Component }">
+      <transition name="page-component-fade" mode="out-in">
+        <component :is="Component"></component>
+      </transition>
+    </router-view>
+    <AppLoading key="loading-app" v-else />
+  </transition>
 </template>
 
 <script>
 import AnalyticsService from '@/services/analytics'
-import Spinner from '@/components/Spinner'
+import AppLoading from '@/components/AppLoading'
 
 export default {
   components: {
-    Spinner
+    AppLoading
   },
   data: () => ({
     fetchedInitialUserProfile: false
@@ -32,6 +35,7 @@ export default {
         }
       })
       .catch(() => {
+        console.log('gotcha')
         if (location.pathname.startsWith('/app')) {
           this.$router.push({ name: 'login' })
         } else if (!location.pathname.startsWith('/auth')) {
