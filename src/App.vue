@@ -1,19 +1,46 @@
 <template>
   <global-sheet-modal-container />
   <toasts-container />
-  <router-view />
+  <router-view v-if="fetchedInitialUserProfile" />
+  <div v-else>
+    Recipeit wczytuję
+    <Spinner :show="true" />
+  </div>
 </template>
 
 <script>
 import AnalyticsService from '@/services/analytics'
+import Spinner from '@/components/Spinner'
 
 export default {
+  components: {
+    Spinner
+  },
+  data: () => ({
+    fetchedInitialUserProfile: false
+  }),
   beforeCreate() {
     const currentTheme = localStorage.getItem('theme')
     document.documentElement.setAttribute('theme', currentTheme || 'system')
   },
   created() {
-    this.$store.dispatch('user/fetchUserProfile', { getInitUserData: true })
+    this.$store
+      .dispatch('user/fetchUserProfile', { getInitUserData: true })
+      .then(() => {
+        if (!this.$route.fullPath.startsWith('/app')) {
+          this.$router.push({ name: 'app' })
+        }
+      })
+      .catch(() => {
+        if (this.$route.fullPath.startsWith('/app')) {
+          this.$router.push({ name: 'login' })
+        } else if (!this.$route.fullPath.startsWith('/auth')) {
+          this.$router.push({ name: 'landing-page' })
+        }
+      })
+      .finally(() => {
+        this.fetchedInitialUserProfile = true
+      })
     AnalyticsService.init()
   }
 }

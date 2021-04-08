@@ -68,19 +68,22 @@ export default {
   },
   actions: {
     fetchUserProfile({ commit, dispatch }, { getInitUserData }) {
-      identityApi
-        .profile()
-        .then(response => {
-          const { userProfile } = response.data
-          commit(MUTATIONS.SET_USER_PROFILE, userProfile)
-          commit(MUTATIONS.SET_USER_AUTH_STATE, USER_AUTH_STATE.USER_LOGGED_IN)
-          if (getInitUserData) {
-            dispatch('getInitUserData')
-          }
-        })
-        .catch(error => {
-          console.error(error)
-        })
+      return new Promise((resolve, reject) => {
+        identityApi
+          .profile()
+          .then(response => {
+            const { userProfile } = response.data
+            commit(MUTATIONS.SET_USER_PROFILE, userProfile)
+            commit(MUTATIONS.SET_USER_AUTH_STATE, USER_AUTH_STATE.USER_LOGGED_IN)
+            if (getInitUserData) {
+              dispatch('getInitUserData')
+            }
+            resolve()
+          })
+          .catch(error => {
+            reject(error)
+          })
+      })
     },
     register(_, { email, password, confirmPassword }) {
       return new Promise((resolve, reject) => {
@@ -176,6 +179,7 @@ export default {
       return new Promise((resolve, reject) => {
         if (state.userAuthState === USER_AUTH_STATE.USER_FETCHING) {
           reject({ isFetching: true })
+          console.log('whatt')
           return
         }
 
@@ -196,8 +200,10 @@ export default {
               reject()
             }
           })
-          .catch(() => {
+          .catch(e => {
             commit(MUTATIONS.SET_USER_AUTH_STATE, USER_AUTH_STATE.USER_LOGGED_OUT)
+            // TODO chyba trzeba logout dać na if
+            console.log(e)
             dispatch('logout')
             reject()
           })

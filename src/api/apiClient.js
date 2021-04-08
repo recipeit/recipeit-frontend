@@ -19,15 +19,22 @@ apiClient.interceptors.response.use(
     const originalRequest = error.config
 
     // Prevent infinite loops
-    if (error.response?.status === 401 && originalRequest.url.includes('/identity/refresh')) {
+    if (error.response?.status === 401 && originalRequest.url.includes('/identity/refresh-cookie')) {
       return Promise.reject(error)
     }
 
     if (error.response?.status === 401) {
-      store.dispatch('user/refreshCookie').then(() => {
-        onRefreshed()
-        subscribers = []
-      })
+      store
+        .dispatch('user/refreshCookie')
+        .then(() => {
+          onRefreshed(true)
+          subscribers = []
+        })
+        .catch(() => {
+          // TOOD JEST PĘTLA WYWOŁYWAŃ
+          onRefreshed(false)
+          subscribers = []
+        })
       // if (!store.getters['user/isUserTokenRefreshing']) {
       //   store.dispatch('user/setTokenRefreshing', true)
       //   identityApi
@@ -49,9 +56,15 @@ apiClient.interceptors.response.use(
       //     })
       // }
 
-      return new Promise(resolve => {
-        subscribeTokenRefresh(() => {
-          resolve(apiClient(originalRequest))
+      return new Promise((resolve, reject) => {
+        subscribeTokenRefresh(success => {
+          console.log('success', success)
+          if (success) {
+            resolve(apiClient(originalRequest))
+          } else {
+            // reject(apiClient(originalRequest))
+            reject()
+          }
         })
       })
     }
@@ -65,8 +78,8 @@ function subscribeTokenRefresh(cb) {
   subscribers.push(cb)
 }
 
-function onRefreshed() {
-  subscribers.map(cb => cb())
+function onRefreshed(success) {
+  subscribers.map(cb => cb(success))
 }
 
 export default apiClient
