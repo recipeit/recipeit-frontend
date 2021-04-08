@@ -26,45 +26,19 @@ apiClient.interceptors.response.use(
     if (error.response?.status === 401) {
       store
         .dispatch('user/refreshCookie')
-        .then(() => {
-          onRefreshed(true)
-          subscribers = []
+        .then(response => {
+          if (response?.isFetching !== true) {
+            onRefreshed(true)
+            subscribers = []
+          }
         })
         .catch(() => {
-          // TOOD JEST PĘTLA WYWOŁYWAŃ
-          onRefreshed(false)
           subscribers = []
         })
-      // if (!store.getters['user/isUserTokenRefreshing']) {
-      //   store.dispatch('user/setTokenRefreshing', true)
-      //   identityApi
-      //     .refreshCookie()
-      //     .then(({ status }) => {
-      //       if (status === 200 || status == 204) {
-      //         onRefreshed()
-      //       }
-      //       subscribers = []
-      //     })
-      //     .catch(error => {
-      //       // todo logout only when api error, not when there is no token
-      //       if (error) {
-      //         store.dispatch('user/logout')
-      //       }
-      //     })
-      //     .finally(() => {
-      //       store.dispatch('user/setTokenRefreshing', false)
-      //     })
-      // }
 
-      return new Promise((resolve, reject) => {
-        subscribeTokenRefresh(success => {
-          console.log('success', success)
-          if (success) {
-            resolve(apiClient(originalRequest))
-          } else {
-            // reject(apiClient(originalRequest))
-            reject()
-          }
+      return new Promise(resolve => {
+        subscribeTokenRefresh(() => {
+          resolve(apiClient(originalRequest))
         })
       })
     }
@@ -78,8 +52,8 @@ function subscribeTokenRefresh(cb) {
   subscribers.push(cb)
 }
 
-function onRefreshed(success) {
-  subscribers.map(cb => cb(success))
+function onRefreshed() {
+  subscribers.map(cb => cb())
 }
 
 export default apiClient

@@ -128,7 +128,13 @@ export default {
               commit(MUTATIONS.SET_USER_PROFILE, userProfile)
               commit(MUTATIONS.SET_USER_AUTH_STATE, USER_AUTH_STATE.USER_LOGGED_IN)
               dispatch('getInitUserData')
-              router.push({ name: 'home' })
+              const redirectUrl = sessionStorage.getItem('LOGIN_REDIRECT')
+              if (redirectUrl) {
+                router.push(redirectUrl)
+                sessionStorage.removeItem('LOGIN_REDIRECT')
+              } else {
+                router.push({ name: 'home' })
+              }
             }
             resolve()
           })
@@ -148,7 +154,13 @@ export default {
             commit(MUTATIONS.SET_USER_PROFILE, userProfile)
             commit(MUTATIONS.SET_USER_AUTH_STATE, USER_AUTH_STATE.USER_LOGGED_IN)
             dispatch('getInitUserData')
-            router.push({ name: 'home' })
+            const redirectUrl = sessionStorage.getItem('LOGIN_REDIRECT')
+            if (redirectUrl) {
+              router.push(redirectUrl)
+              sessionStorage.removeItem('LOGIN_REDIRECT')
+            } else {
+              router.push({ name: 'home' })
+            }
             resolve()
           })
           .catch(error => {
@@ -167,7 +179,13 @@ export default {
             commit(MUTATIONS.SET_USER_PROFILE, userProfile)
             commit(MUTATIONS.SET_USER_AUTH_STATE, USER_AUTH_STATE.USER_LOGGED_IN)
             dispatch('getInitUserData')
-            router.push({ name: 'home' })
+            const redirectUrl = sessionStorage.getItem('LOGIN_REDIRECT')
+            if (redirectUrl) {
+              router.push(redirectUrl)
+              sessionStorage.removeItem('LOGIN_REDIRECT')
+            } else {
+              router.push({ name: 'home' })
+            }
             resolve()
           })
           .catch(error => {
@@ -178,34 +196,40 @@ export default {
     refreshCookie({ commit, dispatch, state }) {
       return new Promise((resolve, reject) => {
         if (state.userAuthState === USER_AUTH_STATE.USER_FETCHING) {
-          reject({ isFetching: true })
-          console.log('whatt')
+          resolve({ isFetching: true })
           return
         }
 
         commit(MUTATIONS.SET_USER_AUTH_STATE, USER_AUTH_STATE.USER_FETCHING)
 
+        const onRefreshCookieError = () => {
+          commit(MUTATIONS.SET_USER_AUTH_STATE, USER_AUTH_STATE.USER_LOGGED_OUT)
+          if (router.currentRoute.value.fullPath.startsWith('/app')) {
+            sessionStorage.setItem('LOGIN_REDIRECT', router.currentRoute.value.fullPath)
+          }
+          dispatch('logout')
+          reject()
+        }
+
+        const onRefreshCookieSuccess = ({ userProfile }) => {
+          if (userProfile) {
+            commit(MUTATIONS.SET_USER_PROFILE, userProfile)
+          }
+          commit(MUTATIONS.SET_USER_AUTH_STATE, USER_AUTH_STATE.USER_LOGGED_IN)
+          resolve()
+        }
+
         identityApi
           .refreshCookie()
           .then(({ status, data }) => {
             if (status === 200) {
-              if (data.userProfile) {
-                commit(MUTATIONS.SET_USER_PROFILE, data.userProfile)
-              }
-              commit(MUTATIONS.SET_USER_AUTH_STATE, USER_AUTH_STATE.USER_LOGGED_IN)
-              resolve()
+              onRefreshCookieSuccess(data)
             } else {
-              commit(MUTATIONS.SET_USER_AUTH_STATE, USER_AUTH_STATE.USER_LOGGED_OUT)
-              dispatch('logout')
-              reject()
+              onRefreshCookieError()
             }
           })
-          .catch(e => {
-            commit(MUTATIONS.SET_USER_AUTH_STATE, USER_AUTH_STATE.USER_LOGGED_OUT)
-            // TODO chyba trzeba logout dać na if
-            console.log(e)
-            dispatch('logout')
-            reject()
+          .catch(() => {
+            onRefreshCookieError()
           })
       })
     },
@@ -214,7 +238,10 @@ export default {
 
       commit(MUTATIONS.SET_USER_PROFILE, null)
 
-      // router.push({ name: 'login' })
+      if (router.currentRoute.value.fullPath.startsWith('/app')) {
+        sessionStorage.setItem('LOGIN_REDIRECT', router.currentRoute.value.fullPath)
+        router.push({ name: 'login' })
+      }
 
       dispatch('shoppingList/resetUserData', {}, { root: true })
       dispatch('myKitchen/resetUserData', {}, { root: true })

@@ -87,7 +87,6 @@ export default {
     }
   },
   beforeMount() {
-    console.log(this.$router)
     this.tryFetchInitialData()
   },
   watch: {
