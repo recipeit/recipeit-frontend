@@ -22,17 +22,17 @@ const routes = [
   {
     path: '/',
     name: 'landing-page',
-    component: () => import(/* webpackChunkName: "home" */ '@/views/LandingPage.vue')
+    component: () => import(/* webpackChunkName: "landing" */ '@/views/LandingPage.vue')
   },
   {
     path: '/terms',
     name: 'terms',
-    component: () => import(/* webpackChunkName: "home" */ '@/views/Terms.vue')
+    component: () => import(/* webpackChunkName: "terms" */ '@/views/Terms.vue')
   },
   {
     path: '/app',
     name: 'app',
-    component: () => import(/* webpackChunkName: "auth" */ '@/views/App.vue'),
+    component: () => import(/* webpackChunkName: "app" */ '@/views/App.vue'),
     children: [
       {
         path: '',

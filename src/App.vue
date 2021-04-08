@@ -27,14 +27,14 @@ export default {
     this.$store
       .dispatch('user/fetchUserProfile', { getInitUserData: true })
       .then(() => {
-        if (!this.$route.fullPath.startsWith('/app')) {
-          this.$router.push({ name: 'app' })
+        if (!location.pathname.startsWith('/app')) {
+          this.$router.push({ name: 'home' })
         }
       })
       .catch(() => {
-        if (this.$route.fullPath.startsWith('/app')) {
+        if (location.pathname.startsWith('/app')) {
           this.$router.push({ name: 'login' })
-        } else if (!this.$route.fullPath.startsWith('/auth')) {
+        } else if (!location.pathname.startsWith('/auth')) {
           this.$router.push({ name: 'landing-page' })
         }
       })

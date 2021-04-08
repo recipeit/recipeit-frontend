@@ -214,7 +214,7 @@ export default {
 
       commit(MUTATIONS.SET_USER_PROFILE, null)
 
-      router.push({ name: 'login' })
+      // router.push({ name: 'login' })
 
       dispatch('shoppingList/resetUserData', {}, { root: true })
       dispatch('myKitchen/resetUserData', {}, { root: true })
