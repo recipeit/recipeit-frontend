@@ -44,7 +44,7 @@
           </BaseButton>
         </div>
 
-        <BaseLink tag="button" class="recipe__hidden-bar" v-if="isHidden" color="red">
+        <BaseLink tag="button" class="recipe__hidden-bar" v-if="isHidden" color="red" @click="showInvisibleInfoModal()">
           <BaseIcon class="recipe__hidden-bar__icon" icon="invisible" weight="bold" />
           Ten przepis jest ukryty
         </BaseLink>
@@ -152,6 +152,7 @@ import Rating from '@/components/Rating'
 import Dialog from '@/components/modals/Dialog'
 import { ToastType } from '@/plugins/toast/toastType'
 import PlanRecipeModal from '@/components/modals/PlanRecipeModal'
+import InvisibleRecipeInfoModal from '@/components/modals/InvisibleRecipeInfoModal'
 // import userApi from '@/api/userApi'
 
 // import { useMeta } from 'vue-meta'
@@ -258,6 +259,9 @@ export default {
         return
       }
       this.$store.dispatch('user/changeBlogVisibility', { blogId: this.recipe.author.blogId, visible })
+    },
+    showInvisibleInfoModal() {
+      this.$modal.show(markRaw(InvisibleRecipeInfoModal), {}, {})
     }
   },
   computed: {
