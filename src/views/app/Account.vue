@@ -26,12 +26,12 @@
     <h3>Ukryta zawartość</h3>
     <h5>Ukryte blogi (zarządzaj)</h5>
     <ul>
-      <li v-for="blogId in hiddenBlogs" :key="blogId">{{ blogId }}</li>
+      <li v-for="blogId in hiddenBlogs" :key="blogId" @click="unhideBlog(blogId)">{{ blogId }}</li>
     </ul>
 
     <h5>Ukryte przepisy (zarządzaj)</h5>
     <ul>
-      <li v-for="recipeId in hiddenRecipes" :key="recipeId">{{ recipeId }}</li>
+      <li v-for="recipeId in hiddenRecipes" :key="recipeId" @click="unhideRecipe(recipeId)">{{ recipeId }}</li>
     </ul>
   </div>
 </template>
@@ -39,7 +39,8 @@
 <script>
 import PageHeader from '@/components/PageHeader'
 import { ref } from 'vue'
-import userApi from '@/api/userApi'
+// import userApi from '@/api/userApi'
+import { mapState, useStore } from 'vuex'
 
 const themes = ['dark', 'light', 'system']
 
@@ -51,18 +52,24 @@ export default {
     if (currentTheme) {
       this.selectedTheme = currentTheme
     }
-    userApi.getHiddenRecipes().then(({ data }) => {
-      this.hiddenRecipes = data.recipeIds
-    })
-    userApi.getHiddenBlogs().then(({ data }) => {
-      this.hiddenBlogs = data.blogIds
+    // userApi.getHiddenRecipes().then(({ data }) => {
+    //   this.hiddenRecipes = data.recipeIds
+    // })
+    // userApi.getHiddenBlogs().then(({ data }) => {
+    //   this.hiddenBlogs = data.blogIds
+    // })
+  },
+  computed: {
+    ...mapState({
+      hiddenRecipes: state => state.user.hiddenRecipeIds,
+      hiddenBlogs: state => state.user.hiddenBlogIds
     })
   },
   setup() {
+    const store = useStore()
     const currentTheme = localStorage.getItem('theme') || 'system'
     const selectedTheme = ref(currentTheme)
-    const hiddenRecipes = ref([])
-    const hiddenBlogs = ref([])
+
     function updateTheme(value) {
       if (value && themes.includes(value)) {
         selectedTheme.value = value
@@ -70,11 +77,22 @@ export default {
         document.documentElement.setAttribute('theme', value)
       }
     }
+
+    function unhideRecipe(recipeId) {
+      store.dispatch('user/changeRecipeVisibility', { recipeId, visible: true })
+    }
+
+    function unhideBlog(blogId) {
+      store.dispatch('user/changeBlogVisibility', { blogId, visible: true })
+    }
+
     return {
-      hiddenRecipes,
-      hiddenBlogs,
+      // hiddenRecipes,
+      // hiddenBlogs,
       selectedTheme,
       updateTheme,
+      unhideRecipe,
+      unhideBlog,
       themes
     }
   }

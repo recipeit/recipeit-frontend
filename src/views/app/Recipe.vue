@@ -1,6 +1,6 @@
 <template>
   <div class="layout__page__content">
-    <div v-if="recipe && recipe.details" class="recipe">
+    <div v-if="recipe && recipe.details" :class="['recipe', { 'recipe--hidden': isHidden }]">
       <div class="recipe__image-container">
         <div class="recipe__image-container__buttons">
           <BaseLink class="recipe__image-container__button" @click="back()" tag="button">
@@ -43,6 +43,11 @@
             Zaplanuj
           </BaseButton>
         </div>
+
+        <BaseLink tag="button" class="recipe__hidden-bar" v-if="isHidden" color="text-secondary">
+          Ten przepis jest ukryty
+        </BaseLink>
+
         <div class="recipe__header">
           <h2 class="recipe__header__title">{{ recipe.name }}</h2>
           <div class="recipe__header__actions">
@@ -53,8 +58,6 @@
           <span class="recipe__author__name">{{ recipe.author.name }}</span>
           <span class="recipe__author__blog-name">, {{ recipe.author.blog.name }}</span>
         </div>
-
-        <div v-if="isRecipeHidden || isBlogHidden">Ten przepis jest ukryty</div>
 
         <div class="recipe__tags">
           <BaseButton stroked size="small">
@@ -274,6 +277,9 @@ export default {
       }
       return false
     },
+    isHidden() {
+      return this.isRecipeHidden || this.isBlogHidden
+    },
     cookingHours() {
       if (this.recipe && this.recipe.cookingMinutes) {
         return dayjs.duration(this.recipe.cookingMinutes, 'minutes').format('H:mm')
@@ -409,6 +415,8 @@ export default {
 }
 
 .recipe {
+  $root: &;
+
   font-size: 0.875rem;
   line-height: 1.5;
   margin: -32px -32px 0 -32px;
@@ -446,6 +454,13 @@ export default {
       height: 320px;
       max-height: 320px;
     }
+  }
+
+  &__hidden-bar {
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 0.5rem 0 1rem 0;
   }
 
   &__main {
@@ -524,6 +539,10 @@ export default {
       margin: 0;
       font-size: 1.25rem;
       line-height: 1.75rem;
+
+      #{ $root }--hidden & {
+        color: var(--color-text-secondary);
+      }
     }
 
     &__actions {
