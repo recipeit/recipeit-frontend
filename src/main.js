@@ -4,6 +4,7 @@ import './registerServiceWorker'
 import App from './App'
 import GlobalSheetModal from './plugins/global-sheet-modal'
 import Clipboard from './plugins/clipboard'
+import Progressbar from './plugins/progressbar'
 import Toast from './plugins/toast'
 import router from './router'
 import store from './store'
@@ -27,9 +28,14 @@ requireComponent.keys().forEach(fileName => {
   app.component(componentName, componentConfig.default || componentConfig)
 })
 
+const progressbarOptions = {
+  color: 'var(--color-primary)'
+}
+
 app
   .use(GlobalSheetModal)
   .use(Clipboard)
+  .use(Progressbar, progressbarOptions)
   .use(Toast)
   .use(router)
   .use(store)

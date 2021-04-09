@@ -12,8 +12,6 @@ export const USER_AUTH_STATE = {
 }
 
 export const MUTATIONS = {
-  SET_ROUTE_LOADING: 'SET_ROUTE_LOADING',
-
   SET_USER_PROFILE: 'SET_USER_PROFILE',
   SET_USER_AUTH_STATE: 'SET_USER_AUTH_STATE',
 
@@ -32,15 +30,10 @@ export default {
     userProfile: undefined,
     userAuthState: USER_AUTH_STATE.USER_APP_INITIAL,
     hiddenRecipeIds: null,
-    hiddenBlogIds: null,
-    routeLoading: false // TODO temporary here
+    hiddenBlogIds: null
     // userTokenRefreshing: false
   },
   mutations: {
-    [MUTATIONS.SET_ROUTE_LOADING](state, loading) {
-      state.routeLoading = loading
-    },
-
     [MUTATIONS.SET_USER_PROFILE](state, profile) {
       state.userProfile = profile
     },
@@ -311,9 +304,6 @@ export default {
     resetUserData({ commit }) {
       commit(MUTATIONS.SET_HIDDEN_BLOG_IDS, null)
       commit(MUTATIONS.SET_HIDDEN_RECIPE_IDS, null)
-    },
-    setRouteLoading({ commit }, loading) {
-      commit(MUTATIONS.SET_ROUTE_LOADING, loading)
     }
   },
   getters: {

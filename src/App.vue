@@ -1,12 +1,4 @@
 <template>
-  <global-sheet-modal-container />
-  <toasts-container />
-
-  <!-- <transition name="page-component-fade" mode="out-in"> -->
-  <div v-if="fetchedInitialUserProfile && routeLoading === true" class="route-loader" />
-  <!-- <div class="route-loader" /> -->
-  <!-- </transition> -->
-
   <!-- <transition name="page-component-fade" mode="out-in"> -->
   <!-- <div> -->
   <router-view key="loaded-app" v-if="fetchedInitialUserProfile"></router-view>
@@ -18,12 +10,15 @@
   <!-- </div> -->
   <AppLoading key="loading-app" v-else />
   <!-- </transition> -->
+
+  <vue-progress-bar></vue-progress-bar>
+  <global-sheet-modal-container />
+  <toasts-container />
 </template>
 
 <script>
 import AnalyticsService from '@/services/analytics'
 import AppLoading from '@/components/AppLoading'
-import { mapState } from 'vuex'
 
 export default {
   components: {
@@ -32,11 +27,6 @@ export default {
   data: () => ({
     fetchedInitialUserProfile: false
   }),
-  computed: {
-    ...mapState({
-      routeLoading: store => store.user.routeLoading
-    })
-  },
   beforeCreate() {
     const currentTheme = localStorage.getItem('theme')
     document.documentElement.setAttribute('theme', currentTheme || 'system')

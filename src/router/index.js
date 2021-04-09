@@ -3,6 +3,7 @@ import modalPlugin from '@/plugins/global-sheet-modal'
 import store from '@/store'
 import { USER_AUTH_STATE } from '@/store/modules/user'
 import identityApi from '@/api/identityApi'
+import progressbarPlugin from '@/plugins/progressbar'
 
 const forceIsAuthenticated = async () => {
   const userAuthState = store.getters['user/currentUserAuthState']
@@ -26,12 +27,9 @@ const forceIsAuthenticated = async () => {
 const onlyAnonymousGuard = async (to, from, next) => {
   const isAuthenticated = await forceIsAuthenticated()
 
-  console.log('isauth', isAuthenticated)
-
   if (isAuthenticated) {
     next({ name: 'landing-page' })
   } else {
-    console.log('soo ide', to)
     next()
   }
 }
@@ -167,29 +165,18 @@ const router = createRouter({
   }
 })
 
-// this.$router.beforeEach((to, from, next) => {
-//   // Do stuff
-
-//   // Then
-//   next() // move on to the next hook in the pipeline. If no hooks are left, the navigation is confirmed.
-//   next(false) // abort the current navigation.
-//   next('/') // redirect to a different location.
-// })
-
 router.beforeEach((to, from, next) => {
-  store.dispatch('user/setRouteLoading', true)
+  progressbarPlugin.progressbar.start()
 
   if (modalPlugin.modal && modalPlugin.modal.anyModalOpened()) {
     modalPlugin.modal.hideLast()
   } else {
     next()
   }
-  // if (to.name !== 'Login' && !store.getters['user/isAuthenticated']) next({ name: 'Login' })
-  // else next()
 })
 
 router.afterEach(() => {
-  store.dispatch('user/setRouteLoading', false)
+  progressbarPlugin.progressbar.finish()
 })
 
 export default router
