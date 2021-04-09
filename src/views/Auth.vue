@@ -3,11 +3,12 @@
     <router-link :to="{ name: 'landing-page' }">Recipeit</router-link>
 
     <div class="auth-page">
-      <router-view v-slot="{ Component }">
+      <router-view></router-view>
+      <!-- <router-view v-slot="{ Component }">
         <transition name="page-component-fade" mode="out-in">
           <component :is="Component"></component>
         </transition>
-      </router-view>
+      </router-view> -->
     </div>
   </div>
 </template>

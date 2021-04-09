@@ -2,18 +2,22 @@
   <global-sheet-modal-container />
   <toasts-container />
 
-  <transition name="page-component-fade" mode="out-in">
-    <AppLoading v-if="fetchedInitialUserProfile && routeLoading === true" class="route-loader" />
-  </transition>
+  <!-- <transition name="page-component-fade" mode="out-in"> -->
+  <div v-if="fetchedInitialUserProfile && routeLoading === true" class="route-loader" />
+  <!-- <div class="route-loader" /> -->
+  <!-- </transition> -->
 
-  <transition name="page-component-fade" mode="out-in">
-    <router-view key="loaded-app" v-if="fetchedInitialUserProfile" v-slot="{ Component }">
+  <!-- <transition name="page-component-fade" mode="out-in"> -->
+  <!-- <div> -->
+  <router-view key="loaded-app" v-if="fetchedInitialUserProfile"></router-view>
+  <!-- <router-view v-slot="{ Component }">
       <transition name="page-component-fade" mode="out-in">
         <component :is="Component"></component>
       </transition>
-    </router-view>
-    <AppLoading key="loading-app" v-else />
-  </transition>
+    </router-view> -->
+  <!-- </div> -->
+  <AppLoading key="loading-app" v-else />
+  <!-- </transition> -->
 </template>
 
 <script>
@@ -73,8 +77,23 @@ export default {
 }
 
 .route-loader {
-  opacity: 0.85;
-  // background: var(--color-background);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 10%;
+  height: 3px;
+  background: var(--color-primary);
   z-index: 1111111;
+  animation: routeLoader 2s 1 linear;
+  @include transition(all);
+}
+
+@keyframes routeLoader {
+  0% {
+    right: 100%;
+  }
+  100% {
+    right: 10%;
+  }
 }
 </style>

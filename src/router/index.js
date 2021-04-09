@@ -26,9 +26,12 @@ const forceIsAuthenticated = async () => {
 const onlyAnonymousGuard = async (to, from, next) => {
   const isAuthenticated = await forceIsAuthenticated()
 
+  console.log('isauth', isAuthenticated)
+
   if (isAuthenticated) {
     next({ name: 'landing-page' })
   } else {
+    console.log('soo ide', to)
     next()
   }
 }
