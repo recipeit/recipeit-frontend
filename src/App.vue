@@ -36,14 +36,14 @@ export default {
       .dispatch('user/fetchUserProfile', { getInitUserData: true })
       .then(() => {
         if (!location.pathname.startsWith('/app')) {
-          this.$router.push({ name: 'home' })
+          this.$router.replace({ name: 'home' })
         }
       })
       .catch(() => {
         if (location.pathname.startsWith('/app')) {
-          this.$router.push({ name: 'login' })
+          this.$router.replace({ name: 'login' })
         } else if (!location.pathname.startsWith('/auth')) {
-          this.$router.push({ name: 'landing-page' })
+          this.$router.replace({ name: 'landing-page' })
         }
       })
       .finally(() => {
@@ -61,6 +61,7 @@ export default {
 .page-component-fade-leave-active {
   transition: all 0.2s ease;
 }
+
 .page-component-fade-enter-from,
 .page-component-fade-leave-to {
   opacity: 0;
