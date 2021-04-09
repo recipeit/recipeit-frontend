@@ -11,28 +11,28 @@
         </h1>
       </template>
     </PageHeader>
-    <template v-if="isAuthenticated">
-      <DayPlan></DayPlan>
-      <div>
-        Ulubione
-      </div>
-      <div>
-        Przepisy według kategorii
-      </div>
-    </template>
+    <!-- <template v-if="isAuthenticated"> -->
+    <DayPlan></DayPlan>
+    <div>
+      Ulubione
+    </div>
+    <div>
+      Przepisy według kategorii
+    </div>
+    <!-- </template>
 
-    <LoginBeforeEnter v-else></LoginBeforeEnter>
+    <LoginBeforeEnter v-else></LoginBeforeEnter> -->
   </div>
 </template>
 
 <script>
 import PageHeader from '@/components/PageHeader'
 import DayPlan from '@/components/DayPlan'
-import LoginBeforeEnter from '@/components/LoginBeforeEnter'
+// import LoginBeforeEnter from '@/components/LoginBeforeEnter'
 import { mapGetters, mapState } from 'vuex'
 
 export default {
-  components: { PageHeader, DayPlan, LoginBeforeEnter },
+  components: { PageHeader, DayPlan },
   name: 'Home',
   computed: {
     ...mapGetters({

@@ -1,22 +1,47 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import modalPlugin from '@/plugins/global-sheet-modal'
 import store from '@/store'
+import { USER_AUTH_STATE } from '@/store/modules/user'
+import identityApi from '@/api/identityApi'
 
-const onlyAnonymousGuard = (to, from, next) => {
-  if (!store.getters['user/isAuthenticated']) {
-    next()
-  } else {
-    next({ name: 'home' })
+const forceIsAuthenticated = async () => {
+  const userAuthState = store.getters['user/currentUserAuthState']
+
+  if (userAuthState === USER_AUTH_STATE.USER_LOGGED_IN) {
+    return true
+  }
+
+  if (userAuthState === USER_AUTH_STATE.USER_LOGGED_OUT) {
+    return false
+  }
+
+  try {
+    await identityApi.profile()
+    return true
+  } catch {
+    return false
   }
 }
 
-// const ifAuthenticated = (to, from, next) => {
-//   if (store.getters['user/isAuthenticated']) {
-//     next()
-//   } else {
-//     next({ name: 'auth' })
-//   }
-// }
+const onlyAnonymousGuard = async (to, from, next) => {
+  const isAuthenticated = await forceIsAuthenticated()
+
+  if (isAuthenticated) {
+    next({ name: 'landing-page' })
+  } else {
+    next()
+  }
+}
+
+const onlyAuthenticated = async (to, from, next) => {
+  const isAuthenticated = await forceIsAuthenticated()
+
+  if (isAuthenticated) {
+    next()
+  } else {
+    next({ name: 'login' })
+  }
+}
 
 const routes = [
   {
@@ -32,6 +57,7 @@ const routes = [
   {
     path: '/app',
     name: 'app',
+    beforeEnter: onlyAuthenticated,
     component: () => import(/* webpackChunkName: "app" */ '@/views/App.vue'),
     children: [
       {
@@ -148,6 +174,8 @@ const router = createRouter({
 // })
 
 router.beforeEach((to, from, next) => {
+  store.dispatch('user/setRouteLoading', true)
+
   if (modalPlugin.modal && modalPlugin.modal.anyModalOpened()) {
     modalPlugin.modal.hideLast()
   } else {
@@ -155,6 +183,10 @@ router.beforeEach((to, from, next) => {
   }
   // if (to.name !== 'Login' && !store.getters['user/isAuthenticated']) next({ name: 'Login' })
   // else next()
+})
+
+router.afterEach(() => {
+  store.dispatch('user/setRouteLoading', false)
 })
 
 export default router

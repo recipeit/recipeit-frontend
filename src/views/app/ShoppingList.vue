@@ -2,38 +2,38 @@
   <div class="layout__page__content">
     <PageHeader :title="$t('shoppingList.title')"></PageHeader>
 
-    <template v-if="isAuthenticated">
-      <!-- <SearchWithFilter class="product-list-filter" placeholder="Szukaj produktu" @search="onSearch($event)" /> -->
+    <!-- <template v-if="isAuthenticated"> -->
+    <!-- <SearchWithFilter class="product-list-filter" placeholder="Szukaj produktu" @search="onSearch($event)" /> -->
 
-      <ul class="product-list-groups">
-        <li class="product-list-group" v-for="products in groupedProducts" :key="products[0]">
-          <div class="product-list-group__title">
-            <ProductIcon class="product-list-group__title__icon" :group="products[0]"></ProductIcon>
-            <div class="product-list-group__title__name">
-              {{ $t(`productCategory.${products[0]}`) }}
-            </div>
+    <ul class="product-list-groups">
+      <li class="product-list-group" v-for="products in groupedProducts" :key="products[0]">
+        <div class="product-list-group__title">
+          <ProductIcon class="product-list-group__title__icon" :group="products[0]"></ProductIcon>
+          <div class="product-list-group__title__name">
+            {{ $t(`productCategory.${products[0]}`) }}
           </div>
-          <ul class="product-list">
-            <li class="product-list__item" v-for="product in products[1]" :key="product.id">
-              <ShoppingListProduct :product="product" @purchase="purchase(product.id)" />
-            </li>
-          </ul>
-        </li>
-      </ul>
+        </div>
+        <ul class="product-list">
+          <li class="product-list__item" v-for="product in products[1]" :key="product.id">
+            <ShoppingListProduct :product="product" @purchase="purchase(product.id)" />
+          </li>
+        </ul>
+      </li>
+    </ul>
 
-      <BaseLink v-if="products && products.length > 0" color="primary" class="purchase-all-button" @click="purchaseAll">
-        {{ $t('shoppingList.purchaseAllButton') }}
-      </BaseLink>
+    <BaseLink v-if="products && products.length > 0" color="primary" class="purchase-all-button" @click="purchaseAll">
+      {{ $t('shoppingList.purchaseAllButton') }}
+    </BaseLink>
 
-      <div class="floating-action-button-container">
-        <BaseButton raised color="contrast" @click="newProduct()">
-          <BaseIcon class="floating-action-button__icon" icon="plus" weight="semi-bold" />
-          {{ $t('shared.addProduct') }}
-        </BaseButton>
-      </div>
-    </template>
+    <div class="floating-action-button-container">
+      <BaseButton raised color="contrast" @click="newProduct()">
+        <BaseIcon class="floating-action-button__icon" icon="plus" weight="semi-bold" />
+        {{ $t('shared.addProduct') }}
+      </BaseButton>
+    </div>
+    <!-- </template> -->
 
-    <LoginBeforeEnter v-else></LoginBeforeEnter>
+    <!-- <LoginBeforeEnter v-else></LoginBeforeEnter> -->
   </div>
 </template>
 
@@ -44,7 +44,7 @@ import _ from 'lodash'
 import ShoppingListProduct from '@/components/ShoppingListProduct'
 import Dialog from '@/components/modals/Dialog'
 import PageHeader from '@/components/PageHeader.vue'
-import LoginBeforeEnter from '@/components/LoginBeforeEnter'
+// import LoginBeforeEnter from '@/components/LoginBeforeEnter'
 import { PRODUCT_GROUP_ICONS } from '@/constants'
 import NewShoppingListProduct from '@/components/modals/NewShoppingListProduct'
 import ProductIcon from '@/components/ProductIcon'
@@ -55,7 +55,7 @@ export default {
   components: {
     ShoppingListProduct,
     PageHeader,
-    LoginBeforeEnter,
+    // LoginBeforeEnter,
     ProductIcon
     // SearchWithFilter
   },

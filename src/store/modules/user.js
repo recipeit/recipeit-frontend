@@ -5,12 +5,15 @@ import toastPlugin from '@/plugins/toast'
 import router from '@/router'
 
 export const USER_AUTH_STATE = {
+  USER_APP_INITIAL: 'USER_APP_INITIAL',
   USER_LOGGED_IN: 'USER_LOGGED_IN',
   USER_FETCHING: 'USER_FETCHING',
   USER_LOGGED_OUT: 'USER_LOGGED_OUT'
 }
 
 export const MUTATIONS = {
+  SET_ROUTE_LOADING: 'SET_ROUTE_LOADING',
+
   SET_USER_PROFILE: 'SET_USER_PROFILE',
   SET_USER_AUTH_STATE: 'SET_USER_AUTH_STATE',
 
@@ -27,12 +30,17 @@ export default {
   namespaced: true,
   state: {
     userProfile: undefined,
-    userAuthState: USER_AUTH_STATE.USER_LOGGED_OUT,
+    userAuthState: USER_AUTH_STATE.USER_APP_INITIAL,
     hiddenRecipeIds: null,
-    hiddenBlogIds: null
+    hiddenBlogIds: null,
+    routeLoading: false // TODO temporary here
     // userTokenRefreshing: false
   },
   mutations: {
+    [MUTATIONS.SET_ROUTE_LOADING](state, loading) {
+      state.routeLoading = loading
+    },
+
     [MUTATIONS.SET_USER_PROFILE](state, profile) {
       state.userProfile = profile
     },
@@ -204,8 +212,10 @@ export default {
 
         const onRefreshCookieError = () => {
           commit(MUTATIONS.SET_USER_AUTH_STATE, USER_AUTH_STATE.USER_LOGGED_OUT)
-          if (router.currentRoute.value.fullPath.startsWith('/app')) {
-            sessionStorage.setItem('LOGIN_REDIRECT', router.currentRoute.value.fullPath)
+          // console.log(router.currentRoute.value.fullPath)
+          // console.log(location.pathname)
+          if (location.pathname.startsWith('/app')) {
+            sessionStorage.setItem('LOGIN_REDIRECT', location.pathname)
           }
           dispatch('logout')
           reject()
@@ -238,8 +248,8 @@ export default {
 
       commit(MUTATIONS.SET_USER_PROFILE, null)
 
-      if (router.currentRoute.value.fullPath.startsWith('/app')) {
-        sessionStorage.setItem('LOGIN_REDIRECT', router.currentRoute.value.fullPath)
+      if (location.pathname.startsWith('/app')) {
+        sessionStorage.setItem('LOGIN_REDIRECT', location.pathname)
         router.push({ name: 'login' })
       }
 
@@ -301,6 +311,9 @@ export default {
     resetUserData({ commit }) {
       commit(MUTATIONS.SET_HIDDEN_BLOG_IDS, null)
       commit(MUTATIONS.SET_HIDDEN_RECIPE_IDS, null)
+    },
+    setRouteLoading({ commit }, loading) {
+      commit(MUTATIONS.SET_ROUTE_LOADING, loading)
     }
   },
   getters: {

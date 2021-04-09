@@ -2,38 +2,38 @@
   <div class="layout__page__content">
     <PageHeader :title="$t('myKitchen.title')"></PageHeader>
 
-    <div v-if="currentUserAuthState === 'USER_LOGGED_IN'">
-      <SearchWithFilter class="product-list-filter" placeholder="Szukaj produktu" @search="onSearch($event)" />
+    <!-- <div v-if="currentUserAuthState === 'USER_LOGGED_IN'"> -->
+    <SearchWithFilter class="product-list-filter" placeholder="Szukaj produktu" @search="onSearch($event)" />
 
-      <ul class="product-list-groups">
-        <li class="product-list-group" v-for="products in groupedProducts" :key="products[0]">
-          <div class="product-list-group__title">
-            <ProductIcon class="product-list-group__title__icon" :group="products[0]"></ProductIcon>
-            <div class="product-list-group__title__name">
-              {{ $t(`productCategory.${products[0]}`) }}
-            </div>
+    <ul class="product-list-groups">
+      <li class="product-list-group" v-for="products in groupedProducts" :key="products[0]">
+        <div class="product-list-group__title">
+          <ProductIcon class="product-list-group__title__icon" :group="products[0]"></ProductIcon>
+          <div class="product-list-group__title__name">
+            {{ $t(`productCategory.${products[0]}`) }}
           </div>
-          <ul class="product-list">
-            <li class="product-list__item" v-for="product in products[1]" :key="product.id">
-              <KitchenProduct :product="product" />
-            </li>
-          </ul>
-        </li>
-      </ul>
+        </div>
+        <ul class="product-list">
+          <li class="product-list__item" v-for="product in products[1]" :key="product.id">
+            <KitchenProduct :product="product" />
+          </li>
+        </ul>
+      </li>
+    </ul>
 
-      <div class="floating-action-button-container">
-        <BaseButton class="gtm_my-kitchen-add-product-button" raised color="contrast" @click="newProduct">
-          <BaseIcon class="floating-action-button__icon" icon="plus" weight="semi-bold" />
-          {{ $t('shared.addProduct') }}
-        </BaseButton>
-      </div>
+    <div class="floating-action-button-container">
+      <BaseButton class="gtm_my-kitchen-add-product-button" raised color="contrast" @click="newProduct">
+        <BaseIcon class="floating-action-button__icon" icon="plus" weight="semi-bold" />
+        {{ $t('shared.addProduct') }}
+      </BaseButton>
     </div>
+    <!-- </div> -->
 
-    <template v-else-if="currentUserAuthState === 'USER_FETCHING'">
+    <!-- <template v-else-if="currentUserAuthState === 'USER_FETCHING'">
       Czekaj...
     </template>
 
-    <LoginBeforeEnter v-else-if="currentUserAuthState === 'USER_LOGGED_OUT'"></LoginBeforeEnter>
+    <LoginBeforeEnter v-else-if="currentUserAuthState === 'USER_LOGGED_OUT'"></LoginBeforeEnter> -->
   </div>
 </template>
 
@@ -45,7 +45,7 @@ import _ from 'lodash'
 import KitchenProduct from '@/components/KitchenProduct'
 import NewKitchenProductModal from '@/components/modals/NewKitchenProductModal'
 import PageHeader from '@/components/PageHeader.vue'
-import LoginBeforeEnter from '@/components/LoginBeforeEnter'
+// import LoginBeforeEnter from '@/components/LoginBeforeEnter'
 import ProductIcon from '@/components/ProductIcon'
 import SearchWithFilter from '@/components/SearchWithFilter'
 
@@ -54,7 +54,7 @@ export default {
   components: {
     KitchenProduct,
     PageHeader,
-    LoginBeforeEnter,
+    // LoginBeforeEnter,
     ProductIcon,
     SearchWithFilter
   },
