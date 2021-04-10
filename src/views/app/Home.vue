@@ -30,6 +30,28 @@
     <HorizontalRecipesList :recipes="favouriteRecipes" />
 
     <div class="section-title"><BaseIcon class="section-title-icon" icon="star" /> Popularne kategorie</div>
+    <div class="popular-categories-container">
+      <ul class="popular-categories">
+        <li class="popular-category-container">
+          <a href="#" class="popular-category">Kuchnia włoska</a>
+        </li>
+        <li class="popular-category-container">
+          <a href="#" class="popular-category">Dieta wegetariańska</a>
+        </li>
+        <li class="popular-category-container">
+          <a href="#" class="popular-category">Makarony</a>
+        </li>
+        <li class="popular-category-container">
+          <a href="#" class="popular-category">Ciasteczka</a>
+        </li>
+        <li class="popular-category-container">
+          <a href="#" class="popular-category">Kuchnia tajska</a>
+        </li>
+        <li class="popular-category-container">
+          <a href="#" class="popular-category">Kuchnia chińska</a>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -114,5 +136,35 @@ export default {
     font-size: 1.5rem;
     color: var(--color-primary);
   }
+}
+
+.popular-categories-container {
+}
+.popular-categories {
+  display: flex;
+  flex-wrap: wrap;
+  margin: -8px;
+}
+
+.popular-category-container {
+  width: 50%;
+  padding: 8px;
+}
+
+.popular-category {
+  background-color: var(--color-image-background);
+  color: inherit;
+  text-decoration: none;
+  display: block;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  padding: 16px;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  border-radius: 1.5rem;
+  min-height: 96px;
+  font-size: 0.875rem;
 }
 </style>
