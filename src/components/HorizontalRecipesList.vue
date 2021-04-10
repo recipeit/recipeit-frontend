@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="list-container">
     <ul class="list">
       <li class="list-item" v-for="recipe in recipes" :key="recipe.id">
         <RecipeBox :recipe="recipe" />
@@ -29,10 +29,21 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.list-container {
+  margin: 0 -32px;
+}
+
 .list {
   display: flex;
   overflow: auto;
   padding-bottom: 16px;
+
+  &::before,
+  &::after {
+    content: '';
+    width: 32px;
+    flex-shrink: 0;
+  }
 
   /* width */
   &::-webkit-scrollbar {
@@ -59,7 +70,7 @@ export default {
 
 .list-item {
   width: 150px;
-  max-width: 40%;
+  max-width: calc((100% - 64px) * 0.4);
   flex-shrink: 0;
 
   & + & {
