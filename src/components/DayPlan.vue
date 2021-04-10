@@ -24,7 +24,11 @@
           </div>
         </div>
 
-        <div v-if="anyPlannedRecipesInDay" class="day-plan__times-of-day">
+        <div v-if="currentDayPlan === null">
+          wczytuję...
+        </div>
+
+        <div v-else-if="anyPlannedRecipesInDay" class="day-plan__times-of-day">
           <div class="time-of-day" v-for="(recipes, key) in currentDayPlan" :key="key">
             <div class="time-of-day__title">{{ $t(`timeOfDay.${key}`) }}</div>
             <div class="time-of-day__recipes">
@@ -47,8 +51,13 @@
           </div>
         </div>
 
-        <div v-else key="no-plans">
+        <div v-else key="no-plans" class="no-plans-message">
           Zaplanuj pierwszy przepis na ten dzień!
+          <router-link :to="{ name: 'recipes' }" v-slot="{ href, navigate }" custom>
+            <BaseButton :anchorTag="true" :href="href" @click="navigate" class="no-plans-message-button" raised color="primary">
+              Przeglądaj przepisy
+            </BaseButton>
+          </router-link>
         </div>
       </div>
     </transition>
@@ -119,6 +128,7 @@ export default {
         name: day.calendar(),
         isToday: day.isToday()
       }
+      this.currentDayPlan = null
       userApi.getPlannedRecipes(this.currentDay.key).then(resp => {
         this.currentDayPlan = resp.data.dayPlan
       })
@@ -327,6 +337,15 @@ export default {
         font-size: 1.25rem;
       }
     }
+  }
+}
+
+.no-plans-message {
+  text-align: center;
+  padding: 2rem 0;
+
+  &-button {
+    margin-top: 1rem;
   }
 }
 </style>
