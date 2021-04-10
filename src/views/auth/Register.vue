@@ -31,7 +31,7 @@
       <li v-for="(error, index) in errors" :key="index">{{ $t(`errorCode.${error}`) }}</li>
     </ul>
 
-    <AuthSocialList buttonPrefix="Zarejestruj się z" />
+    <AuthSocialList buttonPrefix="Kontynuuj z" />
 
     <div class="auth-page__content__terms">
       Rejestrując się akceptujesz

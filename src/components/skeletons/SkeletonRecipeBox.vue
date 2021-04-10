@@ -52,11 +52,11 @@ export default {
       background-color: var(--color-image-background);
 
       &:first-child {
-        margin-right: 24px;
+        margin-right: 15%;
       }
 
       &:last-child {
-        margin-right: 96px;
+        margin-right: 50%;
       }
     }
   }

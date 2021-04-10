@@ -45,7 +45,7 @@
       </BaseLink>
     </router-link>
 
-    <AuthSocialList buttonPrefix="Zaloguj się z" @lockInputs="socialSending = true" @unlockInputs="socialSending = false" />
+    <AuthSocialList buttonPrefix="Kontynuuj z" @lockInputs="socialSending = true" @unlockInputs="socialSending = false" />
   </div>
 </template>
 

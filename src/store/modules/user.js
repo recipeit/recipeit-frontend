@@ -236,13 +236,16 @@ export default {
           })
       })
     },
-    async logout({ commit, dispatch }) {
+    async logout({ commit, dispatch }, withoutRedirect) {
       await identityApi.logout()
 
       commit(MUTATIONS.SET_USER_PROFILE, null)
+      commit(MUTATIONS.SET_USER_AUTH_STATE, USER_AUTH_STATE.USER_LOGGED_OUT)
 
       if (location.pathname.startsWith('/app')) {
-        sessionStorage.setItem('LOGIN_REDIRECT', location.pathname)
+        if (!withoutRedirect) {
+          sessionStorage.setItem('LOGIN_REDIRECT', location.pathname)
+        }
         router.push({ name: 'login' })
       }
 
