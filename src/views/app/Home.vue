@@ -14,17 +14,15 @@
     <PageHeader :title="$t(welcomeType) + '!'"></PageHeader>
 
     <div class="section-title">
-      Twój plan dnia
+      <BaseIcon class="section-title-icon" icon="clock" /> Twój plan dnia
       <BaseLink class="section-title-link" tag="button" color="primary">pokaż dzisiaj</BaseLink>
     </div>
     <DayPlan />
 
-    <div class="section-title">Ulubione</div>
+    <div class="section-title"><BaseIcon class="section-title-icon" icon="heart" /> Ulubione</div>
     <HorizontalRecipesList :recipes="favouriteRecipes" />
 
-    <div class="section-title">
-      Popularne kategorie
-    </div>
+    <div class="section-title"><BaseIcon class="section-title-icon" icon="star" /> Popularne kategorie</div>
   </div>
 </template>
 
@@ -102,6 +100,12 @@ export default {
   &-link {
     margin-left: auto;
     font-size: 12px;
+  }
+
+  &-icon {
+    margin-right: 0.5rem;
+    font-size: 1.25rem;
+    color: var(--color-primary);
   }
 }
 </style>

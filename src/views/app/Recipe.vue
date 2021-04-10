@@ -39,7 +39,7 @@
             {{ $tc('shared.servings', recipe.details.servings) }}
           </div>
           <BaseButton class="recipe__header-pill-button" color="primary" raised @click="openPlanRecipeModal()">
-            <BaseIcon class="recipe__header-pill-button__icon" icon="stop-watch"></BaseIcon>
+            <BaseIcon class="recipe__header-pill-button__icon" icon="clock" weight="semi-bold"></BaseIcon>
             Zaplanuj
           </BaseButton>
         </div>

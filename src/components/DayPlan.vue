@@ -1,29 +1,21 @@
 <template>
   <div class="day-plan" v-if="currentDay">
-    <!-- <div class="day-plan__header">
-      <BaseLink tag="button" class="day-plan__header__button" @click="previousDay()">
-        <BaseIcon icon="angle-left" weight="semi-bold"></BaseIcon>
-      </BaseLink>
-      <div class="day-plan__header__title-container">
-        <transition :name="`day-plan-slide-${currendDaySlideType}`" mode="out-in">
-          <div :class="['day-plan__header__title', { 'day-plan__header__title--today': currentDay.isToday }]" :key="currentDay.key">
-            {{ currentDay.name }}
-          </div>
-        </transition>
-      </div>
-      <BaseLink tag="button" class="day-plan__header__button" @click="nextDay()">
-        <BaseIcon icon="angle-right" weight="semi-bold"></BaseIcon>
-      </BaseLink>
-    </div> -->
     <transition :name="`day-plan-slide-${currendDaySlideType}`" mode="out-in">
-      <div v-if="currentDayPlan" :key="currentDay.key">
+      <div :key="currentDay.key">
         <div class="day-plan__new-header">
           <div class="new-header-list">
             <div
               @click="setDay(day.dayjs, 'fade')"
               v-for="day in daysList"
               :key="day.key"
-              :class="['new-header-day', { 'new-header-day--selected': currentDay.key === day.key, 'new-header-day--today': day.isToday }]"
+              :class="[
+                'new-header-day',
+                {
+                  'new-header-day--selected': currentDay.key === day.key,
+                  'new-header-day--today': day.isToday,
+                  'new-header-day--before-today': day.isBeforeToday
+                }
+              ]"
             >
               <div class="new-header-day-weekday">{{ day.weekday }}</div>
               <div class="new-header-day-monthday">{{ day.monthday }}</div>
@@ -31,7 +23,7 @@
           </div>
         </div>
 
-        <div class="day-plan__times-of-day">
+        <div v-if="anyPlannedRecipesInDay" class="day-plan__times-of-day">
           <div class="time-of-day" v-for="(recipes, key) in currentDayPlan" :key="key">
             <div class="time-of-day__title">{{ $t(`timeOfDay.${key}`) }}</div>
             <div class="time-of-day__recipes">
@@ -52,6 +44,10 @@
               </div>
             </div>
           </div>
+        </div>
+
+        <div v-else key="no-plans">
+          Zaplanuj pierwszy przepis na ten dzień!
         </div>
       </div>
     </transition>
@@ -81,8 +77,16 @@ export default {
   beforeMount() {
     this.setDay(dayjs().startOf('day'), SlideType.FADE)
   },
+  computed: {
+    anyPlannedRecipesInDay() {
+      const { currentDayPlan } = this
+      return currentDayPlan && Object.keys(currentDayPlan).length > 0 && currentDayPlan.constructor === Object
+    }
+  },
   methods: {
     setDay(day, slideType) {
+      const today = dayjs().startOf('day')
+
       this.daysList = [
         day.subtract(1, 'day'),
         day,
@@ -98,7 +102,8 @@ export default {
         key: day.format('YYYY-MM-DD'),
         weekday: day.format('ddd'),
         monthday: day.date(),
-        isToday: day.isToday()
+        isToday: day.isToday(),
+        isBeforeToday: day.isBefore(today, 'day')
       }))
       this.currendDaySlideType = slideType
       this.currentDay = {
@@ -294,6 +299,12 @@ export default {
         // .new-header-day-monthday {
         color: var(--color-primary);
         // }
+      }
+
+      &--before-today {
+        .new-header-day-monthday {
+          color: var(--color-text-secondary);
+        }
       }
 
       .new-header-day-weekday {
