@@ -144,6 +144,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.layout__page__content {
+  margin-bottom: 88px;
+}
+
 .product-list-filter {
   margin-bottom: 1.5rem;
 }
