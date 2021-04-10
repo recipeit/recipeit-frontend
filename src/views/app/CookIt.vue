@@ -15,6 +15,7 @@
 
       <div v-if="almostAvailableRecipes.items?.length > 0 || almostAvailableRecipes.filters">
         <div class="recipes-list-title">
+          <BaseIcon class="recipes-list-title-icon" icon="basket" />
           {{ $t('cookIt.buyMissingIngredient') }}
         </div>
 
@@ -91,9 +92,17 @@ export default {
 }
 
 .recipes-list-title {
+  display: flex;
   font-size: 14px;
   margin-top: 32px;
   margin-bottom: 16px;
   font-weight: bold;
+  align-items: center;
+
+  &-icon {
+    font-size: 1.5rem;
+    margin-right: 0.5rem;
+    color: var(--color-primary);
+  }
 }
 </style>

@@ -111,7 +111,7 @@ export default {
 
   &-icon {
     margin-right: 0.5rem;
-    font-size: 1.25rem;
+    font-size: 1.5rem;
     color: var(--color-primary);
   }
 }
