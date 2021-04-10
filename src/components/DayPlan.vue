@@ -49,7 +49,8 @@ import { ToastType } from '@/plugins/toast/toastType'
 
 const SlideType = {
   PREVIOUS: 'previous',
-  NEXT: 'next'
+  NEXT: 'next',
+  FADE: 'fade'
 }
 
 export default {
@@ -61,7 +62,7 @@ export default {
     }
   },
   beforeMount() {
-    this.setDay(dayjs().startOf('day'), SlideType.NEXT)
+    this.setDay(dayjs().startOf('day'), SlideType.FADE)
   },
   methods: {
     setDay(day, slideType) {
@@ -105,6 +106,7 @@ export default {
 
 <style lang="scss" scoped>
 .day-plan {
+  &-slide-fade,
   &-slide-previous,
   &-slide-next {
     // &-enter-active,
