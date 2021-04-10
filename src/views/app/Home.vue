@@ -1,6 +1,6 @@
 <template>
   <div class="layout__page__content home-page">
-    <PageHeader>
+    <!-- <PageHeader>
       <template v-slot:title>
         <h1 v-if="userProfile && userProfile.username" class="home-page__title">
           <span class="home-page__title__sub">{{ $t(welcomeType) }},</span>
@@ -10,7 +10,8 @@
           <span>{{ $t(welcomeType) }}</span>
         </h1>
       </template>
-    </PageHeader>
+    </PageHeader> -->
+    <PageHeader :title="$t(welcomeType) + '!'"></PageHeader>
 
     <div class="section-title">
       Twój plan dnia
