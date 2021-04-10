@@ -116,6 +116,10 @@ export default {
     font-size: 14px;
     font-weight: 500;
     padding: 0 8px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
   &__props {

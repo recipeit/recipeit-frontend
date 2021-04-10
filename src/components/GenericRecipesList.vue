@@ -157,7 +157,7 @@ export default {
 
     &__item {
       width: 50%;
-      padding: 8px;
+      padding: 0.5rem 0.5rem 1rem 0.5rem;
       box-sizing: border-box;
       cursor: pointer;
 

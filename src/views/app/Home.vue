@@ -13,12 +13,11 @@
     </PageHeader>
     <!-- <template v-if="isAuthenticated"> -->
     <DayPlan></DayPlan>
-    <div>
-      Ulubione
-    </div>
-    <div>
-      Przepisy według kategorii
-    </div>
+    <p>Ulubione</p>
+    <HorizontalRecipesList :recipes="favouriteRecipes" />
+    <p>
+      Popularne kategorie
+    </p>
     <!-- </template>
 
     <LoginBeforeEnter v-else></LoginBeforeEnter> -->
@@ -28,18 +27,26 @@
 <script>
 import PageHeader from '@/components/PageHeader'
 import DayPlan from '@/components/DayPlan'
-// import LoginBeforeEnter from '@/components/LoginBeforeEnter'
+import HorizontalRecipesList from '@/components/HorizontalRecipesList'
 import { mapGetters, mapState } from 'vuex'
+import userApi from '@/api/userApi'
 
 export default {
-  components: { PageHeader, DayPlan },
+  components: { PageHeader, DayPlan, HorizontalRecipesList },
   name: 'Home',
   computed: {
     ...mapGetters({
       isAuthenticated: 'user/isAuthenticated'
     }),
     ...mapState({
-      userProfile: state => state.user.userProfile
+      userProfile: state => state.user.userProfile,
+      recipes: state => state.recipes.recipes
+    })
+  },
+  beforeMount() {
+    userApi.getFavouriteRecipes().then(({ data }) => {
+      this.favouriteRecipes = data
+      // console.log(data)
     })
   },
   data() {
@@ -56,7 +63,8 @@ export default {
         { id: 1, name: 'Alaska' },
         { id: 2, name: 'Alabama' },
         { id: 3, name: 'Kalifornia' }
-      ]
+      ],
+      favouriteRecipes: null
     }
   }
 }
