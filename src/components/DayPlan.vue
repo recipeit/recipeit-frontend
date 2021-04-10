@@ -15,59 +15,41 @@
         <BaseIcon icon="angle-right" weight="semi-bold"></BaseIcon>
       </BaseLink>
     </div> -->
-
-    <div class="day-plan__new-header">
-      <div class="new-header-list">
-        <div class="new-header-day new-header-day">
-          <div class="new-header-day-weekday">PT</div>
-          <div class="new-header-day-monthday">9</div>
-        </div>
-        <div class="new-header-day new-header-day--selected">
-          <div class="new-header-day-weekday">SOB</div>
-          <div class="new-header-day-monthday">10</div>
-        </div>
-        <div class="new-header-day">
-          <div class="new-header-day-weekday">NIE</div>
-          <div class="new-header-day-monthday">11</div>
-        </div>
-        <div class="new-header-day">
-          <div class="new-header-day-weekday">PON</div>
-          <div class="new-header-day-monthday">12</div>
-        </div>
-        <div class="new-header-day">
-          <div class="new-header-day-weekday">WT</div>
-          <div class="new-header-day-monthday">13</div>
-        </div>
-        <div class="new-header-day">
-          <div class="new-header-day-weekday">ŚR</div>
-          <div class="new-header-day-monthday">14</div>
-        </div>
-        <!-- <div class="new-header-day">
-          <div class="new-header-day-weekday">CZW</div>
-          <div class="new-header-day-monthday">15</div>
-        </div> -->
-      </div>
-    </div>
-
     <transition :name="`day-plan-slide-${currendDaySlideType}`" mode="out-in">
-      <div v-if="currentDayPlan" :key="currentDay.key" class="day-plan__times-of-day">
-        <div class="time-of-day" v-for="(recipes, key) in currentDayPlan" :key="key">
-          <div class="time-of-day__title">{{ $t(`timeOfDay.${key}`) }}</div>
-          <div class="time-of-day__recipes">
-            <div href="#" class="time-of-day__recipe" v-for="recipe in recipes" :key="recipe.id">
-              <router-link :to="{ name: 'recipe', params: { recipeId: recipe.recipeId } }" v-slot="{ href, navigate }" custom>
-                <BaseLink :href="href" @click="navigate" class="time-of-day__recipe__link">
-                  {{ recipe.name }}
+      <div v-if="currentDayPlan" :key="currentDay.key">
+        <div class="day-plan__new-header">
+          <div class="new-header-list">
+            <div
+              @click="setDay(day.dayjs, 'fade')"
+              v-for="day in daysList"
+              :key="day.key"
+              :class="['new-header-day', { 'new-header-day--selected': currentDay.key === day.key, 'new-header-day--today': day.isToday }]"
+            >
+              <div class="new-header-day-weekday">{{ day.weekday }}</div>
+              <div class="new-header-day-monthday">{{ day.monthday }}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="day-plan__times-of-day">
+          <div class="time-of-day" v-for="(recipes, key) in currentDayPlan" :key="key">
+            <div class="time-of-day__title">{{ $t(`timeOfDay.${key}`) }}</div>
+            <div class="time-of-day__recipes">
+              <div href="#" class="time-of-day__recipe" v-for="recipe in recipes" :key="recipe.id">
+                <router-link :to="{ name: 'recipe', params: { recipeId: recipe.recipeId } }" v-slot="{ href, navigate }" custom>
+                  <BaseLink :href="href" @click="navigate" class="time-of-day__recipe__link">
+                    {{ recipe.name }}
+                  </BaseLink>
+                </router-link>
+                <BaseLink
+                  tag="button"
+                  color="text-secondary"
+                  class="time-of-day__recipe__remove"
+                  @click="removePlannedRecipe(recipe.id, key)"
+                >
+                  <BaseIcon icon="close" weight="semi-bold"></BaseIcon>
                 </BaseLink>
-              </router-link>
-              <BaseLink
-                tag="button"
-                color="text-secondary"
-                class="time-of-day__recipe__remove"
-                @click="removePlannedRecipe(recipe.id, key)"
-              >
-                <BaseIcon icon="close" weight="semi-bold"></BaseIcon>
-              </BaseLink>
+              </div>
             </div>
           </div>
         </div>
@@ -90,6 +72,7 @@ const SlideType = {
 export default {
   data() {
     return {
+      daysList: [],
       currentDay: null,
       currentDayPlan: null,
       currendDaySlideType: null
@@ -100,6 +83,23 @@ export default {
   },
   methods: {
     setDay(day, slideType) {
+      this.daysList = [
+        day.subtract(1, 'day'),
+        day,
+        day.add(1, 'day'),
+        day.add(2, 'day'),
+        day.add(3, 'day'),
+        day.add(4, 'day'),
+        day.add(5, 'day'),
+        day.add(6, 'day'),
+        day.add(7, 'day')
+      ].map(day => ({
+        dayjs: day,
+        key: day.format('YYYY-MM-DD'),
+        weekday: day.format('ddd'),
+        monthday: day.date(),
+        isToday: day.isToday()
+      }))
       this.currendDaySlideType = slideType
       this.currentDay = {
         dayjs: day,
@@ -261,15 +261,39 @@ export default {
 .day-plan__new-header {
   .new-header-list {
     display: flex;
+    overflow: hidden;
+    position: relative;
+    gap: 8px;
+
+    &::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: 64px;
+      pointer-events: none;
+      background: linear-gradient(to right, transparent, var(--color-background));
+    }
 
     .new-header-day {
       border-radius: 1.25rem;
-      padding: 1rem;
+      padding: 1rem 0;
       text-align: center;
       line-height: 1;
+      width: 50px;
+      flex-shrink: 0;
+      cursor: pointer;
 
       &--selected {
         background-color: var(--color-image-background);
+        cursor: initial;
+      }
+
+      &--today {
+        // .new-header-day-monthday {
+        color: var(--color-primary);
+        // }
       }
 
       .new-header-day-weekday {
@@ -281,7 +305,7 @@ export default {
       }
 
       .new-header-day-monthday {
-        color: var(--color-text-primary);
+        // color: var(--color-text-primary);
         font-size: 1.25rem;
       }
     }
