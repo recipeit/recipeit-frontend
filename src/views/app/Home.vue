@@ -13,11 +13,18 @@
     </PageHeader> -->
     <PageHeader :title="$t(welcomeType) + '!'"></PageHeader>
 
-    <div class="section-title">
-      <BaseIcon class="section-title-icon" icon="clock" /> Twój plan dnia
-      <BaseLink class="section-title-link" tag="button" color="primary">pokaż dzisiaj</BaseLink>
-    </div>
-    <DayPlan />
+    <DayPlan>
+      <template #title="{ backToToday, showBackToToday }">
+        <div class="section-title">
+          <BaseIcon class="section-title-icon" icon="clock" /> Twój plan dnia
+          <transition name="fade">
+            <BaseLink v-if="showBackToToday" class="section-title-link" tag="button" color="primary" @click="backToToday()">
+              pokaż dzisiaj
+            </BaseLink>
+          </transition>
+        </div>
+      </template>
+    </DayPlan>
 
     <div class="section-title"><BaseIcon class="section-title-icon" icon="heart" /> Ulubione</div>
     <HorizontalRecipesList :recipes="favouriteRecipes" />

@@ -1,5 +1,6 @@
 <template>
   <div class="day-plan" v-if="currentDay">
+    <slot name="title" :backToToday="backToToday" :showBackToToday="showBackToToday" />
     <transition :name="`day-plan-slide-${currendDaySlideType}`" mode="out-in">
       <div :key="currentDay.key">
         <div class="day-plan__new-header">
@@ -75,15 +76,21 @@ export default {
     }
   },
   beforeMount() {
-    this.setDay(dayjs().startOf('day'), SlideType.FADE)
+    this.backToToday()
   },
   computed: {
     anyPlannedRecipesInDay() {
       const { currentDayPlan } = this
       return currentDayPlan && Object.keys(currentDayPlan).length > 0 && currentDayPlan.constructor === Object
+    },
+    showBackToToday() {
+      return this.currentDay && !this.currentDay.isToday
     }
   },
   methods: {
+    backToToday() {
+      this.setDay(dayjs().startOf('day'), SlideType.FADE)
+    },
     setDay(day, slideType) {
       const today = dayjs().startOf('day')
 
