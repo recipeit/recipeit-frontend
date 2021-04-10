@@ -46,7 +46,9 @@
           <RecipeBox :recipe="recipe" />
         </li>
         <template v-if="recipes.fetching">
-          <li class="recipes-list__list__item" v-for="i in 4" :key="i">O</li>
+          <li class="recipes-list__list__item recipes-list__list__item--skeleton" v-for="i in 4" :key="i">
+            <SkeletonRecipeBox />
+          </li>
         </template>
       </ul>
 
@@ -58,6 +60,7 @@
 <script>
 import { RecipeList } from '@/constants'
 import RecipeBox from '@/components/RecipeBox'
+import SkeletonRecipeBox from '@/components/skeletons/SkeletonRecipeBox'
 import SearchWithFilter from '@/components/SearchWithFilter'
 import Observer from './Observer'
 
@@ -65,6 +68,7 @@ export default {
   emits: ['reload', 'load-next'],
   components: {
     SearchWithFilter,
+    SkeletonRecipeBox,
     RecipeBox,
     Observer
   },
@@ -156,6 +160,10 @@ export default {
       padding: 8px;
       box-sizing: border-box;
       cursor: pointer;
+
+      &--skeleton {
+        cursor: initial;
+      }
     }
   }
 }
