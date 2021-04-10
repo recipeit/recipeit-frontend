@@ -11,16 +11,19 @@
         </h1>
       </template>
     </PageHeader>
-    <!-- <template v-if="isAuthenticated"> -->
-    <DayPlan></DayPlan>
-    <p>Ulubione</p>
-    <HorizontalRecipesList :recipes="favouriteRecipes" />
-    <p>
-      Popularne kategorie
-    </p>
-    <!-- </template>
 
-    <LoginBeforeEnter v-else></LoginBeforeEnter> -->
+    <div class="section-title">
+      Twój plan dnia
+      <BaseLink class="section-title-link" tag="button" color="primary">pokaż dzisiaj</BaseLink>
+    </div>
+    <DayPlan />
+
+    <div class="section-title">Ulubione</div>
+    <HorizontalRecipesList :recipes="favouriteRecipes" />
+
+    <div class="section-title">
+      Popularne kategorie
+    </div>
   </div>
 </template>
 
@@ -84,6 +87,20 @@ export default {
       font-weight: 500;
       display: block;
     }
+  }
+}
+
+.section-title {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+
+  &-link {
+    margin-left: auto;
+    font-size: 12px;
   }
 }
 </style>

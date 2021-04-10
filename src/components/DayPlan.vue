@@ -1,6 +1,6 @@
 <template>
   <div class="day-plan" v-if="currentDay">
-    <div class="day-plan__header">
+    <!-- <div class="day-plan__header">
       <BaseLink tag="button" class="day-plan__header__button" @click="previousDay()">
         <BaseIcon icon="angle-left" weight="semi-bold"></BaseIcon>
       </BaseLink>
@@ -14,7 +14,41 @@
       <BaseLink tag="button" class="day-plan__header__button" @click="nextDay()">
         <BaseIcon icon="angle-right" weight="semi-bold"></BaseIcon>
       </BaseLink>
+    </div> -->
+
+    <div class="day-plan__new-header">
+      <div class="new-header-list">
+        <div class="new-header-day new-header-day">
+          <div class="new-header-day-weekday">PT</div>
+          <div class="new-header-day-monthday">9</div>
+        </div>
+        <div class="new-header-day new-header-day--selected">
+          <div class="new-header-day-weekday">SOB</div>
+          <div class="new-header-day-monthday">10</div>
+        </div>
+        <div class="new-header-day">
+          <div class="new-header-day-weekday">NIE</div>
+          <div class="new-header-day-monthday">11</div>
+        </div>
+        <div class="new-header-day">
+          <div class="new-header-day-weekday">PON</div>
+          <div class="new-header-day-monthday">12</div>
+        </div>
+        <div class="new-header-day">
+          <div class="new-header-day-weekday">WT</div>
+          <div class="new-header-day-monthday">13</div>
+        </div>
+        <div class="new-header-day">
+          <div class="new-header-day-weekday">ŚR</div>
+          <div class="new-header-day-monthday">14</div>
+        </div>
+        <!-- <div class="new-header-day">
+          <div class="new-header-day-weekday">CZW</div>
+          <div class="new-header-day-monthday">15</div>
+        </div> -->
+      </div>
     </div>
+
     <transition :name="`day-plan-slide-${currendDaySlideType}`" mode="out-in">
       <div v-if="currentDayPlan" :key="currentDay.key" class="day-plan__times-of-day">
         <div class="time-of-day" v-for="(recipes, key) in currentDayPlan" :key="key">
@@ -220,6 +254,36 @@ export default {
       font-size: 1rem;
       line-height: 1;
       height: 2.5rem;
+    }
+  }
+}
+
+.day-plan__new-header {
+  .new-header-list {
+    display: flex;
+
+    .new-header-day {
+      border-radius: 1.25rem;
+      padding: 1rem;
+      text-align: center;
+      line-height: 1;
+
+      &--selected {
+        background-color: var(--color-image-background);
+      }
+
+      .new-header-day-weekday {
+        text-transform: uppercase;
+        color: var(--color-text-secondary);
+        font-size: 10px;
+        font-weight: bold;
+        margin-bottom: 0.25rem;
+      }
+
+      .new-header-day-monthday {
+        color: var(--color-text-primary);
+        font-size: 1.25rem;
+      }
     }
   }
 }
