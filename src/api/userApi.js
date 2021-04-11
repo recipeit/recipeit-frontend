@@ -51,5 +51,11 @@ export default {
   },
   getHiddenBlogs() {
     return apiClient.get(`/${route}/hidden-blogs`)
+  },
+  getHiddenRecipeIds() {
+    return apiClient.get(`/${route}/hidden-recipes/ids`)
+  },
+  getHiddenBlogIds() {
+    return apiClient.get(`/${route}/hidden-blogs/ids`)
   }
 }

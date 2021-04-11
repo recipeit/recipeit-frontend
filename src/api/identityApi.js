@@ -36,6 +36,9 @@ export default {
   resetPassword(data) {
     return apiClient.post(`/${route}/reset-password`, data)
   },
+  changePassword(data) {
+    return apiClient.post(`/${route}/change-password`, data)
+  },
   sendConfirmationEmail(email) {
     return apiClient.post(`/${route}/send-confirmation-email`, { email })
   }

@@ -109,6 +109,16 @@ const routes = [
         component: () => import(/* webpackChunkName: "account" */ '@/views/app/Account.vue')
       },
       {
+        path: 'hidden-blogs',
+        name: 'hidden-blogs',
+        component: () => import(/* webpackChunkName: "account" */ '@/views/app/account/HiddenBlogs.vue')
+      },
+      {
+        path: 'hidden-recipes',
+        name: 'hidden-recipes',
+        component: () => import(/* webpackChunkName: "account" */ '@/views/app/account/HiddenRecipes.vue')
+      },
+      {
         path: 'help',
         name: 'help',
         component: () => import(/* webpackChunkName: "help" */ '@/views/app/Help.vue')

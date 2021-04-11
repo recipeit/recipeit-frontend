@@ -60,7 +60,7 @@ export default {
   // changeBlogVisibility(blogId, visible) {
   //   return apiClient.post(`/${route}/blogs/${blogId}/visibility`, { visible })
   // },
-  // getHiddenRecipes() {
+  // getHiddenRecipeIds() {
   //   return apiClient.get(`/${route}/hidden-recipes`)
   // }
 }

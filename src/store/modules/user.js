@@ -260,12 +260,12 @@ export default {
       dispatch('user/fetchHiddenBlogIds', {}, { root: true })
     },
     fetchHiddenRecipeIds({ commit }) {
-      userApi.getHiddenRecipes().then(({ data }) => {
+      userApi.getHiddenRecipeIds().then(({ data }) => {
         commit(MUTATIONS.SET_HIDDEN_RECIPE_IDS, data.recipeIds)
       })
     },
     fetchHiddenBlogIds({ commit }) {
-      userApi.getHiddenBlogs().then(({ data }) => {
+      userApi.getHiddenBlogIds().then(({ data }) => {
         commit(MUTATIONS.SET_HIDDEN_BLOG_IDS, data.blogIds)
       })
     },

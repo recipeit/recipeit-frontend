@@ -45,12 +45,22 @@
     </div>
 
     <h3>Ukryta zawartość</h3>
-    <div>
-      <BaseLink class="card-link" color="primary">Zarządzaj ukrytymi blogami</BaseLink>
-    </div>
-    <div>
-      <BaseLink class="card-link" color="primary">Zarządzaj ukrytymi przepisami</BaseLink>
-    </div>
+    <p>
+      <router-link :to="{ name: 'hidden-blogs' }" v-slot="{ href, navigate }" custom>
+        <BaseLink :href="href" @click="navigate" class="card-link" color="primary">
+          Zarządzaj ukrytymi blogami
+        </BaseLink>
+      </router-link>
+      <!-- <BaseLink class="card-link" color="primary">Zarządzaj ukrytymi blogami</BaseLink> -->
+    </p>
+    <p>
+      <router-link :to="{ name: 'hidden-recipes' }" v-slot="{ href, navigate }" custom>
+        <BaseLink :href="href" @click="navigate" class="card-link" color="primary">
+          Zarządzaj ukrytymi przepisami
+        </BaseLink>
+      </router-link>
+      <!-- <BaseLink class="card-link" color="primary">Zarządzaj ukrytymi przepisami</BaseLink> -->
+    </p>
 
     <!-- <h5>Ukryte blogi (zarządzaj)</h5>
     <ul>
@@ -82,10 +92,10 @@ export default {
     if (currentTheme) {
       this.selectedTheme = currentTheme
     }
-    // userApi.getHiddenRecipes().then(({ data }) => {
+    // userApi.getHiddenRecipeIds().then(({ data }) => {
     //   this.hiddenRecipes = data.recipeIds
     // })
-    // userApi.getHiddenBlogs().then(({ data }) => {
+    // userApi.getHiddenBlogIds().then(({ data }) => {
     //   this.hiddenBlogs = data.blogIds
     // })
   },

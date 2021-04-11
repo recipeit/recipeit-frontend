@@ -9,12 +9,15 @@
         <BaseInput class="form-row" label="Nowe hasło" type="password" v-model="form.newPassword"></BaseInput>
         <BaseInput class="form-row" label="Potwierdź nowe hasło" type="password" v-model="form.newPasswordConfirmation"></BaseInput>
       </form>
+      <div v-for="(error, i) in errors" :key="i" class="error">
+        {{ error }}
+      </div>
     </BaseModalBody>
     <BaseModalFooter>
       <BaseButton class="submit-button" stroked @click="$emit('close')">
         Anuluj
       </BaseButton>
-      <BaseButton class="submit-button" raised color="contrast" @click="changePassword">
+      <BaseButton class="submit-button" raised color="contrast" :form="formID">
         {{ loading ? '...czekaj' : 'Zapisz' }}
       </BaseButton>
     </BaseModalFooter>
@@ -22,12 +25,15 @@
 </template>
 
 <script>
+import { useToast } from '@/plugins/toast'
 // import { useStore } from 'vuex'
 import { reactive, toRefs } from 'vue'
 // import ExpirationDatesFormSection from './ExpirationDatesFormSection'
 // import ProductModalForm from '@/components/ProductModalForm'
 import uniqueID from '@/functions/uniqueID'
 import identityApi from '@/api/identityApi'
+import { ToastType } from '@/plugins/toast/toastType'
+// import components from '../base/icons'
 
 export default {
   // components: { ExpirationDatesFormSection, ProductModalForm },
@@ -38,10 +44,12 @@ export default {
       required: true
     }
   },
-  setup(props) {
-    // const store = useStore()
+  setup(props, component) {
+    const toast = useToast()
     const formID = 'form-' + uniqueID().getID()
     const data = reactive({
+      loading: false,
+      errors: [],
       form: {
         currentPassword: '',
         newPassword: '',
@@ -52,9 +60,25 @@ export default {
     function changePassword() {
       const requestData = {
         email: props.email,
-        ...this.form
+        ...data.form
       }
-      identityApi.changePassword(requestData).then()
+      data.loading = true
+      data.errors = []
+      identityApi
+        .changePassword(requestData)
+        .then(() => {
+          component.emit('close', { success: true })
+          toast.show('Hasło zmienione!', ToastType.SUCCESS)
+        })
+        .catch(error => {
+          const errors = error?.response?.data?.errors
+          if (errors) {
+            data.errors = errors
+          }
+        })
+        .finally(() => {
+          data.loading = false
+        })
     }
 
     return {
