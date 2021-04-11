@@ -91,6 +91,12 @@ export default {
 .base-input {
   $root: &;
 
+  color: var(--color-text-primary);
+
+  &--disabled {
+    color: var(--color-text-secondary);
+  }
+
   &__control {
     position: relative;
     font-size: 0.875rem;
@@ -123,7 +129,7 @@ export default {
       width: 100%;
       min-width: 0;
       background: transparent;
-      @include transition((border-color));
+      @include transition((border-color, color));
 
       #{ $root }:not(#{ $root }--disabled) &:hover {
         border-color: var(--color-border-hover);

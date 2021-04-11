@@ -5,6 +5,7 @@
     </BaseModalHeader>
     <BaseModalBody>
       <form :id="formID" @submit.prevent="changePassword()">
+        <BaseInput class="form-row" label="E-mail" type="text" :disabled="true" :modelValue="email"></BaseInput>
         <BaseInput class="form-row" label="Obecne hasło" type="password" v-model="form.currentPassword"></BaseInput>
         <BaseInput class="form-row" label="Nowe hasło" type="password" v-model="form.newPassword"></BaseInput>
         <BaseInput class="form-row" label="Potwierdź nowe hasło" type="password" v-model="form.newPasswordConfirmation"></BaseInput>
@@ -59,8 +60,8 @@ export default {
 
     function changePassword() {
       const requestData = {
-        email: props.email,
-        ...data.form
+        ...data.form,
+        email: props.email
       }
       data.loading = true
       data.errors = []

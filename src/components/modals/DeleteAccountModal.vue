@@ -8,6 +8,7 @@
         <b>Nieodwracalnie</b> utracisz m.in. listy zakupów, Twoje produkty, Twój plan dnia czy listę ulubionych przepisów.
       </div>
       <form class="form" :id="formID" @submit.prevent="changePassword()">
+        <BaseInput class="form-row" label="E-mail" type="text" :disabled="true" :modelValue="email"></BaseInput>
         <BaseInput class="form-row" label="Obecne hasło" type="password" v-model="form.currentPassword"></BaseInput>
       </form>
       <div v-for="(error, i) in errors" :key="i" class="error">
@@ -52,8 +53,8 @@ export default {
 
     function changePassword() {
       const requestData = {
-        email: props.email,
-        ...data.form
+        ...data.form,
+        email: props.email
       }
       data.loading = true
       data.errors = []
