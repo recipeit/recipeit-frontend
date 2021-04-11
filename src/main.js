@@ -12,6 +12,13 @@ import i18n from './i18n'
 import blurOnClick from './directives/blurOnClick'
 import autofocus from './directives/autofocus'
 
+import { defineRule } from 'vee-validate'
+import { required, email, min } from '@vee-validate/rules'
+
+defineRule('required', required)
+defineRule('email', email)
+defineRule('min', min)
+
 const app = createApp(App)
 
 const requireComponent = require.context('./components/base', false, /\w+\.(vue|js)$/)

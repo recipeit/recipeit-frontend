@@ -7,10 +7,12 @@
       <div class="message">
         <b>Nieodwracalnie</b> utracisz m.in. listy zakupów, Twoje produkty, Twój plan dnia czy listę ulubionych przepisów.
       </div>
-      <form class="form" :id="formID" @submit.prevent="changePassword()">
+      <Form class="form" :id="formID" @submit="changePassword($event)" :validation-schema="schema">
         <BaseInput class="form-row" label="E-mail" type="text" :disabled="true" :modelValue="email"></BaseInput>
-        <BaseInput class="form-row" label="Obecne hasło" type="password" v-model="form.currentPassword"></BaseInput>
-      </form>
+        <Field type="password" name="password" v-slot="{ field, errors }">
+          <BaseInput class="form-row" label="Obecne hasło" type="password" :field="field" :errors="errors"></BaseInput>
+        </Field>
+      </Form>
       <div v-for="(error, i) in errors" :key="i" class="error">
         {{ error }}
       </div>
@@ -27,13 +29,16 @@
 </template>
 
 <script>
+import { Field, Form } from 'vee-validate'
 import { reactive, toRefs } from 'vue'
 import uniqueID from '@/functions/uniqueID'
 import identityApi from '@/api/identityApi'
 import { useStore } from 'vuex'
+import * as Yup from 'yup'
 
 export default {
   emits: ['close'],
+  components: { Field, Form },
   props: {
     email: {
       type: String,
@@ -45,10 +50,11 @@ export default {
     const formID = 'form-' + uniqueID().getID()
     const data = reactive({
       loading: false,
-      errors: [],
-      form: {
-        password: ''
-      }
+      errors: []
+    })
+
+    const schema = Yup.object().shape({
+      password: Yup.string().required('REQUIRED')
     })
 
     function changePassword() {
@@ -78,6 +84,7 @@ export default {
     return {
       ...toRefs(data),
       changePassword,
+      schema,
       formID
     }
   }

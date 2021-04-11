@@ -4,12 +4,18 @@
       <BaseModalTitle>Zmień hasło</BaseModalTitle>
     </BaseModalHeader>
     <BaseModalBody>
-      <form :id="formID" @submit.prevent="changePassword()">
-        <BaseInput class="form-row" label="E-mail" type="text" :disabled="true" :modelValue="email"></BaseInput>
-        <BaseInput class="form-row" label="Obecne hasło" type="password" v-model="form.currentPassword"></BaseInput>
-        <BaseInput class="form-row" label="Nowe hasło" type="password" v-model="form.newPassword"></BaseInput>
-        <BaseInput class="form-row" label="Potwierdź nowe hasło" type="password" v-model="form.newPasswordConfirmation"></BaseInput>
-      </form>
+      <Form :id="formID" @submit="changePassword($event)" :validation-schema="schema">
+        <BaseInput class="form-row" label="E-mail" type="text" :disabled="true" :modelValue="email" />
+        <Field type="password" name="currentPassword" v-slot="{ field, errors }">
+          <BaseInput class="form-row" label="Obecne hasło" type="password" :field="field" :errors="errors" />
+        </Field>
+        <Field type="password" name="newPassword" v-slot="{ field, errors }">
+          <BaseInput class="form-row" label="Nowe hasło" type="password" :field="field" :errors="errors" />
+        </Field>
+        <Field type="password" name="newPasswordConfirmation" v-slot="{ field, errors }">
+          <BaseInput class="form-row" label="Potwierdź nowe hasło" type="password" :field="field" :errors="errors" />
+        </Field>
+      </Form>
       <div v-for="(error, i) in errors" :key="i" class="error">
         {{ error }}
       </div>
@@ -26,18 +32,19 @@
 </template>
 
 <script>
+import { Field, Form } from 'vee-validate'
 import { useToast } from '@/plugins/toast'
-// import { useStore } from 'vuex'
 import { reactive, toRefs } from 'vue'
-// import ExpirationDatesFormSection from './ExpirationDatesFormSection'
-// import ProductModalForm from '@/components/ProductModalForm'
 import uniqueID from '@/functions/uniqueID'
 import identityApi from '@/api/identityApi'
 import { ToastType } from '@/plugins/toast/toastType'
-// import components from '../base/icons'
+import * as Yup from 'yup'
 
 export default {
-  // components: { ExpirationDatesFormSection, ProductModalForm },
+  components: {
+    Field,
+    Form
+  },
   emits: ['close'],
   props: {
     email: {
@@ -50,17 +57,26 @@ export default {
     const formID = 'form-' + uniqueID().getID()
     const data = reactive({
       loading: false,
-      errors: [],
-      form: {
-        currentPassword: '',
-        newPassword: '',
-        newPasswordConfirmation: ''
-      }
+      errors: []
     })
 
-    function changePassword() {
+    const schema = Yup.object().shape({
+      currentPassword: Yup.string().required('REQUIRED'),
+      newPassword: Yup.string()
+        .min(6, 'REQUIRED_AT_LEAST_6_CHAR')
+        .matches(/^(?=.*[a-z])/, 'REQUIRED_AT_LEAST_ONE_LOWER')
+        .matches(/^(?=.*[A-Z])/, 'REQUIRED_AT_LEAST_ONE_UPPER')
+        .matches(/^(?=.*[0-9])/, 'REQUIRED_AT_LEAST_ONE_DIGIT')
+        .matches(/^(?=.*[!@#$%^&*])/, 'REQUIRED_AT_LEAST_ONE_NON_ALPHANUM')
+        .required('REQUIRED'),
+      newPasswordConfirmation: Yup.string()
+        .oneOf([Yup.ref('newPassword'), null], 'WRONG_PASSWORD_COMBINATION')
+        .required('REQUIRED')
+    })
+
+    function changePassword(values) {
       const requestData = {
-        ...data.form,
+        ...values,
         email: props.email
       }
       data.loading = true
@@ -85,7 +101,8 @@ export default {
     return {
       ...toRefs(data),
       changePassword,
-      formID
+      formID,
+      schema
     }
   }
 }

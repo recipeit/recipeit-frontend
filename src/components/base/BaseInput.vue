@@ -1,5 +1,10 @@
 <template>
-  <div :class="['base-input', { 'base-input--focus': focused, 'base-input--invalid': errors, 'base-input--disabled': disabled }]">
+  <div
+    :class="[
+      'base-input',
+      { 'base-input--focus': focused, 'base-input--invalid': errors && errors.length > 0, 'base-input--disabled': disabled }
+    ]"
+  >
     <div class="base-input__control">
       <label :for="id" :class="[{ 'label-up': hasValue || focused }]">
         <slot name="label">{{ label }}</slot>
@@ -14,7 +19,7 @@
         :aria-describedby="errors ? erorrsID : null"
         :aria-invalid="errors ? true : null"
         v-autofocus="autofocus"
-        @input="valueChanged($event)"
+        v-bind="field"
         @focus="setFocus()"
         @blur="setBlur()"
       />
@@ -35,7 +40,10 @@ import uniqueID from '@/functions/uniqueID'
 export default {
   emits: ['update:modelValue'],
   props: {
-    modelValue: [String, Number],
+    modelValue: {
+      type: [String, Number],
+      default: null
+    },
     errors: Array,
     placeholder: String,
     label: String,
@@ -55,15 +63,23 @@ export default {
     disabled: {
       type: Boolean,
       default: false
-    }
+    },
+    field: Object
   },
   data: () => ({
     focused: false,
     id: 'base-input-' + uniqueID().getID()
   }),
   methods: {
-    valueChanged(event) {
-      this.$emit('update:modelValue', event.target.value)
+    valueChanged() {
+      if (!this.field) {
+        this.$emit('update:modelValue', event.target.value)
+      }
+      // if (this.input) {
+      //   this.input.forEach(b => {
+      //     b(event)
+      //   })
+      // }
     },
     setFocus() {
       this.focused = true
@@ -77,7 +93,7 @@ export default {
       return `${this.id}-errors`
     },
     hasValue() {
-      const stringValue = this.modelValue?.toString()
+      const stringValue = this.field ? this.field.value?.toString() : this.modelValue?.toString()
       if (stringValue === null) return false
       if (stringValue === undefined) return false
       if (stringValue === '') return false
