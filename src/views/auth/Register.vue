@@ -14,18 +14,18 @@
 
     <!-- <p>lub za pomocą adresu email</p> -->
 
-    <form @submit.prevent="register()">
-      <BaseInput class="form-row" label="Email" type="email" v-model="userData.email" :errors="userDataErrors.email"></BaseInput>
-      <BaseInput class="form-row" label="Hasło" type="password" v-model="userData.password" :errors="userDataErrors.password"></BaseInput>
-      <BaseInput
-        class="form-row"
-        label="Potwierdź hasło"
-        type="password"
-        v-model="userData.confirmPassword"
-        :errors="userDataErrors.confirmPassword"
-      ></BaseInput>
+    <Form @submit="register($event)" :validation-schema="schema">
+      <Field type="text" name="email" v-slot="{ field, errors }">
+        <BaseInput class="form-row" label="Email" type="email" :field="field" :errors="errors" />
+      </Field>
+      <Field type="text" name="password" v-slot="{ field, errors }">
+        <BaseInput class="form-row" label="Hasło" type="password" :field="field" :errors="errors" />
+      </Field>
+      <Field type="text" name="confirmPassword" v-slot="{ field, errors }">
+        <BaseInput class="form-row" label="Potwierdź hasło" type="password" :field="field" :errors="errors" />
+      </Field>
       <BaseButton class="form-row auth-page__content__submit" raised color="contrast" type="submit">Zarejestruj się</BaseButton>
-    </form>
+    </Form>
 
     <ul v-if="errors" class="auth-page__content__errors">
       <li v-for="(error, index) in errors" :key="index">{{ $t(`errorCode.${error}`) }}</li>
@@ -45,71 +45,40 @@
 </template>
 
 <script>
-import { validateEmail } from '@/functions/validators'
+import { Field, Form } from 'vee-validate'
 import AuthSocialList from './AuthSocialList'
+import * as Yup from 'yup'
 
 export default {
   components: {
-    AuthSocialList
+    AuthSocialList,
+    Field,
+    Form
   },
   data: () => ({
-    userData: {
-      email: '',
-      password: '',
-      confirmPassword: ''
-    },
-    userDataErrors: {
-      email: null,
-      password: null,
-      confirmPassword: null
-    },
+    schema: Yup.object().shape({
+      email: Yup.string()
+        .required('REQUIRED')
+        .email('INVALID_EMAIL'),
+      password: Yup.string()
+        .min(6, 'REQUIRED_AT_LEAST_6_CHAR')
+        .matches(/^(?=.*[a-z])/, 'REQUIRED_AT_LEAST_ONE_LOWER')
+        .matches(/^(?=.*[A-Z])/, 'REQUIRED_AT_LEAST_ONE_UPPER')
+        .matches(/^(?=.*[0-9])/, 'REQUIRED_AT_LEAST_ONE_DIGIT')
+        .matches(/^(?=.*[!@#$%^&*])/, 'REQUIRED_AT_LEAST_ONE_NON_ALPHANUM')
+        .required('REQUIRED'),
+      confirmPassword: Yup.string()
+        .oneOf([Yup.ref('newPassword'), null], 'WRONG_PASSWORD_COMBINATION')
+        .required('REQUIRED')
+    }),
     errors: null
   }),
   methods: {
-    register() {
+    register(valus) {
       this.errors = null
-      this.userDataErrors.email = this.validateEmail()
-      this.userDataErrors.password = this.validatePassword()
-      this.userDataErrors.confirmPassword = this.validateConfirmPassword()
-
-      if (Object.values(this.userDataErrors).some(v => v !== null)) return
-
-      this.$store.dispatch('user/register', this.userData).catch(errors => {
+      this.$store.dispatch('user/register', valus).catch(errors => {
         this.errors = errors
       })
-    },
-    validateEmail() {
-      const { email } = this.userData
-      if (!email) return ['REQUIRED']
-      if (!validateEmail(email)) return ['INVALID_EMAIL']
-      return null
-    },
-    validatePassword() {
-      const { password } = this.userData
-      if (!password) return ['REQUIRED']
-
-      let passwordPolicies = []
-
-      if (password.length <= 6) passwordPolicies.push('REQUIRED_AT_LEAST_6_CHAR')
-      if (!/[a-z]/.test(password)) passwordPolicies.push('REQUIRED_AT_LEAST_ONE_LOWER')
-      if (!/[A-Z]/.test(password)) passwordPolicies.push('REQUIRED_AT_LEAST_ONE_UPPER')
-      if (!/\d/.test(password)) passwordPolicies.push('REQUIRED_AT_LEAST_ONE_DIGIT')
-      if (/^[a-z0-9]+$/i.test(password.toLowerCase())) passwordPolicies.push('REQUIRED_AT_LEAST_ONE_NON_ALPHANUM')
-
-      if (passwordPolicies.length > 0) return passwordPolicies
-
-      return null
-    },
-    validateConfirmPassword() {
-      if (!this.userData.confirmPassword) {
-        return ['REQUIRED']
-      }
-
-      if (this.userData.password !== this.userData.confirmPassword) {
-        return ['WRONG_PASSWORD_COMBINATION']
-      }
-
-      return null
     }
   }
 }

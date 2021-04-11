@@ -12,28 +12,18 @@
 
     <!-- <p>lub za pomocą adresu email</p> -->
 
-    <form @submit.prevent="login()">
-      <BaseInput
-        class="form-row"
-        label="Email"
-        type="email"
-        v-model="userData.email"
-        :errors="userDataErrors.email"
-        :disabled="anySending"
-      ></BaseInput>
-      <BaseInput
-        class="form-row"
-        label="Hasło"
-        type="password"
-        v-model="userData.password"
-        :errors="userDataErrors.password"
-        :disabled="anySending"
-      ></BaseInput>
+    <Form @submit="login($event)" :validation-schema="schema">
+      <Field type="text" name="email" v-slot="{ field, errors }">
+        <BaseInput class="form-row" label="Email" type="email" :field="field" :errors="errors" :disabled="anySending" />
+      </Field>
+      <Field type="text" name="password" v-slot="{ field, errors }">
+        <BaseInput class="form-row" label="Hasło" type="password" :field="field" :errors="errors" :disabled="anySending" />
+      </Field>
       <BaseButton class="form-row auth-page__content__submit" raised color="contrast" type="submit" :disabled="anySending">
         <Spinner :show="sending" />
         Zaloguj się
       </BaseButton>
-    </form>
+    </Form>
 
     <ul v-if="errors" class="auth-page__content__errors">
       <li v-for="(error, index) in errors" :key="index">{{ $t(`errorCode.${error}`) }}</li>
@@ -50,24 +40,25 @@
 </template>
 
 <script>
+import { Field, Form } from 'vee-validate'
 import Spinner from '@/components/Spinner'
 import AuthSocialList from './AuthSocialList'
-import { validateEmail } from '@/functions/validators'
+import * as Yup from 'yup'
 
 export default {
   components: {
     AuthSocialList,
-    Spinner
+    Spinner,
+    Field,
+    Form
   },
   data: () => ({
-    userData: {
-      email: '',
-      password: ''
-    },
-    userDataErrors: {
-      email: null,
-      password: null
-    },
+    schema: Yup.object().shape({
+      email: Yup.string()
+        .required('REQUIRED')
+        .email('INVALID_EMAIL'),
+      password: Yup.string().required('REQUIRED')
+    }),
     errors: null,
     sending: false,
     socialSending: false
@@ -75,11 +66,6 @@ export default {
   methods: {
     login() {
       this.errors = null
-      this.userDataErrors.email = this.validateEmail()
-      this.userDataErrors.password = this.validatePassword()
-
-      if (Object.values(this.userDataErrors).some(v => v !== null)) return
-
       this.sending = true
       this.$store
         .dispatch('user/login', this.userData)
@@ -89,16 +75,6 @@ export default {
         .finally(() => {
           this.sending = null
         })
-    },
-    validateEmail() {
-      const { email } = this.userData
-      if (!email) return ['REQUIRED']
-      if (!validateEmail(email)) return ['INVALID_EMAIL']
-      return null
-    },
-    validatePassword() {
-      if (!this.userData.password) return ['REQUIRED']
-      return null
     }
   },
   computed: {
