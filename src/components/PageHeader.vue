@@ -1,13 +1,17 @@
 <template>
   <header class="page-header">
     <div class="page-header__content">
+      <BaseLink v-if="backButton" class="page-header__back-icon" color="text-primary" @click="$router.go(-1)">
+        <BaseIcon icon="arrow-left" weight="semi-bold" />
+      </BaseLink>
+
       <div class="page-header__title-container">
         <slot name="title">
           <h1>{{ title }}</h1>
         </slot>
       </div>
 
-      <PageHeaderUser />
+      <PageHeaderUser v-if="showUser" />
     </div>
   </header>
 </template>
@@ -20,6 +24,10 @@ export default {
     backButton: {
       type: Boolean,
       default: false
+    },
+    showUser: {
+      type: Boolean,
+      default: true
     },
     title: String
   }

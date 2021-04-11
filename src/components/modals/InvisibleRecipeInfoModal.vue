@@ -18,8 +18,8 @@
       </p>
     </BaseModalBody>
     <BaseModalFooter>
-      <BaseButton class="submit-button" raised color="contrast" @close="$emit('close')">
-        Rozumiem
+      <BaseButton class="submit-button" raised color="contrast" @click="$emit('close')">
+        OK!
       </BaseButton>
     </BaseModalFooter>
   </sheet-modal-content>

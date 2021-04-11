@@ -1,22 +1,43 @@
 <template>
   <div class="layout__page__content my-account-page">
-    <PageHeader :title="'Moje konto'"></PageHeader>
+    <PageHeader :title="'Moje konto'" :backButton="true" :show-user="false" />
 
-    <h3>Profil (edytuj)</h3>
+    <!-- <h3>Profil</h3> -->
+
+    <div class="profile">
+      <div class="card">
+        <div class="card-label">E-mail</div>
+        <div class="card-value">{{ userProfile.email }}</div>
+
+        <div class="card-label">Hasło</div>
+        <div class="card-value">●●●●●●●●●●</div>
+        <BaseLink class="card-link" color="primary">zmień hasło</BaseLink>
+      </div>
+      <div class="avatar">
+        <img :src="userProfile?.imageUrl || 'https://sprm.org.pl/wp-content/uploads/2018/04/User-icon.png'" alt="profile picture" />
+      </div>
+    </div>
+    <!-- 
     <h5>Avatar</h5>
     <h5>Email</h5>
     <h5>Nazwa</h5>
-    <h5>Hasło</h5>
+    <h5>Hasło</h5> -->
 
-    <h3>Ustawienia</h3>
-    <h5>Powiadomienia systemowe (tak|nie)</h5>
+    <h3>Preferencje</h3>
+    <!-- <h5>Powiadomienia systemowe (tak|nie)</h5> -->
     <!-- <h5>Wygląd (dark|light|system)</h5> -->
     <div class="settings-row">
-      <div class="settings-row__name">
+      <!-- <div class="settings-row__name">
         {{ $t('theme') }}
-      </div>
+      </div> -->
       <div class="settings-row__value settings-row__value--theme">
-        <BaseSelect :options="themes" :modelValue="selectedTheme" @update:modelValue="updateTheme($event)" :searchable="false">
+        <BaseSelect
+          placeholder="Motyw"
+          :options="themes"
+          :modelValue="selectedTheme"
+          @update:modelValue="updateTheme($event)"
+          :searchable="false"
+        >
           <template v-slot:label="{ option }">{{ $t(`themes.${option}`) }}</template>
           <template v-slot:option="{ option }">{{ $t(`themes.${option}`) }}</template>
         </BaseSelect>
@@ -24,7 +45,14 @@
     </div>
 
     <h3>Ukryta zawartość</h3>
-    <h5>Ukryte blogi (zarządzaj)</h5>
+    <div>
+      <BaseLink class="card-link" color="primary">Zarządzaj ukrytymi blogami</BaseLink>
+    </div>
+    <div>
+      <BaseLink class="card-link" color="primary">Zarządzaj ukrytymi przepisami</BaseLink>
+    </div>
+
+    <!-- <h5>Ukryte blogi (zarządzaj)</h5>
     <ul>
       <li v-for="blogId in hiddenBlogs" :key="blogId" @click="unhideBlog(blogId)">{{ blogId }}</li>
     </ul>
@@ -32,7 +60,7 @@
     <h5>Ukryte przepisy (zarządzaj)</h5>
     <ul>
       <li v-for="recipeId in hiddenRecipes" :key="recipeId" @click="unhideRecipe(recipeId)">{{ recipeId }}</li>
-    </ul>
+    </ul> -->
   </div>
 </template>
 
@@ -62,7 +90,8 @@ export default {
   computed: {
     ...mapState({
       hiddenRecipes: state => state.user.hiddenRecipeIds,
-      hiddenBlogs: state => state.user.hiddenBlogIds
+      hiddenBlogs: state => state.user.hiddenBlogIds,
+      userProfile: state => state.user.userProfile
     })
   },
   setup() {
@@ -100,6 +129,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+h3 {
+  font-size: 0.875rem;
+  font-weight: bold;
+  margin-top: 3rem;
+}
 .settings-row {
   display: flex;
   font-size: 0.875rem;
@@ -112,9 +146,61 @@ export default {
   }
 
   &__value {
-    &--theme {
-      width: 128px;
+    flex: 1;
+    // &--theme {
+    //   width: 128px;
+    // }
+  }
+}
+
+.card {
+  // background-color: var(--color-background-flyout);
+  // box-shadow: 0 8px 32px -8px rgba(0, 0, 0, 0.1);
+  // padding: 1rem 1.5rem;
+  // border-radius: 1.5rem;
+}
+
+.card-label {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+
+  &:not(:first-child) {
+    margin-top: 0.5rem;
+  }
+}
+
+.card-value {
+  font-size: 14px;
+
+  &--disabled {
+    color: var(--color-text-secondary);
+  }
+}
+
+.profile {
+  display: flex;
+
+  .avatar {
+    height: 64px;
+    width: 64px;
+    border-radius: 64px;
+    overflow: hidden;
+
+    img {
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
     }
   }
+
+  .card {
+    margin-right: 16px;
+    flex: 1;
+  }
+}
+
+.card-link {
+  font-weight: bold;
+  font-size: 0.75rem;
 }
 </style>
