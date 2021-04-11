@@ -34,16 +34,16 @@ export default {
   created() {
     this.$store
       .dispatch('user/fetchUserProfile', { getInitUserData: true })
-      .then(() => {
+      .then(async () => {
         if (!location.pathname.startsWith('/app')) {
-          this.$router.replace({ name: 'home' })
+          await this.$router.replace({ name: 'home' })
         }
       })
-      .catch(() => {
+      .catch(async () => {
         if (location.pathname.startsWith('/app')) {
-          this.$router.replace({ name: 'login' })
+          await this.$router.replace({ name: 'login' })
         } else if (!location.pathname.startsWith('/auth')) {
-          this.$router.replace({ name: 'landing-page' })
+          await this.$router.replace({ name: 'landing-page' })
         }
       })
       .finally(() => {

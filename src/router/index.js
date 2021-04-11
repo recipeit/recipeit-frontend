@@ -166,11 +166,13 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  progressbarPlugin.progressbar.start()
-
   if (modalPlugin.modal && modalPlugin.modal.anyModalOpened()) {
     modalPlugin.modal.hideLast()
+    if (typeof to === 'object' && to.params.closeModalAndGo) {
+      next()
+    }
   } else {
+    progressbarPlugin.progressbar.start()
     next()
   }
 })
