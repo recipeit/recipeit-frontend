@@ -2,8 +2,6 @@
   <div class="layout__page__content my-account-page">
     <PageHeader :title="'Moje konto'" :backButton="true" :show-user="false" />
 
-    <!-- <h3>Profil</h3> -->
-
     <div class="profile">
       <div class="card">
         <div class="card-label">E-mail</div>
@@ -17,19 +15,9 @@
         <img :src="userProfile?.imageUrl || 'https://sprm.org.pl/wp-content/uploads/2018/04/User-icon.png'" alt="profile picture" />
       </div>
     </div>
-    <!-- 
-    <h5>Avatar</h5>
-    <h5>Email</h5>
-    <h5>Nazwa</h5>
-    <h5>Hasło</h5> -->
 
     <h3>Preferencje</h3>
-    <!-- <h5>Powiadomienia systemowe (tak|nie)</h5> -->
-    <!-- <h5>Wygląd (dark|light|system)</h5> -->
     <div class="settings-row">
-      <!-- <div class="settings-row__name">
-        {{ $t('theme') }}
-      </div> -->
       <div class="settings-row__value settings-row__value--theme">
         <BaseSelect
           placeholder="Motyw"
@@ -51,7 +39,6 @@
           Zarządzaj ukrytymi blogami
         </BaseLink>
       </router-link>
-      <!-- <BaseLink class="card-link" color="primary">Zarządzaj ukrytymi blogami</BaseLink> -->
     </p>
     <p>
       <router-link :to="{ name: 'hidden-recipes' }" v-slot="{ href, navigate }" custom>
@@ -59,28 +46,37 @@
           Zarządzaj ukrytymi przepisami
         </BaseLink>
       </router-link>
-      <!-- <BaseLink class="card-link" color="primary">Zarządzaj ukrytymi przepisami</BaseLink> -->
     </p>
 
-    <!-- <h5>Ukryte blogi (zarządzaj)</h5>
-    <ul>
-      <li v-for="blogId in hiddenBlogs" :key="blogId" @click="unhideBlog(blogId)">{{ blogId }}</li>
-    </ul>
-
-    <h5>Ukryte przepisy (zarządzaj)</h5>
-    <ul>
-      <li v-for="recipeId in hiddenRecipes" :key="recipeId" @click="unhideRecipe(recipeId)">{{ recipeId }}</li>
-    </ul> -->
+    <h3>Inne</h3>
+    <p>
+      <router-link :to="{ name: 'terms' }" v-slot="{ href, navigate }" custom>
+        <BaseLink :href="href" @click="navigate()" class="card-link" color="primary">
+          Regulamin
+        </BaseLink>
+      </router-link>
+    </p>
+    <p>
+      <router-link :to="{ name: 'privacy-policy' }" v-slot="{ href, navigate }" custom>
+        <BaseLink :href="href" @click="navigate()" class="card-link" color="primary">
+          Polityka prywatności
+        </BaseLink>
+      </router-link>
+    </p>
+    <p>
+      <BaseLink tag="button" @click="openDeleteAccountModal()" class="card-link" color="red">
+        Usuń konto
+      </BaseLink>
+    </p>
   </div>
 </template>
 
 <script>
 import ChangePasswordModal from '@/components/modals/ChangePasswordModal'
+import DeleteAccountModal from '@/components/modals/DeleteAccountModal'
 import PageHeader from '@/components/PageHeader'
 import { markRaw, ref } from 'vue'
-// import userApi from '@/api/userApi'
 import { mapState, useStore } from 'vuex'
-// import components from '@/components/base/icons'
 
 const themes = ['dark', 'light', 'system']
 
@@ -92,12 +88,6 @@ export default {
     if (currentTheme) {
       this.selectedTheme = currentTheme
     }
-    // userApi.getHiddenRecipeIds().then(({ data }) => {
-    //   this.hiddenRecipes = data.recipeIds
-    // })
-    // userApi.getHiddenBlogIds().then(({ data }) => {
-    //   this.hiddenBlogs = data.blogIds
-    // })
   },
   computed: {
     ...mapState({
@@ -110,6 +100,15 @@ export default {
     openChangePasswordModal() {
       this.$modal.show(
         markRaw(ChangePasswordModal),
+        {
+          email: this.userProfile.email
+        },
+        {}
+      )
+    },
+    openDeleteAccountModal() {
+      this.$modal.show(
+        markRaw(DeleteAccountModal),
         {
           email: this.userProfile.email
         },
@@ -139,8 +138,6 @@ export default {
     }
 
     return {
-      // hiddenRecipes,
-      // hiddenBlogs,
       selectedTheme,
       updateTheme,
       unhideRecipe,
@@ -170,17 +167,7 @@ h3 {
 
   &__value {
     flex: 1;
-    // &--theme {
-    //   width: 128px;
-    // }
   }
-}
-
-.card {
-  // background-color: var(--color-background-flyout);
-  // box-shadow: 0 8px 32px -8px rgba(0, 0, 0, 0.1);
-  // padding: 1rem 1.5rem;
-  // border-radius: 1.5rem;
 }
 
 .card-label {

@@ -56,6 +56,11 @@ const routes = [
     component: () => import(/* webpackChunkName: "terms" */ '@/views/Terms.vue')
   },
   {
+    path: '/privacy-policy',
+    name: 'privacy-policy',
+    component: () => import(/* webpackChunkName: "terms" */ '@/views/PrivacyPolicy.vue')
+  },
+  {
     path: '/app',
     name: 'app',
     beforeEnter: onlyAuthenticated,
