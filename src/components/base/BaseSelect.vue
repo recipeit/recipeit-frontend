@@ -476,7 +476,7 @@ export default {
 
     &:not(&--above) {
       top: 100%;
-      border-radius: 8px 8px 16px 16px;
+      border-radius: 0px 0px 16px 16px;
     }
 
     &--above {

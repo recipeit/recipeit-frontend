@@ -11,7 +11,7 @@
 
         <div class="card-label">Hasło</div>
         <div class="card-value">●●●●●●●●●●</div>
-        <BaseLink class="card-link" color="primary">zmień hasło</BaseLink>
+        <BaseLink tag="button" class="card-link" color="primary" @click="openChangePasswordModal()">zmień hasło</BaseLink>
       </div>
       <div class="avatar">
         <img :src="userProfile?.imageUrl || 'https://sprm.org.pl/wp-content/uploads/2018/04/User-icon.png'" alt="profile picture" />
@@ -65,10 +65,12 @@
 </template>
 
 <script>
+import ChangePasswordModal from '@/components/modals/ChangePasswordModal'
 import PageHeader from '@/components/PageHeader'
-import { ref } from 'vue'
+import { markRaw, ref } from 'vue'
 // import userApi from '@/api/userApi'
 import { mapState, useStore } from 'vuex'
+// import components from '@/components/base/icons'
 
 const themes = ['dark', 'light', 'system']
 
@@ -93,6 +95,17 @@ export default {
       hiddenBlogs: state => state.user.hiddenBlogIds,
       userProfile: state => state.user.userProfile
     })
+  },
+  methods: {
+    openChangePasswordModal() {
+      this.$modal.show(
+        markRaw(ChangePasswordModal),
+        {
+          email: this.userProfile.email
+        },
+        {}
+      )
+    }
   },
   setup() {
     const store = useStore()
