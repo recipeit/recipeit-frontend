@@ -1,7 +1,7 @@
 <template>
   <sheet-modal-content>
     <BaseModalHeader @close="$emit('close')">
-      <BaseModalTitle><BaseIcon class="header-icon" icon="invisible" weight="bold" />Ukryty przepis - co oznacza?</BaseModalTitle>
+      <BaseModalTitle><BaseIcon class="header-icon" icon="eye-hidden" weight="semi-bold" />Ukryty przepis - co oznacza?</BaseModalTitle>
     </BaseModalHeader>
     <BaseModalBody>
       <p class="paragraph">

@@ -45,7 +45,7 @@
         </div>
 
         <BaseLink tag="button" class="recipe__hidden-bar" v-if="isHidden" color="red" @click="showInvisibleInfoModal()">
-          <BaseIcon class="recipe__hidden-bar__icon" icon="invisible" weight="bold" />
+          <BaseIcon class="recipe__hidden-bar__icon" icon="eye-hidden" weight="semi-bold" />
           Ten przepis jest ukryty
         </BaseLink>
 

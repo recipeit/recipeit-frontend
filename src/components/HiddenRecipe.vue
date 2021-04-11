@@ -16,7 +16,7 @@
       </div>
       <div class="hidden-recipe__action">
         <button class="unhide" @click.prevent.stop="$emit('unhide')">
-          <BaseIcon icon="invisible" weight="bold" />
+          <BaseIcon icon="eye" weight="semi-bold" />
         </button>
       </div>
     </a>
