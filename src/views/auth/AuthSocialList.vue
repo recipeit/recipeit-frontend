@@ -1,13 +1,13 @@
 <template>
-  <div class="auth-social-list">
-    <BaseButton class="auth-social-list__button" stroked color="contrast" @click="loginFacebook()" :disabled="anySending ? true : null">
+  <div class="social-list">
+    <BaseButton class="social-button" stroked color="contrast" @click="loginFacebook()" :disabled="anySending ? true : null">
       <Spinner :show="facebookSending" color="text-primary" />
-      <img src="@/assets/logos/facebook.svg" alt="logo" />
+      <div class="social-logo" v-html="FacebookLogo" />
       Kontynuuj z Facebook
     </BaseButton>
-    <BaseButton class="auth-social-list__button" stroked color="contrast" @click="loginGoogle()" :disabled="anySending ? true : null">
+    <BaseButton class="social-button" stroked color="contrast" @click="loginGoogle()" :disabled="anySending ? true : null">
       <Spinner :show="googleSending" color="text-primary" />
-      <img src="@/assets/logos/google.svg" alt="logo" />
+      <div class="social-logo" v-html="GoogleLogo" />
       Kontynuuj z Google
     </BaseButton>
   </div>
@@ -16,11 +16,19 @@
 <script>
 import Spinner from '@/components/Spinner'
 import authSocialMixin from './mixins/authSocialMixin'
+import FacebookLogo from '@/assets/logos/facebook.svg?inline'
+import GoogleLogo from '@/assets/logos/google.svg?inline'
 
 export default {
   emits: ['lockInputs', 'unlockInputs'],
   mixins: [authSocialMixin],
   components: { Spinner },
+  setup() {
+    return {
+      FacebookLogo,
+      GoogleLogo
+    }
+  },
   computed: {
     anySending() {
       return this.facebookSending || this.googleSending
@@ -39,46 +47,24 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.auth-social-list-title {
-  margin: 1.5rem 0;
-  display: flex;
-  align-items: center;
-  font-size: 0.75rem;
-  color: var(--color-text-secondary);
-  gap: 1rem;
+.social-list {
+  margin-top: 1rem;
+}
 
-  &:before,
-  &:after {
-    content: '';
-    height: 1px;
-    flex: 1;
-    background: var(--color-border);
+.social-button {
+  width: 100%;
+
+  & + & {
+    margin-top: 1rem;
   }
 }
-.auth-social-list {
-  margin-top: 1rem;
 
-  &__button {
-    width: 100%;
+.social-logo {
+  height: 1rem;
+  margin-right: 0.5rem;
 
-    & + & {
-      margin-top: 1rem;
-    }
-
-    &__icon {
-      font-size: 1rem;
-      margin-right: 0.5rem;
-
-      &--apple {
-        font-size: 1.25rem;
-        color: var(--color-max-contrast);
-      }
-    }
-
-    img {
-      height: 1rem;
-      margin-right: 0.5rem;
-    }
+  ::v-deep(svg) {
+    height: 100%;
   }
 }
 </style>

@@ -5,7 +5,7 @@
     <p class="subtitle">
       lub
       <router-link :to="{ name: 'login' }" v-slot="{ href, navigate }" custom>
-        <BaseLink :href="href" @click="navigate" color="primary">
+        <BaseLink :href="href" @click="navigate($event)" color="primary">
           zaloguj na swoje konto
         </BaseLink>
       </router-link>
@@ -33,13 +33,13 @@
     <div class="auth-main__content__terms">
       Rejestrując się akceptujesz
       <router-link :to="{ name: 'terms' }" v-slot="{ href, navigate }" custom>
-        <BaseLink class="auth-main__content__terms__link" :href="href" @click="navigate" color="primary">
+        <BaseLink class="auth-main__content__terms__link" :href="href" @click="navigate($event)" color="text-secondary">
           regulamin
         </BaseLink>
       </router-link>
       oraz
       <router-link :to="{ name: 'privacy-policy' }" v-slot="{ href, navigate }" custom>
-        <BaseLink class="auth-main__content__terms__link" :href="href" @click="navigate" color="primary">
+        <BaseLink class="auth-main__content__terms__link" :href="href" @click="navigate($event)" color="text-secondary">
           politykę prywatności
         </BaseLink>
       </router-link>

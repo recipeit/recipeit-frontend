@@ -1,7 +1,7 @@
 <template>
   <div class="parallax-image" ref="block">
     <div class="parallax-image__image" ref="image">
-      <slot></slot>
+      <slot />
     </div>
   </div>
 </template>

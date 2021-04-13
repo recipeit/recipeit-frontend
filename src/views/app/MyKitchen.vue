@@ -1,14 +1,13 @@
 <template>
   <div class="layout__page__content">
-    <PageHeader :title="$t('myKitchen.title')"></PageHeader>
+    <PageHeader :title="$t('myKitchen.title')" />
 
-    <!-- <div v-if="currentUserAuthState === 'USER_LOGGED_IN'"> -->
     <SearchWithFilter class="product-list-filter" placeholder="Szukaj produktu" @search="onSearch($event)" />
 
     <ul class="product-list-groups">
       <li class="product-list-group" v-for="products in groupedProducts" :key="products[0]">
         <div class="product-list-group__title">
-          <ProductIcon class="product-list-group__title__icon" :group="products[0]"></ProductIcon>
+          <ProductIcon class="product-list-group__title__icon" :group="products[0]" />
           <div class="product-list-group__title__name">
             {{ $t(`productCategory.${products[0]}`) }}
           </div>
@@ -27,25 +26,16 @@
         {{ $t('shared.addProduct') }}
       </BaseButton>
     </div>
-    <!-- </div> -->
-
-    <!-- <template v-else-if="currentUserAuthState === 'USER_FETCHING'">
-      Czekaj...
-    </template>
-
-    <LoginBeforeEnter v-else-if="currentUserAuthState === 'USER_LOGGED_OUT'"></LoginBeforeEnter> -->
   </div>
 </template>
 
 <script>
 import { markRaw } from 'vue'
 import { mapGetters, mapState } from 'vuex'
-// import { groupBy } from 'lodash'
 import _ from 'lodash'
 import KitchenProduct from '@/components/KitchenProduct'
 import NewKitchenProductModal from '@/components/modals/NewKitchenProductModal'
-import PageHeader from '@/components/PageHeader.vue'
-// import LoginBeforeEnter from '@/components/LoginBeforeEnter'
+import PageHeader from '@/components/PageHeader'
 import ProductIcon from '@/components/ProductIcon'
 import SearchWithFilter from '@/components/SearchWithFilter'
 
@@ -54,7 +44,6 @@ export default {
   components: {
     KitchenProduct,
     PageHeader,
-    // LoginBeforeEnter,
     ProductIcon,
     SearchWithFilter
   },
@@ -137,10 +126,8 @@ export default {
     }
 
     &__name {
-      // padding-top: 4px;
       font-size: 0.875rem;
       font-weight: bold;
-      // color: var(--color-text-secondary);
     }
   }
 
@@ -153,14 +140,12 @@ export default {
   display: flex;
   flex-direction: column;
   padding: 0;
-  // margin: -6px 0;
   background: var(--color-background-flyout);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   border-radius: 1.5rem;
   padding: 0.5rem 1.5rem;
 
   &__item {
-    // padding: 6px 0;
     cursor: pointer;
   }
 }

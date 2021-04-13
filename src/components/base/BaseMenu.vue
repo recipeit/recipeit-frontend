@@ -16,11 +16,11 @@
       @click="open($event)"
       @keypress.enter.stop.self="toggle($event)"
     >
-      <slot name="toggle" :focused="toggleFocused"></slot>
+      <slot name="toggle" :focused="toggleFocused" />
     </div>
     <transition name="slide-in">
       <div ref="dropdownContainer" v-show="opened" class="menu__dropdown-container">
-        <slot name="dropdown"></slot>
+        <slot name="dropdown" />
       </div>
     </transition>
   </div>

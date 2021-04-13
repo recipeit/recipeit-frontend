@@ -1,7 +1,7 @@
 <template>
   <sheet-modal-content>
     <BaseModalBody>
-      <Authorization></Authorization>
+      <Authorization />
     </BaseModalBody>
   </sheet-modal-content>
 </template>

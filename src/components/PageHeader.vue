@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import PageHeaderUser from './PageHeaderUser.vue'
+import PageHeaderUser from './PageHeaderUser'
 export default {
   components: { PageHeaderUser },
   props: {

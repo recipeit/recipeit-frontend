@@ -1,26 +1,26 @@
 <template>
   <div class="page-header-user">
     <BaseMenu :hideOnClick="isAuthenticated">
-      <template v-slot:toggle="{ focused }">
+      <template #toggle="{ focused }">
         <div v-if="isAuthenticated" :class="['page-header-user__avatar', { 'page-header-user__avatar--focused': focused }]">
           <img :src="userProfile?.imageUrl || 'https://sprm.org.pl/wp-content/uploads/2018/04/User-icon.png'" alt="profile picture" />
         </div>
         <BaseLink v-else color="text-primary" class="page-header-user__anonymous-avatar">
-          <BaseIcon icon="user" weight="semi-bold"></BaseIcon>
+          <BaseIcon icon="user" weight="semi-bold" />
         </BaseLink>
       </template>
-      <template v-slot:dropdown>
+      <template #dropdown>
         <BaseMenuList>
           <template v-if="!isAuthenticated">
             <BaseMenuRouterLink :to="{ name: 'login' }">Zaloguj się</BaseMenuRouterLink>
             <BaseMenuRouterLink :to="{ name: 'register' }">Utwórz konto</BaseMenuRouterLink>
-            <BaseMenuSeparator></BaseMenuSeparator>
+            <BaseMenuSeparator />
             <BaseMenuRouterLink :to="{ name: 'help' }">Pomoc</BaseMenuRouterLink>
           </template>
           <template v-else>
             <BaseMenuRouterLink :to="{ name: 'account' }">Moje konto</BaseMenuRouterLink>
             <BaseMenuRouterLink :to="{ name: 'help' }">Pomoc</BaseMenuRouterLink>
-            <BaseMenuSeparator></BaseMenuSeparator>
+            <BaseMenuSeparator />
             <BaseMenuLink color="red" @click="logout()">Wyloguj się</BaseMenuLink>
           </template>
         </BaseMenuList>

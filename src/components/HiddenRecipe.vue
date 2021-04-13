@@ -1,6 +1,6 @@
 <template>
   <router-link :to="{ name: 'recipe', params: { recipeId: recipe.id } }" v-slot="{ href, navigate }" custom>
-    <a :href="href" @click="navigate" class="hidden-recipe">
+    <a :href="href" @click="navigate($event)" class="hidden-recipe">
       <BaseImageLazyload :src="recipe.mainImageUrl" :alt="recipe.name" class="hidden-recipe__image" />
       <div class="hidden-recipe__details">
         <div class="hidden-recipe__name">{{ recipe.name }}</div>

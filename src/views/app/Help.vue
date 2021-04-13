@@ -1,6 +1,6 @@
 <template>
   <div class="layout__page__content my-account-page">
-    <PageHeader :title="'Pomoc'"></PageHeader>
+    <PageHeader :title="'Pomoc'" />
 
     <h3>FAQ</h3>
 

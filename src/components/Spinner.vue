@@ -1,7 +1,7 @@
 <template>
   <transition name="spinner-fade">
     <span v-if="show" class="spinner-container">
-      <span :class="['spinner', `spinner--color-${color}`]"></span>
+      <span :class="['spinner', `spinner--color-${color}`]" />
     </span>
   </transition>
 </template>

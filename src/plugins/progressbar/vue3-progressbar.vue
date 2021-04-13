@@ -1,5 +1,5 @@
 <template>
-  <div :style="finalStyle"></div>
+  <div :style="finalStyle" />
 </template>
 <script>
 import { inject, computed } from 'vue'

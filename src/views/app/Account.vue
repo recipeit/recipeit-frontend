@@ -20,8 +20,8 @@
     <div class="settings-row">
       <div class="settings-row__value settings-row__value--theme">
         <BaseSelect placeholder="Motyw" :options="themes" :value="selectedTheme" @change="updateTheme($event)" :searchable="false">
-          <template v-slot:label="{ option }">{{ $t(`themes.${option}`) }}</template>
-          <template v-slot:option="{ option }">{{ $t(`themes.${option}`) }}</template>
+          <template #label="{ option }">{{ $t(`themes.${option}`) }}</template>
+          <template #option="{ option }">{{ $t(`themes.${option}`) }}</template>
         </BaseSelect>
       </div>
     </div>
@@ -29,14 +29,14 @@
     <h3>Ukryta zawartość</h3>
     <p>
       <router-link :to="{ name: 'hidden-blogs' }" v-slot="{ href, navigate }" custom>
-        <BaseLink :href="href" @click="navigate" class="card-link" color="primary">
+        <BaseLink :href="href" @click="navigate($event)" class="card-link" color="primary">
           Zarządzaj ukrytymi blogami
         </BaseLink>
       </router-link>
     </p>
     <p>
       <router-link :to="{ name: 'hidden-recipes' }" v-slot="{ href, navigate }" custom>
-        <BaseLink :href="href" @click="navigate" class="card-link" color="primary">
+        <BaseLink :href="href" @click="navigate($event)" class="card-link" color="primary">
           Zarządzaj ukrytymi przepisami
         </BaseLink>
       </router-link>
@@ -45,14 +45,14 @@
     <h3>Inne</h3>
     <p>
       <router-link :to="{ name: 'terms' }" v-slot="{ href, navigate }" custom>
-        <BaseLink :href="href" @click="navigate()" class="card-link" color="primary">
+        <BaseLink :href="href" @click="navigate($event)" class="card-link" color="primary">
           Regulamin
         </BaseLink>
       </router-link>
     </p>
     <p>
       <router-link :to="{ name: 'privacy-policy' }" v-slot="{ href, navigate }" custom>
-        <BaseLink :href="href" @click="navigate()" class="card-link" color="primary">
+        <BaseLink :href="href" @click="navigate($event)" class="card-link" color="primary">
           Polityka prywatności
         </BaseLink>
       </router-link>

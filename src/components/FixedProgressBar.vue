@@ -5,7 +5,7 @@
 }
 </style>
 <template>
-  <div class="__cov-progress" :style="style"></div>
+  <div class="__cov-progress" :style="style" />
 </template>
 <script>
 const inBrowser = typeof window !== 'undefined'

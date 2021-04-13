@@ -8,7 +8,7 @@
     <div v-else-if="state === 'SUCCESS'">
       Udało się! Teraz możesz się
       <router-link :to="{ name: 'login' }" v-slot="{ href, navigate }" custom>
-        <BaseLink :href="href" @click="navigate" color="primary">
+        <BaseLink :href="href" @click="navigate($event)" color="primary">
           zalogować
         </BaseLink>
       </router-link>

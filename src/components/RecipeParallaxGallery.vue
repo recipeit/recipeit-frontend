@@ -21,7 +21,7 @@
         :class="['recipe-parallax-gallery__indicator', { 'recipe-parallax-gallery__indicator--current': currentImageIndex === index }]"
         v-for="(_, index) in imageObjects"
         :key="index"
-      ></span>
+      />
     </div>
     <div
       ref="images"

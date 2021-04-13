@@ -1,17 +1,7 @@
 <template>
-  <!-- <transition name="page-component-fade" mode="out-in"> -->
-  <!-- <div> -->
-  <router-view key="loaded-app" v-if="fetchedInitialUserProfile"></router-view>
-  <!-- <router-view v-slot="{ Component }">
-      <transition name="page-component-fade" mode="out-in">
-        <component :is="Component"></component>
-      </transition>
-    </router-view> -->
-  <!-- </div> -->
-  <AppLoading key="loading-app" v-else />
-  <!-- </transition> -->
-
-  <vue-progress-bar></vue-progress-bar>
+  <router-view v-if="fetchedInitialUserProfile" />
+  <AppLoading v-else />
+  <vue-progress-bar />
   <global-sheet-modal-container />
   <toasts-container />
 </template>
@@ -35,7 +25,8 @@ export default {
     this.$store
       .dispatch('user/fetchUserProfile', { getInitUserData: true })
       .then(async () => {
-        if (!location.pathname.startsWith('/app')) {
+        console.log('i cyk', location.pathname)
+        if (location.pathname.startsWith('/auth')) {
           await this.$router.replace({ name: 'home' })
         }
       })

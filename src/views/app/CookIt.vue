@@ -1,16 +1,10 @@
 <template>
   <div class="layout__page__content">
     <div class="cook-it-layout">
-      <PageHeader :title="$t('cookIt.title')"></PageHeader>
+      <PageHeader :title="$t('cookIt.title')" />
 
-      <!-- <template v-if="isAuthenticated"> -->
       <div>
-        <GenericRecipesList
-          :recipes="availableRecipes"
-          :showAllLink="{ name: 'available' }"
-          :limitedItems="4"
-          @reload="reloadRecipes"
-        ></GenericRecipesList>
+        <GenericRecipesList :recipes="availableRecipes" :showAllLink="{ name: 'available' }" :limitedItems="4" @reload="reloadRecipes" />
       </div>
 
       <div v-if="almostAvailableRecipes.items?.length > 0 || almostAvailableRecipes.filters">
@@ -24,10 +18,8 @@
           :showAllLink="{ name: 'almost-available' }"
           :limitedItems="4"
           :showFilterButtons="false"
-        ></GenericRecipesList>
+        />
       </div>
-      <!-- </template> -->
-      <!-- <LoginBeforeEnter v-else></LoginBeforeEnter> -->
     </div>
   </div>
 </template>
@@ -36,8 +28,7 @@
 import { mapGetters, mapState } from 'vuex'
 import { fetchRecipesQueryParams } from '@/constants'
 import GenericRecipesList from '@/components/GenericRecipesList'
-import PageHeader from '@/components/PageHeader.vue'
-// import LoginBeforeEnter from '@/components/LoginBeforeEnter'
+import PageHeader from '@/components/PageHeader'
 
 export default {
   components: { GenericRecipesList, PageHeader },

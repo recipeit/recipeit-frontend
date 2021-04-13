@@ -1,6 +1,6 @@
 <template>
   <div :class="['toast', `toast--${type}`]" @mouseenter="resetTimer()" @mouseleave="setTimer()">
-    <BaseIcon class="toast__icon" :icon="icon" weight="bold"></BaseIcon>
+    <BaseIcon class="toast__icon" :icon="icon" weight="bold" />
     <div class="toast__message">
       {{ message }}
     </div>

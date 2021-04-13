@@ -6,7 +6,7 @@
     data-ad-slot="6673585291"
     data-ad-format="auto"
     data-full-width-responsive="true"
-  ></ins>
+  />
 </template>
 
 <script>

@@ -1,8 +1,8 @@
 <template>
   <div class="layout__page__content">
-    <PageHeader title="Pełna lista" :backButton="true" :search="true"></PageHeader>
+    <PageHeader title="Pełna lista" :backButton="true" :search="true" />
     <div class="recipes-list-title">Te potrawy możesz przyrządzić po drobnych zakupach!</div>
-    <GenericRecipesList :recipes="recipes" @load-next="loadNextRecipes" @reload="reloadRecipes"></GenericRecipesList>
+    <GenericRecipesList :recipes="recipes" @load-next="loadNextRecipes" @reload="reloadRecipes" />
   </div>
 </template>
 
@@ -11,7 +11,7 @@ import { mapState } from 'vuex'
 import { fetchRecipesQueryParams } from '@/constants'
 import recipeApi from '@/api/recipeApi'
 import GenericRecipesList from '@/components/GenericRecipesList'
-import PageHeader from '@/components/PageHeader.vue'
+import PageHeader from '@/components/PageHeader'
 
 export default {
   name: 'AlmostAvailableRecipes',

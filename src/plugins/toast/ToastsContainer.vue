@@ -9,7 +9,7 @@
         :cancellable="toast.cancellable"
         :cancelCallback="toast.onCancel"
         @hide="removeToast(toast.id)"
-      ></Toast>
+      />
     </div>
   </transition-group>
 </template>

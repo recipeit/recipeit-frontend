@@ -1,7 +1,7 @@
 <template>
   <div class="layout__page__content">
-    <PageHeader :title="$t('recipes.title')"></PageHeader>
-    <GenericRecipesList :recipes="recipes" @load-next="loadNextRecipes" @reload="reloadRecipes"></GenericRecipesList>
+    <PageHeader :title="$t('recipes.title')" />
+    <GenericRecipesList :recipes="recipes" @load-next="loadNextRecipes" @reload="reloadRecipes" />
   </div>
 </template>
 
@@ -10,7 +10,7 @@ import { mapState } from 'vuex'
 import { fetchRecipesQueryParams } from '@/constants'
 import recipeApi from '@/api/recipeApi'
 import GenericRecipesList from '@/components/GenericRecipesList'
-import PageHeader from '@/components/PageHeader.vue'
+import PageHeader from '@/components/PageHeader'
 
 export default {
   name: 'Recipes',

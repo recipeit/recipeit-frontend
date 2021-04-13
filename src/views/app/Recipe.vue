@@ -7,12 +7,12 @@
             <BaseIcon icon="arrow-right" weight="regular" />
           </BaseLink>
           <BaseMenu>
-            <template v-slot:toggle>
+            <template #toggle>
               <BaseLink class="recipe__image-container__button" tag="button">
                 <BaseIcon icon="dots-horizontal" weight="regular" />
               </BaseLink>
             </template>
-            <template v-slot:dropdown>
+            <template #dropdown>
               <BaseMenuList>
                 <BaseMenuLink v-if="!isRecipeHidden" @click="changeRecipeVisibility(false)">Ukryj ten przepis</BaseMenuLink>
                 <BaseMenuLink v-else @click="changeRecipeVisibility(true)">Pokazuj ten przepis</BaseMenuLink>
@@ -20,26 +20,27 @@
                 <BaseMenuLink v-if="!isBlogHidden" @click="changeBlogVisibility(false)">Ukryj ten blog</BaseMenuLink>
                 <BaseMenuLink v-else @click="changeBlogVisibility(true)">Pokazuj ten blog</BaseMenuLink>
 
-                <BaseMenuSeparator></BaseMenuSeparator>
+                <BaseMenuSeparator />
+
                 <BaseMenuLink @click="copyLinkToClipboard()">Skopiuj link do przepisu</BaseMenuLink>
               </BaseMenuList>
             </template>
           </BaseMenu>
         </div>
-        <RecipeParallaxGallery :images="images"></RecipeParallaxGallery>
+        <RecipeParallaxGallery :images="images" />
       </div>
       <div class="recipe__main">
         <div class="recipe__header-pills">
           <div v-if="cookingHours" class="recipe__header-pill">
-            <BaseIcon class="recipe__header-pill__icon" icon="clock" weight="semi-bold"></BaseIcon>
+            <BaseIcon class="recipe__header-pill__icon" icon="clock" weight="semi-bold" />
             {{ cookingHours }} h
           </div>
           <div v-if="recipe.details.servings" class="recipe__header-pill">
-            <BaseIcon class="recipe__header-pill__icon" icon="user" weight="semi-bold"></BaseIcon>
+            <BaseIcon class="recipe__header-pill__icon" icon="user" weight="semi-bold" />
             {{ $tc('shared.servings', recipe.details.servings) }}
           </div>
           <BaseButton class="recipe__header-pill-button" color="primary" raised @click="openPlanRecipeModal()">
-            <BaseIcon class="recipe__header-pill-button__icon" icon="clock" weight="semi-bold"></BaseIcon>
+            <BaseIcon class="recipe__header-pill-button__icon" icon="clock" weight="semi-bold" />
             Zaplanuj
           </BaseButton>
         </div>
@@ -121,7 +122,7 @@
             ]"
           >
             <BaseCheckbox v-model="finishedDirections" :value="index">
-              <template v-slot:label>
+              <template #label>
                 <div>{{ paragraph }}</div>
               </template>
             </BaseCheckbox>

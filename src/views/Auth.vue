@@ -6,19 +6,17 @@
           <Logotype class="logo" />
         </router-link>
       </div>
-      <router-view></router-view>
-      <!-- <router-view v-slot="{ Component }">
+      <router-view v-slot="{ Component }">
         <transition name="page-component-fade" mode="out-in">
-          <component :is="Component"></component>
+          <component :is="Component" />
         </transition>
-      </router-view> -->
+      </router-view>
     </div>
     <div class="auth-image">
       <BaseImageLazyload
         class="auth-image__image"
         src="https://images.unsplash.com/photo-1482049016688-2d3e1b311543?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=653&q=80"
       />
-      <!-- div.auth- -->
     </div>
   </div>
 </template>
@@ -52,7 +50,8 @@ export default {
 
 .auth-image {
   position: relative;
-  width: 50%;
+  padding: 32px;
+  flex: 1;
 
   @media (max-width: 960px) {
     display: none;
@@ -74,16 +73,12 @@ export default {
 }
 
 .auth-main {
-  width: 50%;
+  padding: 48px 32px;
+  flex: 1;
   flex-direction: column;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 32px 32px 84px 32px;
-
-  @media (max-width: 960px) {
-    width: 100%;
-  }
 
   &__logo {
     margin-bottom: 2rem;

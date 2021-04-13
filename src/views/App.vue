@@ -3,7 +3,7 @@
     <div class="layout__page">
       <router-view v-slot="{ Component }">
         <transition name="page-component-fade" mode="out-in">
-          <component :is="Component"></component>
+          <component :is="Component" />
         </transition>
       </router-view>
     </div>

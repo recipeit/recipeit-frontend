@@ -4,7 +4,7 @@
   </div>
   <div v-if="!(expirationDateObjects && expirationDateObjects.length === 0)" class="form-row">
     <div v-if="expirationDateObjects === null" class="expiration-date-list">
-      <BaseButton class="expiration-date-list__item" subtle color="primary" size="small" v-for="i in 3" :key="i"></BaseButton>
+      <BaseButton class="expiration-date-list__item" subtle color="primary" size="small" v-for="i in 3" :key="i" />
     </div>
     <div v-else class="expiration-date-list">
       <BaseButton
@@ -17,14 +17,14 @@
         @click.stop="deleteExpirationDateAt(index)"
       >
         {{ formattedExpirationDate(date) }}
-        <BaseIcon class="expiration-date-list__item__icon" icon="close" weight="semi-bold"></BaseIcon>
+        <BaseIcon class="expiration-date-list__item__icon" icon="close" weight="semi-bold" />
       </BaseButton>
     </div>
   </div>
 
   <div class="form-row">
     <BaseLink tag="button" color="primary" class="add-expiration-date-button" @click.prevent="openNewExpirationDateModal()">
-      <BaseIcon class="add-expiration-date-button__icon" icon="plus" weight="semi-bold"></BaseIcon>
+      <BaseIcon class="add-expiration-date-button__icon" icon="plus" weight="semi-bold" />
       {{ expirationDateObjects && expirationDateObjects.length > 0 ? 'dodaj kolejną datę ważności' : 'dodaj datę ważności' }}
     </BaseLink>
   </div>

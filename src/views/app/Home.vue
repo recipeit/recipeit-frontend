@@ -1,7 +1,7 @@
 <template>
   <div class="layout__page__content home-page">
     <!-- <PageHeader>
-      <template v-slot:title>
+      <template #title>
         <h1 v-if="userProfile && userProfile.username" class="home-page__title">
           <span class="home-page__title__sub">{{ $t(welcomeType) }},</span>
           <span class="home-page__title__main">{{ userProfile.username }}</span>
@@ -11,7 +11,7 @@
         </h1>
       </template>
     </PageHeader> -->
-    <PageHeader :title="$t(welcomeType) + '!'"></PageHeader>
+    <PageHeader :title="$t(welcomeType) + '!'" />
 
     <DayPlan>
       <template #title="{ backToToday, showBackToToday }">

@@ -29,7 +29,7 @@
     </div>
 
     <transition name="fade">
-      <div v-if="opened && !modalClosed" class="sheet-modal-backdrop"></div>
+      <div v-if="opened && !modalClosed" class="sheet-modal-backdrop" />
     </transition>
   </div>
 </template>

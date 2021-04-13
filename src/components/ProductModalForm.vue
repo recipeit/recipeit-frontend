@@ -28,9 +28,9 @@
         groupLabel="groupKey"
         groupValues="groupValues"
       >
-        <template v-slot:label="{ option }">{{ $tc(`units.${option}`, unitLabelAmount) }}</template>
-        <template v-slot:option="{ option }">{{ $tc(`units.${option}`, unitLabelAmount) }}</template>
-        <template v-slot:groupLabel="{ label }">{{ $t(`unitGroups.${label}`) }}</template>
+        <template #label="{ option }">{{ $tc(`units.${option}`, unitLabelAmount) }}</template>
+        <template #option="{ option }">{{ $tc(`units.${option}`, unitLabelAmount) }}</template>
+        <template #groupLabel="{ label }">{{ $t(`unitGroups.${label}`) }}</template>
       </BaseSelect>
     </Field>
   </div>

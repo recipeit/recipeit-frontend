@@ -34,7 +34,7 @@
         </div>
         <div v-if="showAllLink" class="recipes-list__header__show-all">
           <router-link :to="showAllLink" v-slot="{ href, navigate }" custom>
-            <BaseLink :href="href" @click="navigate" color="primary" class="recipes-list__header__show-all__button">
+            <BaseLink :href="href" @click="navigate($event)" color="primary" class="recipes-list__header__show-all__button">
               {{ $t('shared.seeAll') }}
             </BaseLink>
           </router-link>
@@ -52,7 +52,7 @@
         </template>
       </ul>
 
-      <Observer v-if="!limitedItems && recipes.hasNext" @intersect="loadNext" :options="{ rootMargin: '256px' }"></Observer>
+      <Observer v-if="!limitedItems && recipes.hasNext" @intersect="loadNext" :options="{ rootMargin: '256px' }" />
     </template>
   </div>
 </template>

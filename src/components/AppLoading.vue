@@ -1,6 +1,6 @@
 <template>
   <div class="app-loading">
-    <div class="logo" v-html="logo"></div>
+    <div class="logo" v-html="logo" />
     <Spinner :show="true" color="primary" />
   </div>
 </template>

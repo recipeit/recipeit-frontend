@@ -1,12 +1,8 @@
 <template>
   <div class="base-menu-list">
-    <slot></slot>
+    <slot />
   </div>
 </template>
-
-<script>
-export default {}
-</script>
 
 <style lang="scss" scoped>
 .base-menu-list {

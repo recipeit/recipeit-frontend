@@ -13,7 +13,7 @@
       <p class="paragraph">
         Listę ukrytych przepisów i blogów znajdziesz w
         <router-link :to="{ name: 'account', params: { closeModalAndGo: true } }" v-slot="{ href, navigate }" custom>
-          <BaseLink :href="href" @click="navigate" color="primary">swoim koncie</BaseLink>
+          <BaseLink :href="href" @click="navigate($event)" color="primary">swoim koncie</BaseLink>
         </router-link>
       </p>
     </BaseModalBody>

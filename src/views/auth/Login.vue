@@ -4,7 +4,7 @@
     <p class="subtitle">
       lub
       <router-link :to="{ name: 'register' }" v-slot="{ href, navigate }" custom>
-        <BaseLink :href="href" @click="navigate" color="primary">
+        <BaseLink :href="href" @click="navigate($event)" color="primary">
           utwórz konto
         </BaseLink>
       </router-link>

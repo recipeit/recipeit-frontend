@@ -34,7 +34,7 @@
             <div class="time-of-day__recipes">
               <div href="#" class="time-of-day__recipe" v-for="recipe in recipes" :key="recipe.id">
                 <router-link :to="{ name: 'recipe', params: { recipeId: recipe.recipeId } }" v-slot="{ href, navigate }" custom>
-                  <BaseLink :href="href" @click="navigate" class="time-of-day__recipe__link">
+                  <BaseLink :href="href" @click="navigate($event)" class="time-of-day__recipe__link">
                     {{ recipe.name }}
                   </BaseLink>
                 </router-link>
@@ -44,7 +44,7 @@
                   class="time-of-day__recipe__remove"
                   @click="removePlannedRecipe(recipe.id, key)"
                 >
-                  <BaseIcon icon="close" weight="semi-bold"></BaseIcon>
+                  <BaseIcon icon="close" weight="semi-bold" />
                 </BaseLink>
               </div>
             </div>
@@ -54,7 +54,7 @@
         <div v-else key="no-plans" class="no-plans-message">
           Zaplanuj przepis na ten dzień!
           <router-link :to="{ name: 'recipes' }" v-slot="{ href, navigate }" custom>
-            <BaseButton :anchorTag="true" :href="href" @click="navigate" class="no-plans-message-button" raised color="primary">
+            <BaseButton :anchorTag="true" :href="href" @click="navigate($event)" class="no-plans-message-button" raised color="primary">
               <BaseIcon class="no-plans-message-button-icon" icon="search" weight="semi-bold" />
               Przeglądaj przepisy
             </BaseButton>

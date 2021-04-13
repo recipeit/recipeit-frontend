@@ -13,7 +13,7 @@
         <div class="buttons">
           <BaseButton class="form-row auth-main__content__submit" raised color="contrast" type="submit">Prześlij</BaseButton>
           <router-link :to="{ name: 'login' }" v-slot="{ href, navigate }" custom>
-            <BaseButton :anchorTag="true" class="return-button" :href="href" @click="navigate" stroked>
+            <BaseButton :anchorTag="true" class="return-button" :href="href" @click="navigate($event)" stroked>
               <BaseIcon class="return-button-icon" icon="arrow-left" weight="semi-bold" />
               Wróć
             </BaseButton>

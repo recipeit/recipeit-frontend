@@ -1,5 +1,5 @@
 <template>
-  <div class="base-icon-wrapper" v-html="iconObject"></div>
+  <div class="base-icon-wrapper" v-html="iconObject" />
 </template>
 
 <script>

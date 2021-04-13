@@ -18,8 +18,8 @@
         </Field>
         <Field name="timeOfDay" v-slot="{ field, errors }">
           <BaseSelect :searchable="false" placeholder="Pora dnia" v-bind="field" :errors="errors" :options="timesOfDay">
-            <template v-slot:label="{ option }">{{ $t(`timeOfDay.${option}`) }}</template>
-            <template v-slot:option="{ option }">{{ $t(`timeOfDay.${option}`) }}</template>
+            <template #label="{ option }">{{ $t(`timeOfDay.${option}`) }}</template>
+            <template #option="{ option }">{{ $t(`timeOfDay.${option}`) }}</template>
           </BaseSelect>
         </Field>
       </Form>

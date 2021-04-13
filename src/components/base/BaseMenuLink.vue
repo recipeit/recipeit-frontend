@@ -1,11 +1,11 @@
 <template>
   <BaseLink class="base-menu-link" :color="color">
-    <slot></slot>
+    <slot />
   </BaseLink>
 </template>
 
 <script>
-import BaseLink from './BaseLink.vue'
+import BaseLink from './BaseLink'
 export default {
   props: {
     color: String

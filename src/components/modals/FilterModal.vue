@@ -14,8 +14,8 @@
             :options="orderOptions"
             :searchable="false"
           >
-            <template v-slot:label="{ option }">{{ $t(`recipesSortingMethods.${option}`) }}</template>
-            <template v-slot:option="{ option }">{{ $t(`recipesSortingMethods.${option}`) }}</template>
+            <template #label="{ option }">{{ $t(`recipesSortingMethods.${option}`) }}</template>
+            <template #option="{ option }">{{ $t(`recipesSortingMethods.${option}`) }}</template>
           </BaseSelect>
         </div>
         <div v-for="(group, groupValue) in options" :key="groupValue" class="filter__group">
