@@ -14,8 +14,8 @@
         :aria-describedby="errors ? erorrsID : null"
         :aria-invalid="errors ? true : null"
         v-autofocus="autofocus"
-        @focus="setFocus()"
-        @blur="setBlur()"
+        @focus.stop="setFocus()"
+        @blur.stop="setBlur()"
       />
     </div>
     <div v-if="errors" class="base-input__errors">
@@ -69,9 +69,11 @@ export default {
   methods: {
     setFocus() {
       this.focused = true
+      this.$emit('focus')
     },
     setBlur() {
       this.focused = false
+      this.$emit('blur')
     }
   },
   computed: {

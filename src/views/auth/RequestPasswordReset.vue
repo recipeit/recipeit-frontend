@@ -5,10 +5,12 @@
     <template v-if="state === 'BEFORE'">
       <p>Wpisz adres e-mail, aby zresetować hasło. Może być konieczne sprawdzenie folderu ze spamem.</p>
 
-      <form @submit.prevent="requestPasswordReset()">
-        <BaseInput class="form-row" label="Email" type="email" v-model="userData.email" :errors="userDataErrors.email"></BaseInput>
+      <Form @submit="requestPasswordReset($event)" :validation-schema="schema">
+        <Field name="email" v-slot="{ field, errors }">
+          <BaseInput class="form-row" label="E-mail" type="email" v-bind="field" :errors="errors" />
+        </Field>
         <BaseButton class="form-row auth-page__content__submit" raised color="contrast" type="submit">Prześlij</BaseButton>
-      </form>
+      </Form>
     </template>
 
     <template v-else-if="state === 'SENDING'">
@@ -26,47 +28,37 @@
 </template>
 
 <script>
+import { Field, Form } from 'vee-validate'
+import * as Yup from 'yup'
 import identityApi from '@/api/identityApi'
-import { validateEmail } from '@/functions/validators'
 
 export default {
+  components: {
+    Field,
+    Form
+  },
   data: () => ({
-    userData: {
-      email: ''
-    },
-    userDataErrors: {
-      email: null
-    },
+    schema: Yup.object().shape({
+      email: Yup.string()
+        .required('REQUIRED')
+        .email('INVALID_EMAIL')
+    }),
     state: 'BEFORE'
   }),
   beforeMount() {
     this.state = 'BEFORE'
   },
   methods: {
-    requestPasswordReset() {
-      this.userDataErrors.email = this.validateEmail()
-
-      if (Object.values(this.userDataErrors).some(v => v !== null)) return
-
+    requestPasswordReset({ email }) {
       this.state = 'SENDING'
       identityApi
-        .requestPasswordReset(this.userData.email)
+        .requestPasswordReset(email)
         .then(() => {
           this.state = 'SUCCESS'
         })
         .catch(() => {
           this.state = 'ERROR'
         })
-    },
-    validateEmail() {
-      const { email } = this.userData
-      if (!email) return ['REQUIRED']
-      if (!validateEmail(email)) return ['INVALID_EMAIL']
-      return null
-    },
-    validatePassword() {
-      if (!this.userData.password) return ['REQUIRED']
-      return null
     }
   }
 }

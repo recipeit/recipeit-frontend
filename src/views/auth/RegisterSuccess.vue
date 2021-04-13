@@ -2,7 +2,7 @@
   <div class="auth-page__content">
     <h1>Potwierdź swoje konto</h1>
 
-    Sprawdź swój adres email. Może być konieczne sprawdzenie folderu ze spamem.
+    Sprawdź swoją skrzynkę pocztową. Może być konieczne sprawdzenie folderu ze spamem.
 
     <p>Nie otrzymałeś wiadomości?</p>
     <BaseLink tag="button" color="primary" @click="sendConfirmationEmail()">Wyślij jeszcze raz</BaseLink>

@@ -8,9 +8,9 @@
         <b>Nieodwracalnie</b> utracisz m.in. listy zakupów, Twoje produkty, Twój plan dnia czy listę ulubionych przepisów.
       </div>
       <Form class="form" :id="formID" @submit="deleteAccount($event)" :validation-schema="schema">
-        <BaseInput class="form-row" label="E-mail" type="text" :disabled="true" :value="email"></BaseInput>
+        <BaseInput class="form-row" label="E-mail" type="text" :disabled="true" :value="email" />
         <Field type="password" name="password" v-slot="{ field, errors }">
-          <BaseInput class="form-row" label="Obecne hasło" type="password" v-bind="field" :errors="errors"></BaseInput>
+          <BaseInput class="form-row" label="Obecne hasło" type="password" v-bind="field" :errors="errors" />
         </Field>
       </Form>
       <div v-for="(error, i) in errors" :key="i" class="error">

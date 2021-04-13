@@ -4,20 +4,19 @@
 
     <template v-if="state === 'BEFORE'">
       <p>
-        Wprowadź nowe hasło dla konta <b>{{ email }}</b>
+        Wprowadź nowe hasło
       </p>
 
-      <form @submit.prevent="resetPassword()">
-        <BaseInput class="form-row" label="Hasło" type="password" v-model="userData.password" :errors="userDataErrors.password"></BaseInput>
-        <BaseInput
-          class="form-row"
-          label="Potwierdź hasło"
-          type="password"
-          v-model="userData.confirmPassword"
-          :errors="userDataErrors.confirmPassword"
-        ></BaseInput>
+      <Form @submit="resetPassword($event)" :validation-schema="schema">
+        <BaseInput class="form-row" label="E-mail" type="text" :value="email" :disabled="true" />
+        <Field name="password" type="password" v-slot="{ field, errors }">
+          <BaseInput class="form-row" label="Hasło" type="password" v-bind="field" :errors="errors" />
+        </Field>
+        <Field name="confirmPassword" type="password" v-slot="{ field, errors }">
+          <BaseInput class="form-row" label="Potwierdź hasło" type="password" v-bind="field" :errors="errors" />
+        </Field>
         <BaseButton class="form-row auth-page__content__submit" raised color="contrast" type="submit">Zmień hasło</BaseButton>
-      </form>
+      </Form>
     </template>
 
     <template v-else-if="state === 'SENDING'">
@@ -35,21 +34,31 @@
 </template>
 
 <script>
+import { Field, Form } from 'vee-validate'
+import * as Yup from 'yup'
 import identityApi from '@/api/identityApi'
 
 export default {
+  components: {
+    Field,
+    Form
+  },
   data: () => ({
     state: 'BEFORE',
     email: null,
     token: null,
-    userData: {
-      password: '',
-      confirmPassword: ''
-    },
-    userDataErrors: {
-      password: null,
-      confirmPassword: null
-    }
+    schema: Yup.object().shape({
+      password: Yup.string()
+        .min(6, 'REQUIRED_AT_LEAST_6_CHAR')
+        .matches(/^(?=.*[a-z])/, 'REQUIRED_AT_LEAST_ONE_LOWER')
+        .matches(/^(?=.*[A-Z])/, 'REQUIRED_AT_LEAST_ONE_UPPER')
+        .matches(/^(?=.*[0-9])/, 'REQUIRED_AT_LEAST_ONE_DIGIT')
+        .matches(/^(?=.*[!@#$%^&*])/, 'REQUIRED_AT_LEAST_ONE_NON_ALPHANUM')
+        .required('REQUIRED'),
+      confirmPassword: Yup.string()
+        .oneOf([Yup.ref('password'), null], 'WRONG_PASSWORD_COMBINATION')
+        .required('REQUIRED')
+    })
   }),
   beforeMount() {
     this.state = 'BEFORE'
@@ -63,19 +72,14 @@ export default {
     }
   },
   methods: {
-    resetPassword() {
-      this.userDataErrors.password = this.validatePassword()
-      this.userDataErrors.confirmPassword = this.validateConfirmPassword()
-
-      if (Object.values(this.userDataErrors).some(v => v !== null)) return
-
+    resetPassword({ password, confirmPassword }) {
       this.state = 'SENDING'
       identityApi
         .resetPassword({
           email: this.email,
           token: this.token,
-          password: this.userData.password,
-          confirmPassword: this.userData.confirmPassword
+          password: password,
+          confirmPassword: confirmPassword
         })
         .then(resp => {
           if (resp.data.success) {
@@ -87,33 +91,6 @@ export default {
         .catch(() => {
           this.state = 'ERROR'
         })
-    },
-    validatePassword() {
-      const { password } = this.userData
-      if (!password) return ['REQUIRED']
-
-      let passwordPolicies = []
-
-      if (password.length <= 6) passwordPolicies.push('REQUIRED_AT_LEAST_6_CHAR')
-      if (!/[a-z]/.test(password)) passwordPolicies.push('REQUIRED_AT_LEAST_ONE_LOWER')
-      if (!/[A-Z]/.test(password)) passwordPolicies.push('REQUIRED_AT_LEAST_ONE_UPPER')
-      if (!/\d/.test(password)) passwordPolicies.push('REQUIRED_AT_LEAST_ONE_DIGIT')
-      if (/^[a-z0-9]+$/i.test(password.toLowerCase())) passwordPolicies.push('REQUIRED_AT_LEAST_ONE_NON_ALPHANUM')
-
-      if (passwordPolicies.length > 0) return passwordPolicies
-
-      return null
-    },
-    validateConfirmPassword() {
-      if (!this.userData.confirmPassword) {
-        return ['REQUIRED']
-      }
-
-      if (this.userData.password !== this.userData.confirmPassword) {
-        return ['WRONG_PASSWORD_COMBINATION']
-      }
-
-      return null
     }
   }
 }

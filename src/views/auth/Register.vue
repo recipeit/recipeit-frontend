@@ -16,7 +16,7 @@
 
     <Form @submit="register($event)" :validation-schema="schema">
       <Field type="text" name="email" v-slot="{ field, errors }">
-        <BaseInput class="form-row" label="Email" type="email" v-bind="field" :errors="errors" />
+        <BaseInput class="form-row" label="E-mail" type="email" v-bind="field" :errors="errors" />
       </Field>
       <Field type="text" name="password" v-slot="{ field, errors }">
         <BaseInput class="form-row" label="Hasło" type="password" v-bind="field" :errors="errors" />
@@ -68,7 +68,7 @@ export default {
         .matches(/^(?=.*[!@#$%^&*])/, 'REQUIRED_AT_LEAST_ONE_NON_ALPHANUM')
         .required('REQUIRED'),
       confirmPassword: Yup.string()
-        .oneOf([Yup.ref('newPassword'), null], 'WRONG_PASSWORD_COMBINATION')
+        .oneOf([Yup.ref('password'), null], 'WRONG_PASSWORD_COMBINATION')
         .required('REQUIRED')
     }),
     errors: null

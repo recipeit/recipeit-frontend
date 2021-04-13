@@ -6,7 +6,7 @@
     <BaseModalBody>
       <Form ref="form" :id="formID" @submit="addProduct($event)" :validation-schema="schema" v-slot="{ values }">
         <ProductModalForm :productAutofocus="true" :amount="values.amount"></ProductModalForm>
-        <!-- <BaseInput class="form-row" label="Dodatkowa nazwa" type="text" v-model="newProduct.name"></BaseInput> -->
+        <!-- <BaseInput class="form-row" label="Dodatkowa nazwa" type="text" v-model="newProduct.name"/> -->
       </Form>
     </BaseModalBody>
     <BaseModalFooter>

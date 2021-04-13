@@ -52,7 +52,7 @@
               :key="option"
               :class="{
                 'base-select__options__list__item': true,
-                'base-select__options__list__item--selected': option === value,
+                'base-select__options__list__item--selected': getKeyFromValue(option) === getKeyFromValue(value),
                 'base-select__options__list__item--highlight': index === pointer
               }"
             >
@@ -157,6 +157,13 @@ export default {
     id: 'base-select-' + uniqueID().getID()
   }),
   methods: {
+    getKeyFromValue(value) {
+      const { trackBy } = this
+      if (trackBy) {
+        return value ? value[trackBy] : null
+      }
+      return value
+    },
     async addPointerElement() {
       if (this.filteredOptions.length > 0) {
         await this.selectOption(this.filteredOptions[this.pointer])
@@ -241,7 +248,6 @@ export default {
       this.search = query
     },
     open() {
-      console.log('bede otwierał')
       if (this.opened) return
 
       this.opened = true
@@ -276,8 +282,11 @@ export default {
     },
     async selectOption(newValue) {
       await this.hide()
-      // await nextTick()
-      this.$emit('change', newValue === this.value ? null : newValue)
+
+      const { value, getKeyFromValue } = this
+      let selectCurrentSelected = value ? getKeyFromValue(newValue) === getKeyFromValue(value) : null
+
+      this.$emit('change', selectCurrentSelected ? null : newValue)
       if (this.searchable) {
         this.search = ''
       }

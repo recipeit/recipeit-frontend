@@ -6,7 +6,14 @@
     <BaseModalBody>
       <div class="filters">
         <div class="filter__group">
-          <BaseSelect placeholder="Sortuj wg." class="form-row" v-model="orderSelected" :options="orderOptions" :searchable="false">
+          <BaseSelect
+            placeholder="Sortuj wg."
+            class="form-row"
+            :value="orderSelected"
+            @change="orderSelectedChanged($event)"
+            :options="orderOptions"
+            :searchable="false"
+          >
             <template v-slot:label="{ option }">{{ $t(`recipesSortingMethods.${option}`) }}</template>
             <template v-slot:option="{ option }">{{ $t(`recipesSortingMethods.${option}`) }}</template>
           </BaseSelect>
@@ -86,6 +93,9 @@ export default {
     },
     clearFilterGroup(event, groupValue) {
       this.selected[groupValue] = []
+    },
+    orderSelectedChanged(newValue) {
+      this.orderSelected = newValue || this.defaultOrderSelected
     }
   },
   created() {

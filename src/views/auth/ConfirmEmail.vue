@@ -16,13 +16,6 @@
     <div v-else>
       Coś poszło nie tak
     </div>
-
-    <!-- <p>Wpisz adres e-mail, aby zresetować hasło. Może być konieczne sprawdzenie folderu ze spamem.</p>
-
-    <form @submit.prevent="register()">
-      <BaseInput class="form-row" label="Email" type="text" v-model="userData.email"></BaseInput>
-      <BaseButton class="form-row auth-page__content__submit" raised color="contrast" type="submit">Prześlij</BaseButton>
-    </form> -->
   </div>
 </template>
 

@@ -14,7 +14,7 @@
 
     <Form @submit="login($event)" :validation-schema="schema">
       <Field type="text" name="email" v-slot="{ field, errors }">
-        <BaseInput class="form-row" label="Email" type="email" v-bind="field" :errors="errors" :disabled="anySending" />
+        <BaseInput class="form-row" label="E-mail" type="email" v-bind="field" :errors="errors" :disabled="anySending" />
       </Field>
       <Field type="text" name="password" v-slot="{ field, errors }">
         <BaseInput class="form-row" label="Hasło" type="password" v-bind="field" :errors="errors" :disabled="anySending" />

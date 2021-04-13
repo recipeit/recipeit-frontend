@@ -4,20 +4,25 @@
       <BaseModalTitle>Zaplanuj przepis</BaseModalTitle>
     </BaseModalHeader>
     <BaseModalBody>
-      <form :id="formID" @submit.prevent="planRecipe()" class="form-columns">
-        <BaseSelect
-          :searchable="false"
-          placeholder="Dzień"
-          v-model="formData.day"
-          :options="days"
-          trackBy="value"
-          label="label"
-        ></BaseSelect>
-        <BaseSelect :searchable="false" placeholder="Pora dnia" v-model="formData.timeOfDay" :options="timesOfDay">
-          <template v-slot:label="{ option }">{{ $t(`timeOfDay.${option}`) }}</template>
-          <template v-slot:option="{ option }">{{ $t(`timeOfDay.${option}`) }}</template>
-        </BaseSelect>
-      </form>
+      <Form :id="formID" @submit="planRecipe($event)" :validation-schema="schema" :initial-values="initialValues" class="form-columns">
+        <Field name="day" v-slot="{ field, errors }">
+          <BaseSelect
+            :searchable="false"
+            placeholder="Dzień"
+            :errors="errors"
+            :options="days"
+            v-bind="field"
+            trackBy="value"
+            label="label"
+          />
+        </Field>
+        <Field name="timeOfDay" v-slot="{ field, errors }">
+          <BaseSelect :searchable="false" placeholder="Pora dnia" v-bind="field" :errors="errors" :options="timesOfDay">
+            <template v-slot:label="{ option }">{{ $t(`timeOfDay.${option}`) }}</template>
+            <template v-slot:option="{ option }">{{ $t(`timeOfDay.${option}`) }}</template>
+          </BaseSelect>
+        </Field>
+      </Form>
       <div v-for="(error, i) in errors" :key="i" class="error">
         {{ error }}
       </div>
@@ -32,41 +37,70 @@
 </template>
 
 <script>
+import * as Yup from 'yup'
+import { Field, Form } from 'vee-validate'
 import uniqueID from '@/functions/uniqueID'
 import dayjs from '@/functions/dayjs'
-import timesOfDay from '@/constants/timesOfDay'
+import timesOfDayConst from '@/constants/timesOfDay'
+import { reactive } from 'vue'
 
 export default {
   emits: ['close'],
+  components: {
+    Field,
+    Form
+  },
   props: {
     recipeId: {
       type: String,
       required: true
     }
   },
-  data: () => ({
-    formData: {
-      day: null,
-      timeOfDay: null
-    },
-    formID: 'form-' + uniqueID().getID(),
-    timesOfDay: Object.keys(timesOfDay),
-    days: null,
-    errors: null
-  }),
-  methods: {
-    planRecipe() {
-      const { formData } = this
-      if (!formData.day || !formData.timeOfDay) {
-        this.errors = ['oba pola są wymagane']
-        return
+  setup() {
+    const formID = 'form-' + uniqueID().getID()
+    const timesOfDay = Object.keys(timesOfDayConst)
+
+    const today = dayjs()
+    const days = Array.from({ length: 7 }, (_, i) => {
+      const day = today.add(i, 'days')
+      return {
+        value: day.format('YYYY-MM-DD'),
+        label: day.calendar()
       }
+    })
+    const initialValues = {
+      day: days[0],
+      timeOfDay: timesOfDay[0]
+    }
+    const errors = reactive(null)
+    const schema = Yup.object().shape({
+      day: Yup.object()
+        .required('REQUIRED')
+        .typeError('REQUIRED'),
+      timeOfDay: Yup.string()
+        .required('REQUIRED')
+        .typeError('REQUIRED')
+    })
+
+    return {
+      formID,
+      days,
+      timesOfDay,
+      initialValues,
+      errors,
+      schema
+    }
+  },
+  methods: {
+    planRecipe(values) {
       this.errors = null
+
       const preparedData = {
         recipeId: this.recipeId,
-        day: formData.day.value,
-        timeOfDay: formData.timeOfDay
+        day: values.day.value,
+        timeOfDay: values.timeOfDay
       }
+
       this.$store
         .dispatch('recipes/addRecipeToPlanned', preparedData)
         .then(({ data }) => {
@@ -81,18 +115,6 @@ export default {
           this.errors = responseErrors || ['coś poszło nie tak']
         })
     }
-  },
-  beforeMount() {
-    const today = dayjs()
-    this.days = Array.from({ length: 7 }, (_, i) => {
-      const day = today.add(i, 'days')
-      return {
-        value: day.format('YYYY-MM-DD'),
-        label: day.calendar()
-      }
-    })
-    this.formData.day = this.days[0]
-    this.formData.timeOfDay = this.timesOfDay[0]
   }
 }
 </script>
