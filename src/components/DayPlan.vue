@@ -52,9 +52,10 @@
         </div>
 
         <div v-else key="no-plans" class="no-plans-message">
-          Zaplanuj pierwszy przepis na ten dzień!
+          Zaplanuj przepis na ten dzień!
           <router-link :to="{ name: 'recipes' }" v-slot="{ href, navigate }" custom>
             <BaseButton :anchorTag="true" :href="href" @click="navigate" class="no-plans-message-button" raised color="primary">
+              <BaseIcon class="no-plans-message-button-icon" icon="search" weight="semi-bold" />
               Przeglądaj przepisy
             </BaseButton>
           </router-link>
@@ -346,6 +347,11 @@ export default {
 
   &-button {
     margin-top: 1rem;
+
+    &-icon {
+      margin-right: 0.5rem;
+      font-size: 1rem;
+    }
   }
 }
 </style>

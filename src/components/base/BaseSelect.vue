@@ -1,79 +1,93 @@
 <template>
-  <div
-    :class="['base-select', { 'base-select--focus': opened }]"
-    :tabindex="searchable ? -1 : 0"
-    @focus="open()"
-    @blur="searchable ? false : hide()"
-    @keyup.esc.stop="hide()"
-    @keydown.self.down.prevent="pointerForward()"
-    @keydown.self.up.prevent="pointerBackward()"
-    @keypress.enter.tab.stop.self="addPointerElement()"
-  >
-    <div :class="['base-select__field', { 'base-select__field--selected': modelValue !== null }]">
-      <span :class="['base-select__field__placeholder', { 'base-select__field__placeholder--small': placeholderAsLabel }]">
-        {{ placeholder }}
-      </span>
-      <template v-if="searchable">
-        <input
-          v-show="opened"
-          :value="search"
-          class="base-select__field__input"
-          ref="search"
-          tabindex="0"
-          @input="updateSearch($event.target.value)"
-          @focus.prevent="open()"
-          @blur.prevent="hide()"
-          @keyup.esc.stop="hide()"
-          @keydown.down.prevent="pointerForward()"
-          @keydown.up.prevent="pointerBackward()"
-          @keypress.enter.prevent.stop.self="addPointerElement()"
-        />
-      </template>
-      <span v-if="showSelectedValue" class="base-select__field__value">
-        <slot name="label" :option="modelValue">
-          {{ label ? modelValue[label] : modelValue }}
-        </slot>
-      </span>
-      <BaseIcon class="base-select__field__open-indicator" icon="angle-left" weight="semi-bold" />
-    </div>
-    <transition name="fade">
-      <div
-        v-show="opened"
-        @mousedown.prevent
-        :class="['base-select__options', { 'base-select__options--above': isAbove }]"
-        :style="{ maxHeight: optimizedHeight + 'px' }"
-      >
-        <ul class="base-select__options__list" v-if="filteredOptions && filteredOptions.length > 0">
-          <li
-            v-for="(option, index) in filteredOptions"
-            :key="option"
-            :class="[
-              'base-select__options__list__item',
-              { 'base-select__options__list__item--selected': option === modelValue },
-              { 'base-select__options__list__item--highlight': index === pointer }
-            ]"
-          >
-            <div class="base-select__options__list__group-label" v-if="option.isLabel">
-              <slot name="groupLabel" :label="option['groupLabel']">
-                {{ option['groupLabel'] }}
-              </slot>
-            </div>
-            <div v-else @mouseenter.self="pointerSet(index)" @click="selectOption(option)">
-              <slot name="option" :option="option" :search="search" :index="index">
-                {{ label ? option[label] : option }}
-              </slot>
-            </div>
-          </li>
-        </ul>
-        <div v-else class="base-select__options__empty">
-          Brak pasujących elementów
-        </div>
+  <div>
+    <div
+      ref="select"
+      :class="['base-select', { 'base-select--focus': opened }]"
+      :tabindex="searchable ? -1 : 0"
+      @focus="open()"
+      @blur="searchable ? false : hide()"
+      @keyup.esc.stop="hide()"
+      @keydown.self.down.prevent="pointerForward()"
+      @keydown.self.up.prevent="pointerBackward()"
+      @keypress.enter.tab.stop.self="addPointerElement()"
+    >
+      <div :class="['base-select__field', { 'base-select__field--selected': value !== null }]">
+        <span :class="['base-select__field__placeholder', { 'base-select__field__placeholder--small': placeholderAsLabel }]">
+          {{ placeholder }}
+        </span>
+        <template v-if="searchable">
+          <input
+            v-show="opened"
+            :value="search"
+            class="base-select__field__input"
+            ref="search"
+            tabindex="0"
+            @change.stop
+            @input.stop="updateSearch($event.target.value)"
+            @focus.prevent="open()"
+            @blur.prevent="hide()"
+            @keyup.esc.stop="hide()"
+            @keydown.down.prevent="pointerForward()"
+            @keydown.up.prevent="pointerBackward()"
+            @keypress.enter.prevent.stop.self="addPointerElement()"
+          />
+        </template>
+        <span v-if="showSelectedValue" class="base-select__field__value">
+          <slot name="label" :option="value">
+            {{ label ? value[label] : value }}
+          </slot>
+        </span>
+        <BaseIcon class="base-select__field__open-indicator" icon="angle-left" weight="semi-bold" />
       </div>
-    </transition>
+      <transition name="fade">
+        <div
+          v-show="opened"
+          @mousedown.prevent
+          :class="['base-select__options', { 'base-select__options--above': isAbove }]"
+          :style="{ maxHeight: optimizedHeight + 'px' }"
+        >
+          <ul class="base-select__options__list" v-if="filteredOptions && filteredOptions.length > 0">
+            <li
+              v-for="(option, index) in filteredOptions"
+              :key="option"
+              :class="{
+                'base-select__options__list__item': true,
+                'base-select__options__list__item--selected': option === value,
+                'base-select__options__list__item--highlight': index === pointer
+              }"
+            >
+              <div class="base-select__options__list__group-label" v-if="option.isLabel">
+                <slot name="groupLabel" :label="option['groupLabel']">
+                  {{ option['groupLabel'] }}
+                </slot>
+              </div>
+              <div v-else @mouseenter.self="pointerSet(index)" @click="selectOption(option)">
+                <slot name="option" :option="option" :search="search" :index="index">
+                  {{ label ? option[label] : option }}
+                </slot>
+              </div>
+            </li>
+          </ul>
+          <div v-else class="base-select__options__empty">
+            Brak pasujących elementów
+          </div>
+        </div>
+      </transition>
+    </div>
+    <div v-if="errors && errors.length > 0" class="base-select__errors">
+      <slot name="errors">
+        <ul class="base-select__errors__list" :id="erorrsID">
+          <li v-for="(error, i) in errors" :key="i">{{ $t(`errorCode.${error}`) }}</li>
+        </ul>
+      </slot>
+    </div>
   </div>
 </template>
 
 <script>
+import uniqueID from '@/functions/uniqueID'
+import { nextTick } from 'vue'
+
 function isEmpty(opt) {
   if (opt === 0) return false
   if (Array.isArray(opt) && opt.length === 0) return true
@@ -92,8 +106,13 @@ function includes(str, query) {
 }
 
 export default {
-  emits: ['update:modelValue'],
+  emits: ['change', 'blur', 'focus'],
+  model: {
+    prop: 'value',
+    event: 'change'
+  },
   props: {
+    errors: Array,
     searchable: {
       type: Boolean,
       default: true
@@ -101,7 +120,7 @@ export default {
     limit: {
       type: Number
     },
-    modelValue: { default: null },
+    value: { default: null },
     options: {
       type: Array,
       required: true
@@ -134,14 +153,16 @@ export default {
     opened: false,
     preferredOpenDirection: 'below',
     optimizedHeight: component.maxHeight,
-    pointer: null
+    pointer: null,
+    id: 'base-select-' + uniqueID().getID()
   }),
   methods: {
-    addPointerElement() {
+    async addPointerElement() {
       if (this.filteredOptions.length > 0) {
-        this.selectOption(this.filteredOptions[this.pointer])
+        await this.selectOption(this.filteredOptions[this.pointer])
+      } else {
+        await this.hide()
       }
-      this.hide()
     },
     pointerForward() {
       if (this.pointer !== null && this.pointer < this.filteredOptions.length - 1) {
@@ -220,35 +241,46 @@ export default {
       this.search = query
     },
     open() {
+      console.log('bede otwierał')
       if (this.opened) return
 
       this.opened = true
       this.adjustPosition()
 
-      if (this.searchable) {
-        this.$nextTick(() => this.$refs.search && this.$refs.search.focus())
-      } else {
-        this.$el.focus()
-      }
+      this.$nextTick(() => {
+        if (this.searchable) {
+          this.$refs.search && this.$refs.search.focus()
+        } else {
+          this.$refs.select && this.$refs.select.focus()
+        }
+        this.$emit('focus')
+      })
     },
-    hide() {
+    async hide() {
       if (!this.opened) return
 
       this.opened = false
       this.pointerReset()
 
+      // TODO gdzieś błąd z tym, że po zaznaczeniu wartości, menu się chowa, ale dalej gdzieś zostaje focus
+
+      // this.$nextTick(() => {
+      await nextTick()
       if (this.searchable) {
         this.$refs.search && this.$refs.search.blur()
       } else {
-        this.$el.blur()
+        this.$refs.select && this.$refs.select.blur()
       }
+      this.$emit('blur')
+      // })
     },
-    selectOption(newValue) {
-      this.$emit('update:modelValue', newValue === this.modelValue ? null : newValue)
+    async selectOption(newValue) {
+      await this.hide()
+      // await nextTick()
+      this.$emit('change', newValue === this.value ? null : newValue)
       if (this.searchable) {
         this.search = ''
       }
-      this.hide()
     },
     adjustPosition() {
       if (typeof window === 'undefined') return
@@ -275,14 +307,17 @@ export default {
     }
   },
   computed: {
+    erorrsID() {
+      return `${this.id}-errors`
+    },
     isGrouped() {
       return this.groupLabel && this.groupValues
     },
     placeholderAsLabel() {
-      return this.searchable ? this.opened || this.modelValue !== null : this.modelValue !== null
+      return this.searchable ? this.opened || this.value !== null : this.value !== null
     },
     showSelectedValue() {
-      return this.searchable ? !this.opened && this.modelValue !== null : this.modelValue !== null
+      return this.searchable ? !this.opened && this.value !== null : this.value !== null
     },
     filteredOptions() {
       if (!this.searchable || !this.search) return this.isGrouped ? this.plainOptions(this.options) : this.options
@@ -319,7 +354,7 @@ export default {
       this.pointerAdjust()
     },
     options() {
-      if (this.modelValue && !this.options.includes(this.modelValue)) {
+      if (this.value && !this.options.includes(this.value)) {
         this.selectOption(null)
       }
     }
@@ -487,6 +522,19 @@ export default {
     &__empty {
       padding: 16px;
       color: var(--color-text-secondary);
+    }
+  }
+
+  &__errors {
+    &__list {
+      margin-top: 6px;
+      font-size: 0.75rem;
+      text-align: left;
+      color: var(--color-red);
+
+      li {
+        padding: 2px 0;
+      }
     }
   }
 }

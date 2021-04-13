@@ -19,13 +19,7 @@
     <h3>Preferencje</h3>
     <div class="settings-row">
       <div class="settings-row__value settings-row__value--theme">
-        <BaseSelect
-          placeholder="Motyw"
-          :options="themes"
-          :modelValue="selectedTheme"
-          @update:modelValue="updateTheme($event)"
-          :searchable="false"
-        >
+        <BaseSelect placeholder="Motyw" :options="themes" :value="selectedTheme" @change="updateTheme($event)" :searchable="false">
           <template v-slot:label="{ option }">{{ $t(`themes.${option}`) }}</template>
           <template v-slot:option="{ option }">{{ $t(`themes.${option}`) }}</template>
         </BaseSelect>

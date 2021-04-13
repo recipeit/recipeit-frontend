@@ -7,10 +7,10 @@
       <div class="message">
         <b>Nieodwracalnie</b> utracisz m.in. listy zakupów, Twoje produkty, Twój plan dnia czy listę ulubionych przepisów.
       </div>
-      <Form class="form" :id="formID" @submit="changePassword($event)" :validation-schema="schema">
-        <BaseInput class="form-row" label="E-mail" type="text" :disabled="true" :modelValue="email"></BaseInput>
+      <Form class="form" :id="formID" @submit="deleteAccount($event)" :validation-schema="schema">
+        <BaseInput class="form-row" label="E-mail" type="text" :disabled="true" :value="email"></BaseInput>
         <Field type="password" name="password" v-slot="{ field, errors }">
-          <BaseInput class="form-row" label="Obecne hasło" type="password" :field="field" :errors="errors"></BaseInput>
+          <BaseInput class="form-row" label="Obecne hasło" type="password" v-bind="field" :errors="errors"></BaseInput>
         </Field>
       </Form>
       <div v-for="(error, i) in errors" :key="i" class="error">
@@ -57,7 +57,7 @@ export default {
       password: Yup.string().required('REQUIRED')
     })
 
-    function changePassword() {
+    function deleteAccount() {
       const requestData = {
         ...data.form,
         email: props.email
@@ -83,7 +83,7 @@ export default {
 
     return {
       ...toRefs(data),
-      changePassword,
+      deleteAccount,
       schema,
       formID
     }

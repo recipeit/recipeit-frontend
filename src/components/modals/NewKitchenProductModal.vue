@@ -4,18 +4,11 @@
       <BaseModalTitle>Dodaj nowy produkt</BaseModalTitle>
     </BaseModalHeader>
     <BaseModalBody>
-      <form :id="formID" @submit.prevent="addProduct()">
-        <ProductModalForm
-          :productAutofocus="true"
-          v-model:baseProductId="newProduct.baseProductId"
-          v-model:amount="newProduct.amount"
-          v-model:unit="newProduct.unit"
-        ></ProductModalForm>
-
+      <Form :id="formID" @submit="addProduct($event)" :validation-schema="schema" v-slot="{ values }">
+        <ProductModalForm :productAutofocus="true" :amount="values.amount"></ProductModalForm>
         <!-- <BaseInput class="form-row" label="Dodatkowa nazwa" type="text" v-model="newProduct.name"></BaseInput> -->
-
         <ExpirationDatesFormSection v-model="expirationDatesForm"></ExpirationDatesFormSection>
-      </form>
+      </Form>
     </BaseModalBody>
     <BaseModalFooter>
       <BaseButton class="submit-button" raised color="contrast" type="submit" :form="formID">
@@ -27,18 +20,33 @@
 </template>
 
 <script>
+import * as Yup from 'yup'
+import { Form } from 'vee-validate'
 import uniqueID from '@/functions/uniqueID'
 import ExpirationDatesFormSection from './ExpirationDatesFormSection'
 import ProductModalForm from '@/components/ProductModalForm'
 
 export default {
   emits: ['close'],
-  components: { ExpirationDatesFormSection, ProductModalForm },
+  components: { Form, ExpirationDatesFormSection, ProductModalForm },
   data: component => ({
     loading: false,
     newProduct: component.emptyProduct(),
     formID: 'form-' + uniqueID().getID(),
-    expirationDatesForm: []
+    expirationDatesForm: [],
+    schema: Yup.object().shape({
+      baseProduct: Yup.object()
+        .required('REQUIRED')
+        .typeError('REQUIRED'),
+      amount: Yup.number()
+        .typeError('Niepoprawna liczba')
+        .transform((cv, ov) => {
+          return ov === '' ? undefined : cv
+        })
+        .positive('Ilość musi być większa od 0')
+        .nullable(),
+      unit: Yup.object().nullable()
+    })
   }),
   methods: {
     emptyProduct() {
@@ -49,18 +57,23 @@ export default {
         unit: null
       }
     },
-    addProduct() {
-      this.$store
-        .dispatch('myKitchen/addProduct', {
-          product: this.newProduct,
-          expirationDates: this.expirationDatesForm
-        })
-        .then(() => {
-          this.$emit('close')
-          this.newProduct = this.emptyProduct()
-          this.expirationDates = []
-          this.selectedBaseProduct = null
-        })
+    addProduct(values) {
+      const { baseProduct, amount, unit } = values
+      const requestData = {
+        product: {
+          baseProductId: baseProduct.id,
+          amount,
+          unit
+        },
+        expirationDates: this.expirationDatesForm
+      }
+
+      this.$store.dispatch('myKitchen/addProduct', requestData).then(() => {
+        this.$emit('close')
+        this.newProduct = this.emptyProduct()
+        this.expirationDates = []
+        this.selectedBaseProduct = null
+      })
     }
   }
 }

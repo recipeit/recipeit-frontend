@@ -1,10 +1,5 @@
 <template>
-  <div
-    :class="[
-      'base-input',
-      { 'base-input--focus': focused, 'base-input--invalid': errors && errors.length > 0, 'base-input--disabled': disabled }
-    ]"
-  >
+  <div :class="baseInputClasses">
     <div class="base-input__control">
       <label :for="id" :class="[{ 'label-up': hasValue || focused }]">
         <slot name="label">{{ label }}</slot>
@@ -14,12 +9,11 @@
         :type="type"
         :tabindex="tabindex"
         :placeholder="placeholder"
-        :value="modelValue"
+        :value="value"
         :disabled="disabled"
         :aria-describedby="errors ? erorrsID : null"
         :aria-invalid="errors ? true : null"
         v-autofocus="autofocus"
-        v-bind="field"
         @focus="setFocus()"
         @blur="setBlur()"
       />
@@ -38,9 +32,12 @@
 import uniqueID from '@/functions/uniqueID'
 
 export default {
-  emits: ['update:modelValue'],
+  model: {
+    prop: 'value',
+    event: 'input'
+  },
   props: {
-    modelValue: {
+    value: {
       type: [String, Number],
       default: null
     },
@@ -63,24 +60,13 @@ export default {
     disabled: {
       type: Boolean,
       default: false
-    },
-    field: Object
+    }
   },
   data: () => ({
     focused: false,
     id: 'base-input-' + uniqueID().getID()
   }),
   methods: {
-    valueChanged() {
-      if (!this.field) {
-        this.$emit('update:modelValue', event.target.value)
-      }
-      // if (this.input) {
-      //   this.input.forEach(b => {
-      //     b(event)
-      //   })
-      // }
-    },
     setFocus() {
       this.focused = true
     },
@@ -89,11 +75,19 @@ export default {
     }
   },
   computed: {
+    baseInputClasses() {
+      return {
+        'base-input': true,
+        'base-input--focus': this.focused,
+        'base-input--invalid': this.errors && this.errors.length > 0,
+        'base-input--disabled': this.disabled
+      }
+    },
     erorrsID() {
       return `${this.id}-errors`
     },
     hasValue() {
-      const stringValue = this.field ? this.field.value?.toString() : this.modelValue?.toString()
+      const stringValue = this.value?.toString()
       if (stringValue === null) return false
       if (stringValue === undefined) return false
       if (stringValue === '') return false
@@ -160,6 +154,7 @@ export default {
       }
     }
   }
+
   &__errors {
     &__list {
       margin-top: 6px;

@@ -1,12 +1,7 @@
 <template>
   <router-link :to="{ name: 'recipe', params: { recipeId: recipe.id } }" v-slot="{ href, navigate }" custom>
-    <!-- <BaseButton :anchorTag="true" :href="href" @click="navigate" class="no-plans-message-button" raised color="primary">
-              Przeglądaj przepisy
-            </BaseButton> -->
     <a :href="href" @click="navigate" class="hidden-recipe">
-      <div class="hidden-recipe__image-container">
-        <img :src="recipe.mainImageUrl" :alt="recipe.name" class="hidden-recipe__image" />
-      </div>
+      <BaseImageLazyload :src="recipe.mainImageUrl" :alt="recipe.name" class="hidden-recipe__image" />
       <div class="hidden-recipe__details">
         <div class="hidden-recipe__name">{{ recipe.name }}</div>
         <div class="hidden-recipe__author-section">
@@ -41,17 +36,18 @@ export default {
   text-decoration: none;
   color: var(--color-text-primary);
 
-  &__image-container {
+  &__image {
     height: 48px;
     width: 48px;
     border-radius: 1rem;
     overflow: hidden;
-  }
+    background-color: var(--color-image-background);
 
-  &__image {
-    object-fit: cover;
-    height: 100%;
-    width: 100%;
+    ::v-deep(img) {
+      object-fit: cover;
+      height: 100%;
+      width: 100%;
+    }
   }
 
   &__details {

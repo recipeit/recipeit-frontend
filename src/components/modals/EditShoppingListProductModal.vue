@@ -4,21 +4,16 @@
       <BaseModalTitle>Edytuj produkt</BaseModalTitle>
     </BaseModalHeader>
     <BaseModalBody>
-      <form :id="formID" @submit.prevent="editProduct()">
-        <ProductModalForm
-          v-model:baseProductId="editedProduct.baseProductId"
-          v-model:amount="editedProduct.amount"
-          v-model:unit="editedProduct.unit"
-        ></ProductModalForm>
-
+      <Form :id="formID" @submit="editProduct($event)" :validation-schema="schema" :initial-values="initialValues" v-slot="{ values }">
+        <ProductModalForm :amount="values.amount" />
         <!-- <BaseInput class="form-row" label="Dodatkowa nazwa" type="text" v-model="editedProduct.name"></BaseInput> -->
-      </form>
+      </Form>
     </BaseModalBody>
     <BaseModalFooter>
       <BaseButton class="submit-button" stroked @click="$emit('close')">
         Anuluj
       </BaseButton>
-      <BaseButton class="submit-button" raised color="contrast" @click="editProduct">
+      <BaseButton class="submit-button" raised color="contrast" type="submit" :form="formID">
         {{ loading ? '...edytowanie' : 'Edytuj' }}
       </BaseButton>
     </BaseModalFooter>
@@ -26,13 +21,15 @@
 </template>
 
 <script>
+import * as Yup from 'yup'
+import { Form } from 'vee-validate'
 import { useStore } from 'vuex'
-import { reactive, toRefs } from 'vue'
+import { computed, reactive, toRefs } from 'vue'
 import ProductModalForm from '@/components/ProductModalForm'
 import uniqueID from '@/functions/uniqueID'
 
 export default {
-  components: { ProductModalForm },
+  components: { Form, ProductModalForm },
   emits: ['close'],
   props: {
     product: {
@@ -43,17 +40,44 @@ export default {
   },
   setup(props, component) {
     const store = useStore()
+    const baseProducts = computed(() => store.state.ingredients.baseProducts)
+
     const formID = 'form-' + uniqueID().getID()
     const data = reactive({
-      loading: false,
-      editedProduct: JSON.parse(JSON.stringify(props.product))
+      loading: false
     })
 
-    function editProduct() {
+    const initialValues = {
+      baseProduct: props.product.baseProductId ? baseProducts.value?.find(p => p.id === props.product.baseProductId) : null,
+      amount: props.product.amount,
+      unit: props.product.unit
+    }
+
+    const schema = Yup.object().shape({
+      baseProduct: Yup.object()
+        .required('REQUIRED')
+        .typeError('REQUIRED'),
+      amount: Yup.number()
+        .typeError('Niepoprawna liczba')
+        .transform((cv, ov) => {
+          return ov === '' ? undefined : cv
+        })
+        .positive('Ilość musi być większa od 0')
+        .nullable(),
+      unit: Yup.string().nullable()
+    })
+
+    function editProduct(values) {
+      const { baseProduct, amount, unit } = values
+      console.log(values)
+      console.log(props.product)
+
       store
         .dispatch('shoppingList/editProductFromShoppingList', {
-          ...data.editedProduct,
-          id: props.product.id
+          id: props.product.id,
+          baseProductId: baseProduct.id,
+          amount,
+          unit
         })
         .then(() => {
           component.emit('close')
@@ -61,6 +85,8 @@ export default {
     }
 
     return {
+      initialValues,
+      schema,
       ...toRefs(data),
       editProduct,
       formID

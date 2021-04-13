@@ -5,15 +5,15 @@
     </BaseModalHeader>
     <BaseModalBody>
       <Form :id="formID" @submit="changePassword($event)" :validation-schema="schema">
-        <BaseInput class="form-row" label="E-mail" type="text" :disabled="true" :modelValue="email" />
+        <BaseInput class="form-row" label="E-mail" type="text" :disabled="true" :value="email" />
         <Field type="password" name="currentPassword" v-slot="{ field, errors }">
-          <BaseInput class="form-row" label="Obecne hasło" type="password" :field="field" :errors="errors" />
+          <BaseInput class="form-row" label="Obecne hasło" type="password" v-bind="field" :errors="errors" />
         </Field>
         <Field type="password" name="newPassword" v-slot="{ field, errors }">
-          <BaseInput class="form-row" label="Nowe hasło" type="password" :field="field" :errors="errors" />
+          <BaseInput class="form-row" label="Nowe hasło" type="password" v-bind="field" :errors="errors" />
         </Field>
         <Field type="password" name="newPasswordConfirmation" v-slot="{ field, errors }">
-          <BaseInput class="form-row" label="Potwierdź nowe hasło" type="password" :field="field" :errors="errors" />
+          <BaseInput class="form-row" label="Potwierdź nowe hasło" type="password" v-bind="field" :errors="errors" />
         </Field>
       </Form>
       <div v-for="(error, i) in errors" :key="i" class="error">
@@ -75,14 +75,10 @@ export default {
     })
 
     function changePassword(values) {
-      const requestData = {
-        ...values,
-        email: props.email
-      }
       data.loading = true
       data.errors = []
       identityApi
-        .changePassword(requestData)
+        .changePassword(values)
         .then(() => {
           component.emit('close', { success: true })
           toast.show('Hasło zmienione!', ToastType.SUCCESS)

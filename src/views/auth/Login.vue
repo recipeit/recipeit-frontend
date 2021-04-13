@@ -14,10 +14,10 @@
 
     <Form @submit="login($event)" :validation-schema="schema">
       <Field type="text" name="email" v-slot="{ field, errors }">
-        <BaseInput class="form-row" label="Email" type="email" :field="field" :errors="errors" :disabled="anySending" />
+        <BaseInput class="form-row" label="Email" type="email" v-bind="field" :errors="errors" :disabled="anySending" />
       </Field>
       <Field type="text" name="password" v-slot="{ field, errors }">
-        <BaseInput class="form-row" label="Hasło" type="password" :field="field" :errors="errors" :disabled="anySending" />
+        <BaseInput class="form-row" label="Hasło" type="password" v-bind="field" :errors="errors" :disabled="anySending" />
       </Field>
       <BaseButton class="form-row auth-page__content__submit" raised color="contrast" type="submit" :disabled="anySending">
         <Spinner :show="sending" />
