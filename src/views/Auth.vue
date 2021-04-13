@@ -142,6 +142,10 @@ export default {
     p {
       margin: 0.5rem 0;
     }
+
+    .link {
+      font-weight: bold;
+    }
   }
 }
 </style>
