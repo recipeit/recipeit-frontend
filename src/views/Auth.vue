@@ -1,8 +1,11 @@
 <template>
   <div class="auth-layout">
-    <router-link :to="{ name: 'landing-page' }">Recipeit</router-link>
-
     <div class="auth-page">
+      <div class="auth-page__logo">
+        <router-link :to="{ name: 'landing-page' }">
+          <Logotype class="logo" />
+        </router-link>
+      </div>
       <router-view></router-view>
       <!-- <router-view v-slot="{ Component }">
         <transition name="page-component-fade" mode="out-in">
@@ -14,10 +17,18 @@
 </template>
 
 <script>
-export default {}
+import Logotype from '@/components/Logotype'
+
+export default {
+  components: { Logotype }
+}
 </script>
 
 <style lang="scss">
+.logo {
+  width: 128px;
+}
+
 .auth-layout {
   max-width: 460px;
   box-sizing: border-box;
@@ -33,13 +44,20 @@ export default {}
 
 .auth-page {
   flex: 1;
+  flex-direction: column;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 32px 32px 84px 32px;
 
+  &__logo {
+    margin-block: 2rem;
+    max-width: 350px;
+    width: 100%;
+  }
+
   &__content {
-    text-align: center;
+    // text-align: center;
     font-size: 0.75rem;
     max-width: 350px;
     width: 100%;

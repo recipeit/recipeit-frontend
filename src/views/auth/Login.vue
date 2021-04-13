@@ -1,7 +1,7 @@
 <template>
   <div class="auth-page__content">
     <h1>Zaloguj się</h1>
-    <p>
+    <p class="subtitle">
       lub
       <router-link :to="{ name: 'register' }" v-slot="{ href, navigate }" custom>
         <BaseLink :href="href" @click="navigate" color="primary">
@@ -91,6 +91,9 @@ export default {
 // }
 h1 {
   margin-bottom: 8px;
+}
+.subtitle {
+  margin-bottom: 1.5rem;
 }
 
 // p {
