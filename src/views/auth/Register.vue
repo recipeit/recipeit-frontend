@@ -2,7 +2,7 @@
   <div class="auth-page__content">
     <h1>Zarejestruj się</h1>
 
-    <p>
+    <p class="subtitle">
       lub
       <router-link :to="{ name: 'login' }" v-slot="{ href, navigate }" custom>
         <BaseLink :href="href" @click="navigate" color="primary">
@@ -10,9 +10,6 @@
         </BaseLink>
       </router-link>
     </p>
-    <!-- <AuthSocialList /> -->
-
-    <!-- <p>lub za pomocą adresu email</p> -->
 
     <Form @submit="register($event)" :validation-schema="schema">
       <Field type="text" name="email" v-slot="{ field, errors }">
@@ -87,5 +84,9 @@ export default {
 <style lang="scss" scoped>
 h1 {
   margin-bottom: 8px;
+}
+
+.subtitle {
+  margin-bottom: 1.5rem;
 }
 </style>

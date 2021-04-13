@@ -12,16 +12,11 @@
 
         <div class="buttons">
           <BaseButton class="form-row auth-page__content__submit" raised color="contrast" type="submit">Prześlij</BaseButton>
-          <!-- <router-link :to="{ name: 'login' }" v-slot="{ href, nagivate }" custom>
-            <BaseButton :anchorTag="true" :href="href" @click="nagivate" class="return-button" stroked>
+          <router-link :to="{ name: 'login' }" v-slot="{ href, navigate }" custom>
+            <BaseButton :anchorTag="true" class="return-button" :href="href" @click="navigate" stroked>
               <BaseIcon class="return-button-icon" icon="arrow-left" weight="semi-bold" />
               Wróć
             </BaseButton>
-          </router-link> -->
-          <router-link :to="{ name: 'login' }" v-slot="{ href, navigate }" custom>
-            <BaseLink class="auth-page__content__request-password-reset" :href="href" @click="navigate" color="primary">
-              Nie pamiętasz hasła?
-            </BaseLink>
           </router-link>
         </div>
       </Form>
