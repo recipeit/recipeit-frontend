@@ -10,9 +10,9 @@
       </Form>
     </BaseModalBody>
     <BaseModalFooter>
-      <BaseButton class="submit-button" raised color="contrast" type="submit" :form="formID">
+      <BaseButton class="submit-button" raised color="contrast" type="submit" :form="formID" :loading="sending">
         <BaseIcon class="submit-button__icon" icon="plus" weight="semi-bold" />
-        {{ loading ? '...dodawanie' : $t('shared.addProduct') }}
+        {{ $t('shared.addProduct') }}
       </BaseButton>
     </BaseModalFooter>
   </sheet-modal-content>
@@ -28,7 +28,7 @@ export default {
   emits: ['close'],
   components: { Form, ProductModalForm },
   data: () => ({
-    loading: false,
+    sending: false,
     formID: 'form-' + uniqueID().getID(),
     schema: Yup.object().shape({
       baseProduct: Yup.object()
@@ -45,22 +45,28 @@ export default {
     })
   }),
   methods: {
-    addProduct(values) {
-      const { baseProduct, amount, unit } = values
+    addProduct({ baseProduct, amount, unit }) {
+      this.sending = true
+
       const requestData = {
         baseProductId: baseProduct.id,
         amount,
         unit
       }
 
-      this.$store.dispatch('shoppingList/addProduct', requestData).then(() => {
-        this.$emit('close')
-        this.$refs.form.setValues({
-          baseProduct: null,
-          amount: null,
-          unit: null
+      this.$store
+        .dispatch('shoppingList/addProduct', requestData)
+        .then(() => {
+          this.$emit('close')
+          // this.$refs.form.setValues({
+          //   baseProduct: null,
+          //   amount: null,
+          //   unit: null
+          // })
         })
-      })
+        .finally(() => {
+          this.sending = false
+        })
     }
   }
 }

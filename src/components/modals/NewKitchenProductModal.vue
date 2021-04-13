@@ -11,9 +11,9 @@
       </Form>
     </BaseModalBody>
     <BaseModalFooter>
-      <BaseButton class="submit-button" raised color="contrast" type="submit" :form="formID">
+      <BaseButton class="submit-button" raised color="contrast" type="submit" :form="formID" :loading="sending">
         <BaseIcon class="submit-button__icon" icon="plus" weight="semi-bold" />
-        {{ loading ? '...dodawanie' : $t('shared.addProduct') }}
+        {{ $t('shared.addProduct') }}
       </BaseButton>
     </BaseModalFooter>
   </sheet-modal-content>
@@ -30,7 +30,7 @@ export default {
   emits: ['close'],
   components: { Form, ExpirationDatesFormSection, ProductModalForm },
   data: component => ({
-    loading: false,
+    sending: false,
     newProduct: component.emptyProduct(),
     formID: 'form-' + uniqueID().getID(),
     expirationDatesForm: [],
@@ -57,8 +57,9 @@ export default {
         unit: null
       }
     },
-    addProduct(values) {
-      const { baseProduct, amount, unit } = values
+    addProduct({ baseProduct, amount, unit }) {
+      this.sending = true
+
       const requestData = {
         product: {
           baseProductId: baseProduct.id,
@@ -68,12 +69,14 @@ export default {
         expirationDates: this.expirationDatesForm
       }
 
-      this.$store.dispatch('myKitchen/addProduct', requestData).then(() => {
-        this.$emit('close')
-        this.newProduct = this.emptyProduct()
-        this.expirationDates = []
-        this.selectedBaseProduct = null
-      })
+      this.$store
+        .dispatch('myKitchen/addProduct', requestData)
+        .then(() => {
+          this.$emit('close')
+        })
+        .finally(() => {
+          this.sending = false
+        })
     }
   }
 }

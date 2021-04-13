@@ -13,22 +13,31 @@
 
     <Form @submit="register($event)" :validation-schema="schema">
       <Field name="email" v-slot="{ field, errors }">
-        <BaseInput class="form-row" label="E-mail" type="text" v-bind="field" :errors="errors" />
+        <BaseInput class="form-row" label="E-mail" type="text" v-bind="field" :errors="errors" :disabled="anySending" />
       </Field>
       <Field name="password" v-slot="{ field, errors }">
-        <BaseInput class="form-row" label="Hasło" type="password" v-bind="field" :errors="errors" />
+        <BaseInput class="form-row" label="Hasło" type="password" v-bind="field" :errors="errors" :disabled="anySending" />
       </Field>
       <Field name="confirmPassword" v-slot="{ field, errors }">
-        <BaseInput class="form-row" label="Potwierdź hasło" type="password" v-bind="field" :errors="errors" />
+        <BaseInput class="form-row" label="Potwierdź hasło" type="password" v-bind="field" :errors="errors" :disabled="anySending" />
       </Field>
-      <BaseButton class="form-row auth-main__content__submit" raised color="contrast" type="submit">Zarejestruj się</BaseButton>
+      <BaseButton
+        class="form-row auth-main__content__submit"
+        raised
+        color="contrast"
+        type="submit"
+        :disabled="anySending"
+        :loading="sending"
+      >
+        Zarejestruj się
+      </BaseButton>
     </Form>
 
     <ul v-if="errors" class="auth-main__content__errors">
       <li v-for="(error, index) in errors" :key="index">{{ $t(`errorCode.${error}`) }}</li>
     </ul>
 
-    <AuthSocialList buttonPrefix="Kontynuuj z" />
+    <AuthSocialList @lockInputs="socialSending = true" @unlockInputs="socialSending = false" />
 
     <div class="auth-main__content__terms">
       Rejestrując się akceptujesz
@@ -71,14 +80,27 @@ export default {
     }
   },
   data: () => ({
-    errors: null
+    errors: null,
+    sending: false,
+    socialSending: false
   }),
   methods: {
     register(valus) {
+      this.sending = true
       this.errors = null
-      this.$store.dispatch('user/register', valus).catch(errors => {
-        this.errors = errors
-      })
+      this.$store
+        .dispatch('user/register', valus)
+        .catch(errors => {
+          this.errors = errors
+        })
+        .finally(() => {
+          this.sending = false
+        })
+    }
+  },
+  computed: {
+    anySending() {
+      return this.sending || this.socialSending
     }
   }
 }

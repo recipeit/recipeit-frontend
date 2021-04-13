@@ -1,12 +1,24 @@
 <template>
   <div class="social-list">
-    <BaseButton class="social-button" stroked color="contrast" @click="loginFacebook()" :disabled="anySending ? true : null">
-      <Spinner :show="facebookSending" color="text-primary" />
+    <BaseButton
+      class="social-button"
+      stroked
+      color="contrast"
+      @click="loginFacebook()"
+      :disabled="anySending ? true : null"
+      :loading="facebookSending"
+    >
       <div class="social-logo" v-html="FacebookLogo" />
       Kontynuuj z Facebook
     </BaseButton>
-    <BaseButton class="social-button" stroked color="contrast" @click="loginGoogle()" :disabled="anySending ? true : null">
-      <Spinner :show="googleSending" color="text-primary" />
+    <BaseButton
+      class="social-button"
+      stroked
+      color="contrast"
+      @click="loginGoogle()"
+      :disabled="anySending ? true : null"
+      :loading="googleSending"
+    >
       <div class="social-logo" v-html="GoogleLogo" />
       Kontynuuj z Google
     </BaseButton>
@@ -14,7 +26,6 @@
 </template>
 
 <script>
-import Spinner from '@/components/Spinner'
 import authSocialMixin from './mixins/authSocialMixin'
 import FacebookLogo from '@/assets/logos/facebook.svg?inline'
 import GoogleLogo from '@/assets/logos/google.svg?inline'
@@ -22,7 +33,6 @@ import GoogleLogo from '@/assets/logos/google.svg?inline'
 export default {
   emits: ['lockInputs', 'unlockInputs'],
   mixins: [authSocialMixin],
-  components: { Spinner },
   setup() {
     return {
       FacebookLogo,

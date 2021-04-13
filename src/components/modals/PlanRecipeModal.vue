@@ -28,7 +28,7 @@
       </div>
     </BaseModalBody>
     <BaseModalFooter>
-      <BaseButton class="submit-button" raised color="contrast" type="submit" :form="formID">
+      <BaseButton class="submit-button" raised color="contrast" type="submit" :form="formID" :loading="sending">
         <BaseIcon class="submit-button__icon" icon="clock" weight="semi-bold" />
         {{ $t('shared.planRecipe') }}
       </BaseButton>
@@ -42,7 +42,7 @@ import { Field, Form } from 'vee-validate'
 import uniqueID from '@/functions/uniqueID'
 import dayjs from '@/functions/dayjs'
 import timesOfDayConst from '@/constants/timesOfDay'
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
 
 export default {
   emits: ['close'],
@@ -73,7 +73,7 @@ export default {
       timeOfDay: timesOfDay[0]
     }
     const errors = reactive(null)
-    const schema = Yup.object().shape({
+    const schema = Yup.object({
       day: Yup.object()
         .required('REQUIRED')
         .typeError('REQUIRED'),
@@ -82,23 +82,27 @@ export default {
         .typeError('REQUIRED')
     })
 
+    const sending = ref(false)
+
     return {
       formID,
       days,
       timesOfDay,
       initialValues,
       errors,
+      sending,
       schema
     }
   },
   methods: {
-    planRecipe(values) {
+    planRecipe({ day, timeOfDay }) {
+      this.sending = true
       this.errors = null
 
       const preparedData = {
         recipeId: this.recipeId,
-        day: values.day.value,
-        timeOfDay: values.timeOfDay
+        day: day.value,
+        timeOfDay: timeOfDay
       }
 
       this.$store
@@ -113,6 +117,9 @@ export default {
         .catch(error => {
           const responseErrors = error.response?.data?.errors
           this.errors = responseErrors || ['coś poszło nie tak']
+        })
+        .finally(() => {
+          this.sending = false
         })
     }
   }

@@ -19,8 +19,14 @@
       <Field name="password" v-slot="{ field, errors }">
         <BaseInput class="form-row" label="Hasło" type="password" v-bind="field" :errors="errors" :disabled="anySending" />
       </Field>
-      <BaseButton class="form-row auth-main__content__submit" raised color="contrast" type="submit" :disabled="anySending">
-        <Spinner :show="sending" />
+      <BaseButton
+        class="form-row auth-main__content__submit"
+        raised
+        color="contrast"
+        type="submit"
+        :disabled="anySending"
+        :loading="sending"
+      >
         Zaloguj się
       </BaseButton>
 
@@ -38,13 +44,12 @@
       </BaseLink>
     </Form>
 
-    <AuthSocialList buttonPrefix="Kontynuuj z" @lockInputs="socialSending = true" @unlockInputs="socialSending = false" />
+    <AuthSocialList @lockInputs="socialSending = true" @unlockInputs="socialSending = false" />
   </div>
 </template>
 
 <script>
 import { Field, Form } from 'vee-validate'
-import Spinner from '@/components/Spinner'
 import AuthSocialList from './AuthSocialList'
 import * as yup from 'yup'
 import { emailSchema, passwordSchema } from '@/configs/schemas'
@@ -52,7 +57,6 @@ import { emailSchema, passwordSchema } from '@/configs/schemas'
 export default {
   components: {
     AuthSocialList,
-    Spinner,
     Field,
     Form
   },
@@ -81,7 +85,7 @@ export default {
           this.errors = errors
         })
         .finally(() => {
-          this.sending = null
+          this.sending = false
         })
     },
     goToRequestPasswordReset(email) {

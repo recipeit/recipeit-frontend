@@ -13,8 +13,8 @@
       <BaseButton class="submit-button" stroked @click="$emit('close')">
         Anuluj
       </BaseButton>
-      <BaseButton class="submit-button" raised color="contrast" type="submit" :form="formID">
-        {{ loading ? '...edytowanie' : 'Edytuj' }}
+      <BaseButton class="submit-button" raised color="contrast" type="submit" :form="formID" :loading="sending">
+        {{ 'Edytuj' }}
       </BaseButton>
     </BaseModalFooter>
   </sheet-modal-content>
@@ -24,7 +24,7 @@
 import * as Yup from 'yup'
 import { Form } from 'vee-validate'
 import { useStore } from 'vuex'
-import { computed, reactive, toRefs } from 'vue'
+import { computed, reactive, ref, toRefs } from 'vue'
 import ProductModalForm from '@/components/ProductModalForm'
 import uniqueID from '@/functions/uniqueID'
 
@@ -67,20 +67,25 @@ export default {
       unit: Yup.string().nullable()
     })
 
-    function editProduct(values) {
-      const { baseProduct, amount, unit } = values
-      console.log(values)
-      console.log(props.product)
+    const sending = ref(false)
+
+    const editProduct = ({ baseProduct, amount, unit }) => {
+      sending.value = true
+
+      const requestData = {
+        id: props.product.id,
+        baseProductId: baseProduct.id,
+        amount,
+        unit
+      }
 
       store
-        .dispatch('shoppingList/editProductFromShoppingList', {
-          id: props.product.id,
-          baseProductId: baseProduct.id,
-          amount,
-          unit
-        })
+        .dispatch('shoppingList/editProductFromShoppingList', requestData)
         .then(() => {
           component.emit('close')
+        })
+        .finally(() => {
+          sending.value = false
         })
     }
 
@@ -89,6 +94,7 @@ export default {
       schema,
       ...toRefs(data),
       editProduct,
+      sending,
       formID
     }
   }

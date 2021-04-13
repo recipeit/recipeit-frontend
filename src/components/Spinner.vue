@@ -36,36 +36,50 @@ export default {
   }
 }
 
+$border-size: 0.25em;
+$spinner-size: 2em;
+
 .spinner-container {
+  position: relative;
   font-size: 10px;
-  width: calc(2em + 0.75rem);
+  width: $spinner-size;
+  height: $spinner-size;
   line-height: 0;
   display: inline-block;
-  text-align: left;
 }
 
 .spinner {
   display: inline-block;
-  position: relative;
-  border: 0.25em solid var(--spinner-background);
-  border-top-color: var(--spinner-color);
+  position: absolute;
+  right: 0;
   transform: translateZ(0);
   animation: load8 1s infinite linear;
+  width: 2em;
+  height: 2em;
 
-  &,
-  &:after {
+  &:after,
+  &:before {
+    content: '';
+    top: 0;
+    left: 0;
+    position: absolute;
+    height: 100%;
+    width: 100%;
     border-radius: 50%;
-    width: 2em;
-    height: 2em;
+    box-sizing: border-box;
   }
 
-  &--color-text-primary {
-    border-color: var(--color-text-secondary);
-    border-top-color: var(--color-text-primary);
+  &:before {
+    border: $border-size solid currentColor;
+    opacity: 0.25;
   }
 
-  &--color-primary {
-    border-color: transparent;
+  &:after {
+    border: $border-size solid transparent;
+    border-top-color: currentColor;
+  }
+
+  &--color-primary:after {
     border-top-color: var(--color-primary);
   }
 }

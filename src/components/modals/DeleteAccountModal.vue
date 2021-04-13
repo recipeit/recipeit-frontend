@@ -21,8 +21,8 @@
       <BaseButton class="submit-button" stroked @click="$emit('close')">
         Nie chcę
       </BaseButton>
-      <BaseButton class="submit-button" raised color="danger" :form="formID">
-        {{ loading ? '...czekaj' : 'Usuń konto' }}
+      <BaseButton class="submit-button" raised color="danger" :form="formID" :loading="sending">
+        {{ 'Usuń konto' }}
       </BaseButton>
     </BaseModalFooter>
   </sheet-modal-content>
@@ -49,7 +49,7 @@ export default {
     const store = useStore()
     const formID = 'form-' + uniqueID().getID()
     const data = reactive({
-      loading: false,
+      sending: false,
       errors: []
     })
 
@@ -57,13 +57,14 @@ export default {
       password: Yup.string().required('REQUIRED')
     })
 
-    function deleteAccount() {
+    const deleteAccount = ({ password }) => {
       const requestData = {
-        ...data.form,
-        email: props.email
+        email: props.email,
+        password
       }
-      data.loading = true
+      data.sending = true
       data.errors = []
+
       identityApi
         .deleteFAAAAccount(requestData)
         .then(() => {
@@ -77,7 +78,7 @@ export default {
           }
         })
         .finally(() => {
-          data.loading = false
+          data.sending = false
         })
     }
 

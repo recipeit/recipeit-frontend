@@ -14,8 +14,8 @@
       <BaseButton class="submit-button" stroked @click="$emit('close')">
         Anuluj
       </BaseButton>
-      <BaseButton class="submit-button" raised color="contrast" :form="formID">
-        {{ loading ? '...edytowanie' : 'Edytuj' }}
+      <BaseButton class="submit-button" raised color="contrast" :form="formID" :loading="sending">
+        {{ 'Edytuj' }}
       </BaseButton>
     </BaseModalFooter>
   </sheet-modal-content>
@@ -24,7 +24,7 @@
 <script>
 import { Form } from 'vee-validate'
 import { useStore } from 'vuex'
-import { computed, reactive, toRefs } from 'vue'
+import { computed, reactive, ref, toRefs } from 'vue'
 import ExpirationDatesFormSection from './ExpirationDatesFormSection'
 import ProductModalForm from '@/components/ProductModalForm'
 import uniqueID from '@/functions/uniqueID'
@@ -70,8 +70,10 @@ export default {
       unit: Yup.string().nullable()
     })
 
-    function editProduct(values) {
-      const { baseProduct, amount, unit } = values
+    const sending = ref(false)
+
+    const editProduct = ({ baseProduct, amount, unit }) => {
+      sending.value = true
 
       const requestData = {
         id: props.product.id,
@@ -83,9 +85,14 @@ export default {
         expirationDates: data.expirationDatesForm
       }
 
-      store.dispatch('myKitchen/editProductFromKitchen', requestData).then(() => {
-        component.emit('close')
-      })
+      store
+        .dispatch('myKitchen/editProductFromKitchen', requestData)
+        .then(() => {
+          component.emit('close')
+        })
+        .finally(() => {
+          sending.value = false
+        })
     }
 
     return {
@@ -93,6 +100,7 @@ export default {
       initialValues,
       schema,
       editProduct,
+      sending,
       formID
     }
   }

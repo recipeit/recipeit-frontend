@@ -21,7 +21,7 @@
     </ul>
 
     <div class="floating-action-button-container">
-      <BaseButton class="gtm_my-kitchen-add-product-button" raised color="contrast" @click="newProduct">
+      <BaseButton class="gtm_my-kitchen-add-product-button" raised color="contrast" @click="newProduct()">
         <BaseIcon class="floating-action-button__icon" icon="plus" weight="semi-bold" />
         {{ $t('shared.addProduct') }}
       </BaseButton>

@@ -24,8 +24,8 @@
       <BaseButton class="submit-button" stroked @click="$emit('close')">
         Anuluj
       </BaseButton>
-      <BaseButton class="submit-button" raised color="contrast" :form="formID">
-        {{ loading ? '...czekaj' : 'Zapisz' }}
+      <BaseButton class="submit-button" raised color="contrast" :form="formID" :loading="sending">
+        {{ 'Zapisz' }}
       </BaseButton>
     </BaseModalFooter>
   </sheet-modal-content>
@@ -56,7 +56,7 @@ export default {
     const toast = useToast()
     const formID = 'form-' + uniqueID().getID()
     const data = reactive({
-      loading: false,
+      sending: false,
       errors: []
     })
 
@@ -74,8 +74,8 @@ export default {
         .required('REQUIRED')
     })
 
-    function changePassword(values) {
-      data.loading = true
+    const changePassword = values => {
+      data.sending = true
       data.errors = []
       identityApi
         .changePassword(values)
@@ -90,7 +90,7 @@ export default {
           }
         })
         .finally(() => {
-          data.loading = false
+          data.sending = false
         })
     }
 

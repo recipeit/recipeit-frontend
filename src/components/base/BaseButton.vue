@@ -1,10 +1,16 @@
 <template>
-  <button v-if="!anchorTag" v-blur-on-click class="button" :class="classList"><slot /></button>
-  <a v-else v-blur-on-click class="button" :class="classList"><slot /></a>
+  <component :is="tag" v-blur-on-click class="button" :class="classList">
+    <slot />
+    <Spinner class="button-spinner" :show="loading" />
+  </component>
 </template>
 
 <script>
+import Spinner from '@/components/Spinner'
+const validTags = ['button', 'a']
+
 export default {
+  components: { Spinner },
   props: {
     color: {
       type: String
@@ -24,6 +30,15 @@ export default {
     anchorTag: {
       type: Boolean,
       default: false
+    },
+    tag: {
+      type: String,
+      default: 'button',
+      validator: value => validTags.includes(value)
+    },
+    loading: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
@@ -33,7 +48,8 @@ export default {
         this.stroked ? 'button--stroked' : '',
         this.raised ? 'button--raised' : '',
         this.subtle ? 'button--subtle' : '',
-        this.size === 'small' ? 'button--small' : ''
+        this.size === 'small' ? 'button--small' : '',
+        this.loading ? 'loading' : ''
       ]
     }
   }
@@ -51,13 +67,13 @@ export default {
   color: $color;
   // box-shadow: 0 12px 32px -16px $background;
 
-  &:not([disabled]):hover {
+  &:hover {
     // box-shadow: 0 12px 32px -16px $background;
     background-color: $background-hover;
     // transform: scale(1.05);
   }
 
-  &:not([disabled]):active {
+  &:active {
     // box-shadow: 0 12px 32px -16px $background;
     background-color: $background-active;
     // transform: scale(1.05);
@@ -74,11 +90,11 @@ export default {
   background-color: $background;
   color: $color;
 
-  &:not([disabled]):hover {
+  &:hover {
     background-color: $background-hover;
   }
 
-  &:not([disabled]):active {
+  &:active {
     background-color: $background-active;
   }
 }
@@ -104,10 +120,7 @@ export default {
   box-sizing: border-box;
   text-decoration: none;
   @include transition(all);
-
-  &:not([disabled]) {
-    cursor: pointer;
-  }
+  cursor: pointer;
 
   &#{ $root }--small {
     font-weight: 500;
@@ -118,11 +131,11 @@ export default {
     background-color: var(--color-button-contrast);
     color: var(--color-button-contrast-text);
 
-    &:not([disabled]):hover {
+    &:hover {
       background-color: var(--color-button-contrast-hover);
     }
 
-    &:not([disabled]):active {
+    &:active {
       background-color: var(--color-button-contrast-active);
     }
     // box-shadow: 0 12px 32px -16px $background;
@@ -166,11 +179,11 @@ export default {
     background-color: transparent;
     border: 1px solid var(--color-border);
 
-    &:not([disabled]):hover {
+    &:not([disabled]):not(.loading):hover {
       border-color: var(--color-border-hover);
     }
 
-    &:not([disabled]):active {
+    &:not([disabled]):not(.loading):active {
       border-color: var(--color-border-active);
     }
 
@@ -183,6 +196,15 @@ export default {
 
   &[disabled] {
     opacity: 0.5;
+    pointer-events: none;
+  }
+
+  &.loading {
+    pointer-events: none;
+  }
+
+  .button-spinner {
+    width: calc(2em + 0.75rem);
   }
 }
 </style>
