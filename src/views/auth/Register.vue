@@ -1,5 +1,5 @@
 <template>
-  <div class="auth-page__content">
+  <div class="auth-main__content">
     <h1>Zarejestruj się</h1>
 
     <p class="subtitle">
@@ -21,25 +21,25 @@
       <Field name="confirmPassword" v-slot="{ field, errors }">
         <BaseInput class="form-row" label="Potwierdź hasło" type="password" v-bind="field" :errors="errors" />
       </Field>
-      <BaseButton class="form-row auth-page__content__submit" raised color="contrast" type="submit">Zarejestruj się</BaseButton>
+      <BaseButton class="form-row auth-main__content__submit" raised color="contrast" type="submit">Zarejestruj się</BaseButton>
     </Form>
 
-    <ul v-if="errors" class="auth-page__content__errors">
+    <ul v-if="errors" class="auth-main__content__errors">
       <li v-for="(error, index) in errors" :key="index">{{ $t(`errorCode.${error}`) }}</li>
     </ul>
 
     <AuthSocialList buttonPrefix="Kontynuuj z" />
 
-    <div class="auth-page__content__terms">
+    <div class="auth-main__content__terms">
       Rejestrując się akceptujesz
       <router-link :to="{ name: 'terms' }" v-slot="{ href, navigate }" custom>
-        <BaseLink class="auth-page__content__terms__link" :href="href" @click="navigate" color="primary">
+        <BaseLink class="auth-main__content__terms__link" :href="href" @click="navigate" color="primary">
           regulamin
         </BaseLink>
       </router-link>
       oraz
       <router-link :to="{ name: 'privacy-policy' }" v-slot="{ href, navigate }" custom>
-        <BaseLink class="auth-page__content__terms__link" :href="href" @click="navigate" color="primary">
+        <BaseLink class="auth-main__content__terms__link" :href="href" @click="navigate" color="primary">
           politykę prywatności
         </BaseLink>
       </router-link>

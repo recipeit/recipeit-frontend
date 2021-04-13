@@ -1,5 +1,5 @@
 <template>
-  <div class="auth-page__content">
+  <div class="auth-main__content">
     <h1>Zmiana hasła</h1>
 
     <template v-if="state === 'BEFORE'">
@@ -11,7 +11,7 @@
         <Field name="confirmPassword" type="password" v-slot="{ field, errors }">
           <BaseInput class="form-row" label="Potwierdź hasło" type="password" v-bind="field" :errors="errors" />
         </Field>
-        <BaseButton class="form-row auth-page__content__submit" raised color="contrast" type="submit">Zmień hasło</BaseButton>
+        <BaseButton class="form-row auth-main__content__submit" raised color="contrast" type="submit">Zmień hasło</BaseButton>
       </Form>
     </template>
 

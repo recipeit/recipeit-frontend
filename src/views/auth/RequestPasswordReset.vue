@@ -1,5 +1,5 @@
 <template>
-  <div class="auth-page__content">
+  <div class="auth-main__content">
     <h1>Nie pamiętasz hasła?</h1>
 
     <template v-if="state === 'BEFORE'">
@@ -11,7 +11,7 @@
         </Field>
 
         <div class="buttons">
-          <BaseButton class="form-row auth-page__content__submit" raised color="contrast" type="submit">Prześlij</BaseButton>
+          <BaseButton class="form-row auth-main__content__submit" raised color="contrast" type="submit">Prześlij</BaseButton>
           <router-link :to="{ name: 'login' }" v-slot="{ href, navigate }" custom>
             <BaseButton :anchorTag="true" class="return-button" :href="href" @click="navigate" stroked>
               <BaseIcon class="return-button-icon" icon="arrow-left" weight="semi-bold" />

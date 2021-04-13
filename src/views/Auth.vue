@@ -1,7 +1,7 @@
 <template>
   <div class="auth-layout">
-    <div class="auth-page">
-      <div class="auth-page__logo">
+    <div class="auth-main">
+      <div class="auth-main__logo">
         <router-link :to="{ name: 'landing-page' }">
           <Logotype class="logo" />
         </router-link>
@@ -12,6 +12,13 @@
           <component :is="Component"></component>
         </transition>
       </router-view> -->
+    </div>
+    <div class="auth-image">
+      <BaseImageLazyload
+        class="auth-image__image"
+        src="https://images.unsplash.com/photo-1482049016688-2d3e1b311543?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=653&q=80"
+      />
+      <!-- div.auth- -->
     </div>
   </div>
 </template>
@@ -30,25 +37,53 @@ export default {
 }
 
 .auth-layout {
-  max-width: 460px;
+  // max-width: 460px;
   box-sizing: border-box;
-  margin: 0 auto;
-  background: var(--color-background);
+  // margin: 0 auto;
+  // background: var(--color-background);
   min-height: 100%;
-  // box-shadow: 0 0 64px rgba(0, 0, 0, 0.1);
+  // // box-shadow: 0 0 64px rgba(0, 0, 0, 0.1);
   display: flex;
-  flex-direction: column;
-  width: 100%;
+  // flex-direction: column;
+  // width: 100%;
   flex: 1;
+  flex-direction: row-reverse;
 }
 
-.auth-page {
-  flex: 1;
+.auth-image {
+  position: relative;
+  width: 50%;
+
+  @media (max-width: 960px) {
+    display: none;
+  }
+
+  &__image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    img {
+      object-fit: cover;
+      height: 100%;
+      width: 100%;
+    }
+  }
+}
+
+.auth-main {
+  width: 50%;
   flex-direction: column;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 32px 32px 84px 32px;
+
+  @media (max-width: 960px) {
+    width: 100%;
+  }
 
   &__logo {
     margin-bottom: 2rem;

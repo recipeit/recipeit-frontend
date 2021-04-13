@@ -1,5 +1,5 @@
 <template>
-  <div class="auth-page__content">
+  <div class="auth-main__content">
     <h1>Zaloguj się</h1>
     <p class="subtitle">
       lub
@@ -19,22 +19,22 @@
       <Field name="password" v-slot="{ field, errors }">
         <BaseInput class="form-row" label="Hasło" type="password" v-bind="field" :errors="errors" :disabled="anySending" />
       </Field>
-      <BaseButton class="form-row auth-page__content__submit" raised color="contrast" type="submit" :disabled="anySending">
+      <BaseButton class="form-row auth-main__content__submit" raised color="contrast" type="submit" :disabled="anySending">
         <Spinner :show="sending" />
         Zaloguj się
       </BaseButton>
 
-      <ul v-if="errors" class="auth-page__content__errors">
+      <ul v-if="errors" class="auth-main__content__errors">
         <li v-for="(error, index) in errors" :key="index">{{ $t(`errorCode.${error}`) }}</li>
       </ul>
 
       <BaseLink
         tag="button"
         color="primary"
-        class="auth-page__content__request-password-reset"
+        class="auth-main__content__request-password-reset"
         @click.prevent="goToRequestPasswordReset(values.email)"
       >
-        Nie pamiętasz hasła?
+        nie pamiętasz hasła?
       </BaseLink>
     </Form>
 

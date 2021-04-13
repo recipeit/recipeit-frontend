@@ -1,5 +1,5 @@
 <template>
-  <div class="auth-page__content">
+  <div class="auth-main__content">
     <h1>Potwierdź adres email</h1>
 
     <div v-if="state === 'LOADING'">

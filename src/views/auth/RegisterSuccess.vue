@@ -1,5 +1,5 @@
 <template>
-  <div class="auth-page__content">
+  <div class="auth-main__content">
     <h1>Potwierdź swoje konto</h1>
 
     Sprawdź swoją skrzynkę pocztową. Może być konieczne sprawdzenie folderu ze spamem.
