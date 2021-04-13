@@ -3,12 +3,12 @@
     <BaseButton class="auth-social-list__button" stroked color="contrast" @click="loginFacebook()" :disabled="anySending ? true : null">
       <Spinner :show="facebookSending" color="text-primary" />
       <img src="@/assets/logos/facebook.svg" alt="logo" />
-      {{ buttonPrefix }} Facebook
+      Kontynuuj z Facebook
     </BaseButton>
     <BaseButton class="auth-social-list__button" stroked color="contrast" @click="loginGoogle()" :disabled="anySending ? true : null">
       <Spinner :show="googleSending" color="text-primary" />
       <img src="@/assets/logos/google.svg" alt="logo" />
-      {{ buttonPrefix }} Google
+      Kontynuuj z Google
     </BaseButton>
   </div>
 </template>
@@ -21,9 +21,6 @@ export default {
   emits: ['lockInputs', 'unlockInputs'],
   mixins: [authSocialMixin],
   components: { Spinner },
-  props: {
-    buttonPrefix: String
-  },
   computed: {
     anySending() {
       return this.facebookSending || this.googleSending

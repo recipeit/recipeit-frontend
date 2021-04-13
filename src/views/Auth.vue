@@ -51,7 +51,7 @@ export default {
   padding: 32px 32px 84px 32px;
 
   &__logo {
-    margin-block: 2rem;
+    margin-bottom: 2rem;
     max-width: 350px;
     width: 100%;
   }

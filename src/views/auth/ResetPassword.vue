@@ -3,10 +3,6 @@
     <h1>Zmiana hasła</h1>
 
     <template v-if="state === 'BEFORE'">
-      <p>
-        Wprowadź nowe hasło
-      </p>
-
       <Form @submit="resetPassword($event)" :validation-schema="schema">
         <BaseInput class="form-row" label="E-mail" type="text" :value="email" :disabled="true" />
         <Field name="password" type="password" v-slot="{ field, errors }">
@@ -37,28 +33,27 @@
 import { Field, Form } from 'vee-validate'
 import * as Yup from 'yup'
 import identityApi from '@/api/identityApi'
+import { confirmNewPasswordSchema, newPasswordSchema } from '@/configs/schemas'
 
 export default {
   components: {
     Field,
     Form
   },
+  setup() {
+    const schema = Yup.object({
+      password: newPasswordSchema(),
+      confirmPassword: confirmNewPasswordSchema()
+    })
+
+    return {
+      schema
+    }
+  },
   data: () => ({
     state: 'BEFORE',
     email: null,
-    token: null,
-    schema: Yup.object().shape({
-      password: Yup.string()
-        .min(6, 'REQUIRED_AT_LEAST_6_CHAR')
-        .matches(/^(?=.*[a-z])/, 'REQUIRED_AT_LEAST_ONE_LOWER')
-        .matches(/^(?=.*[A-Z])/, 'REQUIRED_AT_LEAST_ONE_UPPER')
-        .matches(/^(?=.*[0-9])/, 'REQUIRED_AT_LEAST_ONE_DIGIT')
-        .matches(/^(?=.*[!@#$%^&*])/, 'REQUIRED_AT_LEAST_ONE_NON_ALPHANUM')
-        .required('REQUIRED'),
-      confirmPassword: Yup.string()
-        .oneOf([Yup.ref('password'), null], 'WRONG_PASSWORD_COMBINATION')
-        .required('REQUIRED')
-    })
+    token: null
   }),
   beforeMount() {
     this.state = 'BEFORE'
@@ -101,6 +96,6 @@ export default {
 // margin-bottom: 16px;
 // }
 h1 {
-  margin-bottom: 8px;
+  margin-bottom: 1.5rem;
 }
 </style>

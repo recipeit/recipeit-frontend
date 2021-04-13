@@ -12,13 +12,13 @@
     </p>
 
     <Form @submit="register($event)" :validation-schema="schema">
-      <Field type="text" name="email" v-slot="{ field, errors }">
-        <BaseInput class="form-row" label="E-mail" type="email" v-bind="field" :errors="errors" />
+      <Field name="email" v-slot="{ field, errors }">
+        <BaseInput class="form-row" label="E-mail" type="text" v-bind="field" :errors="errors" />
       </Field>
-      <Field type="text" name="password" v-slot="{ field, errors }">
+      <Field name="password" v-slot="{ field, errors }">
         <BaseInput class="form-row" label="Hasło" type="password" v-bind="field" :errors="errors" />
       </Field>
-      <Field type="text" name="confirmPassword" v-slot="{ field, errors }">
+      <Field name="confirmPassword" v-slot="{ field, errors }">
         <BaseInput class="form-row" label="Potwierdź hasło" type="password" v-bind="field" :errors="errors" />
       </Field>
       <BaseButton class="form-row auth-page__content__submit" raised color="contrast" type="submit">Zarejestruj się</BaseButton>
@@ -34,7 +34,13 @@
       Rejestrując się akceptujesz
       <router-link :to="{ name: 'terms' }" v-slot="{ href, navigate }" custom>
         <BaseLink class="auth-page__content__terms__link" :href="href" @click="navigate" color="primary">
-          warunki korzystania z Recipeit
+          regulamin
+        </BaseLink>
+      </router-link>
+      oraz
+      <router-link :to="{ name: 'privacy-policy' }" v-slot="{ href, navigate }" custom>
+        <BaseLink class="auth-page__content__terms__link" :href="href" @click="navigate" color="primary">
+          politykę prywatności
         </BaseLink>
       </router-link>
     </div>
@@ -44,7 +50,8 @@
 <script>
 import { Field, Form } from 'vee-validate'
 import AuthSocialList from './AuthSocialList'
-import * as Yup from 'yup'
+import { emailSchema, newPasswordSchema, confirmNewPasswordSchema } from '@/configs/schemas'
+import * as yup from 'yup'
 
 export default {
   components: {
@@ -52,22 +59,18 @@ export default {
     Field,
     Form
   },
+  setup() {
+    const schema = yup.object({
+      email: emailSchema(),
+      password: newPasswordSchema(),
+      confirmPassword: confirmNewPasswordSchema('password')
+    })
+
+    return {
+      schema
+    }
+  },
   data: () => ({
-    schema: Yup.object().shape({
-      email: Yup.string()
-        .required('REQUIRED')
-        .email('INVALID_EMAIL'),
-      password: Yup.string()
-        .min(6, 'REQUIRED_AT_LEAST_6_CHAR')
-        .matches(/^(?=.*[a-z])/, 'REQUIRED_AT_LEAST_ONE_LOWER')
-        .matches(/^(?=.*[A-Z])/, 'REQUIRED_AT_LEAST_ONE_UPPER')
-        .matches(/^(?=.*[0-9])/, 'REQUIRED_AT_LEAST_ONE_DIGIT')
-        .matches(/^(?=.*[!@#$%^&*])/, 'REQUIRED_AT_LEAST_ONE_NON_ALPHANUM')
-        .required('REQUIRED'),
-      confirmPassword: Yup.string()
-        .oneOf([Yup.ref('password'), null], 'WRONG_PASSWORD_COMBINATION')
-        .required('REQUIRED')
-    }),
     errors: null
   }),
   methods: {

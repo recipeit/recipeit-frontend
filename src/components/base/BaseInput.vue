@@ -32,6 +32,7 @@
 import uniqueID from '@/functions/uniqueID'
 
 export default {
+  emits: ['focus', 'blur'],
   model: {
     prop: 'value',
     event: 'input'

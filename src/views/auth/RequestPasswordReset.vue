@@ -3,11 +3,11 @@
     <h1>Nie pamiętasz hasła?</h1>
 
     <template v-if="state === 'BEFORE'">
-      <p class="subtitle">Wpisz adres e-mail, aby zresetować hasło. Może być konieczne sprawdzenie folderu ze spamem.</p>
+      <p class="subtitle">Wprowadź adres e-mail, aby zresetować hasło. Może być konieczne sprawdzenie folderu ze spamem.</p>
 
-      <Form @submit="requestPasswordReset($event)" :validation-schema="schema">
+      <Form @submit="requestPasswordReset($event)" :validation-schema="schema" :initial-values="initialValues">
         <Field name="email" v-slot="{ field, errors }">
-          <BaseInput class="form-row" label="E-mail" type="email" v-bind="field" :errors="errors" />
+          <BaseInput class="form-row" label="E-mail" v-bind="field" :errors="errors" />
         </Field>
 
         <div class="buttons">
@@ -38,20 +38,32 @@
 
 <script>
 import { Field, Form } from 'vee-validate'
-import * as Yup from 'yup'
+import * as yup from 'yup'
 import identityApi from '@/api/identityApi'
+import { emailSchema } from '@/configs/schemas'
 
 export default {
   components: {
     Field,
     Form
   },
+  props: {
+    initialEmail: {
+      type: String,
+      default: ''
+    }
+  },
+  setup(props) {
+    const schema = yup.object({
+      email: emailSchema()
+    })
+    const initialValues = {
+      email: props.initialEmail
+    }
+
+    return { schema, initialValues }
+  },
   data: () => ({
-    schema: Yup.object().shape({
-      email: Yup.string()
-        .required('REQUIRED')
-        .email('INVALID_EMAIL')
-    }),
     state: 'BEFORE'
   }),
   beforeMount() {
