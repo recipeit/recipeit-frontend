@@ -26,6 +26,14 @@ $text-primary: #cedeeb;
 $text-secondary: #657786;
 $text-secondary: #657786;
 
+$background: darken(#272c30, 5);
+$background: #000;
+$background: darken(#272c30, 7);
+
+$background-lighter: #272c30;
+$background-lighter: darken(#272c30, 5);
+$background-lighter: darken(#272c30, 3);
+
 $product-color-others: $text-secondary;
 $product-color-dairy: $yellow;
 $product-color-vegetables: $orange;
@@ -49,9 +57,9 @@ $product-color-beverages: #58e2dc;
 $color-theme: (
   'primary': functions.colorVariables($green),
   'accent': $blue,
-  'background': darken(#272c30, 5),
-  'background-flyout': #272c30,
-  'background-rgb': #{functions.toRGB(darken(#272c30, 5))},
+  'background': $background,
+  'background-flyout': $background-lighter,
+  'background-rgb': #{functions.toRGB($background)},
   'border': (
     'DEFAULT': #343d44,
     'hover': lighten(#343d44, 10%),
@@ -64,7 +72,7 @@ $color-theme: (
   'blue': $blue,
   'yellow': $yellow,
   'red': $red,
-  'image-background': #272c30,
+  'image-background': $background-lighter,
   'product-group-icon': (
     'others': $product-color-others,
     'dairy': $product-color-dairy,
@@ -87,7 +95,7 @@ $color-theme: (
     'beverages': $product-color-beverages
   ),
   'toast': (
-    'background': rgba(#272c30, 0.95),
+    'background': rgba($background-lighter, 0.95),
     'color': $text-primary,
     'icon': (
       'background': rgba($blue, 0.1),
@@ -121,11 +129,11 @@ $color-theme: (
   ),
   'button': (
     'raised': (
-      'primary': functions.buttonRaisedVariablesDark($green, darken(#272c30, 5)),
-      'accent': functions.buttonRaisedVariablesDark($blue, darken(#272c30, 5)),
-      'warning': functions.buttonRaisedVariablesDark($yellow, darken(#272c30, 5)),
-      'danger': functions.buttonRaisedVariablesDark($red, darken(#272c30, 5)),
-      'contrast': functions.buttonRaisedVariablesDark($text-primary, darken(#272c30, 5))
+      'primary': functions.buttonRaisedVariablesDark($green, $background),
+      'accent': functions.buttonRaisedVariablesDark($blue, $background),
+      'warning': functions.buttonRaisedVariablesDark($yellow, $background),
+      'danger': functions.buttonRaisedVariablesDark($red, $background),
+      'contrast': functions.buttonRaisedVariablesDark($text-primary, $background)
     ),
     'subtle': (
       'primary': functions.buttonSubtleVariables($green),

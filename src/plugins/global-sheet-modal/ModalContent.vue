@@ -12,7 +12,7 @@ export default {
 
 <style lang="scss">
 .sheet-modal-content {
-  background-color: var(--color-background);
+  background-color: var(--color-background-flyout);
   border-radius: 32px 32px 0 0;
   position: relative;
 
