@@ -49,6 +49,8 @@ export default {
 }
 
 .auth-image {
+  // average color of current image
+  background-color: #383527;
   position: relative;
   padding: 32px;
   flex: 1;

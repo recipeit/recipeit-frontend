@@ -13,7 +13,8 @@ export default {
   components: { Spinner },
   props: {
     color: {
-      type: String
+      type: String,
+      default: ''
     },
     size: {
       type: String

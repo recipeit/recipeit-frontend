@@ -1,6 +1,8 @@
 @use './theme-light-variables' as lightVariables;
 @use './theme-dark-variables' as darkVariables;
 
+$light-theme-primary: lightVariables.$green;
+
 // $black: #000;
 // $gray: #90abb9;
 // $gray-light: #e2e9ed;

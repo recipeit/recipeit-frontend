@@ -7,19 +7,19 @@
       <div class="user-links">
         <template v-if="isAuthenticated">
           <router-link :to="authenticatedReturnUrl || { name: 'home' }" v-slot="{ href, navigate }" custom>
-            <BaseButton class="user-link" tag="a" size="small" :href="href" @click="navigate($event)" raised color="primary">
+            <BaseButton class="user-link" tag="a" :href="href" @click="navigate($event)" raised color="primary">
               Wróć do aplikacji
             </BaseButton>
           </router-link>
         </template>
         <template v-else>
           <router-link :to="{ name: 'login' }" v-slot="{ href, navigate }" custom>
-            <BaseButton class="user-link" tag="a" size="small" :href="href" @click="navigate($event)" stroked>
+            <BaseButton class="user-link" tag="a" :href="href" @click="navigate($event)" stroked>
               Zaloguj się
             </BaseButton>
           </router-link>
           <router-link :to="{ name: 'register' }" v-slot="{ href, navigate }" custom>
-            <BaseButton class="user-link" tag="a" size="small" :href="href" @click="navigate($event)" raised color="primary">
+            <BaseButton class="user-link" tag="a" :href="href" @click="navigate($event)" raised color="primary">
               Utwórz konto
             </BaseButton>
           </router-link>
