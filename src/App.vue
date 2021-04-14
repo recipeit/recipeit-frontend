@@ -25,7 +25,6 @@ export default {
     this.$store
       .dispatch('user/fetchUserProfile', { getInitUserData: true })
       .then(async () => {
-        console.log('i cyk', location.pathname)
         if (location.pathname.startsWith('/auth')) {
           await this.$router.replace({ name: 'home' })
         }
@@ -33,8 +32,6 @@ export default {
       .catch(async () => {
         if (location.pathname.startsWith('/app')) {
           await this.$router.replace({ name: 'login' })
-        } else if (!location.pathname.startsWith('/auth')) {
-          await this.$router.replace({ name: 'landing-page' })
         }
       })
       .finally(() => {

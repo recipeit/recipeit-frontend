@@ -44,14 +44,14 @@
 
     <h3>Inne</h3>
     <p>
-      <router-link :to="{ name: 'terms' }" v-slot="{ href, navigate }" custom>
+      <router-link :to="{ name: 'terms', params: { returnUrl: $route.fullPath } }" v-slot="{ href, navigate }" custom>
         <BaseLink :href="href" @click="navigate($event)" class="card-link" color="primary">
           Regulamin
         </BaseLink>
       </router-link>
     </p>
     <p>
-      <router-link :to="{ name: 'privacy-policy' }" v-slot="{ href, navigate }" custom>
+      <router-link :to="{ name: 'privacy-policy', params: { returnUrl: $route.fullPath } }" v-slot="{ href, navigate }" custom>
         <BaseLink :href="href" @click="navigate($event)" class="card-link" color="primary">
           Polityka prywatności
         </BaseLink>

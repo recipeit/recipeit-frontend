@@ -53,11 +53,13 @@ const routes = [
   {
     path: '/terms',
     name: 'terms',
+    props: true,
     component: () => import(/* webpackChunkName: "terms" */ '@/views/Terms.vue')
   },
   {
     path: '/privacy-policy',
     name: 'privacy-policy',
+    props: true,
     component: () => import(/* webpackChunkName: "terms" */ '@/views/PrivacyPolicy.vue')
   },
   {

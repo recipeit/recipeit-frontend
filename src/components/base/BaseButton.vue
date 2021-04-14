@@ -123,7 +123,7 @@ export default {
   cursor: pointer;
 
   &#{ $root }--small {
-    font-weight: 500;
+    // font-weight: 500;
     height: 40px;
   }
 
