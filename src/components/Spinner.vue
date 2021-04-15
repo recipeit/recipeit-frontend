@@ -71,7 +71,7 @@ $spinner-size: 2em;
 
   &:before {
     border: $border-size solid currentColor;
-    opacity: 0.25;
+    opacity: 0.15;
   }
 
   &:after {

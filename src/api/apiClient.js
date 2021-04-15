@@ -5,6 +5,7 @@ import { API_DEV_BASE_URL_SSL, API_PROD_BASE_URL } from '@/configs/api'
 const apiClient = axios.create({
   baseURL: process.env.NODE_ENV === 'production' ? API_PROD_BASE_URL : API_DEV_BASE_URL_SSL,
   withCredentials: true,
+  timeout: 5000,
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json'

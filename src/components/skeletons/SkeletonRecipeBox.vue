@@ -47,7 +47,7 @@ export default {
 
     &__line {
       height: 1em;
-      margin: 0.25em 0;
+      margin: 0.375em 0;
       border-radius: 1em;
       background-color: var(--color-image-background);
 

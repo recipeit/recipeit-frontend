@@ -63,10 +63,10 @@ export default {
       favouriteRecipesIds: state => state.recipes.favouriteRecipesIds
     }),
     isFavourite() {
-      if (!this.isAuthenticated) {
-        return false
-      }
-      return this.favouriteRecipesIds.find(id => id === this.recipe.id) !== undefined
+      // if (!this.isAuthenticated) {
+      //   return false
+      // }
+      return this.favouriteRecipesIds?.find(id => id === this.recipe.id) !== undefined
     }
   }
 }

@@ -453,7 +453,7 @@ export default {
       justify-content: center;
       font-size: 1rem;
 
-      & ::v-deep(svg) {
+      ::v-deep(svg) {
         transform: rotate(-90deg);
         @include transition(transform);
 

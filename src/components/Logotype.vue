@@ -16,11 +16,9 @@ export default {
 
 <style lang="scss" scoped>
 .logo {
-  &::v-deep {
-    svg {
-      height: 100%;
-      width: 100%;
-    }
+  ::v-deep(svg) {
+    height: 100%;
+    width: 100%;
   }
 }
 </style>

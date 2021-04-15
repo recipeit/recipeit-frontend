@@ -246,7 +246,7 @@ export default {
         if (!withoutRedirect) {
           sessionStorage.setItem('LOGIN_REDIRECT', location.pathname)
         }
-        router.push({ name: 'login' })
+        await router.push({ name: 'login' })
       }
 
       dispatch('shoppingList/resetUserData', {}, { root: true })

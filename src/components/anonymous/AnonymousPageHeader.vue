@@ -34,9 +34,7 @@ import Logotype from '@/components/Logotype'
 import { mapGetters } from 'vuex'
 
 export default {
-  components: {
-    Logotype
-  },
+  components: { Logotype },
   computed: {
     ...mapGetters({
       isAuthenticated: 'user/isAuthenticated'

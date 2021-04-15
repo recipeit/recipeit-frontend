@@ -32,11 +32,7 @@ import BackgroundUrl from '@/assets/img/splash.jpg'
 
 export default {
   components: { Logotype },
-  setup() {
-    return {
-      BackgroundUrl
-    }
-  }
+  setup: () => ({ BackgroundUrl })
 }
 </script>
 

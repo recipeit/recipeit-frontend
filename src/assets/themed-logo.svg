@@ -5,7 +5,7 @@
             fill: var(--color-primary);
           }
           .b {
-            fill: var(--color-text-primary);
+            fill: currentColor;
           }
     </style>
   </defs>
