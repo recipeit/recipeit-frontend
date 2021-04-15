@@ -44,11 +44,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.header {
-  position: sticky;
-  top: 0;
-  background-color: var(--color-background);
-}
+// .header {
+// position: sticky;
+// top: 0;
+// background-color: var(--color-background);
+// }
 
 .header-container {
   max-width: 960px;
