@@ -25,7 +25,11 @@ export default {
     this.$store
       .dispatch('user/fetchUserProfile', { getInitUserData: true })
       .then(async () => {
-        if (location.pathname.startsWith('/auth')) {
+        if (
+          !location.pathname.startsWith('/app') &&
+          !location.pathname.startsWith('/terms') &&
+          !location.pathname.startsWith('/privacy-policy')
+        ) {
           await this.$router.replace({ name: 'home' })
         }
       })

@@ -6,9 +6,9 @@
       </router-link>
       <div class="user-links">
         <template v-if="isAuthenticated">
-          <router-link :to="authenticatedReturnUrl || { name: 'home' }" v-slot="{ href, navigate }" custom>
+          <router-link :to="{ name: 'home' }" v-slot="{ href, navigate }" custom>
             <BaseButton class="user-link" tag="a" :href="href" @click="navigate($event)" raised color="primary">
-              Wróć do aplikacji
+              Przejdź do aplikacji
             </BaseButton>
           </router-link>
         </template>
@@ -40,10 +40,7 @@ export default {
   computed: {
     ...mapGetters({
       isAuthenticated: 'user/isAuthenticated'
-    }),
-    authenticatedReturnUrl() {
-      return this.$route.params.returnUrl
-    }
+    })
   }
 }
 </script>

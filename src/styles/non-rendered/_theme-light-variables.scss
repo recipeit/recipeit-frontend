@@ -4,6 +4,7 @@ $black: #000;
 $gray: #90abb9;
 $gray-dark: darken($gray, 30);
 $gray-light: #e2e9ed;
+$gray-extra-light: mix(#e2e9ed, #fff);
 $white: #fff;
 
 $grayscale-min: #000;
@@ -64,7 +65,7 @@ $color-theme: (
   'blue': $blue,
   'yellow': $yellow,
   'red': $red,
-  'image-background': $gray-light,
+  'image-background': $gray-extra-light,
   'product-group-icon': (
     'others': $product-color-others,
     'dairy': $product-color-dairy,

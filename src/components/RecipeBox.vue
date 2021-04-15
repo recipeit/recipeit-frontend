@@ -148,7 +148,7 @@ export default {
     > * {
       // backdrop-filter: blur(8px) saturate(200%) brightness(150%);
       // backdrop-filter: blur(8px);
-      padding: 7px 8px;
+      padding: 0 8px;
       border-radius: 50px;
       background-color: rgba(var(--color-background-rgb), 0.95);
       // color: #fff;

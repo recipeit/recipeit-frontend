@@ -10,25 +10,16 @@
       <div class="main">
         <h1 class="h1">Znajdź przepis<br />z tego co masz!</h1>
         <div class="user-buttons">
-          <template v-if="isAuthenticated">
-            <router-link :to="authenticatedReturnUrl || { name: 'home' }" v-slot="{ href, navigate }" custom>
-              <BaseButton class="user-button user-button--main" tag="a" :href="href" @click="navigate($event)">
-                Wróć do aplikacji
-              </BaseButton>
-            </router-link>
-          </template>
-          <template v-else>
-            <router-link :to="{ name: 'register' }" v-slot="{ href, navigate }" custom>
-              <BaseButton class="user-button user-button--main" tag="a" :href="href" @click="navigate($event)">
-                Utwórz konto
-              </BaseButton>
-            </router-link>
-            <router-link :to="{ name: 'login' }" v-slot="{ href, navigate }" custom>
-              <BaseButton class="user-button user-button--secondary" tag="a" :href="href" @click="navigate($event)">
-                Zaloguj się
-              </BaseButton>
-            </router-link>
-          </template>
+          <router-link :to="{ name: 'register' }" v-slot="{ href, navigate }" custom>
+            <BaseButton class="user-button user-button--main" tag="a" :href="href" @click="navigate($event)">
+              Utwórz konto
+            </BaseButton>
+          </router-link>
+          <router-link :to="{ name: 'login' }" v-slot="{ href, navigate }" custom>
+            <BaseButton class="user-button user-button--secondary" tag="a" :href="href" @click="navigate($event)">
+              Zaloguj się
+            </BaseButton>
+          </router-link>
         </div>
       </div>
     </div>
