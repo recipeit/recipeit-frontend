@@ -40,10 +40,15 @@ $text-secondary: $gray;
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  @media (max-width: 720px) {
+    flex-direction: column;
+    text-align: center;
+  }
 }
 
 .logo {
-  width: 128px;
+  width: 96px;
 
   ::v-deep(.a) {
     fill: $gray;
@@ -56,8 +61,13 @@ $text-secondary: $gray;
 .link {
   color: $gray;
   font-size: 0.875rem;
+  line-height: 1.25;
   text-decoration: none;
   @include transition((color));
+
+  @media (max-width: 720px) {
+    font-size: 0.75rem;
+  }
 
   &:hover {
     color: lighten($gray, 10);

@@ -9,6 +9,7 @@
       </header>
       <div class="main">
         <h1 class="h1">Znajdź przepis<br />z tego co masz!</h1>
+        <p class="description">Nie pozwól aby Twoje produkty się przeterminowały. Recipeit pokaże Ci, co możesz z nich przygotować!</p>
         <div class="user-buttons">
           <router-link :to="{ name: 'register' }" v-slot="{ href, navigate }" custom>
             <BaseButton class="user-button user-button--main" tag="a" :href="href" @click="navigate($event)">
@@ -70,8 +71,11 @@ export default {
 .user-buttons {
   display: flex;
 
-  @media (max-width: 600px) {
+  @media (max-width: 720px) {
     flex-direction: column;
+    max-width: 256px;
+    width: 100%;
+    // margin: 0 auto;
   }
 }
 
@@ -79,7 +83,7 @@ export default {
   & + & {
     margin-left: 1rem;
 
-    @media (max-width: 600px) {
+    @media (max-width: 720px) {
       margin-left: 0;
       margin-top: 1rem;
     }
@@ -106,17 +110,34 @@ export default {
   flex-direction: column;
   justify-content: center;
   flex: 1;
+
+  @media (max-width: 720px) {
+    align-items: center;
+  }
 }
 
 .h1 {
   font-size: 4rem;
   color: #fff;
   line-height: 1.15;
-  margin-bottom: 3rem;
+  margin-bottom: 1.5rem;
 
-  @media (max-width: 600px) {
+  @media (max-width: 720px) {
     text-align: center;
     font-size: 2rem;
+  }
+}
+
+.description {
+  font-size: 0.875rem;
+  color: rgba(#fff, 0.75);
+  margin-bottom: 3rem;
+  max-width: 380px;
+
+  @media (max-width: 720px) {
+    text-align: center;
+    // margin: 0 auto;
+    // font-size: 2rem;
   }
 }
 
@@ -148,7 +169,7 @@ export default {
     height: 720px;
     width: 1280px;
 
-    @media (max-width: 600px) {
+    @media (max-width: 720px) {
       left: 50%;
       transform: translate(-50%, -50%);
     }
@@ -161,7 +182,7 @@ export default {
       max-width: 1280px;
       margin: 0 auto;
 
-      @media (max-width: 600px) {
+      @media (max-width: 720px) {
         opacity: 0.5;
       }
     }

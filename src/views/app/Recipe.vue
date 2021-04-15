@@ -498,7 +498,7 @@ export default {
     //   left: 50%;
     //   transform: translateX(-50%);
 
-    //   // @media (max-width: 719px) {
+    //   // @media (max-width: 720px) {
     //   //   content: '';
     //   // }
     // }

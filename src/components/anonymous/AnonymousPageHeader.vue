@@ -63,6 +63,7 @@ export default {
 .logo {
   width: 128px;
   line-height: 1;
+  color: var(--color-max-contrast);
 }
 
 .user-links {

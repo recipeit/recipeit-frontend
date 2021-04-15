@@ -32,13 +32,13 @@ export default {
       {
         title: 'Dodaj swoje produkty',
         description:
-          'Stwórz listę produktów, które masz w swojej kuchni. Możesz ją uzupełnić o szczegóły, takie jak ilość, jednostka czy daty ważności!',
+          'Stwórz listę produktów, które masz w swojej kuchni. Możesz je uzupełnić o szczegóły, takie jak ilość czy data ważności!',
         image: ''
       },
       {
         title: 'Sprawdź co możesz z nich przygotować',
         description:
-          'Nie pozwól aby produkty, które kupiłeś się przeterminowały! Aplikacja pokaże, co możesz przygotować z tego, co już masz!',
+          'Nie pozwól aby produkty, które kupiłeś, się przeterminowały. Recipeit pokaże Ci, co możesz przygotować z tego, co już masz!',
         image: ''
       },
       {
@@ -49,23 +49,24 @@ export default {
       },
       {
         title: 'Stwórz listę zakupów',
-        description: 'Czegos brakuje? Chcesz ugotować danie, ale nie masz potrzebnych składników? Stwórz listę zakupów!',
+        description: 'Czegos Ci brakuje? Chcesz ugotować danie, ale nie masz potrzebnych składników? Dodaj je do listy zakupów!',
         image: ''
       },
       {
         title: 'Filtruj przepisy',
-        description: 'Szukasz czegoś konkretnego? Masz na coś alergię? Szukasz przepisu z konkretnymi składnikami? Skorzystaj z filtrów!',
+        description:
+          'Szukasz czegoś konkretnego? Masz na coś alergię? Potrzebujesz przepis z konkretnymi składnikami? Skorzystaj z dedykowanych filtrów!',
         image: ''
       },
       {
         title: 'Zaplanuj przepis na później',
-        description: 'Znalazłeś przepis, ale nie chcesz go przygotowywać od razu? Stwórz swój plan dnia, bądź nawet tygodnia!',
+        description: 'Znalazłeś przepis, ale nie chcesz go przygotowywać już teraz? Dodaj go do planu dnia, bądź nawet tygodnia!',
         image: ''
       },
       {
         title: 'Dodawaj do ulubionych',
         description:
-          'Posiadasz takie danie, które uwielbiasz przygotowywać? Z lista ulubionych przepisów, ich znalezienie jest błyskawiczne!',
+          'Każdy ma taki przepis, który uwielbia często przygotowywać. Z listą ulubionych przepisów, ich znalezienie jest błyskawiczne!',
         image: ''
       }
     ]

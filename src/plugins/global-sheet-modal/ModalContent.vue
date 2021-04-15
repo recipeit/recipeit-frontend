@@ -16,7 +16,7 @@ export default {
   border-radius: 32px 32px 0 0;
   position: relative;
 
-  @media (min-width: 720px) {
+  @media (min-width: 721px) {
     border-radius: 32px;
   }
 
@@ -30,7 +30,7 @@ export default {
     left: 50%;
     transform: translateX(-50%);
 
-    @media (max-width: 719px) {
+    @media (max-width: 720px) {
       content: '';
     }
   }

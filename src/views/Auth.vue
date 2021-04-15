@@ -86,6 +86,10 @@ export default {
     margin-bottom: 2rem;
     max-width: 350px;
     width: 100%;
+
+    .logo {
+      color: var(--color-max-contrast);
+    }
   }
 
   &__content {

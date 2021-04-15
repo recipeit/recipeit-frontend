@@ -187,7 +187,7 @@ export default {
   z-index: 12500;
   margin-top: auto;
 
-  @media (min-width: 720px) {
+  @media (min-width: 721px) {
     margin-bottom: auto;
   }
 }
@@ -201,7 +201,7 @@ export default {
 .slide-leave-to {
   transform: translate3d(0, 100%, 0);
 
-  @media (min-width: 720px) {
+  @media (min-width: 721px) {
     transform: scale(0.5);
     opacity: 0;
   }
