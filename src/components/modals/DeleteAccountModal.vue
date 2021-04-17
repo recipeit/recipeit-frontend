@@ -59,14 +59,13 @@ export default {
 
     const deleteAccount = ({ password }) => {
       const requestData = {
-        email: props.email,
         password
       }
       data.sending = true
       data.errors = []
 
       identityApi
-        .deleteFAAAAccount(requestData)
+        .deleteAccount(requestData)
         .then(() => {
           component.emit('close', { success: true })
           store.dispatch('user/logout')

@@ -10,7 +10,7 @@
       <router-link class="link" :to="{ name: 'privacy-policy' }">
         Polityka prywatności
       </router-link>
-      <a class="link" href="mailto:kontakt@recipeit.pl">
+      <a class="link" :href="contactHref">
         Kontakt
       </a>
     </div>
@@ -18,10 +18,18 @@
 </template>
 
 <script>
+import { CONTACT_MAIL_ADDRESS } from '@/configs/emails'
 import Logotype from '@/components/Logotype'
 
 export default {
-  components: { Logotype }
+  components: { Logotype },
+  setup() {
+    const contactHref = `mailto:${CONTACT_MAIL_ADDRESS}`
+
+    return {
+      contactHref
+    }
+  }
 }
 </script>
 
