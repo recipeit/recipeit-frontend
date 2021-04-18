@@ -16,8 +16,10 @@ export default {
       params: queryParams
     })
   },
-  getFavouriteRecipes() {
-    return apiClient.get(`/${route}/favourite-recipes`)
+  getFavouriteRecipes(queryParams) {
+    return apiClient.get(`/${route}/favourite-recipes`, {
+      params: queryParams
+    })
   },
   getFavouriteRecipesIds() {
     return apiClient.get(`/${route}/favourite-recipes/ids`)

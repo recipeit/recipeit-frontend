@@ -26,8 +26,14 @@
       </template>
     </DayPlan>
 
-    <div class="section-title"><BaseIcon class="section-title-icon" icon="heart" /> Ulubione</div>
-    <HorizontalRecipesList :recipes="favouriteRecipes" />
+    <div class="section-title">
+      <BaseIcon class="section-title-icon" icon="heart" />
+      Ulubione
+      <BaseLink v-if="favouriteRecipes.items" class="section-title-link" tag="button" color="primary" @click="showAllFavourites()">
+        zobacz wszystkie
+      </BaseLink>
+    </div>
+    <HorizontalRecipesList :recipes="favouriteRecipes" @showAll="showAllFavourites()" />
 
     <div class="section-title"><BaseIcon class="section-title-icon" icon="star" /> Popularne kategorie</div>
     <div class="popular-categories-container">
@@ -61,6 +67,7 @@ import DayPlan from '@/components/DayPlan'
 import HorizontalRecipesList from '@/components/HorizontalRecipesList'
 import { mapGetters, mapState } from 'vuex'
 import userApi from '@/api/userApi'
+import { RecipeList } from '@/constants'
 
 export default {
   components: { PageHeader, DayPlan, HorizontalRecipesList },
@@ -75,9 +82,9 @@ export default {
     })
   },
   beforeMount() {
+    this.favouriteRecipes.fetching = true
     userApi.getFavouriteRecipes().then(({ data }) => {
-      this.favouriteRecipes = data
-      // console.log(data)
+      this.favouriteRecipes.setFromApi({ ...data, fetching: false })
     })
   },
   data() {
@@ -95,7 +102,12 @@ export default {
         { id: 2, name: 'Alabama' },
         { id: 3, name: 'Kalifornia' }
       ],
-      favouriteRecipes: null
+      favouriteRecipes: new RecipeList()
+    }
+  },
+  methods: {
+    showAllFavourites() {
+      this.$router.push({ name: 'favourites' })
     }
   }
 }

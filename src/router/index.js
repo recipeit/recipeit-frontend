@@ -86,6 +86,11 @@ const routes = [
         component: () => import(/* webpackChunkName: "recipes" */ '@/views/app/Recipes.vue')
       },
       {
+        path: 'favourites',
+        name: 'favourites',
+        component: () => import(/* webpackChunkName: "favourites" */ '@/views/app/Favourites.vue')
+      },
+      {
         path: 'cook-it',
         name: 'cook-it',
         component: () => import(/* webpackChunkName: "cook-it" */ '@/views/app/CookIt.vue')

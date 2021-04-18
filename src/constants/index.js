@@ -41,7 +41,7 @@ export class RecipeList {
 
   setFromApi({
     fetching,
-    recipes,
+    items,
     currentPage,
     totalPages,
     totalCount,
@@ -54,7 +54,7 @@ export class RecipeList {
     defaultOrderMethod
   }) {
     this.fetching = fetching
-    this.items = recipes
+    this.items = items
     this.pagesTo = currentPage
     this.totalPages = totalPages
     this.totalCount = totalCount
@@ -69,7 +69,7 @@ export class RecipeList {
 
   addFromApi({
     fetching,
-    recipes,
+    items,
     currentPage,
     totalPages,
     totalCount,
@@ -82,9 +82,9 @@ export class RecipeList {
     defaultOrderMethod
   }) {
     if (this.items !== null) {
-      this.items.push(...recipes)
+      this.items.push(...items)
     } else {
-      this.items = recipes
+      this.items = items
     }
     this.fetching = fetching
     this.pagesTo = currentPage
