@@ -15,7 +15,7 @@
         </div>
       </li>
       <template v-if="recipes.fetching">
-        <li class="recipes-list__list__item recipes-list__list__item--skeleton" v-for="i in 4" :key="i">
+        <li class="list-item list-item--skeleton" v-for="i in 4" :key="i">
           <SkeletonRecipeBox />
         </li>
       </template>
