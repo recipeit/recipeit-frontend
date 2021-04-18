@@ -4,8 +4,10 @@
     <div v-if="hiddenBlogs === null">
       ...wczytuje
     </div>
-    <ul v-else-if="hiddenBlogs.length > 0">
-      <li v-for="blog in hiddenBlogs" :key="blog.id">{{ blog.name }}</li>
+    <ul v-else-if="hiddenBlogs.length > 0" class="blogs-list">
+      <li v-for="blog in hiddenBlogs" :key="blog.id" class="blogs-list-item">
+        <HiddenBlog :blog="blog" @unhide="unhideBlog(blog.id)" />
+      </li>
     </ul>
     <div v-else>
       Nie ukryłeś jeszcze żadnego blogu
@@ -15,15 +17,25 @@
 
 <script>
 import PageHeader from '@/components/PageHeader'
+import HiddenBlog from '@/components/HiddenBlog'
 import userApi from '@/api/userApi'
 
 export default {
   components: {
-    PageHeader
+    PageHeader,
+    HiddenBlog
   },
   data: () => ({
     hiddenBlogs: null
   }),
+  methods: {
+    unhideBlog(id) {
+      this.$store.dispatch('user/changeBlogVisibility', { blogId: id, visible: true }).then(() => {
+        const index = this.hiddenBlogs.findIndex(v => v.id === id)
+        this.hiddenBlogs.splice(index, 1)
+      })
+    }
+  },
   beforeMount() {
     userApi.getHiddenBlogs().then(({ data }) => {
       this.hiddenBlogs = data.blogs || []
@@ -32,4 +44,10 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.blogs-list-item {
+  & + & {
+    margin-top: 1rem;
+  }
+}
+</style>

@@ -30,7 +30,10 @@ export default {
   }),
   methods: {
     unhideRecipe(id) {
-      alert(id)
+      this.$store.dispatch('user/changeRecipeVisibility', { recipeId: id, visible: true }).then(() => {
+        const index = this.hiddenRecipes.findIndex(v => v.id === id)
+        this.hiddenRecipes.splice(index, 1)
+      })
     }
   },
   beforeMount() {
@@ -42,8 +45,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.recipes-list {
-}
 .recipes-list-item {
   & + & {
     margin-top: 1rem;

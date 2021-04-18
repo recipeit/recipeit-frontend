@@ -1,15 +1,12 @@
 <template>
-  <router-link :to="{ name: 'recipe', params: { recipeId: recipe.id } }" v-slot="{ href, navigate }" custom>
-    <a :href="href" @click="navigate($event)" class="hidden-recipe">
-      <BaseImageLazyload :src="recipe.mainImageUrl" :alt="recipe.name" class="hidden-recipe__image" />
-      <div class="hidden-recipe__details">
-        <div class="hidden-recipe__name">{{ recipe.name }}</div>
-        <div class="hidden-recipe__author-section">
-          <span class="hidden-recipe__author">{{ recipe.author.name }}</span
-          ><span class="hidden-recipe__blog">, {{ recipe.author.blog.name }}</span>
-        </div>
+  <router-link :to="{ name: 'blog', params: { blogId: blog.id } }" v-slot="{ href, navigate }" custom>
+    <a :href="href" @click="navigate($event)" class="hidden-blog">
+      <BaseImageLazyload :src="blog.imageUrl" :alt="blog.name" class="hidden-blog__image" />
+      <div class="hidden-blog__details">
+        <div class="hidden-blog__name">{{ blog.name }}</div>
+        <div class="hidden-blog__url">{{ blog.url }}</div>
       </div>
-      <div class="hidden-recipe__action">
+      <div class="hidden-blog__action">
         <button class="unhide" @click.prevent.stop="$emit('unhide')">
           <BaseIcon icon="eye" weight="semi-bold" />
         </button>
@@ -21,7 +18,7 @@
 <script>
 export default {
   props: {
-    recipe: {
+    blog: {
       type: Object,
       required: true
     }
@@ -30,16 +27,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.hidden-recipe {
+.hidden-blog {
   display: flex;
   align-items: center;
   text-decoration: none;
   color: var(--color-text-primary);
 
   &__image {
-    height: 48px;
-    width: 48px;
-    border-radius: 1rem;
+    height: 3rem;
+    width: 3rem;
+    border-radius: 3rem;
     overflow: hidden;
     background-color: var(--color-image-background);
 
@@ -57,7 +54,7 @@ export default {
   }
 
   &__name,
-  &__author-section {
+  &__url {
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -67,7 +64,7 @@ export default {
     font-size: 0.875rem;
   }
 
-  &__author-section {
+  &__url {
     color: var(--color-text-secondary);
     font-size: 0.75rem;
   }

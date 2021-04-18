@@ -270,39 +270,49 @@ export default {
       })
     },
     changeRecipeVisibility({ commit }, { recipeId, visible }) {
-      userApi
-        .changeRecipeVisibility(recipeId, visible)
-        .then(({ data }) => {
-          if (data.success) {
-            commit(visible ? MUTATIONS.REMOVE_FROM_HIDDEN_RECIPE_IDS : MUTATIONS.ADD_TO_HIDDEN_RECIPE_IDS, recipeId)
-            toastPlugin.toast.show(visible ? 'Przepis został odkryty' : 'Przepis nie będzie już widoczny', ToastType.SUCCESS)
-          } else {
+      return new Promise((resolve, reject) => {
+        userApi
+          .changeRecipeVisibility(recipeId, visible)
+          .then(({ data }) => {
+            if (data.success) {
+              commit(visible ? MUTATIONS.REMOVE_FROM_HIDDEN_RECIPE_IDS : MUTATIONS.ADD_TO_HIDDEN_RECIPE_IDS, recipeId)
+              resolve()
+              toastPlugin.toast.show(visible ? 'Przepis został odkryty' : 'Przepis nie będzie już widoczny', ToastType.SUCCESS)
+            } else {
+              reject()
+              toastPlugin.toast.show('Wystapił błąd. Spróbuj ponownie', ToastType.ERROR)
+              // this.$toast.show('Nie udało się ukryć przepisu. Spróbuj ponownie', ToastType.ERROR)
+            }
+          })
+          .catch(() => {
+            reject()
             toastPlugin.toast.show('Wystapił błąd. Spróbuj ponownie', ToastType.ERROR)
-            // this.$toast.show('Nie udało się ukryć przepisu. Spróbuj ponownie', ToastType.ERROR)
-          }
-        })
-        .catch(() => {
-          toastPlugin.toast.show('Wystapił błąd. Spróbuj ponownie', ToastType.ERROR)
-        })
+          })
+      })
     },
     changeBlogVisibility({ commit }, { blogId, visible }) {
-      userApi
-        .changeBlogVisibility(blogId, visible)
-        .then(({ data }) => {
-          if (data.success) {
-            commit(visible ? MUTATIONS.REMOVE_FROM_HIDDEN_BLOG_IDS : MUTATIONS.ADD_TO_HIDDEN_BLOG_IDS, blogId)
-            toastPlugin.toast.show(
-              visible ? 'Przepisy z tego blogu zostały odkryte' : 'Przepisy z tego blogu nie będą już widoczne',
-              ToastType.SUCCESS
-            )
-          } else {
+      return new Promise((resolve, reject) => {
+        userApi
+          .changeBlogVisibility(blogId, visible)
+          .then(({ data }) => {
+            if (data.success) {
+              commit(visible ? MUTATIONS.REMOVE_FROM_HIDDEN_BLOG_IDS : MUTATIONS.ADD_TO_HIDDEN_BLOG_IDS, blogId)
+              resolve()
+              toastPlugin.toast.show(
+                visible ? 'Przepisy z tego blogu zostały odkryte' : 'Przepisy z tego blogu nie będą już widoczne',
+                ToastType.SUCCESS
+              )
+            } else {
+              reject()
+              toastPlugin.toast.show('Wystapił błąd. Spróbuj ponownie', ToastType.ERROR)
+              // this.$toast.show('Nie udało się ukryć przepisu. Spróbuj ponownie', ToastType.ERROR)
+            }
+          })
+          .catch(() => {
+            reject()
             toastPlugin.toast.show('Wystapił błąd. Spróbuj ponownie', ToastType.ERROR)
-            // this.$toast.show('Nie udało się ukryć przepisu. Spróbuj ponownie', ToastType.ERROR)
-          }
-        })
-        .catch(() => {
-          toastPlugin.toast.show('Wystapił błąd. Spróbuj ponownie', ToastType.ERROR)
-        })
+          })
+      })
     },
     resetUserData({ commit }) {
       commit(MUTATIONS.SET_HIDDEN_BLOG_IDS, null)
