@@ -2,7 +2,7 @@
   <div class="list-container">
     <ul class="list">
       <li class="list-item" v-for="recipe in recipes.items" :key="recipe.id">
-        <RecipeBox :recipe="recipe" />
+        <RecipeBox :recipe="recipe" :showRecipeProps="false" />
       </li>
       <li v-if="recipes.items && recipes.totalCount > recipes.items.length" class="list-item" @click="$emit('showAll')">
         <div class="show-all-item">

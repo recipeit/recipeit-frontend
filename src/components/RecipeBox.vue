@@ -6,7 +6,7 @@
           <BaseImageLazyload :src="recipe.mainImageUrl" :alt="recipe.name" />
         </div>
 
-        <div class="recipe-box__props2">
+        <div v-if="showRecipeProps" class="recipe-box__props2">
           <Rating :value="recipe.rating" />
           <FavouriteIcon
             :isFavourite="isFavourite"
@@ -38,6 +38,10 @@ export default {
     recipe: {
       type: Object,
       required: true
+    },
+    showRecipeProps: {
+      type: Boolean,
+      default: true
     }
   },
   methods: {
