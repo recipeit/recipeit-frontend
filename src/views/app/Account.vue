@@ -67,6 +67,7 @@
 
 <script>
 import ChangePasswordModal from '@/components/modals/ChangePasswordModal'
+import ForgotPasswordModal from '@/components/modals/ForgotPasswordModal'
 import DeleteAccountModal from '@/components/modals/DeleteAccountModal'
 import PageHeader from '@/components/PageHeader'
 import { markRaw, ref } from 'vue'
@@ -94,6 +95,21 @@ export default {
     openChangePasswordModal() {
       this.$modal.show(
         markRaw(ChangePasswordModal),
+        {
+          email: this.userProfile.email
+        },
+        {
+          close: response => {
+            if (response?.openForgotPasswordModal) {
+              this.openForgotPasswordModal()
+            }
+          }
+        }
+      )
+    },
+    openForgotPasswordModal() {
+      this.$modal.show(
+        markRaw(ForgotPasswordModal),
         {
           email: this.userProfile.email
         },

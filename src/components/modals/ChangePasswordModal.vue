@@ -9,6 +9,10 @@
         <Field type="password" name="currentPassword" v-slot="{ field, errors }">
           <BaseInput class="form-row" label="Obecne hasło" type="password" v-bind="field" :errors="errors" />
         </Field>
+        <BaseLink tag="button" class="forgot-password-button" color="primary" @click="forgotPassword()">
+          nie pamiętasz hasła?
+        </BaseLink>
+
         <Field type="password" name="newPassword" v-slot="{ field, errors }">
           <BaseInput class="form-row" label="Nowe hasło" type="password" v-bind="field" :errors="errors" />
         </Field>
@@ -52,7 +56,7 @@ export default {
       required: true
     }
   },
-  setup(props, component) {
+  setup(props, { emit }) {
     const toast = useToast()
     const formID = 'form-' + uniqueID().getID()
     const data = reactive({
@@ -80,7 +84,7 @@ export default {
       identityApi
         .changePassword(values)
         .then(() => {
-          component.emit('close', { success: true })
+          emit('close', { success: true })
           toast.show('Hasło zmienione!', ToastType.SUCCESS)
         })
         .catch(error => {
@@ -94,9 +98,14 @@ export default {
         })
     }
 
+    const forgotPassword = () => {
+      emit('close', { success: false, openForgotPasswordModal: true })
+    }
+
     return {
       ...toRefs(data),
       changePassword,
+      forgotPassword,
       formID,
       schema
     }
@@ -112,5 +121,11 @@ export default {
     margin-right: 0.5rem;
     font-size: 1rem;
   }
+}
+
+.forgot-password-button {
+  margin-bottom: 1.5rem;
+  font-size: 0.75rem;
+  font-weight: bold;
 }
 </style>
