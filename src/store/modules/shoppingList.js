@@ -80,23 +80,31 @@ export default {
           .catch(error => reject(error))
       })
     },
-    purchaseProduct({ commit }, productId) {
+    purchaseProduct({ commit, dispatch }, productId) {
       return new Promise((resolve, reject) => {
         shoppingListApi
           .purchaseProduct(productId)
-          .then(() => {
+          .then(({ data }) => {
             commit(MUTATIONS.REMOVE_PRODUCT_FROM_SHOPPING_LIST, productId)
+
+            const { newKitchenProduct } = data
+            dispatch('myKitchen/includeProductToList', newKitchenProduct, { root: true })
+
             resolve()
           })
           .catch(error => reject(error))
       })
     },
-    purchaseAllProducts({ commit }) {
+    purchaseAllProducts({ commit, dispatch }) {
       return new Promise((resolve, reject) => {
         shoppingListApi
           .purchaseAllProducts()
-          .then(() => {
+          .then(({ data }) => {
             commit(MUTATIONS.SET_PRODUCTS, [])
+
+            const { newKitchenProducts: kitchenProducts } = data
+            dispatch('myKitchen/includeProductsToList', kitchenProducts, { root: true })
+
             resolve()
           })
           .catch(error => reject(error))

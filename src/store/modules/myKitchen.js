@@ -3,6 +3,7 @@ import myKitchenApi from '@/api/myKitchenApi'
 export const MUTATIONS = {
   SET_PRODUCTS: 'SET_PRODUCTS',
   ADD_PRODUCTS: 'ADD_PRODUCTS',
+  ADD_PRODUCT: 'ADD_PRODUCT',
   UPDATE_PRODUCT_FROM_KITCHEN: 'UPDATE_PRODUCT_FROM_KITCHEN',
   REMOVE_PRODUCT_FROM_KITCHEN: 'REMOVE_PRODUCT_FROM_KITCHEN'
 }
@@ -18,6 +19,9 @@ export default {
     },
     [MUTATIONS.ADD_PRODUCTS](state, products) {
       state.products = state.products.concat(products)
+    },
+    [MUTATIONS.ADD_PRODUCT](state, product) {
+      state.products.push(product)
     },
     [MUTATIONS.UPDATE_PRODUCT_FROM_KITCHEN](state, product) {
       var productIndex = state.products.findIndex(p => p.id === product.id)
@@ -86,6 +90,12 @@ export default {
           })
           .catch(error => reject(error))
       })
+    },
+    includeProductToList({ commit }, product) {
+      commit(MUTATIONS.ADD_PRODUCT, product)
+    },
+    includeProductsToList({ commit }, products) {
+      commit(MUTATIONS.ADD_PRODUCTS, products)
     },
     resetUserData({ commit }) {
       commit(MUTATIONS.SET_PRODUCTS, null)
