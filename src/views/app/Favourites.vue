@@ -31,19 +31,11 @@ export default {
       })
     }
   },
-  // computed: {
-  //   ...mapState({
-  //     recipes: state => state.recipes.availableRecipes
-  //   })
-  // },
   created() {
     this.recipes.fetching = true
     userApi.getFavouriteRecipes().then(({ data }) => {
       this.recipes.setFromApi({ ...data, fetching: false })
     })
-    // if (this.recipes.items === null) {
-    //   this.$store.dispatch('recipes/fetchAvailableRecipes')
-    // }
   }
 }
 </script>

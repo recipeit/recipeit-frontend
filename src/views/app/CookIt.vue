@@ -25,24 +25,23 @@
 </template>
 
 <script>
-import { mapGetters, mapState } from 'vuex'
-import { fetchRecipesQueryParams } from '@/constants'
+import { mapGetters } from 'vuex'
+import { fetchRecipesQueryParams, RecipeList } from '@/constants'
 import GenericRecipesList from '@/components/GenericRecipesList'
 import PageHeader from '@/components/PageHeader'
+import userApi from '@/api/userApi'
 
 export default {
   components: { GenericRecipesList, PageHeader },
   name: 'CookIt',
   data: () => ({
-    fetchedData: false
+    fetchedData: false,
+    availableRecipes: new RecipeList(),
+    almostAvailableRecipes: new RecipeList()
   }),
   computed: {
     ...mapGetters({
       isAuthenticated: 'user/isAuthenticated'
-    }),
-    ...mapState({
-      availableRecipes: state => state.recipes.availableRecipes,
-      almostAvailableRecipes: state => state.recipes.almostAvailableRecipes
     })
   },
   beforeMount() {
@@ -69,8 +68,16 @@ export default {
     },
     fetchRecipes(orderMethod, filters, search) {
       const queryParams = fetchRecipesQueryParams(orderMethod, filters, search)
-      this.$store.dispatch('recipes/fetchAvailableRecipes', queryParams)
-      this.$store.dispatch('recipes/fetchAlmostAvailableRecipes', queryParams)
+
+      this.availableRecipes.fetching = true
+      userApi.getAvailableRecipes(queryParams).then(resp => {
+        this.availableRecipes.setFromApi(resp.data)
+      })
+
+      this.almostAvailableRecipes.fetching = true
+      userApi.getAlmostAvailableRecipes(queryParams).then(resp => {
+        this.almostAvailableRecipes.setFromApi(resp.data)
+      })
     }
   }
 }

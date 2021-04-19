@@ -6,8 +6,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
-import { fetchRecipesQueryParams } from '@/constants'
+import { fetchRecipesQueryParams, RecipeList } from '@/constants'
 import recipeApi from '@/api/recipeApi'
 import GenericRecipesList from '@/components/GenericRecipesList'
 import PageHeader from '@/components/PageHeader'
@@ -19,7 +18,7 @@ export default {
     PageHeader
   },
   data: () => ({
-    getRecipesApiEndpoint: recipeApi.getRecipes
+    recipes: new RecipeList()
   }),
   methods: {
     loadNextRecipes() {
@@ -33,21 +32,34 @@ export default {
       this.fetchRecipes(this.recipes.orderMethod, this.recipes.filters, this.recipes.search)
     },
     fetchNextRecipes(orderMethod, filters, search) {
-      this.$store.dispatch('recipes/fetchNextRecipes', fetchRecipesQueryParams(orderMethod, filters, search))
+      if (this.recipes.fetching) return
+      this.recipes.fetching = true
+
+      const queryParams = fetchRecipesQueryParams(orderMethod, filters, search)
+
+      recipeApi
+        .getRecipes({
+          ...queryParams,
+          pageNumber: this.recipes.pagesTo + 1
+        })
+        .then(resp => {
+          this.recipes.addFromApi(resp.data)
+        })
     },
     fetchRecipes(orderMethod, filters, search) {
-      this.$store.dispatch('recipes/fetchRecipes', fetchRecipesQueryParams(orderMethod, filters, search))
+      if (this.recipes.fetching) return
+      this.recipes = new RecipeList()
+      this.recipes.fetching = true
+
+      const queryParams = fetchRecipesQueryParams(orderMethod, filters, search)
+
+      recipeApi.getRecipes(queryParams).then(resp => {
+        this.recipes.setFromApi(resp.data)
+      })
     }
-  },
-  computed: {
-    ...mapState({
-      recipes: state => state.recipes.recipes
-    })
   },
   beforeMount() {
-    if (this.recipes.items === null) {
-      this.$store.dispatch('recipes/fetchRecipes')
-    }
+    this.fetchRecipes()
   }
 }
 </script>

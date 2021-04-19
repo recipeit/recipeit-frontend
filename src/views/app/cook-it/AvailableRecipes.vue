@@ -7,11 +7,10 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
-import { fetchRecipesQueryParams } from '@/constants'
-import recipeApi from '@/api/recipeApi'
+import { fetchRecipesQueryParams, RecipeList } from '@/constants'
 import GenericRecipesList from '@/components/GenericRecipesList'
 import PageHeader from '@/components/PageHeader'
+import userApi from '@/api/userApi'
 
 export default {
   name: 'AvailableRecipes',
@@ -20,26 +19,39 @@ export default {
     PageHeader
   },
   data: () => ({
-    getRecipesApiEndpoint: recipeApi.getRecipes
+    recipes: new RecipeList()
   }),
   methods: {
     loadNextRecipes() {
+      if (this.recipes.fetching) return
+      this.recipes.fetching = true
+
       const { orderMethod, filters, search } = this.recipes
-      this.$store.dispatch('recipes/fetchNextAvailableRecipes', fetchRecipesQueryParams(orderMethod, filters, search))
+      const queryParams = fetchRecipesQueryParams(orderMethod, filters, search)
+
+      userApi
+        .getAvailableRecipes({
+          ...queryParams,
+          pageNumber: this.recipes.pagesTo + 1
+        })
+        .then(resp => {
+          this.recipes.addFromApi(resp.data)
+        })
     },
-    reloadRecipes({ orderMethod, filters, search }) {
-      this.$store.dispatch('recipes/fetchAvailableRecipes', fetchRecipesQueryParams(orderMethod, filters, search))
+    reloadRecipes(orderMethod, filters, search) {
+      if (this.recipes.fetching) return
+      this.recipes = new RecipeList()
+      this.recipes.fetching = true
+
+      const queryParams = fetchRecipesQueryParams(orderMethod, filters, search)
+
+      userApi.getAvailableRecipes(queryParams).then(resp => {
+        this.recipes.setFromApi(resp.data)
+      })
     }
   },
-  computed: {
-    ...mapState({
-      recipes: state => state.recipes.availableRecipes
-    })
-  },
-  created() {
-    if (this.recipes.items === null) {
-      this.$store.dispatch('recipes/fetchAvailableRecipes')
-    }
+  beforeMount() {
+    this.reloadRecipes()
   }
 }
 </script>
