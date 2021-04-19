@@ -28,7 +28,7 @@ const onlyAnonymousGuard = async (to, from, next) => {
   const isAuthenticated = await forceIsAuthenticated()
 
   if (isAuthenticated) {
-    next({ name: 'landing-page' })
+    next({ name: 'home' })
   } else {
     next()
   }
@@ -123,6 +123,7 @@ const routes = [
       {
         path: 'blog/:blogId',
         name: 'blog',
+        props: true,
         component: () => import(/* webpackChunkName: "account" */ '@/views/app/BlogRecipes.vue')
       },
       {

@@ -42,7 +42,7 @@ export default {
   sendConfirmationEmail(email) {
     return apiClient.post(`/${route}/send-confirmation-email`, { email })
   },
-  deleteAccount({ password }) {
-    return apiClient.post(`/${route}/delete-account`, { password })
+  deleteAccount() {
+    return apiClient.delete(`/${route}/delete-account`)
   }
 }

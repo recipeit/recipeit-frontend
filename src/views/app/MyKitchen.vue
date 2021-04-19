@@ -4,7 +4,8 @@
 
     <SearchWithFilter class="product-list-filter" placeholder="Szukaj produktu" @search="onSearch($event)" />
 
-    <ul class="product-list-groups">
+    <div v-if="groupedProducts === null">...wczytuję</div>
+    <ul v-else-if="groupedProducts.length > 0" class="product-list-groups">
       <li class="product-list-group" v-for="products in groupedProducts" :key="products[0]">
         <div class="product-list-group__title">
           <ProductIcon class="product-list-group__title__icon" :group="products[0]" />
@@ -19,6 +20,9 @@
         </ul>
       </li>
     </ul>
+    <div v-else>
+      Dodaj to, co masz w swojej kuchni!
+    </div>
 
     <div class="floating-action-button-container">
       <BaseButton class="gtm_my-kitchen-add-product-button" raised color="contrast" @click="newProduct()">

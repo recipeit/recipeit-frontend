@@ -4,13 +4,16 @@
       <BaseModalTitle class="title">Czy na pewno chcesz usunąć konto?</BaseModalTitle>
     </BaseModalHeader>
     <BaseModalBody>
-      <div class="message">
+      <p class="message">
         <b>Nieodwracalnie</b> utracisz m.in. listy zakupów, Twoje produkty, Twój plan dnia czy listę ulubionych przepisów.
-      </div>
+      </p>
+      <p class="message">
+        Jeżeli dalej chcesz usunąć swoje konto, wprowadź kod <b class="code">{{ code }}</b> w poniższe pole.
+      </p>
       <Form class="form" :id="formID" @submit="deleteAccount($event)" :validation-schema="schema">
         <BaseInput class="form-row" label="E-mail" type="text" :disabled="true" :value="email" />
-        <Field type="password" name="password" v-slot="{ field, errors }">
-          <BaseInput class="form-row" label="Obecne hasło" type="password" v-bind="field" :errors="errors" />
+        <Field name="code" v-slot="{ field, errors }">
+          <BaseInput class="form-row" label="Kod" type="text" v-bind="field" :errors="errors" />
         </Field>
       </Form>
       <div v-for="(error, i) in errors" :key="i" class="error">
@@ -50,12 +53,26 @@ export default {
     const formID = 'form-' + uniqueID().getID()
     const data = reactive({
       sending: false,
-      errors: []
+      errors: [],
+      code: ''
     })
 
     const schema = Yup.object().shape({
-      password: Yup.string().required('REQUIRED')
+      code: Yup.string()
+        .test({
+          name: 'codeMatches',
+          message: 'Wprowadź prawidłowy kod',
+          test: value => (value !== undefined ? value.toUpperCase() === data.code.toUpperCase() : true)
+        })
+        .required('REQUIRED')
     })
+
+    const generateCode = () => {
+      return Math.random()
+        .toString(36)
+        .substring(7)
+        .toUpperCase()
+    }
 
     const deleteAccount = ({ password }) => {
       const requestData = {
@@ -71,6 +88,7 @@ export default {
           store.dispatch('user/logout')
         })
         .catch(error => {
+          data.code = generateCode()
           const errors = error?.response?.data?.errors
           if (errors) {
             data.errors = errors
@@ -83,10 +101,14 @@ export default {
 
     return {
       ...toRefs(data),
+      generateCode,
       deleteAccount,
       schema,
       formID
     }
+  },
+  beforeMount() {
+    this.code = this.generateCode()
   }
 }
 </script>
@@ -106,7 +128,19 @@ export default {
 }
 
 .message {
+  margin: 0;
   font-size: 0.875rem;
+
+  & + & {
+    margin-top: 1rem;
+  }
+}
+
+.code {
+  font-weight: bold;
+  color: var(--color-red);
+  pointer-events: none;
+  user-select: none;
 }
 
 .form {

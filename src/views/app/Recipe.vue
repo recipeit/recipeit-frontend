@@ -57,8 +57,12 @@
           </div>
         </div>
         <div class="recipe__author">
-          <span class="recipe__author__name">{{ recipe.author.name }}</span>
-          <span class="recipe__author__blog-name">, {{ recipe.author.blog.name }}</span>
+          <router-link :to="{ name: 'blog', params: { blogId: recipe.author.blogId } }" v-slot="{ href, navigate }" custom>
+            <BaseLink :href="href" @click="navigate($event)" color="text-secondary">
+              <span class="recipe__author__name">{{ recipe.author.name }}</span>
+              <span class="recipe__author__blog-name">, {{ recipe.author.blog.name }}</span>
+            </BaseLink>
+          </router-link>
         </div>
 
         <div class="recipe__tags">
@@ -652,7 +656,6 @@ export default {
 
   &__author {
     margin-top: 4px;
-    color: var(--color-text-secondary);
 
     &__name {
       font-weight: 700;

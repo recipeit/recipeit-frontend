@@ -1,11 +1,26 @@
 <template>
   <div class="layout__page__content">
-    <PageHeader class="recipes-page__header" :title="$t('recipes.title')" />
-    <GenericRecipesList :recipes="recipes" @load-next="loadNextRecipes" @reload="reloadRecipes" />
+    <PageHeader :showUser="false">
+      <template #title>
+        <div v-if="blogDetails">
+          {{ blogDetails.name }}
+        </div>
+        <div v-else>...wczytuję</div>
+        <!-- <h1 v-if="userProfile && userProfile.username" class="home-page__title">
+          <span class="home-page__title__sub">{{ $t(welcomeType) }},</span>
+          <span class="home-page__title__main">{{ userProfile.username }}</span>
+        </h1>
+        <h1 v-else class="home-page__title">
+          <span>{{ $t(welcomeType) }}</span>
+        </h1> -->
+      </template>
+    </PageHeader>
+    <GenericRecipesList :recipes="recipes" @load-next="loadNextRecipes" @reload="reloadRecipes" :showFilterButtons="false" />
   </div>
 </template>
 
 <script>
+import blogApi from '@/api/blogApi'
 import { mapState } from 'vuex'
 import { fetchRecipesQueryParams } from '@/constants'
 import recipeApi from '@/api/recipeApi'
@@ -25,8 +40,15 @@ export default {
     PageHeader
   },
   data: () => ({
-    getRecipesApiEndpoint: recipeApi.getRecipes
+    getRecipesApiEndpoint: recipeApi.getRecipes,
+    blogDetails: null
   }),
+  created() {
+    console.log('eee')
+    blogApi.getBlogDetails(this.blogId).then(({ data }) => {
+      this.blogDetails = data
+    })
+  },
   methods: {
     loadNextRecipes() {
       const { orderMethod, filters, search } = this.recipes

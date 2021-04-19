@@ -2,7 +2,8 @@
   <div class="layout__page__content">
     <PageHeader :title="$t('shoppingList.title')" />
 
-    <ul class="product-list-groups">
+    <div v-if="groupedProducts === null">...wczytuję</div>
+    <ul v-else-if="groupedProducts.length > 0" class="product-list-groups">
       <li class="product-list-group" v-for="products in groupedProducts" :key="products[0]">
         <div class="product-list-group__title">
           <ProductIcon class="product-list-group__title__icon" :group="products[0]" />
@@ -17,6 +18,9 @@
         </ul>
       </li>
     </ul>
+    <div v-else>
+      Dodaj pierwszy produkt do listy zakupów!
+    </div>
 
     <BaseLink v-if="products && products.length > 0" color="primary" class="purchase-all-button" @click="purchaseAll">
       {{ $t('shoppingList.purchaseAllButton') }}
