@@ -68,6 +68,7 @@ export default {
       if (this.fetchedData) return
 
       if (this.isAuthenticated) {
+        this.$store.dispatch('ingredients/fetchBaseProducts')
         this.$store.dispatch('shoppingList/fetchProducts')
         this.fetchedData = true
       }

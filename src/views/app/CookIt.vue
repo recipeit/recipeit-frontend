@@ -7,7 +7,7 @@
         <GenericRecipesList :recipes="availableRecipes" :showAllLink="{ name: 'available' }" :limitedItems="4" @reload="reloadRecipes" />
       </div>
 
-      <div v-if="almostAvailableRecipes.items?.length > 0 || almostAvailableRecipes.filters">
+      <div v-if="almostAvailableRecipes.items?.length > 0">
         <div class="recipes-list-title">
           <BaseIcon class="recipes-list-title-icon" icon="basket" />
           {{ $t('cookIt.buyMissingIngredient') }}
@@ -64,6 +64,8 @@ export default {
       }
     },
     reloadRecipes({ orderMethod, filters, search }) {
+      this.availableRecipes = new RecipeList()
+      this.almostAvailableRecipes = new RecipeList()
       this.fetchRecipes(orderMethod, filters, search)
     },
     fetchRecipes(orderMethod, filters, search) {
