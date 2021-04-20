@@ -23,8 +23,8 @@
       :color="selectedFiltersCount > 0 ? 'primary' : 'contrast'"
       @click="openFilterModal()"
     >
-      <!-- <BaseIcon class="recipes-list-search__filter-button__icon" icon="filter" /> -->
-      <span>Sortowanie i filtry</span>
+      <BaseIcon class="recipes-list-search__filter-button__icon" icon="filter" weight="semi-bold" />
+      <span>Filtry</span>
       <!-- <transition name="filters-button-count-fade"> -->
       <span v-if="selectedFiltersCount > 0" class="recipes-list-search__filter-button__count">
         {{ selectedFiltersCount }}
@@ -162,10 +162,10 @@ export default {
     height: 32px;
     min-width: 32px;
 
-    // &__icon {
-    //   font-size: 1.5rem;
-    //   transform: rotate(90deg);
-    // }
+    &__icon {
+      // font-size: 1.5rem;
+      transform: rotate(90deg);
+    }
 
     &__count {
       opacity: 0.75;
