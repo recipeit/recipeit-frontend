@@ -13,8 +13,8 @@
                 'new-header-day',
                 {
                   'new-header-day--selected': currentDay.key === day.key,
-                  'new-header-day--today': day.isToday,
-                  'new-header-day--before-today': day.isBeforeToday
+                  'new-header-day--today': day.type === DayType.TODAY,
+                  'new-header-day--before-today': day.type === DayType.PAST
                 }
               ]"
             >
@@ -52,13 +52,21 @@
         </div>
 
         <div v-else key="no-plans" class="no-plans-message">
-          Zaplanuj przepis na ten dzień!
-          <router-link :to="{ name: 'recipes' }" v-slot="{ href, navigate }" custom>
-            <BaseButton tag="a" :href="href" @click="navigate($event)" class="no-plans-message-button" raised color="primary">
-              <BaseIcon class="no-plans-message-button-icon" icon="search" weight="semi-bold" />
-              Przeglądaj przepisy
-            </BaseButton>
-          </router-link>
+          <!-- WHEN CURRENT DAY IS NEXT 7 DAYS INCLUDING TODAY -->
+          <template v-if="currentDay.type === DayType.TODAY || currentDay.type === DayType.THIS_WEEK">
+            Zaplanuj przepis na ten dzień!
+            <router-link :to="{ name: 'recipes' }" v-slot="{ href, navigate }" custom>
+              <BaseButton tag="a" :href="href" @click="navigate($event)" class="no-plans-message-button" raised color="primary">
+                <BaseIcon class="no-plans-message-button-icon" icon="search" weight="semi-bold" />
+                Przeglądaj przepisy
+              </BaseButton>
+            </router-link>
+          </template>
+
+          <!-- WHEN CURRENT DAY IS IN PAST OR IN FAR FUTURE  -->
+          <template v-else-if="currentDay.type === DayType.PAST || currentDay.type === DayType.FAR_FUTURE">
+            Nie zaplanowałeś żadnego przepisu na ten dzień
+          </template>
         </div>
       </div>
     </transition>
@@ -76,6 +84,13 @@ const SlideType = {
   FADE: 'fade'
 }
 
+const DayType = {
+  PAST: 'PAST',
+  TODAY: 'TODAY',
+  THIS_WEEK: 'THIS_WEEK',
+  FAR_FUTURE: 'FAR_FUTURE'
+}
+
 export default {
   data() {
     return {
@@ -88,16 +103,35 @@ export default {
   beforeMount() {
     this.backToToday()
   },
+  created() {
+    this.DayType = DayType
+  },
   computed: {
     anyPlannedRecipesInDay() {
       const { currentDayPlan } = this
-      return currentDayPlan && Object.keys(currentDayPlan).length > 0 && currentDayPlan.constructor === Object
+      return !!currentDayPlan && Object.keys(currentDayPlan).length > 0 && currentDayPlan.constructor === Object
+    },
+    noRecipesTemplateName() {
+      if (this.anyPlannedRecipesInDay || this.currentDay === null) return null
+
+      if (this.currentDay.type === 'PAST') return 'NO_RECIPES_IN_PAST'
+      if (this.currentDay.type === 'FAR_FUTURE') return 'NO_RECIPES_IN_FAR_FUTURE'
+      return 'ADD_RECIPES'
     },
     showBackToToday() {
-      return this.currentDay && !this.currentDay.isToday
+      return this.currentDay && this.currentDay.type !== DayType.TODAY
     }
   },
   methods: {
+    dayType(day, today) {
+      if (day.isToday()) return 'TODAY'
+      if (day.isBefore(today, 'day')) return 'PAST'
+
+      const lastValidDay = today.add(7, 'days')
+      if (!day.isBefore(lastValidDay, 'day')) return 'FAR_FUTURE'
+
+      return 'THIS_WEEK'
+    },
     backToToday() {
       this.setDay(dayjs().startOf('day'), SlideType.FADE)
     },
@@ -119,15 +153,14 @@ export default {
         key: day.format('YYYY-MM-DD'),
         weekday: day.format('ddd'),
         monthday: day.date(),
-        isToday: day.isToday(),
-        isBeforeToday: day.isBefore(today, 'day')
+        type: this.dayType(day, today)
       }))
       this.currendDaySlideType = slideType
       this.currentDay = {
         dayjs: day,
         key: day.format('YYYY-MM-DD'),
         name: day.calendar(),
-        isToday: day.isToday()
+        type: this.dayType(day, today)
       }
       this.currentDayPlan = null
       userApi.getPlannedRecipes(this.currentDay.key).then(resp => {
