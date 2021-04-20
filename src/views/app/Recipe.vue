@@ -69,7 +69,14 @@
           <BaseButton stroked size="small">
             <Rating :value="recipe.rating" />
           </BaseButton>
-          <BaseButton subtle color="accent" size="small" v-for="category in recipe.categoryKeys" :key="category">
+          <BaseButton
+            subtle
+            color="accent"
+            size="small"
+            v-for="category in recipe.categoryKeys"
+            :key="category"
+            @click="navigateToRecipesWithCategoryFilter(category)"
+          >
             {{ $t(`recipeCategory.${category}`) }}
           </BaseButton>
         </div>
@@ -169,6 +176,7 @@ import Dialog from '@/components/modals/Dialog'
 import { ToastType } from '@/plugins/toast/toastType'
 import PlanRecipeModal from '@/components/modals/PlanRecipeModal'
 import InvisibleRecipeInfoModal from '@/components/modals/InvisibleRecipeInfoModal'
+import { parseFilters } from '@/constants'
 
 export default {
   name: 'Recipe',
@@ -200,6 +208,9 @@ export default {
     this.$store.dispatch('shoppingList/fetchProducts')
   },
   methods: {
+    navigateToRecipesWithCategoryFilter(category) {
+      this.$router.push({ name: 'cook-it', query: parseFilters({ Category: [category] }) })
+    },
     back() {
       this.$router.go(-1)
     },

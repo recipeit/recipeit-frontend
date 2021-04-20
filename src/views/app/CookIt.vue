@@ -39,7 +39,8 @@ export default {
     almostAvailableRecipes: new RecipeList()
   }),
   beforeMount() {
-    this.fetchRecipes()
+    var queryParams = this.$route.query ? this.$route.query : null
+    this.fetchRecipesWithQuery(queryParams)
   },
   methods: {
     reloadRecipes({ orderMethod, filters, search }) {
@@ -49,7 +50,9 @@ export default {
     },
     fetchRecipes(orderMethod, filters, search) {
       const queryParams = fetchRecipesQueryParams(orderMethod, filters, search)
-
+      this.fetchRecipesWithQuery(queryParams)
+    },
+    fetchRecipesWithQuery(queryParams) {
       this.availableRecipes.fetching = true
       userApi.getAvailableRecipes(queryParams).then(resp => {
         this.availableRecipes.setFromApi(resp.data)
