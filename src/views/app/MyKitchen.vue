@@ -25,7 +25,7 @@
     </div>
 
     <div class="floating-action-button-container">
-      <BaseButton class="gtm_my-kitchen-add-product-button" raised color="contrast" @click="newProduct()">
+      <BaseButton class="gtm_my-kitchen-add-product-button" raised color="primary" @click="newProduct()">
         <BaseIcon class="floating-action-button__icon" icon="plus" weight="semi-bold" />
         {{ $t('shared.addProduct') }}
       </BaseButton>
@@ -35,7 +35,7 @@
 
 <script>
 import { markRaw } from 'vue'
-import { mapGetters, mapState } from 'vuex'
+import { mapState } from 'vuex'
 import _ from 'lodash'
 import KitchenProduct from '@/components/KitchenProduct'
 import NewKitchenProductModal from '@/components/modals/NewKitchenProductModal'
@@ -56,11 +56,8 @@ export default {
     searchString: null
   }),
   computed: {
-    ...mapGetters({
-      isAuthenticated: 'user/isAuthenticated',
-      currentUserAuthState: 'user/currentUserAuthState'
-    }),
     ...mapState({
+      userAuthenticatedLazy: state => state.user.userAuthenticatedLazy,
       products: state => state.myKitchen.products
     }),
     filteredProducts() {
@@ -83,7 +80,7 @@ export default {
     this.tryFetchInitialData()
   },
   watch: {
-    isAuthenticated(newValue) {
+    userAuthenticatedLazy(newValue) {
       if (newValue && !this.fetchedData) {
         this.tryFetchInitialData()
       }
@@ -93,7 +90,7 @@ export default {
     tryFetchInitialData() {
       if (this.fetchedData) return
 
-      if (this.isAuthenticated) {
+      if (this.userAuthenticatedLazy) {
         this.$store.dispatch('ingredients/fetchBaseProducts')
         this.$store.dispatch('myKitchen/fetchProducts')
         this.fetchedData = true

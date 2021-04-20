@@ -11,7 +11,7 @@
         </Field>
 
         <div class="buttons">
-          <BaseButton class="form-row auth-main__content__submit" raised color="contrast" type="submit" :loading="state === 'SENDING'">
+          <BaseButton class="form-row auth-main__content__submit" raised color="primary" type="submit" :loading="state === 'SENDING'">
             Prześlij
           </BaseButton>
           <router-link :to="{ name: 'login' }" v-slot="{ href, navigate }" custom>

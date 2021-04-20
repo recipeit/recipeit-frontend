@@ -1,24 +1,10 @@
 <template>
   <div class="social-list">
-    <BaseButton
-      class="social-button"
-      stroked
-      color="contrast"
-      @click="loginFacebook()"
-      :disabled="anySending ? true : null"
-      :loading="facebookSending"
-    >
+    <BaseButton class="social-button" stroked @click="loginFacebook()" :disabled="anySending ? true : null" :loading="facebookSending">
       <div class="social-logo" v-html="FacebookLogo" />
       Kontynuuj z Facebook
     </BaseButton>
-    <BaseButton
-      class="social-button"
-      stroked
-      color="contrast"
-      @click="loginGoogle()"
-      :disabled="anySending ? true : null"
-      :loading="googleSending"
-    >
+    <BaseButton class="social-button" stroked @click="loginGoogle()" :disabled="anySending ? true : null" :loading="googleSending">
       <div class="social-logo" v-html="GoogleLogo" />
       Kontynuuj z Google
     </BaseButton>

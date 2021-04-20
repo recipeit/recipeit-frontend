@@ -132,8 +132,8 @@
             </BaseCheckbox>
           </div>
         </div>
-        <BaseButton class="update-button" stroked color="contrast">Zjedzone! Zaaktualizuj kuchnię</BaseButton>
-        <BaseButton class="plan-button" raised color="contrast" @click="openPlanRecipeModal()">
+        <BaseButton class="update-button" stroked>Zjedzone! Zaaktualizuj kuchnię</BaseButton>
+        <BaseButton class="plan-button" raised color="primary" @click="openPlanRecipeModal()">
           <BaseIcon class="plan-button__icon" icon="clock" /> Zaplanuj na później
         </BaseButton>
         <!-- <BaseAdSenseAd /> -->
@@ -187,37 +187,22 @@ export default {
   data: component => ({
     fetchedData: false,
     recipe: null,
-    // recipeDetails: null,
     servings: 1,
-    finishedDirections: component.$store.getters['recipes/getFinishedDirectionsForRecipe'](component.recipeId) || [],
-    hiddenRecipe: false, //temporary!!!! TODO
-    hiddenBlog: false //temporary!!!! TODO
+    finishedDirections: component.$store.getters['recipes/getFinishedDirectionsForRecipe'](component.recipeId) || []
   }),
   created() {
     this.$store.dispatch('recipes/fetchDetailedRecipe', this.recipeId).then(rd => {
       this.recipe = rd
       this.servings = rd.details.servings
     })
-    this.tryFetchInitialData()
+    this.$store.dispatch('myKitchen/fetchProducts')
+    this.$store.dispatch('shoppingList/fetchProducts')
   },
   methods: {
-    tryFetchInitialData() {
-      if (this.fetchedData) return
-
-      if (this.isAuthenticated) {
-        this.$store.dispatch('myKitchen/fetchProducts')
-        this.$store.dispatch('shoppingList/fetchProducts')
-        this.fetchedData = true
-      }
-    },
     back() {
       this.$router.go(-1)
     },
     addToFavourites() {
-      if (!this.isAuthenticated) {
-        alert('Zaloguj się')
-        return
-      }
       this.$store.dispatch('recipes/addToFavourites', this.recipe.id)
     },
     deleteFromFavourites() {
@@ -245,24 +230,12 @@ export default {
       }
     },
     openPlanRecipeModal() {
-      if (!this.isAuthenticated) {
-        alert('Zaloguj się')
-        return
-      }
       this.$modal.show(markRaw(PlanRecipeModal), { recipeId: this.recipeId }, {})
     },
     changeRecipeVisibility(visible) {
-      if (!this.isAuthenticated) {
-        alert('Zaloguj się')
-        return
-      }
       this.$store.dispatch('user/changeRecipeVisibility', { recipeId: this.recipeId, visible })
     },
     changeBlogVisibility(visible) {
-      if (!this.isAuthenticated) {
-        alert('Zaloguj się')
-        return
-      }
       this.$store.dispatch('user/changeBlogVisibility', { blogId: this.recipe.author.blogId, visible })
     },
     showInvisibleInfoModal() {
@@ -271,7 +244,6 @@ export default {
   },
   computed: {
     ...mapGetters({
-      isAuthenticated: 'user/isAuthenticated',
       isRecipeHiddenGetter: 'user/isRecipeHidden',
       isBlogHiddenGetter: 'user/isBlogHidden'
     }),
@@ -329,11 +301,6 @@ export default {
     }
   },
   watch: {
-    isAuthenticated(newValue) {
-      if (newValue && !this.fetchedData) {
-        this.tryFetchInitialData()
-      }
-    },
     finishedDirections(finishedDirections) {
       this.$store.dispatch('recipes/setFinishedDirectionsForRecipe', { recipeId: this.recipeId, finishedDirections })
       const remaining = _.difference(this.allIndexes, finishedDirections)

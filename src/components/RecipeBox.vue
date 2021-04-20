@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import { mapGetters, mapState } from 'vuex'
+import { mapState } from 'vuex'
 import Rating from '@/components/Rating'
 import FavouriteIcon from '@/components/FavouriteIcon'
 
@@ -49,10 +49,6 @@ export default {
       this.$router.push({ name: 'recipe', params: { recipeId: this.recipe.id } })
     },
     addToFavourites() {
-      if (!this.isAuthenticated) {
-        alert('Zaloguj się')
-        return
-      }
       this.$store.dispatch('recipes/addToFavourites', this.recipe.id)
     },
     deleteFromFavourites() {
@@ -60,16 +56,10 @@ export default {
     }
   },
   computed: {
-    ...mapGetters({
-      isAuthenticated: 'user/isAuthenticated'
-    }),
     ...mapState({
       favouriteRecipesIds: state => state.recipes.favouriteRecipesIds
     }),
     isFavourite() {
-      // if (!this.isAuthenticated) {
-      //   return false
-      // }
       return this.favouriteRecipesIds?.find(id => id === this.recipe.id) !== undefined
     }
   }

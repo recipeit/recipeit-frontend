@@ -21,7 +21,7 @@
         <BaseButton class="submit-button" stroked @click="$emit('close')">
           Anuluj
         </BaseButton>
-        <BaseButton class="submit-button" raised color="contrast" :loading="sending" @click="onConfirmForgotPassword()">
+        <BaseButton class="submit-button" raised color="primary" :loading="sending" @click="onConfirmForgotPassword()">
           {{ 'Wyślij e-mail' }}
         </BaseButton>
       </template>

@@ -13,7 +13,7 @@
       <BaseButton class="submit-button" stroked @click="$emit('close')">
         Anuluj
       </BaseButton>
-      <BaseButton class="submit-button" raised color="contrast" type="submit" :form="formID" :loading="sending">
+      <BaseButton class="submit-button" raised color="primary" type="submit" :form="formID" :loading="sending">
         {{ 'Edytuj' }}
       </BaseButton>
     </BaseModalFooter>

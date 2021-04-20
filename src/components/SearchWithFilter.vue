@@ -19,7 +19,7 @@
       v-if="showFilterButton"
       class="recipes-list-search__filter-button"
       size="small"
-      raised
+      subtle
       color="contrast"
       @click="openFilterModal()"
     >

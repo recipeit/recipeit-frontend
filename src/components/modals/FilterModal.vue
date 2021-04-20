@@ -47,7 +47,7 @@
       <BaseButton class="submit-button" stroked color="white" @click="$emit('close')">
         {{ $t('filterModal.cancelButton') }}
       </BaseButton>
-      <BaseButton class="submit-button" raised color="contrast" @click="submit">
+      <BaseButton class="submit-button" raised color="primary" @click="submit">
         {{ $t('filterModal.submitButton') }}
       </BaseButton>
     </BaseModalFooter>

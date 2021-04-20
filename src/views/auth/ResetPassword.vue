@@ -11,7 +11,7 @@
         <Field name="confirmPassword" type="password" v-slot="{ field, errors }">
           <BaseInput class="form-row" label="Potwierdź hasło" type="password" v-bind="field" :errors="errors" />
         </Field>
-        <BaseButton class="form-row auth-main__content__submit" raised color="contrast" type="submit">Zmień hasło</BaseButton>
+        <BaseButton class="form-row auth-main__content__submit" raised color="primary" type="submit">Zmień hasło</BaseButton>
       </Form>
     </template>
 

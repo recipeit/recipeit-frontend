@@ -10,7 +10,7 @@
             v-if="sortingMethod === defaultSelected"
             class="choice-button"
             raised
-            color="contrast"
+            color="primary"
             @click="$emit('close', sortingMethod)"
           >
             {{ $t(`recipesSortingMethods.${sortingMethod}`) }}

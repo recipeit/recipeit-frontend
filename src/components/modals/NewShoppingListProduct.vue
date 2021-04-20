@@ -10,7 +10,7 @@
       </Form>
     </BaseModalBody>
     <BaseModalFooter>
-      <BaseButton class="submit-button" raised color="contrast" type="submit" :form="formID" :loading="sending">
+      <BaseButton class="submit-button" raised color="primary" type="submit" :form="formID" :loading="sending">
         <BaseIcon class="submit-button__icon" icon="plus" weight="semi-bold" />
         {{ $t('shared.addProduct') }}
       </BaseButton>

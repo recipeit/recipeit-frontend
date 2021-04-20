@@ -18,7 +18,7 @@
       </p>
     </BaseModalBody>
     <BaseModalFooter>
-      <BaseButton class="submit-button" raised color="contrast" @click="$emit('close')">
+      <BaseButton class="submit-button" stroked @click="$emit('close')">
         OK!
       </BaseButton>
     </BaseModalFooter>

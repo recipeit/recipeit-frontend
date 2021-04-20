@@ -5,7 +5,7 @@
         <Logotype class="logo" />
       </router-link>
       <div class="user-links">
-        <template v-if="isAuthenticated">
+        <template v-if="userAuthenticatedLazy">
           <router-link :to="{ name: 'home' }" v-slot="{ href, navigate }" custom>
             <BaseButton class="user-link" tag="a" :href="href" @click="navigate($event)" raised color="primary">
               Przejdź do aplikacji
@@ -31,13 +31,13 @@
 
 <script>
 import Logotype from '@/components/Logotype'
-import { mapGetters } from 'vuex'
+import { mapState } from 'vuex'
 
 export default {
   components: { Logotype },
   computed: {
-    ...mapGetters({
-      isAuthenticated: 'user/isAuthenticated'
+    ...mapState({
+      userAuthenticatedLazy: state => state.user.userAuthenticatedLazy
     })
   }
 }

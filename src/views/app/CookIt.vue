@@ -25,44 +25,23 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import { fetchRecipesQueryParams, RecipeList } from '@/constants'
 import GenericRecipesList from '@/components/GenericRecipesList'
 import PageHeader from '@/components/PageHeader'
 import userApi from '@/api/userApi'
 
 export default {
-  components: { GenericRecipesList, PageHeader },
   name: 'CookIt',
+  components: { GenericRecipesList, PageHeader },
   data: () => ({
     fetchedData: false,
     availableRecipes: new RecipeList(),
     almostAvailableRecipes: new RecipeList()
   }),
-  computed: {
-    ...mapGetters({
-      isAuthenticated: 'user/isAuthenticated'
-    })
-  },
   beforeMount() {
-    this.tryFetchInitialData()
-  },
-  watch: {
-    isAuthenticated(newValue) {
-      if (newValue && !this.fetchedData) {
-        this.tryFetchInitialData()
-      }
-    }
+    this.fetchRecipes()
   },
   methods: {
-    tryFetchInitialData() {
-      if (this.fetchedData) return
-
-      if (this.isAuthenticated && (this.availableRecipes.items === null || this.almostAvailableRecipes.items === null)) {
-        this.fetchRecipes()
-        this.fetchedData = true
-      }
-    },
     reloadRecipes({ orderMethod, filters, search }) {
       this.availableRecipes = new RecipeList()
       this.almostAvailableRecipes = new RecipeList()

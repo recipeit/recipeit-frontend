@@ -65,7 +65,7 @@
 import PageHeader from '@/components/PageHeader'
 import DayPlan from '@/components/DayPlan'
 import HorizontalRecipesList from '@/components/HorizontalRecipesList'
-import { mapGetters, mapState } from 'vuex'
+import { mapState } from 'vuex'
 import userApi from '@/api/userApi'
 import { RecipeList } from '@/constants'
 
@@ -73,9 +73,6 @@ export default {
   components: { PageHeader, DayPlan, HorizontalRecipesList },
   name: 'Home',
   computed: {
-    ...mapGetters({
-      isAuthenticated: 'user/isAuthenticated'
-    }),
     ...mapState({
       userProfile: state => state.user.userProfile,
       recipes: state => state.recipes.recipes

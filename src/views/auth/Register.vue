@@ -24,7 +24,7 @@
       <BaseButton
         class="form-row auth-main__content__submit"
         raised
-        color="contrast"
+        color="primary"
         type="submit"
         :disabled="anySending"
         :loading="sending"

@@ -29,6 +29,7 @@ export default {
   state: {
     userProfile: undefined,
     userAuthState: USER_AUTH_STATE.USER_APP_INITIAL,
+    userAuthenticatedLazy: false,
     hiddenRecipeIds: null,
     hiddenBlogIds: null
     // userTokenRefreshing: false
@@ -39,6 +40,11 @@ export default {
     },
     [MUTATIONS.SET_USER_AUTH_STATE](state, userAuthState) {
       state.userAuthState = userAuthState
+      if (userAuthState === USER_AUTH_STATE.USER_LOGGED_IN) {
+        state.userAuthenticatedLazy = true
+      } else if (userAuthState === USER_AUTH_STATE.USER_LOGGED_OUT) {
+        state.userAuthenticatedLazy = false
+      }
     },
 
     [MUTATIONS.SET_HIDDEN_RECIPE_IDS](state, hiddenRecipeIds) {

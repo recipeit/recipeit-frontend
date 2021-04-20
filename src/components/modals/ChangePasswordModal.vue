@@ -28,7 +28,7 @@
       <BaseButton class="submit-button" stroked @click="$emit('close')">
         Anuluj
       </BaseButton>
-      <BaseButton class="submit-button" raised color="contrast" :form="formID" :loading="sending">
+      <BaseButton class="submit-button" raised color="primary" :form="formID" :loading="sending">
         {{ 'Zapisz' }}
       </BaseButton>
     </BaseModalFooter>

@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { mapGetters, mapState } from 'vuex'
+import { mapState } from 'vuex'
 
 export default {
   props: {
@@ -51,11 +51,6 @@ export default {
   }),
   methods: {
     addProductToShoppingList(product) {
-      if (!this.isAuthenticated) {
-        alert('Zaloguj się')
-        return
-      }
-
       this.loading = true
       this.$store
         .dispatch('shoppingList/addProduct', {
@@ -73,9 +68,6 @@ export default {
     }
   },
   computed: {
-    ...mapGetters({
-      isAuthenticated: 'user/isAuthenticated'
-    }),
     ...mapState({
       myKitchenProducts: state => state.myKitchen.products || [],
       shoppingListProducts: state => state.shoppingList.products || []

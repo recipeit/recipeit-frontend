@@ -4,7 +4,7 @@
       Zaloguj się, aby zobaczyć co tu na Ciebie czeka!
     </p>
     <router-link :to="{ name: 'login' }" v-slot="{ href, navigate }" custom>
-      <BaseButton tag="a" :href="href" @click="navigate($event)" class="login-before-enter__button" raised color="contrast">
+      <BaseButton tag="a" :href="href" @click="navigate($event)" class="login-before-enter__button" raised color="primary">
         Zaloguj się
       </BaseButton>
     </router-link>

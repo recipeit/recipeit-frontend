@@ -1,8 +1,8 @@
 <template>
   <div class="page-header-user">
-    <BaseMenu :hideOnClick="isAuthenticated">
+    <BaseMenu :hideOnClick="userAuthenticatedLazy">
       <template #toggle="{ focused }">
-        <div v-if="isAuthenticated" :class="['page-header-user__avatar', { 'page-header-user__avatar--focused': focused }]">
+        <div v-if="userAuthenticatedLazy" :class="['page-header-user__avatar', { 'page-header-user__avatar--focused': focused }]">
           <img :src="userProfile?.imageUrl || 'https://sprm.org.pl/wp-content/uploads/2018/04/User-icon.png'" alt="profile picture" />
         </div>
         <BaseLink v-else color="text-primary" class="page-header-user__anonymous-avatar">
@@ -11,7 +11,7 @@
       </template>
       <template #dropdown>
         <BaseMenuList>
-          <template v-if="!isAuthenticated">
+          <template v-if="!userAuthenticatedLazy">
             <BaseMenuRouterLink :to="{ name: 'login' }">Zaloguj się</BaseMenuRouterLink>
             <BaseMenuRouterLink :to="{ name: 'register' }">Utwórz konto</BaseMenuRouterLink>
             <BaseMenuSeparator />
@@ -30,15 +30,13 @@
 </template>
 
 <script>
-import { mapGetters, mapState } from 'vuex'
+import { mapState } from 'vuex'
 
 export default {
   computed: {
-    ...mapGetters({
-      isAuthenticated: 'user/isAuthenticated'
-    }),
     ...mapState({
-      userProfile: state => state.user.userProfile
+      userProfile: state => state.user.userProfile,
+      userAuthenticatedLazy: state => state.user.userAuthenticatedLazy
     })
   },
   methods: {

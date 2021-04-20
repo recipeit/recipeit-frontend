@@ -22,7 +22,7 @@
       <slot v-else name="empty-without-filters">
         <div class="recipes-list-block">
           Najpierw dodaj coś do swojej kuchni!
-          <BaseButton raised color="contrast">Przejdź do kuchni</BaseButton>
+          <BaseButton raised color="primary">Przejdź do kuchni</BaseButton>
         </div>
       </slot>
     </template>

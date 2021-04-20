@@ -1,13 +1,13 @@
 <template>
   <div class="auth-social-list-pills-title">lub {{ buttonPrefix }}</div>
   <div class="auth-social-list-pills">
-    <BaseButton class="auth-social-list-pills__button" stroked color="contrast" @click="loginFacebook()">
+    <BaseButton class="auth-social-list-pills__button" stroked @click="loginFacebook()">
       <img src="@/assets/logos/facebook.svg" alt="logo" />
     </BaseButton>
-    <BaseButton class="auth-social-list-pills__button" stroked color="contrast" @click="loginGoogle()">
+    <BaseButton class="auth-social-list-pills__button" stroked @click="loginGoogle()">
       <img src="@/assets/logos/google.svg" alt="logo" />
     </BaseButton>
-    <BaseButton class="auth-social-list-pills__button" stroked color="contrast" @click="loginGoogle()">
+    <BaseButton class="auth-social-list-pills__button" stroked @click="loginGoogle()">
       <BaseIcon class="auth-social-list-pills__button__icon auth-social-list-pills__button__icon--apple" weight="brands" icon="apple" />
     </BaseButton>
   </div>

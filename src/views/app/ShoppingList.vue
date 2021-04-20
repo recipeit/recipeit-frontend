@@ -27,7 +27,7 @@
     </BaseLink>
 
     <div class="floating-action-button-container">
-      <BaseButton raised color="contrast" @click="newProduct()">
+      <BaseButton raised color="primary" @click="newProduct()">
         <BaseIcon class="floating-action-button__icon" icon="plus" weight="semi-bold" />
         {{ $t('shared.addProduct') }}
       </BaseButton>
@@ -37,7 +37,7 @@
 
 <script>
 import { markRaw, ref } from 'vue'
-import { mapGetters, mapState } from 'vuex'
+import { mapState } from 'vuex'
 import _ from 'lodash'
 import ShoppingListProduct from '@/components/ShoppingListProduct'
 import Dialog from '@/components/modals/Dialog'
@@ -64,15 +64,6 @@ export default {
     }
   },
   methods: {
-    tryFetchInitialData() {
-      if (this.fetchedData) return
-
-      if (this.isAuthenticated) {
-        this.$store.dispatch('ingredients/fetchBaseProducts')
-        this.$store.dispatch('shoppingList/fetchProducts')
-        this.fetchedData = true
-      }
-    },
     newProduct() {
       this.$modal.show(markRaw(NewShoppingListProduct), {}, {})
     },
@@ -103,9 +94,6 @@ export default {
     }
   },
   computed: {
-    ...mapGetters({
-      isAuthenticated: 'user/isAuthenticated'
-    }),
     ...mapState({
       products: state => state.shoppingList.products
     }),
@@ -126,14 +114,8 @@ export default {
     }
   },
   beforeMount() {
-    this.tryFetchInitialData()
-  },
-  watch: {
-    isAuthenticated(newValue) {
-      if (newValue && !this.fetchedData) {
-        this.tryFetchInitialData()
-      }
-    }
+    this.$store.dispatch('ingredients/fetchBaseProducts')
+    this.$store.dispatch('shoppingList/fetchProducts')
   }
 }
 </script>

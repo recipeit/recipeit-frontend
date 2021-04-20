@@ -18,15 +18,9 @@
 import Splash from '@/components/landingPage/Splash'
 import Section from '@/components/landingPage/Section'
 import Footer from '@/components/landingPage/Footer'
-import { mapGetters } from 'vuex'
 
 export default {
   components: { Section, Splash, Footer },
-  computed: {
-    ...mapGetters({
-      isAuthenticated: 'user/isAuthenticated'
-    })
-  },
   setup() {
     const sections = [
       {

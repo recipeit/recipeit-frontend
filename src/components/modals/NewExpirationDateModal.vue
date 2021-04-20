@@ -35,7 +35,7 @@
       </form>
     </BaseModalBody>
     <BaseModalFooter>
-      <BaseButton class="submit-button" raised color="contrast" type="submit" :form="formID">
+      <BaseButton class="submit-button" raised color="primary" type="submit" :form="formID">
         <BaseIcon class="submit-button__icon" icon="plus" weight="semi-bold" />
         {{ $t('shared.addExpirationDate') }}
       </BaseButton>
