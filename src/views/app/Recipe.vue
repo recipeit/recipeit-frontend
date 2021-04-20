@@ -99,12 +99,23 @@
           <div class="recipe__ingredient-group" v-for="(list, groupName) in recipe.details.ingredientGroups" :key="groupName">
             <div v-if="groupName" class="recipe__ingredient-group-name">{{ groupName }}</div>
             <ul class="recipe__ingredients-list">
-              <RecipeIngredient v-for="ingredient in list" :key="ingredient.id" :amountFactor="amountFactor" :ingredient="ingredient" />
+              <RecipeIngredient
+                v-for="ingredient in list"
+                :key="ingredient.id"
+                :amountFactor="amountFactor"
+                :ingredient="ingredient"
+                :allAdding="allIngredientsAdding"
+              />
             </ul>
           </div>
         </div>
         <div class="recipe__ingredients-button-container">
-          <BaseLink tag="button" color="primary" class="all-to-shopping-list-button link-with-icon">
+          <BaseLink
+            tag="button"
+            color="primary"
+            class="all-to-shopping-list-button link-with-icon"
+            @click="addMissingIngredientsToShoppingList()"
+          >
             dodaj brakujące składniki do zakupów
             <!-- <BaseIcon class="link-with-icon__icon" icon="plus" weight="semi-bold" /> -->
           </BaseLink>
@@ -158,20 +169,9 @@ import Dialog from '@/components/modals/Dialog'
 import { ToastType } from '@/plugins/toast/toastType'
 import PlanRecipeModal from '@/components/modals/PlanRecipeModal'
 import InvisibleRecipeInfoModal from '@/components/modals/InvisibleRecipeInfoModal'
-// import userApi from '@/api/userApi'
-
-// import { useMeta } from 'vue-meta'
 
 export default {
   name: 'Recipe',
-  // metaInfo: {
-  //   title: 'My Example App',
-  //   titleTemplate: '%s - Yay!',
-  //   htmlAttrs: {
-  //     lang: 'en',
-  //     amp: true
-  //   }
-  // },
   props: {
     recipeId: {
       type: String,
@@ -185,6 +185,7 @@ export default {
     Rating
   },
   data: component => ({
+    allIngredientsAdding: false,
     fetchedData: false,
     recipe: null,
     servings: 1,
@@ -240,6 +241,12 @@ export default {
     },
     showInvisibleInfoModal() {
       this.$modal.show(markRaw(InvisibleRecipeInfoModal), {}, {})
+    },
+    async addMissingIngredientsToShoppingList() {
+      this.allIngredientsAdding = true
+      this.$store.dispatch('shoppingList/addMissingIngredientsToShoppingList', this.recipeId).finally(() => {
+        this.allIngredientsAdding = false
+      })
     }
   },
   computed: {

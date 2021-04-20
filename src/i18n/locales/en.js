@@ -17,7 +17,7 @@ export default {
       no: 'No'
     },
     filterModal: {
-      title: 'Available filters',
+      title: 'Sorting and filters',
       submitButton: 'Filter',
       cancelButton: 'Cancel'
     },

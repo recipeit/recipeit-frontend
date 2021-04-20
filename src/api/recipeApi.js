@@ -16,6 +16,9 @@ export default {
   },
   getRecipeDetails(id) {
     return apiClient.get(`/${route}/${id}/details`)
+  },
+  addMissingIngredientsToShoppingList(id) {
+    return apiClient.post(`/${route}/${id}/add-missing-ingredients-to-shopping-list`)
   }
   // updateKitchenByRecipe(id) {
   //   return apiClient.post(`/${route}/${id}/update-kitchen`, null)

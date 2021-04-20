@@ -1,8 +1,10 @@
+import recipeApi from '@/api/recipeApi'
 import shoppingListApi from '@/api/shoppingListApi'
 
 export const MUTATIONS = {
   SET_PRODUCTS: 'SET_PRODUCTS',
   ADD_PRODUCT: 'ADD_PRODUCT',
+  ADD_PRODUCTS: 'ADD_PRODUCTS',
   UPDATE_PRODUCT_FROM_SHOPPING_LIST: 'UPDATE_PRODUCT_FROM_SHOPPING_LIST',
   REMOVE_PRODUCT_FROM_SHOPPING_LIST: 'REMOVE_PRODUCT_FROM_SHOPPING_LIST'
 }
@@ -21,6 +23,13 @@ export default {
         state.products = [product]
       } else {
         state.products.push(product)
+      }
+    },
+    [MUTATIONS.ADD_PRODUCTS](state, products) {
+      if (!state.products) {
+        state.products = products
+      } else {
+        state.products = state.products.concat(products)
       }
     },
     [MUTATIONS.UPDATE_PRODUCT_FROM_SHOPPING_LIST](state, product) {
@@ -56,6 +65,22 @@ export default {
             resolve()
           })
           .catch(error => reject(error))
+      })
+    },
+    addMissingIngredientsToShoppingList({ commit }, recipeId) {
+      return new Promise((resolve, reject) => {
+        recipeApi
+          .addMissingIngredientsToShoppingList(recipeId)
+          .then(({ data: products }) => {
+            console.log(products)
+            if (products) {
+              commit(MUTATIONS.ADD_PRODUCTS, products)
+            }
+            resolve(products)
+          })
+          .catch(e => {
+            reject(e)
+          })
       })
     },
     editProductFromShoppingList({ commit }, product) {

@@ -20,6 +20,9 @@
           weight="semi-bold"
         />
       </a>
+      <a v-else-if="allAdding" class="ingredient__action ingredient__action--loading">
+        <BaseIcon class="ingredient__action__icon" icon="clock" />
+      </a>
       <a v-else class="ingredient__action ingredient__action--unavailable" @click="addProductToShoppingList(ingredient)">
         <BaseIcon class="ingredient__action__icon" icon="basket" />
         <BaseIcon
@@ -44,6 +47,10 @@ export default {
     amountFactor: {
       type: Number,
       default: 1
+    },
+    allAdding: {
+      type: Boolean,
+      default: false
     }
   },
   data: () => ({

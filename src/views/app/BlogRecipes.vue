@@ -12,7 +12,12 @@
     <BlogDetails v-if="blogDetails" :blog="blogDetails" class="blog-details-row" />
     <div v-else>...wczytuję</div>
 
-    <GenericRecipesList :recipes="recipes" @load-next="loadNextRecipes" @reload="reloadRecipes" :showFilterButtons="false" />
+    <GenericRecipesList
+      :recipes="recipes"
+      :showFilterButtons="false"
+      @load-next="loadNextRecipes($event)"
+      @reload="reloadRecipes($event)"
+    />
   </div>
 </template>
 

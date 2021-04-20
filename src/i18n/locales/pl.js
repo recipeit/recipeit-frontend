@@ -23,7 +23,7 @@ export default {
       no: 'Nie'
     },
     filterModal: {
-      title: 'Filtry',
+      title: 'Sortowanie i filtry',
       submitButton: 'Filtruj',
       cancelButton: 'Anuluj'
     },

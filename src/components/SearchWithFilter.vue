@@ -19,17 +19,17 @@
       v-if="showFilterButton"
       class="recipes-list-search__filter-button"
       size="small"
-      subtle
-      color="contrast"
+      :subtle="true"
+      :color="selectedFiltersCount > 0 ? 'primary' : 'contrast'"
       @click="openFilterModal()"
     >
       <!-- <BaseIcon class="recipes-list-search__filter-button__icon" icon="filter" /> -->
-      <span>Filtruj</span>
-      <transition name="filters-button-count-fade">
-        <span v-if="selectedFiltersCount !== 0" class="recipes-list-search__filter-button__count">
-          {{ selectedFiltersCount }}
-        </span>
-      </transition>
+      <span>Sortowanie i filtry</span>
+      <!-- <transition name="filters-button-count-fade"> -->
+      <span v-if="selectedFiltersCount > 0" class="recipes-list-search__filter-button__count">
+        {{ selectedFiltersCount }}
+      </span>
+      <!-- </transition> -->
     </BaseButton>
   </div>
 </template>
