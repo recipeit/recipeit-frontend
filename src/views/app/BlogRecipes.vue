@@ -2,19 +2,16 @@
   <div class="layout__page__content">
     <PageHeader :showUser="false">
       <template #title>
-        <div v-if="blogDetails">
-          {{ blogDetails.name }}
-        </div>
-        <div v-else>...wczytuję</div>
-        <!-- <h1 v-if="userProfile && userProfile.username" class="home-page__title">
-          <span class="home-page__title__sub">{{ $t(welcomeType) }},</span>
-          <span class="home-page__title__main">{{ userProfile.username }}</span>
-        </h1>
-        <h1 v-else class="home-page__title">
-          <span>{{ $t(welcomeType) }}</span>
-        </h1> -->
+        <BaseLink tag="button" @click="$router.go(-1)" class="back-button" color="text-secondary">
+          <BaseIcon class="back-button-icon" icon="arrow-left" weight="semi-bold" />
+          cofnij
+        </BaseLink>
       </template>
     </PageHeader>
+
+    <BlogDetails v-if="blogDetails" :blog="blogDetails" class="blog-details-row" />
+    <div v-else>...wczytuję</div>
+
     <GenericRecipesList :recipes="recipes" @load-next="loadNextRecipes" @reload="reloadRecipes" :showFilterButtons="false" />
   </div>
 </template>
@@ -23,6 +20,7 @@
 import blogApi from '@/api/blogApi'
 import { fetchRecipesQueryParams, RecipeList } from '@/constants'
 import GenericRecipesList from '@/components/GenericRecipesList'
+import BlogDetails from '@/components/BlogDetails'
 import PageHeader from '@/components/PageHeader'
 
 export default {
@@ -35,6 +33,7 @@ export default {
   },
   components: {
     GenericRecipesList,
+    BlogDetails,
     PageHeader
   },
   data: () => ({
@@ -93,5 +92,20 @@ export default {
   &__header {
     margin-bottom: 16px;
   }
+}
+
+.back-button {
+  font-weight: bold;
+  font-size: 0.75rem;
+  display: flex;
+
+  &-icon {
+    font-size: 1rem;
+    margin-right: 0.5rem;
+  }
+}
+
+.blog-details-row {
+  margin-bottom: 24px;
 }
 </style>
