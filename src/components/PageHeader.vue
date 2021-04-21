@@ -69,44 +69,8 @@ export default {
     font-size: 1.25rem;
   }
 
-  &__search {
-    $margin-fix: ($header-height - $header-search-height) / 2;
-    // border: 1px solid var(--color-border);
-    position: absolute;
-    top: $margin-fix;
-    left: $margin-fix;
-    right: $margin-fix;
-    bottom: $margin-fix;
-    // height: 48px;
-    border-radius: 2.5rem;
-    padding: 0 16px;
-    display: flex;
-    align-items: center;
-    line-height: 1rem;
-    background-color: var(--color-background-flyout);
-    box-shadow: 0 24px 48px -8px rgba(0, 0, 0, 0.3);
-
-    &__search-icon {
-      color: var(--color-text-secondary);
-    }
-
-    input {
-      border: none;
-      height: 100%;
-      padding: 0 12px;
-      flex: 1;
-      color: inherit;
-      font-family: inherit;
-      background: transparent;
-
-      &::placeholder {
-        color: var(--color-text-secondary);
-      }
-    }
-  }
-
-  &__back-icon,
-  &__search-icon {
+  &__back-icon {
+    margin-left: -($header-height - 1.25rem) / 2;
     width: $header-height;
     height: $header-height;
     display: flex;
@@ -114,10 +78,6 @@ export default {
     justify-content: center;
     font-size: 1.25rem;
     cursor: pointer;
-  }
-
-  &__back-icon {
-    margin-left: -($header-height - 1.25rem) / 2;
   }
 }
 </style>

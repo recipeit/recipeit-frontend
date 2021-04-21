@@ -1,7 +1,7 @@
 <template>
   <div class="day-plan" v-if="currentDay">
     <slot name="title" :backToToday="backToToday" :showBackToToday="showBackToToday" />
-    <transition :name="`day-plan-slide-${currendDaySlideType}`" mode="out-in">
+    <transition name="fade" mode="out-in">
       <div :key="currentDay.key">
         <div class="day-plan__new-header">
           <div class="new-header-list">
