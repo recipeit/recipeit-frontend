@@ -68,10 +68,12 @@ export default {
   color: $color;
   // box-shadow: 0 12px 32px -16px $background;
 
-  &:hover {
-    // box-shadow: 0 12px 32px -16px $background;
-    background-color: $background-hover;
-    // transform: scale(1.05);
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      // box-shadow: 0 12px 32px -16px $background;
+      background-color: $background-hover;
+      // transform: scale(1.05);
+    }
   }
 
   &:active {
@@ -91,8 +93,10 @@ export default {
   background-color: $background;
   color: $color;
 
-  &:hover {
-    background-color: $background-hover;
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      background-color: $background-hover;
+    }
   }
 
   &:active {
@@ -132,8 +136,10 @@ export default {
     background-color: var(--color-button-contrast);
     color: var(--color-button-contrast-text);
 
-    &:hover {
-      background-color: var(--color-button-contrast-hover);
+    @media (hover: hover) and (pointer: fine) {
+      &:hover {
+        background-color: var(--color-button-contrast-hover);
+      }
     }
 
     &:active {
@@ -180,8 +186,10 @@ export default {
     background-color: transparent;
     border: 1px solid var(--color-border);
 
-    &:not([disabled]):not(.loading):hover {
-      border-color: var(--color-border-hover);
+    @media (hover: hover) and (pointer: fine) {
+      &:not([disabled]):not(.loading):hover {
+        border-color: var(--color-border-hover);
+      }
     }
 
     &:not([disabled]):not(.loading):active {
