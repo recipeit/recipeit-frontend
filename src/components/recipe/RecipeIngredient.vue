@@ -6,37 +6,31 @@
       <span class="ingredient__unit"> {{ $tc(`unitsShort.${ingredient.unit}`, computedAmount) }}</span>
     </template>
     <div class="ingredient__action-container">
-      <a v-if="loading" class="ingredient__action ingredient__action--loading">
-        <BaseIcon class="ingredient__action__icon" icon="clock" />
-      </a>
-      <a v-else-if="isInMyKitchen" class="ingredient__action ingredient__action--available">
+      <a v-if="ingredient.state === 'IN_KITCHEN'" class="ingredient__action ingredient__action--available">
         <BaseIcon class="ingredient__action__icon ingredient__action__icon--small" icon="check" weight="semi-bold" />
       </a>
-      <a v-else-if="isInShoppingList" class="ingredient__action ingredient__action--in-shopping-list">
+
+      <BaseButton
+        v-else-if="ingredient.state === 'IN_SHOPPING_LIST' || ingredient.state === 'UNAVAILABLE'"
+        class="ingredient__action ingredient__action--unavailable"
+        subtle
+        :color="ingredient.state === 'IN_SHOPPING_LIST' ? 'primary' : 'accent'"
+        :loading="showLoadingState"
+        @click="addProductToShoppingList(ingredient)"
+      >
         <BaseIcon class="ingredient__action__icon" icon="basket" />
         <BaseIcon
           class="ingredient__action__icon ingredient__action__icon--small ingredient__action__icon--less-space"
-          icon="check"
+          :icon="ingredient.state === 'IN_SHOPPING_LIST' ? 'check' : 'plus'"
           weight="semi-bold"
         />
-      </a>
-      <a v-else-if="allAdding" class="ingredient__action ingredient__action--loading">
-        <BaseIcon class="ingredient__action__icon" icon="clock" />
-      </a>
-      <a v-else class="ingredient__action ingredient__action--unavailable" @click="addProductToShoppingList(ingredient)">
-        <BaseIcon class="ingredient__action__icon" icon="basket" />
-        <BaseIcon
-          class="ingredient__action__icon ingredient__action__icon--small ingredient__action__icon--less-space"
-          icon="plus"
-          weight="semi-bold"
-        />
-      </a>
+      </BaseButton>
     </div>
   </li>
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { ToastType } from '@/plugins/toast/toastType'
 
 export default {
   props: {
@@ -58,7 +52,12 @@ export default {
   }),
   methods: {
     addProductToShoppingList(product) {
+      if (this.ingredient.state !== 'UNAVAILABLE') {
+        return
+      }
+
       this.loading = true
+
       this.$store
         .dispatch('shoppingList/addProduct', {
           name: product.name,
@@ -66,27 +65,20 @@ export default {
           unit: product.unit,
           baseProductId: product.baseProductId
         })
-        .then(() => {
-          this.loading = false
-        })
         .catch(() => {
+          this.$toast.show('Nie udało się dodać produktu do listy zakupów', ToastType.ERROR)
+        })
+        .finally(() => {
           this.loading = false
         })
     }
   },
   computed: {
-    ...mapState({
-      myKitchenProducts: state => state.myKitchen.products || [],
-      shoppingListProducts: state => state.shoppingList.products || []
-    }),
-    isInShoppingList() {
-      return this.shoppingListProducts.find(p => p.baseProductId === this.ingredient.baseProductId)
-    },
-    isInMyKitchen() {
-      return this.myKitchenProducts.find(p => p.baseProductId === this.ingredient.baseProductId)
-    },
     computedAmount() {
       return this.ingredient.amount * this.amountFactor
+    },
+    showLoadingState() {
+      return this.loading || (this.allAdding && this.ingredient.state === 'UNAVAILABLE')
     }
   }
 }
@@ -120,6 +112,7 @@ export default {
     display: flex;
     align-items: center;
     min-height: 32px;
+    height: 32px;
     min-width: 32px;
     border-radius: 50px;
     padding: 4px 8px;

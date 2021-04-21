@@ -103,7 +103,7 @@
           </div>
         </div>
         <div class="recipe__ingredient-groups">
-          <div class="recipe__ingredient-group" v-for="(list, groupName) in recipe.details.ingredientGroups" :key="groupName">
+          <div class="recipe__ingredient-group" v-for="(list, groupName) in ingredientGroups" :key="groupName">
             <div v-if="groupName" class="recipe__ingredient-group-name">{{ groupName }}</div>
             <ul class="recipe__ingredients-list">
               <RecipeIngredient
@@ -116,7 +116,7 @@
             </ul>
           </div>
         </div>
-        <div class="recipe__ingredients-button-container">
+        <div v-if="canAddAnythingToShoppingList" class="recipe__ingredients-button-container">
           <BaseLink
             tag="button"
             color="primary"
@@ -203,11 +203,24 @@ export default {
     this.$store.dispatch('recipes/fetchDetailedRecipe', this.recipeId).then(rd => {
       this.recipe = rd
       this.servings = rd.details.servings
+
+      // const ingredientGroups = this.recipe.details.ingredientGroups
+
+      // const statedIngredientGroups =
+
+      // console.log('legit', ingredientGroups)
+      // console.log('maked', statedIngredientGroups)
     })
     this.$store.dispatch('myKitchen/fetchProducts')
     this.$store.dispatch('shoppingList/fetchProducts')
   },
   methods: {
+    isInMyKitchen(baseProductId) {
+      return this.myKitchenProducts.find(p => p.baseProductId === baseProductId)
+    },
+    isInShoppingList(baseProductId) {
+      return this.shoppingListProducts.find(p => p.baseProductId === baseProductId)
+    },
     navigateToRecipesWithCategoryFilter(category) {
       this.$router.push({ name: 'cook-it', query: parseFilters({ Category: [category] }) })
     },
@@ -266,8 +279,50 @@ export default {
       isBlogHiddenGetter: 'user/isBlogHidden'
     }),
     ...mapState({
-      favouriteRecipesIds: state => state.recipes.favouriteRecipesIds
+      favouriteRecipesIds: state => state.recipes.favouriteRecipesIds,
+      myKitchenProducts: state => state.myKitchen.products || [],
+      shoppingListProducts: state => state.shoppingList.products || []
     }),
+    ingredientGroups() {
+      if (this.recipe === null || this.recipe.details === null) {
+        return {}
+      }
+
+      const { ingredientGroups } = this.recipe.details
+      return Object.fromEntries(
+        Object.keys(ingredientGroups).map(key => [
+          key,
+          ingredientGroups[key].map(ingredient => {
+            const { baseProductId } = ingredient
+            let state
+
+            if (!baseProductId) {
+              state = 'NONE'
+            } else if (this.isInMyKitchen(baseProductId)) {
+              state = 'IN_KITCHEN'
+            } else if (this.isInShoppingList(baseProductId)) {
+              state = 'IN_SHOPPING_LIST'
+            } else {
+              state = 'UNAVAILABLE'
+            }
+
+            return {
+              ...ingredient,
+              state
+            }
+          })
+        ])
+      )
+    },
+    canAddAnythingToShoppingList() {
+      const { ingredientGroups } = this
+
+      if (!ingredientGroups) return false
+
+      return Object.keys(ingredientGroups)
+        .flatMap(key => ingredientGroups[key].map(i => i.state))
+        .includes('UNAVAILABLE')
+    },
     isRecipeHidden() {
       return this.isRecipeHiddenGetter(this.recipeId)
     },
@@ -316,6 +371,11 @@ export default {
           src: 'https://www.kwestiasmaku.com/sites/v123.kwestiasmaku.com/files/nalesniki-po-bolonsku-01.jpg'
         }
       ]
+    },
+    ingredientGroupsWithState() {
+      Object.keys(this.recipe.details.ingredientGroups)
+
+      return this.recipe.details.ingredientGroups
     }
   },
   watch: {
