@@ -37,25 +37,32 @@
 
     <div class="section-title"><BaseIcon class="section-title-icon" icon="star" /> Popularne kategorie</div>
     <div class="popular-categories-container">
-      <ul class="popular-categories">
-        <li class="popular-category-container">
-          <a href="#" class="popular-category">Kuchnia włoska</a>
+      <ul v-if="popularCategories" class="popular-categories">
+        <li v-for="category in popularCategories" :key="category.key" class="popular-category-container">
+          <router-link :to="{ name: 'cook-it', query: { 'filters.Category': category.key } }" class="popular-category">
+            {{ $t(`recipeFilterOptions.Category.${category.value}`) }}
+          </router-link>
+        </li>
+        <!-- <li class="popular-category-container">
+          <router-link :to="{ name: 'cook-it', query: { 'filters.Category': '0' } }" class="popular-category">Kuchnia włoska</router-link>
         </li>
         <li class="popular-category-container">
-          <a href="#" class="popular-category">Dieta wegetariańska</a>
+          <router-link :to="{ name: 'cook-it', query: { 'filters.Category': '1' } }" class="popular-category">
+            Dieta wegetariańska
+          </router-link>
         </li>
         <li class="popular-category-container">
-          <a href="#" class="popular-category">Makarony</a>
+          <router-link :to="{ name: 'cook-it', query: { 'filters.Category': '2' } }" class="popular-category">Makarony</router-link>
         </li>
         <li class="popular-category-container">
-          <a href="#" class="popular-category">Ciasteczka</a>
+          <router-link :to="{ name: 'cook-it', query: { 'filters.Category': '3' } }" class="popular-category">Ciasteczka</router-link>
         </li>
         <li class="popular-category-container">
-          <a href="#" class="popular-category">Kuchnia tajska</a>
+          <router-link :to="{ name: 'cook-it', query: { 'filters.Category': '4' } }" class="popular-category">Kuchnia tajska</router-link>
         </li>
         <li class="popular-category-container">
-          <a href="#" class="popular-category">Kuchnia chińska</a>
-        </li>
+          <router-link :to="{ name: 'cook-it', query: { 'filters.Category': '5' } }" class="popular-category">Kuchnia chińska</router-link>
+        </li> -->
       </ul>
     </div>
   </div>
@@ -68,6 +75,7 @@ import HorizontalRecipesList from '@/components/HorizontalRecipesList'
 import { mapState } from 'vuex'
 import userApi from '@/api/userApi'
 import { RecipeList } from '@/constants'
+import recipeApi from '@/api/recipeApi'
 
 export default {
   components: { PageHeader, DayPlan, HorizontalRecipesList },
@@ -82,6 +90,9 @@ export default {
     this.favouriteRecipes.fetching = true
     userApi.getFavouriteRecipes().then(({ data }) => {
       this.favouriteRecipes.setFromApi({ ...data, fetching: false })
+    })
+    recipeApi.getPopularCategories().then(({ data: popularCategories }) => {
+      this.popularCategories = popularCategories
     })
   },
   data() {
@@ -99,7 +110,8 @@ export default {
         { id: 2, name: 'Alabama' },
         { id: 3, name: 'Kalifornia' }
       ],
-      favouriteRecipes: new RecipeList()
+      favouriteRecipes: new RecipeList(),
+      popularCategories: null
     }
   },
   methods: {

@@ -19,6 +19,9 @@ export default {
   },
   addMissingIngredientsToShoppingList(id) {
     return apiClient.post(`/${route}/${id}/add-missing-ingredients-to-shopping-list`)
+  },
+  getPopularCategories() {
+    return apiClient.get(`/${route}/popular-categories`)
   }
   // updateKitchenByRecipe(id) {
   //   return apiClient.post(`/${route}/${id}/update-kitchen`, null)
