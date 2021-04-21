@@ -39,7 +39,7 @@ export default {
   background-color: transparent;
   border: none;
 
-  @media (hover: hover) and (pointer: fine) {
+  @include cursor-only {
     &:hover,
     &:focus {
       color: var(--color-link-color-hover);
@@ -53,7 +53,7 @@ export default {
   &--color-text-primary {
     color: var(--color-link-text-primary-color);
 
-    @media (hover: hover) and (pointer: fine) {
+    @include cursor-only {
       &:hover,
       &:focus {
         color: var(--color-link-text-primary-color-hover);
@@ -68,7 +68,7 @@ export default {
   &--color-text-secondary {
     color: var(--color-link-text-secondary-color);
 
-    @media (hover: hover) and (pointer: fine) {
+    @include cursor-only {
       &:hover,
       &:focus {
         color: var(--color-link-text-secondary-color-hover);
@@ -83,7 +83,7 @@ export default {
   &--color-accent {
     color: var(--color-link-accent-color);
 
-    @media (hover: hover) and (pointer: fine) {
+    @include cursor-only {
       &:hover,
       &:focus {
         color: var(--color-link-accent-color-hover);
@@ -98,7 +98,7 @@ export default {
   &--color-primary {
     color: var(--color-link-primary-color);
 
-    @media (hover: hover) and (pointer: fine) {
+    @include cursor-only {
       &:hover,
       &:focus {
         color: var(--color-link-primary-color-hover);
@@ -113,7 +113,7 @@ export default {
   &--color-red {
     color: var(--color-link-danger-color);
 
-    @media (hover: hover) and (pointer: fine) {
+    @include cursor-only {
       &:hover,
       &:focus {
         color: var(--color-link-danger-color-hover);

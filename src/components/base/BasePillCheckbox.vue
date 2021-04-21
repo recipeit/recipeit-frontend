@@ -62,7 +62,7 @@ $checked-icon-width: $checked-icon-size + $checked-icon-margin-right;
   transition: all 0.2s ease;
   overflow: hidden;
 
-  @media (hover: hover) and (pointer: fine) {
+  @include cursor-only {
     &:not(&--checked):hover,
     &:not(&--checked):focus {
       border-color: var(--color-border-hover);
@@ -78,7 +78,7 @@ $checked-icon-width: $checked-icon-size + $checked-icon-margin-right;
     background-color: var(--color-button-subtle-primary-background);
     color: var(--color-button-subtle-primary-color);
 
-    @media (hover: hover) and (pointer: fine) {
+    @include cursor-only {
       &:hover,
       &:focus {
         background-color: var(--color-button-subtle-primary-background-hover);
@@ -94,7 +94,7 @@ $checked-icon-width: $checked-icon-size + $checked-icon-margin-right;
     background-color: var(--color-button-subtle-danger-background);
     color: var(--color-button-subtle-danger-color);
 
-    @media (hover: hover) and (pointer: fine) {
+    @include cursor-only {
       &:hover,
       &:focus {
         background-color: var(--color-button-subtle-danger-background-hover);

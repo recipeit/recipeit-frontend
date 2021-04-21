@@ -2,25 +2,25 @@
   <li class="ingredient">
     {{ ingredient.name || ingredient.baseProduct?.name }}
     <template v-if="ingredient.amount > 0">
-      <span class="ingredient__amount">{{ computedAmount }}</span>
-      <span class="ingredient__unit"> {{ $tc(`unitsShort.${ingredient.unit}`, computedAmount) }}</span>
+      <span class="ingredient-amount">{{ computedAmount }}</span>
+      <span class="ingredient-unit"> {{ $tc(`unitsShort.${ingredient.unit}`, computedAmount) }}</span>
     </template>
-    <div class="ingredient__action-container">
-      <a v-if="ingredient.state === 'IN_KITCHEN'" class="ingredient__action ingredient__action--available">
-        <BaseIcon class="ingredient__action__icon ingredient__action__icon--small" icon="check" weight="semi-bold" />
+    <div class="state-container">
+      <a v-if="ingredient.state === 'IN_KITCHEN'" class="state state--available">
+        <BaseIcon class="state-icon state-icon--small" icon="check" weight="semi-bold" />
       </a>
 
       <BaseButton
         v-else-if="ingredient.state === 'IN_SHOPPING_LIST' || ingredient.state === 'UNAVAILABLE'"
-        class="ingredient__action ingredient__action--unavailable"
+        class="state"
         subtle
         :color="ingredient.state === 'IN_SHOPPING_LIST' ? 'primary' : 'accent'"
         :loading="showLoadingState"
         @click="addProductToShoppingList(ingredient)"
       >
-        <BaseIcon class="ingredient__action__icon" icon="basket" />
+        <BaseIcon class="state-icon" icon="basket" />
         <BaseIcon
-          class="ingredient__action__icon ingredient__action__icon--small ingredient__action__icon--less-space"
+          class="state-icon state-icon--small state-icon--less-space"
           :icon="ingredient.state === 'IN_SHOPPING_LIST' ? 'check' : 'plus'"
           weight="semi-bold"
         />
@@ -91,24 +91,24 @@ export default {
   min-height: 32px;
   padding: 4px 0;
 
-  &__amount {
+  &-amount {
     margin-left: 0.75rem;
   }
 
-  &__unit {
+  &-unit {
     margin-left: 0.25rem;
   }
 
-  &__amount,
-  &__unit {
+  &-amount,
+  &-unit {
     color: var(--color-text-secondary);
   }
 
-  &__action-container {
+  .state-container {
     margin-left: auto;
   }
 
-  &__action {
+  .state {
     display: flex;
     align-items: center;
     min-height: 32px;
@@ -121,43 +121,19 @@ export default {
     margin-right: -4px;
     justify-content: center;
 
-    &--loading {
-      color: var(--color-button-subtle-contrast-color);
-      background-color: var(--color-button-subtle-contrast-background-hover);
-    }
-
     &--available {
-      color: var(--color-button-subtle-primary-color);
-
-      &:hover {
-        background-color: var(--color-button-subtle-primary-background-hover);
-      }
-    }
-
-    &--in-shopping-list {
-      color: var(--color-button-subtle-primary-color);
-      background-color: var(--color-button-subtle-primary-background);
-
-      &:hover {
-        background-color: var(--color-button-subtle-primary-background-hover);
-      }
-    }
-
-    &--unavailable {
-      color: var(--color-button-subtle-accent-color);
-      background-color: var(--color-button-subtle-accent-background);
-
-      &:hover {
-        background-color: var(--color-button-subtle-accent-background-hover);
-      }
-    }
-
-    &--available,
-    &--loading {
       padding: 4px;
+      color: var(--color-button-subtle-primary-color);
+
+      @include cursor-only {
+        &:hover,
+        &:focus {
+          background-color: var(--color-button-subtle-primary-background-hover);
+        }
+      }
     }
 
-    &__icon {
+    &-icon {
       font-size: 24px;
 
       &--less-space {

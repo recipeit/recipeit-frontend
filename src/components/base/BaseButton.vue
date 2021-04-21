@@ -68,7 +68,7 @@ export default {
   color: $color;
   // box-shadow: 0 12px 32px -16px $background;
 
-  @media (hover: hover) and (pointer: fine) {
+  @include cursor-only {
     &:hover,
     &:focus {
       // box-shadow: 0 12px 32px -16px $background;
@@ -94,7 +94,7 @@ export default {
   background-color: $background;
   color: $color;
 
-  @media (hover: hover) and (pointer: fine) {
+  @include cursor-only {
     &:hover,
     &:focus {
       background-color: $background-hover;
@@ -138,7 +138,7 @@ export default {
     background-color: var(--color-button-contrast);
     color: var(--color-button-contrast-text);
 
-    @media (hover: hover) and (pointer: fine) {
+    @include cursor-only {
       &:hover,
       &:focus {
         background-color: var(--color-button-contrast-hover);
@@ -189,7 +189,7 @@ export default {
     background-color: transparent;
     border: 1px solid var(--color-border);
 
-    @media (hover: hover) and (pointer: fine) {
+    @include cursor-only {
       &:not([disabled]):not(.loading):hover,
       &:not([disabled]):not(.loading):focus {
         border-color: var(--color-border-hover);

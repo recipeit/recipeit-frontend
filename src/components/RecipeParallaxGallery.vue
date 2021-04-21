@@ -237,7 +237,7 @@ export default {
   &__controls {
     display: none;
 
-    @media (hover: hover) and (pointer: fine) {
+    @include cursor-only {
       display: initial;
     }
 

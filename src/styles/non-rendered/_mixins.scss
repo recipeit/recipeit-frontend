@@ -12,3 +12,9 @@
     transition-delay: $delay;
   }
 }
+
+@mixin cursor-only {
+  @media (hover: hover) and (pointer: fine) {
+    @content;
+  }
+}

@@ -94,7 +94,7 @@ export default {
     justify-content: center;
     @include transition((border-color, color));
 
-    @media (hover: hover) and (pointer: fine) {
+    @include cursor-only {
       #{ $root }:hover &,
       #{ $root }--focus & {
         border-color: var(--color-border-hover);
@@ -110,7 +110,7 @@ export default {
       color: var(--color-primary);
     }
 
-    @media (hover: hover) and (pointer: fine) {
+    @include cursor-only {
       #{ $root }--checked:hover &,
       #{ $root }--checked#{ $root }--focus & {
         border-color: var(--color-primary-lighter);
