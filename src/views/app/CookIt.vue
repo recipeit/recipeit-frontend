@@ -39,8 +39,18 @@ export default {
     almostAvailableRecipes: new RecipeList()
   }),
   beforeMount() {
-    var queryParams = this.$route.query ? this.$route.query : null
-    this.fetchRecipesWithQuery(queryParams)
+    var { query } = this.$route
+
+    if (query) {
+      const queryParams = Object.fromEntries(
+        Object.keys(query)
+          .filter(key => key === 'orderMethod' || key.startsWith('filters.'))
+          .map(key => [key, query[key]])
+      )
+      this.fetchRecipesWithQuery(queryParams)
+    } else {
+      this.fetchRecipesWithQuery()
+    }
   },
   methods: {
     reloadRecipes({ orderMethod, filters, search }) {
@@ -54,8 +64,11 @@ export default {
     },
     fetchRecipesWithQuery(queryParams) {
       this.availableRecipes.fetching = true
-      userApi.getAvailableRecipes(queryParams).then(resp => {
-        this.availableRecipes.setFromApi(resp.data)
+      userApi.getAvailableRecipes(queryParams).then(({ data: recipes }) => {
+        this.availableRecipes.setFromApi(recipes)
+
+        const queryParams = fetchRecipesQueryParams(recipes.orderMethod, recipes.filters, recipes.search)
+        this.$router.replace({ query: queryParams })
       })
 
       this.almostAvailableRecipes.fetching = true

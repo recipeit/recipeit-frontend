@@ -113,12 +113,18 @@ export function parseFilters(filters) {
 }
 
 export function fetchRecipesQueryParams(orderMethod, filters, search) {
-  return {
-    pageNumber: null,
+  const paramsWithNullItems = {
+    // pageNumber: null,
     search: search,
     orderMethod: orderMethod,
     ...parseFilters(filters)
   }
+
+  return Object.fromEntries(
+    Object.keys(paramsWithNullItems)
+      .filter(key => paramsWithNullItems[key] !== null)
+      .map(key => [key, paramsWithNullItems[key]])
+  )
 }
 
 export const STORAGE_TOKEN = 'token'

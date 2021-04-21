@@ -48,18 +48,36 @@ export default {
     },
     fetchRecipes(orderMethod, filters, search) {
       if (this.recipes.fetching) return
-      this.recipes = new RecipeList()
-      this.recipes.fetching = true
 
       const queryParams = fetchRecipesQueryParams(orderMethod, filters, search)
 
-      recipeApi.getRecipes(queryParams).then(resp => {
-        this.recipes.setFromApi(resp.data)
+      this.fetchRecipesWithQuery(queryParams)
+    },
+    fetchRecipesWithQuery(queryParams) {
+      this.recipes = new RecipeList()
+      this.recipes.fetching = true
+
+      recipeApi.getRecipes(queryParams).then(({ data: recipes }) => {
+        this.recipes.setFromApi(recipes)
+
+        const queryParams = fetchRecipesQueryParams(recipes.orderMethod, recipes.filters, recipes.search)
+        this.$router.replace({ query: queryParams })
       })
     }
   },
   beforeMount() {
-    this.fetchRecipes()
+    var { query } = this.$route
+
+    if (query) {
+      const queryParams = Object.fromEntries(
+        Object.keys(query)
+          .filter(key => key === 'orderMethod' || key.startsWith('filters.'))
+          .map(key => [key, query[key]])
+      )
+      this.fetchRecipesWithQuery(queryParams)
+    } else {
+      this.fetchRecipesWithQuery()
+    }
   }
 }
 </script>
