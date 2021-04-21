@@ -8,7 +8,7 @@
         Przepisy z ukrytego blogu nie pojawiają się w bazie przepisów oraz nie są proponowane do wykonania z Twoich produków.
       </p>
       <p class="paragraph">
-        Ukryć możesz zarówno pojedynczy przepis, jak i wszystkie przepisy danego twórcy.
+        Ukryć możesz zarówno cały blog, jak i pojedynczy przepis.
       </p>
       <p class="paragraph">
         Listę ukrytych przepisów i blogów znajdziesz w
