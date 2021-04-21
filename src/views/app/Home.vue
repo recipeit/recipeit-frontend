@@ -43,26 +43,6 @@
             {{ $t(`recipeFilterOptions.Category.${category.value}`) }}
           </router-link>
         </li>
-        <!-- <li class="popular-category-container">
-          <router-link :to="{ name: 'cook-it', query: { 'filters.Category': '0' } }" class="popular-category">Kuchnia włoska</router-link>
-        </li>
-        <li class="popular-category-container">
-          <router-link :to="{ name: 'cook-it', query: { 'filters.Category': '1' } }" class="popular-category">
-            Dieta wegetariańska
-          </router-link>
-        </li>
-        <li class="popular-category-container">
-          <router-link :to="{ name: 'cook-it', query: { 'filters.Category': '2' } }" class="popular-category">Makarony</router-link>
-        </li>
-        <li class="popular-category-container">
-          <router-link :to="{ name: 'cook-it', query: { 'filters.Category': '3' } }" class="popular-category">Ciasteczka</router-link>
-        </li>
-        <li class="popular-category-container">
-          <router-link :to="{ name: 'cook-it', query: { 'filters.Category': '4' } }" class="popular-category">Kuchnia tajska</router-link>
-        </li>
-        <li class="popular-category-container">
-          <router-link :to="{ name: 'cook-it', query: { 'filters.Category': '5' } }" class="popular-category">Kuchnia chińska</router-link>
-        </li> -->
       </ul>
     </div>
   </div>

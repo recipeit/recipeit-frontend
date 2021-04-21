@@ -1,13 +1,54 @@
 <template>
   <div class="layout__page__content">
-    <PageHeader :showUser="false">
+    <!-- <PageHeader :showUser="false">
       <template #title>
         <BaseLink tag="button" @click="$router.go(-1)" class="back-button" color="text-secondary">
           <BaseIcon class="back-button-icon" icon="arrow-left" weight="semi-bold" />
           cofnij
         </BaseLink>
       </template>
-    </PageHeader>
+    </PageHeader> -->
+    <div class="header">
+      <div class="header-container">
+        <div class="header-buttons">
+          <BaseLink class="header-button" @click="$router.go(-1)" tag="button">
+            <BaseIcon icon="arrow-right" weight="regular" />
+          </BaseLink>
+          <BaseMenu>
+            <template #toggle>
+              <BaseLink class="header-button" tag="button">
+                <BaseIcon icon="dots-horizontal" weight="regular" />
+              </BaseLink>
+            </template>
+            <template #dropdown>
+              <BaseMenuList>
+                <BaseMenuLink v-if="!isHidden" @click="changeBlogVisibility(false)">Ukryj ten blog</BaseMenuLink>
+                <BaseMenuLink v-else @click="changeBlogVisibility(true)">Pokazuj ten blog</BaseMenuLink>
+
+                <BaseMenuSeparator />
+
+                <BaseMenuLink @click="copyLinkToClipboard()">Skopiuj link do blogu</BaseMenuLink>
+              </BaseMenuList>
+            </template>
+          </BaseMenu>
+        </div>
+        <div class="header-avatar-container">
+          <BaseImageLazyload
+            class="header-avatar"
+            :src="'https://sprm.org.pl/wp-content/uploads/2018/04/User-icon.png'"
+            :alt="blogDetails?.name"
+          />
+        </div>
+      </div>
+      <RecipeParallaxImage class="header-image">
+        <BaseImageLazyload src="https://maspex.com/wp-content/uploads/2020/07/EITFood-keyimage1-LR.jpg" />
+      </RecipeParallaxImage>
+    </div>
+
+    <BaseLink tag="button" class="hidden-bar" v-if="isHidden" color="red" @click="showInvisibleInfoModal()">
+      <BaseIcon class="hidden-bar-icon" icon="eye-hidden" weight="semi-bold" />
+      Ten blog jest ukryty
+    </BaseLink>
 
     <BlogDetails v-if="blogDetails" :blog="blogDetails" class="blog-details-row" />
     <div v-else>...wczytuję</div>
@@ -22,11 +63,14 @@
 </template>
 
 <script>
+import { markRaw } from 'vue'
+import { mapGetters } from 'vuex'
 import blogApi from '@/api/blogApi'
 import { fetchRecipesQueryParams, RecipeList } from '@/constants'
+import RecipeParallaxImage from '@/components/RecipeParallaxImage'
 import GenericRecipesList from '@/components/GenericRecipesList'
 import BlogDetails from '@/components/BlogDetails'
-import PageHeader from '@/components/PageHeader'
+import InvisibleBlogInfoModal from '@/components/modals/InvisibleBlogInfoModal'
 
 export default {
   name: 'Recipes',
@@ -37,15 +81,29 @@ export default {
     }
   },
   components: {
+    RecipeParallaxImage,
     GenericRecipesList,
-    BlogDetails,
-    PageHeader
+    BlogDetails
   },
   data: () => ({
     recipes: new RecipeList(),
     blogDetails: null
   }),
+  computed: {
+    ...mapGetters({
+      isBlogHiddenGetter: 'user/isBlogHidden'
+    }),
+    isHidden() {
+      return this.isBlogHiddenGetter(this.blogId)
+    }
+  },
   methods: {
+    changeBlogVisibility(visible) {
+      this.$store.dispatch('user/changeBlogVisibility', { blogId: this.blogId, visible })
+    },
+    showInvisibleInfoModal() {
+      this.$modal.show(markRaw(InvisibleBlogInfoModal), {}, {})
+    },
     loadNextRecipes() {
       const { orderMethod, filters, search } = this.recipes
       this.fetchNextRecipes(orderMethod, filters, search)
@@ -112,5 +170,102 @@ export default {
 
 .blog-details-row {
   margin-bottom: 24px;
+}
+
+.header {
+  display: flex;
+  position: relative;
+  margin: -32px -32px 16px -32px;
+
+  &::before {
+    content: '';
+    z-index: 1;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 40px;
+    min-height: 32px;
+    border-radius: 32px 32px 0 0;
+    background-color: var(--color-background);
+  }
+
+  &-buttons {
+    z-index: 1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    padding: 32px;
+  }
+
+  &-button {
+    position: relative;
+    font-size: 1.5rem;
+    padding: 0.5rem;
+    // background: rgba(#fff, 0.75);
+    // background-color: rgba(#222, 0.75);
+    background-color: rgba(var(--color-background-rgb), 0.95);
+    color: var(--color-text-primary);
+    // backdrop-filter: blur(8px);
+    border-radius: 50px;
+    line-height: 0;
+    transform: rotate(180deg); // TODO arrow ikonki
+  }
+
+  &-image {
+    position: relative;
+    height: 196px;
+
+    &:after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: var(--color-background);
+      opacity: 0.5;
+    }
+  }
+
+  &-avatar-container {
+    z-index: 1;
+    position: absolute;
+    bottom: 0;
+    left: 32px;
+  }
+
+  &-avatar {
+    height: 80px;
+    width: 80px;
+    border-radius: 80px;
+    overflow: hidden;
+    background-color: var(--color-image-background);
+
+    ::v-deep(img) {
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+    }
+  }
+}
+
+.hidden-bar {
+  font-size: 0.875rem;
+  font-weight: bold;
+  // text-transform: uppercase;
+  padding: 0.5rem 0;
+  line-height: 1rem;
+  display: flex;
+  align-items: center;
+
+  &-icon {
+    font-size: 1rem;
+    line-height: inherit;
+    margin-right: 0.75rem;
+  }
 }
 </style>

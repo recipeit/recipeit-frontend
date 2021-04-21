@@ -1,6 +1,6 @@
 <template>
   <div class="blog-details">
-    <BaseImageLazyload class="avatar" :src="'https://sprm.org.pl/wp-content/uploads/2018/04/User-icon.png'" :alt="blog.name" />
+    <!-- <BaseImageLazyload class="avatar" :src="'https://sprm.org.pl/wp-content/uploads/2018/04/User-icon.png'" :alt="blog.name" /> -->
     <div class="blog-info">
       <h1 class="blog-name">{{ blog.name }}</h1>
       <BaseLink :href="blog.url" class="blog-url" color="text-secondary">{{ blog.url }}</BaseLink>
@@ -39,7 +39,7 @@ export default {
 }
 
 .blog-info {
-  margin-left: 1rem;
+  // margin-left: 1rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
