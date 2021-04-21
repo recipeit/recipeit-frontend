@@ -39,9 +39,11 @@ export default {
   background-color: transparent;
   border: none;
 
-  &:hover,
-  &:focus {
-    color: var(--color-link-color-hover);
+  @media (hover: hover) and (pointer: fine) {
+    &:hover,
+    &:focus {
+      color: var(--color-link-color-hover);
+    }
   }
 
   &:active {
@@ -51,9 +53,11 @@ export default {
   &--color-text-primary {
     color: var(--color-link-text-primary-color);
 
-    &:hover,
-    &:focus {
-      color: var(--color-link-text-primary-color-hover);
+    @media (hover: hover) and (pointer: fine) {
+      &:hover,
+      &:focus {
+        color: var(--color-link-text-primary-color-hover);
+      }
     }
 
     &:active {
@@ -64,9 +68,11 @@ export default {
   &--color-text-secondary {
     color: var(--color-link-text-secondary-color);
 
-    &:hover,
-    &:focus {
-      color: var(--color-link-text-secondary-color-hover);
+    @media (hover: hover) and (pointer: fine) {
+      &:hover,
+      &:focus {
+        color: var(--color-link-text-secondary-color-hover);
+      }
     }
 
     &:active {
@@ -77,9 +83,11 @@ export default {
   &--color-accent {
     color: var(--color-link-accent-color);
 
-    &:hover,
-    &:focus {
-      color: var(--color-link-accent-color-hover);
+    @media (hover: hover) and (pointer: fine) {
+      &:hover,
+      &:focus {
+        color: var(--color-link-accent-color-hover);
+      }
     }
 
     &:active {
@@ -90,9 +98,11 @@ export default {
   &--color-primary {
     color: var(--color-link-primary-color);
 
-    &:hover,
-    &:focus {
-      color: var(--color-link-primary-color-hover);
+    @media (hover: hover) and (pointer: fine) {
+      &:hover,
+      &:focus {
+        color: var(--color-link-primary-color-hover);
+      }
     }
 
     &:active {
@@ -103,9 +113,11 @@ export default {
   &--color-red {
     color: var(--color-link-danger-color);
 
-    &:hover,
-    &:focus {
-      color: var(--color-link-danger-color-hover);
+    @media (hover: hover) and (pointer: fine) {
+      &:hover,
+      &:focus {
+        color: var(--color-link-danger-color-hover);
+      }
     }
 
     &:active {

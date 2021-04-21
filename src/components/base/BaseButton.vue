@@ -69,7 +69,8 @@ export default {
   // box-shadow: 0 12px 32px -16px $background;
 
   @media (hover: hover) and (pointer: fine) {
-    &:hover {
+    &:hover,
+    &:focus {
       // box-shadow: 0 12px 32px -16px $background;
       background-color: $background-hover;
       // transform: scale(1.05);
@@ -94,7 +95,8 @@ export default {
   color: $color;
 
   @media (hover: hover) and (pointer: fine) {
-    &:hover {
+    &:hover,
+    &:focus {
       background-color: $background-hover;
     }
   }
@@ -137,7 +139,8 @@ export default {
     color: var(--color-button-contrast-text);
 
     @media (hover: hover) and (pointer: fine) {
-      &:hover {
+      &:hover,
+      &:focus {
         background-color: var(--color-button-contrast-hover);
       }
     }
@@ -187,7 +190,8 @@ export default {
     border: 1px solid var(--color-border);
 
     @media (hover: hover) and (pointer: fine) {
-      &:not([disabled]):not(.loading):hover {
+      &:not([disabled]):not(.loading):hover,
+      &:not([disabled]):not(.loading):focus {
         border-color: var(--color-border-hover);
       }
     }

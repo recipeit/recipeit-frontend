@@ -62,8 +62,11 @@ $checked-icon-width: $checked-icon-size + $checked-icon-margin-right;
   transition: all 0.2s ease;
   overflow: hidden;
 
-  &:not(&--checked):hover {
-    border-color: var(--color-border-hover);
+  @media (hover: hover) and (pointer: fine) {
+    &:not(&--checked):hover,
+    &:not(&--checked):focus {
+      border-color: var(--color-border-hover);
+    }
   }
 
   &:not(&--checked):active {
@@ -75,8 +78,11 @@ $checked-icon-width: $checked-icon-size + $checked-icon-margin-right;
     background-color: var(--color-button-subtle-primary-background);
     color: var(--color-button-subtle-primary-color);
 
-    &:hover {
-      background-color: var(--color-button-subtle-primary-background-hover);
+    @media (hover: hover) and (pointer: fine) {
+      &:hover,
+      &:focus {
+        background-color: var(--color-button-subtle-primary-background-hover);
+      }
     }
 
     &:active {
@@ -88,8 +94,11 @@ $checked-icon-width: $checked-icon-size + $checked-icon-margin-right;
     background-color: var(--color-button-subtle-danger-background);
     color: var(--color-button-subtle-danger-color);
 
-    &:hover {
-      background-color: var(--color-button-subtle-danger-background-hover);
+    @media (hover: hover) and (pointer: fine) {
+      &:hover,
+      &:focus {
+        background-color: var(--color-button-subtle-danger-background-hover);
+      }
     }
 
     &:active {

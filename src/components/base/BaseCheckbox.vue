@@ -94,9 +94,11 @@ export default {
     justify-content: center;
     @include transition((border-color, color));
 
-    #{ $root }:hover &,
-    #{ $root }--focus & {
-      border-color: var(--color-border-hover);
+    @media (hover: hover) and (pointer: fine) {
+      #{ $root }:hover &,
+      #{ $root }--focus & {
+        border-color: var(--color-border-hover);
+      }
     }
 
     #{ $root }:active & {
@@ -108,10 +110,12 @@ export default {
       color: var(--color-primary);
     }
 
-    #{ $root }--checked:hover &,
-    #{ $root }--checked#{ $root }--focus & {
-      border-color: var(--color-primary-lighter);
-      color: var(--color-primary-lighter);
+    @media (hover: hover) and (pointer: fine) {
+      #{ $root }--checked:hover &,
+      #{ $root }--checked#{ $root }--focus & {
+        border-color: var(--color-primary-lighter);
+        color: var(--color-primary-lighter);
+      }
     }
 
     #{ $root }--checked:active & {
