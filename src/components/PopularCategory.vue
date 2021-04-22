@@ -2,7 +2,9 @@
   <router-link :to="{ name: 'cook-it', query: { 'filters.Category': categoryKey } }" #default="{ href, navigate }" custom>
     <a :href="href" @click="navigate($event)" class="category">
       <BaseImageLazyload class="category-image" :src="imageUrl" />
-      <span class="category-name">{{ $t(`recipeFilterOptions.Category.${categoryValue}`) }}</span>
+      <div>
+        <span class="category-name">{{ $t(`recipeFilterOptions.Category.${categoryValue}`) }}</span>
+      </div>
     </a>
   </router-link>
 </template>
@@ -72,17 +74,19 @@ export default {
   }
 
   &-name {
-    color: var(--color-max-contrast);
     font-size: 0.75rem;
     font-weight: 700;
     z-index: 0;
-    display: block;
+    text-align: center;
     text-transform: uppercase;
-    height: 32px;
-    padding: 0 16px;
-    border-radius: 30px;
-    background: var(--color-background);
-    line-height: 32px;
+    color: var(--color-max-contrast);
+    background-color: var(--color-background);
+    font-style: normal;
+    position: relative;
+    display: inline;
+    box-decoration-break: clone;
+    padding: 8.5px 12px;
+    border-radius: 32px;
   }
 }
 </style>
