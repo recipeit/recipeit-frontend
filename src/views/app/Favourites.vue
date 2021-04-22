@@ -1,7 +1,7 @@
 <template>
   <div class="layout__page__content">
     <PageHeader title="Ulubione" :backButton="true" />
-    <GenericRecipesList :recipes="recipes" @load-next="loadNextRecipes" :showFilterButtons="false" />
+    <GenericRecipesList :recipes="recipesList.recipes.value" @load-next="recipesList.loadNextRecipes()" :showFilterButtons="false" />
   </div>
 </template>
 
@@ -9,7 +9,7 @@
 import GenericRecipesList from '@/components/GenericRecipesList'
 import PageHeader from '@/components/PageHeader'
 import userApi from '@/api/userApi'
-import { RecipeList } from '@/constants'
+import recipePagedList from './composable/recipePagedList'
 
 export default {
   name: 'AvailableRecipes',
@@ -17,25 +17,12 @@ export default {
     GenericRecipesList,
     PageHeader
   },
-  data: () => ({
-    recipes: new RecipeList()
-  }),
-  methods: {
-    loadNextRecipes() {
-      if (this.recipes.fetching) return
+  setup() {
+    const recipesList = recipePagedList(userApi.getFavouriteRecipes)
 
-      const queryParams = { pageNumber: this.recipes.pagesTo + 1 }
-
-      userApi.getFavouriteRecipes(queryParams).then(({ data }) => {
-        this.recipes.addFromApi(data)
-      })
+    return {
+      recipesList
     }
-  },
-  created() {
-    this.recipes.fetching = true
-    userApi.getFavouriteRecipes().then(({ data }) => {
-      this.recipes.setFromApi({ ...data, fetching: false })
-    })
   }
 }
 </script>

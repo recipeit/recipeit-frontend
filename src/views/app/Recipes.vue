@@ -13,7 +13,7 @@
 import recipeApi from '@/api/recipeApi'
 import GenericRecipesList from '@/components/GenericRecipesList'
 import PageHeader from '@/components/PageHeader'
-import recipeFilteredPagedList from './mixins/recipeFilteredPagedList'
+import recipeFilteredPagedList from './composable/recipeFilteredPagedList'
 
 export default {
   name: 'Recipes',
