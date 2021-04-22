@@ -54,7 +54,6 @@ export default {
     right: 0;
     bottom: 0;
     z-index: 0;
-    opacity: 0.25;
 
     ::v-deep(img) {
       object-fit: cover;
@@ -74,9 +73,16 @@ export default {
 
   &-name {
     color: var(--color-max-contrast);
-    font-size: 0.875rem;
+    font-size: 0.75rem;
     font-weight: 700;
     z-index: 0;
+    display: block;
+    text-transform: uppercase;
+    height: 32px;
+    padding: 0 16px;
+    border-radius: 30px;
+    background: var(--color-background);
+    line-height: 32px;
   }
 }
 </style>
