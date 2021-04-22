@@ -4,9 +4,7 @@
     <div class="popular-categories-container">
       <ul v-if="popularCategories" class="popular-categories">
         <li v-for="category in popularCategories" :key="category.key" class="popular-category-container">
-          <router-link :to="{ name: 'cook-it', query: { 'filters.Category': category.key } }" class="popular-category">
-            {{ $t(`recipeFilterOptions.Category.${category.value}`) }}
-          </router-link>
+          <PopularCategory :categoryKey="category.key" :categoryValue="category.value" />
         </li>
       </ul>
     </div>
@@ -18,9 +16,10 @@ import { onBeforeMount } from '@vue/runtime-core'
 import { ref } from 'vue'
 import recipeApi from '@/api/recipeApi'
 import SectionTitle from '@/components/SectionTitle'
+import PopularCategory from '@/components/PopularCategory'
 
 export default {
-  components: { SectionTitle },
+  components: { SectionTitle, PopularCategory },
   setup() {
     const popularCategories = ref(null)
 
@@ -46,22 +45,5 @@ export default {
 .popular-category-container {
   width: 50%;
   padding: 8px;
-}
-
-.popular-category {
-  background-color: var(--color-image-background);
-  color: inherit;
-  text-decoration: none;
-  display: block;
-  height: 100%;
-  width: 100%;
-  display: flex;
-  padding: 16px;
-  text-align: center;
-  justify-content: center;
-  align-items: center;
-  border-radius: 1.5rem;
-  min-height: 96px;
-  font-size: 0.875rem;
 }
 </style>
