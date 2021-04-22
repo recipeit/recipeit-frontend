@@ -73,6 +73,7 @@ export default {
   }
 
   &-name {
+    color: var(--color-max-contrast);
     font-size: 0.875rem;
     font-weight: 700;
     z-index: 1;
