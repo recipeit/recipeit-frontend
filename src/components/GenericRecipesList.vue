@@ -43,8 +43,9 @@
       </div>
 
       <ul class="recipes-list__list">
-        <li class="recipes-list__list__item" v-for="recipe in recipesList" :key="recipe.id">
-          <RecipeBox :recipe="recipe" />
+        <li class="recipes-list__list__item" :class="{ 'full-width': recipe.almost }" v-for="recipe in recipesList" :key="recipe.id">
+          <slot v-if="recipe.almost" name="almost-available" />
+          <RecipeBox v-else :recipe="recipe" />
         </li>
         <template v-if="recipes.fetching">
           <li class="recipes-list__list__item recipes-list__list__item--skeleton" v-for="i in 4" :key="i">
@@ -108,7 +109,16 @@ export default {
   },
   computed: {
     recipesList() {
-      return this.limitedItems ? this.recipes.items?.slice(0, this.limitedItems) : this.recipes.items
+      var eee = this.limitedItems ? this.recipes.items?.slice(0, this.limitedItems) : this.recipes.items
+
+      // console.log(eee)
+      if (eee && this.$slots['almost-available']) {
+        return [...eee.slice(0, 4), { almost: true }, ...eee.slice(4)]
+      }
+
+      return eee
+
+      // eee?.splice(3, 0, { almost: true })
     }
   }
 }
@@ -164,6 +174,10 @@ export default {
 
       &--skeleton {
         cursor: initial;
+      }
+
+      &.full-width {
+        width: 100%;
       }
     }
   }

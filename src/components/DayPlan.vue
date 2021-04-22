@@ -61,7 +61,7 @@
           <!-- WHEN CURRENT DAY IS NEXT 7 DAYS INCLUDING TODAY -->
           <template v-if="currentDay.type === DayType.TODAY || currentDay.type === DayType.THIS_WEEK">
             Zaplanuj przepis na ten dzień!
-            <router-link :to="{ name: 'recipes' }" v-slot="{ href, navigate }" custom>
+            <router-link :to="{ name: 'cook-it' }" v-slot="{ href, navigate }" custom>
               <BaseButton tag="a" :href="href" @click="navigate($event)" class="no-plans-message-button" raised color="primary">
                 <BaseIcon class="no-plans-message-button-icon" icon="search" weight="semi-bold" />
                 Przeglądaj przepisy
