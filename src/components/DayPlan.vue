@@ -1,6 +1,12 @@
 <template>
   <div class="day-plan" v-if="currentDay">
-    <slot name="title" :backToToday="backToToday" :showBackToToday="showBackToToday" />
+    <SectionTitle
+      icon="clock"
+      title="Twój plan dnia"
+      actionText="pokaż dzisiaj"
+      :showAction="showBackToToday"
+      @action-click="backToToday()"
+    />
     <transition name="fade" mode="out-in">
       <div :key="currentDay.key">
         <div class="day-plan__new-header">
@@ -77,6 +83,7 @@
 import dayjs from '@/functions/dayjs'
 import userApi from '@/api/userApi'
 import { ToastType } from '@/plugins/toast/toastType'
+import SectionTitle from '@/components/SectionTitle'
 
 const SlideType = {
   PREVIOUS: 'previous',
@@ -92,6 +99,7 @@ const DayType = {
 }
 
 export default {
+  components: { SectionTitle },
   data() {
     return {
       daysList: [],

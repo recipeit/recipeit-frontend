@@ -8,11 +8,7 @@
       </div>
 
       <div v-if="almostAvailableRecipes.items?.length > 0">
-        <div class="recipes-list-title">
-          <BaseIcon class="recipes-list-title-icon" icon="basket" />
-          {{ $t('cookIt.buyMissingIngredient') }}
-        </div>
-
+        <SectionTitle icon="basket" :title="$t('cookIt.buyMissingIngredient')" />
         <GenericRecipesList
           :recipes="almostAvailableRecipes"
           :showAllLink="{ name: 'almost-available' }"
@@ -27,12 +23,13 @@
 <script>
 import { fetchRecipesQueryParams, RecipeList } from '@/constants'
 import GenericRecipesList from '@/components/GenericRecipesList'
+import SectionTitle from '@/components/SectionTitle'
 import PageHeader from '@/components/PageHeader'
 import userApi from '@/api/userApi'
 
 export default {
   name: 'CookIt',
-  components: { GenericRecipesList, PageHeader },
+  components: { GenericRecipesList, SectionTitle, PageHeader },
   data: () => ({
     fetchedData: false,
     availableRecipes: new RecipeList(),
@@ -84,20 +81,5 @@ export default {
 .cook-it-layout {
   display: flex;
   flex-direction: column;
-}
-
-.recipes-list-title {
-  display: flex;
-  font-size: 14px;
-  margin-top: 32px;
-  margin-bottom: 16px;
-  font-weight: bold;
-  align-items: center;
-
-  &-icon {
-    font-size: 1.5rem;
-    margin-right: 0.5rem;
-    color: var(--color-primary);
-  }
 }
 </style>
