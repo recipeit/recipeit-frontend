@@ -106,15 +106,15 @@ button:focus {
   }
 }
 
-.filters-button-count-fade {
-  &-enter-active,
-  &-leave-active {
-    @include transition((opacity, margin-right));
-  }
+// .filters-button-count-fade {
+//   &-enter-active,
+//   &-leave-active {
+//     @include transition((opacity, margin-right));
+//   }
 
-  &-enter-from,
-  &-leave-to {
-    margin-right: -1.6rem;
-    opacity: 0;
-  }
-}
+//   &-enter-from,
+//   &-leave-to {
+//     margin-right: -1.6rem;
+//     opacity: 0;
+//   }
+// }

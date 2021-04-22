@@ -6,6 +6,7 @@
       placeholder="Szukaj przepisu"
       :showFilterButton="true"
       :search="recipes.search"
+      :fetching="recipes.fetching"
       :filters="recipes.filterOptions"
       :sortings="recipes.orderMethodOptions"
       :appliedFilters="recipes.filters"

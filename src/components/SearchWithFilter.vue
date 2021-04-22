@@ -20,14 +20,14 @@
       class="recipes-list-search__filter-button"
       size="small"
       :subtle="true"
-      :color="selectedFiltersCount > 0 ? 'primary' : 'contrast'"
+      :color="cachedFiltersCount > 0 ? 'primary' : 'contrast'"
       @click="openFilterModal()"
     >
       <BaseIcon class="recipes-list-search__filter-button__icon" icon="filter" weight="semi-bold" />
       <span>Filtry</span>
       <!-- <transition name="filters-button-count-fade"> -->
-      <span v-if="selectedFiltersCount > 0" class="recipes-list-search__filter-button__count">
-        {{ selectedFiltersCount }}
+      <span v-if="cachedFiltersCount > 0" class="recipes-list-search__filter-button__count">
+        {{ cachedFiltersCount }}
       </span>
       <!-- </transition> -->
     </BaseButton>
@@ -35,8 +35,9 @@
 </template>
 
 <script>
-import { markRaw } from 'vue'
+import { markRaw, watch } from 'vue'
 import FilterModal from './modals/FilterModal'
+import { ref } from 'vue'
 
 export default {
   emits: ['search'],
@@ -51,14 +52,61 @@ export default {
     appliedSorting: String,
     appliedFilters: Object,
     defaultSorting: String,
-    showFilterButton: Boolean
+    showFilterButton: Boolean,
+    fetching: Boolean
   },
-  data: component => ({
-    searchString: component.search,
+  data: () => ({
     searchTimeoutCallback: null
   }),
+  setup(props) {
+    const countFilters = () => {
+      let count = 0
+
+      if (typeof props.appliedFilters === 'object' && props.appliedFilters !== null) {
+        count += Object.entries(props.appliedFilters)
+          .map(f => f[1].length)
+          .reduce((a, b) => a + b, 0)
+      }
+
+      if (props.appliedSorting && props.appliedSorting !== props.defaultSorting) {
+        count++
+      }
+
+      return count
+    }
+
+    const cachedFiltersCount = ref(countFilters())
+    const searchString = ref(props.search)
+
+    watch(
+      () => [props.appliedFilters, props.appliedSorting],
+      () => {
+        if (!props.fetching) {
+          cachedFiltersCount.value = countFilters()
+        }
+      }
+    )
+
+    watch(
+      () => props.search,
+      newValue => {
+        if (searchString.value !== newValue && !props.fetching) {
+          searchString.value = newValue
+        }
+      }
+    )
+
+    return {
+      cachedFiltersCount,
+      searchString
+    }
+  },
   methods: {
     openFilterModal() {
+      if (this.fetching) {
+        return
+      }
+
       this.$modal.show(
         markRaw(FilterModal),
         {
@@ -69,8 +117,13 @@ export default {
         },
         {
           close: result => {
+            const defaultOrderMethodSelected = !result.orderSelected || result.orderSelected === this.defaultSorting
             if (result?.selected || result?.orderSelected) {
-              this.$emit('search', { orderMethod: result.orderSelected, filters: result.selected, search: this.searchString })
+              this.$emit('search', {
+                orderMethod: defaultOrderMethodSelected ? null : result.orderSelected,
+                filters: result.selected,
+                search: this.searchString
+              })
             }
           }
         }
@@ -93,18 +146,18 @@ export default {
       this.emitSearch()
     },
     emitSearch() {
+      if ((!this.searchString && !this.search === true) || this.searchString === this.search || this.fetching) {
+        return
+      }
+
       this.$emit('search', { orderMethod: this.appliedSorting, filters: this.appliedFilters, search: this.searchString })
     }
   },
-  computed: {
-    selectedFiltersCount() {
-      // TODO add +1 if sorting
-      if (typeof this.appliedFilters === 'object' && this.appliedFilters !== null) {
-        return Object.entries(this.appliedFilters)
-          .map(f => f[1].length)
-          .reduce((a, b) => a + b, 0)
+  watch: {
+    search(newValue) {
+      if (this.searchString !== newValue && !this.fetching) {
+        this.searchString = newValue
       }
-      return 0
     }
   }
 }
@@ -169,7 +222,14 @@ export default {
     }
 
     &__count {
-      opacity: 0.75;
+      min-width: 1rem;
+      height: 1rem;
+      border-radius: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--color-button-raised-primary-background);
+      color: var(--color-button-raised-primary-color);
     }
 
     span {
