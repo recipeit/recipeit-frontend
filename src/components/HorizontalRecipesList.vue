@@ -62,26 +62,28 @@ export default {
     flex-shrink: 0;
   }
 
-  /* width */
-  &::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-  }
+  @include cursor-only {
+    /* width */
+    &::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
 
-  /* Track */
-  &::-webkit-scrollbar-track {
-    background-color: transparent;
-  }
+    /* Track */
+    &::-webkit-scrollbar-track {
+      background-color: transparent;
+    }
 
-  /* Handle */
-  &::-webkit-scrollbar-thumb {
-    background-color: var(--color-scrollbar-thumb);
-    border-radius: 8px;
-  }
+    /* Handle */
+    &::-webkit-scrollbar-thumb {
+      background-color: var(--color-scrollbar-thumb);
+      border-radius: 8px;
+    }
 
-  /* Handle on hover */
-  &::-webkit-scrollbar-thumb:hover {
-    background-color: var(--color-scrollbar-thumb-hover);
+    /* Handle on hover */
+    &::-webkit-scrollbar-thumb:hover {
+      background-color: var(--color-scrollbar-thumb-hover);
+    }
   }
 }
 

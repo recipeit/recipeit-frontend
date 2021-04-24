@@ -175,7 +175,7 @@ export default {
 }
 
 .almost-available-horizontal {
-  margin: 0.5rem 0 1.5rem;
+  margin: 0.5rem 0;
 
   &-title {
     margin-top: 0;
