@@ -37,7 +37,7 @@ export default {
     },
     cookIt: {
       title: 'Ugotuj to!',
-      buyMissingIngredient: 'Te przepisy przygotujesz po drobnych zakupach'
+      buyMissingIngredient: 'Planujesz drobne zakupy?'
     },
     myKitchen: {
       title: 'Moja kuchnia'
