@@ -1,9 +1,15 @@
 <template>
   <div class="list-container">
     <ul class="list">
-      <li class="list-item" v-for="recipe in recipes.items" :key="recipe.id">
-        <RecipeBox :recipe="recipe" :showRecipeProps="false" />
-      </li>
+      <GenericRecipesListItem
+        class="list-item"
+        v-for="recipe in recipes.items"
+        :key="recipe.id"
+        :recipeId="recipe.id"
+        :recipeName="recipe.name"
+        :recipeRating="recipe.rating"
+        :recipeImageUrl="recipe.mainImageUrl"
+      />
       <li v-if="recipes.items && recipes.totalCount > recipes.items.length" class="list-item" @click="$emit('showAll')">
         <div class="show-all-item">
           <div class="show-all-item-sizer">
@@ -25,12 +31,12 @@
 
 <script>
 import SkeletonRecipeBox from '@/components/skeletons/SkeletonRecipeBox'
-import RecipeBox from '@/components/RecipeBox'
 import { RecipeList } from '@/constants'
+import GenericRecipesListItem from './GenericRecipesListItem.vue'
 
 export default {
   emits: ['showAll'],
-  components: { SkeletonRecipeBox, RecipeBox },
+  components: { SkeletonRecipeBox, GenericRecipesListItem },
   props: {
     recipes: {
       type: RecipeList

@@ -4,10 +4,22 @@
       <PageHeader :title="$t('cookIt.title')" />
 
       <GenericRecipesList :recipes="recipes" @load-next="loadNextRecipes()" @reload="reloadRecipes($event)">
-        <template #almost-available>
+        <template #above-list>
           <div class="almost-available-horizontal">
-            <SectionTitle class="section-title" icon="basket" :title="$t('cookIt.buyMissingIngredient')" />
+            <SectionTitle class="almost-available-horizontal-title" icon="basket" :title="$t('cookIt.buyMissingIngredient')" />
             <HorizontalRecipesList :recipes="almostAvailableRecipes" @showAll="$router.push({ name: 'almost-available' })" />
+          </div>
+        </template>
+        <template #count="{ count, fetching}">
+          <div v-if="count !== null && !fetching" class="recipes-count">
+            <BaseIcon class="recipes-count-icon" icon="chef-hat" />
+            <span>
+              Znaleźliśmy <b>{{ $tc('shared.recipes', count) }}</b
+              >, które możesz przygotować z tego, co juz masz!
+            </span>
+          </div>
+          <div v-else class="recipes-count-loading">
+            wczytuję
           </div>
         </template>
       </GenericRecipesList>
@@ -160,5 +172,29 @@ export default {
 .cook-it-layout {
   display: flex;
   flex-direction: column;
+}
+
+.almost-available-horizontal {
+  margin: 1.5rem 0;
+
+  &-title {
+    margin-top: 0;
+  }
+}
+
+.recipes-count {
+  padding: 1.25rem 1.5rem;
+  border-radius: 1.5rem;
+  color: var(--color-primary);
+  margin-bottom: 1rem;
+  font-weight: 500;
+  background-color: var(--color-button-subtle-primary-background);
+  display: flex;
+  align-items: center;
+
+  &-icon {
+    font-size: 1.5rem;
+    margin-right: 1rem;
+  }
 }
 </style>

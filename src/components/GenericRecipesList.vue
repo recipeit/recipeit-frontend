@@ -15,6 +15,8 @@
       @search="onSearch($event)"
     />
 
+    <slot name="above-list" />
+
     <template v-if="recipes.totalCount === 0 && !recipes.fetching">
       <slot v-if="recipes.filters" name="empty-with-filters">
         Nie znaleziono przepisów dla zadanych filtrów
@@ -30,9 +32,11 @@
 
     <template v-else>
       <div class="recipes-list__header">
-        <div class="recipes-list__header__total-count">
-          {{ recipes.totalCount !== null && !recipes.fetching ? $tc('shared.recipes', recipes.totalCount) : 'wczytuję' }}
-        </div>
+        <slot name="count" :count="recipes.totalCount" :fetching="recipes.fetching">
+          <div class="recipes-list__header__total-count">
+            {{ recipes.totalCount !== null && !recipes.fetching ? $tc('shared.recipes', recipes.totalCount) : 'wczytuję' }}
+          </div>
+        </slot>
         <div v-if="showAllLink" class="recipes-list__header__show-all">
           <router-link :to="showAllLink" v-slot="{ href, navigate }" custom>
             <BaseLink :href="href" @click="navigate($event)" color="primary" class="recipes-list__header__show-all__button">
@@ -43,10 +47,14 @@
       </div>
 
       <ul class="recipes-list__list">
-        <li class="recipes-list__list__item" :class="{ 'full-width': recipe.almost }" v-for="recipe in recipesList" :key="recipe.id">
-          <slot v-if="recipe.almost" name="almost-available" />
-          <RecipeBox v-else :recipe="recipe" />
-        </li>
+        <GenericRecipesListItem
+          v-for="recipe in recipes.items"
+          :key="recipe.id"
+          :recipeId="recipe.id"
+          :recipeName="recipe.name"
+          :recipeRating="recipe.rating"
+          :recipeImageUrl="recipe.mainImageUrl"
+        />
         <template v-if="recipes.fetching">
           <li class="recipes-list__list__item recipes-list__list__item--skeleton" v-for="i in 4" :key="i">
             <SkeletonRecipeBox />
@@ -61,7 +69,7 @@
 
 <script>
 import { RecipeList } from '@/constants'
-import RecipeBox from '@/components/RecipeBox'
+import GenericRecipesListItem from '@/components/GenericRecipesListItem'
 import SkeletonRecipeBox from '@/components/skeletons/SkeletonRecipeBox'
 import SearchWithFilter from '@/components/SearchWithFilter'
 import Observer from './Observer'
@@ -71,7 +79,7 @@ export default {
   components: {
     SearchWithFilter,
     SkeletonRecipeBox,
-    RecipeBox,
+    GenericRecipesListItem,
     Observer
   },
   props: {
@@ -105,20 +113,6 @@ export default {
     },
     onSearch({ orderMethod, filters, search }) {
       this.$emit('reload', { orderMethod, filters, search })
-    }
-  },
-  computed: {
-    recipesList() {
-      var eee = this.limitedItems ? this.recipes.items?.slice(0, this.limitedItems) : this.recipes.items
-
-      // console.log(eee)
-      if (eee && this.$slots['almost-available']) {
-        return [...eee.slice(0, 4), { almost: true }, ...eee.slice(4)]
-      }
-
-      return eee
-
-      // eee?.splice(3, 0, { almost: true })
     }
   }
 }
@@ -161,14 +155,16 @@ export default {
   }
 
   &__list {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 1rem;
+    // flex-wrap: wrap;
     max-width: 416px;
-    margin: -8px;
+    // margin: -8px;
 
     &__item {
-      width: 50%;
-      padding: 0.5rem 0.5rem 1rem 0.5rem;
+      // width: 50%;
+      // padding: 0.5rem 0.5rem 1rem 0.5rem;
       box-sizing: border-box;
       cursor: pointer;
 
@@ -176,9 +172,9 @@ export default {
         cursor: initial;
       }
 
-      &.full-width {
-        width: 100%;
-      }
+      // &.full-width {
+      //   width: 100%;
+      // }
     }
   }
 }

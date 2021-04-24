@@ -1,13 +1,13 @@
 <template>
-  <router-link :to="{ name: 'recipe', params: { recipeId: recipe.id } }" v-slot="{ href, navigate }" custom>
+  <router-link :to="{ name: 'recipe', params: { recipeId } }" v-slot="{ href, navigate }" custom>
     <a :href="href" @click="navigate($event)" class="recipe-box">
       <div class="recipe-box__image-container">
         <div class="recipe-box__image-container__image">
-          <BaseImageLazyload :src="recipe.mainImageUrl" :alt="recipe.name" />
+          <BaseImageLazyload :src="recipeImageUrl" :alt="recipeName" />
         </div>
 
         <div v-if="showRecipeProps" class="recipe-box__props2">
-          <Rating :value="recipe.rating" />
+          <Rating :value="recipeRating" />
           <FavouriteIcon
             :isFavourite="isFavourite"
             @removed="deleteFromFavourites"
@@ -18,7 +18,7 @@
         </div>
       </div>
       <div class="recipe-box__name">
-        {{ recipe.name }}
+        {{ recipeName }}
       </div>
     </a>
   </router-link>
@@ -35,8 +35,19 @@ export default {
     FavouriteIcon
   },
   props: {
-    recipe: {
-      type: Object,
+    recipeId: {
+      type: String,
+      required: true
+    },
+    recipeName: {
+      type: String,
+      required: true
+    },
+    recipeRating: {
+      type: Number
+    },
+    recipeImageUrl: {
+      type: String,
       required: true
     },
     showRecipeProps: {
@@ -46,13 +57,13 @@ export default {
   },
   methods: {
     showDetails() {
-      this.$router.push({ name: 'recipe', params: { recipeId: this.recipe.id } })
+      this.$router.push({ name: 'recipe', params: { recipeId: this.recipeId } })
     },
     addToFavourites() {
-      this.$store.dispatch('recipes/addToFavourites', this.recipe.id)
+      this.$store.dispatch('recipes/addToFavourites', this.recipeId)
     },
     deleteFromFavourites() {
-      this.$store.dispatch('recipes/deleteFromFavourites', this.recipe.id)
+      this.$store.dispatch('recipes/deleteFromFavourites', this.recipeId)
     }
   },
   computed: {
@@ -60,7 +71,7 @@ export default {
       favouriteRecipesIds: state => state.recipes.favouriteRecipesIds
     }),
     isFavourite() {
-      return this.favouriteRecipesIds?.find(id => id === this.recipe.id) !== undefined
+      return this.favouriteRecipesIds?.find(id => id === this.recipeId) !== undefined
     }
   }
 }
