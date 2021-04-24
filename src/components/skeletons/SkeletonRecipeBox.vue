@@ -38,16 +38,16 @@ export default {
   }
 
   &__name {
-    margin-top: 12px;
-    font-size: 14px;
+    margin: 12px 0;
+    font-size: 12px;
     font-weight: 500;
     padding: 0 8px;
     display: flex;
     flex-direction: column;
 
     &__line {
-      height: 1em;
-      margin: 0.375em 0;
+      height: 0.75em;
+      margin: 0.25em 0;
       border-radius: 1em;
       background-color: var(--color-image-background);
 
