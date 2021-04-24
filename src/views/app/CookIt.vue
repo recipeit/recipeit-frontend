@@ -4,7 +4,7 @@
       <PageHeader :title="$t('cookIt.title')" />
 
       <GenericRecipesList :recipes="recipes" @load-next="loadNextRecipes()" @reload="reloadRecipes($event)">
-        <template #above-list>
+        <template v-if="!(!almostAvailableRecipes.fetching && almostAvailableRecipes.items.length === 0)" #above-list>
           <div class="almost-available-horizontal">
             <SectionTitle class="almost-available-horizontal-title" icon="basket" :title="$t('cookIt.buyMissingIngredient')" />
             <HorizontalRecipesList :recipes="almostAvailableRecipes" @showAll="$router.push({ name: 'almost-available' })" />
@@ -175,7 +175,7 @@ export default {
 }
 
 .almost-available-horizontal {
-  margin: 1.5rem 0;
+  margin: 0.5rem 0 1.5rem;
 
   &-title {
     margin-top: 0;
@@ -186,7 +186,7 @@ export default {
   padding: 1.25rem 1.5rem;
   border-radius: 1.5rem;
   color: var(--color-primary);
-  margin-bottom: 1rem;
+  // margin-bottom: 1rem;
   font-weight: 500;
   background-color: var(--color-button-subtle-primary-background);
   display: flex;
