@@ -117,9 +117,10 @@ export default {
   }
 
   &__name {
-    margin-top: 12px;
-    font-size: 14px;
-    font-weight: 500;
+    margin: 12px 0;
+    font-size: 12px;
+    line-height: 1.25;
+    font-weight: bold;
     padding: 0 8px;
     display: -webkit-box;
     -webkit-line-clamp: 2;
