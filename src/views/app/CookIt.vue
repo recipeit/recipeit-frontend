@@ -7,7 +7,10 @@
         <template v-if="!(!almostAvailableRecipes.fetching && almostAvailableRecipes.items.length === 0)" #above-list>
           <div class="almost-available-horizontal">
             <SectionTitle class="almost-available-horizontal-title" icon="basket" :title="$t('cookIt.buyMissingIngredient')" />
-            <HorizontalRecipesList :recipes="almostAvailableRecipes" @showAll="$router.push({ name: 'almost-available' })" />
+            <HorizontalRecipesList
+              :recipes="almostAvailableRecipes"
+              @showAll="$router.push({ name: 'almost-available', query: $route.query })"
+            />
           </div>
         </template>
         <template #count="{ count, fetching}">
@@ -121,50 +124,6 @@ export default {
       almostAvailableRecipes
     }
   }
-  // data: () => ({
-  //   fetchedData: false,
-  //   availableRecipes: new RecipeList(),
-  //   almostAvailableRecipes: new RecipeList()
-  // }),
-  // beforeMount() {
-  //   var { query } = this.$route
-
-  //   if (query) {
-  //     const queryParams = Object.fromEntries(
-  //       Object.keys(query)
-  //         .filter(key => key === 'orderMethod' || key.startsWith('filters.'))
-  //         .map(key => [key, query[key]])
-  //     )
-  //     this.fetchRecipesWithQuery(queryParams)
-  //   } else {
-  //     this.fetchRecipesWithQuery()
-  //   }
-  // },
-  // methods: {
-  //   reloadRecipes({ orderMethod, filters, search }) {
-  //     this.availableRecipes = new RecipeList()
-  //     this.almostAvailableRecipes = new RecipeList()
-  //     this.fetchRecipes(orderMethod, filters, search)
-  //   },
-  //   fetchRecipes(orderMethod, filters, search) {
-  //     const queryParams = fetchRecipesQueryParams(orderMethod, filters, search)
-  //     this.fetchRecipesWithQuery(queryParams)
-  //   },
-  //   fetchRecipesWithQuery(queryParams) {
-  //     this.availableRecipes.fetching = true
-  //     userApi.getAvailableRecipes(queryParams).then(({ data: recipes }) => {
-  //       this.availableRecipes.setFromApi(recipes)
-
-  //       const queryParams = fetchRecipesQueryParams(recipes.orderMethod, recipes.filters, recipes.search)
-  //       this.$router.replace({ query: queryParams })
-  //     })
-
-  //     this.almostAvailableRecipes.fetching = true
-  //     userApi.getAlmostAvailableRecipes(queryParams).then(resp => {
-  //       this.almostAvailableRecipes.setFromApi(resp.data)
-  //     })
-  //   }
-  // }
 }
 </script>
 

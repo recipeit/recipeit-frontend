@@ -117,7 +117,7 @@ export default {
         },
         {
           close: result => {
-            const defaultOrderMethodSelected = !result.orderSelected || result.orderSelected === this.defaultSorting
+            const defaultOrderMethodSelected = !result || !result.orderSelected || result.orderSelected === this.defaultSorting
             if (result?.selected || result?.orderSelected) {
               this.$emit('search', {
                 orderMethod: defaultOrderMethodSelected ? null : result.orderSelected,

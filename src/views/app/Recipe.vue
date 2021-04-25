@@ -81,79 +81,42 @@
           </BaseButton>
         </div>
 
-        <div class="section-header">
-          <div class="section-title">
-            <div class="servings-title">
-              Składniki dla
-              <BaseButton
-                class="servings-button servings-button--left"
-                subtle
-                color="primary"
-                v-bind:disabled="servings <= 1"
-                @click="decreaseServings()"
-              >
-                <BaseIcon icon="minus" weight="semi-bold" />
-              </BaseButton>
-              <span class="servings-count">{{ servings }}</span>
-              <BaseButton class="servings-button servings-button--right" subtle color="primary" @click="increaseServings()">
-                <BaseIcon icon="plus" weight="semi-bold" />
-              </BaseButton>
-              porcji
+        <RecipeIngredientsSection
+          class="recipe-ingredients-section"
+          v-if="recipe?.details?.ingredientGroups"
+          :recipeId="recipe.id"
+          :servings="recipe.details.servings"
+          :ingredientGroups="recipe.details.ingredientGroups"
+        />
+
+        <div class="recipe-directions-section">
+          <SectionTitle size="large" title="Przygotowanie" />
+          <div class="recipe__directions-list">
+            <div
+              v-for="(paragraph, index) in recipe.details.directionsParagraphs"
+              :key="index"
+              :class="{
+                'recipe__directions-list__item': true,
+                'recipe__directions-list__item--selected': index === selectedDirection,
+                'recipe__directions-list__item--finished': finishedDirections.includes(index)
+              }"
+            >
+              <BaseCheckbox v-model="finishedDirections" :value="index">
+                <template #label>
+                  <div>{{ paragraph }}</div>
+                </template>
+              </BaseCheckbox>
             </div>
           </div>
         </div>
-        <div class="recipe__ingredient-groups">
-          <div class="recipe__ingredient-group" v-for="(list, groupName) in ingredientGroups" :key="groupName">
-            <div v-if="groupName" class="recipe__ingredient-group-name">{{ groupName }}</div>
-            <ul class="recipe__ingredients-list">
-              <RecipeIngredient
-                v-for="ingredient in list"
-                :key="ingredient.id"
-                :amountFactor="amountFactor"
-                :ingredient="ingredient"
-                :allAdding="allIngredientsAdding"
-              />
-            </ul>
-          </div>
-        </div>
-        <div v-if="canAddAnythingToShoppingList" class="recipe__ingredients-button-container">
-          <BaseLink
-            tag="button"
-            color="primary"
-            class="all-to-shopping-list-button link-with-icon"
-            @click="addMissingIngredientsToShoppingList()"
-          >
-            dodaj brakujące składniki do zakupów
-            <!-- <BaseIcon class="link-with-icon__icon" icon="plus" weight="semi-bold" /> -->
-          </BaseLink>
+
+        <div class="recipe-bottom-buttons-section">
+          <!-- <BaseButton class="update-button" stroked>Zjedzone! Zaaktualizuj kuchnię</BaseButton> -->
+          <BaseButton class="plan-button" raised color="primary" @click="openPlanRecipeModal()">
+            <BaseIcon class="plan-button__icon" icon="clock" /> Zaplanuj na później
+          </BaseButton>
         </div>
 
-        <div class="section-header">
-          <div class="section-title">
-            <div>Przygotowanie</div>
-          </div>
-        </div>
-        <div class="recipe__directions-list">
-          <div
-            v-for="(paragraph, index) in recipe.details.directionsParagraphs"
-            :key="index"
-            :class="[
-              'recipe__directions-list__item',
-              { 'recipe__directions-list__item--selected': index === selectedDirection },
-              { 'recipe__directions-list__item--finished': finishedDirections.includes(index) }
-            ]"
-          >
-            <BaseCheckbox v-model="finishedDirections" :value="index">
-              <template #label>
-                <div>{{ paragraph }}</div>
-              </template>
-            </BaseCheckbox>
-          </div>
-        </div>
-        <BaseButton class="update-button" stroked>Zjedzone! Zaaktualizuj kuchnię</BaseButton>
-        <BaseButton class="plan-button" raised color="primary" @click="openPlanRecipeModal()">
-          <BaseIcon class="plan-button__icon" icon="clock" /> Zaplanuj na później
-        </BaseButton>
         <!-- <BaseAdSenseAd /> -->
       </div>
     </div>
@@ -164,12 +127,13 @@
 </template>
 
 <script>
+import SectionTitle from '@/components/SectionTitle'
 import RecipeParallaxGallery from '@/components/RecipeParallaxGallery'
+import RecipeIngredientsSection from '@/components/recipe/RecipeIngredientsSection'
 import dayjs from '@/functions/dayjs'
 import { markRaw } from 'vue'
 import _ from 'lodash'
 import { mapGetters, mapState } from 'vuex'
-import RecipeIngredient from '@/components/recipe/RecipeIngredient'
 import FavouriteIcon from '@/components/FavouriteIcon'
 import Rating from '@/components/Rating'
 import Dialog from '@/components/modals/Dialog'
@@ -187,40 +151,26 @@ export default {
     }
   },
   components: {
-    RecipeIngredient,
+    SectionTitle,
     FavouriteIcon,
     RecipeParallaxGallery,
+    RecipeIngredientsSection,
     Rating
   },
   data: component => ({
-    allIngredientsAdding: false,
     fetchedData: false,
     recipe: null,
-    servings: 1,
     finishedDirections: component.$store.getters['recipes/getFinishedDirectionsForRecipe'](component.recipeId) || []
   }),
   created() {
     this.$store.dispatch('recipes/fetchDetailedRecipe', this.recipeId).then(rd => {
       this.recipe = rd
       this.servings = rd.details.servings
-
-      // const ingredientGroups = this.recipe.details.ingredientGroups
-
-      // const statedIngredientGroups =
-
-      // console.log('legit', ingredientGroups)
-      // console.log('maked', statedIngredientGroups)
     })
     this.$store.dispatch('myKitchen/fetchProducts')
     this.$store.dispatch('shoppingList/fetchProducts')
   },
   methods: {
-    isInMyKitchen(baseProductId) {
-      return this.myKitchenProducts.find(p => p.baseProductId === baseProductId)
-    },
-    isInShoppingList(baseProductId) {
-      return this.shoppingListProducts.find(p => p.baseProductId === baseProductId)
-    },
     navigateToRecipesWithCategoryFilter(category) {
       this.$router.push({ name: 'cook-it', query: parseFilters({ Category: [category] }) })
     },
@@ -232,16 +182,6 @@ export default {
     },
     deleteFromFavourites() {
       this.$store.dispatch('recipes/deleteFromFavourites', this.recipe.id)
-    },
-    decreaseServings() {
-      if (this.servings > 1) {
-        this.servings -= 1
-      } else {
-        this.servings = 1
-      }
-    },
-    increaseServings() {
-      this.servings += 1
     },
     copyLinkToClipboard() {
       const { url } = this.recipe
@@ -265,12 +205,6 @@ export default {
     },
     showInvisibleInfoModal() {
       this.$modal.show(markRaw(InvisibleRecipeInfoModal), {}, {})
-    },
-    async addMissingIngredientsToShoppingList() {
-      this.allIngredientsAdding = true
-      this.$store.dispatch('shoppingList/addMissingIngredientsToShoppingList', this.recipeId).finally(() => {
-        this.allIngredientsAdding = false
-      })
     }
   },
   computed: {
@@ -279,50 +213,9 @@ export default {
       isBlogHiddenGetter: 'user/isBlogHidden'
     }),
     ...mapState({
-      favouriteRecipesIds: state => state.recipes.favouriteRecipesIds,
-      myKitchenProducts: state => state.myKitchen.products || [],
-      shoppingListProducts: state => state.shoppingList.products || []
+      favouriteRecipesIds: state => state.recipes.favouriteRecipesIds
     }),
-    ingredientGroups() {
-      if (this.recipe === null || this.recipe.details === null) {
-        return {}
-      }
 
-      const { ingredientGroups } = this.recipe.details
-      return Object.fromEntries(
-        Object.keys(ingredientGroups).map(key => [
-          key,
-          ingredientGroups[key].map(ingredient => {
-            const { baseProductId } = ingredient
-            let state
-
-            if (!baseProductId) {
-              state = 'NONE'
-            } else if (this.isInMyKitchen(baseProductId)) {
-              state = 'IN_KITCHEN'
-            } else if (this.isInShoppingList(baseProductId)) {
-              state = 'IN_SHOPPING_LIST'
-            } else {
-              state = 'UNAVAILABLE'
-            }
-
-            return {
-              ...ingredient,
-              state
-            }
-          })
-        ])
-      )
-    },
-    canAddAnythingToShoppingList() {
-      const { ingredientGroups } = this
-
-      if (!ingredientGroups) return false
-
-      return Object.keys(ingredientGroups)
-        .flatMap(key => ingredientGroups[key].map(i => i.state))
-        .includes('UNAVAILABLE')
-    },
     isRecipeHidden() {
       return this.isRecipeHiddenGetter(this.recipeId)
     },
@@ -340,12 +233,6 @@ export default {
         return dayjs.duration(this.recipe.cookingMinutes, 'minutes').format('H:mm')
       }
       return null
-    },
-    amountFactor() {
-      if (this.recipe) {
-        return this.servings / this.recipe.details.servings
-      }
-      return this.servings
     },
     isFavourite() {
       return this.favouriteRecipesIds.find(id => id === this.recipe.id) !== undefined
@@ -371,11 +258,6 @@ export default {
           src: 'https://www.kwestiasmaku.com/sites/v123.kwestiasmaku.com/files/nalesniki-po-bolonsku-01.jpg'
         }
       ]
-    },
-    ingredientGroupsWithState() {
-      Object.keys(this.recipe.details.ingredientGroups)
-
-      return this.recipe.details.ingredientGroups
     }
   },
   watch: {
@@ -413,41 +295,7 @@ export default {
   width: 100%;
 }
 
-.servings-title {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-.servings-count {
-  color: var(--color-primary);
-  min-width: 36px;
-  padding: 0 6px;
-  display: inline-block;
-  text-align: center;
-}
-
-.servings-button {
-  display: inline-flex;
-  width: 32px;
-  padding: 0;
-  height: 32px;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
-  vertical-align: middle;
-  line-height: 1;
-
-  &--left {
-    margin-left: 12px;
-  }
-
-  &--right {
-    margin-right: 12px;
-  }
-}
-
-.update-button {
+.recipe-bottom-buttons-section {
   margin-top: 32px;
 }
 
@@ -495,11 +343,8 @@ export default {
       position: relative;
       font-size: 1.5rem;
       padding: 0.5rem;
-      // background: rgba(#fff, 0.75);
-      // background-color: rgba(#222, 0.75);
       background-color: rgba(var(--color-background-rgb), 0.95);
       color: var(--color-text-primary);
-      // backdrop-filter: blur(8px);
       border-radius: 50px;
       line-height: 0;
       transform: rotate(180deg); // TODO arrow ikonki
@@ -514,7 +359,6 @@ export default {
   &__hidden-bar {
     font-size: 0.875rem;
     font-weight: bold;
-    // text-transform: uppercase;
     padding: 0.5rem 0 1rem 0;
     line-height: 1rem;
     display: flex;
@@ -529,33 +373,15 @@ export default {
 
   &__main {
     margin-top: -32px;
-    // z-index: 1;
     position: relative;
     background-color: var(--color-background);
     border-radius: 32px 32px 0 0;
     box-shadow: 0 0 32px rgba(0, 0, 0, 0.1);
     padding: 32px;
-
-    // &::before {
-    //   content: '';
-    //   position: absolute;
-    //   height: 4px;
-    //   width: 48px;
-    //   border-radius: 8px;
-    //   background-color: var(--color-border);
-    //   top: 12px;
-    //   left: 50%;
-    //   transform: translateX(-50%);
-
-    //   // @media (max-width: 720px) {
-    //   //   content: '';
-    //   // }
-    // }
   }
 
   &__header-pills {
     display: flex;
-    // width: 100%;
     gap: 8px;
     position: absolute;
     top: 0;
@@ -637,40 +463,6 @@ export default {
     }
   }
 
-  &__ingredients-list {
-  }
-
-  &__ingredient-groups {
-  }
-
-  &__ingredient-group {
-  }
-
-  &__ingredient-group-name {
-    margin-top: 0.5rem;
-    display: flex;
-    align-items: center;
-    min-height: 2rem;
-    font-weight: bold;
-    gap: 1rem;
-
-    &:before,
-    &:after {
-      content: '';
-      height: 1px;
-      flex: 1;
-      background: var(--color-border);
-    }
-  }
-  &__ingredients-button-container {
-    margin-top: 16px;
-
-    button {
-      margin-left: auto;
-      font-size: 0.75rem;
-    }
-  }
-
   &__directions-list {
     label {
       display: flex;
@@ -705,44 +497,6 @@ export default {
     &__name {
       font-weight: 700;
     }
-  }
-}
-
-.section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 24px 0 8px 0;
-}
-
-.section-title {
-  // font-size: 0.875rem;
-  font-size: 1rem;
-  font-weight: bold;
-}
-
-.recipes-list {
-  display: flex;
-  flex-wrap: wrap;
-  max-width: 416px;
-  margin: -8px;
-
-  &__item {
-    width: 50%;
-    padding: 8px;
-    box-sizing: border-box;
-    cursor: pointer;
-  }
-}
-
-.link-with-icon {
-  display: flex;
-  align-items: center;
-  font-weight: 600;
-
-  &__icon {
-    margin: 0 4px;
-    font-size: 16px;
   }
 }
 </style>

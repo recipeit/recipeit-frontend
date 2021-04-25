@@ -1,7 +1,9 @@
 <template>
-  <div class="section-title">
+  <div :class="{ 'section-title': true, 'section-title--large': size === 'large' }">
     <BaseIcon v-if="!!icon" class="section-title-icon" :icon="icon" />
-    {{ title }}
+    <slot name="title">
+      {{ title }}
+    </slot>
     <BaseLink v-if="showAction" class="section-title-link" tag="button" color="primary" @click="$emit('action-click')">
       {{ actionText }}
     </BaseLink>
@@ -9,6 +11,8 @@
 </template>
 
 <script>
+const sizes = ['regular', 'large']
+
 export default {
   emits: ['action-click'],
   props: {
@@ -18,7 +22,11 @@ export default {
       type: Boolean,
       default: false
     },
-    actionText: String
+    actionText: String,
+    size: {
+      type: String,
+      validator: value => !value || sizes.includes(value)
+    }
   }
 }
 </script>
@@ -41,6 +49,10 @@ export default {
     margin-right: 0.5rem;
     font-size: 1.5rem;
     color: var(--color-primary);
+  }
+
+  &--large {
+    font-size: 1rem;
   }
 }
 </style>
