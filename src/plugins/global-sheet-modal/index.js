@@ -60,3 +60,7 @@ const Plugin = {
 }
 
 export default Plugin
+
+export function useModal() {
+  return Plugin.modal
+}

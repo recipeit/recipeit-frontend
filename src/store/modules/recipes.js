@@ -1,27 +1,10 @@
 import recipeApi from '@/api/recipeApi'
 import userApi from '@/api/userApi'
-// import { RecipeList } from '@/constants'
 import { ToastType } from '@/plugins/toast/toastType'
 import toastPlugin from '@/plugins/toast'
 
 export const MUTATIONS = {
   SET_FAVOURITE_RECIPES_IDS: 'SET_FAVOURITE_RECIPES_IDS',
-
-  // RESET_RECIPES: 'RESET_RECIPES',
-  // RESET_AVAILABLE_RECIPES: 'RESET_AVAILABLE_RECIPES',
-  // RESET_ALMOST_AVAILABLE_RECIPES: 'RESET_ALMOST_AVAILABLE_RECIPES',
-
-  // SET_RECIPES: 'SET_RECIPES',
-  // SET_AVAILABLE_RECIPES: 'SET_AVAILABLE_RECIPES',
-  // SET_ALMOST_AVAILABLE_RECIPES: 'SET_ALMOST_AVAILABLE_RECIPES',
-
-  // SET_RECIPES_FETCHING_STATUS: 'SET_RECIPES_FETCHING_STATUS',
-  // SET_AVAILABLE_RECIPES_FETCHING_STATUS: 'SET_AVAILABLE_RECIPES_FETCHING_STATUS',
-  // SET_ALMOST_AVAILABLE_RECIPES_FETCHING_STATUS: 'SET_ALMOST_AVAILABLE_RECIPES_FETCHING_STATUS',
-
-  // ADD_RECIPES: 'ADD_RECIPES',
-  // ADD_AVAILABLE_RECIPES: 'ADD_AVAILABLE_RECIPES',
-  // ADD_ALMOST_AVAILABLE_RECIPES: 'ADD_ALMOST_AVAILABLE_RECIPES',
 
   SET_RECIPE_DETAILS: 'SET_RECIPE_DETAILS',
   ADD_RECIPE: 'ADD_RECIPE',
@@ -38,57 +21,14 @@ const parsedStorageFinishedDirections = storageFinishedDirections ? JSON.parse(s
 export default {
   namespaced: true,
   state: {
-    // recipes: new RecipeList(),
     detailedRecipes: [],
     favouriteRecipesIds: [],
-    // availableRecipes: new RecipeList(),
-    // almostAvailableRecipes: new RecipeList(),
     recipesFinishedDirections: parsedStorageFinishedDirections
   },
   mutations: {
     [MUTATIONS.SET_FAVOURITE_RECIPES_IDS](state, recipesIds) {
       state.favouriteRecipesIds = recipesIds
     },
-
-    // [MUTATIONS.RESET_RECIPES](state) {
-    //   state.recipes = new RecipeList()
-    // },
-    // [MUTATIONS.RESET_AVAILABLE_RECIPES](state) {
-    //   state.availableRecipes = new RecipeList()
-    // },
-    // [MUTATIONS.RESET_ALMOST_AVAILABLE_RECIPES](state) {
-    //   state.almostAvailableRecipes = new RecipeList()
-    // },
-
-    // [MUTATIONS.SET_RECIPES](state, recipes) {
-    //   state.recipes.setFromApi({ ...recipes, fetching: false })
-    // },
-    // [MUTATIONS.SET_AVAILABLE_RECIPES](state, recipes) {
-    //   state.availableRecipes.setFromApi({ ...recipes, fetching: false })
-    // },
-    // [MUTATIONS.SET_ALMOST_AVAILABLE_RECIPES](state, recipes) {
-    //   state.almostAvailableRecipes.setFromApi({ ...recipes, fetching: false })
-    // },
-
-    // [MUTATIONS.SET_RECIPES_FETCHING_STATUS](state, fetching) {
-    //   state.recipes.fetching = fetching
-    // },
-    // [MUTATIONS.SET_AVAILABLE_RECIPES_FETCHING_STATUS](state, fetching) {
-    //   state.availableRecipes.fetching = fetching
-    // },
-    // [MUTATIONS.SET_ALMOST_AVAILABLE_RECIPES_FETCHING_STATUS](state, fetching) {
-    //   state.almostAvailableRecipes.fetching = fetching
-    // },
-
-    // [MUTATIONS.ADD_RECIPES](state, recipes) {
-    //   state.recipes.addFromApi(recipes)
-    // },
-    // [MUTATIONS.ADD_AVAILABLE_RECIPES](state, recipes) {
-    //   state.availableRecipes.addFromApi(recipes)
-    // },
-    // [MUTATIONS.ADD_ALMOST_AVAILABLE_RECIPES](state, recipes) {
-    //   state.almostAvailableRecipes.addFromApi(recipes)
-    // },
 
     [MUTATIONS.SET_RECIPE_DETAILS](state, recipeDetails) {
       state.recipeDetails = recipeDetails
@@ -128,65 +68,6 @@ export default {
         commit(MUTATIONS.SET_FAVOURITE_RECIPES_IDS, resp.data)
       })
     },
-
-    // fetchRecipes({ commit }, queryParams) {
-    //   commit(MUTATIONS.RESET_RECIPES)
-    //   commit(MUTATIONS.SET_RECIPES_FETCHING_STATUS, true)
-    //   recipeApi.getRecipes(queryParams).then(resp => {
-    //     commit(MUTATIONS.SET_RECIPES, resp.data)
-    //   })
-    // },
-    // fetchAvailableRecipes({ commit }, queryParams) {
-    //   commit(MUTATIONS.RESET_AVAILABLE_RECIPES)
-    //   commit(MUTATIONS.SET_AVAILABLE_RECIPES_FETCHING_STATUS, true)
-    //   userApi.getAvailableRecipes(queryParams).then(resp => {
-    //     commit(MUTATIONS.SET_AVAILABLE_RECIPES, resp.data)
-    //   })
-    // },
-    // fetchAlmostAvailableRecipes({ commit }, queryParams) {
-    //   commit(MUTATIONS.RESET_ALMOST_AVAILABLE_RECIPES)
-    //   commit(MUTATIONS.SET_ALMOST_AVAILABLE_RECIPES_FETCHING_STATUS, true)
-    //   userApi.getAlmostAvailableRecipes(queryParams).then(resp => {
-    //     commit(MUTATIONS.SET_ALMOST_AVAILABLE_RECIPES, resp.data)
-    //   })
-    // },
-
-    // fetchNextRecipes({ state, commit }, queryParams) {
-    //   if (state.recipes.fetching) return
-    //   commit(MUTATIONS.SET_RECIPES_FETCHING_STATUS, true)
-    //   recipeApi
-    //     .getRecipes({
-    //       ...queryParams,
-    //       pageNumber: state.recipes.pagesTo + 1
-    //     })
-    //     .then(resp => {
-    //       commit(MUTATIONS.ADD_RECIPES, resp.data)
-    //     })
-    // },
-    // fetchNextAvailableRecipes({ state, commit }, queryParams) {
-    //   if (state.availableRecipes.fetching) return
-    //   commit(MUTATIONS.SET_AVAILABLE_RECIPES_FETCHING_STATUS, true)
-    //   userApi
-    //     .getAvailableRecipes({
-    //       ...queryParams,
-    //       pageNumber: state.availableRecipes.pagesTo + 1
-    //     })
-    //     .then(resp => {
-    //       commit(MUTATIONS.ADD_AVAILABLE_RECIPES, resp.data)
-    //     })
-    // },
-    // fetchNextAlmostAvailableRecipes({ state, commit }, queryParams) {
-    //   if (state.almostAvailableRecipes.fetching) return
-    //   commit(MUTATIONS.SET_ALMOST_AVAILABLE_RECIPES_FETCHING_STATUS, true)
-    //   userApi
-    //     .getAlmostAvailableRecipes({
-    //       ...queryParams,
-    //       pageNumber: state.almostAvailableRecipes.pagesTo + 1
-    //     })
-    //     .then(resp => {
-    //       commit(MUTATIONS.ADD_ALMOST_AVAILABLE_RECIPES, resp.data)
-    //     })
-    // },
 
     fetchRecipe({ getters, commit }, id) {
       return new Promise((resolve, reject) => {
@@ -261,16 +142,13 @@ export default {
 
     resetUserData({ commit }) {
       commit(MUTATIONS.SET_FAVOURITE_RECIPES_IDS, [])
-      // commit(MUTATIONS.RESET_ALMOST_AVAILABLE_RECIPES)
-      // commit(MUTATIONS.RESET_AVAILABLE_RECIPES)
-      // commit(MUTATIONS.RESET_RECIPES)
     },
 
     setFinishedDirectionsForRecipe({ commit }, { recipeId, finishedDirections }) {
       commit(MUTATIONS.SET_FINISHED_DIRECTIONS_FOR_RECIPE, { recipeId, finishedDirections })
       const existedLocalStorageItem = localStorage.getItem('finishedDirections')
       const parsedLocalStorage = existedLocalStorageItem ? JSON.parse(existedLocalStorageItem) : {}
-      parsedLocalStorage[recipeId] = finishedDirections
+      parsedLocalStorage[recipeId] = finishedDirections // TODO remove when empty
       localStorage.setItem('finishedDirections', JSON.stringify(parsedLocalStorage))
     }
   },

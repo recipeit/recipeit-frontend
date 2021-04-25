@@ -1,14 +1,14 @@
 <template>
   <sheet-modal-content>
-    <BaseModalHeader @close="$emit('close')">
+    <BaseModalHeader @close="$emit('close', false)">
       <BaseModalTitle>{{ title }}</BaseModalTitle>
     </BaseModalHeader>
     <BaseModalBody v-if="content">{{ content }}</BaseModalBody>
     <BaseModalFooter>
-      <BaseButton class="submit-button" stroked color="white" @click="secondaryClick">
+      <BaseButton v-if="secondaryText" class="submit-button" stroked color="white" @click="secondaryClick">
         {{ secondaryText }}
       </BaseButton>
-      <BaseButton class="submit-button" raised color="primary" @click="primaryClick">
+      <BaseButton v-if="primaryText" class="submit-button" raised color="primary" @click="primaryClick">
         {{ primaryText }}
       </BaseButton>
     </BaseModalFooter>

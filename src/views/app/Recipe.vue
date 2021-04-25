@@ -82,33 +82,12 @@
         </div>
 
         <RecipeIngredientsSection
-          class="recipe-ingredients-section"
-          v-if="recipe?.details?.ingredientGroups"
           :recipeId="recipe.id"
           :servings="recipe.details.servings"
           :ingredientGroups="recipe.details.ingredientGroups"
         />
 
-        <div class="recipe-directions-section">
-          <SectionTitle size="large" title="Przygotowanie" />
-          <div class="recipe__directions-list">
-            <div
-              v-for="(paragraph, index) in recipe.details.directionsParagraphs"
-              :key="index"
-              :class="{
-                'recipe__directions-list__item': true,
-                'recipe__directions-list__item--selected': index === selectedDirection,
-                'recipe__directions-list__item--finished': finishedDirections.includes(index)
-              }"
-            >
-              <BaseCheckbox v-model="finishedDirections" :value="index">
-                <template #label>
-                  <div>{{ paragraph }}</div>
-                </template>
-              </BaseCheckbox>
-            </div>
-          </div>
-        </div>
+        <RecipeDirectionsSection :recipeId="recipe.id" :directions="recipe.details.directionsParagraphs" />
 
         <div class="recipe-bottom-buttons-section">
           <!-- <BaseButton class="update-button" stroked>Zjedzone! Zaaktualizuj kuchnię</BaseButton> -->
@@ -127,16 +106,17 @@
 </template>
 
 <script>
-import SectionTitle from '@/components/SectionTitle'
+// import SectionTitle from '@/components/SectionTitle'
 import RecipeParallaxGallery from '@/components/RecipeParallaxGallery'
 import RecipeIngredientsSection from '@/components/recipe/RecipeIngredientsSection'
+import RecipeDirectionsSection from '@/components/recipe/RecipeDirectionsSection'
 import dayjs from '@/functions/dayjs'
 import { markRaw } from 'vue'
-import _ from 'lodash'
+// import _ from 'lodash'
 import { mapGetters, mapState } from 'vuex'
 import FavouriteIcon from '@/components/FavouriteIcon'
 import Rating from '@/components/Rating'
-import Dialog from '@/components/modals/Dialog'
+// import Dialog from '@/components/modals/Dialog'
 import { ToastType } from '@/plugins/toast/toastType'
 import PlanRecipeModal from '@/components/modals/PlanRecipeModal'
 import InvisibleRecipeInfoModal from '@/components/modals/InvisibleRecipeInfoModal'
@@ -151,10 +131,11 @@ export default {
     }
   },
   components: {
-    SectionTitle,
+    // SectionTitle,
     FavouriteIcon,
     RecipeParallaxGallery,
     RecipeIngredientsSection,
+    RecipeDirectionsSection,
     Rating
   },
   data: component => ({
@@ -237,12 +218,12 @@ export default {
     isFavourite() {
       return this.favouriteRecipesIds.find(id => id === this.recipe.id) !== undefined
     },
-    allIndexes() {
-      return this.recipe.details.directionsParagraphs.map((element, index) => index)
-    },
-    selectedDirection() {
-      return _.min(_.difference(this.allIndexes, this.finishedDirections))
-    },
+    // allIndexes() {
+    //   return this.recipe.details.directionsParagraphs.map((element, index) => index)
+    // },
+    // selectedDirection() {
+    //   return _.min(_.difference(this.allIndexes, this.finishedDirections))
+    // },
     images() {
       return [
         {
@@ -261,30 +242,29 @@ export default {
     }
   },
   watch: {
-    finishedDirections(finishedDirections) {
-      this.$store.dispatch('recipes/setFinishedDirectionsForRecipe', { recipeId: this.recipeId, finishedDirections })
-      const remaining = _.difference(this.allIndexes, finishedDirections)
-
-      if (!remaining || remaining.length === 0) {
-        this.$modal.show(
-          markRaw(Dialog),
-          {
-            title: 'Zrobione!',
-            content: 'Czy chcesz zaaktualizować produkty w swojej kuchni?',
-            secondaryText: this.$t('shared.no'),
-            primaryText: this.$t('shared.yes')
-          },
-          {
-            close: updateKitchen => {
-              if (updateKitchen) {
-                alert('Update kitchen')
-              }
-              this.finishedDirections = []
-            }
-          }
-        )
-      }
-    }
+    // finishedDirections(finishedDirections) {
+    //   this.$store.dispatch('recipes/setFinishedDirectionsForRecipe', { recipeId: this.recipeId, finishedDirections })
+    //   const remaining = _.difference(this.allIndexes, finishedDirections)
+    //   if (!remaining || remaining.length === 0) {
+    //     this.$modal.show(
+    //       markRaw(Dialog),
+    //       {
+    //         title: 'Zrobione!',
+    //         content: 'Czy chcesz zaaktualizować produkty w swojej kuchni?',
+    //         secondaryText: this.$t('shared.no'),
+    //         primaryText: this.$t('shared.yes')
+    //       },
+    //       {
+    //         close: updateKitchen => {
+    //           if (updateKitchen) {
+    //             alert('Update kitchen')
+    //           }
+    //           this.finishedDirections = []
+    //         }
+    //       }
+    //     )
+    //   }
+    // }
   }
 }
 </script>
@@ -463,33 +443,33 @@ export default {
     }
   }
 
-  &__directions-list {
-    label {
-      display: flex;
-      align-items: flex-start;
+  // &__directions-list {
+  //   label {
+  //     display: flex;
+  //     align-items: flex-start;
 
-      input {
-        margin-right: 16px;
-      }
-    }
+  //     input {
+  //       margin-right: 16px;
+  //     }
+  //   }
 
-    &__item + &__item {
-      margin-top: 16px;
-    }
+  //   &__item + &__item {
+  //     margin-top: 16px;
+  //   }
 
-    &__item {
-      @include transition((color, text-decoration));
+  //   &__item {
+  //     @include transition((color, text-decoration));
 
-      &--finished {
-        color: var(--color-text-secondary);
-        text-decoration: line-through;
-      }
+  //     &--finished {
+  //       color: var(--color-text-secondary);
+  //       text-decoration: line-through;
+  //     }
 
-      &--selected {
-        font-weight: bold;
-      }
-    }
-  }
+  //     &--selected {
+  //       font-weight: bold;
+  //     }
+  //   }
+  // }
 
   &__author {
     margin-top: 4px;

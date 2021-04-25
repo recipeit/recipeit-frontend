@@ -35,9 +35,7 @@ import { onBeforeMount, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { fetchRecipesQueryParams, RecipeList } from '@/constants'
 import GenericRecipesList from '@/components/GenericRecipesList'
-// import SectionTitle from '@/components/SectionTitle'
 import PageHeader from '@/components/PageHeader'
-// import AlmostAvailableHorizontal from '@/components/AlmostAvailableHorizontal'
 import userApi from '@/api/userApi'
 
 import HorizontalRecipesList from '@/components/HorizontalRecipesList'
@@ -145,7 +143,6 @@ export default {
   padding: 1.25rem 1.5rem;
   border-radius: 1.5rem;
   color: var(--color-primary);
-  // margin-bottom: 1rem;
   font-weight: 500;
   background-color: var(--color-button-subtle-primary-background);
   display: flex;
