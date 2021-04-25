@@ -31,4 +31,9 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.layout__page__content {
+  display: flex;
+  flex-direction: column;
+}
+</style>

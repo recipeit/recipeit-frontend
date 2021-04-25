@@ -96,11 +96,6 @@ const routes = [
         component: () => import(/* webpackChunkName: "cook-it" */ '@/views/app/CookIt.vue')
       },
       {
-        path: 'cook-it/available',
-        name: 'available',
-        component: () => import(/* webpackChunkName: "cook-it" */ '@/views/app/cook-it/AvailableRecipes.vue')
-      },
-      {
         path: 'cook-it/almost-available',
         name: 'almost-available',
         component: () => import(/* webpackChunkName: "cook-it" */ '@/views/app/cook-it/AlmostAvailableRecipes.vue')

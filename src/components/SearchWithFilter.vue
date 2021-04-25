@@ -20,14 +20,14 @@
       class="recipes-list-search__filter-button"
       size="small"
       :subtle="true"
-      :color="cachedFiltersCount > 0 ? 'primary' : 'contrast'"
+      :color="filtersCount > 0 ? 'primary' : 'contrast'"
       @click="openFilterModal()"
     >
       <BaseIcon class="recipes-list-search__filter-button__icon" icon="filter" weight="semi-bold" />
       <span>Filtry</span>
       <!-- <transition name="filters-button-count-fade"> -->
-      <span v-if="cachedFiltersCount > 0" class="recipes-list-search__filter-button__count">
-        {{ cachedFiltersCount }}
+      <span v-if="filtersCount > 0" class="recipes-list-search__filter-button__count">
+        {{ filtersCount }}
       </span>
       <!-- </transition> -->
     </BaseButton>
@@ -53,51 +53,25 @@ export default {
     appliedFilters: Object,
     defaultSorting: String,
     showFilterButton: Boolean,
-    fetching: Boolean
+    fetching: Boolean,
+    filtersCount: Number
   },
   data: () => ({
     searchTimeoutCallback: null
   }),
   setup(props) {
-    const countFilters = () => {
-      let count = 0
-
-      if (typeof props.appliedFilters === 'object' && props.appliedFilters !== null) {
-        count += Object.entries(props.appliedFilters)
-          .map(f => f[1].length)
-          .reduce((a, b) => a + b, 0)
-      }
-
-      if (props.appliedSorting && props.appliedSorting !== props.defaultSorting) {
-        count++
-      }
-
-      return count
-    }
-
-    const cachedFiltersCount = ref(countFilters())
     const searchString = ref(props.search)
 
     watch(
-      () => [props.appliedFilters, props.appliedSorting],
+      () => [props.search, props.fetching],
       () => {
-        if (!props.fetching) {
-          cachedFiltersCount.value = countFilters()
-        }
-      }
-    )
-
-    watch(
-      () => props.search,
-      newValue => {
-        if (searchString.value !== newValue && !props.fetching) {
-          searchString.value = newValue
+        if (searchString.value !== props.search && !props.fetching) {
+          searchString.value = props.search
         }
       }
     )
 
     return {
-      cachedFiltersCount,
       searchString
     }
   },
@@ -151,13 +125,6 @@ export default {
       }
 
       this.$emit('search', { orderMethod: this.appliedSorting, filters: this.appliedFilters, search: this.searchString })
-    }
-  },
-  watch: {
-    search(newValue) {
-      if (this.searchString !== newValue && !this.fetching) {
-        this.searchString = newValue
-      }
     }
   }
 }

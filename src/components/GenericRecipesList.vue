@@ -12,20 +12,23 @@
       :appliedFilters="recipes.filters"
       :appliedSorting="recipes.orderMethod"
       :defaultSorting="recipes.defaultOrderMethod"
+      :filtersCount="filtersCount"
       @search="onSearch($event)"
     />
 
     <slot name="above-list" />
 
     <template v-if="recipes.totalCount === 0 && !recipes.fetching">
-      <slot v-if="recipes.filters" name="empty-with-filters">
-        Nie znaleziono przepisów dla zadanych filtrów
+      <slot v-if="filtersCount > 0 || recipes.search" name="empty-with-filters">
+        <div class="empty-list-message">
+          <p class="empty-list-message-title">Nie znaleźliśmy przepisów dla zadanych filtrów</p>
+          <BaseButton stroked @click="clearFilters()">Wyczyść filtry</BaseButton>
+        </div>
       </slot>
 
       <slot v-else name="empty-without-filters">
-        <div class="recipes-list-block">
-          Najpierw dodaj coś do swojej kuchni!
-          <BaseButton raised color="primary">Przejdź do kuchni</BaseButton>
+        <div class="empty-list-message">
+          <p class="empty-list-message-title">Nie znaleźliśmy przepisów pasujących do Twoich produktów</p>
         </div>
       </slot>
     </template>
@@ -73,6 +76,7 @@ import GenericRecipesListItem from '@/components/GenericRecipesListItem'
 import SkeletonRecipeBox from '@/components/skeletons/SkeletonRecipeBox'
 import SearchWithFilter from '@/components/SearchWithFilter'
 import Observer from './Observer'
+import { ref, watch } from '@vue/runtime-core'
 
 export default {
   emits: ['reload', 'load-next'],
@@ -101,18 +105,60 @@ export default {
       default: true
     }
   },
-  data: component => ({
-    searchString: component.recipes.search,
-    searchTimeoutCallback: null
-  }),
-  methods: {
-    loadNext() {
-      if (!this.recipes.fetching) {
-        this.$emit('load-next')
+  setup(props, { emit }) {
+    const searchString = ref(props.recipes.search)
+    const searchTimeoutCallback = ref(null)
+
+    const loadNext = () => {
+      if (!props.recipes.fetching) {
+        emit('load-next')
       }
-    },
-    onSearch({ orderMethod, filters, search }) {
-      this.$emit('reload', { orderMethod, filters, search })
+    }
+
+    const onSearch = ({ orderMethod, filters, search }) => {
+      emit('reload', { orderMethod, filters, search })
+    }
+
+    const clearFilters = () => {
+      emit('reload', {})
+    }
+
+    const countFilters = () => {
+      let count = 0
+
+      const { filters: appliedFilters, orderMethod: appliedSorting, defaultOrderMethod: defaultSorting } = props.recipes
+
+      if (typeof appliedFilters === 'object' && appliedFilters !== null) {
+        count += Object.entries(appliedFilters)
+          .map(f => f[1].length)
+          .reduce((a, b) => a + b, 0)
+      }
+
+      if (appliedSorting && appliedSorting !== defaultSorting) {
+        count++
+      }
+
+      return count
+    }
+
+    const filtersCount = ref(countFilters())
+
+    watch(
+      () => [props.recipes.filters, props.recipes.orderMethod],
+      () => {
+        if (!props.recipes.fetching) {
+          filtersCount.value = countFilters()
+        }
+      }
+    )
+
+    return {
+      searchString,
+      searchTimeoutCallback,
+      loadNext,
+      onSearch,
+      clearFilters,
+      filtersCount
     }
   }
 }
@@ -122,6 +168,7 @@ export default {
 .recipes-list {
   display: flex;
   flex-direction: column;
+  flex: 1;
 
   &__filter {
     margin-bottom: 1rem;
@@ -176,6 +223,20 @@ export default {
       //   width: 100%;
       // }
     }
+  }
+}
+
+.empty-list-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  flex: 1;
+
+  &-title {
+    margin-bottom: 1rem;
+    font-size: 0.875rem;
   }
 }
 </style>

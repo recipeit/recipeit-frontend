@@ -46,6 +46,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.layout__page__content {
+  display: flex;
+  flex-direction: column;
+}
+
 .recipes-count {
   padding: 1.25rem 1.5rem;
   border-radius: 1.5rem;
