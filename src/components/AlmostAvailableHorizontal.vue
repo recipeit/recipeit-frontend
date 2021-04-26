@@ -1,6 +1,6 @@
 <template>
   <div class="almost-available-horizontal">
-    <SectionTitle class="section-title" icon="basket" :title="$t('cookIt.buyMissingIngredient')" />
+    <SectionTitle icon="basket" :title="$t('cookIt.buyMissingIngredient')" />
     <HorizontalRecipesList :recipes="favouriteRecipes" @showAll="showAllFavourites()" />
   </div>
 </template>
@@ -43,7 +43,7 @@ export default {
   margin-top: 2rem;
   margin-bottom: 2rem;
 
-  .section-title {
+  ::v-deep(.section-title) {
     margin-top: 0;
   }
 }

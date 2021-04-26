@@ -6,7 +6,7 @@
       <GenericRecipesList :recipes="recipes" @load-next="loadNextRecipes()" @reload="reloadRecipes($event)">
         <template v-if="!(!almostAvailableRecipes.fetching && almostAvailableRecipes.items.length === 0)" #above-list>
           <div class="almost-available-horizontal">
-            <SectionTitle class="almost-available-horizontal-title" icon="basket" :title="$t('cookIt.buyMissingIngredient')" />
+            <SectionTitle icon="basket" :title="$t('cookIt.buyMissingIngredient')" />
             <HorizontalRecipesList
               :recipes="almostAvailableRecipes"
               @showAll="$router.push({ name: 'almost-available', query: $route.query })"
@@ -168,7 +168,7 @@ export default {
 .almost-available-horizontal {
   margin: 0.5rem 0;
 
-  &-title {
+  ::v-deep(.section-title) {
     margin-top: 0;
   }
 }

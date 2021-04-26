@@ -1,6 +1,6 @@
 <template>
   <div class="recipe-ingredients-section">
-    <SectionTitle class="recipe-ingredients-section-title" size="large">
+    <SectionTitle size="large">
       <template #title>
         Składniki dla
         <BaseButton
@@ -180,8 +180,10 @@ export default {
   }
 }
 
-.recipe-ingredients-section-title {
-  margin: 32px 0 8px 0;
+.recipe-ingredients-section {
+  ::v-deep(.section-title) {
+    margin: 32px 0 8px 0;
+  }
 }
 
 .recipe-ingredients-group-name {
