@@ -82,7 +82,7 @@ export default {
       return amount
     },
     unitTranslationAmount() {
-      return this.amountMax || this.amount || 1
+      return this.ingredient.amountMax || this.ingredient.amount || 1
     },
     showLoadingState() {
       return this.loading || (this.allAdding && this.ingredient.state === 'UNAVAILABLE')
