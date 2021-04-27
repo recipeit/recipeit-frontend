@@ -97,50 +97,61 @@ export default {
       Snack: 'Przekąska'
     },
     unitsShort: {
-      Weight: {
-        Gram: 'g',
-        Kilogram: 'kg'
-      },
-      Volume: {
-        Liter: 'l',
-        Milliliter: 'ml',
-        Tablespoon: 'łyżek | łyżka | łyżki | łyżek',
-        Teaspoon: 'łyżeczek | łyżeczka | łyżeczki | łyżeczek',
-        Cup: 'szklanek | szklanka | szklanki | szklanek'
-      },
-      Whole: {
-        Piece: 'szt.',
-        Grain: 'ziaren | ziarno | ziarna | ziaren',
-        Handful: 'garści | garść | garście | garści'
-      }
+      milligram: 'mg',
+      gram: 'g',
+      kilogram: 'kg',
+      dekagram: 'dg',
+
+      milliliter: 'ml',
+      deciliter: 'dl',
+      liter: 'l',
+
+      cup: 'szkl.',
+      tablespoon: 'łyżek | łyżka | łyżki | łyżek',
+      teaspoon: 'łyżeczek | łyżeczka | łyżeczki | łyżeczek',
+
+      clove: 'ząbków | ząbek | ząbki | ząbków',
+      piece: 'szt.',
+      grain: 'ziaren | ziarno | ziarna | ziaren',
+      package: 'opak.',
+      pinch: 'szczypt | szczypta | szczypty | szczypt',
+      handful: 'garści | garść | garście | garści',
+      slice: 'plastrów | plaster | plastry | plastrów',
+      breadslice: 'kromek | kromka | kromki | kromek',
+      bunch: 'pęczków | pęczek | pęczki | pęczków',
+      stalk: 'łodyg | łodyga | łodygi | łodyg',
+      cube: 'kostek | kostka | kostki | kostek'
     },
     units: {
-      Weight: {
-        Milligram: 'miligramów | miligram | miligramy | miligramów',
-        Gram: 'gram | gram | gramy | gram',
-        Kilogram: 'kilogramów | kilogram | kilogramy | kilogramów',
-        Dekagram: 'dekagramów | dekagram | dekagramy | dekagramów'
-      },
-      Volume: {
-        Cup: 'szklanek | szklanka | szklanki | szklanek',
-        Milliliter: 'mililitrów | mililitr | mililitry | mililitrów',
-        Deciliter: 'decylitrów | decylitr | decylitry | decylitrów',
-        Liter: 'litrów | litr | litry | litrów',
-        Tablespoon: 'łyżek | łyżka | łyżki | łyżek',
-        Teaspoon: 'łyżeczek | łyżeczka | łyżeczki | łyżeczek'
-      },
-      Whole: {
-        Piece: 'sztuk | sztuka | sztuki | sztuk',
-        Grain: 'ziaren | ziarno | ziarna | ziaren',
-        Package: 'opakowań | opakowanie | opakowania | opakowań',
-        Pinch: 'szczypt | szczypta | szczypty | szczypt',
-        Handful: 'garści | garść | garście | garści'
-      }
+      milligram: 'miligramów | miligram | miligramy | miligramów',
+      gram: 'gram | gram | gramy | gram',
+      kilogram: 'kilogramów | kilogram | kilogramy | kilogramów',
+      dekagram: 'dekagramów | dekagram | dekagramy | dekagramów',
+
+      milliliter: 'mililitrów | mililitr | mililitry | mililitrów',
+      deciliter: 'decylitrów | decylitr | decylitry | decylitrów',
+      liter: 'litrów | litr | litry | litrów',
+
+      cup: 'szklanek | szklanka | szklanki | szklanek',
+      tablespoon: 'łyżek | łyżka | łyżki | łyżek',
+      teaspoon: 'łyżeczek | łyżeczka | łyżeczki | łyżeczek',
+
+      clove: 'ząbków | ząbek | ząbki | ząbków',
+      piece: 'sztuk | sztuka | sztuki | sztuk',
+      grain: 'ziaren | ziarno | ziarna | ziaren',
+      package: 'opakowań | opakowanie | opakowania | opakowań',
+      pinch: 'szczypt | szczypta | szczypty | szczypt',
+      handful: 'garści | garść | garście | garści',
+      slice: 'plastrów | plaster | plastry | plastrów',
+      breadslice: 'kromek | kromka | kromki | kromek',
+      bunch: 'pęczków | pęczek | pęczki | pęczków',
+      stalk: 'łodyg | łodyga | łodygi | łodyg',
+      cube: 'kostek | kostka | kostki | kostek'
     },
     unitGroups: {
       weight: 'waga',
       volume: 'objętość',
-      other: 'inne'
+      unset: 'inne'
     },
     theme: 'Motyw',
     themes: {

@@ -115,6 +115,7 @@ export default {
   },
   beforeMount() {
     this.$store.dispatch('ingredients/fetchBaseProducts')
+    this.$store.dispatch('ingredients/fetchUnitsGroupedByMeasurement')
     this.$store.dispatch('shoppingList/fetchProducts')
   }
 }

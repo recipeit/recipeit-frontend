@@ -484,6 +484,8 @@ export default {
     font-size: 14px;
     line-height: 20px;
 
+    @include scrollbar;
+
     &__list {
       margin: 8px 0;
 

@@ -48,42 +48,22 @@ export default {
 <style lang="scss" scoped>
 .list-container {
   margin: 0 -32px;
+  margin-bottom: 16px;
 }
 
 .list {
   display: flex;
   overflow: auto;
-  padding-bottom: 16px;
+
+  @include cursor-only {
+    @include scrollbar;
+  }
 
   &::before,
   &::after {
     content: '';
     width: 32px;
     flex-shrink: 0;
-  }
-
-  @include cursor-only {
-    /* width */
-    &::-webkit-scrollbar {
-      width: 8px;
-      height: 8px;
-    }
-
-    /* Track */
-    &::-webkit-scrollbar-track {
-      background-color: transparent;
-    }
-
-    /* Handle */
-    &::-webkit-scrollbar-thumb {
-      background-color: var(--color-scrollbar-thumb);
-      border-radius: 8px;
-    }
-
-    /* Handle on hover */
-    &::-webkit-scrollbar-thumb:hover {
-      background-color: var(--color-scrollbar-thumb-hover);
-    }
   }
 }
 

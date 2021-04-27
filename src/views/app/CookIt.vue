@@ -27,6 +27,22 @@
           </div>
         </template>
 
+        <template #empty-with-filters>
+          <div class="empty-list-message">
+            <p class="empty-list-message-title">Nie znaleźliśmy przepisów dla użytych filtrów</p>
+            <p v-if="almostAvailableRecipes.items?.length > 0" class="empty-list-message-sub">
+              Możesz <BaseLink class="empty-list-message-link" color="primary">wyczyścić filtry</BaseLink>, przeszukać całą
+              <BaseLink class="empty-list-message-link" color="primary">bazę przepisów</BaseLink>, bądź sprawdzić
+              <BaseLink class="empty-list-message-link" color="primary">propozycje przepisów</BaseLink> po dokupieniu paru składników.
+            </p>
+            <p v-else class="empty-list-message-sub">
+              Możesz <BaseLink class="empty-list-message-link" color="primary">wyczyścić filtry</BaseLink> lub sprawdzić całą
+              <BaseLink class="empty-list-message-link" color="primary">bazę przepisów</BaseLink>.
+            </p>
+            <!-- <BaseButton stroked @click="clearFilters()">Wyczyść filtry</BaseButton> -->
+          </div>
+        </template>
+
         <template #empty-without-filters>
           <div v-if="kitchenProductsCount === 0" class="empty-list-message">
             <p class="empty-list-message-title">Najpierw dodaj coś do swojej kuchni</p>
@@ -36,6 +52,7 @@
               </BaseButton>
             </router-link>
           </div>
+
           <div v-else class="empty-list-message">
             <p class="empty-list-message-title">Nie znaleźliśmy przepisów pasujących do Twoich produktów</p>
             <p class="empty-list-message-sub">

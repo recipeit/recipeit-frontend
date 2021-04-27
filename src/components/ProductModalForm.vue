@@ -40,7 +40,7 @@
 import { Field } from 'vee-validate'
 import { computed } from 'vue'
 import { useStore } from 'vuex'
-import { units } from '@/constants'
+// import { units } from '@/constants'
 
 export default {
   emits: ['update:baseProductId', 'update:unit'],
@@ -54,6 +54,7 @@ export default {
   setup(props) {
     const store = useStore()
     const baseProducts = computed(() => store.state.ingredients.baseProducts)
+    const units = computed(() => store.state.ingredients.units)
 
     // const localProduct = reactive({
     //   selectedBaseProduct: props.baseProductId ? baseProducts.value?.find(p => p.id === props.baseProductId) : null,
@@ -61,7 +62,7 @@ export default {
     //   unit: props.unit
     // })
 
-    const unitLabelAmount = computed(() => parseFloat(props.amount) || 2)
+    const unitLabelAmount = computed(() => parseFloat(props.amount) || 1)
 
     function unitCustomLabel(value) {
       return this.$tc(`units.${value}`, unitLabelAmount.value)

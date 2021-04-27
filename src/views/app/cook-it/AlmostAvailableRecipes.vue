@@ -19,6 +19,35 @@
           wczytuję
         </div>
       </template>
+
+      <template #empty-with-filters>
+        <div class="empty-list-message">
+          <p class="empty-list-message-title">Nie znaleźliśmy przepisów dla użytych filtrów</p>
+          <p class="empty-list-message-sub">
+            Możesz <BaseLink class="empty-list-message-link" color="primary">wyczyścić filtry</BaseLink> lub sprawdzić całą
+            <BaseLink class="empty-list-message-link" color="primary">bazę przepisów</BaseLink>.
+          </p>
+        </div>
+      </template>
+
+      <template #empty-without-filters>
+        <div v-if="kitchenProductsCount === 0" class="empty-list-message">
+          <p class="empty-list-message-title">Najpierw dodaj coś do swojej kuchni</p>
+          <router-link :to="{ name: 'my-kitchen' }" v-slot="{ href, navigate }" custom>
+            <BaseButton tag="a" :href="href" @click="navigate($event)" stroked>
+              Przejdź do kuchni
+            </BaseButton>
+          </router-link>
+        </div>
+
+        <div v-else class="empty-list-message">
+          <p class="empty-list-message-title">Nie znaleźliśmy przepisów pasujących do Twoich produktów</p>
+          <p class="empty-list-message-sub">
+            Możesz <BaseLink class="empty-list-message-link" color="primary">wyczyścić filtry</BaseLink> lub sprawdzić całą
+            <BaseLink class="empty-list-message-link" color="primary">bazę przepisów</BaseLink>.
+          </p>
+        </div>
+      </template>
     </GenericRecipesList>
   </div>
 </template>
@@ -28,6 +57,8 @@ import GenericRecipesList from '@/components/GenericRecipesList'
 import PageHeader from '@/components/PageHeader'
 import userApi from '@/api/userApi'
 import recipeFilteredPagedList from '../composable/recipeFilteredPagedList'
+import { computed } from '@vue/runtime-core'
+import { useStore } from 'vuex'
 
 export default {
   name: 'AlmostAvailableRecipes',
@@ -36,9 +67,12 @@ export default {
     PageHeader
   },
   setup() {
+    const store = useStore()
+    const kitchenProductsCount = computed(() => store.state.myKitchen.products?.length || 0)
     const recipesList = recipeFilteredPagedList(userApi.getAlmostAvailableRecipes)
 
     return {
+      kitchenProductsCount,
       recipesList
     }
   }

@@ -265,6 +265,7 @@ export default {
       dispatch('user/fetchHiddenRecipeIds', {}, { root: true })
       dispatch('user/fetchHiddenBlogIds', {}, { root: true })
       dispatch('ingredients/fetchBaseProducts', {}, { root: true }) // TODO once
+      dispatch('ingredients/fetchUnitsGroupedByMeasurement', {}, { root: true }) // TODO once
       dispatch('myKitchen/fetchProducts', {}, { root: true }) // TODO only base ids
     },
     fetchHiddenRecipeIds({ commit }) {

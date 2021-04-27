@@ -1,15 +1,15 @@
 export const units = [
   {
     groupKey: 'weight',
-    groupValues: ['Weight.Milligram', 'Weight.Gram', 'Weight.Kilogram', 'Weight.Dekagram']
+    groupValues: ['milligram', 'gram', 'kilogram', 'dekagram']
   },
   {
     groupKey: 'volume',
-    groupValues: ['Volume.Cup', 'Volume.Milliliter', 'Volume.Deciliter', 'Volume.Liter', 'Volume.Tablespoon', 'Volume.Teaspoon']
+    groupValues: ['cup', 'milliliter', 'deciliter', 'liter', 'tablespoon', 'teaspoon']
   },
   {
     groupKey: 'other',
-    groupValues: ['Whole.Piece', 'Whole.Grain', 'Whole.Package', 'Whole.Pinch', 'Whole.Handful']
+    groupValues: ['clove', 'piece', 'grain', 'package', 'pinch', 'handful', 'slice', 'breadslice', 'bunch']
   }
 ]
 

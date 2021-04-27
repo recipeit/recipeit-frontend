@@ -92,6 +92,7 @@ export default {
 
       if (this.userAuthenticatedLazy) {
         this.$store.dispatch('ingredients/fetchBaseProducts')
+        this.$store.dispatch('ingredients/fetchUnitsGroupedByMeasurement')
         this.$store.dispatch('myKitchen/fetchProducts')
         this.fetchedData = true
       }

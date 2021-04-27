@@ -21,6 +21,8 @@ $darkYellow: #ff961d;
 $orange: #ff701d;
 $gray-500: #6c8693;
 
+$primary: $green;
+
 $gray-palette: functions.colorPalette($gray-500);
 $red-palette: functions.colorPalette2($red);
 $blue-palette: functions.colorPalette2($blue);
@@ -144,6 +146,7 @@ $color-theme: (
       'contrast': functions.buttonStrokedVariables($black)
     )
   ),
-  'scrollbar-thumb': rgba($black, 0.1),
-  'scrollbar-thumb-hover': rgba($black, 0.2)
+  'scrollbar-background': $gray-extra-light,
+  'scrollbar-thumb': $gray-light,
+  'scrollbar-thumb-hover': darken($gray-light, 10)
 );
