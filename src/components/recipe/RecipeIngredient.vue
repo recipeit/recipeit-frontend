@@ -1,7 +1,7 @@
 <template>
   <li class="ingredient">
     {{ ingredient.name || ingredient.baseProduct?.name }}
-    <template v-if="ingredient.amount > 0">
+    <template v-if="ingredient.amount && ingredient.amount > 0">
       <span class="ingredient-amount">{{ computedAmount }}</span>
       <span class="ingredient-unit"> {{ $tc(`unitsShort.${ingredient.unit}`, computedAmount) }}</span>
     </template>
@@ -75,7 +75,11 @@ export default {
   },
   computed: {
     computedAmount() {
-      return this.ingredient.amount * this.amountFactor
+      let amount = this.ingredient.amount * this.amountFactor
+      if (this.ingredient.amountMax) {
+        amount += ` - ${this.ingredient.amountMax * this.amountFactor}`
+      }
+      return amount
     },
     showLoadingState() {
       return this.loading || (this.allAdding && this.ingredient.state === 'UNAVAILABLE')

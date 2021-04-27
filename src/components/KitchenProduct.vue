@@ -77,20 +77,6 @@ export default {
     deleteProduct() {
       this.$store.dispatch('myKitchen/deleteProductFromKitchen', this.product.id)
     },
-    increaseAmount() {
-      const amount = Math.round(this.product.amount + 1, 5)
-      this.putAmountChange(amount)
-    },
-    decreaseAmount() {
-      if (this.product.amount <= 1.0) return
-      const amount = Math.round(this.product.amount - 1, 5)
-      this.putAmountChange(amount)
-    },
-    putAmountChange(amount) {
-      var product = JSON.parse(JSON.stringify(this.product))
-      product.amount = amount
-      this.$store.dispatch('myKitchen/editProductFromKitchen', product)
-    },
     addToShoppingList() {
       if (this.addToShoppingListLoading) return
 
@@ -103,9 +89,6 @@ export default {
             baseProductId,
             amount,
             unit
-          })
-          .then(() => {
-            this.$toast.show('Produkt dodany do listy zakupów', ToastType.SUCCESS)
           })
           .catch(() => {
             this.$toast.show('Nie udało się dodać produktu do listy zakupów', ToastType.ERROR)

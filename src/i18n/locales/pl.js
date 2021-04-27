@@ -120,7 +120,9 @@ export default {
       breadslice: 'kromek | kromka | kromki | kromek',
       bunch: 'pęczków | pęczek | pęczki | pęczków',
       stalk: 'łodyg | łodyga | łodygi | łodyg',
-      cube: 'kostek | kostka | kostki | kostek'
+      cube: 'kostek | kostka | kostki | kostek',
+      puszka: 'puszek | puszka | puszki | puszek',
+      leaf: 'liści | liść | liście | liści'
     },
     units: {
       milligram: 'miligramów | miligram | miligramy | miligramów',
@@ -146,7 +148,9 @@ export default {
       breadslice: 'kromek | kromka | kromki | kromek',
       bunch: 'pęczków | pęczek | pęczki | pęczków',
       stalk: 'łodyg | łodyga | łodygi | łodyg',
-      cube: 'kostek | kostka | kostki | kostek'
+      cube: 'kostek | kostka | kostki | kostek',
+      puszka: 'puszek | puszka | puszki | puszek',
+      leaf: 'liści | liść | liście | liści'
     },
     unitGroups: {
       weight: 'waga',
