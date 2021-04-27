@@ -1,14 +1,11 @@
 <template>
   <Product :product="product" @click="openEditModal">
     <div class="actions" @click.stop>
-      <!-- <a v-if="!isInShoppingList" class="purchase-button" @click.prevent.stop="addToShoppingList()">
-        <BaseIcon icon="basket" />
-      </a> -->
       <BaseButton
         class="purchase-button"
         subtle
         :color="isInShoppingList ? 'primary' : 'accent'"
-        :loading="addToShoppingListLoading"
+        :disabled="addToShoppingListLoading"
         @click.prevent.stop="addToShoppingList()"
       >
         <BaseIcon class="purchase-button-icon" icon="basket" />
