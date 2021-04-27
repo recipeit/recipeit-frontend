@@ -3,7 +3,7 @@
     {{ ingredient.name || ingredient.baseProduct?.name }}
     <template v-if="ingredient.amount && ingredient.amount > 0">
       <span class="ingredient-amount">{{ computedAmount }}</span>
-      <span class="ingredient-unit"> {{ $tc(`unitsShort.${ingredient.unit}`, computedAmount) }}</span>
+      <span class="ingredient-unit"> {{ $tc(`unitsShort.${ingredient.unit}`, unitTranslationAmount) }}</span>
     </template>
     <div class="state-container">
       <a v-if="ingredient.state === 'IN_KITCHEN'" class="state state--available">
@@ -80,6 +80,9 @@ export default {
         amount += ` - ${this.ingredient.amountMax * this.amountFactor}`
       }
       return amount
+    },
+    unitTranslationAmount() {
+      return this.amountMax || this.amount || 1
     },
     showLoadingState() {
       return this.loading || (this.allAdding && this.ingredient.state === 'UNAVAILABLE')
