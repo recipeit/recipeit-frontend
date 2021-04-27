@@ -15,7 +15,7 @@
         </div>
         <ul class="product-list">
           <li class="product-list__item" v-for="product in products[1]" :key="product.id">
-            <KitchenProduct :product="product" />
+            <KitchenProduct :product="product" @add-to-shopping-list="addToShoppingList(product)" />
           </li>
         </ul>
       </li>
@@ -94,6 +94,7 @@ export default {
         this.$store.dispatch('ingredients/fetchBaseProducts')
         this.$store.dispatch('ingredients/fetchUnitsGroupedByMeasurement')
         this.$store.dispatch('myKitchen/fetchProducts')
+        this.$store.dispatch('shoppingList/fetchProducts')
         this.fetchedData = true
       }
     },
