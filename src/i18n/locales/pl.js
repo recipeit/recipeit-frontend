@@ -121,7 +121,7 @@ export default {
       bunch: 'pęczków | pęczek | pęczki | pęczków',
       stalk: 'łodyg | łodyga | łodygi | łodyg',
       cube: 'kostek | kostka | kostki | kostek',
-      puszka: 'puszek | puszka | puszki | puszek',
+      can: 'puszek | puszka | puszki | puszek',
       leaf: 'liści | liść | liście | liści'
     },
     units: {
@@ -149,7 +149,7 @@ export default {
       bunch: 'pęczków | pęczek | pęczki | pęczków',
       stalk: 'łodyg | łodyga | łodygi | łodyg',
       cube: 'kostek | kostka | kostki | kostek',
-      puszka: 'puszek | puszka | puszki | puszek',
+      can: 'puszek | puszka | puszki | puszek',
       leaf: 'liści | liść | liście | liści'
     },
     unitGroups: {

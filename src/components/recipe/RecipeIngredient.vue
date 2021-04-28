@@ -1,10 +1,12 @@
 <template>
   <li class="ingredient">
-    {{ ingredient.name || ingredient.baseProduct?.name }}
-    <template v-if="ingredient.amount && ingredient.amount > 0">
-      <span class="ingredient-amount">{{ computedAmount }}</span>
-      <span class="ingredient-unit"> {{ $tc(`unitsShort.${ingredient.unit}`, unitTranslationAmount) }}</span>
-    </template>
+    <span class="ingredient-text">
+      <span class="ingredient-name">{{ ingredient.name || ingredient.baseProduct?.name }}</span>
+      <template v-if="ingredient.amount && ingredient.amount > 0">
+        <span class="ingredient-amount">{{ computedAmount }}</span>
+        <span class="ingredient-unit"> {{ $tc(`unitsShort.${ingredient.unit}`, unitTranslationAmount) }}</span>
+      </template>
+    </span>
     <div class="state-container">
       <a v-if="ingredient.state === 'IN_KITCHEN'" class="state state--available">
         <BaseIcon class="state-icon state-icon--small" icon="check" weight="semi-bold" />
@@ -15,7 +17,7 @@
         class="state"
         subtle
         :color="ingredient.state === 'IN_SHOPPING_LIST' ? 'primary' : 'accent'"
-        :loading="showLoadingState"
+        :disabled="showLoadingState"
         @click="addProductToShoppingList(ingredient)"
       >
         <BaseIcon class="state-icon" icon="basket" />
@@ -82,7 +84,11 @@ export default {
       return amount
     },
     unitTranslationAmount() {
-      return this.ingredient.amountMax || this.ingredient.amount || 1
+      const amount = this.ingredient.amountMax || this.ingredient.amount
+      if (amount) {
+        return amount * this.amountFactor
+      }
+      return 1
     },
     showLoadingState() {
       return this.loading || (this.allAdding && this.ingredient.state === 'UNAVAILABLE')
@@ -99,20 +105,28 @@ export default {
   padding: 4px 0;
 
   &-amount {
-    margin-left: 0.75rem;
-  }
-
-  &-unit {
-    margin-left: 0.25rem;
+    margin-right: 0.25rem;
   }
 
   &-amount,
   &-unit {
     color: var(--color-text-secondary);
+    font-size: 0.75rem;
+    font-weight: bold;
+  }
+
+  &-text {
+    flex: 1;
+  }
+
+  &-name {
+    margin-right: 0.75rem;
   }
 
   .state-container {
-    margin-left: auto;
+    min-width: 64px;
+    display: flex;
+    justify-content: flex-end;
   }
 
   .state {
