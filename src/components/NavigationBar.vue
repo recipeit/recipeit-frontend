@@ -1,34 +1,55 @@
 <template>
   <div class="navigation-bar">
+    <router-link :to="{ name: 'home' }" class="logo-link">
+      <Logotype class="logo" />
+    </router-link>
     <router-link :to="{ name: 'home' }" class="navigation-bar__item">
-      <BaseIcon class="navigation-bar__item__icon" icon="home" />
-      <span>Kokpit</span>
+      <BaseIcon class="item-icon" icon="home" />
+      <span class="item-name">Kokpit</span>
     </router-link>
     <router-link :to="{ name: 'recipes' }" class="navigation-bar__item">
-      <BaseIcon class="navigation-bar__item__icon" icon="cookbook" />
-      <span>Przepisy</span>
+      <BaseIcon class="item-icon" icon="cookbook" />
+      <span class="item-name">Przepisy</span>
     </router-link>
     <router-link :to="{ name: 'cook-it' }" class="navigation-bar__item">
-      <!-- <BaseIcon class="navigation-bar__item__icon"icon="chef-hat" weight="fill" /> -->
-      <BaseIcon class="navigation-bar__item__icon" icon="chef-hat" />
-      <span>Ugotuj to!</span>
+      <!-- <BaseIcon class="item-icon"icon="chef-hat" weight="fill" /> -->
+      <BaseIcon class="item-icon" icon="chef-hat" />
+      <span class="item-name">Ugotuj to!</span>
     </router-link>
     <router-link :to="{ name: 'my-kitchen' }" class="navigation-bar__item">
-      <BaseIcon class="navigation-bar__item__icon" icon="food" />
-      <span>Moja kuchnia</span>
+      <BaseIcon class="item-icon" icon="food" />
+      <span class="item-name">Moja kuchnia</span>
     </router-link>
     <router-link :to="{ name: 'shopping-list' }" class="navigation-bar__item">
-      <BaseIcon class="navigation-bar__item__icon" icon="basket" />
-      <span>Lista zakupów</span>
+      <BaseIcon class="item-icon" icon="basket" />
+      <span class="item-name">Lista zakupów</span>
     </router-link>
   </div>
 </template>
 
 <script>
-export default {}
+import Logotype from '@/components/Logotype'
+
+export default {
+  components: {
+    Logotype
+  }
+}
 </script>
 
 <style lang="scss" scoped>
+.logo-link {
+  display: none;
+
+  @media (min-width: 721px) {
+    display: block;
+    width: 120px;
+    padding: 4px 0;
+    margin-bottom: 1rem;
+    color: var(--color-max-contrast);
+  }
+}
+
 .navigation-bar {
   // position: sticky;
   position: fixed;
@@ -55,13 +76,15 @@ export default {}
     // transition: color 0.3s ease;
     position: relative;
     line-height: 0;
-    // @include transition((color, transform));
+    text-decoration: none;
 
-    &__icon {
+    @include transition((color));
+
+    .item-icon {
       @include transition((color, transform));
     }
 
-    span {
+    .item-name {
       display: none;
     }
 
@@ -86,19 +109,44 @@ export default {}
     //   transition: all 0.3s ease;
     // }
 
-    &.router-link-exact-active &__icon {
+    &.router-link-exact-active {
       color: var(--color-primary);
-      transform: scale(1.5);
 
-      // ::v-deep(svg) {
-      // }
-      // filter: drop-shadow(0 0 4px #fff);
+      .item-icon {
+        transform: scale(1.5);
+      }
+    }
+  }
 
-      // &:after {
-      //   background-color: var(--color-primary);
-      //   left: 0;
-      //   right: 0;
-      // }
+  @media (min-width: 721px) {
+    position: static;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 48px 0 48px 32px;
+
+    &__item {
+      flex: unset;
+      text-align: left;
+      padding: 1rem 0;
+      display: flex;
+      align-items: center;
+
+      .item-name {
+        display: inline-block;
+        margin-left: 1rem;
+        font-size: 0.875rem;
+      }
+
+      .item-icon {
+        color: var(--color-text-secondary);
+      }
+
+      &.router-link-exact-active {
+        .item-icon {
+          transform: none;
+          color: var(--color-primary);
+        }
+      }
     }
   }
 }

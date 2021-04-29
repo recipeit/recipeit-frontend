@@ -155,7 +155,10 @@ export default {
         day.add(4, 'day'),
         day.add(5, 'day'),
         day.add(6, 'day'),
-        day.add(7, 'day')
+        day.add(7, 'day'),
+        day.add(8, 'day'),
+        day.add(9, 'day'),
+        day.add(10, 'day')
       ].map(day => ({
         dayjs: day,
         key: day.format('YYYY-MM-DD'),
@@ -309,6 +312,9 @@ export default {
 }
 
 .no-plans-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
   padding: 2rem 0;
 

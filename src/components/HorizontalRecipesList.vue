@@ -47,8 +47,14 @@ export default {
 
 <style lang="scss" scoped>
 .list-container {
-  margin: 0 -32px;
+  margin-left: -32px;
+  margin-right: -32px;
   margin-bottom: 16px;
+
+  @media (min-width: 721px) {
+    margin-left: 0;
+    margin-right: 0;
+  }
 }
 
 .list {
@@ -64,6 +70,10 @@ export default {
     content: '';
     width: 32px;
     flex-shrink: 0;
+
+    @media (min-width: 721px) {
+      content: none;
+    }
   }
 }
 

@@ -40,7 +40,7 @@ export default {
   // border: 1px solid var(--color-border);
   // background: var(--color-background-flyout);
   display: flex;
-  max-width: 416px;
+  // max-width: 416px;
   min-height: 56px;
 
   &__info {

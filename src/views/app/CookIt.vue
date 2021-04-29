@@ -198,6 +198,7 @@ export default {
   background-color: var(--color-button-subtle-primary-background);
   display: flex;
   align-items: center;
+  width: 100%;
 
   &-icon {
     font-size: 1.5rem;

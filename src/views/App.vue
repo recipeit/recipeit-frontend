@@ -7,7 +7,7 @@
         </transition>
       </router-view>
     </div>
-    <NavigationBar />
+    <NavigationBar class="layout__navigation" />
   </div>
 </template>
 
@@ -39,9 +39,24 @@ export default {
     flex: 1;
     display: flex;
     flex-direction: column;
+    min-width: 0;
 
     &__content {
       flex: 1;
+    }
+  }
+
+  @media (min-width: 721px) {
+    flex-direction: row-reverse;
+    width: 960px;
+    max-width: 100%;
+
+    &__navigation {
+      width: 25%;
+    }
+    &__page {
+      padding-top: 48px;
+      padding-bottom: 48px;
     }
   }
 }

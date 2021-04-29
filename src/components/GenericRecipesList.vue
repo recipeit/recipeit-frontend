@@ -203,11 +203,15 @@ export default {
 
   &__list {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, 1fr);
     grid-gap: 1rem;
     // flex-wrap: wrap;
-    max-width: 416px;
+    // max-width: 416px;
     // margin: -8px;
+
+    @media (min-width: 721px) {
+      grid-template-columns: repeat(3, 1fr);
+    }
 
     &__item {
       // width: 50%;

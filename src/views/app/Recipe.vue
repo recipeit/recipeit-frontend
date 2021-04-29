@@ -27,7 +27,7 @@
             </template>
           </BaseMenu>
         </div>
-        <RecipeParallaxGallery :images="images" />
+        <RecipeParallaxGallery class="recipe__image-gallery" :images="images" />
       </div>
       <div class="recipe__main">
         <div class="recipe__header-pills">
@@ -305,6 +305,16 @@ export default {
   margin: -32px -32px 0 -32px;
   overflow: hidden;
 
+  @media (min-width: 721px) {
+    margin: 0;
+  }
+
+  &__image-gallery {
+    @media (min-width: 721px) {
+      border-radius: 32px;
+    }
+  }
+
   &__image-container {
     position: relative;
 
@@ -358,6 +368,11 @@ export default {
     border-radius: 32px 32px 0 0;
     box-shadow: 0 0 32px rgba(0, 0, 0, 0.1);
     padding: 32px;
+
+    @media (min-width: 721px) {
+      margin-top: 0;
+      box-shadow: none;
+    }
   }
 
   &__header-pills {

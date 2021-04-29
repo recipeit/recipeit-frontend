@@ -43,18 +43,24 @@ export default {
   },
   mounted() {
     this.imagesScrollHandler = debounce(this.imagesScrollHandlerDebounced, 200)
+    // this.resizeHandler = debounce(this.resizeHandlerDebounced, 500)
     this.windowScrollHandler()
 
     window.addEventListener('scroll', this.windowScrollHandler, false)
+    // window.addEventListener('resize', this.resizeHandler, false)
     this.$refs.images.addEventListener('scroll', this.imagesScrollHandler, false)
   },
   beforeUnmount() {
     window.removeEventListener('scroll', this.windowScrollHandler, false)
+    // window.addEventLiremoveEventListenerstener('resize', this.resizeHandler, false)
     this.$refs.images.removeEventListener('scroll', this.imagesScrollHandler, false)
   },
   methods: {
-    setImageRef({ $el }) {
-      this.imageRefs.push($el)
+    setImageRef(el) {
+      const $el = el?.$el
+      if ($el) {
+        this.imageRefs.push($el)
+      }
     },
     showPrev() {
       if (this.currentImageIndex > 0) {
@@ -70,7 +76,8 @@ export default {
       if (!this.imageRefs) return
       const imageEl = this.imageRefs[index]
       if (imageEl) {
-        imageEl.scrollIntoView({
+        this.$refs.images?.scrollTo({
+          left: imageEl.offsetLeft,
           behavior: 'smooth'
         })
         if (this.currentImageIndex !== index) {
@@ -91,6 +98,13 @@ export default {
         this.currentImageIndex = index
       }
     }
+    // resizeHandlerDebounced() {
+    //   if (window.innerWidth <= 720) {
+
+    //   } else {
+
+    //   }
+    // }
   },
   computed: {
     isCurrentImageLast() {
@@ -198,6 +212,15 @@ export default {
     display: flex;
     -webkit-overflow-scrolling: touch;
     overflow-x: scroll;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    @media (min-width: 721px) {
+      transform: none !important;
+    }
   }
 
   .gallery-image {
