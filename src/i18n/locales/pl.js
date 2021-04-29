@@ -110,6 +110,10 @@ export default {
       tablespoon: 'łyżek | łyżka | łyżki | łyżek',
       teaspoon: 'łyżeczek | łyżeczka | łyżeczki | łyżeczek',
 
+      millimeter: 'mm',
+      centimeter: 'cm',
+      meter: 'm',
+
       clove: 'ząbków | ząbek | ząbki | ząbków',
       piece: 'szt.',
       grain: 'ziaren | ziarno | ziarna | ziaren',
@@ -122,7 +126,8 @@ export default {
       stalk: 'łodyg | łodyga | łodygi | łodyg',
       cube: 'kostek | kostka | kostki | kostek',
       can: 'puszek | puszka | puszki | puszek',
-      leaf: 'liści | liść | liście | liści'
+      leaf: 'liści | liść | liście | liści',
+      sachet: 'saszetek | saszetka | saszetki | saszetek'
     },
     units: {
       milligram: 'miligramów | miligram | miligramy | miligramów',
@@ -138,6 +143,10 @@ export default {
       tablespoon: 'łyżek | łyżka | łyżki | łyżek',
       teaspoon: 'łyżeczek | łyżeczka | łyżeczki | łyżeczek',
 
+      millimeter: 'milimetrów | milimetr | milimetry | milimetrów',
+      centimeter: 'centymetrów | centymetr | centymetry | centymetrów',
+      meter: 'metrów | metr | metry | metrów',
+
       clove: 'ząbków | ząbek | ząbki | ząbków',
       piece: 'sztuk | sztuka | sztuki | sztuk',
       grain: 'ziaren | ziarno | ziarna | ziaren',
@@ -150,7 +159,8 @@ export default {
       stalk: 'łodyg | łodyga | łodygi | łodyg',
       cube: 'kostek | kostka | kostki | kostek',
       can: 'puszek | puszka | puszki | puszek',
-      leaf: 'liści | liść | liście | liści'
+      leaf: 'liści | liść | liście | liści',
+      sachet: 'saszetek | saszetka | saszetki | saszetek'
     },
     unitGroups: {
       weight: 'waga',

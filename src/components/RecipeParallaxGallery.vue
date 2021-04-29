@@ -23,20 +23,12 @@
         :key="index"
       />
     </div>
-    <div
-      ref="images"
-      class="recipe-parallax-gallery__images"
-      @mousedown="mouseDownHandler($event)"
-      @mousemove="mouseMoveHandler($event)"
-      @mouseup="mouseUpHandler()"
-      @touchstart="touchStartHanlder($event)"
-      @touchmove="touchMoveHandler($event)"
-      @touchend="touchEndHandler()"
-    >
+    <div ref="images" class="recipe-parallax-gallery__images">
       <BaseImageLazyload
+        class="recipe-parallax-gallery__image"
         :id="image.id"
-        :class="imageClasses(index)"
         v-for="(image, index) in imageObjects"
+        :ref="setImageRef($event)"
         :src="image.src"
         :key="index"
         @click="move(index)"
@@ -62,8 +54,12 @@ export default {
       isPointerDown: false,
       offset: null,
       movement: 0,
-      currentImageIndex: 0
+      currentImageIndex: 0,
+      imageRefs: []
     }
+  },
+  beforeUpdate() {
+    this.imageRefs = []
   },
   beforeMount() {
     window.addEventListener('scroll', this.scrollHandler, false)
@@ -75,6 +71,11 @@ export default {
     window.removeEventListener('scroll', this.scrollHandler, false)
   },
   methods: {
+    setImageRef(el) {
+      if (el) {
+        this.imageRefs.push(el)
+      }
+    },
     scrollHandler() {
       const parentHeight = this.$refs.block.offsetHeight
       const scrollFactor = Math.max(0, Math.min(window.pageYOffset / parentHeight, 1))
@@ -308,12 +309,19 @@ export default {
     transform: translate3d(0, 0, 0);
     transform-style: preserve-3d;
     background-color: var(--color-image-background);
+
+    scroll-snap-type: x mandatory;
+    display: flex;
+    -webkit-overflow-scrolling: touch;
+    overflow-x: scroll;
   }
 
   &__image {
+    flex-shrink: 0;
+    scroll-snap-align: start;
     width: 100%;
     height: 100%;
-    display: none;
+    // display: none;
 
     img {
       object-fit: cover;
@@ -321,33 +329,33 @@ export default {
       height: 100%;
     }
 
-    &--previous,
-    &--current,
-    &--next {
-      display: block;
-      transform: translate3d(var(--recipe-parallax-gallery-movement), 0, 0);
-      @include transition(transform, 0.15s, ease);
+    // &--previous,
+    // &--current,
+    // &--next {
+    //   display: block;
+    //   transform: translate3d(var(--recipe-parallax-gallery-movement), 0, 0);
+    //   @include transition(transform, 0.15s, ease);
 
-      #{ $root }--pointer-down &,
-      #{ $root }--changing-current-index & {
-        transition-duration: 0s;
-      }
-    }
+    //   #{ $root }--pointer-down &,
+    //   #{ $root }--changing-current-index & {
+    //     transition-duration: 0s;
+    //   }
+    // }
 
-    &--previous,
-    &--next {
-      position: absolute;
-    }
+    // &--previous,
+    // &--next {
+    //   position: absolute;
+    // }
 
-    &--previous {
-      top: 0;
-      right: 100%;
-    }
+    // &--previous {
+    //   top: 0;
+    //   right: 100%;
+    // }
 
-    &--next {
-      top: 0;
-      left: 100%;
-    }
+    // &--next {
+    //   top: 0;
+    //   left: 100%;
+    // }
   }
 }
 </style>
