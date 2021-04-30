@@ -44,14 +44,14 @@ export default {
   mounted() {
     this.imagesScrollHandler = debounce(this.imagesScrollHandlerDebounced, 200)
     // this.resizeHandler = debounce(this.resizeHandlerDebounced, 500)
-    // this.windowScrollHandler()
+    this.windowScrollHandler()
 
-    // window.addEventListener('scroll', this.windowScrollHandler, false)
+    window.addEventListener('scroll', this.windowScrollHandler, false)
     // window.addEventListener('resize', this.resizeHandler, false)
     this.$refs.images.addEventListener('scroll', this.imagesScrollHandler, false)
   },
   beforeUnmount() {
-    // window.removeEventListener('scroll', this.windowScrollHandler, false)
+    window.removeEventListener('scroll', this.windowScrollHandler, false)
     // window.addEventLiremoveEventListenerstener('resize', this.resizeHandler, false)
     this.$refs.images.removeEventListener('scroll', this.imagesScrollHandler, false)
   },
@@ -124,7 +124,7 @@ export default {
   height: 320px;
   position: relative;
   overflow: hidden;
-  transform-style: preserve-3d;
+  // transform-style: preserve-3d;
 
   .gallery-controls {
     display: none;
@@ -205,9 +205,11 @@ export default {
   .gallery-images {
     width: 100%;
     height: 100%;
-    // transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    transform-style: preserve-3d;
 
-    transform: translateZ(-1px) scale(2);
+    // transform-origin: 0 0;
+    // transform: translateZ(-1px) scale(2);
     background-color: var(--color-image-background);
 
     scroll-snap-type: x mandatory;

@@ -4,6 +4,7 @@
 
 body,
 html {
+  height: 100%;
   padding: 0;
   margin: 0;
 }
@@ -11,7 +12,7 @@ html {
 html {
   background-color: var(--color-background);
   color: var(--color-text-primary);
-  overflow: hidden;
+  // overflow: hidden;
 
   // @include cursor-only {
   //   scrollbar-width: thin;
@@ -23,10 +24,10 @@ html {
 body {
   overflow-y: scroll;
   overflow-x: hidden;
-  perspective: 1px;
-  perspective-origin: 50% 160px; // TODO special for mobile recipe view
-  transform-style: preserve-3d;
-  height: 100vh;
+  // perspective: 1px;
+  // perspective-origin: 0 0; // TODO special for mobile recipe view
+  // transform-style: preserve-3d;
+  // height: 100vh;
   // height: 100vh;
 
   // @include cursor-only {
