@@ -33,7 +33,21 @@
               </BaseLink>
             </transition>
           </div>
-          <div class="filter__group__options">
+          <div v-if="groupValue === 'BaseProducts'">
+            <BaseButton subtle color="primary" v-for="baseProduct in selectedBaseProducts" :key="baseProduct.id">{{
+              baseProduct.name
+            }}</BaseButton>
+            <BaseSelect
+              placeholder="Produkt"
+              class="form-row"
+              trackBy="id"
+              label="name"
+              :options="baseProducts"
+              :searchable="true"
+              @change="selectedBaseProducts.push($event)"
+            />
+          </div>
+          <div v-else class="filter__group__options">
             <div v-for="option in group.options" :key="option.value">
               <BasePillCheckbox v-model="selected[groupValue]" :value="option.key" :excluding="group.type === 'None'">
                 {{ $t(`recipeFilterOptions.${groupValue}.${option.value}`) }}
@@ -55,6 +69,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   emits: ['close'],
   props: {
@@ -75,13 +91,21 @@ export default {
   },
   data: component => ({
     selected: {},
-    orderSelected: component.defaultOrderSelected
+    orderSelected: component.defaultOrderSelected,
+    selectedBaseProducts: []
   }),
-  computed: {},
+  computed: {
+    ...mapState({
+      baseProducts: state => state.ingredients.baseProducts
+    })
+  },
   methods: {
     submit() {
       this.$emit('close', {
-        selected: this.selected,
+        selected: {
+          ...this.selected,
+          BaseProducts: this.selectedBaseProducts.map(p => p.id)
+        },
         orderSelected: this.orderSelected
       })
     },

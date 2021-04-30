@@ -58,10 +58,11 @@ export default {
       MissingIngredientsDescending: 'liczby brakujących składników: malejąco'
     },
     recipeFilterGroups: {
-      Other: 'Ogólne',
+      Other: 'Twoje',
       Category: 'Kategoria',
       Diet: 'Dieta',
-      Allergens: 'Wyklucz alergeny'
+      Allergens: 'Wyklucz alergeny',
+      BaseProducts: 'Wymagane składniki'
     },
     recipeFilterOptions: {
       Other: {
