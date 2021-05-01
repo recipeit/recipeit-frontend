@@ -57,6 +57,7 @@
               :options="baseProducts"
               :limit="25"
               :searchable="true"
+              @click.stop
               @change="addSelectedBaseProduct($event)"
             />
           </div>
