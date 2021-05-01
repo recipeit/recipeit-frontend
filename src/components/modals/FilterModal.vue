@@ -213,6 +213,10 @@ export default {
 
       & + & {
         margin-left: 12px;
+
+        @include cursor-only {
+          margin-left: 0;
+        }
       }
     }
 
@@ -229,6 +233,18 @@ export default {
         content: '';
         width: 32px;
         flex-shrink: 0;
+      }
+
+      @include cursor-only {
+        flex-wrap: wrap;
+        overflow: initial;
+        margin: 0;
+        gap: 12px;
+
+        &::before,
+        &::after {
+          content: none;
+        }
       }
     }
   }
