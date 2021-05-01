@@ -58,6 +58,7 @@ $checked-icon-width: $checked-icon-size + $checked-icon-margin-right;
   display: flex;
   align-items: center;
   font-size: 14px;
+  font-size: 12px;
   cursor: pointer;
   transition: all 0.2s ease;
   overflow: hidden;

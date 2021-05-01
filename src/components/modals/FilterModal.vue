@@ -49,17 +49,25 @@
               class="form-row"
               trackBy="id"
               label="name"
+              defaultOpenDirection="above"
               :options="baseProducts"
               :searchable="true"
               @change="addSelectedBaseProduct($event)"
             />
           </div>
           <div v-else class="filter__group__options">
-            <div v-for="option in group.options" :key="option.value">
-              <BasePillCheckbox v-model="selected[groupValue]" :value="option.key" :excluding="group.type === 'None'">
-                {{ $t(`recipeFilterOptions.${groupValue}.${option.value}`) }}
-              </BasePillCheckbox>
-            </div>
+            <!-- <div> -->
+            <BasePillCheckbox
+              v-for="option in group.options"
+              :key="option.value"
+              v-model="selected[groupValue]"
+              :value="option.key"
+              :excluding="group.type === 'None'"
+              class="filter__group__option"
+            >
+              {{ $t(`recipeFilterOptions.${groupValue}.${option.value}`) }}
+            </BasePillCheckbox>
+            <!-- </div> -->
           </div>
         </div>
       </div>
@@ -192,17 +200,36 @@ export default {
     }
 
     &__name {
-      color: var(--color-text-primary);
+      color: var(--color-text-secondary);
+      // font-weight: bold;
     }
 
     &__clear {
       margin-left: auto;
     }
 
+    &__option {
+      flex-shrink: 0;
+
+      & + & {
+        margin-left: 12px;
+      }
+    }
+
     &__options {
       display: flex;
       flex-wrap: wrap;
-      gap: 12px;
+      // gap: 12px;
+      flex-wrap: nowrap;
+      overflow: auto;
+      margin: 0 -32px;
+
+      &::before,
+      &::after {
+        content: '';
+        width: 32px;
+        flex-shrink: 0;
+      }
     }
   }
 }

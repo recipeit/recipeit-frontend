@@ -105,6 +105,11 @@ function includes(str, query) {
   // return text.indexOf(query.trim()) !== -1
 }
 
+const OPEN_DIRECTIONS = {
+  ABOVE: 'above',
+  BELOW: 'below'
+}
+
 export default {
   emits: ['change', 'blur', 'focus'],
   model: {
@@ -140,6 +145,11 @@ export default {
       type: Number,
       default: 210
     },
+    defaultOpenDirection: {
+      type: String,
+      validator: value => Object.values(OPEN_DIRECTIONS).includes(value),
+      default: OPEN_DIRECTIONS.BELOW
+    },
     customLabel: {
       type: Function,
       default(option, label) {
@@ -151,7 +161,7 @@ export default {
   data: component => ({
     search: '',
     opened: false,
-    preferredOpenDirection: 'below',
+    preferredOpenDirection: component.defaultOpenDirection,
     optimizedHeight: component.maxHeight,
     pointer: null,
     id: 'base-select-' + uniqueID().getID()
@@ -298,11 +308,16 @@ export default {
       const spaceBelow = window.innerHeight - this.$el.getBoundingClientRect().bottom
       const hasEnoughSpaceBelow = spaceBelow > this.maxHeight
 
-      if (hasEnoughSpaceBelow || spaceBelow > spaceAbove || this.openDirection === 'below' || this.openDirection === 'bottom') {
-        this.preferredOpenDirection = 'below'
+      if (
+        hasEnoughSpaceBelow ||
+        spaceBelow > spaceAbove ||
+        this.openDirection === OPEN_DIRECTIONS.BELOW ||
+        this.openDirection === 'bottom'
+      ) {
+        this.preferredOpenDirection = OPEN_DIRECTIONS.BELOW
         this.optimizedHeight = Math.min(spaceBelow - 40, this.maxHeight)
       } else {
-        this.preferredOpenDirection = 'above'
+        this.preferredOpenDirection = OPEN_DIRECTIONS.ABOVE
         this.optimizedHeight = Math.min(spaceAbove - 40, this.maxHeight)
       }
     },
@@ -354,7 +369,7 @@ export default {
       // ) {
       //   return false
       // } else {
-      return this.preferredOpenDirection === 'above'
+      return this.preferredOpenDirection === OPEN_DIRECTIONS.ABOVE
       // }
     }
   },

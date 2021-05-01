@@ -62,6 +62,7 @@
     bottom: 0;
     z-index: 1;
     background-color: rgba(var(--color-background-rgb), 0.95);
+    border-radius: 0 0 32px 32px;
 
     @supports (backdrop-filter: blur(8px)) {
       background-color: rgba(var(--color-background-rgb), 0.75);

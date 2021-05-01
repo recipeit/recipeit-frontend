@@ -83,7 +83,8 @@ export default {
       }
 
       if (!preventScroll) {
-        this.offset = [e.changedTouches[0].clientX, e.changedTouches[0].clientY]
+        const { clientX, clientY } = e.changedTouches[0]
+        this.offset = [clientX, clientY]
       }
     },
     onPointerUp() {
@@ -104,11 +105,10 @@ export default {
       }
 
       if (this.isDown && this.offset) {
-        let mousePosition = {
-          x: event.changedTouches[0].clientX,
-          y: event.changedTouches[0].clientY
-        }
-        this.transformTop = mousePosition.y - this.offset[1]
+        const { clientY } = event.changedTouches[0]
+
+        this.transformTop = clientY - this.offset[1]
+
         if (this.$refs.scroller.scrollTop === 0 && this.transformTop >= 0) {
           event.preventDefault()
         }
