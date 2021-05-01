@@ -58,7 +58,7 @@
           <div v-else class="filter__group__options">
             <!-- <div> -->
             <BasePillCheckbox
-              v-for="option in group.options"
+              v-for="option in orderedGroupOptions(groupValue)"
               :key="option.value"
               v-model="selected[groupValue]"
               :value="option.key"
@@ -84,6 +84,7 @@
 </template>
 
 <script>
+import _ from 'lodash'
 import { computed, reactive, toRefs } from '@vue/runtime-core'
 import { useStore } from 'vuex'
 
@@ -114,6 +115,7 @@ export default {
     const baseProducts = computed(() => store.state.ingredients.baseProducts)
 
     console.log('props.defaultSelected', props.defaultSelected)
+    console.log('props.options', props.options)
 
     // eslint-disable-next-line vue/no-setup-props-destructure
     const { [OPTION_KEYS.BASE_PRODUCTS]: defaultSelectedBaseProductIds, ...rest } = props.defaultSelected
@@ -148,17 +150,28 @@ export default {
     }
 
     const addSelectedBaseProduct = product => {
-      var productIndex = data.selected[OPTION_KEYS.BASE_PRODUCTS].findIndex(p => p.id === product.id)
+      const productIndex = data.selected[OPTION_KEYS.BASE_PRODUCTS].findIndex(p => p.id === product.id)
       if (productIndex < 0) {
         data.selected[OPTION_KEYS.BASE_PRODUCTS].push(product)
       }
     }
 
     const removeSelectedBaseProduct = id => {
-      var productIndex = data.selected[OPTION_KEYS.BASE_PRODUCTS].findIndex(p => p.id === id)
+      const productIndex = data.selected[OPTION_KEYS.BASE_PRODUCTS].findIndex(p => p.id === id)
       if (productIndex >= 0) {
         data.selected[OPTION_KEYS.BASE_PRODUCTS].splice(productIndex, 1)
       }
+    }
+
+    const orderedGroupOptions = groupKey => {
+      const options = props.options[groupKey]?.options
+      const defaultSelectedIds = props.defaultSelected[groupKey]
+      if (options) {
+        return _.sortBy(options, o => {
+          return !defaultSelectedIds?.includes(o.key)
+        })
+      }
+      return []
     }
 
     return {
@@ -169,6 +182,7 @@ export default {
       orderSelectedChanged,
       addSelectedBaseProduct,
       removeSelectedBaseProduct,
+      orderedGroupOptions,
       OPTION_KEYS
     }
   }
