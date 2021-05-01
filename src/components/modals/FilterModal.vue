@@ -64,6 +64,7 @@
               :value="option.key"
               :excluding="group.type === 'None'"
               class="filter__group__option"
+              @click="pillCheckboxClickHandler($event)"
             >
               {{ $t(`recipeFilterOptions.${groupValue}.${option.value}`) }}
             </BasePillCheckbox>
@@ -171,6 +172,14 @@ export default {
       return []
     }
 
+    const pillCheckboxClickHandler = ({ target }) => {
+      setTimeout(() => {
+        target?.scrollIntoView({
+          behavior: 'smooth'
+        })
+      }, 500)
+    }
+
     return {
       ...toRefs(data),
       baseProducts,
@@ -180,6 +189,7 @@ export default {
       addSelectedBaseProduct,
       removeSelectedBaseProduct,
       orderedGroupOptions,
+      pillCheckboxClickHandler,
       OPTION_KEYS
     }
   }
