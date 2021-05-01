@@ -27,16 +27,23 @@
                 color="primary"
                 class="filter__group__clear"
                 v-if="selected[groupValue] && selected[groupValue].length > 0"
-                @click.stop="clearFilterGroup($event, groupValue)"
+                @click.stop="clearFilterGroup(groupValue)"
               >
                 wyczyść
               </BaseLink>
             </transition>
           </div>
-          <div v-if="groupValue === 'BaseProducts'">
-            <BaseButton subtle color="primary" v-for="baseProduct in selectedBaseProducts" :key="baseProduct.id">{{
-              baseProduct.name
-            }}</BaseButton>
+          <div v-if="groupValue === OPTION_KEYS.BASE_PRODUCTS">
+            <BaseButton
+              subtle
+              color="primary"
+              size="small"
+              v-for="baseProduct in selected[groupValue]"
+              :key="baseProduct.id"
+              @click.stop="removeSelectedBaseProduct(baseProduct.id)"
+            >
+              {{ baseProduct.name }}
+            </BaseButton>
             <BaseSelect
               placeholder="Produkt"
               class="form-row"
@@ -44,7 +51,7 @@
               label="name"
               :options="baseProducts"
               :searchable="true"
-              @change="selectedBaseProducts.push($event)"
+              @change="addSelectedBaseProduct($event)"
             />
           </div>
           <div v-else class="filter__group__options">
@@ -69,7 +76,12 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { computed, reactive, toRefs } from '@vue/runtime-core'
+import { useStore } from 'vuex'
+
+const OPTION_KEYS = {
+  BASE_PRODUCTS: 'BaseProducts'
+}
 
 export default {
   emits: ['close'],
@@ -89,41 +101,68 @@ export default {
       type: String
     }
   },
-  data: component => ({
-    selected: {},
-    orderSelected: component.defaultOrderSelected,
-    selectedBaseProducts: []
-  }),
-  computed: {
-    ...mapState({
-      baseProducts: state => state.ingredients.baseProducts
+  setup(props, { emit }) {
+    const store = useStore()
+    const baseProducts = computed(() => store.state.ingredients.baseProducts)
+
+    console.log('props.defaultSelected', props.defaultSelected)
+
+    // eslint-disable-next-line vue/no-setup-props-destructure
+    const { [OPTION_KEYS.BASE_PRODUCTS]: defaultSelectedBaseProductIds, ...rest } = props.defaultSelected
+
+    const data = reactive({
+      selected: {
+        ...Object.fromEntries(Object.keys(props.options).map(o => [o, []])),
+        ...rest,
+        [OPTION_KEYS.BASE_PRODUCTS]: defaultSelectedBaseProductIds?.map(id => baseProducts.value?.find(p => p.id === id)) || []
+      },
+      orderSelected: props.defaultOrderSelected
     })
-  },
-  methods: {
-    submit() {
-      this.$emit('close', {
+
+    const submit = () => {
+      const { [OPTION_KEYS.BASE_PRODUCTS]: selectedBaseProducts, ...restSelected } = data.selected
+
+      emit('close', {
         selected: {
-          ...this.selected,
-          BaseProducts: this.selectedBaseProducts.map(p => p.id)
+          ...restSelected,
+          [OPTION_KEYS.BASE_PRODUCTS]: selectedBaseProducts.map(p => p.id)
         },
-        orderSelected: this.orderSelected
+        orderSelected: data.orderSelected
       })
-    },
-    prepareSelected(options, selected) {
-      return {
-        ...Object.fromEntries(Object.keys(options).map(o => [o, []])),
-        ...selected
-      }
-    },
-    clearFilterGroup(event, groupValue) {
-      this.selected[groupValue] = []
-    },
-    orderSelectedChanged(newValue) {
-      this.orderSelected = newValue || this.defaultOrderSelected
     }
-  },
-  created() {
-    this.selected = this.prepareSelected(this.options, this.defaultSelected)
+
+    const clearFilterGroup = groupValue => {
+      data.selected[groupValue] = []
+    }
+
+    const orderSelectedChanged = newValue => {
+      data.orderSelected = newValue || props.defaultOrderSelected
+    }
+
+    const addSelectedBaseProduct = product => {
+      var productIndex = data.selected[OPTION_KEYS.BASE_PRODUCTS].findIndex(p => p.id === product.id)
+      if (productIndex < 0) {
+        data.selected[OPTION_KEYS.BASE_PRODUCTS].push(product)
+      }
+    }
+
+    const removeSelectedBaseProduct = id => {
+      var productIndex = data.selected[OPTION_KEYS.BASE_PRODUCTS].findIndex(p => p.id === id)
+      if (productIndex >= 0) {
+        data.selected[OPTION_KEYS.BASE_PRODUCTS].splice(productIndex, 1)
+      }
+    }
+
+    return {
+      ...toRefs(data),
+      baseProducts,
+      submit,
+      clearFilterGroup,
+      orderSelectedChanged,
+      addSelectedBaseProduct,
+      removeSelectedBaseProduct,
+      OPTION_KEYS
+    }
   }
 }
 </script>
