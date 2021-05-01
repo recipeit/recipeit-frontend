@@ -55,6 +55,7 @@
               label="name"
               defaultOpenDirection="above"
               :options="baseProducts"
+              :limit="25"
               :searchable="true"
               @change="addSelectedBaseProduct($event)"
             />

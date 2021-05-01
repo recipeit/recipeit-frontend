@@ -46,9 +46,9 @@
           :class="['base-select__options', { 'base-select__options--above': isAbove }]"
           :style="{ maxHeight: optimizedHeight + 'px' }"
         >
-          <ul class="base-select__options__list" v-if="filteredOptions && filteredOptions.length > 0">
+          <ul class="base-select__options__list" v-if="filteredOptionsLimited && filteredOptionsLimited.length > 0">
             <li
-              v-for="(option, index) in filteredOptions"
+              v-for="(option, index) in filteredOptionsLimited"
               :key="option"
               :class="{
                 'base-select__options__list__item': true,
@@ -122,6 +122,10 @@ export default {
       type: Boolean,
       default: true
     },
+    multiple: {
+      type: Boolean,
+      default: false
+    },
     limit: {
       type: Number
     },
@@ -175,32 +179,32 @@ export default {
       return value
     },
     async addPointerElement() {
-      if (this.filteredOptions.length > 0) {
-        await this.selectOption(this.filteredOptions[this.pointer])
+      if (this.filteredOptionsLimited.length > 0) {
+        await this.selectOption(this.filteredOptionsLimited[this.pointer])
       } else {
         await this.hide()
       }
     },
     pointerForward() {
-      if (this.pointer !== null && this.pointer < this.filteredOptions.length - 1) {
+      if (this.pointer !== null && this.pointer < this.filteredOptionsLimited.length - 1) {
         this.pointer++
       } else {
         this.pointer = 0
       }
 
       //RISKY TODO
-      if (this.filteredOptions[this.pointer].isLabel) {
+      if (this.filteredOptionsLimited[this.pointer].isLabel) {
         this.pointer++
       }
       // /* istanbul ignore else */
-      // if (this.pointer < this.filteredOptions.length - 1) {
+      // if (this.pointer < this.filteredOptionsLimited.length - 1) {
       //   this.pointer++
       //   /* istanbul ignore next */
       //   if (this.$refs.list.scrollTop <= this.pointerPosition - (this.visibleElements - 1) * this.optionHeight) {
       //     this.$refs.list.scrollTop = this.pointerPosition - (this.visibleElements - 1) * this.optionHeight
       //   }
       //   /* istanbul ignore else */
-      //   if (this.filteredOptions[this.pointer] && this.filteredOptions[this.pointer].$isLabel && !this.groupSelect)
+      //   if (this.filteredOptionsLimited[this.pointer] && this.filteredOptionsLimited[this.pointer].$isLabel && !this.groupSelect)
       //     this.pointerForward()
       // }
       // this.pointerDirty = true
@@ -209,15 +213,15 @@ export default {
       if (this.pointer !== null && this.pointer > 0) {
         this.pointer--
       } else {
-        this.pointer = this.filteredOptions.length - 1
+        this.pointer = this.filteredOptionsLimited.length - 1
       }
 
       //RISKY TODO
-      if (this.filteredOptions[this.pointer].isLabel) {
+      if (this.filteredOptionsLimited[this.pointer].isLabel) {
         this.pointer--
 
         if (this.pointer < 0) {
-          this.pointer = this.filteredOptions.length - 1
+          this.pointer = this.filteredOptionsLimited.length - 1
         }
       }
       // if (this.pointer > 0) {
@@ -227,11 +231,11 @@ export default {
       //     this.$refs.list.scrollTop = this.pointerPosition
       //   }
       //   /* istanbul ignore else */
-      //   if (this.filteredOptions[this.pointer] && this.filteredOptions[this.pointer].$isLabel && !this.groupSelect)
+      //   if (this.filteredOptionsLimited[this.pointer] && this.filteredOptionsLimited[this.pointer].$isLabel && !this.groupSelect)
       //     this.pointerBackward()
       // } else {
       //   /* istanbul ignore else */
-      //   if (this.filteredOptions[this.pointer] && this.filteredOptions[0].$isLabel && !this.groupSelect) this.pointerForward()
+      //   if (this.filteredOptionsLimited[this.pointer] && this.filteredOptionsLimited[0].$isLabel && !this.groupSelect) this.pointerForward()
       // }
       // this.pointerDirty = true
     },
@@ -249,8 +253,8 @@ export default {
       this.pointer = index
     },
     pointerAdjust() {
-      if (this.pointer >= this.filteredOptions.length - 1) {
-        this.pointer = this.filteredOptions.length ? this.filteredOptions.length - 1 : 0
+      if (this.pointer >= this.filteredOptionsLimited.length - 1) {
+        this.pointer = this.filteredOptionsLimited.length ? this.filteredOptionsLimited.length - 1 : 0
       }
     },
 
@@ -359,6 +363,12 @@ export default {
       } else {
         return this.filterOptions(this.options)
       }
+    },
+    filteredOptionsLimited() {
+      if (this.limit) {
+        return this.filteredOptions?.slice(0, this.limit)
+      }
+      return this.filteredOptions
     },
     isAbove() {
       // if (this.openDirection === 'above' || this.openDirection === 'top') {
