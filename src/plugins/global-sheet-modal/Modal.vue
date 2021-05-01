@@ -69,22 +69,21 @@ export default {
     },
     onPointerDown(e) {
       this.isDown = true
-      if (e.changedTouches) {
-        let tempElement = e.target
-        let preventScroll = false
-        while (tempElement !== this.$refs.scroller && tempElement.parentElement && this.$refs.scroller) {
-          if (tempElement.scrollHeight > tempElement.clientHeight && tempElement.scrollTop > 0) {
-            preventScroll = true
-            break
-          }
-          tempElement = tempElement.parentElement
-        }
 
-        if (!preventScroll) {
-          this.offset = [e.changedTouches[0].clientX, e.changedTouches[0].clientY]
+      if (this.$refs.scroller.scrollTop !== 0) return
+
+      let tempElement = e.target
+      let preventScroll = false
+      while (tempElement !== this.$refs.scroller && tempElement.parentElement && this.$refs.scroller) {
+        if (tempElement.scrollHeight > tempElement.clientHeight && tempElement.scrollTop > 0) {
+          preventScroll = true
+          break
         }
-      } else {
-        this.offset = [e.clientX, e.clientY]
+        tempElement = tempElement.parentElement
+      }
+
+      if (!preventScroll) {
+        this.offset = [e.changedTouches[0].clientX, e.changedTouches[0].clientY]
       }
     },
     onPointerUp() {
@@ -100,16 +99,15 @@ export default {
       this.transformTop = null
     },
     onPointerMove(event) {
+      if (this.$refs.scroller.scrollTop !== 0) {
+        this.offset = null
+      }
+
       if (this.isDown && this.offset) {
-        let mousePosition = event.changedTouches
-          ? {
-              x: event.changedTouches[0].clientX,
-              y: event.changedTouches[0].clientY
-            }
-          : {
-              x: event.clientX,
-              y: event.clientY
-            }
+        let mousePosition = {
+          x: event.changedTouches[0].clientX,
+          y: event.changedTouches[0].clientY
+        }
         this.transformTop = mousePosition.y - this.offset[1]
         if (this.$refs.scroller.scrollTop === 0 && this.transformTop >= 0) {
           event.preventDefault()

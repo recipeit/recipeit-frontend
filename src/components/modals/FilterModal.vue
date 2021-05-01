@@ -64,7 +64,7 @@
         </div>
       </div>
     </BaseModalBody>
-    <BaseModalFooter>
+    <BaseModalFooter :sticky="true">
       <BaseButton class="submit-button" stroked color="white" @click="$emit('close')">
         {{ $t('filterModal.cancelButton') }}
       </BaseButton>

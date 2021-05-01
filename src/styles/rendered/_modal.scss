@@ -56,4 +56,16 @@
   .modal-header + & {
     padding-top: 0;
   }
+
+  &--sticky {
+    position: sticky;
+    bottom: 0;
+    z-index: 1;
+    background-color: rgba(var(--color-background-rgb), 0.95);
+
+    @supports (backdrop-filter: blur(8px)) {
+      background-color: rgba(var(--color-background-rgb), 0.75);
+      backdrop-filter: saturate(180%) blur(8px);
+    }
+  }
 }
