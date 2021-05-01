@@ -16,7 +16,13 @@
         @click="scrollTo(index)"
       />
     </div>
-    <div ref="images" class="gallery-images">
+    <div
+      ref="images"
+      class="gallery-images"
+      @touchstart="isTouching = true"
+      @touchend="isTouching = false"
+      @touchcancel="isTouching = false"
+    >
       <BaseImageLazyload class="gallery-image" v-for="(image, index) in images" :key="index" :src="image.src" :ref="setImageRef" />
     </div>
   </div>
@@ -35,6 +41,8 @@ export default {
   data() {
     return {
       currentImageIndex: 0,
+      isTouching: false,
+      onScrollTimeout: null,
       imageRefs: []
     }
   },
@@ -43,16 +51,16 @@ export default {
   },
   mounted() {
     this.imagesScrollHandler = debounce(this.imagesScrollHandlerDebounced, 200)
-    // this.resizeHandler = debounce(this.resizeHandlerDebounced, 500)
+    this.resizeHandler = debounce(this.resizeHandlerDebounced, 500)
     this.windowScrollHandler()
 
     window.addEventListener('scroll', this.windowScrollHandler, false)
-    // window.addEventListener('resize', this.resizeHandler, false)
+    window.addEventListener('resize', this.resizeHandler, false)
     this.$refs.images.addEventListener('scroll', this.imagesScrollHandler, false)
   },
   beforeUnmount() {
     window.removeEventListener('scroll', this.windowScrollHandler, false)
-    // window.addEventLiremoveEventListenerstener('resize', this.resizeHandler, false)
+    window.removeEventListener('resize', this.resizeHandler, false)
     this.$refs.images.removeEventListener('scroll', this.imagesScrollHandler, false)
   },
   methods: {
@@ -76,10 +84,12 @@ export default {
       if (!this.imageRefs) return
       const imageEl = this.imageRefs[index]
       if (imageEl) {
-        this.$refs.images?.scrollTo({
-          left: imageEl.offsetLeft,
-          behavior: 'smooth'
-        })
+        if (this.$refs.images && this.$refs.images.scrollLeft !== imageEl.offsetLeft) {
+          this.$refs.images?.scrollTo({
+            left: imageEl.offsetLeft,
+            behavior: 'smooth'
+          })
+        }
         if (this.currentImageIndex !== index) {
           this.currentImageIndex = index
         }
@@ -97,14 +107,15 @@ export default {
       if (this.currentImageIndex !== index) {
         this.currentImageIndex = index
       }
+      if (!this.isTouching) {
+        this.scrollTo(this.currentImageIndex)
+      }
+    },
+    resizeHandlerDebounced() {
+      if (!this.isTouching) {
+        this.scrollTo(this.currentImageIndex)
+      }
     }
-    // resizeHandlerDebounced() {
-    //   if (window.innerWidth <= 720) {
-
-    //   } else {
-
-    //   }
-    // }
   },
   computed: {
     isCurrentImageLast() {
