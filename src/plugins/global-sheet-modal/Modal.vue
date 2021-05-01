@@ -83,8 +83,8 @@ export default {
       }
 
       if (!preventScroll) {
-        const { clientX, clientY } = e.changedTouches[0]
-        this.offset = [clientX, clientY]
+        const { clientX: x, clientY: y } = e.changedTouches[0]
+        this.offset = { x, y, initial: true }
       }
     },
     onPointerUp() {
@@ -105,14 +105,29 @@ export default {
       }
 
       if (this.isDown && this.offset) {
-        const { clientY } = event.changedTouches[0]
+        const { clientX, clientY } = event.changedTouches[0]
 
-        this.transformTop = clientY - this.offset[1]
+        const newOffsetX = clientX - this.offset.x
+        const newOffsetY = clientY - this.offset.y
 
-        if (this.$refs.scroller.scrollTop === 0 && this.transformTop >= 0) {
-          event.preventDefault()
+        if (this.offset.initial && Math.abs(newOffsetX) > Math.abs(newOffsetY)) {
+          this.offset = null
+          return false
+        }
+
+        if (this.offset.initial && Math.abs(newOffsetX) < Math.abs(newOffsetY)) {
+          this.offset.initial = false
+        }
+
+        if (!this.offset.initial) {
+          this.transformTop = newOffsetY
+
+          if (this.$refs.scroller.scrollTop === 0 && this.transformTop >= 0) {
+            event.preventDefault()
+          }
         }
       }
+      return false
     }
   },
   computed: {
