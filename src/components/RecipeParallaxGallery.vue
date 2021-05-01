@@ -51,19 +51,19 @@ export default {
   },
   mounted() {
     this.imagesScrollHandler = debounce(this.imagesScrollHandlerDebounced, 200)
-    this.resizeHandler = debounce(this.resizeHandlerDebounced, 500)
+    this.checkGalleryStoppedInMiddleHandler = debounce(this.checkGalleryStoppedInMiddle, 500)
     this.windowScrollHandler()
 
     window.addEventListener('scroll', this.windowScrollHandler, false)
-    window.addEventListener('resize', this.resizeHandler, false)
+    window.addEventListener('resize', this.checkGalleryStoppedInMiddleHandler, false)
     this.$refs.images.addEventListener('scroll', this.imagesScrollHandler, false)
-    this.$refs.images.addEventListener('scroll', this.checkStopScrollingInMiddle, false)
+    this.$refs.images.addEventListener('scroll', this.checkGalleryStoppedInMiddleHandler, false)
   },
   beforeUnmount() {
     window.removeEventListener('scroll', this.windowScrollHandler, false)
-    window.removeEventListener('resize', this.resizeHandler, false)
+    window.removeEventListener('resize', this.checkGalleryStoppedInMiddleHandler, false)
     this.$refs.images.removeEventListener('scroll', this.imagesScrollHandler, false)
-    this.$refs.images.removeEventListener('scroll', this.checkStopScrollingInMiddle, false)
+    this.$refs.images.removeEventListener('scroll', this.checkGalleryStoppedInMiddleHandler, false)
   },
   methods: {
     setImageRef(el) {
@@ -113,22 +113,16 @@ export default {
         this.currentImageIndex = index
       }
     },
-    resizeHandlerDebounced() {
+    // resizeHandlerDebounced() {
+    //   if (!this.isTouching) {
+    //     this.scrollTo(this.calculateCurrentIndex())
+    //   }
+    // },
+    checkGalleryStoppedInMiddle() {
+      console.log('CHECK')
       if (!this.isTouching) {
         this.scrollTo(this.calculateCurrentIndex())
       }
-    },
-    checkStopScrollingInMiddle() {
-      if (this.onScrollTimeout) {
-        clearTimeout(this.onScrollTimeout)
-      }
-      this.onScrollTimeout = setTimeout(this.checkStopScrollingInMiddleHandler, 1000)
-    },
-    checkStopScrollingInMiddleHandler() {
-      if (!this.isTouching) {
-        this.scrollTo(this.calculateCurrentIndex())
-      }
-      this.onScrollTimeout = null
     }
   },
   computed: {
