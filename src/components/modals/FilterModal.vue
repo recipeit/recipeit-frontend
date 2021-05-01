@@ -34,16 +34,20 @@
             </transition>
           </div>
           <div v-if="groupValue === OPTION_KEYS.BASE_PRODUCTS">
-            <BaseButton
-              subtle
-              color="primary"
-              size="small"
-              v-for="baseProduct in selected[groupValue]"
-              :key="baseProduct.id"
-              @click.stop="removeSelectedBaseProduct(baseProduct.id)"
-            >
-              {{ baseProduct.name }}
-            </BaseButton>
+            <div class="test-multiselect-pills">
+              <BaseButton
+                subtle
+                class="test-multiselect-pill"
+                color="primary"
+                size="small"
+                v-for="baseProduct in selected[groupValue]"
+                :key="baseProduct.id"
+                @click.stop="removeSelectedBaseProduct(baseProduct.id)"
+              >
+                {{ baseProduct.name }}
+                <BaseIcon class="test-multiselect-pill-close" icon="close" weight="semi-bold" />
+              </BaseButton>
+            </div>
             <BaseSelect
               placeholder="Produkt"
               class="form-row"
@@ -56,7 +60,6 @@
             />
           </div>
           <div v-else class="filter__group__options">
-            <!-- <div> -->
             <BasePillCheckbox
               v-for="option in orderedGroupOptions(groupValue)"
               :key="option.value"
@@ -68,7 +71,6 @@
             >
               {{ $t(`recipeFilterOptions.${groupValue}.${option.value}`) }}
             </BasePillCheckbox>
-            <!-- </div> -->
           </div>
         </div>
       </div>
@@ -197,6 +199,22 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.test-multiselect-pills {
+  margin: -4px;
+}
+
+.test-multiselect-pill {
+  height: 28px;
+  padding: 0 12px;
+  margin: 4px;
+
+  &-close {
+    margin-left: 4px;
+    margin-right: -4px;
+    font-size: 0.875rem;
+  }
+}
+
 .submit-button {
   width: 100%;
 
