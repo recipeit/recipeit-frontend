@@ -114,9 +114,6 @@ export default {
     const store = useStore()
     const baseProducts = computed(() => store.state.ingredients.baseProducts)
 
-    console.log('props.defaultSelected', props.defaultSelected)
-    console.log('props.options', props.options)
-
     // eslint-disable-next-line vue/no-setup-props-destructure
     const { [OPTION_KEYS.BASE_PRODUCTS]: defaultSelectedBaseProductIds, ...rest } = props.defaultSelected
 
