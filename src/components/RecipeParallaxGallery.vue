@@ -57,11 +57,13 @@ export default {
     window.addEventListener('scroll', this.windowScrollHandler, false)
     window.addEventListener('resize', this.resizeHandler, false)
     this.$refs.images.addEventListener('scroll', this.imagesScrollHandler, false)
+    this.$refs.images.addEventListener('scroll', this.checkStopScrollingInMiddle, false)
   },
   beforeUnmount() {
     window.removeEventListener('scroll', this.windowScrollHandler, false)
     window.removeEventListener('resize', this.resizeHandler, false)
     this.$refs.images.removeEventListener('scroll', this.imagesScrollHandler, false)
+    this.$refs.images.removeEventListener('scroll', this.checkStopScrollingInMiddle, false)
   },
   methods: {
     setImageRef(el) {
@@ -101,20 +103,32 @@ export default {
       const transformValue = (scrollFactor * parentHeight) / 2
       this.$refs.images.style.transform = `translate3d(0, ${transformValue}px ,0)`
     },
-    imagesScrollHandlerDebounced() {
+    calculateCurrentIndex() {
       const { scrollLeft, scrollWidth } = this.$refs.images
-      let index = Math.round((scrollLeft / scrollWidth) * this.images.length)
+      return Math.round((scrollLeft / scrollWidth) * this.images.length)
+    },
+    imagesScrollHandlerDebounced() {
+      const index = this.calculateCurrentIndex()
       if (this.currentImageIndex !== index) {
         this.currentImageIndex = index
-      }
-      if (!this.isTouching) {
-        this.scrollTo(this.currentImageIndex)
       }
     },
     resizeHandlerDebounced() {
       if (!this.isTouching) {
-        this.scrollTo(this.currentImageIndex)
+        this.scrollTo(this.calculateCurrentIndex())
       }
+    },
+    checkStopScrollingInMiddle() {
+      if (this.onScrollTimeout) {
+        clearTimeout(this.onScrollTimeout)
+      }
+      this.onScrollTimeout = setTimeout(this.checkStopScrollingInMiddleHandler, 1000)
+    },
+    checkStopScrollingInMiddleHandler() {
+      if (!this.isTouching) {
+        this.scrollTo(this.calculateCurrentIndex())
+      }
+      this.onScrollTimeout = null
     }
   },
   computed: {
