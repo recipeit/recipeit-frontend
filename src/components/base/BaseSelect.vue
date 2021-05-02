@@ -56,6 +56,7 @@
       </div>
       <transition name="fade">
         <div
+          ref="options"
           v-show="opened"
           @mousedown.prevent
           :class="['base-select__options', { 'base-select__options--above': isAbove }]"
@@ -447,13 +448,24 @@ export default {
     }
   },
   watch: {
-    filteredOptions() {
+    filteredOptionsLimited() {
       this.pointerAdjust()
+      if (this.$refs.options) {
+        this.$refs.options.scrollTop = 0
+      }
     },
     options() {
       // TODO multiple
-      if (this.value && !this.options.includes(this.value)) {
-        this.selectOption(null)
+      // TODO grouped
+      if (this.multiple) {
+        // if (this.value) {
+        //   const newValue = this.value.filter(o => this.options.includes(this.value))
+        //   this.$emit('change', newList)
+        // }
+      } else {
+        if (this.value && !this.options.includes(this.value)) {
+          this.selectOption(null)
+        }
       }
     }
   }
