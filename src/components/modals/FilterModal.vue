@@ -49,8 +49,8 @@
               </BaseButton>
             </div> -->
             <BaseSelect
-              placeholder="Produkty"
-              multiPlaceholder="dodaj kolejny produkt"
+              placeholder="Dodaj składnik"
+              multiPlaceholder="dodaj kolejny składnik"
               class="form-row"
               trackBy="id"
               label="name"
