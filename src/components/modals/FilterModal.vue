@@ -55,10 +55,11 @@
               trackBy="id"
               label="name"
               defaultOpenDirection="above"
-              :options="baseProducts"
+              :options="baseProductsGrouped"
               :multiple="true"
               :searchable="true"
               @click.stop
+              :limit="25"
               :value="selected[OPTION_KEYS.BASE_PRODUCTS]"
               @change="selected[OPTION_KEYS.BASE_PRODUCTS] = $event"
               groupLabel="groupKey"
@@ -123,8 +124,9 @@ export default {
   },
   setup(props, { emit }) {
     const store = useStore()
-    const baseProducts = computed(() =>
-      _(store.state.ingredients.baseProducts)
+    const baseProducts = computed(() => store.state.ingredients.baseProducts)
+    const baseProductsGrouped = computed(() =>
+      _(baseProducts.value)
         .groupBy(item => item.category)
         .toPairs()
         .value()
@@ -133,8 +135,6 @@ export default {
           groupValues: pair[1]
         }))
     )
-
-    console.log(baseProducts.value)
 
     // eslint-disable-next-line vue/no-setup-props-destructure
     const { [OPTION_KEYS.BASE_PRODUCTS]: defaultSelectedBaseProductIds, ...rest } = props.defaultSelected
@@ -204,7 +204,7 @@ export default {
 
     return {
       ...toRefs(data),
-      baseProducts,
+      baseProductsGrouped,
       submit,
       clearFilterGroup,
       orderSelectedChanged,

@@ -83,6 +83,12 @@
                 </slot>
               </div>
             </li>
+            <li
+              class="base-select__options__list__others-item"
+              v-if="filteredOptions && filteredOptions.length > filteredOptionsLimited.length"
+            >
+              i {{ filteredOptions.length - filteredOptionsLimited.length }} innnych opcji
+            </li>
           </ul>
           <div v-else class="base-select__options__empty">
             Brak pasujących elementów
@@ -419,7 +425,11 @@ export default {
     },
     filteredOptionsLimited() {
       if (this.limit) {
-        return this.filteredOptions?.slice(0, this.limit)
+        let limit = this.limit
+        if (this.filteredOptions && this.filteredOptions[limit - 1]?.isLabel) {
+          limit++
+        }
+        return this.filteredOptions?.slice(0, limit)
       }
       return this.filteredOptions
     },
@@ -618,6 +628,11 @@ export default {
 
     &__list {
       margin: 8px 0;
+
+      &__others-item {
+        padding: 8px 16px;
+        color: var(--color-text-secondary);
+      }
 
       &__item {
         padding: 8px 16px;
