@@ -305,6 +305,7 @@ export default {
       this.adjustPosition()
 
       this.$nextTick(() => {
+        this.scrollOptionsToTop()
         if (this.searchable) {
           this.$refs.search && this.$refs.search.focus()
         } else {
@@ -384,6 +385,11 @@ export default {
     },
     filterOptions(options) {
       return options.filter(option => includes(this.customLabel(option, this.label), this.search))
+    },
+    scrollOptionsToTop() {
+      if (this.$refs.options) {
+        this.$refs.options.scrollTop = 0
+      }
     }
   },
   computed: {
@@ -450,9 +456,7 @@ export default {
   watch: {
     filteredOptionsLimited() {
       this.pointerAdjust()
-      if (this.$refs.options) {
-        this.$refs.options.scrollTop = 0
-      }
+      this.scrollOptionsToTop()
     },
     options() {
       // TODO multiple
