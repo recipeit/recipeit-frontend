@@ -65,7 +65,12 @@
               groupLabel="groupKey"
               groupValues="groupValues"
             >
-              <template #groupLabel="{ label }">{{ $t(`productCategory.${label}`) }}</template>
+              <template #groupLabel="{ label }">
+                <span class="category-group">
+                  <ProductIcon class="category-group-icon" :group="label" />
+                  {{ $t(`productCategory.${label}`) }}
+                </span>
+              </template>
             </BaseSelect>
           </div>
           <div v-else class="filter__group__options">
@@ -99,6 +104,7 @@
 import _ from 'lodash'
 import { computed, reactive, toRefs } from '@vue/runtime-core'
 import { useStore } from 'vuex'
+import ProductIcon from '@/components/ProductIcon'
 
 const OPTION_KEYS = {
   BASE_PRODUCTS: 'BaseProducts'
@@ -106,6 +112,9 @@ const OPTION_KEYS = {
 
 export default {
   emits: ['close'],
+  components: {
+    ProductIcon
+  },
   props: {
     options: {
       type: Object,
@@ -219,6 +228,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.category-group {
+  display: flex;
+  align-items: center;
+}
+
+.category-group-icon {
+  margin-right: 0.5rem;
+  font-size: 1.25rem;
+}
+
 .test-multiselect-pills {
   margin: -4px;
 }

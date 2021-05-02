@@ -14,7 +14,12 @@
       groupLabel="groupKey"
       groupValues="groupValues"
     >
-      <template #groupLabel="{ label }">{{ $t(`productCategory.${label}`) }}</template>
+      <template #groupLabel="{ label }">
+        <span class="category-group">
+          <ProductIcon class="category-group-icon" :group="label" />
+          {{ $t(`productCategory.${label}`) }}
+        </span>
+      </template>
     </BaseSelect>
   </Field>
 
@@ -46,11 +51,12 @@ import _ from 'lodash'
 import { Field } from 'vee-validate'
 import { computed } from 'vue'
 import { useStore } from 'vuex'
+import ProductIcon from '@/components/ProductIcon'
 // import { units } from '@/constants'
 
 export default {
   emits: ['update:baseProductId', 'update:unit'],
-  components: { Field },
+  components: { Field, ProductIcon },
   props: {
     productAutofocus: Boolean,
     baseProductId: [String, Number],
@@ -121,6 +127,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.category-group {
+  display: flex;
+  align-items: center;
+}
+
+.category-group-icon {
+  margin-right: 0.5rem;
+  font-size: 1.25rem;
+}
+
 .amount-input {
   width: 128px;
   flex: unset;
