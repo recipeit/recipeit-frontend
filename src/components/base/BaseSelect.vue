@@ -2,7 +2,7 @@
   <div>
     <div
       ref="select"
-      :class="['base-select', { 'base-select--focus': opened }]"
+      :class="['base-select', { 'base-select--focus': opened, 'base-select--multiple': multiple }]"
       :tabindex="searchable ? -1 : 0"
       @focus="open()"
       @blur="searchable ? false : hide()"
@@ -15,6 +15,26 @@
         <span :class="['base-select__field__placeholder', { 'base-select__field__placeholder--small': placeholderAsLabel }]">
           {{ placeholder }}
         </span>
+        <span v-if="showSelectedValue && !multiple" class="base-select__field__value">
+          <slot name="label" :option="value">
+            {{ label ? value[label] : value }}
+          </slot>
+        </span>
+        <template v-else-if="multiple" class="test-multiselect-pills">
+          <BaseButton
+            subtle
+            class="test-multiselect-pill"
+            color="primary"
+            size="small"
+            v-for="singleValue in value"
+            :key="trackBy ? singleValue[trackBy] : singleValue"
+            @click="selectOption(singleValue)"
+          >
+            {{ label ? singleValue[label] : value }}
+            <BaseIcon class="test-multiselect-pill-close" icon="close" weight="semi-bold" />
+          </BaseButton>
+          <span class="multi-placeholder" v-if="multiPlaceholder && showSelectedValue">{{ multiPlaceholder }}</span>
+        </template>
         <template v-if="searchable">
           <input
             v-show="opened"
@@ -32,11 +52,6 @@
             @keypress.enter.prevent.stop.self="addPointerElement()"
           />
         </template>
-        <span v-if="showSelectedValue" class="base-select__field__value">
-          <slot name="label" :option="value">
-            {{ label ? value[label] : value }}
-          </slot>
-        </span>
         <BaseIcon class="base-select__field__open-indicator" icon="angle-left" weight="semi-bold" />
       </div>
       <transition name="fade">
@@ -52,7 +67,7 @@
               :key="option"
               :class="{
                 'base-select__options__list__item': true,
-                'base-select__options__list__item--selected': getKeyFromValue(option) === getKeyFromValue(value),
+                'base-select__options__list__item--selected': isOptionSelected(option),
                 'base-select__options__list__item--highlight': index === pointer
               }"
             >
@@ -145,6 +160,9 @@ export default {
     placeholder: {
       type: String
     },
+    multiPlaceholder: {
+      type: String
+    },
     maxHeight: {
       type: Number,
       default: 210
@@ -171,6 +189,17 @@ export default {
     id: 'base-select-' + uniqueID().getID()
   }),
   methods: {
+    isOptionSelected(option) {
+      const { getKeyFromValue, value } = this
+      const optionKey = getKeyFromValue(option)
+
+      if (this.multiple) {
+        const index = value?.findIndex(v => getKeyFromValue(v) === optionKey)
+        return index >= 0
+      } else {
+        return optionKey === getKeyFromValue(value)
+      }
+    },
     getKeyFromValue(value) {
       const { trackBy } = this
       if (trackBy) {
@@ -298,9 +327,27 @@ export default {
       await this.hide()
 
       const { value, getKeyFromValue } = this
-      let selectCurrentSelected = value ? getKeyFromValue(newValue) === getKeyFromValue(value) : null
 
-      this.$emit('change', selectCurrentSelected ? null : newValue)
+      if (this.multiple) {
+        const newSelectedKey = getKeyFromValue(newValue)
+        const index = value?.findIndex(v => getKeyFromValue(v) === newSelectedKey)
+
+        console.log('newSelectedKey', newSelectedKey)
+        console.log('v', index)
+
+        if (index >= 0) {
+          const newList = [...value]
+          newList.splice(index, 1)
+          this.$emit('change', newList)
+        } else {
+          this.$emit('change', [...value, newValue])
+        }
+      } else {
+        let selectCurrentSelected = value ? getKeyFromValue(newValue) === getKeyFromValue(value) : null
+
+        this.$emit('change', selectCurrentSelected ? null : newValue)
+      }
+
       if (this.searchable) {
         this.search = ''
       }
@@ -342,9 +389,17 @@ export default {
       return this.groupLabel && this.groupValues
     },
     placeholderAsLabel() {
+      if (this.multiple) {
+        return this.searchable
+          ? this.opened || (this.value !== null && this.value.length > 0)
+          : this.value !== null && this.value.length > 0
+      }
       return this.searchable ? this.opened || this.value !== null : this.value !== null
     },
     showSelectedValue() {
+      if (this.multiple) {
+        return this.searchable ? !this.opened && this.value !== null && this.value.length > 0 : this.value !== null && this.value.length > 0
+      }
       return this.searchable ? !this.opened && this.value !== null : this.value !== null
     },
     filteredOptions() {
@@ -388,6 +443,7 @@ export default {
       this.pointerAdjust()
     },
     options() {
+      // TODO multiple
       if (this.value && !this.options.includes(this.value)) {
         this.selectOption(null)
       }
@@ -397,6 +453,40 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.multi-placeholder {
+  margin: 2px;
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+  display: flex;
+  height: 24px;
+  align-items: center;
+  line-height: 14px;
+}
+
+.test-multiselect-pills {
+  margin: -2px;
+  padding: 12px 0 6px 0;
+  padding-right: 1.5rem;
+}
+
+.test-multiselect-pill {
+  height: 24px;
+  padding: 0 12px;
+  line-height: 14px;
+  margin: 2px;
+
+  &-close {
+    margin-left: 4px;
+    margin-right: -4px;
+    font-size: 0.875rem;
+  }
+
+  // &:last-of-type {
+  //   margin-right: 8px;
+  // }
+}
+
 .base-select {
   $root: &;
 
@@ -404,12 +494,16 @@ export default {
 
   &__field {
     position: relative;
-    height: 48px;
+    min-height: 48px;
     border-bottom: 2px solid var(--color-border);
     overflow: hidden;
     font-size: 0.875rem;
     cursor: pointer;
     @include transition((border-color));
+    display: flex;
+    flex-wrap: wrap;
+    padding: 14px 0 4px 0;
+    align-items: center;
 
     &:hover {
       border-color: var(--color-border-hover);
@@ -422,11 +516,12 @@ export default {
     &__placeholder {
       position: absolute;
       height: 48px;
+      top: 0;
       display: flex;
       align-items: center;
       color: var(--color-text-secondary);
       // transform-origin: top left;
-      @include transition((height, font-size, color));
+      @include transition((height, font-size, color, opacity, visibility));
 
       &--small {
         height: 12px;
@@ -434,12 +529,18 @@ export default {
         // color: var(--color-text-primary);
         // font-weight: bold;
         // transform: scale(0.75);
+
+        #{ $root }--multiple & {
+          opacity: 0;
+          visibility: hidden;
+        }
       }
     }
 
     &__input {
       display: block;
-      height: 48px;
+      // height: 48px;
+      height: 24px;
       display: flex;
       align-items: center;
       // margin-top: 6px;
@@ -449,8 +550,12 @@ export default {
       font-family: inherit;
       font-weight: inherit;
       padding: 0;
-      padding-top: 6px;
-      width: 100%;
+      margin: 2px;
+      line-height: 14px;
+      // padding-top: 6px;
+      // width: 100%;
+      min-width: 128px;
+      flex: 1;
       box-sizing: border-box;
       background: transparent;
     }
@@ -458,19 +563,20 @@ export default {
     &__value {
       box-sizing: border-box;
       width: 100%;
-      display: block;
-      height: 48px;
+      // display: block;
+      min-height: 24px;
       display: flex;
       align-items: center;
-      padding-top: 6px;
+      line-height: 14px;
+      // padding-top: 6px;
       // margin-top: 6px;
     }
 
     &__open-indicator {
       position: absolute;
       right: 0;
-      top: 0;
-      height: 100%;
+      bottom: 0;
+      height: 48px;
       width: 1rem;
       color: var(--color-text-secondary);
       display: flex;

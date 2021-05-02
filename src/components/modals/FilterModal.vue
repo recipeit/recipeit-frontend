@@ -34,7 +34,7 @@
             </transition>
           </div>
           <div v-if="groupValue === OPTION_KEYS.BASE_PRODUCTS">
-            <div class="test-multiselect-pills">
+            <!-- <div class="test-multiselect-pills">
               <BaseButton
                 subtle
                 class="test-multiselect-pill"
@@ -47,18 +47,21 @@
                 {{ baseProduct.name }}
                 <BaseIcon class="test-multiselect-pill-close" icon="close" weight="semi-bold" />
               </BaseButton>
-            </div>
+            </div> -->
             <BaseSelect
-              placeholder="Produkt"
+              placeholder="Produkty"
+              multiPlaceholder="dodaj kolejny produkt"
               class="form-row"
               trackBy="id"
               label="name"
               defaultOpenDirection="above"
               :options="baseProducts"
               :limit="25"
+              :multiple="true"
               :searchable="true"
               @click.stop
-              @change="addSelectedBaseProduct($event)"
+              :value="selected[OPTION_KEYS.BASE_PRODUCTS]"
+              @change="selected[OPTION_KEYS.BASE_PRODUCTS] = $event"
             />
           </div>
           <div v-else class="filter__group__options">
@@ -123,6 +126,7 @@ export default {
     const { [OPTION_KEYS.BASE_PRODUCTS]: defaultSelectedBaseProductIds, ...rest } = props.defaultSelected
 
     const data = reactive({
+      selectedTheme: [],
       selected: {
         ...Object.fromEntries(Object.keys(props.options).map(o => [o, []])),
         ...rest,
