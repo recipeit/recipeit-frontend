@@ -166,6 +166,7 @@ export default {
     unitGroups: {
       weight: 'waga',
       volume: 'objętość',
+      length: 'długość',
       unset: 'inne'
     },
     theme: 'Motyw',

@@ -77,7 +77,7 @@
                   {{ option['groupLabel'] }}
                 </slot>
               </div>
-              <div v-else @mouseenter.self="pointerSet(index)" @click="selectOption(option)">
+              <div class="base-select__options__list__option" v-else @mouseenter.self="pointerSet(index)" @click="selectOption(option)">
                 <slot name="option" :option="option" :search="search" :index="index">
                   {{ label ? option[label] : option }}
                 </slot>
@@ -624,7 +624,7 @@ export default {
     font-size: 14px;
     line-height: 20px;
 
-    @include scrollbar;
+    @include scrollbar(transparent);
 
     &__list {
       margin: 8px 0;
@@ -634,9 +634,12 @@ export default {
         color: var(--color-text-secondary);
       }
 
-      &__item {
+      &__option {
         padding: 8px 16px;
         cursor: pointer;
+      }
+
+      &__item {
         @include transition((background-color));
 
         &--highlight {
@@ -663,6 +666,7 @@ export default {
       }
 
       &__group-label {
+        padding: 8px 16px;
         font-size: 0.75rem;
         font-weight: bold;
         color: var(--color-text-secondary);

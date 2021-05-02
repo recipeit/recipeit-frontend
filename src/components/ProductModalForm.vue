@@ -6,11 +6,16 @@
       v-autofocus="productAutofocus"
       trackBy="id"
       label="name"
-      :options="baseProducts"
+      :options="baseProductsGrouped"
+      :limit="25"
       :searchable="true"
       :errors="errors"
       v-bind="field"
-    />
+      groupLabel="groupKey"
+      groupValues="groupValues"
+    >
+      <template #groupLabel="{ label }">{{ $t(`productCategory.${label}`) }}</template>
+    </BaseSelect>
   </Field>
 
   <div class="form-row form-columns">
@@ -37,6 +42,7 @@
 </template>
 
 <script>
+import _ from 'lodash'
 import { Field } from 'vee-validate'
 import { computed } from 'vue'
 import { useStore } from 'vuex'
@@ -53,7 +59,18 @@ export default {
   },
   setup(props) {
     const store = useStore()
-    const baseProducts = computed(() => store.state.ingredients.baseProducts)
+    // const baseProducts = computed(() => store.state.ingredients.baseProducts)
+    const baseProductsGrouped = computed(() =>
+      _(store.state.ingredients.baseProducts)
+        .groupBy(item => item.category)
+        .toPairs()
+        .value()
+        .map(pair => ({
+          groupKey: pair[0],
+          groupValues: pair[1]
+        }))
+    )
+
     const units = computed(() => store.state.ingredients.units)
 
     // const localProduct = reactive({
@@ -94,7 +111,7 @@ export default {
     return {
       // localProduct,
       units,
-      baseProducts,
+      baseProductsGrouped,
       unitLabelAmount,
       unitCustomLabel,
       print
