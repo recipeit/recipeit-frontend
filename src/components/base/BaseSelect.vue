@@ -502,7 +502,7 @@ export default {
     @include transition((border-color));
     display: flex;
     flex-wrap: wrap;
-    padding: 14px 0 4px 0;
+    padding: 14px 1.5rem 4px 0;
     align-items: center;
 
     &:hover {
@@ -583,6 +583,7 @@ export default {
       align-items: center;
       justify-content: center;
       font-size: 1rem;
+      padding: 14px 0 4px 0;
 
       ::v-deep(svg) {
         transform: rotate(-90deg);
