@@ -19,7 +19,7 @@
           </BaseSelect>
         </div>
         <div v-for="(group, groupValue) in options" :key="groupValue" class="filter__group">
-          <div class="filter__group__title">
+          <div :class="{ filter__group__title: true, 'filter__group__title--no-margin': groupValue === OPTION_KEYS.BASE_PRODUCTS }">
             <div class="filter__group__name">{{ $t(`recipeFilterGroups.${groupValue}`) }}</div>
             <transition name="fade">
               <BaseLink
@@ -242,6 +242,10 @@ export default {
       position: relative;
       font-weight: 600;
       margin-bottom: 12px;
+
+      &--no-margin {
+        margin-bottom: 0;
+      }
     }
 
     &__name {
