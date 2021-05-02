@@ -183,7 +183,7 @@ export default {
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: var(--color-modal-backdrop);
     // backdrop-filter: saturate(180%) blur(4px);
     z-index: 1001;
   }

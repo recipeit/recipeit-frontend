@@ -97,6 +97,7 @@ $color-theme: (
     'desserts-and-snacks': $product-color-desserts-and-snacks,
     'beverages': $product-color-beverages
   ),
+  'modal-backdrop': rgba(#000, 0.6),
   'toast': (
     'background': rgba($background-lighter, 0.95),
     'color': $text-primary,
