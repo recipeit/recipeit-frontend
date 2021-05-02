@@ -68,7 +68,8 @@
               :class="{
                 'base-select__options__list__item': true,
                 'base-select__options__list__item--selected': isOptionSelected(option),
-                'base-select__options__list__item--highlight': index === pointer
+                'base-select__options__list__item--highlight': index === pointer,
+                'base-select__options__list__item--label': option.isLabel
               }"
             >
               <div class="base-select__options__list__group-label" v-if="option.isLabel">
@@ -331,9 +332,6 @@ export default {
       if (this.multiple) {
         const newSelectedKey = getKeyFromValue(newValue)
         const index = value?.findIndex(v => getKeyFromValue(v) === newSelectedKey)
-
-        console.log('newSelectedKey', newSelectedKey)
-        console.log('v', index)
 
         if (index >= 0) {
           const newList = [...value]
@@ -640,6 +638,12 @@ export default {
             // color: var(--color-primary);
             background-color: var(--color-button-subtle-primary-background);
           }
+        }
+
+        &--label {
+          position: sticky;
+          top: 0;
+          background-color: var(--color-background-flyout);
         }
       }
 

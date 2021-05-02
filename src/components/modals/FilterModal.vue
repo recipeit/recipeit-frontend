@@ -56,13 +56,16 @@
               label="name"
               defaultOpenDirection="above"
               :options="baseProducts"
-              :limit="25"
               :multiple="true"
               :searchable="true"
               @click.stop
               :value="selected[OPTION_KEYS.BASE_PRODUCTS]"
               @change="selected[OPTION_KEYS.BASE_PRODUCTS] = $event"
-            />
+              groupLabel="groupKey"
+              groupValues="groupValues"
+            >
+              <template #groupLabel="{ label }">{{ $t(`productCategory.${label}`) }}</template>
+            </BaseSelect>
           </div>
           <div v-else class="filter__group__options">
             <BasePillCheckbox
@@ -120,7 +123,18 @@ export default {
   },
   setup(props, { emit }) {
     const store = useStore()
-    const baseProducts = computed(() => store.state.ingredients.baseProducts)
+    const baseProducts = computed(() =>
+      _(store.state.ingredients.baseProducts)
+        .groupBy(item => item.category)
+        .toPairs()
+        .value()
+        .map(pair => ({
+          groupKey: pair[0],
+          groupValues: pair[1]
+        }))
+    )
+
+    console.log(baseProducts.value)
 
     // eslint-disable-next-line vue/no-setup-props-destructure
     const { [OPTION_KEYS.BASE_PRODUCTS]: defaultSelectedBaseProductIds, ...rest } = props.defaultSelected
