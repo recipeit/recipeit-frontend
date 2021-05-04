@@ -92,10 +92,10 @@ export default {
           })
       })
     },
-    register(_, { email, password, confirmPassword }) {
+    register(_, { email, password, confirmPassword, recaptchaToken }) {
       return new Promise((resolve, reject) => {
         identityApi
-          .register({ email, password, confirmPassword })
+          .register({ email, password, confirmPassword, recaptchaToken })
           .then(response => {
             const { success, errors } = response.data
 
@@ -116,12 +116,12 @@ export default {
           })
       })
     },
-    login({ commit, dispatch }, { email, password }) {
+    login({ commit, dispatch }, { email, password, recaptchaToken }) {
       dispatch('recipes/resetUserData', {}, { root: true })
 
       return new Promise((resolve, reject) => {
         identityApi
-          .login({ email, password })
+          .login({ email, password, recaptchaToken })
           .then(response => {
             if (response.data.emailUnconfirmed) {
               router.push({

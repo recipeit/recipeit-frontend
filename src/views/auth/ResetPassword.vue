@@ -34,6 +34,8 @@ import { Field, Form } from 'vee-validate'
 import * as Yup from 'yup'
 import identityApi from '@/api/identityApi'
 import { confirmNewPasswordSchema, newPasswordSchema } from '@/configs/schemas'
+import recaptcha from '@/services/recaptcha'
+import { RECAPTCHA_ACTIONS } from '@/configs/recaptcha'
 
 export default {
   components: {
@@ -69,19 +71,28 @@ export default {
   methods: {
     resetPassword({ password, confirmPassword }) {
       this.state = 'SENDING'
-      identityApi
-        .resetPassword({
-          email: this.email,
-          token: this.token,
-          password: password,
-          confirmPassword: confirmPassword
-        })
-        .then(resp => {
-          if (resp.data.success) {
-            this.state = 'SUCCESS'
-          } else {
-            this.state = 'ERROR'
-          }
+
+      recaptcha
+        .execute(RECAPTCHA_ACTIONS.RESET_PASSWORD)
+        .then(recaptchaToken => {
+          identityApi
+            .resetPassword({
+              email: this.email,
+              token: this.token,
+              password: password,
+              confirmPassword: confirmPassword,
+              recaptchaToken: recaptchaToken
+            })
+            .then(resp => {
+              if (resp.data.success) {
+                this.state = 'SUCCESS'
+              } else {
+                this.state = 'ERROR'
+              }
+            })
+            .catch(() => {
+              this.state = 'ERROR'
+            })
         })
         .catch(() => {
           this.state = 'ERROR'

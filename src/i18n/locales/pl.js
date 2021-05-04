@@ -128,7 +128,9 @@ export default {
       cube: 'kostek | kostka | kostki | kostek',
       can: 'puszek | puszka | puszki | puszek',
       leaf: 'liści | liść | liście | liści',
-      sachet: 'saszetek | saszetka | saszetki | saszetek'
+      sachet: 'saszetek | saszetka | saszetki | saszetek',
+      jar: 'słoików | słoik | słoiki | słoików',
+      bucket: 'wiaderek | wiaderko | wiaderka | wiaderek'
     },
     units: {
       milligram: 'miligramów | miligram | miligramy | miligramów',
@@ -161,7 +163,9 @@ export default {
       cube: 'kostek | kostka | kostki | kostek',
       can: 'puszek | puszka | puszki | puszek',
       leaf: 'liści | liść | liście | liści',
-      sachet: 'saszetek | saszetka | saszetki | saszetek'
+      sachet: 'saszetek | saszetka | saszetki | saszetek',
+      jar: 'słoików | słoik | słoiki | słoików',
+      bucket: 'wiaderek | wiaderko | wiaderka | wiaderek'
     },
     unitGroups: {
       weight: 'waga',
@@ -205,7 +209,7 @@ export default {
       Fruits: 'Owoce',
       BakingAndGrains: 'Zboża i pieczywo',
       Sweeteners: 'Słodziki',
-      Spices: 'Zioła i przyprawy',
+      Spices: 'Zioła i przyprawy', // i dodatki
       Meats: 'Mięso',
       Fishes: 'Ryby',
       Seafoods: 'Owoce morza',

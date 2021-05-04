@@ -19,6 +19,8 @@
       <div v-for="(error, i) in errors" :key="i" class="error">
         {{ error }}
       </div>
+
+      <RecaptchaBranding class="recaptcha-branding" />
     </BaseModalBody>
     <BaseModalFooter>
       <BaseButton class="submit-button" stroked @click="$emit('close')">
@@ -33,15 +35,18 @@
 
 <script>
 import { Field, Form } from 'vee-validate'
-import { reactive, toRefs } from 'vue'
+import { onBeforeMount, reactive, toRefs } from 'vue'
 import uniqueID from '@/functions/uniqueID'
 import identityApi from '@/api/identityApi'
 import { useStore } from 'vuex'
 import * as Yup from 'yup'
+import recaptcha from '@/services/recaptcha'
+import { RECAPTCHA_ACTIONS } from '@/configs/recaptcha'
+import RecaptchaBranding from '@/components/RecaptchaBranding'
 
 export default {
   emits: ['close'],
-  components: { Field, Form },
+  components: { RecaptchaBranding, Field, Form },
   props: {
     email: {
       type: String,
@@ -81,23 +86,35 @@ export default {
       data.sending = true
       data.errors = []
 
-      identityApi
-        .deleteAccount(requestData)
-        .then(() => {
-          component.emit('close', { success: true })
-          store.dispatch('user/logout')
+      recaptcha
+        .execute(RECAPTCHA_ACTIONS.DELETE_ACCOUNT)
+        .then(recaptchaToken => {
+          identityApi
+            .deleteAccount({ ...requestData, recaptchaToken })
+            .then(() => {
+              component.emit('close', { success: true })
+              store.dispatch('user/logout')
+            })
+            .catch(error => {
+              data.code = generateCode()
+              const errors = error?.response?.data?.errors
+              if (errors) {
+                data.errors = errors
+              }
+            })
+            .finally(() => {
+              data.sending = false
+            })
         })
-        .catch(error => {
-          data.code = generateCode()
-          const errors = error?.response?.data?.errors
-          if (errors) {
-            data.errors = errors
-          }
-        })
-        .finally(() => {
+        .catch(() => {
           data.sending = false
         })
     }
+
+    onBeforeMount(async () => {
+      data.code = generateCode()
+      await recaptcha.init()
+    })
 
     return {
       ...toRefs(data),
@@ -106,9 +123,6 @@ export default {
       schema,
       formID
     }
-  },
-  beforeMount() {
-    this.code = this.generateCode()
   }
 }
 </script>
@@ -145,5 +159,9 @@ export default {
 
 .form {
   margin-top: 1.5rem;
+}
+
+.recaptcha-branding {
+  margin-top: 1rem;
 }
 </style>

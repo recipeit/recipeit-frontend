@@ -15,6 +15,8 @@
           Sprawdź swoją skrzyknę pocztową!
         </p>
       </div>
+
+      <RecaptchaBranding class="recaptcha-branding" />
     </BaseModalBody>
     <BaseModalFooter>
       <template v-if="!success">
@@ -35,11 +37,17 @@
 </template>
 
 <script>
-import { reactive, toRefs } from 'vue'
+import { onBeforeMount, reactive, toRefs } from 'vue'
 import identityApi from '@/api/identityApi'
+import recaptcha from '@/services/recaptcha'
+import { RECAPTCHA_ACTIONS } from '@/configs/recaptcha'
+import RecaptchaBranding from '@/components/RecaptchaBranding'
 
 export default {
   emits: ['close'],
+  components: {
+    RecaptchaBranding
+  },
   props: {
     email: {
       type: String,
@@ -56,21 +64,32 @@ export default {
     const onConfirmForgotPassword = () => {
       data.sending = true
 
-      identityApi
-        .requestPasswordReset(props.email)
-        .then(() => {
-          data.success = true
+      recaptcha
+        .execute(RECAPTCHA_ACTIONS.FORGOT_PASSWORD)
+        .then(recaptchaToken => {
+          identityApi
+            .requestPasswordReset({ email: props.email, recaptchaToken })
+            .then(() => {
+              data.success = true
+            })
+            .catch(error => {
+              const errors = error?.response?.data?.errors
+              if (errors) {
+                data.errors = errors
+              }
+            })
+            .finally(() => {
+              data.sending = false
+            })
         })
-        .catch(error => {
-          const errors = error?.response?.data?.errors
-          if (errors) {
-            data.errors = errors
-          }
-        })
-        .finally(() => {
+        .catch(() => {
           data.sending = false
         })
     }
+
+    onBeforeMount(async () => {
+      await recaptcha.init()
+    })
 
     return {
       ...toRefs(data),
@@ -99,5 +118,9 @@ export default {
 .message {
   font-size: 0.875rem;
   margin: 0;
+}
+
+.recaptcha-branding {
+  margin-top: 1rem;
 }
 </style>

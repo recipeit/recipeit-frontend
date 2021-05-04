@@ -23,6 +23,8 @@
       <div v-for="(error, i) in errors" :key="i" class="error">
         {{ error }}
       </div>
+
+      <RecaptchaBranding class="recaptcha-branding" />
     </BaseModalBody>
     <BaseModalFooter>
       <BaseButton class="submit-button" stroked @click="$emit('close')">
@@ -38,14 +40,18 @@
 <script>
 import { Field, Form } from 'vee-validate'
 import { useToast } from '@/plugins/toast'
-import { reactive, toRefs } from 'vue'
+import { onBeforeMount, reactive, toRefs } from 'vue'
 import uniqueID from '@/functions/uniqueID'
 import identityApi from '@/api/identityApi'
 import { ToastType } from '@/plugins/toast/toastType'
 import * as Yup from 'yup'
+import recaptcha from '@/services/recaptcha'
+import { RECAPTCHA_ACTIONS } from '@/configs/recaptcha'
+import RecaptchaBranding from '@/components/RecaptchaBranding'
 
 export default {
   components: {
+    RecaptchaBranding,
     Field,
     Form
   },
@@ -81,19 +87,27 @@ export default {
     const changePassword = values => {
       data.sending = true
       data.errors = []
-      identityApi
-        .changePassword(values)
-        .then(() => {
-          emit('close', { success: true })
-          toast.show('Hasło zmienione!', ToastType.SUCCESS)
+
+      recaptcha
+        .execute(RECAPTCHA_ACTIONS.CHANGE_PASSWORD)
+        .then(recaptchaToken => {
+          identityApi
+            .changePassword({ ...values, recaptchaToken })
+            .then(() => {
+              emit('close', { success: true })
+              toast.show('Hasło zmienione!', ToastType.SUCCESS)
+            })
+            .catch(error => {
+              const errors = error?.response?.data?.errors
+              if (errors) {
+                data.errors = errors
+              }
+            })
+            .finally(() => {
+              data.sending = false
+            })
         })
-        .catch(error => {
-          const errors = error?.response?.data?.errors
-          if (errors) {
-            data.errors = errors
-          }
-        })
-        .finally(() => {
+        .catch(() => {
           data.sending = false
         })
     }
@@ -101,6 +115,10 @@ export default {
     const forgotPassword = () => {
       emit('close', { success: false, openForgotPasswordModal: true })
     }
+
+    onBeforeMount(async () => {
+      await recaptcha.init()
+    })
 
     return {
       ...toRefs(data),
@@ -127,5 +145,9 @@ export default {
   margin-bottom: 1.5rem;
   font-size: 0.75rem;
   font-weight: bold;
+}
+
+.recaptcha-branding {
+  margin-top: 1rem;
 }
 </style>

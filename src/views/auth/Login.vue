@@ -45,6 +45,8 @@
     </Form>
 
     <AuthSocialList @lockInputs="socialSending = true" @unlockInputs="socialSending = false" />
+
+    <RecaptchaBranding class="recaptcha-branding" />
   </div>
 </template>
 
@@ -53,9 +55,13 @@ import { Field, Form } from 'vee-validate'
 import AuthSocialList from './AuthSocialList'
 import * as yup from 'yup'
 import { emailSchema, passwordSchema } from '@/configs/schemas'
+import RecaptchaBranding from '@/components/RecaptchaBranding'
+import recaptcha from '@/services/recaptcha'
+import { RECAPTCHA_ACTIONS } from '@/configs/recaptcha'
 
 export default {
   components: {
+    RecaptchaBranding,
     AuthSocialList,
     Field,
     Form
@@ -79,12 +85,20 @@ export default {
     login(values) {
       this.errors = null
       this.sending = true
-      this.$store
-        .dispatch('user/login', values)
-        .catch(errors => {
-          this.errors = errors
+
+      recaptcha
+        .execute(RECAPTCHA_ACTIONS.LOGIN)
+        .then(recaptchaToken => {
+          this.$store
+            .dispatch('user/login', { ...values, recaptchaToken })
+            .catch(errors => {
+              this.errors = errors
+            })
+            .finally(() => {
+              this.sending = false
+            })
         })
-        .finally(() => {
+        .catch(() => {
           this.sending = false
         })
     },
@@ -109,6 +123,10 @@ h1 {
 }
 .subtitle {
   margin-bottom: 1.5rem;
+}
+
+.recaptcha-branding {
+  margin-top: 1rem;
 }
 
 // p {

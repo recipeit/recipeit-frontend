@@ -22,6 +22,8 @@
           </router-link>
         </div>
       </Form>
+
+      <RecaptchaBranding class="recaptcha-branding" />
     </template>
 
     <template v-else-if="state === 'SUCCESS'">
@@ -47,9 +49,13 @@ import { Field, Form } from 'vee-validate'
 import * as yup from 'yup'
 import identityApi from '@/api/identityApi'
 import { emailSchema } from '@/configs/schemas'
+import recaptcha from '@/services/recaptcha'
+import { RECAPTCHA_ACTIONS } from '@/configs/recaptcha'
+import RecaptchaBranding from '@/components/RecaptchaBranding'
 
 export default {
   components: {
+    RecaptchaBranding,
     Field,
     Form
   },
@@ -78,10 +84,21 @@ export default {
   methods: {
     requestPasswordReset({ email }) {
       this.state = 'SENDING'
-      identityApi
-        .requestPasswordReset(email)
-        .then(() => {
-          this.state = 'SUCCESS'
+
+      recaptcha
+        .execute(RECAPTCHA_ACTIONS.REQUEST_PASSWORD_RESET)
+        .then(recaptchaToken => {
+          identityApi
+            .requestPasswordReset({
+              email,
+              recaptchaToken
+            })
+            .then(() => {
+              this.state = 'SUCCESS'
+            })
+            .catch(() => {
+              this.state = 'ERROR'
+            })
         })
         .catch(() => {
           this.state = 'ERROR'
@@ -121,5 +138,9 @@ h1 {
 
 .return-button-only {
   margin-right: auto;
+}
+
+.recaptcha-branding {
+  margin-top: 1rem;
 }
 </style>

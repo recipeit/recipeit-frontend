@@ -53,6 +53,8 @@
         </BaseLink>
       </router-link>
     </div>
+
+    <RecaptchaBranding class="recaptcha-branding" />
   </div>
 </template>
 
@@ -61,9 +63,13 @@ import { Field, Form } from 'vee-validate'
 import AuthSocialList from './AuthSocialList'
 import { emailSchema, newPasswordSchema, confirmNewPasswordSchema } from '@/configs/schemas'
 import * as yup from 'yup'
+import recaptcha from '@/services/recaptcha'
+import RecaptchaBranding from '@/components/RecaptchaBranding'
+import { RECAPTCHA_ACTIONS } from '@/configs/recaptcha'
 
 export default {
   components: {
+    RecaptchaBranding,
     AuthSocialList,
     Field,
     Form
@@ -88,12 +94,23 @@ export default {
     register(valus) {
       this.sending = true
       this.errors = null
-      this.$store
-        .dispatch('user/register', valus)
-        .catch(errors => {
-          this.errors = errors
+
+      recaptcha
+        .execute(RECAPTCHA_ACTIONS.REGISTER)
+        .then(recaptchaToken => {
+          this.$store
+            .dispatch('user/register', {
+              ...valus,
+              recaptchaToken
+            })
+            .catch(errors => {
+              this.errors = errors
+            })
+            .finally(() => {
+              this.sending = false
+            })
         })
-        .finally(() => {
+        .catch(() => {
           this.sending = false
         })
     }
@@ -113,5 +130,9 @@ h1 {
 
 .subtitle {
   margin-bottom: 1.5rem;
+}
+
+.recaptcha-branding {
+  margin-top: 0.75rem;
 }
 </style>
