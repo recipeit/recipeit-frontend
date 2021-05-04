@@ -39,10 +39,10 @@ export default {
   changePassword(data) {
     return apiClient.post(`/${route}/change-password`, data)
   },
-  sendConfirmationEmail(email) {
-    return apiClient.post(`/${route}/send-confirmation-email`, { email })
+  sendConfirmationEmail(data) {
+    return apiClient.post(`/${route}/send-confirmation-email`, data)
   },
-  deleteAccount() {
-    return apiClient.delete(`/${route}/delete-account`)
+  deleteAccount(data) {
+    return apiClient.delete(`/${route}/delete-account`, data)
   }
 }

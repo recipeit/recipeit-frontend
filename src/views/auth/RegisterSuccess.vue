@@ -11,6 +11,8 @@
 
 <script>
 import identityApi from '@/api/identityApi'
+import recaptcha from '@/services/recaptcha'
+import { RECAPTCHA_ACTIONS } from '@/configs/recaptcha'
 export default {
   props: {
     email: {
@@ -20,10 +22,17 @@ export default {
   },
   methods: {
     sendConfirmationEmail() {
-      identityApi
-        .sendConfirmationEmail(this.email)
-        .then(() => {
-          alert('sprawdź swoją skrzynkę pocztową')
+      recaptcha
+        .execute(RECAPTCHA_ACTIONS.SEND_CONFIRMATION_EMAIL)
+        .then(recaptchaToken => {
+          identityApi
+            .sendConfirmationEmail({ email: this.email, recaptchaToken })
+            .then(() => {
+              alert('sprawdź swoją skrzynkę pocztową')
+            })
+            .catch(() => {
+              alert('coś poszło nie tak')
+            })
         })
         .catch(() => {
           alert('coś poszło nie tak')

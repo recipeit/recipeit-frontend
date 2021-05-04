@@ -79,10 +79,7 @@ export default {
         .toUpperCase()
     }
 
-    const deleteAccount = ({ password }) => {
-      const requestData = {
-        password
-      }
+    const deleteAccount = () => {
       data.sending = true
       data.errors = []
 
@@ -90,7 +87,7 @@ export default {
         .execute(RECAPTCHA_ACTIONS.DELETE_ACCOUNT)
         .then(recaptchaToken => {
           identityApi
-            .deleteAccount({ ...requestData, recaptchaToken })
+            .deleteAccount({ recaptchaToken })
             .then(() => {
               component.emit('close', { success: true })
               store.dispatch('user/logout')

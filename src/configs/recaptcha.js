@@ -4,6 +4,7 @@ export const RECAPTCHA_ACTIONS = {
   REGISTER: 'register',
   LOGIN: 'login',
   REQUEST_PASSWORD_RESET: 'request-password-reset',
+  SEND_CONFIRMATION_EMAIL: 'send-confirmation-email',
   RESET_PASSWORD: 'reset-password',
   FORGOT_PASSWORD: 'forgot-password',
   CHANGE_PASSWORD: 'change-password',
