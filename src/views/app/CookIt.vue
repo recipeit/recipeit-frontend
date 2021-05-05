@@ -39,13 +39,32 @@
           <div class="empty-list-message">
             <p class="empty-list-message-title">Nie znaleźliśmy przepisów dla użytych filtrów</p>
             <p v-if="almostAvailableRecipes.items?.length > 0" class="empty-list-message-sub">
-              Możesz <BaseLink class="empty-list-message-link" color="primary">wyczyścić filtry</BaseLink>, przeszukać całą
-              <BaseLink class="empty-list-message-link" color="primary">bazę przepisów</BaseLink>, bądź sprawdzić
-              <BaseLink class="empty-list-message-link" color="primary">propozycje przepisów</BaseLink> po dokupieniu paru składników.
+              Możesz
+              <BaseLink tag="button" @click="reloadRecipes({})" class="empty-list-message-link" color="primary">
+                wyczyścić filtry
+              </BaseLink>
+              , przeszukać całą
+              <router-link :to="{ name: 'recipes' }" v-slot="{ href, navigate }" custom>
+                <BaseLink :href="href" @click="navigate($event)" class="empty-list-message-link" color="primary">bazę przepisów</BaseLink>
+              </router-link>
+              , bądź sprawdzić
+              <router-link :to="{ name: 'almost-available', query: $route.query }" v-slot="{ href, navigate }" custom>
+                <BaseLink :href="href" @click="navigate($event)" class="empty-list-message-link" color="primary">
+                  propozycje przepisów
+                </BaseLink>
+              </router-link>
+              po dokupieniu paru składników.
             </p>
             <p v-else class="empty-list-message-sub">
-              Możesz <BaseLink class="empty-list-message-link" color="primary">wyczyścić filtry</BaseLink> lub sprawdzić całą
-              <BaseLink class="empty-list-message-link" color="primary">bazę przepisów</BaseLink>.
+              Możesz
+              <BaseLink tag="button" @click="reloadRecipes({})" class="empty-list-message-link" color="primary">
+                wyczyścić filtry
+              </BaseLink>
+              lub sprawdzić całą
+              <router-link :to="{ name: 'recipes' }" v-slot="{ href, navigate }" custom>
+                <BaseLink :href="href" @click="navigate($event)" class="empty-list-message-link" color="primary">bazę przepisów</BaseLink>
+              </router-link>
+              .
             </p>
             <!-- <BaseButton stroked @click="clearFilters()">Wyczyść filtry</BaseButton> -->
           </div>

@@ -203,12 +203,13 @@ export default {
       return []
     }
 
-    const pillCheckboxClickHandler = ({ target }) => {
-      setTimeout(() => {
-        target?.scrollIntoView({
-          behavior: 'smooth'
-        })
-      }, 500)
+    const pillCheckboxClickHandler = () => {
+      // TODO zeby nie scrollowało wertykalnie
+      // setTimeout(() => {
+      //   target?.scrollIntoView({
+      //     behavior: 'smooth'
+      //   })
+      // }, 500)
     }
 
     return {
