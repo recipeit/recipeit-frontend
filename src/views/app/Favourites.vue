@@ -1,7 +1,13 @@
 <template>
   <div class="layout__page__content">
     <PageHeader title="Ulubione" :backButton="true" />
-    <GenericRecipesList :recipes="recipesList.recipes.value" @load-next="recipesList.loadNextRecipes()" :showFilterButtons="false" />
+    <GenericRecipesList
+      :showFilterButtons="false"
+      :recipes="recipesList.recipes.value"
+      :errors="recipesList.recipesErrors.value"
+      @load-next="recipesList.loadNextRecipes()"
+      @reload-with-query="recipesList.reloadRecipes()"
+    />
   </div>
 </template>
 

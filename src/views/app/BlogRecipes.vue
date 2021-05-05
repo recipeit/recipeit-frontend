@@ -47,9 +47,11 @@
 
     <GenericRecipesList
       :recipes="recipesList.recipes.value"
+      :errors="recipesList.recipesErrors.value"
       :showFilterButtons="false"
       @load-next="recipesList.loadNextRecipes($event)"
-      @reload="recipesList.reloadRecipes($event)"
+      @reload="recipesList.reloadRecipes()"
+      @reload-with-query="recipesList.reloadRecipes()"
     />
   </div>
 </template>

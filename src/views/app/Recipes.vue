@@ -3,8 +3,10 @@
     <PageHeader :title="$t('recipes.title')" />
     <GenericRecipesList
       :recipes="recipesList.recipes.value"
+      :errors="recipesList.recipesErrors.value"
       @load-next="recipesList.loadNextRecipes()"
       @reload="recipesList.reloadRecipes($event)"
+      @reload-with-query="recipesList.reloadRecipesWithQuery($event)"
     />
   </div>
 </template>

@@ -13,6 +13,7 @@
       :appliedSorting="recipes.orderMethod"
       :defaultSorting="recipes.defaultOrderMethod"
       :filtersCount="filtersCount"
+      :error="!!errors"
       @search="onSearch($event)"
     />
 
@@ -37,7 +38,12 @@
       <div class="recipes-list__header">
         <slot name="count" :count="recipes.totalCount" :fetching="recipes.fetching">
           <div class="recipes-list__header__total-count">
-            {{ recipes.totalCount !== null && !recipes.fetching ? $tc('shared.recipes', recipes.totalCount) : 'wczytuję' }}
+            <template v-if="recipes.totalCount !== null && !recipes.fetching">
+              {{ $tc('shared.recipes', recipes.totalCount) }}
+            </template>
+            <template v-else-if="recipes.fetching">
+              wczytuję
+            </template>
           </div>
         </slot>
         <div v-if="showAllLink" class="recipes-list__header__show-all">
@@ -65,7 +71,15 @@
         </template>
       </ul>
 
-      <Observer v-if="!limitedItems && recipes.hasNext" @intersect="loadNext" :options="{ rootMargin: '256px' }" />
+      <div v-if="errors" class="recipes-errors">
+        <div class="recipes-errors-message">
+          <!-- {{ errors.messageId }} -->
+          Wystąpił błąd podczas wczytywania
+        </div>
+        <BaseButton stroked @click="tryFetchOnError()">Spróbuj ponownie</BaseButton>
+      </div>
+
+      <Observer v-if="!limitedItems && recipes.hasNext && errors === null" @intersect="loadNext" :options="{ rootMargin: '256px' }" />
     </template>
   </div>
 </template>
@@ -90,6 +104,10 @@ export default {
     recipes: {
       type: RecipeList
     },
+    errors: {
+      type: Object,
+      default: null
+    },
     apiEndpoint: {
       type: Function
     },
@@ -110,7 +128,7 @@ export default {
     const searchTimeoutCallback = ref(null)
 
     const loadNext = () => {
-      if (!props.recipes.fetching) {
+      if (!props.recipes.fetching && props.errors === null) {
         emit('load-next')
       }
     }
@@ -141,6 +159,17 @@ export default {
       return count
     }
 
+    const tryFetchOnError = () => {
+      if (props.errors === null) return
+      const { from, query } = props.errors
+
+      if (from === 'RELOAD') {
+        emit('reload-with-query', query)
+      } else if (from === 'LOAD-NEXT') {
+        emit('load-next')
+      }
+    }
+
     const filtersCount = ref(countFilters())
 
     watch(
@@ -156,6 +185,7 @@ export default {
       searchString,
       searchTimeoutCallback,
       loadNext,
+      tryFetchOnError,
       onSearch,
       clearFilters,
       filtersCount
@@ -239,6 +269,16 @@ export default {
   flex: 1;
 
   &-title {
+    margin-bottom: 1rem;
+    font-size: 0.875rem;
+  }
+}
+
+.recipes-errors {
+  text-align: center;
+  margin: 48px 0;
+
+  .recipes-errors-message {
     margin-bottom: 1rem;
     font-size: 0.875rem;
   }

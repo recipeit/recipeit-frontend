@@ -26,6 +26,13 @@
         </li>
       </template>
     </ul>
+    <div v-if="errors" class="recipes-errors">
+      <div class="recipes-errors-message">
+        <!-- {{ errors.messageId }} -->
+        Wystąpił błąd podczas wczytywania
+      </div>
+      <BaseButton stroked @click="tryFetchOnError()">Spróbuj ponownie</BaseButton>
+    </div>
   </div>
 </template>
 
@@ -40,6 +47,20 @@ export default {
   props: {
     recipes: {
       type: RecipeList
+    },
+    errors: {
+      type: Object,
+      default: null
+    }
+  },
+  methods: {
+    tryFetchOnError() {
+      if (this.errors === null) return
+      const { from, query } = this.errors
+
+      if (from === 'RELOAD') {
+        this.$emit('reload-with-query', query)
+      }
     }
   }
 }
@@ -123,6 +144,15 @@ export default {
       align-items: center;
       justify-content: center;
     }
+  }
+}
+.recipes-errors {
+  text-align: center;
+  margin: 24px 0;
+
+  .recipes-errors-message {
+    margin-bottom: 1rem;
+    font-size: 0.875rem;
   }
 }
 </style>

@@ -4,8 +4,10 @@
     <!-- <div class="recipes-list-title">Te potrawy możesz przyrządzić po drobnych zakupach</div> -->
     <GenericRecipesList
       :recipes="recipesList.recipes.value"
+      :errors="recipesList.recipesErrors.value"
       @load-next="recipesList.loadNextRecipes()"
       @reload="recipesList.reloadRecipes($event)"
+      @reload-with-query="recipesList.reloadRecipesWithQuery($event)"
     >
       <template #count="{ count, fetching}">
         <div v-if="count !== null && !fetching" class="recipes-count">

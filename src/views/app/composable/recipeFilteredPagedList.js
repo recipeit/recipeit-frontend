@@ -4,6 +4,7 @@ import { useRoute, useRouter } from 'vue-router'
 
 export default function(apiEndpoint) {
   const recipes = ref(new RecipeList())
+  const recipesErrors = ref(null)
   const router = useRouter()
   const route = useRoute()
 
@@ -16,18 +17,33 @@ export default function(apiEndpoint) {
     fetchRecipes(orderMethod, filters, search)
   }
 
+  const reloadRecipesWithQuery = query => {
+    fetchRecipesWithQuery(query)
+  }
+
   const fetchNextRecipes = (orderMethod, filters, search) => {
     if (recipes.value.fetching) return
     recipes.value.fetching = true
+    recipesErrors.value = null
 
     const queryParams = fetchRecipesQueryParams(orderMethod, filters, search)
 
-    apiEndpoint({
+    const query = {
       ...queryParams,
       pageNumber: recipes.value.pagesTo + 1
-    }).then(({ data }) => {
-      recipes.value.addFromApi(data)
-    })
+    }
+
+    apiEndpoint(query)
+      .then(({ data }) => {
+        recipes.value.addFromApi(data)
+      })
+      .catch(() => {
+        recipes.value.fetching = false
+        recipesErrors.value = {
+          messageId: 'ERORR',
+          from: 'LOAD-NEXT'
+        }
+      })
   }
 
   const fetchRecipes = (orderMethod, filters, search) => {
@@ -41,13 +57,23 @@ export default function(apiEndpoint) {
   const fetchRecipesWithQuery = queryParams => {
     recipes.value = new RecipeList()
     recipes.value.fetching = true
+    recipesErrors.value = null
 
-    apiEndpoint(queryParams).then(({ data }) => {
-      recipes.value.setFromApi(data)
+    apiEndpoint(queryParams)
+      .then(({ data }) => {
+        recipes.value.setFromApi(data)
 
-      const queryParams = fetchRecipesQueryParams(data.orderMethod, data.filters, data.search)
-      router.replace({ query: queryParams })
-    })
+        const queryParams = fetchRecipesQueryParams(data.orderMethod, data.filters, data.search)
+        router.replace({ query: queryParams })
+      })
+      .catch(() => {
+        recipes.value.fetching = false
+        recipesErrors.value = {
+          messageId: 'ERORR',
+          from: 'RELOAD',
+          query: queryParams
+        }
+      })
   }
 
   onBeforeMount(() => {
@@ -68,6 +94,8 @@ export default function(apiEndpoint) {
   return {
     loadNextRecipes,
     reloadRecipes,
-    recipes
+    reloadRecipesWithQuery,
+    recipes,
+    recipesErrors
   }
 }

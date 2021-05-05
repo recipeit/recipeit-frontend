@@ -3,18 +3,26 @@
     <div class="cook-it-layout">
       <PageHeader :title="$t('cookIt.title')" />
 
-      <GenericRecipesList :recipes="recipes" @load-next="loadNextRecipes()" @reload="reloadRecipes($event)">
-        <template v-if="!(!almostAvailableRecipes.fetching && almostAvailableRecipes.items.length === 0)" #above-list>
+      <GenericRecipesList
+        :recipes="recipes"
+        :errors="recipesErrors"
+        @load-next="loadNextRecipes()"
+        @reload="reloadRecipes($event)"
+        @reload-with-query="fetchAvailableRecipesWithQuery($event)"
+      >
+        <template v-if="!(!almostAvailableRecipes.fetching && almostAvailableRecipes.items?.length === 0)" #above-list>
           <div class="almost-available-horizontal">
             <SectionTitle icon="basket" :title="$t('cookIt.buyMissingIngredient')" />
             <HorizontalRecipesList
               :recipes="almostAvailableRecipes"
+              :errors="almostAvailableRecipesErrors"
+              @reload-with-query="fetchAlmostAvailableRecipesWithQuery($event)"
               @showAll="$router.push({ name: 'almost-available', query: $route.query })"
             />
           </div>
         </template>
 
-        <template #count="{ count, fetching}">
+        <template #count="{ count, fetching }">
           <div v-if="count !== null && !fetching" class="recipes-count">
             <BaseIcon class="recipes-count-icon" icon="chef-hat" />
             <span>
@@ -22,7 +30,7 @@
               >, które możesz przygotować z tego, co juz masz!
             </span>
           </div>
-          <div v-else class="recipes-count-loading">
+          <div v-else-if="fetching" class="recipes-count-loading">
             wczytuję
           </div>
         </template>
@@ -89,7 +97,11 @@ export default {
     const kitchenProductsCount = computed(() => store.state.myKitchen.products?.length || 0)
 
     const recipes = ref(new RecipeList())
+    const recipesErrors = ref(null)
+
     const almostAvailableRecipes = ref(new RecipeList())
+    const almostAvailableRecipesErrors = ref(null)
+
     const router = useRouter()
     const route = useRoute()
 
@@ -105,6 +117,7 @@ export default {
     const fetchNextRecipes = (orderMethod, filters, search) => {
       if (recipes.value.fetching) return
       recipes.value.fetching = true
+      recipesErrors.value = null
 
       const queryParams = fetchRecipesQueryParams(orderMethod, filters, search)
 
@@ -116,6 +129,13 @@ export default {
         .then(({ data }) => {
           recipes.value.addFromApi(data)
         })
+        .catch(() => {
+          recipes.value.fetching = false
+          recipesErrors.value = {
+            messageId: 'ERORR',
+            from: 'LOAD-NEXT'
+          }
+        })
     }
 
     const fetchRecipes = (orderMethod, filters, search) => {
@@ -123,24 +143,55 @@ export default {
 
       const queryParams = fetchRecipesQueryParams(orderMethod, filters, search)
 
-      fetchRecipesWithQuery(queryParams)
+      fetchBothRecipesWithQuery(queryParams)
     }
 
-    const fetchRecipesWithQuery = queryParams => {
+    const fetchAvailableRecipesWithQuery = queryParams => {
       recipes.value = new RecipeList()
       recipes.value.fetching = true
+      recipesErrors.value = null
 
-      userApi.getAvailableRecipes(queryParams).then(({ data }) => {
-        recipes.value.setFromApi(data)
+      userApi
+        .getAvailableRecipes(queryParams)
+        .then(({ data }) => {
+          recipes.value.setFromApi(data)
 
-        const queryParams = fetchRecipesQueryParams(data.orderMethod, data.filters, data.search)
-        router.replace({ query: queryParams })
-      })
+          const queryParams = fetchRecipesQueryParams(data.orderMethod, data.filters, data.search)
+          router.replace({ query: queryParams })
+        })
+        .catch(() => {
+          recipes.value.fetching = false
+          recipesErrors.value = {
+            messageId: 'ERORR',
+            from: 'RELOAD',
+            query: queryParams
+          }
+        })
+    }
 
+    const fetchAlmostAvailableRecipesWithQuery = queryParams => {
+      almostAvailableRecipes.value = new RecipeList()
       almostAvailableRecipes.value.fetching = true
-      userApi.getAlmostAvailableRecipes(queryParams).then(resp => {
-        almostAvailableRecipes.value.setFromApi(resp.data)
-      })
+      almostAvailableRecipesErrors.value = null
+
+      userApi
+        .getAlmostAvailableRecipes(queryParams)
+        .then(resp => {
+          almostAvailableRecipes.value.setFromApi(resp.data)
+        })
+        .catch(() => {
+          almostAvailableRecipes.value.fetching = false
+          almostAvailableRecipesErrors.value = {
+            messageId: 'ERORR',
+            from: 'RELOAD',
+            query: queryParams
+          }
+        })
+    }
+
+    const fetchBothRecipesWithQuery = queryParams => {
+      fetchAvailableRecipesWithQuery(queryParams)
+      fetchAlmostAvailableRecipesWithQuery(queryParams)
     }
 
     onBeforeMount(() => {
@@ -152,9 +203,9 @@ export default {
             .filter(key => key === 'search' || key === 'orderMethod' || key.startsWith('filters.'))
             .map(key => [key, query[key]])
         )
-        fetchRecipesWithQuery(queryParams)
+        fetchBothRecipesWithQuery(queryParams)
       } else {
-        fetchRecipesWithQuery()
+        fetchBothRecipesWithQuery()
       }
     })
 
@@ -163,7 +214,11 @@ export default {
       loadNextRecipes,
       reloadRecipes,
       recipes,
-      almostAvailableRecipes
+      recipesErrors,
+      almostAvailableRecipes,
+      almostAvailableRecipesErrors,
+      fetchAvailableRecipesWithQuery,
+      fetchAlmostAvailableRecipesWithQuery
     }
   }
 }

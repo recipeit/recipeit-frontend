@@ -22,6 +22,7 @@
       :subtle="true"
       :color="filtersCount > 0 ? 'primary' : 'contrast'"
       @click="openFilterModal()"
+      :disabled="error"
     >
       <BaseIcon class="recipes-list-search__filter-button__icon" icon="filter" weight="semi-bold" />
       <span>Filtry</span>
@@ -38,6 +39,7 @@
 import { markRaw, watch } from 'vue'
 import FilterModal from './modals/FilterModal'
 import { ref } from 'vue'
+import { ToastType } from '@/plugins/toast/toastType'
 
 export default {
   emits: ['search'],
@@ -54,7 +56,8 @@ export default {
     defaultSorting: String,
     showFilterButton: Boolean,
     fetching: Boolean,
-    filtersCount: Number
+    filtersCount: Number,
+    error: Boolean
   },
   data: () => ({
     searchTimeoutCallback: null
@@ -78,6 +81,11 @@ export default {
   methods: {
     openFilterModal() {
       if (this.fetching) {
+        return
+      }
+
+      if (!this.filters || !this.sortings) {
+        this.$toast.show('Nie udało się wyświetlić filtrów', ToastType.ERROR)
         return
       }
 

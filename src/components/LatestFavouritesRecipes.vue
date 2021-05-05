@@ -7,7 +7,12 @@
       :showAction="favouriteRecipes.items"
       @action-click="showAllFavourites()"
     />
-    <HorizontalRecipesList :recipes="favouriteRecipes" @showAll="showAllFavourites()" />
+    <HorizontalRecipesList
+      :recipes="favouriteRecipes"
+      :errors="favouriteRecipesErrors"
+      @showAll="showAllFavourites()"
+      @reload-with-query="loadFavouriteRecipes()"
+    />
   </div>
 </template>
 
@@ -24,12 +29,27 @@ export default {
   components: { HorizontalRecipesList, SectionTitle },
   setup() {
     const favouriteRecipes = ref(new RecipeList())
+    const favouriteRecipesErrors = ref(new RecipeList())
     const router = useRouter()
 
-    onBeforeMount(async () => {
+    const loadFavouriteRecipes = async () => {
       favouriteRecipes.value.fetching = true
-      const { data } = await userApi.getFavouriteRecipes()
-      favouriteRecipes.value.setFromApi({ ...data, fetching: false })
+      favouriteRecipesErrors.value = null
+
+      try {
+        const { data } = await userApi.getFavouriteRecipes()
+        favouriteRecipes.value.setFromApi({ ...data, fetching: false })
+      } catch {
+        favouriteRecipes.value.fetching = false
+        favouriteRecipesErrors.value = {
+          messageId: 'ERORR',
+          from: 'RELOAD'
+        }
+      }
+    }
+
+    onBeforeMount(async () => {
+      await loadFavouriteRecipes()
     })
 
     const showAllFavourites = () => {
@@ -38,7 +58,9 @@ export default {
 
     return {
       favouriteRecipes,
-      showAllFavourites
+      favouriteRecipesErrors,
+      showAllFavourites,
+      loadFavouriteRecipes
     }
   }
 }
