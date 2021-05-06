@@ -54,9 +54,7 @@ export default {
         {
           product: this.product
         },
-        {
-          product: this.product
-        }
+        {}
       )
     }
   }

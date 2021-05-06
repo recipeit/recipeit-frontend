@@ -1,16 +1,16 @@
 <template>
   <li class="ingredient">
     <span class="ingredient-text">
-      <span class="ingredient-name">{{ ingredient.name || ingredient.baseProduct?.name }}</span>
+      <span class="ingredient-name">{{ name }}</span>
       <template v-if="ingredient.amount && ingredient.amount > 0">
         <span class="ingredient-amount">{{ computedAmount }}</span>
         <span class="ingredient-unit"> {{ $tc(`unitsShort.${ingredient.unit}`, unitTranslationAmount) }}</span>
       </template>
     </span>
     <div class="state-container">
-      <a v-if="ingredient.state === 'IN_KITCHEN'" class="state state--available">
+      <BaseLink tag="button" v-if="ingredient.state === 'IN_KITCHEN'" class="state state--available" @click="stateClickHandler()">
         <BaseIcon class="state-icon state-icon--small" icon="check" weight="semi-bold" />
-      </a>
+      </BaseLink>
 
       <BaseButton
         v-else-if="ingredient.state === 'IN_SHOPPING_LIST' || ingredient.state === 'UNAVAILABLE'"
@@ -18,7 +18,7 @@
         subtle
         :color="ingredient.state === 'IN_SHOPPING_LIST' ? 'primary' : 'accent'"
         :disabled="showLoadingState"
-        @click="addProductToShoppingList(ingredient)"
+        @click="stateClickHandler()"
       >
         <BaseIcon class="state-icon" icon="basket" />
         <BaseIcon
@@ -33,6 +33,10 @@
 
 <script>
 import { ToastType } from '@/plugins/toast/toastType'
+import { mapState } from 'vuex'
+import { markRaw } from '@vue/runtime-core'
+import SelectBaseProductFromArrayModal from '@/components/modals/SelectBaseProductFromArrayModal'
+import DialogVue from '../modals/Dialog.vue'
 
 export default {
   props: {
@@ -53,34 +57,115 @@ export default {
     loading: false
   }),
   methods: {
-    addProductToShoppingList(product) {
-      if (this.ingredient.state !== 'UNAVAILABLE') {
-        return
-      }
-
+    addSingleProductToShoppingList(product) {
       this.loading = true
 
       this.$store
-        .dispatch('shoppingList/addProduct', {
-          name: product.name,
-          amount: product.amount,
-          unit: product.unit,
-          baseProductId: product.baseProductId
-        })
+        .dispatch('shoppingList/addProduct', product)
         .catch(() => {
           this.$toast.show('Nie udało się dodać produktu do listy zakupów', ToastType.ERROR)
         })
         .finally(() => {
           this.loading = false
         })
+    },
+    addProductToShoppingList() {
+      const { ingredient } = this
+      const amount = ingredient.amount ? ingredient.amount * this.amountFactor : null
+
+      if (ingredient.baseProductIdsArray.length > 1) {
+        this.$modal.show(
+          markRaw(SelectBaseProductFromArrayModal),
+          {
+            ids: ingredient.baseProductIdsArray
+          },
+          {
+            close: baseProductId => {
+              if (!baseProductId) return
+              const { name, unit } = ingredient
+              this.addSingleProductToShoppingList({
+                name,
+                amount,
+                unit,
+                baseProductId
+              })
+            }
+          }
+        )
+      } else {
+        const { name, unit, mainBaseProductId: baseProductId } = ingredient
+        this.addSingleProductToShoppingList({ name, amount, unit, baseProductId })
+      }
+    },
+    stateClickHandler() {
+      const { ingredient } = this
+
+      if (ingredient.state === 'IN_KITCHEN' || ingredient.state === 'IN_SHOPPING_LIST') {
+        const title = ingredient.state === 'IN_KITCHEN' ? 'Posiadasz już ten produkt' : 'Posiadasz już ten produkt na liście zakupów'
+        const content =
+          ingredient.state === 'IN_KITCHEN'
+            ? 'Czy mimo to, chcesz dodać do listy zakupów?'
+            : 'Czy mimo to, chcesz dodać go jeszcze raz do listy zakupów?'
+        this.$modal.show(
+          markRaw(DialogVue),
+          {
+            title,
+            content,
+            secondaryText: 'Nie',
+            primaryText: 'Tak'
+          },
+          {
+            close: add => {
+              if (add) {
+                this.addProductToShoppingList()
+              }
+            }
+          }
+        )
+      } else if (ingredient.state === 'UNAVAILABLE') {
+        this.addProductToShoppingList()
+        // } else if (ingredient.baseProductIdsArray.length > 1) {
+        //   this.$modal.show(
+        //     markRaw(SelectBaseProductFromArrayModal),
+        //     {
+        //       ids: ingredient.baseProductIdsArray
+        //     },
+        //     {
+        //       close: baseProductId => {
+        //         if (!baseProductId) return
+        //         const { name, unit } = ingredient
+        //         this.addSingleProductToShoppingList({
+        //           name,
+        //           amount,
+        //           unit,
+        //           baseProductId
+        //         })
+        //       }
+        //     }
+        //   )
+        // } else {
+        //   const { name, unit, mainBaseProductId: baseProductId } = ingredient
+        //   this.addSingleProductToShoppingList({ name, amount, unit, baseProductId })
+      }
     }
   },
   computed: {
+    ...mapState({
+      baseProducts: state => state.ingredients.baseProducts
+    }),
+    name() {
+      const { ingredient } = this
+      if (ingredient.name) return ingredient.name
+      return this.baseProducts.find(p => p.id === ingredient.mainBaseProductId)?.name
+    },
     computedAmount() {
+      if (!this.ingredient.amount) return null
+
       let amount = this.ingredient.amount * this.amountFactor
       if (this.ingredient.amountMax) {
         amount += ` - ${this.ingredient.amountMax * this.amountFactor}`
       }
+
       return amount
     },
     unitTranslationAmount() {

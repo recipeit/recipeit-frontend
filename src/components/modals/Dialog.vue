@@ -3,7 +3,7 @@
     <BaseModalHeader @close="$emit('close', false)">
       <BaseModalTitle>{{ title }}</BaseModalTitle>
     </BaseModalHeader>
-    <BaseModalBody v-if="content">{{ content }}</BaseModalBody>
+    <BaseModalBody v-if="content" class="content">{{ content }}</BaseModalBody>
     <BaseModalFooter>
       <BaseButton v-if="secondaryText" class="submit-button" stroked color="white" @click="secondaryClick">
         {{ secondaryText }}
@@ -51,5 +51,9 @@ export default {
     margin-right: 0.5rem;
     font-size: 1rem;
   }
+}
+
+.content {
+  font-size: 0.875rem;
 }
 </style>

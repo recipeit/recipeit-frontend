@@ -91,11 +91,11 @@ export default {
     const allIngredientsAdding = ref(false)
     const amountFactor = computed(() => localServings.value / props.servings)
 
-    const isInMyKitchen = baseProductId => {
-      return myKitchenProducts.value.find(p => p.baseProductId === baseProductId)
+    const isInMyKitchen = baseProductIdsArray => {
+      return myKitchenProducts.value.find(p => baseProductIdsArray.includes(p.baseProductId))
     }
-    const isInShoppingList = baseProductId => {
-      return shoppingListProducts.value.find(p => p.baseProductId === baseProductId)
+    const isInShoppingList = baseProductIdsArray => {
+      return shoppingListProducts.value.find(p => baseProductIdsArray.includes(p.baseProductId))
     }
 
     const ingredients = computed(() => {
@@ -103,14 +103,14 @@ export default {
         Object.keys(props.ingredientGroups).map(key => [
           key,
           props.ingredientGroups[key].map(ingredient => {
-            const { baseProductId } = ingredient
+            const { baseProductIdsArray } = ingredient
             let state
 
-            if (!baseProductId) {
+            if (!baseProductIdsArray) {
               state = 'NONE'
-            } else if (isInMyKitchen(baseProductId)) {
+            } else if (isInMyKitchen(baseProductIdsArray)) {
               state = 'IN_KITCHEN'
-            } else if (isInShoppingList(baseProductId)) {
+            } else if (isInShoppingList(baseProductIdsArray)) {
               state = 'IN_SHOPPING_LIST'
             } else {
               state = 'UNAVAILABLE'

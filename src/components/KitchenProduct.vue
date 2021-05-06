@@ -69,9 +69,7 @@ export default {
           product: this.product,
           expirationDates: expirationDates
         },
-        {
-          product: this.product
-        }
+        {}
       )
     },
     deleteProduct() {
