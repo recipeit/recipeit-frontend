@@ -7,13 +7,19 @@
           class="servings-button servings-button--left"
           subtle
           color="primary"
-          v-bind:disabled="localServings <= 1"
+          :disabled="localServings <= 1"
           @click="decreaseServings()"
         >
           <BaseIcon icon="minus" weight="semi-bold" />
         </BaseButton>
         <span class="servings-count">{{ localServings }}</span>
-        <BaseButton class="servings-button servings-button--right" subtle color="primary" @click="increaseServings()">
+        <BaseButton
+          class="servings-button servings-button--right"
+          subtle
+          color="primary"
+          @click="increaseServings()"
+          :disabled="localServings >= 100"
+        >
           <BaseIcon icon="plus" weight="semi-bold" />
         </BaseButton>
         porcji
