@@ -34,12 +34,12 @@
     margin-top: 1rem;
   }
 
-  &:last-child {
-    border-radius: 1.5rem 1.5rem 0 0;
+  // &:last-child {
+  //   border-radius: 1.5rem 1.5rem 0 0;
 
-    @media (min-width: 721px) {
-      border-radius: 1.5rem;
-    }
-  }
+  //   @media (min-width: 721px) {
+  //     border-radius: 1.5rem;
+  //   }
+  // }
 }
 </style>

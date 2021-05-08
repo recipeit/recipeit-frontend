@@ -15,7 +15,7 @@
 <style lang="scss" scoped>
 .message-container {
   position: fixed;
-  bottom: 0;
+  bottom: 1rem;
   left: 0;
   right: 0;
   pointer-events: none;
@@ -24,8 +24,8 @@
   flex-direction: column;
   align-items: center;
 
-  @media (min-width: 721px) {
-    bottom: 1rem;
-  }
+  // @media (min-width: 721px) {
+  //   bottom: 1rem;
+  // }
 }
 </style>
