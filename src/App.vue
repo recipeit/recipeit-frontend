@@ -1,6 +1,6 @@
 <template>
-  V8
-  <div v-if="update.updateExists">
+  V12
+  <div v-if="update.updateExists.value">
     An update is available
     <button @click="update.refreshApp()">
       Update
