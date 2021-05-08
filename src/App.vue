@@ -1,4 +1,11 @@
 <template>
+  V8
+  <div v-if="update.updateExists">
+    An update is available
+    <button @click="update.refreshApp()">
+      Update
+    </button>
+  </div>
   <router-view v-if="fetchedInitialUserProfile" />
   <AppLoading v-else />
   <vue-progress-bar />
@@ -9,10 +16,18 @@
 <script>
 import AnalyticsService from '@/services/analytics'
 import AppLoading from '@/components/AppLoading'
+import updateSW from './composables/update'
 
 export default {
   components: {
     AppLoading
+  },
+  setup() {
+    const update = updateSW()
+
+    return {
+      update
+    }
   },
   data: () => ({
     fetchedInitialUserProfile: false
