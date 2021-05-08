@@ -31,6 +31,10 @@ export default {
     tabindex: {
       type: Number,
       default: 0
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
   data: () => ({
@@ -54,6 +58,8 @@ export default {
       this.focused = false
     },
     updateInput() {
+      if (this.disabled) return
+
       let checked = !this.checked
       if (this.modelValue instanceof Array) {
         let newValue = [...this.modelValue]

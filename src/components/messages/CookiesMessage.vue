@@ -9,8 +9,8 @@
         poprawiać nasze usługi
       </div>
       <div class="cookies-message-buttons">
-        <BaseLink class="customize-button" tag="button" color="primary">opcje</BaseLink>
-        <BaseButton @click="acceptAll()" class="accept-button" color="primary" size="small" raised>Akceptuję</BaseButton>
+        <BaseLink @click="customizeOptions()" class="customize-button" tag="button" color="primary">opcje</BaseLink>
+        <BaseButton @click="accept()" class="accept-button" color="primary" size="small" raised>Akceptuję</BaseButton>
       </div>
     </div>
   </Message>
@@ -20,18 +20,35 @@
 import Message from '@/components/Message'
 import cookie from 'js-cookie'
 import { COOKIES_MESSAGE_COOKIE_NAME } from '@/configs/cookies'
+import { useModal } from '@/plugins/global-sheet-modal'
+import { markRaw } from '@vue/reactivity'
+import CustomizeCookiesModal from '@/components/modals/CustomizeCookiesModal'
 
 export default {
   emits: ['close'],
   components: { Message },
   setup(_, { emit }) {
-    const acceptAll = () => {
+    const modal = useModal()
+    const accept = () => {
       cookie.set(COOKIES_MESSAGE_COOKIE_NAME, true, 365)
       emit('close')
     }
 
+    const customizeOptions = () => {
+      modal.show(
+        markRaw(CustomizeCookiesModal),
+        {},
+        {
+          close: () => {
+            accept()
+          }
+        }
+      )
+    }
+
     return {
-      acceptAll
+      accept,
+      customizeOptions
     }
   }
 }
