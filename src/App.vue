@@ -1,31 +1,48 @@
 <template>
-  V12
-  <div v-if="update.updateExists.value">
-    An update is available
-    <button @click="update.refreshApp()">
-      Update
-    </button>
-  </div>
   <router-view v-if="fetchedInitialUserProfile" />
   <AppLoading v-else />
   <vue-progress-bar />
   <global-sheet-modal-container />
   <toasts-container />
+  <MessageContainer>
+    <UpdateMessage v-if="update.updateExists.value" @update="update.refreshApp()" />
+    <!-- <UpdateMessage @update="update.refreshApp()" /> -->
+    <CookiesMessage v-if="showCookiesMessage" @close="showCookiesMessage = false" />
+  </MessageContainer>
 </template>
 
 <script>
 import AnalyticsService from '@/services/analytics'
 import AppLoading from '@/components/AppLoading'
+import MessageContainer from '@/components/MessageContainer'
+import UpdateMessage from '@/components/messages/UpdateMessage'
+import CookiesMessage from '@/components/messages/CookiesMessage'
 import updateSW from './composables/update'
+import { onBeforeMount, reactive, toRefs } from '@vue/runtime-core'
+import { COOKIES_MESSAGE_COOKIE_NAME } from '@/configs/cookies'
+import cookie from 'js-cookie'
 
 export default {
   components: {
-    AppLoading
+    AppLoading,
+    MessageContainer,
+    UpdateMessage,
+    CookiesMessage
   },
   setup() {
+    const data = reactive({
+      showCookiesMessage: false
+    })
+
+    onBeforeMount(() => {
+      const cookiesMessageCookie = cookie.get(COOKIES_MESSAGE_COOKIE_NAME)
+      data.showCookiesMessage = !cookiesMessageCookie
+    })
+
     const update = updateSW()
 
     return {
+      ...toRefs(data),
       update
     }
   },

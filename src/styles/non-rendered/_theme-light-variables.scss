@@ -54,6 +54,7 @@ $color-theme: (
   'accent': $blue,
   'background': $white,
   'background-flyout': $white,
+  'background-flyout-rgb': functions.toRGB($white),
   'background-rgb': functions.toRGB($white),
   'border': (
     'DEFAULT': $gray-light,
