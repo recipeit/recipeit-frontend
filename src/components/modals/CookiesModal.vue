@@ -1,5 +1,8 @@
 <template>
   <sheet-modal-content>
+    <div class="upper-icon-container">
+      <BaseIcon class="upper-icon" weight="custom" icon="cookies" />
+    </div>
     <BaseModalHeader @close="acceptAll()">
       <BaseModalTitle>Nasze ciasteczka są ręcznie robione</BaseModalTitle>
     </BaseModalHeader>
@@ -56,6 +59,22 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.upper-icon-container {
+  position: relative;
+  text-align: center;
+  margin-bottom: -1rem;
+}
+
+.upper-icon {
+  font-size: 4rem;
+  padding: 1rem;
+  border-radius: 4rem;
+  color: var(--color-primary);
+  background-color: var(--color-background-flyout);
+  margin-top: -3rem;
+  box-shadow: 0 16px 32px rgba(#000, 0.1);
+}
+
 .submit-button {
   width: 100%;
 }
