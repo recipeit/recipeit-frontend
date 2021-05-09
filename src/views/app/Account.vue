@@ -17,6 +17,9 @@
     </div>
 
     <h3>Preferencje</h3>
+    <BaseLink tag="button" @click="openCustomizeCookiesModal()" class="card-link" color="primary">
+      Zarządzaj ciasteczkami
+    </BaseLink>
     <div class="settings-row">
       <div class="settings-row__value settings-row__value--theme">
         <BaseSelect placeholder="Motyw" :options="themes" :value="selectedTheme" @change="updateTheme($event)" :searchable="false">
@@ -66,6 +69,7 @@
 </template>
 
 <script>
+import CustomizeCookiesModal from '@/components/modals/CustomizeCookiesModal'
 import ChangePasswordModal from '@/components/modals/ChangePasswordModal'
 import ForgotPasswordModal from '@/components/modals/ForgotPasswordModal'
 import DeleteAccountModal from '@/components/modals/DeleteAccountModal'
@@ -124,6 +128,9 @@ export default {
         },
         {}
       )
+    },
+    openCustomizeCookiesModal() {
+      this.$modal.show(markRaw(CustomizeCookiesModal), {}, {})
     }
   },
   setup() {
@@ -164,9 +171,11 @@ h3 {
   font-weight: bold;
   margin-top: 3rem;
 }
+
 .settings-row {
   display: flex;
   font-size: 0.875rem;
+  margin-top: 1rem;
 
   &__name {
     flex: 1;
