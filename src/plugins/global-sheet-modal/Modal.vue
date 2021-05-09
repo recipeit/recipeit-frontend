@@ -38,6 +38,10 @@ export default {
     opened: {
       type: Boolean,
       default: false
+    },
+    blockCloseOnBackdrop: {
+      type: Boolean,
+      default: false
     }
   },
   data: () => ({
@@ -50,7 +54,7 @@ export default {
   }),
   methods: {
     maybeClose(e) {
-      if (this.$refs.modal && !this.$refs.modal.contains(e.target)) {
+      if (!this.blockCloseOnBackdrop && this.$refs.modal && !this.$refs.modal.contains(e.target)) {
         this.$emit('close')
       }
     },

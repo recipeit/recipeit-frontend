@@ -19,7 +19,7 @@
   left: 0;
   right: 0;
   pointer-events: none;
-  z-index: 10000;
+  z-index: 900;
   display: flex;
   flex-direction: column;
   align-items: center;

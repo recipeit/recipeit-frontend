@@ -17,11 +17,11 @@ const Plugin = {
       _setGlobalModalContainer(container) {
         usedOptions.globalModalContainer = container
       },
-      show(component, props, events) {
+      show(component, props, events, options) {
         if (usedOptions.globalModalContainer == null) {
           console.warn('[global-sheet-modal] Global modal container is not present')
         } else {
-          usedOptions.globalModalContainer.add(component, props, events)
+          usedOptions.globalModalContainer.add(component, props, events, options)
         }
       },
       hide(id) {

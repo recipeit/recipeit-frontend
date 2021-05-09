@@ -3,10 +3,10 @@ export const RECAPTCHA_URL = `https://www.google.com/recaptcha/api.js?render=${R
 export const RECAPTCHA_ACTIONS = {
   REGISTER: 'register',
   LOGIN: 'login',
-  REQUEST_PASSWORD_RESET: 'request-password-reset',
-  SEND_CONFIRMATION_EMAIL: 'send-confirmation-email',
-  RESET_PASSWORD: 'reset-password',
-  FORGOT_PASSWORD: 'forgot-password',
-  CHANGE_PASSWORD: 'change-password',
-  DELETE_ACCOUNT: 'delete-account'
+  REQUEST_PASSWORD_RESET: 'requestPasswordReset',
+  SEND_CONFIRMATION_EMAIL: 'sendConfirmationEmail',
+  RESET_PASSWORD: 'resetPassword',
+  FORGOT_PASSWORD: 'forgotPassword',
+  CHANGE_PASSWORD: 'changePassword',
+  DELETE_ACCOUNT: 'deleteAccount'
 }

@@ -6,43 +6,40 @@
   <toasts-container />
   <MessageContainer>
     <UpdateMessage v-if="update.updateExists.value" @update="update.refreshApp()" />
-    <!-- <UpdateMessage @update="update.refreshApp()" /> -->
-    <CookiesMessage v-if="showCookiesMessage" @close="showCookiesMessage = false" />
   </MessageContainer>
 </template>
 
 <script>
-import AnalyticsService from '@/services/analytics'
+import GDPRService from '@/services/gdpr'
 import AppLoading from '@/components/AppLoading'
 import MessageContainer from '@/components/MessageContainer'
 import UpdateMessage from '@/components/messages/UpdateMessage'
-import CookiesMessage from '@/components/messages/CookiesMessage'
 import updateSW from './composables/update'
-import { onBeforeMount, reactive, toRefs } from '@vue/runtime-core'
-import { COOKIES_MESSAGE_COOKIE_NAME } from '@/configs/cookies'
-import cookie from 'js-cookie'
+import { markRaw, onMounted } from '@vue/runtime-core'
+import { useModal } from './plugins/global-sheet-modal'
+import CookiesModal from './components/modals/CookiesModal'
 
 export default {
   components: {
     AppLoading,
     MessageContainer,
-    UpdateMessage,
-    CookiesMessage
+    UpdateMessage
   },
   setup() {
-    const data = reactive({
-      showCookiesMessage: false
-    })
-
-    onBeforeMount(() => {
-      const cookiesMessageCookie = cookie.get(COOKIES_MESSAGE_COOKIE_NAME)
-      data.showCookiesMessage = !cookiesMessageCookie
-    })
-
+    const modal = useModal()
     const update = updateSW()
 
+    GDPRService.init()
+
+    onMounted(() => {
+      if (GDPRService.showGDPRModal()) {
+        setTimeout(() => {
+          modal.show(markRaw(CookiesModal), {}, {}, { blockCloseOnBackdrop: true })
+        }, 1000)
+      }
+    })
+
     return {
-      ...toRefs(data),
       update
     }
   },
@@ -73,7 +70,6 @@ export default {
       .finally(() => {
         this.fetchedInitialUserProfile = true
       })
-    AnalyticsService.init()
   }
 }
 </script>

@@ -3,6 +3,7 @@
     v-for="modal in modals"
     :key="modal.id"
     :opened="modal.opened"
+    :blockCloseOnBackdrop="modal.blockCloseOnBackdrop"
     @close="close(modal.id)"
     @closed="afterModalTransitionLeave(modal.id)"
   >
@@ -39,14 +40,15 @@ export default {
     }
   },
   methods: {
-    add(component, props = {}, events = {}) {
+    add(component, props = {}, events = {}, { blockCloseOnBackdrop } = {}) {
       const id = nextId()
       this.modals.push({
         id: id,
         opened: false,
         component: component,
         props: props,
-        events: events
+        events: events,
+        blockCloseOnBackdrop: !!blockCloseOnBackdrop
       })
       this.$nextTick(() => {
         this.open(id)

@@ -18,6 +18,25 @@
         Moja Gazetka. Poprzez korzystanie z aplikacji Moja Gazetka, Użytkownik oświadcza, że akceptuje zasady zawarte w niniejszym
         dokumencie.
       </p>
+
+      <h2 class="h2">II. Wykorzystywane ciasteczka</h2>
+      <h3 class="h3">Wymagane</h3>
+      <ul>
+        <li>X_ACCESS_TOKEN</li>
+        <li>X_REFRESH_TOKEN</li>
+        <li>_GRECAPTCHA</li>
+        <li>CONSENT - logowanie Google</li>
+        <li>NID - logowanie Google</li>
+        <li>
+          recipeit_cookies_message - ciasteczko które jest używane do określenia, czy użytkownik przeczytał komunikat dotyczący ciasteczek
+          na stronie
+        </li>
+        <li>
+          recipeit_cookies_analytics - ciasteczko, które jest ustawiane w momencie uzyskania od użytkownika zgody na wykorzystywanie Google
+          Analytics na stronie
+        </li>
+      </ul>
+      <h3 class="h3">Opcjonalne</h3>
     </div>
   </AnonymousPage>
 </template>

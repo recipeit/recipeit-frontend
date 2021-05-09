@@ -3,14 +3,20 @@
     <div class="cookies-message-content">
       <div class="cookies-message-text">
         <div class="cookies-message-title">
-          Korzystamy z ciasteczek
+          <!-- Korzystamy z domowych ciasteczek -->
+          Nasze ciasteczka są ręcznie robione
         </div>
         Aby umożliwić funkcjonowanie serwisu, wykorzystujemy ciasteczka do logowania oraz do celów analitycznych, dzięki którym możemy
-        poprawiać nasze usługi
+        poprawiać nasze usługi.
+        <router-link :to="{ name: 'privacy-policy' }" v-slot="{ href, navigate }" custom>
+          <BaseLink :href="href" @click="navigate($event)" class="card-link" color="primary">
+            Polityka prywatności
+          </BaseLink>
+        </router-link>
       </div>
       <div class="cookies-message-buttons">
         <BaseLink @click="customizeOptions()" class="customize-button" tag="button" color="primary">opcje</BaseLink>
-        <BaseButton @click="accept()" class="accept-button" color="primary" size="small" raised>Akceptuję</BaseButton>
+        <BaseButton @click="accept()" class="accept-button" color="primary" size="small" raised>akceptuję wszystkie</BaseButton>
       </div>
     </div>
   </Message>
@@ -92,6 +98,10 @@ export default {
       font-size: 0.75rem;
       font-weight: bold;
       padding: 1rem;
+    }
+
+    .accept-button {
+      white-space: nowrap;
     }
   }
 }

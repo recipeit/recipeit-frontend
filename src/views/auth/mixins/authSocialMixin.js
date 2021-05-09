@@ -9,7 +9,7 @@ export default {
   }),
   created() {
     FacebookService.init()
-    GoogleService.init()
+    // GoogleService.init() // because of cookies
   },
   methods: {
     async loginFacebook() {
