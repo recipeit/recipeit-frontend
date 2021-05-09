@@ -92,7 +92,7 @@ export default {
       }
     },
     onPointerUp() {
-      if (this.transformTop > 128 && this.$refs.scroller.scrollTop === 0) {
+      if (!this.blockCloseOnBackdrop && this.transformTop > 128 && this.$refs.scroller.scrollTop === 0) {
         this.$nextTick(() => {
           this.$nextTick(() => {
             this.$emit('close')
