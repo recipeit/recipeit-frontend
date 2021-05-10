@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
+    "prebuild": "node src/prebuild.mjs",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "db": "json-server --watch db.json"
@@ -37,7 +38,10 @@
     "eslint": "^6.7.2",
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-vue": "^7.9.0",
+    "fs-extra": "^10.0.0",
+    "html-loader": "^2.1.2",
     "json-server": "^0.16.2",
+    "markdown-it": "^12.0.6",
     "prettier": "^1.19.1",
     "sass": "^1.32.12",
     "sass-loader": "^8.0.2",

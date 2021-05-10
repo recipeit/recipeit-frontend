@@ -81,7 +81,10 @@ export default {
     document.addEventListener('keyup', e => {
       if (e.keyCode === 27 && this.anyModalOpened) {
         const opened = this.modals.filter(m => m.opened)
-        this.$modal.hide(opened[opened.length - 1].id)
+        const modal = opened[opened.length - 1]
+        if (!modal.blockCloseOnBackdrop) {
+          this.$modal.hide(opened[opened.length - 1].id)
+        }
       }
     })
   }

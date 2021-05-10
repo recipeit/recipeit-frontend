@@ -1,6 +1,8 @@
 .DS_Store
 node_modules
 /dist
+/src/assets/docs/privacypolicy
+/src/assets/docs/terms
 
 
 # local env files
