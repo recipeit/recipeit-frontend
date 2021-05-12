@@ -5,6 +5,7 @@
       <template v-if="ingredient.amount && ingredient.amount > 0">
         <span class="ingredient-amount">{{ computedAmount }}</span>
         <span class="ingredient-unit"> {{ $tc(`unitsShort.${ingredient.unit}`, unitTranslationAmount) }}</span>
+        <span v-if="ingredient.optional" class="ingredient-optional">opcjonalnie</span>
       </template>
     </span>
     <div class="state-container">
@@ -193,11 +194,24 @@ export default {
     margin-right: 0.25rem;
   }
 
+  &-unit {
+    &:not(:last-child) {
+      margin-right: 0.75rem;
+    }
+  }
+
   &-amount,
   &-unit {
     color: var(--color-text-secondary);
     font-size: 0.75rem;
     font-weight: bold;
+  }
+
+  &-optional {
+    color: var(--color-text-secondary);
+    font-size: 0.625rem;
+    font-weight: bold;
+    text-transform: uppercase;
   }
 
   &-text {
