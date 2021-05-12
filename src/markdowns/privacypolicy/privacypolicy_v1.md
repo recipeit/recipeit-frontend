@@ -2,7 +2,7 @@
 
 ## 1. Informacje ogólne
 
-Niniejsza Polityka Prywatności dotyczy sposobu wykorzystywania i ochrony danych osobowych Użytkowników Aplikacji znajdującej się pod adresem recipeit.pl (dalej "Aplikacja"). Stanowi ona integralną część Regulaminu Aplikacji.
+Niniejsza Polityka Prywatności dotyczy sposobu wykorzystywania i ochrony danych osobowych Użytkowników Aplikacji znajdującej się pod adresem recipeit.pl (dalej **"Aplikacja"**). Stanowi ona integralną część Regulaminu Aplikacji.
 
 Administratorem danych osobowych Użytkowników Aplikacji jest Kumalg Software Kamil Golec, NIP: 8992894819, REGON: 388356609.
 
@@ -38,16 +38,16 @@ Aplikacja korzysta z usług Google Analytics do celów statystycznych. Pomaga to
 
 Aplikacja korzysta z plików "cookies". Służą one m.in. do zalogowania się i przechowywania sesji Użytkownika, weryfikacji wysyłanych formularzy, przechowywaniu preferencji i ustawień Uzytkowników oraz do celów analitycznych. Wykorzystywane są następujące pliki "cookies":
 
-- **X_ACCESS_TOKEN (12 godzin), X_REFRESH_TOKEN (6 miesięcy)** - logowanie, trzymanie sesji Użytkownika,
-- **recipeit_cookies_message (365 dni)** - ciasteczko które jest używane do określenia, czy użytkownik przeczytał i zaakceptował komunikat dotyczący ciasteczek,
-- **recipeit_cookies_analytics (365 dni)** - ciasteczko, które jest ustawiane w momencie uzyskania od użytkownika zgody na wykorzystywanie Google Analytics w Aplikacji.
+- **X_ACCESS_TOKEN** (12 godzin), **X_REFRESH_TOKEN** (6 miesięcy) - logowanie, trzymanie sesji Użytkownika,
+- **recipeit_cookies_message** (365 dni) - ciasteczko które jest używane do określenia, czy użytkownik przeczytał i zaakceptował komunikat dotyczący ciasteczek,
+- **recipeit_cookies_analytics** (365 dni) - ciasteczko, które jest ustawiane w momencie uzyskania od użytkownika zgody na wykorzystywanie Google Analytics w Aplikacji.
 
 Dodatkowo, Aplikacja korzysta z usług podmiotów zewnętrznych, które również mogą wykorzystywać pliki "cookies". Są to:
 
-- Facebook - do celów logowania kontem Facebook,
-- Google Identity - do celów logowania kontem Google,
-- Google Recaptcha - do celów weryfikacji wysyłanych formularzy,
-- Google Analytics - do celów analitycznych.
+- **Facebook** - do celów logowania kontem Facebook,
+- **Google Identity** - do celów logowania kontem Google,
+- **Google Recaptcha** - do celów weryfikacji wysyłanych formularzy,
+- **Google Analytics** - do celów analitycznych.
 
 Więcej informacji na temat plików cookies wspomnianych podmiotów znajduje się w ich politykach prywatności.
 
@@ -61,7 +61,7 @@ Mogą Państwo w każdej chwili skorzystać z następujących praw:
 - Prawo do ograniczenia przetwarzania danych,
 - Prawo do przenoszenia danych,
 - Prawo do sprzeciwu oraz do niepodleganiu decyzji opartych na zautomatyzowanym przetwarzaniu,
-- Prawo do złożenia skargi do organu nadzorczego
+- Prawo do złożenia skargi do organu nadzorczego.
 
 W celu skorzystania z powyższych praw, mogą się Państwo kontaktować z Administratorem pod adresem pocztowym kontakt@recipeit.pl
 
