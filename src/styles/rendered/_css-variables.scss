@@ -23,13 +23,13 @@
       @include recc('--color', $map);
     }
   } @else {
-    :root[theme='#{ $theme }'] {
+    :root[theme='#{ $theme }']:not([landing-page]) {
       @include recc('--color', $map);
     }
   }
 }
 
-:root[theme='system'] {
+:root[theme='system']:not([landing-page]) {
   @each $theme, $map in $color-themes {
     @media (prefers-color-scheme: $theme) {
       @include recc('--color', $map);

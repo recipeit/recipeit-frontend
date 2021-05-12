@@ -18,6 +18,7 @@
 import Splash from '@/components/landingPage/Splash'
 import Section from '@/components/landingPage/Section'
 import Footer from '@/components/landingPage/Footer'
+import { onBeforeMount, onBeforeUnmount } from '@vue/runtime-core'
 
 export default {
   components: { Section, Splash, Footer },
@@ -65,6 +66,14 @@ export default {
       }
     ]
 
+    onBeforeMount(() => {
+      document.documentElement.setAttribute('landing-page', true)
+    })
+
+    onBeforeUnmount(() => {
+      document.documentElement.removeAttribute('landing-page')
+    })
+
     return {
       sections
     }
@@ -73,16 +82,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$black: #000;
-$gray: #90abb9;
-
-$text-primary: $black;
-$text-secondary: $gray;
-
 .landing-page {
-  background: #fff;
   min-height: 100vh;
-  color: $text-primary;
 }
 
 .landing-page-container {

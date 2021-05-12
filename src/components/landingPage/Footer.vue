@@ -4,15 +4,19 @@
       <Logotype class="logo" />
     </div>
     <div class="links">
-      <router-link class="link" :to="{ name: 'terms' }">
-        Regulamin
+      <router-link :to="{ name: 'terms' }" #default="{ href, navigate}" custom>
+        <BaseLink :href="href" @click="navigate($event)" class="link" color="text-secondary">
+          Regulamin
+        </BaseLink>
       </router-link>
-      <router-link class="link" :to="{ name: 'privacy-policy' }">
-        Polityka prywatności
+      <router-link :to="{ name: 'privacy-policy' }" #default="{ href, navigate}" custom>
+        <BaseLink :href="href" @click="navigate($event)" class="link" color="text-secondary">
+          Polityka prywatności
+        </BaseLink>
       </router-link>
-      <a class="link" :href="contactHref">
+      <BaseLink :href="contactHref" class="link" color="text-secondary">
         Kontakt
-      </a>
+      </BaseLink>
     </div>
   </footer>
 </template>
@@ -34,17 +38,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$black: #000;
-$gray: #90abb9;
-$gray-light: #e2e9ed;
-
-$text-primary: $black;
-$text-secondary: $gray;
-
 .footer {
-  border-top: 1px solid $gray-light;
+  border-top: 1px solid var(--color-border);
   padding-top: 32px;
-  color: $gray;
+  color: var(--color-text-secondary);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -59,30 +56,16 @@ $text-secondary: $gray;
   width: 96px;
 
   ::v-deep(.a) {
-    fill: $gray;
+    fill: currentColor;
   }
-}
-
-.links {
 }
 
 .link {
-  color: $gray;
   font-size: 0.875rem;
   line-height: 1.25;
-  text-decoration: none;
-  @include transition((color));
 
   @media (max-width: 720px) {
     font-size: 0.75rem;
-  }
-
-  &:hover {
-    color: lighten($gray, 10);
-  }
-
-  &:active {
-    color: lighten($gray, 20);
   }
 
   & + & {

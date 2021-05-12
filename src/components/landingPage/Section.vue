@@ -25,12 +25,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$black: #000;
-$gray: #90abb9;
-
-$text-primary: $black;
-$text-secondary: $gray;
-
 .section {
   align-items: center;
   display: flex;
@@ -50,14 +44,12 @@ $text-secondary: $gray;
   }
 
   &-title {
-    color: $text-primary;
     margin-top: 0;
     font-size: 2rem;
     line-height: 1.15;
   }
 
   &-description {
-    color: $text-primary;
     font-size: 0.875rem;
   }
 
