@@ -13,7 +13,7 @@ export const APP_MY_KITCHEN = 'my-kitchen'
 export const APP_SHOPPING_LIST = 'shopping-list'
 export const APP_ACCOUNT = 'account'
 export const APP_BLOG = 'blog'
-export const APP_HIDDEN_BLOGS = 'hidden-blogss'
+export const APP_HIDDEN_BLOGS = 'hidden-blogs'
 export const APP_HIDDEN_RECIPES = 'hidden-recipes'
 export const APP_HELP = 'help'
 
