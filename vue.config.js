@@ -10,6 +10,8 @@ module.exports = {
     devtool: 'source-map'
   },
   devServer: {
+    host: 'localhost',
+    port: 8080,
     https: true
   },
   chainWebpack: config => {

@@ -18,6 +18,12 @@
 
 1. Użytkownik może również dokonać Rejestracji za pośrednictwem swojego konta Facebook lub Google. Wykorzystanie jednego z tych kont jest równoznaczne ze zgodą na udostępnienie niektórych danych pochodzących z tego konta. Dane te obejmują: imię, nazwisko, adres e-mail oraz zdjęcie profilowe, przy czym jedynie adres e-mail i zdjęcie profilowe będą przechowywane i wykorzystywane w Aplikacji.
 
+1. Użytkownik rejestrując się, zezwala Usługodawcy na wysyłanie mu wiadomości e-mail związanych z działaniem Aplikacji, w tym dotyczących:
+
+   - potwierdzenia rejestracji Konta,
+   - umożliwienia zresetowania hasła,
+   - zmian w Regulaminie lub Polityce Prywatności.
+
 1. Rejestracja w Aplikacji jest równoznaczna z akceptacją Regulaminu i Polityki Prywatności oraz do ich przestrzegania.
 
 ## §3 Konto
@@ -74,9 +80,9 @@
 
 1. Administratorem danych osobowych Użytkowników jest Kumalg Software Kamil Golec, NIP: 8992894819, REGON: 388356609.
 
-1. Administrator danych przetwarza dane osobowe Użytkowników wyłącznie na potrzeby realizacji świadczenia usług związanych z obsługą Aplikacji. Dane osobowe są przetwarzane zgodnie z przepisami ustawy z dnia 29 sierpnia 1997 r. o ochronie danych osobowych (Dz. U. 2002 r. Nr 101 poz. 926, z późn. zm.).
+1. Administrator danych przetwarza dane osobowe Użytkowników wyłącznie na potrzeby realizacji świadczenia usług związanych z obsługą Aplikacji.
 
-1. Podanie adresu poczty elektronicznej e-mail jest niezbędne do założenia Konta Użytkownika. Użytkownikowi przysługuje prawo do wglądu treści swoich danych oraz prawo ich poprawiania i aktualizowania. Aktualizacja danych odbywa się poprzez kontakt pocztą elektroniczną.
+1. Podanie adresu poczty elektronicznej e-mail jest niezbędne do założenia Konta Użytkownika. Użytkownikowi przysługuje prawo do wglądu treści swoich danych oraz prawo ich poprawiania i aktualizowania. Aktualizacja danych odbywa się drogą elektroniczną.
 
 1. Wszelkie postanowienia dotyczące prywatności oraz ochrony danych osobowych określa Polityka Prywatności, która stanowi integralną część niniejszego Regulaminu.
 
