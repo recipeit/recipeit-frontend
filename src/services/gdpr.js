@@ -12,6 +12,10 @@ const setGDPRCookie = (cookieName, value) => {
 
     if (!acceptedCookies.value.includes(cookieName)) {
       acceptedCookies.value.push(cookieName)
+
+      if (cookieName === COOKIES_ANALYTICS_COOKIE_NAME) {
+        AnalyticsService.init()
+      }
     }
   } else {
     Cookies.remove(cookieName)
@@ -59,9 +63,6 @@ export default {
     GDPR_OPTIONS.forEach(cookieName => {
       const allowed = allowedCookies.includes(cookieName)
       setGDPRCookie(cookieName, allowed)
-      if (allowed && cookieName === COOKIES_ANALYTICS_COOKIE_NAME) {
-        AnalyticsService.init()
-      }
     })
     this.setGDPRModalShowed()
   },

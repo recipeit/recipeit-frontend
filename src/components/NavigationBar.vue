@@ -1,26 +1,26 @@
 <template>
   <div class="navigation-bar">
-    <router-link :to="{ name: 'home' }" class="logo-link">
+    <router-link :to="{ name: APP_HOME }" class="logo-link">
       <Logotype class="logo" />
     </router-link>
-    <router-link :to="{ name: 'home' }" class="navigation-bar__item">
+    <router-link :to="{ name: APP_HOME }" class="navigation-bar__item">
       <BaseIcon class="item-icon" icon="home" />
       <span class="item-name">Kokpit</span>
     </router-link>
-    <router-link :to="{ name: 'recipes' }" class="navigation-bar__item">
+    <router-link :to="{ name: APP_RECIPES }" class="navigation-bar__item">
       <BaseIcon class="item-icon" icon="cookbook" />
-      <span class="item-name">Przepisy</span>
+      <span class="item-name">Baza przepisów</span>
     </router-link>
-    <router-link :to="{ name: 'cook-it' }" class="navigation-bar__item">
+    <router-link :to="{ name: APP_COOK_IT }" class="navigation-bar__item">
       <!-- <BaseIcon class="item-icon"icon="chef-hat" weight="fill" /> -->
       <BaseIcon class="item-icon" icon="chef-hat" />
       <span class="item-name">Ugotuj to!</span>
     </router-link>
-    <router-link :to="{ name: 'my-kitchen' }" class="navigation-bar__item">
+    <router-link :to="{ name: APP_MY_KITCHEN }" class="navigation-bar__item">
       <BaseIcon class="item-icon" icon="food" />
       <span class="item-name">Moja kuchnia</span>
     </router-link>
-    <router-link :to="{ name: 'shopping-list' }" class="navigation-bar__item">
+    <router-link :to="{ name: APP_SHOPPING_LIST }" class="navigation-bar__item">
       <BaseIcon class="item-icon" icon="basket" />
       <span class="item-name">Lista zakupów</span>
     </router-link>
@@ -29,10 +29,20 @@
 
 <script>
 import Logotype from '@/components/Logotype'
+import { APP_COOK_IT, APP_HOME, APP_MY_KITCHEN, APP_RECIPES, APP_SHOPPING_LIST } from '@/router/names'
 
 export default {
   components: {
     Logotype
+  },
+  setup() {
+    return {
+      APP_HOME,
+      APP_RECIPES,
+      APP_COOK_IT,
+      APP_MY_KITCHEN,
+      APP_SHOPPING_LIST
+    }
   }
 }
 </script>
@@ -43,7 +53,7 @@ export default {
 
   @media (min-width: 721px) {
     display: block;
-    width: 120px;
+    width: 128px;
     padding: 4px 0;
     margin-bottom: 1rem;
     color: var(--color-max-contrast);

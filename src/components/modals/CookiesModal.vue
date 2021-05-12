@@ -11,6 +11,12 @@
         Klikając przycisk "Akceptuję" lub przycisk "X" akceptujesz wszystkie ciasteczka wykorzystywane do celów logowania, przesyłania
         formularzy, zapamiętywania Twoich preferencji oraz do celów analitycznych.
       </p>
+      <p class="paragraph">
+        Więcej informacji znajdziesz w naszej
+        <router-link :to="{ name: 'privacy-policy' }" v-slot="{ href, navigate }" custom>
+          <BaseLink :href="href" @click="navigate($event)" color="primary">polityce prywatności</BaseLink>.
+        </router-link>
+      </p>
     </BaseModalBody>
     <BaseModalFooter>
       <BaseButton class="submit-button" stroked @click="customizeOptions()">

@@ -2,6 +2,9 @@
   <router-view v-if="fetchedInitialUserProfile" />
   <AppLoading v-else />
   <vue-progress-bar />
+  <Modal v-if="showGDPRModal && allowedGDPRModalRoute" :opened="showGDPRModal">
+    <CookiesModal @close="showGDPRModal = false" />
+  </Modal>
   <global-sheet-modal-container />
   <toasts-container />
   <MessageContainer>
@@ -15,31 +18,40 @@ import AppLoading from '@/components/AppLoading'
 import MessageContainer from '@/components/MessageContainer'
 import UpdateMessage from '@/components/messages/UpdateMessage'
 import updateSW from './composables/update'
-import { markRaw, onMounted } from '@vue/runtime-core'
-import { useModal } from './plugins/global-sheet-modal'
+import { computed, onBeforeMount, reactive, toRefs } from '@vue/runtime-core'
 import CookiesModal from './components/modals/CookiesModal'
+import Modal from './plugins/global-sheet-modal/Modal.vue'
+import { useRoute } from 'vue-router'
+import { APP_HOME, AUTH_LOGIN } from './router/names'
 
 export default {
   components: {
     AppLoading,
     MessageContainer,
-    UpdateMessage
+    UpdateMessage,
+    CookiesModal,
+    Modal
   },
   setup() {
-    const modal = useModal()
+    const route = useRoute()
     const update = updateSW()
+    const data = reactive({
+      showGDPRModal: false
+    })
+
+    const allowedGDPRModalRoute = computed(() => !route.meta?.hideCookiesModal)
 
     GDPRService.init()
 
-    onMounted(() => {
+    onBeforeMount(() => {
       if (GDPRService.showGDPRModal()) {
-        setTimeout(() => {
-          modal.show(markRaw(CookiesModal), {}, {}, { blockCloseOnBackdrop: true })
-        }, 1000)
+        data.showGDPRModal = true
       }
     })
 
     return {
+      ...toRefs(data),
+      allowedGDPRModalRoute,
       update
     }
   },
@@ -59,12 +71,12 @@ export default {
           !location.pathname.startsWith('/terms') &&
           !location.pathname.startsWith('/privacy-policy')
         ) {
-          await this.$router.replace({ name: 'home' })
+          await this.$router.replace({ name: APP_HOME })
         }
       })
       .catch(async () => {
         if (location.pathname.startsWith('/app')) {
-          await this.$router.replace({ name: 'login' })
+          await this.$router.replace({ name: AUTH_LOGIN })
         }
       })
       .finally(() => {
