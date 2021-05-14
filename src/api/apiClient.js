@@ -1,6 +1,7 @@
 import axios from 'axios'
 import store from '@/store'
 import { API_DEV_BASE_URL_SSL, API_PROD_BASE_URL } from '@/configs/api'
+import * as Sentry from '@sentry/browser'
 
 const apiClient = axios.create({
   baseURL: process.env.NODE_ENV === 'production' ? API_PROD_BASE_URL : API_DEV_BASE_URL_SSL,
@@ -18,6 +19,7 @@ apiClient.interceptors.response.use(
   response => response,
   error => {
     const originalRequest = error.config
+    Sentry.captureException(error)
 
     // Prevent infinite loops
     if (error.response?.status === 401 && originalRequest.url.includes('/identity/refresh-cookie')) {
