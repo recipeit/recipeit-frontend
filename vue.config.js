@@ -1,3 +1,5 @@
+const SentryWebpackPlugin = require('@sentry/webpack-plugin')
+
 module.exports = {
   css: {
     loaderOptions: {
@@ -7,7 +9,18 @@ module.exports = {
     }
   },
   configureWebpack: {
-    devtool: 'source-map'
+    devtool: 'source-map',
+    plugins: [
+      new SentryWebpackPlugin({
+        // sentry-cli configuration
+        authToken: process.env.SENTRY_AUTH_TOKEN,
+        org: 'recipeit',
+        project: 'recipeit',
+        // release: process.env.SENTRY_RELEASE,
+        include: './dist',
+        ignore: ['node_modules', 'vue.config.js']
+      })
+    ]
   },
   devServer: {
     host: 'localhost',
