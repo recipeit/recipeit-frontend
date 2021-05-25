@@ -4,7 +4,7 @@
 
 1. Niniejszy dokument (dalej **"Regulamin"**) określa zasady korzystania z aplikacji internetowej pod adresem recipeit.pl (dalej **"Aplikacja"**) prowadzonej przez Kumalg Software Kamil Golec, NIP: 8992894819, REGON: 388356609 (dalej **"Usługodawca"**). Aplikacja może być wykorzystywana przez osoby fizyczne odwiedzające ją (dalej **"Użytkownik"** lub **"Użytkownicy"**).
 
-1. Celem Aplikacji jest umożliwienie Użytkownikowi wyświetlanie przepisów kulinarnych (dalej **"Przepisy"**), które może przygotować ze swoich produktów. Przepisy te pochodzą z różnych serwisów i blogów kulinarnych (dalej **"Blogi"**). Użytkownik ma możliwość uzupełniania produktów, które posiada oraz tworzyć własną listę zakupów.
+1. Celem Aplikacji jest umożliwienie Użytkownikowi wyświetlanie przepisów kulinarnych (dalej **"Przepisy"**), które może przygotować ze swoich produktów. Przepisy te pochodzą z różnych serwisów i blogów kulinarnych (dalej **"Blogi"**). Użytkownik ma możliwość uzupełniania produktów, które posiada oraz tworzenia własnej listy zakupów.
 
 1. Z Aplikacji mogą korzystać wyłącznie osoby pełnoletnie.
 
@@ -39,7 +39,7 @@
    - Dodawać i modyfikować produkty spożywcze, które aktualnie posiada (dalej **"Moja Kuchnia"**),
    - Dodawać i modyfikować produkty na swojej liście zakupów (dalej **"Lista Zakupów"**),
    - Przeglądać Przepisy, które jest w stanie wykonać z wcześniej podanych produktów w Mojej Kuchni,
-   - Przeglądać całą bazę Przepisów dostępna w Aplikacji,
+   - Przeglądać całą bazę Przepisów dostępnych w Aplikacji,
    - Planować Przepisy do przygotowania na później,
    - Dodawać Przepisy na listę ulubionych,
    - Ukrywać wybrane Przepisy i Blogi, dzięki temu nie będą pojawiać się one na listach Przepisów.
@@ -50,7 +50,7 @@
 
 1. W celu zamieszczenia przepisów kulinarnych w Aplikacji, należy wysłać wiadomość na adres email kontakt@recipeit.pl zawierający link do serwisu lub blogu kulinarnego.
 
-1. Osoba, która wysyłając taką wiadomość (dalej "Autor"), będącą chęcią zamieszczenia przepisów kulinarnych w Aplikacji, oznajmia, że jest właścicielem zamieszczonego w wiadomości serwisu lub blogu kulinarnego oraz, że posiada wszelkie prawa autorskie do przepisów kulinarnych w nim zawartych.
+1. Osoba, która wysyła taką wiadomość (dalej "Autor"), będąca chęcią zamieszczenia przepisów kulinarnych w Aplikacji, oznajmia, że jest właścicielem zamieszczonego w wiadomości serwisu lub blogu kulinarnego oraz, że posiada wszelkie prawa autorskie do przepisów kulinarnych w nim zawartych.
 
 ## §5 Niedozwolone działania
 

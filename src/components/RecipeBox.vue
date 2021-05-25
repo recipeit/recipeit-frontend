@@ -1,14 +1,15 @@
 <template>
-  <router-link :to="{ name: 'recipe', params: { recipeId } }" v-slot="{ href, navigate }" custom>
+  <router-link :to="{ name: APP_RECIPE, params: { recipeId } }" v-slot="{ href, navigate }" custom>
     <a :href="href" @click="navigate($event)" class="recipe-box">
       <div class="recipe-box__image-container">
         <div class="recipe-box__image-container__image">
-          <BaseImageLazyload :src="recipeImageUrl" :alt="recipeName" />
+          <BaseImageLazyload :src="imageUrl" :alt="recipeName" />
         </div>
 
         <div v-if="showRecipeProps" class="recipe-box__props2">
-          <Rating :value="recipeRating" />
+          <Rating v-if="recipeRating > 0" class="prop-rating" :value="recipeRating" />
           <FavouriteIcon
+            class="prop-favourite"
             :isFavourite="isFavourite"
             @removed="deleteFromFavourites"
             @added="addToFavourites"
@@ -28,6 +29,7 @@
 import { mapState } from 'vuex'
 import Rating from '@/components/Rating'
 import FavouriteIcon from '@/components/FavouriteIcon'
+import { APP_RECIPE } from '@/router/names'
 
 export default {
   components: {
@@ -55,9 +57,14 @@ export default {
       default: true
     }
   },
+  setup() {
+    return {
+      APP_RECIPE
+    }
+  },
   methods: {
     showDetails() {
-      this.$router.push({ name: 'recipe', params: { recipeId: this.recipeId } })
+      this.$router.push({ name: APP_RECIPE, params: { recipeId: this.recipeId } })
     },
     addToFavourites() {
       this.$store.dispatch('recipes/addToFavourites', this.recipeId)
@@ -72,6 +79,9 @@ export default {
     }),
     isFavourite() {
       return this.favouriteRecipesIds?.find(id => id === this.recipeId) !== undefined
+    },
+    imageUrl() {
+      return `/static/recipes/${this.recipeId}/thumb.webp`
     }
   }
 }
@@ -146,9 +156,13 @@ export default {
     margin: 8px;
     min-height: 2rem;
 
-    > *:first-child {
+    .prop-rating {
       padding-left: 10px;
       padding-right: 12px;
+    }
+
+    .prop-favourite {
+      margin-left: auto;
     }
 
     > * {

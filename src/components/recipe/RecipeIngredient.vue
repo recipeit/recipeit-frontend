@@ -2,11 +2,11 @@
   <li class="ingredient">
     <span class="ingredient-text">
       <span class="ingredient-name">{{ name }}</span>
-      <template v-if="ingredient.amount && ingredient.amount > 0">
+      <template v-if="ingredient.amount && ingredient.amount !== 0">
         <span class="ingredient-amount">{{ computedAmount }}</span>
         <span class="ingredient-unit"> {{ $tc(`unitsShort.${ingredient.unit}`, unitTranslationAmount) }}</span>
-        <span v-if="ingredient.optional" class="ingredient-optional">opcjonalnie</span>
       </template>
+      <span v-if="ingredient.optional" class="ingredient-optional">opcjonalnie</span>
     </span>
     <div class="state-container">
       <BaseLink tag="button" v-if="ingredient.state === 'IN_KITCHEN'" class="state state--available" @click="stateClickHandler()">
@@ -36,8 +36,9 @@
 import { ToastType } from '@/plugins/toast/toastType'
 import { mapState } from 'vuex'
 import { markRaw } from '@vue/runtime-core'
+import { stringifiedAmount } from '@/functions/amount'
 import SelectBaseProductFromArrayModal from '@/components/modals/SelectBaseProductFromArrayModal'
-import DialogVue from '../modals/Dialog.vue'
+import Dialog from '@/components/modals/Dialog'
 
 export default {
   props: {
@@ -108,7 +109,7 @@ export default {
             ? 'Czy mimo to, chcesz dodać do listy zakupów?'
             : 'Czy mimo to, chcesz dodać go jeszcze raz do listy zakupów?'
         this.$modal.show(
-          markRaw(DialogVue),
+          markRaw(Dialog),
           {
             title,
             content,
@@ -162,9 +163,9 @@ export default {
     computedAmount() {
       if (!this.ingredient.amount) return null
 
-      let amount = this.ingredient.amount * this.amountFactor
+      let amount = stringifiedAmount(this.ingredient.amount * this.amountFactor)
       if (this.ingredient.amountMax) {
-        amount += ` - ${this.ingredient.amountMax * this.amountFactor}`
+        amount += ` - ${stringifiedAmount(this.ingredient.amountMax * this.amountFactor)}`
       }
 
       return amount
@@ -187,7 +188,7 @@ export default {
 .ingredient {
   display: flex;
   align-items: center;
-  min-height: 32px;
+  min-height: 40px;
   padding: 4px 0;
 
   &-amount {

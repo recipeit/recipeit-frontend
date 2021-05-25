@@ -1,5 +1,5 @@
 <template>
-  <router-link :to="{ name: 'cook-it', query: { 'filters.Category': categoryKey } }" #default="{ href, navigate }" custom>
+  <router-link :to="{ name: APP_COOK_IT, query: { 'filters.Category': categoryKey } }" #default="{ href, navigate }" custom>
     <a :href="href" @click="navigate($event)" class="category">
       <BaseImageLazyload class="category-image" :src="imageUrl" />
       <div>
@@ -12,6 +12,7 @@
 <script>
 import PopularCategoryData from '@/configs/popularCategories'
 import { computed } from '@vue/runtime-core'
+import { APP_COOK_IT } from '@/router/names'
 // https://images.unsplash.com/photo-1563379926898-05f4575a45d8?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8cGFzdGF8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=60
 
 export default {
@@ -23,6 +24,7 @@ export default {
     const imageUrl = computed(() => PopularCategoryData[props.categoryValue]?.image)
 
     return {
+      APP_COOK_IT,
       imageUrl
     }
   }

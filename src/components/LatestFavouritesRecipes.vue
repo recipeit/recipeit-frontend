@@ -24,6 +24,7 @@ import userApi from '@/api/userApi'
 import { RecipeList } from '@/constants'
 import HorizontalRecipesList from '@/components/HorizontalRecipesList'
 import SectionTitle from '@/components/SectionTitle'
+import { APP_FAVOURITES } from '@/router/names'
 
 export default {
   components: { HorizontalRecipesList, SectionTitle },
@@ -53,7 +54,7 @@ export default {
     })
 
     const showAllFavourites = () => {
-      router.push({ name: 'favourites' })
+      router.push({ name: APP_FAVOURITES })
     }
 
     return {

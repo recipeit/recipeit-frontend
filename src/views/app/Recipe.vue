@@ -59,14 +59,14 @@
         <div class="recipe__author">
           <router-link :to="{ name: 'blog', params: { blogId: recipe.author.blogId } }" v-slot="{ href, navigate }" custom>
             <BaseLink :href="href" @click="navigate($event)" color="text-secondary">
-              <span class="recipe__author__name">{{ recipe.author.name }}</span>
-              <span class="recipe__author__blog-name">, {{ recipe.author.blog.name }}</span>
+              <span v-if="recipe.author.name" class="recipe__author__name">{{ recipe.author.name }}, </span>
+              <span class="recipe__author__blog-name">{{ recipe.author.blog.name }}</span>
             </BaseLink>
           </router-link>
         </div>
 
         <div class="recipe__tags">
-          <BaseButton stroked size="small">
+          <BaseButton v-if="recipe.rating > 0" stroked size="small">
             <Rating :value="recipe.rating" />
           </BaseButton>
           <BaseButton
@@ -94,6 +94,14 @@
           <BaseButton class="plan-button" raised color="primary" @click="openPlanRecipeModal()">
             <BaseIcon class="plan-button__icon" icon="clock" /> Zaplanuj na później
           </BaseButton>
+
+          <BaseButton target="_blank" v-if="recipe.url" :href="recipe.url" tag="a" class="original-link" stroked>
+            Przejdź do oryginału
+          </BaseButton>
+
+          <!-- <BaseLink color="text-secondary" target="_blank" v-if="recipe.url" :href="recipe.url" class="original-link">
+            zobacz oryginał
+          </BaseLink> -->
         </div>
 
         <!-- <BaseAdSenseAd /> -->
@@ -225,20 +233,11 @@ export default {
     //   return _.min(_.difference(this.allIndexes, this.finishedDirections))
     // },
     images() {
-      return [
-        {
-          src: this.recipe.mainImageUrl
-        },
-        {
-          src: 'https://www.kwestiasmaku.com/sites/v123.kwestiasmaku.com/files/makaron_stir_fry_01.jpg'
-        },
-        {
-          src: 'https://www.kwestiasmaku.com/sites/v123.kwestiasmaku.com/files/stirfry_wolowina_brokul_01.jpg'
-        },
-        {
-          src: 'https://www.kwestiasmaku.com/sites/v123.kwestiasmaku.com/files/nalesniki-po-bolonsku-01.jpg'
-        }
-      ]
+      if (!this.recipe) return null
+
+      return [...Array(this.recipe.imagesCount).keys()].map(i => ({
+        src: `/static/recipes/${this.recipeId}/${i + 1}.webp`
+      }))
     }
   },
   watch: {
@@ -493,5 +492,10 @@ export default {
       font-weight: 700;
     }
   }
+}
+
+.original-link {
+  margin-top: 1rem;
+  width: 100%;
 }
 </style>

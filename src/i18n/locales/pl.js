@@ -108,64 +108,64 @@ export default {
       liter: 'l',
 
       cup: 'szkl.',
-      tablespoon: 'łyżek | łyżka | łyżki | łyżek',
-      teaspoon: 'łyżeczek | łyżeczka | łyżeczki | łyżeczek',
+      tablespoon: 'łyżki | łyżka | łyżki | łyżek',
+      teaspoon: 'łyżeczki | łyżeczka | łyżeczki | łyżeczek',
 
       millimeter: 'mm',
       centimeter: 'cm',
       meter: 'm',
 
-      clove: 'ząbków | ząbek | ząbki | ząbków',
+      clove: 'ząbka | ząbek | ząbki | ząbków',
       piece: 'szt.',
-      grain: 'ziaren | ziarno | ziarna | ziaren',
+      grain: 'ziarna | ziarno | ziarna | ziaren',
       package: 'opak.',
-      pinch: 'szczypt | szczypta | szczypty | szczypt',
+      pinch: 'szczypy | szczypta | szczypty | szczypt',
       handful: 'garści | garść | garście | garści',
-      slice: 'plastrów | plaster | plastry | plastrów',
-      breadslice: 'kromek | kromka | kromki | kromek',
-      bunch: 'pęczków | pęczek | pęczki | pęczków',
-      stalk: 'łodyg | łodyga | łodygi | łodyg',
-      cube: 'kostek | kostka | kostki | kostek',
-      can: 'puszek | puszka | puszki | puszek',
-      leaf: 'liści | liść | liście | liści',
-      sachet: 'saszetek | saszetka | saszetki | saszetek',
-      jar: 'słoików | słoik | słoiki | słoików',
-      bucket: 'wiaderek | wiaderko | wiaderka | wiaderek'
+      slice: 'plastra | plaster | plastry | plastrów',
+      breadslice: 'kromki | kromka | kromki | kromek',
+      bunch: 'pęczka | pęczek | pęczki | pęczków',
+      stalk: 'łodygi | łodyga | łodygi | łodyg',
+      cube: 'kostki | kostka | kostki | kostek',
+      can: 'puszki | puszka | puszki | puszek',
+      leaf: 'liścia | liść | liście | liści',
+      sachet: 'saszetki | saszetka | saszetki | saszetek',
+      jar: 'słoika | słoik | słoiki | słoików',
+      bucket: 'wiaderka | wiaderko | wiaderka | wiaderek'
     },
     units: {
-      milligram: 'miligramów | miligram | miligramy | miligramów',
-      gram: 'gram | gram | gramy | gram',
-      kilogram: 'kilogramów | kilogram | kilogramy | kilogramów',
-      dekagram: 'dekagramów | dekagram | dekagramy | dekagramów',
+      milligram: 'miligrama | miligram | miligramy | miligramów',
+      gram: 'grama | gram | gramy | gram',
+      kilogram: 'kilograma | kilogram | kilogramy | kilogramów',
+      dekagram: 'dekagrama | dekagram | dekagramy | dekagramów',
 
-      milliliter: 'mililitrów | mililitr | mililitry | mililitrów',
-      deciliter: 'decylitrów | decylitr | decylitry | decylitrów',
-      liter: 'litrów | litr | litry | litrów',
+      milliliter: 'mililitra | mililitr | mililitry | mililitrów',
+      deciliter: 'decylitra | decylitr | decylitry | decylitrów',
+      liter: 'litra | litr | litry | litrów',
 
-      cup: 'szklanek | szklanka | szklanki | szklanek',
-      tablespoon: 'łyżek | łyżka | łyżki | łyżek',
-      teaspoon: 'łyżeczek | łyżeczka | łyżeczki | łyżeczek',
+      cup: 'szklanki | szklanka | szklanki | szklanek',
+      tablespoon: 'łyżki | łyżka | łyżki | łyżek',
+      teaspoon: 'łyżeczki | łyżeczka | łyżeczki | łyżeczek',
 
-      millimeter: 'milimetrów | milimetr | milimetry | milimetrów',
-      centimeter: 'centymetrów | centymetr | centymetry | centymetrów',
-      meter: 'metrów | metr | metry | metrów',
+      millimeter: 'milimetra | milimetr | milimetry | milimetrów',
+      centimeter: 'centymetra | centymetr | centymetry | centymetrów',
+      meter: 'metra | metr | metry | metrów',
 
-      clove: 'ząbków | ząbek | ząbki | ząbków',
-      piece: 'sztuk | sztuka | sztuki | sztuk',
-      grain: 'ziaren | ziarno | ziarna | ziaren',
-      package: 'opakowań | opakowanie | opakowania | opakowań',
-      pinch: 'szczypt | szczypta | szczypty | szczypt',
+      clove: 'ząbka | ząbek | ząbki | ząbków',
+      piece: 'sztuki | sztuka | sztuki | sztuk',
+      grain: 'ziarna | ziarno | ziarna | ziaren',
+      package: 'opakowania | opakowanie | opakowania | opakowań',
+      pinch: 'szczypty | szczypta | szczypty | szczypt',
       handful: 'garści | garść | garście | garści',
-      slice: 'plastrów | plaster | plastry | plastrów',
-      breadslice: 'kromek | kromka | kromki | kromek',
-      bunch: 'pęczków | pęczek | pęczki | pęczków',
-      stalk: 'łodyg | łodyga | łodygi | łodyg',
-      cube: 'kostek | kostka | kostki | kostek',
-      can: 'puszek | puszka | puszki | puszek',
-      leaf: 'liści | liść | liście | liści',
-      sachet: 'saszetek | saszetka | saszetki | saszetek',
-      jar: 'słoików | słoik | słoiki | słoików',
-      bucket: 'wiaderek | wiaderko | wiaderka | wiaderek'
+      slice: 'plastra | plaster | plastry | plastrów',
+      breadslice: 'kromki | kromka | kromki | kromek',
+      bunch: 'pęczka | pęczek | pęczki | pęczków',
+      stalk: 'łodygi | łodyga | łodygi | łodyg',
+      cube: 'kostki | kostka | kostki | kostek',
+      can: 'puszki | puszka | puszki | puszek',
+      leaf: 'liśca | liść | liście | liści',
+      sachet: 'saszetki | saszetka | saszetki | saszetek',
+      jar: 'słoika | słoik | słoiki | słoików',
+      bucket: 'wiaderka | wiaderko | wiaderka | wiaderek'
     },
     unitGroups: {
       weight: 'waga',
@@ -225,11 +225,14 @@ export default {
     }
   },
   pluralizationRules(choice, choicesLength) {
-    if (choice === 0) {
+    const absChoice = Math.abs(choice) // Change to positive
+    const decimal = absChoice - Math.floor(absChoice)
+
+    if (decimal) {
       return 0
     }
 
-    if (choice === 1) {
+    if (absChoice === 1) {
       return 1
     }
 
@@ -237,9 +240,9 @@ export default {
       return 2
     }
 
-    const teen = choice > 10 && choice < 20
+    const teen = absChoice > 10 && absChoice < 20
     // at first, there was ... % 10 >= 2, but there was problem with float numbers, eg. 1.5
-    if (!teen && choice % 10 > 1 && choice % 10 <= 4) {
+    if (!teen && absChoice % 10 > 1 && absChoice % 10 <= 4) {
       return 2
     }
 

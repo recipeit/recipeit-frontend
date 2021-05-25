@@ -1,5 +1,5 @@
 <template>
-  <router-link :to="{ name: 'blog', params: { blogId: blog.id } }" v-slot="{ href, navigate }" custom>
+  <router-link :to="{ name: APP_BLOG, params: { blogId: blog.id } }" v-slot="{ href, navigate }" custom>
     <a :href="href" @click="navigate($event)" class="hidden-blog">
       <BaseImageLazyload :src="blog.imageUrl" :alt="blog.name" class="hidden-blog__image" />
       <div class="hidden-blog__details">
@@ -16,11 +16,18 @@
 </template>
 
 <script>
+import { APP_BLOG } from '@/router/names'
+
 export default {
   props: {
     blog: {
       type: Object,
       required: true
+    }
+  },
+  setup() {
+    return {
+      APP_BLOG
     }
   }
 }

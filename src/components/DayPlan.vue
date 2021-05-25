@@ -39,7 +39,7 @@
             <div class="time-of-day__title">{{ $t(`timeOfDay.${key}`) }}</div>
             <div class="time-of-day__recipes">
               <div href="#" class="time-of-day__recipe" v-for="recipe in recipes" :key="recipe.id">
-                <router-link :to="{ name: 'recipe', params: { recipeId: recipe.recipeId } }" v-slot="{ href, navigate }" custom>
+                <router-link :to="{ name: APP_RECIPE, params: { recipeId: recipe.recipeId } }" v-slot="{ href, navigate }" custom>
                   <BaseLink :href="href" @click="navigate($event)" class="time-of-day__recipe__link">
                     {{ recipe.name }}
                   </BaseLink>
@@ -61,7 +61,7 @@
           <!-- WHEN CURRENT DAY IS NEXT 7 DAYS INCLUDING TODAY -->
           <template v-if="currentDay.type === DayType.TODAY || currentDay.type === DayType.THIS_WEEK">
             Zaplanuj przepis na ten dzień!
-            <router-link :to="{ name: 'cook-it' }" v-slot="{ href, navigate }" custom>
+            <router-link :to="{ name: APP_COOK_IT }" v-slot="{ href, navigate }" custom>
               <BaseButton tag="a" :href="href" @click="navigate($event)" class="no-plans-message-button" raised color="primary">
                 <BaseIcon class="no-plans-message-button-icon" icon="search" weight="semi-bold" />
                 Przeglądaj przepisy
@@ -84,6 +84,7 @@ import dayjs from '@/functions/dayjs'
 import userApi from '@/api/userApi'
 import { ToastType } from '@/plugins/toast/toastType'
 import SectionTitle from '@/components/SectionTitle'
+import { APP_COOK_IT, APP_RECIPE } from '@/router/names'
 
 const SlideType = {
   PREVIOUS: 'previous',
@@ -100,6 +101,13 @@ const DayType = {
 
 export default {
   components: { SectionTitle },
+  setup() {
+    return {
+      APP_COOK_IT,
+      APP_RECIPE,
+      DayType
+    }
+  },
   data() {
     return {
       daysList: [],
@@ -110,9 +118,6 @@ export default {
   },
   beforeMount() {
     this.backToToday()
-  },
-  created() {
-    this.DayType = DayType
   },
   computed: {
     anyPlannedRecipesInDay() {

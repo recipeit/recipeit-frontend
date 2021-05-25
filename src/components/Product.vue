@@ -3,8 +3,8 @@
     <div class="product__info">
       <div class="product__name">{{ product.baseProductName }}</div>
       <div class="product__subname">
-        <span v-if="product.amount && product.amount > 0" class="product__amount">{{ product.amount }}</span>
-        <span v-if="product.amount && product.amount > 0 && product.unit" class="product__unit">
+        <span v-if="amount" class="product__amount">{{ amount }}</span>
+        <span v-if="amount && product.unit" class="product__unit">
           {{ $tc(`unitsShort.${product.unit}`, product.amount) }}
         </span>
       </div>
@@ -16,11 +16,24 @@
 </template>
 
 <script>
+import { computed } from '@vue/runtime-core'
+import { stringifiedAmount } from '@/functions/amount'
+
 export default {
   props: {
     product: {
       type: Object,
       required: true
+    }
+  },
+  setup(props) {
+    const amount = computed(() => {
+      const { amount } = props.product
+      return amount > 0 ? stringifiedAmount(amount) : null
+    })
+
+    return {
+      amount
     }
   }
   // computed: {

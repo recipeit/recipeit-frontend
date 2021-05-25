@@ -60,7 +60,7 @@ export default {
   }),
   beforeCreate() {
     const currentTheme = localStorage.getItem('theme')
-    document.documentElement.setAttribute('theme', currentTheme || 'system')
+    document.documentElement.setAttribute('theme', currentTheme || 'light')
   },
   created() {
     this.$store

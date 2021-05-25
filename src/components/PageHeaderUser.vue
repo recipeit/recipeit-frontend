@@ -12,14 +12,14 @@
       <template #dropdown>
         <BaseMenuList>
           <template v-if="!userAuthenticatedLazy">
-            <BaseMenuRouterLink :to="{ name: 'login' }">Zaloguj się</BaseMenuRouterLink>
-            <BaseMenuRouterLink :to="{ name: 'register' }">Utwórz konto</BaseMenuRouterLink>
+            <BaseMenuRouterLink :to="{ name: AUTH_LOGIN }">Zaloguj się</BaseMenuRouterLink>
+            <BaseMenuRouterLink :to="{ name: AUTH_REGISTER }">Utwórz konto</BaseMenuRouterLink>
             <BaseMenuSeparator />
-            <BaseMenuRouterLink :to="{ name: 'help' }">Pomoc</BaseMenuRouterLink>
+            <BaseMenuRouterLink :to="{ name: APP_HELP }">Pomoc</BaseMenuRouterLink>
           </template>
           <template v-else>
-            <BaseMenuRouterLink :to="{ name: 'account' }">Moje konto</BaseMenuRouterLink>
-            <BaseMenuRouterLink :to="{ name: 'help' }">Pomoc</BaseMenuRouterLink>
+            <BaseMenuRouterLink :to="{ name: APP_ACCOUNT }">Moje konto</BaseMenuRouterLink>
+            <BaseMenuRouterLink :to="{ name: APP_HELP }">Pomoc</BaseMenuRouterLink>
             <BaseMenuSeparator />
             <BaseMenuLink color="red" @click="logout()">Wyloguj się</BaseMenuLink>
           </template>
@@ -30,6 +30,7 @@
 </template>
 
 <script>
+import { APP_ACCOUNT, APP_HELP, AUTH_LOGIN, AUTH_REGISTER } from '@/router/names'
 import { mapState } from 'vuex'
 
 export default {
@@ -42,6 +43,14 @@ export default {
   methods: {
     logout() {
       this.$store.dispatch('user/logout', true)
+    }
+  },
+  setup() {
+    return {
+      APP_ACCOUNT,
+      APP_HELP,
+      AUTH_LOGIN,
+      AUTH_REGISTER
     }
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  <router-link :to="{ name: 'recipe', params: { recipeId: recipe.id } }" v-slot="{ href, navigate }" custom>
+  <router-link :to="{ name: APP_RECIPE, params: { recipeId: recipe.id } }" v-slot="{ href, navigate }" custom>
     <a :href="href" @click="navigate($event)" class="hidden-recipe">
       <BaseImageLazyload :src="recipe.mainImageUrl" :alt="recipe.name" class="hidden-recipe__image" />
       <div class="hidden-recipe__details">
@@ -19,11 +19,18 @@
 </template>
 
 <script>
+import { APP_RECIPE } from '@/router/names'
+
 export default {
   props: {
     recipe: {
       type: Object,
       required: true
+    }
+  },
+  setup() {
+    return {
+      APP_RECIPE
     }
   }
 }
