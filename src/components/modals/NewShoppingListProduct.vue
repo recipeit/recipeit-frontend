@@ -50,7 +50,7 @@ export default {
 
       const requestData = {
         baseProductId: baseProduct.id,
-        amount,
+        amount: amount || undefined,
         unit
       }
 

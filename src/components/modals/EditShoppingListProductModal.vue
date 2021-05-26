@@ -75,7 +75,7 @@ export default {
       const requestData = {
         id: props.product.id,
         baseProductId: baseProduct.id,
-        amount,
+        amount: amount || undefined,
         unit
       }
 

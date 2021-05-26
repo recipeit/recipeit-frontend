@@ -79,7 +79,7 @@ export default {
         id: props.product.id,
         product: {
           baseProductId: baseProduct.id,
-          amount,
+          amount: amount || undefined,
           unit
         },
         expirationDates: data.expirationDatesForm

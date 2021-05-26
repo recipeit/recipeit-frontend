@@ -63,7 +63,7 @@ export default {
       const requestData = {
         product: {
           baseProductId: baseProduct.id,
-          amount,
+          amount: amount || undefined,
           unit
         },
         expirationDates: this.expirationDatesForm
