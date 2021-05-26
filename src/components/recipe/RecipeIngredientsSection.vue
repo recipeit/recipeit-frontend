@@ -75,7 +75,8 @@ export default {
     const shoppingListProducts = computed(() => store.state.shoppingList.products || [])
 
     // SERVINGS
-    const localServings = ref(props.servings || 1)
+    const initialServings = props.servings || 1
+    const localServings = ref(initialServings)
     const decreaseServings = () => {
       if (localServings.value > 1) {
         localServings.value -= 1
@@ -89,7 +90,7 @@ export default {
 
     // INGREDIENTS
     const allIngredientsAdding = ref(false)
-    const amountFactor = computed(() => localServings.value / props.servings)
+    const amountFactor = computed(() => localServings.value / initialServings)
 
     const isInMyKitchen = baseProductIdsArray => {
       return myKitchenProducts.value.find(p => baseProductIdsArray.includes(p.baseProductId))
