@@ -8,7 +8,7 @@
         <BaseIcon icon="angle-right" />
       </button>
     </div>
-    <div class="gallery-indicators">
+    <div v-if="images?.length > 1" class="gallery-indicators">
       <span
         :class="['gallery-indicator', { 'gallery-indicator--current': currentImageIndex === index }]"
         v-for="(_, index) in images"

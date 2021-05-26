@@ -87,7 +87,25 @@
           :ingredientGroups="recipe.details.ingredientGroups"
         />
 
+        <div v-if="recipe.details.introductionParagraphs" class="recipe-introduction">
+          <p class="recipe-paragraph" v-for="(paragraph, index) in recipe.details.introductionParagraphs" :key="index">
+            {{ paragraph }}
+          </p>
+        </div>
+
         <RecipeDirectionsSection :recipeId="recipe.id" :directions="recipe.details.directionsParagraphs" />
+
+        <div v-if="!recipe.details.summaryParagraphs" class="recipe-summary">
+          <p class="recipe-paragraph" v-for="(paragraph, index) in recipe.details.summaryParagraphs" :key="index">
+            {{ paragraph }}
+          </p>
+        </div>
+
+        <div v-if="recipe.details.footerParagraphs" class="recipe-footer">
+          <p class="recipe-paragraph" v-for="(paragraph, index) in recipe.details.footerParagraphs" :key="index">
+            {{ paragraph }}
+          </p>
+        </div>
 
         <div class="recipe-bottom-buttons-section">
           <!-- <BaseButton class="update-button" stroked>Zjedzone! Zaaktualizuj kuchnię</BaseButton> -->
@@ -290,6 +308,25 @@ export default {
   margin-top: 16px;
   font-size: 12px;
   font-weight: 600;
+}
+
+.recipe-introduction {
+  margin-top: 2rem;
+}
+
+.recipe-summary {
+  margin-top: 2rem;
+}
+
+.recipe-footer {
+  margin-top: 2rem;
+  color: var(--color-text-secondary);
+  font-size: 12px;
+}
+
+.recipe-paragraph {
+  margin-top: 8px;
+  margin-bottom: 0;
 }
 
 .plan-button {
