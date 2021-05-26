@@ -96,12 +96,12 @@
           </BaseButton>
 
           <BaseButton target="_blank" v-if="recipe.url" :href="recipe.url" tag="a" class="original-link" stroked>
-            Przejdź do oryginału
+            <BaseIcon class="plan-button__icon" icon="arrow-right" /> Przejdź do oryginału
           </BaseButton>
 
-          <!-- <BaseLink color="text-secondary" target="_blank" v-if="recipe.url" :href="recipe.url" class="original-link">
-            zobacz oryginał
-          </BaseLink> -->
+          <BaseLink :href="reportLinkHref" color="text-secondary" class="report-link">
+            zgłoś błąd w przepisie
+          </BaseLink>
         </div>
 
         <!-- <BaseAdSenseAd /> -->
@@ -173,7 +173,7 @@ export default {
       this.$store.dispatch('recipes/deleteFromFavourites', this.recipe.id)
     },
     copyLinkToClipboard() {
-      const { url } = this.recipe
+      const url = window.location.origin + this.$route.path
 
       if (!url) {
         this.$toast.show('Nie udało się skopiować do schowka', ToastType.ERROR)
@@ -238,6 +238,12 @@ export default {
       return [...Array(this.recipe.imagesCount).keys()].map(i => ({
         src: `/static/recipes/${this.recipeId}/${i + 1}.webp`
       }))
+    },
+    reportLinkHref() {
+      const mail = 'kontakt@recipeit.pl'
+      const subject = `Błąd w przepisie [ID=${this.recipeId}]`
+
+      return `mailto:${mail}?subject=${subject}`
     }
   },
   watch: {
@@ -276,6 +282,14 @@ export default {
 
 .recipe-bottom-buttons-section {
   margin-top: 32px;
+  text-align: center;
+}
+
+.report-link {
+  display: inline-block;
+  margin-top: 16px;
+  font-size: 12px;
+  font-weight: 600;
 }
 
 .plan-button {

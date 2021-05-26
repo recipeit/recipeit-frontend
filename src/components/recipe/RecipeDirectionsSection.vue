@@ -7,7 +7,7 @@
       actionText="usuń znaczniki"
       @action-click="resetFinishedDirections()"
     />
-    <div class="recipe-directions-list">
+    <div v-if="directions?.length > 1" class="recipe-directions-list">
       <div
         v-for="(paragraph, index) in directions"
         :key="index"
@@ -24,16 +24,17 @@
         </BaseCheckbox>
       </div>
     </div>
+    <p class="recipe-single-direction" v-else-if="directions?.length === 1">
+      {{ directions[0] }}
+    </p>
   </div>
 </template>
 
 <script>
 import _ from 'lodash'
-import { computed, markRaw, ref, watch } from '@vue/runtime-core'
+import { computed, ref, watch } from '@vue/runtime-core'
 import { useStore } from 'vuex'
-import { useModal } from '@/plugins/global-sheet-modal'
 import SectionTitle from '@/components/SectionTitle'
-import Dialog from '@/components/modals/Dialog'
 
 export default {
   components: { SectionTitle },
@@ -49,7 +50,7 @@ export default {
   },
   setup(props) {
     const store = useStore()
-    const modal = useModal()
+    // const modal = useModal()
 
     const finishedDirections = ref(store.getters['recipes/getFinishedDirectionsForRecipe'](props.recipeId) || [])
 
@@ -69,19 +70,20 @@ export default {
       store.dispatch('recipes/setFinishedDirectionsForRecipe', { recipeId: props.recipeId, finishedDirections: newValue })
       const remaining = _.difference(allIndexes.value, newValue)
       if (!remaining || remaining.length === 0) {
-        modal.show(
-          markRaw(Dialog),
-          {
-            title: 'Zrobione',
-            content: 'Udało Ci się ukończyć cały przepis',
-            secondaryText: 'OK!'
-          },
-          {
-            close: () => {
-              finishedDirections.value = []
-            }
-          }
-        )
+        finishedDirections.value = []
+        // modal.show(
+        //   markRaw(Dialog),
+        //   {
+        //     title: 'Zrobione',
+        //     content: 'Udało Ci się ukończyć cały przepis',
+        //     secondaryText: 'OK!'
+        //   },
+        //   {
+        //     close: () => {
+        //       finishedDirections.value = []
+        //     }
+        //   }
+        // )
       }
     })
 
