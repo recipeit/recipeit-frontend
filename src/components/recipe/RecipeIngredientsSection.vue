@@ -75,7 +75,7 @@ export default {
     const shoppingListProducts = computed(() => store.state.shoppingList.products || [])
 
     // SERVINGS
-    const localServings = ref(props.servings)
+    const localServings = ref(props.servings || 1)
     const decreaseServings = () => {
       if (localServings.value > 1) {
         localServings.value -= 1
