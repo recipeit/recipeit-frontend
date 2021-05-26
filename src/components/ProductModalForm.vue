@@ -11,6 +11,7 @@
       :searchable="true"
       :errors="errors"
       v-bind="field"
+      @click.stop
       groupLabel="groupKey"
       groupValues="groupValues"
     >
@@ -25,7 +26,7 @@
 
   <div class="form-row form-columns">
     <Field type="text" name="amount" v-slot="{ field, errors }">
-      <BaseInput class="amount-input" label="Ilość" type="text" v-bind="field" :errors="errors" />
+      <BaseInput class="amount-input" label="Ilość" type="number" v-bind="field" :errors="errors" />
     </Field>
     <Field type="text" name="unit" v-slot="{ field, errors }">
       <BaseSelect

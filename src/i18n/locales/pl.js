@@ -181,6 +181,7 @@ export default {
     },
     errorCode: {
       [errorCodes.ERROR]: 'coś poszło nie tak',
+      [errorCodes.TOO_FREQUENT]: 'poczekaj kilka minut aby wysłać wiadomość jeszcze raz',
       [errorCodes.WRONG_PASSWORD]: 'nieprawidłowe hasło',
       [errorCodes.WEAK_PASSWORD]: 'użyj silniejszego hasła',
       [errorCodes.WRONG_USER_PASSWORD_COMBINATION]: 'nieprawidłowy adres e-mail lub hasło',

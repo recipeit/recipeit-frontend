@@ -2,27 +2,42 @@
   <div class="auth-main__content">
     <h1>Potwierdź adres email</h1>
 
-    <div v-if="state === 'LOADING'">
-      ...czekaj
+    <div v-if="state === 'LOADING'" class="wait">
+      <Spinner class="wait-spinner" :show="true" />
+      czekaj
     </div>
+
     <div v-else-if="state === 'SUCCESS'">
-      Udało się! Teraz możesz się
-      <router-link :to="{ name: 'login' }" v-slot="{ href, navigate }" custom>
-        <BaseLink :href="href" @click="navigate($event)" color="primary">
-          zalogować
-        </BaseLink>
-      </router-link>
+      Udało się! Teraz możesz się zalogować
+      <div>
+        <router-link :to="{ name: 'login' }" v-slot="{ href, navigate }" custom>
+          <BaseButton tag="a" class="login-button" :href="href" @click="navigate($event)" raised color="primary">
+            Zaloguj się
+          </BaseButton>
+        </router-link>
+      </div>
     </div>
+
     <div v-else>
       Coś poszło nie tak
+      <div>
+        <router-link :to="{ name: 'login' }" v-slot="{ href, navigate }" custom>
+          <BaseButton tag="a" class="login-button" :href="href" @click="navigate($event)" stroked>
+            <BaseIcon class="login-button-icon" icon="arrow-left" weight="semi-bold" />
+            Wróć do logowania
+          </BaseButton>
+        </router-link>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import identityApi from '@/api/identityApi'
+import Spinner from '@/components/Spinner'
 
 export default {
+  components: { Spinner },
   data: () => ({
     state: 'LOADING'
   }),
@@ -54,10 +69,28 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.wait {
+  display: flex;
+  align-items: center;
+
+  .wait-spinner {
+    margin-right: 0.75rem;
+    color: var(--color-primary);
+  }
+}
 // form {
 // margin-bottom: 16px;
 // }
 // h1 {
 //   margin-bottom: 8px;
 // }
+
+.login-button {
+  margin-top: 1.5rem;
+
+  .login-button-icon {
+    font-size: 0.875rem;
+    margin-right: 0.5rem;
+  }
+}
 </style>

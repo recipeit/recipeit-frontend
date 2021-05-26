@@ -40,6 +40,14 @@
 
     <template v-else>
       Wystąpił błąd
+      <div class="buttons">
+        <router-link :to="{ name: 'login' }" v-slot="{ href, navigate }" custom>
+          <BaseButton tag="a" class="return-button-only" :href="href" @click="navigate($event)" stroked>
+            <BaseIcon class="return-button-icon" icon="arrow-left" weight="semi-bold" />
+            Wróć
+          </BaseButton>
+        </router-link>
+      </div>
     </template>
   </div>
 </template>

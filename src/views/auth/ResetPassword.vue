@@ -1,8 +1,8 @@
 <template>
   <div class="auth-main__content">
-    <h1>Zmiana hasła</h1>
-
     <template v-if="state === 'BEFORE'">
+      <h1>Zmiana hasła</h1>
+
       <Form @submit="resetPassword($event)" :validation-schema="schema">
         <BaseInput class="form-row" label="E-mail" type="text" :value="email" :disabled="true" />
         <Field name="password" type="password" v-slot="{ field, errors }">
@@ -16,15 +16,37 @@
     </template>
 
     <template v-else-if="state === 'SENDING'">
-      ...czekaj
+      <h1>Zmiana hasła</h1>
+
+      <div class="wait">
+        <Spinner class="wait-spinner" :show="true" />
+        czekaj
+      </div>
     </template>
 
     <template v-else-if="state === 'SUCCESS'">
-      Hasło zostało zmienione
+      <h1>Hasło zostało zmienione</h1>
+
+      <div>
+        <router-link :to="{ name: 'login' }" v-slot="{ href, navigate }" custom>
+          <BaseButton tag="a" class="login-button" :href="href" @click="navigate($event)" raised color="primary">
+            Zaloguj się
+          </BaseButton>
+        </router-link>
+      </div>
     </template>
 
     <template v-else>
-      Wystąpił błąd
+      <h1>Wystąpił błąd</h1>
+
+      <div>
+        <router-link :to="{ name: 'login' }" v-slot="{ href, navigate }" custom>
+          <BaseButton tag="a" class="login-button" :href="href" @click="navigate($event)" stroked>
+            <BaseIcon class="login-button-icon" icon="arrow-left" weight="semi-bold" />
+            Wróć do logowania
+          </BaseButton>
+        </router-link>
+      </div>
     </template>
   </div>
 </template>
@@ -36,11 +58,13 @@ import identityApi from '@/api/identityApi'
 import { confirmNewPasswordSchema, newPasswordSchema } from '@/configs/schemas'
 import recaptcha from '@/services/recaptcha'
 import { RECAPTCHA_ACTIONS } from '@/configs/recaptcha'
+import Spinner from '@/components/Spinner'
 
 export default {
   components: {
     Field,
-    Form
+    Form,
+    Spinner
   },
   setup() {
     const schema = Yup.object({
@@ -103,10 +127,28 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.wait {
+  display: flex;
+  align-items: center;
+
+  .wait-spinner {
+    margin-right: 0.75rem;
+    color: var(--color-primary);
+  }
+}
 // form {
 // margin-bottom: 16px;
 // }
 h1 {
   margin-bottom: 1.5rem;
+}
+
+.login-button {
+  margin-top: 1.5rem;
+
+  .login-button-icon {
+    font-size: 0.875rem;
+    margin-right: 0.5rem;
+  }
 }
 </style>
