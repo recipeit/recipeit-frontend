@@ -18,6 +18,9 @@ export default {
   CASSEROLE: 'Casserole',
   SOUP: 'Soup',
   SALAD: 'Salad',
+  DRINK: 'Drink',
+  ALCOHOL: 'Alcohol',
+  PASTE: 'Paste',
 
   // Occasion
   CHRISTMAS: 'Christmas',

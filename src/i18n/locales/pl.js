@@ -74,7 +74,7 @@ export default {
       // Type
       [recipeCategories.SNACK]: 'Przekąski',
       [recipeCategories.DESSERT]: 'Desery',
-      [recipeCategories.CAKE]: 'Ciasto',
+      [recipeCategories.CAKE]: 'Ciasta',
       [recipeCategories.COOKIES]: 'Ciasteczka',
       [recipeCategories.SAUCE]: 'Sosy',
       [recipeCategories.PIZZA]: 'Pizze',
@@ -85,6 +85,9 @@ export default {
       [recipeCategories.CASSEROLE]: 'Zapiekanki',
       [recipeCategories.SOUP]: 'Zupy',
       [recipeCategories.SALAD]: 'Sałatki',
+      [recipeCategories.DRINK]: 'Napoje',
+      [recipeCategories.ALCOHOL]: 'Alkohole',
+      [recipeCategories.PASTE]: 'Do smarowania',
 
       // Occasion
       [recipeCategories.CHRISTMAS]: 'Boże Narodzenie',
