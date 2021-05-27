@@ -4,7 +4,7 @@
       icon="heart"
       title="Ulubione"
       actionText="zobacz wszystkie"
-      :showAction="favouriteRecipes.items"
+      :showAction="favouriteRecipes.items?.length > 0"
       @action-click="showAllFavourites()"
     />
     <HorizontalRecipesList

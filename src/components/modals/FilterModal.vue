@@ -83,7 +83,11 @@
               class="filter__group__option"
               @click="pillCheckboxClickHandler($event)"
             >
-              {{ $t(`recipeFilterOptions.${groupValue}.${option.value}`) }}
+              {{
+                CATEGORY_GROUPS.includes(groupValue)
+                  ? $t(`recipeCategory.${option.value}`)
+                  : $t(`recipeFilterOptions.${groupValue}.${option.value}`)
+              }}
             </BasePillCheckbox>
           </div>
         </div>
@@ -109,6 +113,8 @@ import ProductIcon from '@/components/ProductIcon'
 const OPTION_KEYS = {
   BASE_PRODUCTS: 'BaseProducts'
 }
+
+const CATEGORY_GROUPS = ['Daytime', 'Type', 'Occasion', 'Cuisine']
 
 export default {
   emits: ['close'],
@@ -222,7 +228,8 @@ export default {
       removeSelectedBaseProduct,
       orderedGroupOptions,
       pillCheckboxClickHandler,
-      OPTION_KEYS
+      OPTION_KEYS,
+      CATEGORY_GROUPS
     }
   }
 }

@@ -62,7 +62,6 @@
           :recipeId="recipe.id"
           :recipeName="recipe.name"
           :recipeRating="recipe.rating"
-          :recipeImageUrl="recipe.mainImageUrl"
         />
         <template v-if="recipes.fetching">
           <li class="recipes-list__list__item recipes-list__list__item--skeleton" v-for="i in 4" :key="i">
@@ -73,7 +72,6 @@
 
       <div v-if="errors" class="recipes-errors">
         <div class="recipes-errors-message">
-          <!-- {{ errors.messageId }} -->
           Wystąpił błąd podczas wczytywania
         </div>
         <BaseButton stroked @click="tryFetchOnError()">Spróbuj ponownie</BaseButton>

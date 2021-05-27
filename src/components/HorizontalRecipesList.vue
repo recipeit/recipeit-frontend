@@ -8,7 +8,6 @@
         :recipeId="recipe.id"
         :recipeName="recipe.name"
         :recipeRating="recipe.rating"
-        :recipeImageUrl="recipe.mainImageUrl"
       />
       <li v-if="recipes.items && recipes.totalCount > recipes.items.length" class="list-item" @click="$emit('showAll')">
         <div class="show-all-item">

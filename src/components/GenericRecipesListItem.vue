@@ -1,6 +1,6 @@
 <template>
   <li class="recipes-list-item">
-    <RecipeBox :recipeId="recipeId" :recipeName="recipeName" :recipeRating="recipeRating" :recipeImageUrl="recipeImageUrl" />
+    <RecipeBox :recipeId="recipeId" :recipeName="recipeName" :recipeRating="recipeRating" />
   </li>
 </template>
 
@@ -20,10 +20,6 @@ export default {
     },
     recipeRating: {
       type: Number
-    },
-    recipeImageUrl: {
-      type: String,
-      required: true
     }
   }
 }

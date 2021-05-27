@@ -73,11 +73,11 @@
             subtle
             color="accent"
             size="small"
-            v-for="category in recipe.categoryKeys"
-            :key="category"
+            v-for="category in recipe.details.categoriesWithGroups"
+            :key="category.key"
             @click="navigateToRecipesWithCategoryFilter(category)"
           >
-            {{ $t(`recipeCategory.${category}`) }}
+            {{ $t(`recipeCategory.${category.value}`) }}
           </BaseButton>
         </div>
 
@@ -178,8 +178,8 @@ export default {
     this.$store.dispatch('shoppingList/fetchProducts')
   },
   methods: {
-    navigateToRecipesWithCategoryFilter(category) {
-      this.$router.push({ name: 'cook-it', query: parseFilters({ Category: [category] }) })
+    navigateToRecipesWithCategoryFilter({ key, categoryGroup }) {
+      this.$router.push({ name: 'cook-it', query: parseFilters({ [categoryGroup]: [key] }) })
     },
     back() {
       this.$router.go(-1)

@@ -4,7 +4,7 @@
     <div class="popular-categories-container">
       <ul v-if="popularCategories" class="popular-categories">
         <li v-for="category in popularCategories" :key="category.key" class="popular-category-container">
-          <PopularCategory :categoryKey="category.key" :categoryValue="category.value" />
+          <PopularCategory :categoryKey="category.key" :categoryValue="category.value" :categoryGroup="category.categoryGroup" />
         </li>
       </ul>
     </div>

@@ -3,7 +3,7 @@
     <SectionTitle
       size="large"
       title="Przygotowanie"
-      :showAction="finishedDirections && finishedDirections.length > 0"
+      :showAction="finishedDirections?.length > 0"
       actionText="usuń znaczniki"
       @action-click="resetFinishedDirections()"
     />

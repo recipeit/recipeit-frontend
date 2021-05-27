@@ -48,10 +48,6 @@ export default {
     recipeRating: {
       type: Number
     },
-    recipeImageUrl: {
-      type: String,
-      required: true
-    },
     showRecipeProps: {
       type: Boolean,
       default: true

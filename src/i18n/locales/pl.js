@@ -60,7 +60,10 @@ export default {
     },
     recipeFilterGroups: {
       Other: 'Twoje',
-      Category: 'Kategoria',
+      Daytime: 'Pora dnia',
+      Type: 'Typ',
+      Occasion: 'Okazja',
+      Cuisine: 'Kuchnie świata',
       Diet: 'Dieta',
       Allergens: 'Wyklucz alergeny',
       BaseProducts: 'Wymagane składniki'
@@ -79,7 +82,7 @@ export default {
       [recipeCategories.SAUCE]: 'Sosy',
       [recipeCategories.PIZZA]: 'Pizze',
       [recipeCategories.PASTA]: 'Makarony',
-      [recipeCategories.FAST_FOOD]: 'FastFood',
+      [recipeCategories.FAST_FOOD]: 'Fast food',
       [recipeCategories.APPETIZER]: 'Przystawki',
       [recipeCategories.BAKING]: 'Pieczywo',
       [recipeCategories.CASSEROLE]: 'Zapiekanki',
