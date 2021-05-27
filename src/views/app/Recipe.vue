@@ -454,14 +454,15 @@ export default {
 
   &__header-pill-button {
     margin-left: auto;
-    padding: 8px 12px;
+    padding: 8px 16px;
     font-size: 0.75rem;
-    font-weight: bold;
+    font-weight: 600;
     height: auto;
     gap: 6px;
 
     &__icon {
       font-size: 16px;
+      margin-left: -4px;
     }
   }
 

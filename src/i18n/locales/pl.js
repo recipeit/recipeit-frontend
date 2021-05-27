@@ -1,5 +1,6 @@
 import errorCodes from '@/constants/errorCodes'
 import timesOfDay from '@/constants/timesOfDay'
+import recipeCategories from '@/constants/recipeCategories'
 
 export default {
   messages: {
@@ -64,6 +65,67 @@ export default {
       Allergens: 'Wyklucz alergeny',
       BaseProducts: 'Wymagane składniki'
     },
+    recipeCategory: {
+      // DayTime
+      [recipeCategories.BREAKFAST]: 'Śniadania',
+      [recipeCategories.DINNER]: 'Obiady',
+      [recipeCategories.SUPPER]: 'Kolacje',
+
+      // Type
+      [recipeCategories.SNACK]: 'Przekąski',
+      [recipeCategories.DESSERT]: 'Desery',
+      [recipeCategories.CAKE]: 'Ciasto',
+      [recipeCategories.COOKIES]: 'Ciasteczka',
+      [recipeCategories.SAUCE]: 'Sosy',
+      [recipeCategories.PIZZA]: 'Pizze',
+      [recipeCategories.PASTA]: 'Makarony',
+      [recipeCategories.FAST_FOOD]: 'FastFood',
+      [recipeCategories.APPETIZER]: 'Przystawki',
+      [recipeCategories.BAKING]: 'Pieczywo',
+      [recipeCategories.CASSEROLE]: 'Zapiekanki',
+      [recipeCategories.SOUP]: 'Zupy',
+      [recipeCategories.SALAD]: 'Sałatki',
+
+      // Occasion
+      [recipeCategories.CHRISTMAS]: 'Boże Narodzenie',
+      [recipeCategories.EASTER]: 'Wielkanoc',
+      [recipeCategories.HALLOWEEN]: 'Halloween',
+      [recipeCategories.GRILL]: 'Grill',
+      [recipeCategories.PARTY]: 'Impreza',
+      [recipeCategories.NEW_YEARS_EVE]: 'Sylwester',
+      [recipeCategories.FAT_THURSDAY]: 'Tłusty Czwartek',
+      [recipeCategories.VALENTINES_DAY]: 'Walentynki',
+      [recipeCategories.PICNIC]: 'Piknik',
+
+      // Kitchen
+      [recipeCategories.CUISINE_AFRICAN]: 'Kuchnia afrykańska',
+      [recipeCategories.CUISINE_MIDDLE_EAST]: 'Kuchnia Bliskiego Wschodu',
+      [recipeCategories.CUISINE_AMERICAN]: 'Kuchnia amerykańska',
+      [recipeCategories.CUISINE_BALKAN]: 'Kuchnia bałkańska',
+      [recipeCategories.CUISINE_CHINESE]: 'Kuchnia chińska',
+      [recipeCategories.CUISINE_FRENCH]: 'Kuchnia francuska',
+      [recipeCategories.CUISINE_GREEK]: 'Kuchnia grecka',
+      [recipeCategories.CUISINE_GEORGIAN]: 'Kuchnia gruzińska',
+      [recipeCategories.CUISINE_SPANISH]: 'Kuchnia hiszpańska',
+      [recipeCategories.CUISINE_INDIAN]: 'Kuchnia indyjska',
+      [recipeCategories.CUISINE_POLISH]: 'Kuchnia polska',
+      [recipeCategories.CUISINE_THAI]: 'Kuchnia tajska',
+      [recipeCategories.CUISINE_MEXICAN]: 'Kuchnia meksykańska',
+      [recipeCategories.CUISINE_ITALIAN]: 'Kuchnia włoska',
+      [recipeCategories.CUISINE_KOREAN]: 'Kuchnia koreańska',
+      [recipeCategories.CUISINE_GERMAN]: 'Kuchnia niemiecka',
+      [recipeCategories.CUISINE_ORIENTAL]: 'Kuchnia orientalna',
+      [recipeCategories.CUISINE_TURKISH]: 'Kuchnia turecka',
+      [recipeCategories.CUISINE_MEDITERRANEAN]: 'Kuchnia śródziemnomorska',
+      [recipeCategories.CUISINE_RUSSIAN]: 'Kuchnia rosyjska',
+      [recipeCategories.CUISINE_HUNGARIAN]: 'Kuchnia węgierska',
+      [recipeCategories.CUISINE_FUSHION]: 'Kuchnia fushion',
+      [recipeCategories.CUISINE_UKRAINIAN]: 'Kuchnia ukraińska',
+      [recipeCategories.CUISINE_CZECH]: 'Kuchnia czeska',
+      [recipeCategories.CUISINE_JAPANESE]: 'Kuchnia japońska',
+      [recipeCategories.CUISINE_IRANIAN]: 'Kuchnia irańska',
+      [recipeCategories.CUISINE_ARABIAN]: 'Kuchnia arabska'
+    },
     recipeFilterOptions: {
       Other: {
         Favourite: 'Ulubione',
@@ -88,14 +150,6 @@ export default {
         Fishes: 'Ryby',
         Nuts: 'Orzechy'
       }
-    },
-    recipeCategory: {
-      Breakfast: 'Śniadanie',
-      Dinner: 'Obiad',
-      Supper: 'Kolacja',
-      Dessert: 'Deser',
-      Cake: 'Ciasto',
-      Snack: 'Przekąska'
     },
     unitsShort: {
       milligram: 'mg',
