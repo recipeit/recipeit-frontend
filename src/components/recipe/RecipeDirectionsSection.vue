@@ -125,12 +125,16 @@ export default {
   }
 
   :deep(.checkbox__input) {
-    margin-top: 6px;
-    margin-bottom: 6px;
+    margin-top: 5px;
+    margin-bottom: 5px;
   }
 
   :deep(.checkbox__label) {
     line-height: 26px;
   }
+}
+
+.recipe-single-direction {
+  line-height: 26px;
 }
 </style>
