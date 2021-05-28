@@ -1,12 +1,13 @@
 # build stage
 FROM node:lts-alpine as build-stage
 WORKDIR /app
-# todo: add yarn.lock here
-COPY package*.json ./
 RUN apk add git
-RUN yarn install
-COPY . .
-COPY .git .
+COPY package.json yarn.lock ./
+RUN yarn install --frozen-lockfile
+COPY .git ./.git
+COPY public ./public
+COPY src ./src
+COPY .browserslistrc .eslintrc.js .sentryclirc babel.config.js jsconfig.json vue.config.js ./
 RUN yarn build
 
 # production stage
