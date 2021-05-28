@@ -3,8 +3,10 @@ FROM node:lts-alpine as build-stage
 WORKDIR /app
 # todo: add yarn.lock here
 COPY package*.json ./
+RUN apk add git
 RUN yarn install
 COPY . .
+COPY .git .
 RUN yarn build
 
 # production stage

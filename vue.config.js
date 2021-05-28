@@ -20,7 +20,7 @@ module.exports = {
 
     config.plugins.push(
       new DefinePlugin({
-        __SENTRY_RELEASE__: JSON.stringify(commitHash)
+        __BUILD_VERSION__: JSON.stringify(commitHash)
       })
     )
 

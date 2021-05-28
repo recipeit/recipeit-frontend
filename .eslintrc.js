@@ -17,6 +17,6 @@ module.exports = {
     "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off"
   },
   globals: {
-    __SENTRY_RELEASE__: true
+    __BUILD_VERSION__: true
   }
 };
