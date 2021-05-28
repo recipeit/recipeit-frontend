@@ -1,4 +1,8 @@
 const SentryWebpackPlugin = require('@sentry/webpack-plugin')
+const { DefinePlugin } = require('webpack')
+const { execSync } = require('child_process')
+
+const commitHash = execSync('git rev-parse HEAD').toString()
 
 module.exports = {
   css: {
@@ -11,23 +15,27 @@ module.exports = {
       }
     }
   },
-  configureWebpack: {
-    devtool: 'source-map',
-    plugins:
-      process.env.NODE_ENV === 'production'
-        ? [
-            new SentryWebpackPlugin({
-              // sentry-cli configuration
-              authToken: process.env.SENTRY_AUTH_TOKEN,
-              org: 'recipeit',
-              project: 'recipeit',
-              // release: process.env.SENTRY_RELEASE,
-              release: 'recipeit@0.71',
-              include: './dist',
-              ignore: ['node_modules', 'vue.config.js']
-            })
-          ]
-        : null
+  configureWebpack: config => {
+    config.devtool = 'source-map'
+
+    config.plugins.push(
+      new DefinePlugin({
+        __SENTRY_RELEASE__: JSON.stringify(commitHash)
+      })
+    )
+
+    if (process.env.NODE_ENV === 'production') {
+      config.plugins.push(
+        new SentryWebpackPlugin({
+          authToken: process.env.SENTRY_AUTH_TOKEN,
+          org: 'recipeit',
+          project: 'recipeit',
+          release: commitHash,
+          include: './dist',
+          ignore: ['node_modules', 'vue.config.js']
+        })
+      )
+    }
   },
   devServer: {
     host: 'localhost',

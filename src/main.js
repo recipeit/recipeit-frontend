@@ -17,7 +17,7 @@ import autofocus from './directives/autofocus'
 if (process.env.NODE_ENV === 'production') {
   Sentry.init({
     dsn: 'https://4b843710aac44608b16ad0f7b80b02c0@o662244.ingest.sentry.io/5765240',
-    release: 'recipeit@0.71',
+    release: __SENTRY_RELEASE__,
     integrations: [new Integrations.BrowserTracing()],
     tracesSampleRate: 1.0
   })
