@@ -13,17 +13,21 @@ module.exports = {
   },
   configureWebpack: {
     devtool: 'source-map',
-    plugins: [
-      new SentryWebpackPlugin({
-        // sentry-cli configuration
-        authToken: process.env.SENTRY_AUTH_TOKEN,
-        org: 'recipeit',
-        project: 'recipeit',
-        // release: process.env.SENTRY_RELEASE,
-        include: './dist',
-        ignore: ['node_modules', 'vue.config.js']
-      })
-    ]
+    plugins:
+      process.env.NODE_ENV === 'production'
+        ? [
+            new SentryWebpackPlugin({
+              // sentry-cli configuration
+              authToken: process.env.SENTRY_AUTH_TOKEN,
+              org: 'recipeit',
+              project: 'recipeit',
+              // release: process.env.SENTRY_RELEASE,
+              release: 'recipeit@0.71',
+              include: './dist',
+              ignore: ['node_modules', 'vue.config.js']
+            })
+          ]
+        : null
   },
   devServer: {
     host: 'localhost',
