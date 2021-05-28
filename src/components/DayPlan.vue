@@ -235,7 +235,7 @@ export default {
 
     &__link {
       display: block;
-      padding: #{(3.5rem - 1rem - 0.75rem) / 2} 1.5rem;
+      padding: math.div(3.5rem - 1rem - 0.75rem, 2) 1.5rem;
       padding-right: 0;
       font-size: 0.75rem;
       font-weight: bold;

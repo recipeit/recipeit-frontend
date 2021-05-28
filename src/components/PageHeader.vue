@@ -70,7 +70,7 @@ export default {
   }
 
   &__back-icon {
-    margin-left: -($header-height - 1.25rem) / 2;
+    margin-left: math.div(-$header-height - 1.25rem, 2);
     width: $header-height;
     height: $header-height;
     display: flex;

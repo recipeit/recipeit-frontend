@@ -4,7 +4,10 @@ module.exports = {
   css: {
     loaderOptions: {
       scss: {
-        prependData: `@import '@/styles/non-rendered';`
+        prependData: `
+          @use 'sass:math';
+          @import '@/styles/non-rendered';
+        `
       }
     }
   },
