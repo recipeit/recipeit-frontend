@@ -8,7 +8,7 @@
       @action-click="resetFinishedDirections()"
     />
     <div v-if="directions?.length > 1" class="recipe-directions-list">
-      <div
+      <BaseCheckbox
         v-for="(paragraph, index) in directions"
         :key="index"
         :class="{
@@ -16,13 +16,13 @@
           'recipe-directions-list-item--selected': index === selectedDirection,
           'recipe-directions-list-item--finished': finishedDirections.includes(index)
         }"
+        :value="index"
+        v-model="finishedDirections"
       >
-        <BaseCheckbox v-model="finishedDirections" :value="index">
-          <template #label>
-            <div>{{ paragraph }}</div>
-          </template>
-        </BaseCheckbox>
-      </div>
+        <template #label>
+          <div>{{ paragraph }}</div>
+        </template>
+      </BaseCheckbox>
     </div>
     <p class="recipe-single-direction" v-else-if="directions?.length === 1">
       {{ directions[0] }}
@@ -122,6 +122,15 @@ export default {
 
   & + & {
     margin-top: 16px;
+  }
+
+  :deep(.checkbox__input) {
+    margin-top: 6px;
+    margin-bottom: 6px;
+  }
+
+  :deep(.checkbox__label) {
+    line-height: 26px;
   }
 }
 </style>
