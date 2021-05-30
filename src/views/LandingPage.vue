@@ -3,9 +3,17 @@
     <Splash />
 
     <div class="landing-page-container you-know-container">
-      <div class="you-know">Czy wiesz że...</div>
+      <div class="you-know">Czy wiesz, że...</div>
+      <div class="controls">
+        <BaseLink tag="button" class="control-left" @click="scrollLeft()" :disabled="scrollLeftButtonDisabled">
+          <BaseIcon icon="arrow-right" />
+        </BaseLink>
+        <BaseLink tag="button" class="control-right" @click="scrollRight()" :disabled="scrollRightButtonDisabled">
+          <BaseIcon icon="arrow-right" />
+        </BaseLink>
+      </div>
     </div>
-    <div class="statistic-cards">
+    <div class="statistic-cards" ref="statisticCards" @scroll="onScroll()">
       <div class="statistic-card">
         <div class="statistic-card-title">
           <BaseIcon icon="home" />
@@ -78,7 +86,7 @@
 import Splash from '@/components/landingPage/Splash'
 import Section from '@/components/landingPage/Section'
 import Footer from '@/components/landingPage/Footer'
-import { onBeforeMount, onBeforeUnmount } from '@vue/runtime-core'
+import { onBeforeMount, onBeforeUnmount, onMounted, ref } from '@vue/runtime-core'
 
 export default {
   components: { Section, Splash, Footer },
@@ -134,8 +142,65 @@ export default {
       document.documentElement.removeAttribute('landing-page')
     })
 
+    const statisticCards = ref(null)
+
+    const scrollLeft = () => {
+      const { value: el } = statisticCards
+
+      const scrollByLeft = el.children[0].clientWidth
+
+      el.scrollBy({
+        left: -scrollByLeft,
+        behavior: 'smooth'
+      })
+    }
+
+    const scrollRight = () => {
+      const { value: el } = statisticCards
+
+      const scrollByLeft = el.children[0].clientWidth
+
+      el.scrollBy({
+        left: scrollByLeft,
+        behavior: 'smooth'
+      })
+    }
+
+    const scrollLeftButtonDisabled = ref(true)
+    const scrollRightButtonDisabled = ref(null)
+
+    const onScroll = () => {
+      const { value: el } = statisticCards
+
+      if (el.scrollLeft === 0 && !scrollLeftButtonDisabled.value) {
+        scrollLeftButtonDisabled.value = true
+      } else if (el.scrollLeft !== 0 && scrollLeftButtonDisabled.value) {
+        scrollLeftButtonDisabled.value = null
+      }
+
+      if (el.scrollLeft === el.scrollWidth - el.offsetWidth) {
+        if (!scrollRightButtonDisabled.value) {
+          scrollRightButtonDisabled.value = true
+        }
+      } else {
+        if (scrollRightButtonDisabled.value) {
+          scrollRightButtonDisabled.value = null
+        }
+      }
+    }
+
+    onMounted(() => {
+      onScroll()
+    })
+
     return {
-      sections
+      sections,
+      scrollLeft,
+      scrollRight,
+      statisticCards,
+      scrollLeftButtonDisabled,
+      scrollRightButtonDisabled,
+      onScroll
     }
   }
 }
@@ -155,13 +220,38 @@ export default {
 
 .you-know-container {
   padding-bottom: 0;
+  display: flex;
+  justify-content: space-between;
 }
 
 .you-know {
-  // margin-top: 2rem;
   font-weight: bold;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   color: var(--color-text-secondary);
+}
+
+.controls {
+  display: flex;
+}
+
+.control-left {
+  transform: rotate(180deg); // TODO add icon
+  // visibility: hidden;
+  // opacity: 0;
+}
+
+.control-left,
+.control-right {
+  font-size: 1.5rem;
+  height: 1.5rem;
+  width: 2.5rem;
+  line-height: 1;
+
+  &[disabled] {
+    color: var(--color-text-secondary);
+    pointer-events: none;
+    opacity: 0.5;
+  }
 }
 
 .data-container {
@@ -188,6 +278,10 @@ export default {
   overflow-x: scroll;
   // transform: translateZ(0);
   flex-wrap: nowrap;
+
+  &::-webkit-scrollbar {
+    height: 0;
+  }
 
   &::after {
     content: '';
