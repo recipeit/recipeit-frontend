@@ -48,7 +48,7 @@ export default {
 
   @media (max-width: 720px) {
     flex-direction: column;
-    text-align: center;
+    align-items: flex-start;
   }
 }
 
