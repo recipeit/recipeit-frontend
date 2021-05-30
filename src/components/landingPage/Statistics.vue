@@ -11,7 +11,7 @@
         </BaseLink>
       </div>
     </Container>
-    <div class="statistics-cards" ref="statisticCards" @scroll="onScroll()">
+    <div class="statistics-cards" ref="statisticCards" @scroll="handleControlsDisability()">
       <StatisticsCard v-for="(statistic, index) in statistics" :key="index" :icon="statistic.icon" :description="statistic.description" />
     </div>
     <Container class="statistics-footer-container">
@@ -21,9 +21,10 @@
 </template>
 
 <script>
-import { onMounted, ref } from '@vue/runtime-core'
+import { onBeforeMount, onBeforeUnmount, onMounted, ref } from '@vue/runtime-core'
 import Container from './Container'
 import StatisticsCard from './StatisticsCard'
+import debounce from 'lodash.debounce'
 
 export default {
   components: { Container, StatisticsCard },
@@ -63,7 +64,7 @@ export default {
     const scrollRight = () => {
       const { value: el } = statisticCards
 
-      const scrollByLeft = el.children[0].clientWidth
+      const scrollByLeft = el.children[0].clientWidth + 32
 
       el.scrollBy({
         left: scrollByLeft,
@@ -74,7 +75,7 @@ export default {
     const scrollLeftButtonDisabled = ref(true)
     const scrollRightButtonDisabled = ref(null)
 
-    const onScroll = () => {
+    const handleControlsDisability = debounce(() => {
       const { value: el } = statisticCards
 
       if (el.scrollLeft === 0 && !scrollLeftButtonDisabled.value) {
@@ -92,10 +93,18 @@ export default {
           scrollRightButtonDisabled.value = null
         }
       }
-    }
+    }, 200)
+
+    onBeforeMount(() => {
+      window.addEventListener('resize', handleControlsDisability)
+    })
 
     onMounted(() => {
-      onScroll()
+      handleControlsDisability()
+    })
+
+    onBeforeUnmount(() => {
+      window.removeEventListener('resize', handleControlsDisability)
     })
 
     return {
@@ -105,7 +114,7 @@ export default {
       statisticCards,
       scrollLeftButtonDisabled,
       scrollRightButtonDisabled,
-      onScroll
+      handleControlsDisability
     }
   }
 }
@@ -186,7 +195,7 @@ export default {
     display: block;
     width: 20px;
     height: 20px;
-    min-width: max(var(--half-width) - 480px - 1.5rem, 0.1px);
+    min-width: max(var(--half-width) - 480px - 2rem, 0.1px);
   }
 }
 </style>

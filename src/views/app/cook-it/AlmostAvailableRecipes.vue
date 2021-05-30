@@ -1,7 +1,6 @@
 <template>
   <div class="layout__page__content">
     <PageHeader title="Lista przepisów" :backButton="true" :search="true" />
-    <!-- <div class="recipes-list-title">Te potrawy możesz przyrządzić po drobnych zakupach</div> -->
     <GenericRecipesList
       :recipes="recipesList.recipes.value"
       :errors="recipesList.recipesErrors.value"

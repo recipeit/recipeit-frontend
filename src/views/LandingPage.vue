@@ -9,6 +9,7 @@
         :key="index"
         :inverse="index % 2 === 0"
         :title="section.title"
+        :image="section.image"
         :description="section.description"
       />
       <Footer />
@@ -33,41 +34,41 @@ export default {
         title: 'Dodaj swoje produkty',
         description:
           'Stwórz listę produktów, które masz w swojej kuchni. Możesz je uzupełnić o szczegóły, takie jak ilość czy data ważności!',
-        image: ''
+        image: require('@/assets/img/landing-page/kitchen.png')
       },
       {
         title: 'Sprawdź co możesz z nich przygotować',
         description:
           'Nie pozwól aby produkty, które kupiłeś, się przeterminowały. Recipeit pokaże Ci, co możesz przygotować z tego, co już masz!',
-        image: ''
+        image: require('@/assets/img/landing-page/recipes.png')
       },
       {
-        title: 'Przygotuj potrawę',
+        title: 'Przygotuj posiłek',
         description:
           'Lista składników, liczba porcji, czas czy szczegółowa instrukcja przygotowania podzielona na osobne kroki. Wszystko to w Recipeit!',
-        image: ''
+        image: require('@/assets/img/landing-page/recipe.png')
       },
       {
         title: 'Stwórz listę zakupów',
         description: 'Czegos Ci brakuje? Chcesz ugotować danie, ale nie masz potrzebnych składników? Dodaj je do listy zakupów!',
-        image: ''
+        image: require('@/assets/img/landing-page/kitchen.png')
       },
       {
         title: 'Filtruj przepisy',
         description:
           'Szukasz czegoś konkretnego? Masz na coś alergię? Potrzebujesz przepis z konkretnymi składnikami? Skorzystaj z dedykowanych filtrów!',
-        image: ''
+        image: require('@/assets/img/landing-page/kitchen.png')
       },
       {
         title: 'Zaplanuj przepis na później',
         description: 'Znalazłeś przepis, ale nie chcesz go przygotowywać już teraz? Dodaj go do planu dnia, bądź nawet tygodnia!',
-        image: ''
+        image: require('@/assets/img/landing-page/kitchen.png')
       },
       {
         title: 'Dodawaj do ulubionych',
         description:
           'Każdy ma taki przepis, który uwielbia często przygotowywać. Z listą ulubionych przepisów, ich znalezienie jest błyskawiczne!',
-        image: ''
+        image: require('@/assets/img/landing-page/kitchen.png')
       }
     ]
 
@@ -75,7 +76,7 @@ export default {
 
     const onResizeWindow = () => {
       elementStyle.value = {
-        '--half-width': `${document.body.clientWidth / 2.0}px`
+        '--half-width': `${Math.round(document.body.clientWidth / 2.0)}px`
       }
     }
 

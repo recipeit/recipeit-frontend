@@ -5,10 +5,7 @@
       <p class="section-description">{{ description }}</p>
     </div>
     <div class="section-image">
-      <BaseImageLazyload
-        class="image"
-        src="https://thumbs.dreamstime.com/b/perspective-smartphone-mockup-shadow-ccw-rotated-white-background-isometric-smartphones-front-back-side-one-above-105813174.jpg"
-      />
+      <BaseImageLazyload class="image" :src="image" />
     </div>
   </section>
 </template>
@@ -29,10 +26,6 @@ export default {
   align-items: center;
   display: flex;
   margin: 96px 0;
-
-  &--inverse {
-    flex-direction: row-reverse;
-  }
 
   @media (max-width: 720px) {
     flex-direction: column;
@@ -56,13 +49,33 @@ export default {
 
   &-image {
     flex: 1;
+    height: 720px;
+    text-align: right;
+
+    :deep(img) {
+      height: 100%;
+      // width: 100%;
+      object-fit: contain;
+      height: 100%;
+      border-radius: 2rem;
+      box-shadow: 0 24px 64px -8px rgba(0, 0, 0, 0.1);
+    }
   }
 
   .image {
-    width: 100%;
+    height: 100%;
+    // width: 100%;
 
-    ::v-deep(img) {
-      width: 100%;
+    // ::v-deep(img) {
+    //   width: 100%;
+    // }
+  }
+
+  &--inverse {
+    flex-direction: row-reverse;
+
+    .section-image {
+      text-align: left;
     }
   }
 }
