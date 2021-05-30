@@ -29,7 +29,7 @@
 
 <script>
 import Logotype from '@/components/Logotype'
-import BackgroundUrl from '@/assets/img/spaghetti.jpeg'
+import BackgroundUrl from '@/assets/img/splash.webp'
 
 export default {
   components: {
