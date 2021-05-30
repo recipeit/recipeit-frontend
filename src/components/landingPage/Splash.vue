@@ -202,7 +202,7 @@ export default {
     ::v-deep(img) {
       object-fit: cover;
       // object-position: left;
-      object-position: right;
+      // object-position: right;
       height: 100%;
       width: 100%;
       max-width: 1280px;
