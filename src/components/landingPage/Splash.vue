@@ -32,19 +32,20 @@ import Logotype from '@/components/Logotype'
 import BackgroundUrl from '@/assets/img/splash.webp'
 
 export default {
-  components: { Logotype },
-  setup: () => ({ BackgroundUrl })
+  components: {
+    Logotype
+  },
+  setup: () => ({
+    BackgroundUrl
+  })
 }
 </script>
 
 <style lang="scss" scoped>
-// @use '../../styles/non-rendered/theme-light-variables' as variables;
-
 .splash {
   min-height: 720px;
   position: relative;
   background-color: #000;
-  // overflow: hidden;
   display: flex;
   flex-direction: column;
 }
@@ -59,10 +60,6 @@ export default {
   flex-direction: column;
   z-index: 1;
   flex: 1;
-
-  @media (max-width: 720px) {
-    padding: 0;
-  }
 }
 
 .header {
@@ -70,43 +67,15 @@ export default {
   position: relative;
   align-items: center;
   height: 48px;
-
-  @media (max-width: 720px) {
-    padding: 2rem;
-    height: calc(48px + 4rem);
-
-    &::before {
-      content: '';
-      background: linear-gradient(rgba(#000, 0.5) 50%, rgba(#000, 0) 100%);
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      z-index: -2;
-    }
-  }
 }
 
 .user-buttons {
   display: flex;
-
-  @media (max-width: 720px) {
-    flex-direction: column;
-    // max-width: 256px;
-    width: 100%;
-    // margin: 0 auto;
-  }
 }
 
 .user-button {
   & + & {
     margin-left: 1rem;
-
-    @media (max-width: 720px) {
-      margin-left: 0;
-      margin-top: 1rem;
-    }
   }
 
   &--main {
@@ -130,13 +99,6 @@ export default {
   flex-direction: column;
   justify-content: center;
   flex: 1;
-
-  // @media (max-width: 720px) {
-  //   align-items: center;
-  // }
-  @media (max-width: 720px) {
-    padding: 2rem;
-  }
 }
 
 .h1 {
@@ -144,11 +106,6 @@ export default {
   color: #fff;
   line-height: 1.15;
   margin-bottom: 1.5rem;
-
-  @media (max-width: 720px) {
-    // text-align: center;
-    font-size: 2rem;
-  }
 }
 
 .description {
@@ -156,20 +113,13 @@ export default {
   color: rgba(#fff, 0.75);
   margin-bottom: 3rem;
   max-width: 380px;
-
-  @media (max-width: 720px) {
-    // text-align: center;
-    // margin: 0 auto;
-    // font-size: 2rem;
-  }
 }
 
 .logotype {
   width: 128px;
   line-height: 1;
 
-  // ::v-deep(.a),
-  ::v-deep(.b) {
+  :deep(.b) {
     fill: #fff;
   }
 }
@@ -183,35 +133,22 @@ export default {
   top: 0;
   transform: translateX(-50%);
   z-index: 0;
+}
 
-  .background-image {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    left: 0;
-    height: 720px;
-    width: 1280px;
+.background-image {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 0;
+  height: 720px;
+  width: 1280px;
 
-    @media (max-width: 720px) {
-      left: 50%;
-      // transform: translate(-50%, -50%);
-      transform: translate(-55%, -75%);
-      // height: 100%;
-    }
-
-    ::v-deep(img) {
-      object-fit: cover;
-      // object-position: left;
-      // object-position: right;
-      height: 100%;
-      width: 100%;
-      max-width: 1280px;
-      margin: 0 auto;
-
-      // @media (max-width: 720px) {
-      //   opacity: 0.5;
-      // }
-    }
+  :deep(img) {
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
   }
 }
 
@@ -222,6 +159,38 @@ export default {
     height: 100vh;
   }
 
+  .content {
+    padding: 0;
+  }
+
+  .header {
+    padding: 2rem;
+    height: calc(48px + 4rem);
+
+    &::before {
+      content: '';
+      background: linear-gradient(rgba(#000, 0.5) 50%, rgba(#000, 0) 100%);
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: -2;
+    }
+  }
+
+  .user-buttons {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .user-button {
+    & + & {
+      margin-left: 0;
+      margin-top: 1rem;
+    }
+  }
+
   .main {
     flex: initial;
     position: relative;
@@ -229,6 +198,7 @@ export default {
     padding-top: 96px;
     position: sticky;
     bottom: 0;
+    padding: 2rem;
 
     &::before {
       content: '';
@@ -240,6 +210,14 @@ export default {
       right: 0;
       z-index: -2;
     }
+  }
+
+  .h1 {
+    font-size: 2rem;
+  }
+  .background-image {
+    left: 50%;
+    transform: translate(-55%, -75%);
   }
 }
 </style>
