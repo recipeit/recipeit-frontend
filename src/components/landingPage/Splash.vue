@@ -29,7 +29,7 @@
 
 <script>
 import Logotype from '@/components/Logotype'
-import BackgroundUrl from '@/assets/img/splash.jpg'
+import BackgroundUrl from '@/assets/img/splash.webp'
 
 export default {
   components: { Logotype },
@@ -44,7 +44,7 @@ export default {
   min-height: 720px;
   position: relative;
   background-color: #000;
-  overflow: hidden;
+  // overflow: hidden;
   display: flex;
   flex-direction: column;
 }
@@ -59,13 +59,33 @@ export default {
   flex-direction: column;
   z-index: 1;
   flex: 1;
+
+  @media (max-width: 720px) {
+    padding: 0;
+  }
 }
 
 .header {
   display: flex;
-
+  position: relative;
   align-items: center;
   height: 48px;
+
+  @media (max-width: 720px) {
+    padding: 2rem;
+    height: calc(48px + 4rem);
+
+    &::before {
+      content: '';
+      background: linear-gradient(rgba(#000, 0.5) 50%, rgba(#000, 0) 100%);
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: -2;
+    }
+  }
 }
 
 .user-buttons {
@@ -73,7 +93,7 @@ export default {
 
   @media (max-width: 720px) {
     flex-direction: column;
-    max-width: 256px;
+    // max-width: 256px;
     width: 100%;
     // margin: 0 auto;
   }
@@ -111,8 +131,11 @@ export default {
   justify-content: center;
   flex: 1;
 
+  // @media (max-width: 720px) {
+  //   align-items: center;
+  // }
   @media (max-width: 720px) {
-    align-items: center;
+    padding: 2rem;
   }
 }
 
@@ -123,7 +146,7 @@ export default {
   margin-bottom: 1.5rem;
 
   @media (max-width: 720px) {
-    text-align: center;
+    // text-align: center;
     font-size: 2rem;
   }
 }
@@ -135,7 +158,7 @@ export default {
   max-width: 380px;
 
   @media (max-width: 720px) {
-    text-align: center;
+    // text-align: center;
     // margin: 0 auto;
     // font-size: 2rem;
   }
@@ -171,20 +194,51 @@ export default {
 
     @media (max-width: 720px) {
       left: 50%;
-      transform: translate(-50%, -50%);
+      // transform: translate(-50%, -50%);
+      transform: translate(-55%, -75%);
+      // height: 100%;
     }
 
     ::v-deep(img) {
       object-fit: cover;
-      object-position: left;
+      // object-position: left;
+      object-position: right;
       height: 100%;
       width: 100%;
       max-width: 1280px;
       margin: 0 auto;
 
-      @media (max-width: 720px) {
-        opacity: 0.5;
-      }
+      // @media (max-width: 720px) {
+      //   opacity: 0.5;
+      // }
+    }
+  }
+}
+
+@media (max-width: 720px) {
+  .splash {
+    min-height: 600px;
+    max-height: 1000px;
+    height: 100vh;
+  }
+
+  .main {
+    flex: initial;
+    position: relative;
+    margin-top: auto;
+    padding-top: 96px;
+    position: sticky;
+    bottom: 0;
+
+    &::before {
+      content: '';
+      background: linear-gradient(rgba(#000, 0) 0%, rgba(#000, 0.5) 50%);
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: -2;
     }
   }
 }
