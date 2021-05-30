@@ -27,11 +27,6 @@ export default {
   display: flex;
   margin: 96px 0;
 
-  @media (max-width: 720px) {
-    flex-direction: column;
-    // text-align: center;
-  }
-
   &-text {
     flex: 1;
   }
@@ -54,9 +49,7 @@ export default {
 
     :deep(img) {
       height: 100%;
-      // width: 100%;
       object-fit: contain;
-      height: 100%;
       border-radius: 2rem;
       box-shadow: 0 24px 64px -8px rgba(0, 0, 0, 0.1);
     }
@@ -64,11 +57,6 @@ export default {
 
   .image {
     height: 100%;
-    // width: 100%;
-
-    // ::v-deep(img) {
-    //   width: 100%;
-    // }
   }
 
   &--inverse {
@@ -76,6 +64,29 @@ export default {
 
     .section-image {
       text-align: left;
+    }
+  }
+
+  @media (max-width: 720px) {
+    flex-direction: column;
+    align-items: flex-start;
+    // text-align: center;
+
+    &-image {
+      flex: initial;
+      height: auto;
+      width: 240px;
+      margin-top: 1rem;
+
+      :deep(img) {
+        height: auto;
+        width: 100%;
+      }
+    }
+
+    .image {
+      height: auto;
+      width: 100%;
     }
   }
 }
