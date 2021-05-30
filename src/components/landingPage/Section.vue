@@ -81,6 +81,7 @@ export default {
       :deep(img) {
         height: auto;
         width: 100%;
+        border-radius: 1.5rem;
       }
     }
 

@@ -51,24 +51,24 @@ export default {
       {
         title: 'Stwórz listę zakupów',
         description: 'Czegos Ci brakuje? Chcesz ugotować danie, ale nie masz potrzebnych składników? Dodaj je do listy zakupów!',
-        image: require('@/assets/img/landing-page/kitchen.png')
+        image: require('@/assets/img/landing-page/shopping.png')
       },
       {
         title: 'Filtruj przepisy',
         description:
           'Szukasz czegoś konkretnego? Masz na coś alergię? Potrzebujesz przepis z konkretnymi składnikami? Skorzystaj z dedykowanych filtrów!',
-        image: require('@/assets/img/landing-page/kitchen.png')
+        image: require('@/assets/img/landing-page/filters.png')
       },
       {
         title: 'Zaplanuj przepis na później',
         description: 'Znalazłeś przepis, ale nie chcesz go przygotowywać już teraz? Dodaj go do planu dnia, bądź nawet tygodnia!',
-        image: require('@/assets/img/landing-page/kitchen.png')
+        image: require('@/assets/img/landing-page/plan.png')
       },
       {
         title: 'Dodawaj do ulubionych',
         description:
           'Każdy ma taki przepis, który uwielbia często przygotowywać. Z listą ulubionych przepisów, ich znalezienie jest błyskawiczne!',
-        image: require('@/assets/img/landing-page/kitchen.png')
+        image: require('@/assets/img/landing-page/favourites.png')
       }
     ]
 
