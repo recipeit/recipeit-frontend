@@ -51,6 +51,7 @@ export default {
 
   &-description {
     font-size: 0.875rem;
+    color: var(--color-text-dark);
   }
 
   &-image {

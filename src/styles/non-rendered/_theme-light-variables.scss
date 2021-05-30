@@ -2,6 +2,7 @@
 
 $black: #000;
 $gray: #90abb9;
+$gray-darkly: darken($gray, 15);
 $gray-dark: darken($gray, 30);
 $gray-light: #e2e9ed;
 $gray-extra-light: mix(#e2e9ed, #fff);
@@ -63,6 +64,7 @@ $color-theme: (
   ),
   'text-primary': $black,
   'text-secondary': $gray,
+  'text-dark': mix($black, $gray, 25%),
   'max-contrast': #000,
   'green': $green,
   'blue': $blue,

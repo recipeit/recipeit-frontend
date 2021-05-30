@@ -25,7 +25,7 @@
           <BaseIcon icon="trash" />
         </div>
         <div class="statistic-card-description">
-          W polskich domach, w każdej sekundzie, do kosza wyrzucanych jest aż <b class="bold">92kg</b> żywności.
+          W polskich domach, w każdej sekundzie, do kosza wyrzucanych jest aż <b class="bold">92kg</b> jedzenia.
         </div>
       </div>
       <div class="statistic-card">
@@ -33,7 +33,7 @@
           <BaseIcon icon="grains" />
         </div>
         <div class="statistic-card-description">
-          W koszu przeciętnego Polaka ląduje najczęściej <b class="bold">pieczywo</b> (62,9%), <b class="bold">świeże owoce</b> (57,4%) i
+          Najczęściej wyrzucamy <b class="bold">pieczywo</b> (62,9%), <b class="bold">świeże owoce</b> (57,4%) i
           <b class="bold">warzywa</b> (56,5%).
         </div>
       </div>
@@ -42,34 +42,39 @@
           <BaseIcon icon="clock" />
         </div>
         <div class="statistic-card-description">
-          Najczęstszymi powodami wyrzucania żywności to jej <b class="bold">zepsucie</b> i <b class="bold">przeterminowanie</b>
+          Głównymi powodami wyrzucania żywności to jej <b class="bold">zepsucie</b> i <b class="bold">przeterminowanie</b>.
         </div>
       </div>
     </div>
     <div class="landing-page-container data-container">
-      Zródło: wyniki badań IOŚ-PIB, SGGW w ramach projektu PROM, 2020 r.
+      Źródło: wyniki badań IOŚ-PIB, SGGW w ramach projektu PROM, 2020 r.
+    </div>
+
+    <div class="benefits-section">
+      <div class="landing-page-container">
+        <div class="benefits">
+          <div class="benefit">
+            <BaseIcon class="benefit-icon" icon="tableware" />
+            <div class="benefit-title">Zainspiruj się</div>
+            Z Recipeit poznasz nowe kuchnie i przepisy.
+          </div>
+
+          <div class="benefit">
+            <BaseIcon class="benefit-icon" icon="money" />
+            <div class="benefit-title">Oszczędź pieniądze</div>
+            Recipeit pomoże Ci uniknąć marnowania jedzenia.
+          </div>
+
+          <div class="benefit">
+            <BaseIcon class="benefit-icon" icon="clock" />
+            <div class="benefit-title">Zaoszczędź swój czas</div>
+            Wystarczy kilka chwil, by znaleźć przepis z Twoich składników.
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="landing-page-container">
-      <!-- <div>
-        <div>60%</div>
-        60% marnowanej żywności pochodzi z gospodarstw domowych.
-      </div>
-      <div>
-        <div>92kg</div>
-        W polskich domach, w każdej sekundzie do kosza wyrzucanych jest aż 92kg żywności.
-      </div>
-      <div>
-        W koszu przeciętnego Polaka ląduje najczęściej pieczywo (62,9%), świeże owoce (57,4%) i warzywa (56,5%).
-      </div>
-      <div>
-        Najczęstrzymi powodami wyrzucania żywności to jej zepsucie i przeterminowanie
-      </div>
-      <a href="https://bankizywnosci.pl/wp-content/uploads/2020/10/Raport_NieMarnujJedzenia_2020.pdf">ddd</a>
-      <a href="https://ios.edu.pl/wp-content/uploads/2017/11/Pr%C3%B3ba-oszacowania-strat-i-marnotrawstwa%C5%BCywno%C5%9Bci-w-Polsce.pdf"
-        >ddd</a
-      > -->
-      <!-- <a href="https://bankizywnosci.pl/ponad-53-polakow-przyznaje-ze-zdarza-im-sie-wyrzucic-zywnosc/">aaa</a> -->
       <Section
         v-for="(section, index) in sections"
         :key="index"
@@ -218,7 +223,53 @@ export default {
   margin: 0 auto;
 }
 
+.benefits-section {
+  background-color: mix(#e2e9ed, #fff, 35%);
+  margin: 4rem 0 0 0;
+}
+
+.benefits {
+  display: flex;
+}
+
+.benefit {
+  flex: 1;
+  font-size: 0.875rem;
+  text-align: center;
+  color: var(--color-text-dark);
+  padding: 1rem;
+}
+
+@media (max-width: 720px) {
+  .benefits {
+    // flex-wrap: wrap;
+    // justify-content: center;
+    flex-direction: column;
+  }
+
+  // .benefit {
+  //   width: 50%;
+  //   flex: initial;
+  // }
+}
+
+.benefit-icon {
+  font-size: 2.5rem;
+  margin-bottom: 0.75rem;
+  // color: var(--color-text-dark);
+}
+
+.benefit-title {
+  font-weight: bold;
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+  color: var(--color-text-primary);
+  line-height: 1.15;
+}
+
 .you-know-container {
+  margin-top: 4rem;
+  padding-top: 0;
   padding-bottom: 0;
   display: flex;
   justify-content: space-between;
@@ -227,11 +278,15 @@ export default {
 .you-know {
   font-weight: bold;
   font-size: 1.25rem;
-  color: var(--color-text-secondary);
+  color: var(--color-text-primary);
 }
 
 .controls {
-  display: flex;
+  display: none;
+
+  @include cursor-only {
+    display: flex;
+  }
 }
 
 .control-left {
@@ -279,8 +334,12 @@ export default {
   // transform: translateZ(0);
   flex-wrap: nowrap;
 
-  &::-webkit-scrollbar {
-    height: 0;
+  @include cursor-only {
+    scrollbar-width: none; /* Firefox */
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 
   &::after {
@@ -296,7 +355,7 @@ export default {
 .statistic-card {
   background-color: white;
   border-radius: 1.5rem;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 32px -8px rgba(0, 0, 0, 0.1);
   padding: 1.5rem;
   // min-width: calc(100% / 3);
 
@@ -316,10 +375,11 @@ export default {
   .statistic-card-description {
     font-size: 0.875rem;
     margin-top: 0.5rem;
+    color: var(--color-text-dark);
 
     .bold {
       font-weight: bold;
-      // color: var(--color-primary);
+      color: var(--color-text-primary);
     }
   }
 }

@@ -155,7 +155,7 @@ export default {
 @media (max-width: 720px) {
   .splash {
     min-height: 600px;
-    max-height: 1000px;
+    max-height: 850px;
     height: 100vh;
   }
 
