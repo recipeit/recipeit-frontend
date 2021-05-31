@@ -27,6 +27,10 @@ export default {
   display: flex;
   margin: 96px 0;
 
+  &:last-child {
+    margin-bottom: 48px;
+  }
+
   &-text {
     flex: 1;
   }

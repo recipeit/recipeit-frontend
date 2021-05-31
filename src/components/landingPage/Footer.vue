@@ -1,5 +1,5 @@
 <template>
-  <footer class="footer">
+  <footer :class="{ footer: true, 'footer--bordered': border }">
     <div class="footer-logo">
       <Logotype class="logo" />
     </div>
@@ -27,6 +27,12 @@ import Logotype from '@/components/Logotype'
 
 export default {
   components: { Logotype },
+  props: {
+    border: {
+      type: Boolean,
+      default: true
+    }
+  },
   setup() {
     const contactHref = `mailto:${CONTACT_MAIL_ADDRESS}`
 
@@ -39,12 +45,15 @@ export default {
 
 <style lang="scss" scoped>
 .footer {
-  border-top: 1px solid var(--color-border);
-  padding-top: 32px;
   color: var(--color-text-secondary);
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  &.footer-with-border {
+    border-top: 1px solid var(--color-border);
+    padding-top: 32px;
+  }
 
   @media (max-width: 720px) {
     flex-direction: column;

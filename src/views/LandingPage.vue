@@ -12,7 +12,10 @@
         :image="section.image"
         :description="section.description"
       />
-      <Footer />
+    </Container>
+    <FooterAuth />
+    <Container>
+      <Footer :border="false" />
     </Container>
   </div>
 </template>
@@ -25,9 +28,10 @@ import Footer from '@/components/landingPage/Footer'
 import Container from '@/components/landingPage/Container'
 import Statistics from '@/components/landingPage/Statistics'
 import Benefits from '@/components/landingPage/Benefits'
+import FooterAuth from '@/components/landingPage/FooterAuth'
 
 export default {
-  components: { Section, Splash, Footer, Container, Statistics, Benefits },
+  components: { Section, Splash, Footer, Container, Statistics, Benefits, FooterAuth },
   setup() {
     const sections = [
       {

@@ -125,6 +125,7 @@ export default {
 }
 
 .background-image-container {
+  overflow: hidden;
   position: absolute;
   max-width: 1280px;
   left: 50%;
