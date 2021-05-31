@@ -13,19 +13,20 @@
       </router-view>
     </div>
     <div class="auth-image">
-      <BaseImageLazyload
-        class="auth-image__image"
-        src="https://images.unsplash.com/photo-1482049016688-2d3e1b311543?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=653&q=80"
-      />
+      <BaseImageLazyload class="auth-image__image" :src="BackgroundUrl" />
     </div>
   </div>
 </template>
 
 <script>
 import Logotype from '@/components/Logotype'
+import BackgroundUrl from '@/assets/img/auth.webp'
 
 export default {
-  components: { Logotype }
+  components: { Logotype },
+  setup: () => ({
+    BackgroundUrl
+  })
 }
 </script>
 
@@ -50,7 +51,7 @@ export default {
 
 .auth-image {
   // average color of current image
-  background-color: #383527;
+  background-color: #363f4f;
   position: relative;
   padding: 32px;
   flex: 1;
