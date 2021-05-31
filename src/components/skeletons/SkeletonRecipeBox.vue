@@ -20,7 +20,7 @@ export default {
 
 <style lang="scss" scoped>
 .skeleton-recipe-box {
-  max-width: 192px;
+  // max-width: 192px;
 
   &__image-container {
     width: 100%;

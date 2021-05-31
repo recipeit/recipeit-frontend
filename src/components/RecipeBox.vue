@@ -88,7 +88,7 @@ export default {
   $root: &;
 
   text-align: left;
-  max-width: 192px;
+  // max-width: 192px;
   text-decoration: none;
   color: inherit;
 
