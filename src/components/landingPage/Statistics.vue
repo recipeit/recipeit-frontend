@@ -36,7 +36,7 @@ export default {
       },
       {
         icon: 'trash',
-        description: 'W polskich domach, w każdej sekundzie, do kosza wyrzucanych jest aż <b>92kg</b> jedzenia.'
+        description: 'W polskich domach, co sekundę do kosza wyrzucanych jest aż <b>92kg</b> jedzenia.'
       },
       {
         icon: 'grains',
