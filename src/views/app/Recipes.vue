@@ -16,6 +16,7 @@ import recipeApi from '@/api/recipeApi'
 import GenericRecipesList from '@/components/GenericRecipesList'
 import PageHeader from '@/components/PageHeader'
 import recipeFilteredPagedList from './composable/recipeFilteredPagedList'
+import { useMeta } from 'vue-meta'
 
 export default {
   name: 'Recipes',
@@ -24,6 +25,10 @@ export default {
     PageHeader
   },
   setup() {
+    useMeta({
+      title: 'Baza przepisów'
+    })
+
     const recipesList = recipeFilteredPagedList(recipeApi.getRecipes)
 
     return {

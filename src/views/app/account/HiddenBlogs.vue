@@ -19,11 +19,17 @@
 import PageHeader from '@/components/PageHeader'
 import HiddenBlog from '@/components/HiddenBlog'
 import userApi from '@/api/userApi'
+import { useMeta } from 'vue-meta'
 
 export default {
   components: {
     PageHeader,
     HiddenBlog
+  },
+  setup() {
+    useMeta({
+      title: 'Ukryte blogi'
+    })
   },
   data: () => ({
     hiddenBlogs: null

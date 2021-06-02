@@ -19,11 +19,17 @@
 import PageHeader from '@/components/PageHeader'
 import HiddenRecipe from '@/components/HiddenRecipe'
 import userApi from '@/api/userApi'
+import { useMeta } from 'vue-meta'
 
 export default {
   components: {
     PageHeader,
     HiddenRecipe
+  },
+  setup() {
+    useMeta({
+      title: 'Ukryte przepisy'
+    })
   },
   data: () => ({
     hiddenRecipes: null

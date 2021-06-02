@@ -60,6 +60,7 @@ import { emailSchema } from '@/configs/schemas'
 import recaptcha from '@/services/recaptcha'
 import { RECAPTCHA_ACTIONS } from '@/configs/recaptcha'
 import RecaptchaBranding from '@/components/RecaptchaBranding'
+import { useMeta } from 'vue-meta'
 
 export default {
   components: {
@@ -74,6 +75,10 @@ export default {
     }
   },
   setup(props) {
+    useMeta({
+      title: 'Zresetuj hasło'
+    })
+
     const schema = yup.object({
       email: emailSchema()
     })

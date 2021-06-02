@@ -45,6 +45,7 @@ import PageHeader from '@/components/PageHeader'
 import { PRODUCT_GROUP_ICONS } from '@/constants'
 import NewShoppingListProduct from '@/components/modals/NewShoppingListProduct'
 import ProductIcon from '@/components/ProductIcon'
+import { useMeta } from 'vue-meta'
 
 export default {
   name: 'ShoppingList',
@@ -54,6 +55,10 @@ export default {
     ProductIcon
   },
   setup() {
+    useMeta({
+      title: 'Lista zakupów'
+    })
+
     const fetchedData = ref(false)
     const searchString = ref(null)
 

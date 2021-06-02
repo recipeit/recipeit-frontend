@@ -1,4 +1,7 @@
 <template>
+  <metainfo>
+    <template v-slot:title="{ content }">{{ content ? `${content} - ${TITLE_SMALL_TEMPLATE}` : TITLE_TEMPLATE }}</template>
+  </metainfo>
   <router-view v-if="fetchedInitialUserProfile" />
   <AppLoading v-else />
   <vue-progress-bar />
@@ -23,6 +26,10 @@ import CookiesModal from './components/modals/CookiesModal'
 import Modal from './plugins/global-sheet-modal/Modal.vue'
 import { useRoute } from 'vue-router'
 import { APP_HOME, AUTH_LOGIN } from './router/names'
+import { useMeta } from 'vue-meta'
+
+const TITLE_TEMPLATE = 'Recipeit - Znajdź przepis ze swoich składników'
+const TITLE_SMALL_TEMPLATE = 'Recipeit'
 
 export default {
   components: {
@@ -49,10 +56,17 @@ export default {
       }
     })
 
+    // TODO theme inside computed meta
+    useMeta({
+      title: ''
+    })
+
     return {
       ...toRefs(data),
       allowedGDPRModalRoute,
-      update
+      update,
+      TITLE_TEMPLATE,
+      TITLE_SMALL_TEMPLATE
     }
   },
   data: () => ({

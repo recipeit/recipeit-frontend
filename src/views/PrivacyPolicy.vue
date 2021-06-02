@@ -7,10 +7,15 @@
 <script>
 import AnonymousPage from '@/layouts/AnonymousPage'
 import PRIVACY_POLICY_HTML from 'html-loader!@/assets/docs/privacypolicy/privacypolicy_v1.html'
+import { useMeta } from 'vue-meta'
 
 export default {
   components: { AnonymousPage },
   setup() {
+    useMeta({
+      title: 'Polityka Prywatności'
+    })
+
     return {
       PRIVACY_POLICY_HTML
     }

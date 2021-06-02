@@ -76,6 +76,7 @@ import DeleteAccountModal from '@/components/modals/DeleteAccountModal'
 import PageHeader from '@/components/PageHeader'
 import { markRaw, ref } from 'vue'
 import { mapState, useStore } from 'vuex'
+import { useMeta } from 'vue-meta'
 
 const themes = ['dark', 'light', 'system']
 
@@ -134,6 +135,10 @@ export default {
     }
   },
   setup() {
+    useMeta({
+      title: 'Moje konto'
+    })
+
     const store = useStore()
     const currentTheme = localStorage.getItem('theme') || 'system'
     const selectedTheme = ref(currentTheme)

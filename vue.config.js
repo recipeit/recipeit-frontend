@@ -61,7 +61,7 @@ module.exports = {
   pages: {
     index: {
       entry: 'src/main.js',
-      title: 'Recipeit - Znajdź przepis z tego co masz!'
+      title: 'Recipeit - Znajdź przepis ze swoich składników'
     }
   },
   pwa: {

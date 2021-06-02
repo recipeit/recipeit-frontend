@@ -1,3 +1,4 @@
+import { createMetaManager } from 'vue-meta'
 import { upperFirst, camelCase } from 'lodash'
 import * as Sentry from '@sentry/browser'
 import { Integrations } from '@sentry/tracing'
@@ -51,6 +52,7 @@ app
   .use(router)
   .use(store)
   .use(i18n)
+  .use(createMetaManager())
   .directive('blur-on-click', blurOnClick)
   .directive('autofocus', autofocus)
 

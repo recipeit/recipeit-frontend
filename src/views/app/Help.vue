@@ -11,11 +11,16 @@
 <script>
 import { CONTACT_MAIL_ADDRESS } from '@/configs/emails'
 import PageHeader from '@/components/PageHeader'
+import { useMeta } from 'vue-meta'
 
 export default {
   name: 'Help',
   components: { PageHeader },
   setup() {
+    useMeta({
+      title: 'Pomoc'
+    })
+
     const contactUsHref = `mailto:${CONTACT_MAIL_ADDRESS}`
 
     return {

@@ -57,7 +57,7 @@
 </template>
 
 <script>
-import { markRaw, onBeforeMount, ref } from 'vue'
+import { computed, markRaw, onBeforeMount, ref } from 'vue'
 import { mapGetters } from 'vuex'
 import blogApi from '@/api/blogApi'
 import RecipeParallaxImage from '@/components/RecipeParallaxImage'
@@ -65,6 +65,7 @@ import GenericRecipesList from '@/components/GenericRecipesList'
 import BlogDetails from '@/components/BlogDetails'
 import InvisibleBlogInfoModal from '@/components/modals/InvisibleBlogInfoModal'
 import recipePagedList from './composable/recipePagedList'
+import { useMeta } from 'vue-meta'
 
 export default {
   name: 'Recipes',
@@ -88,6 +89,16 @@ export default {
         blogDetails.value = data
       })
     })
+
+    const computedMeta = computed(() => {
+      return blogDetails.value
+        ? {
+            title: blogDetails.value.name
+          }
+        : {}
+    })
+
+    useMeta(computedMeta)
 
     return {
       blogDetails,

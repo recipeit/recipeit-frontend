@@ -42,6 +42,7 @@ import NewKitchenProductModal from '@/components/modals/NewKitchenProductModal'
 import PageHeader from '@/components/PageHeader'
 import ProductIcon from '@/components/ProductIcon'
 import SearchWithFilter from '@/components/SearchWithFilter'
+import { useMeta } from 'vue-meta'
 
 export default {
   name: 'MyKitchen',
@@ -50,6 +51,11 @@ export default {
     PageHeader,
     ProductIcon,
     SearchWithFilter
+  },
+  setup() {
+    useMeta({
+      title: 'Moja kuchnia'
+    })
   },
   data: () => ({
     fetchedData: false,

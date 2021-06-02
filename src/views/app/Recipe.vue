@@ -137,9 +137,9 @@ import RecipeParallaxGallery from '@/components/RecipeParallaxGallery'
 import RecipeIngredientsSection from '@/components/recipe/RecipeIngredientsSection'
 import RecipeDirectionsSection from '@/components/recipe/RecipeDirectionsSection'
 import dayjs from '@/functions/dayjs'
-import { markRaw } from 'vue'
+import { computed, markRaw, reactive, toRefs } from 'vue'
 // import _ from 'lodash'
-import { mapGetters, mapState } from 'vuex'
+import { mapGetters, mapState, useStore } from 'vuex'
 import FavouriteIcon from '@/components/FavouriteIcon'
 import Rating from '@/components/Rating'
 // import Dialog from '@/components/modals/Dialog'
@@ -147,6 +147,7 @@ import { ToastType } from '@/plugins/toast/toastType'
 import PlanRecipeModal from '@/components/modals/PlanRecipeModal'
 import InvisibleRecipeInfoModal from '@/components/modals/InvisibleRecipeInfoModal'
 import { parseFilters } from '@/constants'
+import { useMeta } from 'vue-meta'
 
 export default {
   name: 'Recipe',
@@ -164,16 +165,43 @@ export default {
     RecipeDirectionsSection,
     Rating
   },
+  setup(props) {
+    const store = useStore()
+
+    const data = reactive({
+      fetchedData: false,
+      recipe: null,
+      finishedDirections: store.getters['recipes/getFinishedDirectionsForRecipe'](props.recipeId) || []
+    })
+
+    store.dispatch('recipes/fetchDetailedRecipe', props.recipeId).then(rd => {
+      data.recipe = rd
+    })
+
+    const computedMeta = computed(() => {
+      return data.recipe
+        ? {
+            title: data.recipe.name
+          }
+        : {}
+    })
+
+    useMeta(computedMeta)
+
+    return {
+      ...toRefs(data)
+    }
+  },
   data: component => ({
     fetchedData: false,
-    recipe: null,
+    // recipe: null,
     finishedDirections: component.$store.getters['recipes/getFinishedDirectionsForRecipe'](component.recipeId) || []
   }),
   created() {
-    this.$store.dispatch('recipes/fetchDetailedRecipe', this.recipeId).then(rd => {
-      this.recipe = rd
-      this.servings = rd.details.servings
-    })
+    // this.$store.dispatch('recipes/fetchDetailedRecipe', this.recipeId).then(rd => {
+    //   this.recipe = rd
+    //   this.servings = rd.details.servings
+    // })
     this.$store.dispatch('myKitchen/fetchProducts')
     this.$store.dispatch('shoppingList/fetchProducts')
   },

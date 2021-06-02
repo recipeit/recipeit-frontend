@@ -66,6 +66,7 @@ import * as yup from 'yup'
 import recaptcha from '@/services/recaptcha'
 import RecaptchaBranding from '@/components/RecaptchaBranding'
 import { RECAPTCHA_ACTIONS } from '@/configs/recaptcha'
+import { useMeta } from 'vue-meta'
 
 export default {
   components: {
@@ -75,6 +76,10 @@ export default {
     Form
   },
   setup() {
+    useMeta({
+      title: 'Zarejestruj się'
+    })
+
     const schema = yup.object({
       email: emailSchema(),
       password: newPasswordSchema(),

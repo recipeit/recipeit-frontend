@@ -29,10 +29,17 @@ import Container from '@/components/landingPage/Container'
 import Statistics from '@/components/landingPage/Statistics'
 import Benefits from '@/components/landingPage/Benefits'
 import FooterAuth from '@/components/landingPage/FooterAuth'
+import { useMeta } from 'vue-meta'
 
 export default {
   components: { Section, Splash, Footer, Container, Statistics, Benefits, FooterAuth },
   setup() {
+    useMeta({
+      htmlAttrs: {
+        'landing-page': true
+      }
+    })
+
     const sections = [
       {
         title: 'Dodaj swoje produkty',
@@ -86,7 +93,7 @@ export default {
 
     onBeforeMount(() => {
       window.addEventListener('resize', onResizeWindow)
-      document.documentElement.setAttribute('landing-page', true)
+      // document.documentElement.setAttribute('landing-page', true)
     })
 
     onMounted(() => {
@@ -95,7 +102,7 @@ export default {
 
     onBeforeUnmount(() => {
       window.removeEventListener('resize', onResizeWindow)
-      document.documentElement.removeAttribute('landing-page')
+      // document.documentElement.removeAttribute('landing-page')
     })
 
     return {

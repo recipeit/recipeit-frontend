@@ -60,6 +60,7 @@ import userApi from '@/api/userApi'
 import recipeFilteredPagedList from '../composable/recipeFilteredPagedList'
 import { computed } from '@vue/runtime-core'
 import { useStore } from 'vuex'
+import { useMeta } from 'vue-meta'
 
 export default {
   name: 'AlmostAvailableRecipes',
@@ -68,6 +69,10 @@ export default {
     PageHeader
   },
   setup() {
+    useMeta({
+      title: 'Zrób drobne zakupy'
+    })
+
     const store = useStore()
     const kitchenProductsCount = computed(() => store.state.myKitchen.products?.length || 0)
     const recipesList = recipeFilteredPagedList(userApi.getAlmostAvailableRecipes)

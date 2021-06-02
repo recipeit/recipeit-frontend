@@ -16,6 +16,7 @@ import GenericRecipesList from '@/components/GenericRecipesList'
 import PageHeader from '@/components/PageHeader'
 import userApi from '@/api/userApi'
 import recipePagedList from './composable/recipePagedList'
+import { useMeta } from 'vue-meta'
 
 export default {
   name: 'AvailableRecipes',
@@ -24,6 +25,10 @@ export default {
     PageHeader
   },
   setup() {
+    useMeta({
+      title: 'Ulubione'
+    })
+
     const recipesList = recipePagedList(userApi.getFavouriteRecipes)
 
     return {

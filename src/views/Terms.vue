@@ -5,12 +5,17 @@
 </template>
 
 <script>
+import { useMeta } from 'vue-meta'
 import AnonymousPage from '@/layouts/AnonymousPage'
 import TERMS_HTML from 'html-loader!@/assets/docs/terms/terms_v1.html'
 
 export default {
   components: { AnonymousPage },
   setup() {
+    useMeta({
+      title: 'Regulamin'
+    })
+
     return {
       TERMS_HTML
     }

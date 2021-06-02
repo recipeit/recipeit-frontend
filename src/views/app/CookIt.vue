@@ -107,11 +107,16 @@ import userApi from '@/api/userApi'
 
 import HorizontalRecipesList from '@/components/HorizontalRecipesList'
 import SectionTitle from '@/components/SectionTitle'
+import { useMeta } from 'vue-meta'
 
 export default {
   name: 'CookIt',
   components: { GenericRecipesList, PageHeader, HorizontalRecipesList, SectionTitle },
   setup() {
+    useMeta({
+      title: 'Ugotuj to!'
+    })
+
     const store = useStore()
     const kitchenProductsCount = computed(() => store.state.myKitchen.products?.length || 0)
 
