@@ -9,7 +9,7 @@
       </header>
       <div class="main">
         <h1 class="h1">Znajdź przepis<br />z tego co masz!</h1>
-        <p class="description">Nie pozwól aby Twoje produkty się przeterminowały. Recipeit pokaże Ci, co możesz z nich przygotować!</p>
+        <p class="description">Nie pozwól aby Twoje produkty się przeterminowały. Recipeit pokaże Ci, co możesz z nich przygotować</p>
         <div class="user-buttons">
           <router-link :to="{ name: 'register' }" v-slot="{ href, navigate }" custom>
             <BaseButton class="user-button user-button--main" tag="a" :href="href" @click="navigate($event)">
@@ -145,7 +145,7 @@ export default {
   width: 1280px;
 
   :deep(img) {
-    object-fit: contain;
+    object-fit: cover;
     height: 100%;
     width: 100%;
     max-width: 1280px;

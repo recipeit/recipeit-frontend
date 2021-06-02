@@ -97,7 +97,7 @@ module.exports = {
         }
       ],
       description:
-        'Znajdź przepis z tego co masz! Nie pozwól aby Twoje produkty się przeterminowały. Recipeit pokaże Ci, co możesz z nich przygotować!',
+        'Znajdź przepis ze swoich składników! Nie pozwól aby Twoje produkty się przeterminowały. Recipeit pokaże Ci, co możesz z nich przygotować.',
       screenshots: [
         {
           src: '/img/screenshots/recipe.png',
@@ -114,7 +114,8 @@ module.exports = {
           type: 'image/png',
           sizes: '750x1440'
         }
-      ]
+      ],
+      categories: ['food', 'shopping', 'productivity']
     },
     themeColor: '#FFFFFF',
     msTileColor: '#FFFFFF',
