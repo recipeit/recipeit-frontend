@@ -87,13 +87,32 @@ module.exports = {
           src: '/img/icons/android-chrome-maskable-192x192.png',
           type: 'image/png',
           sizes: '192x192',
-          purpose: 'maskable'
+          purpose: 'any maskable'
         },
         {
           src: '/img/icons/android-chrome-maskable-512x512.png',
           type: 'image/png',
           sizes: '512x512',
-          purpose: 'maskable'
+          purpose: 'any maskable'
+        }
+      ],
+      description:
+        'Znajdź przepis z tego co masz! Nie pozwól aby Twoje produkty się przeterminowały. Recipeit pokaże Ci, co możesz z nich przygotować!',
+      screenshots: [
+        {
+          src: '/img/screenshots/recipe.png',
+          type: 'image/png',
+          sizes: '750x1440'
+        },
+        {
+          src: '/img/screenshots/recipes.png',
+          type: 'image/png',
+          sizes: '750x1440'
+        },
+        {
+          src: '/img/screenshots/kitchen.png',
+          type: 'image/png',
+          sizes: '750x1440'
         }
       ]
     },
