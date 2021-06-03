@@ -20,8 +20,11 @@
         </ul>
       </li>
     </ul>
-    <div v-else>
-      Dodaj to, co masz w swojej kuchni!
+    <div v-else class="empty-message">
+      <div class="empty-message-title">
+        Trochę tu pusto
+      </div>
+      Dodaj to, co masz w swojej kuchni
     </div>
 
     <div class="floating-action-button-container">
@@ -117,6 +120,25 @@ export default {
 <style lang="scss" scoped>
 .layout__page__content {
   margin-bottom: 88px;
+  flex-direction: column;
+  display: flex;
+  flex: 1;
+}
+
+.empty-message {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 0.875rem;
+
+  .empty-message-title {
+    margin-bottom: 1rem;
+    font-weight: bold;
+    font-size: 1rem;
+  }
 }
 
 .product-list-filter {

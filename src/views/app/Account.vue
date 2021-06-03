@@ -12,7 +12,7 @@
         <BaseLink tag="button" class="card-link" color="primary" @click="openChangePasswordModal()">zmień hasło</BaseLink>
       </div>
       <div class="avatar">
-        <img :src="userProfile?.imageUrl || 'https://sprm.org.pl/wp-content/uploads/2018/04/User-icon.png'" alt="profile picture" />
+        <BaseImageLazyload :src="userImageUrl" alt="" />
       </div>
     </div>
 
@@ -87,7 +87,10 @@ export default {
       hiddenRecipes: state => state.user.hiddenRecipeIds,
       hiddenBlogs: state => state.user.hiddenBlogIds,
       userProfile: state => state.user.userProfile
-    })
+    }),
+    userImageUrl() {
+      return this.userProfile?.imageUrl || 'https://sprm.org.pl/wp-content/uploads/2018/04/User-icon.png'
+    }
   },
   methods: {
     openChangePasswordModal() {
@@ -211,8 +214,9 @@ h3 {
     width: 64px;
     border-radius: 64px;
     overflow: hidden;
+    background-color: var(--color-border);
 
-    img {
+    :deep(img) {
       height: 100%;
       width: 100%;
       object-fit: cover;

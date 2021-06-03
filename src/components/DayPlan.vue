@@ -70,7 +70,7 @@
             <span v-else>
               Zaplanuj przepis na ten dzień!
             </span>
-            <router-link :to="{ name: APP_COOK_IT }" v-slot="{ href, navigate }" custom>
+            <router-link :to="{ name: APP_RECIPES }" v-slot="{ href, navigate }" custom>
               <BaseButton tag="a" :href="href" @click="navigate($event)" class="no-plans-message-button" raised color="primary">
                 <BaseIcon class="no-plans-message-button-icon" icon="search" weight="semi-bold" />
                 Przeglądaj przepisy
@@ -93,7 +93,7 @@ import dayjs from '@/functions/dayjs'
 import userApi from '@/api/userApi'
 import { ToastType } from '@/plugins/toast/toastType'
 import SectionTitle from '@/components/SectionTitle'
-import { APP_COOK_IT, APP_RECIPE } from '@/router/names'
+import { APP_RECIPES, APP_RECIPE } from '@/router/names'
 
 const SlideType = {
   PREVIOUS: 'previous',
@@ -112,7 +112,7 @@ export default {
   components: { SectionTitle },
   setup() {
     return {
-      APP_COOK_IT,
+      APP_RECIPES,
       APP_RECIPE,
       DayType
     }

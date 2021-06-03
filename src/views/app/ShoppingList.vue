@@ -18,8 +18,11 @@
         </ul>
       </li>
     </ul>
-    <div v-else>
-      Dodaj pierwszy produkt do listy zakupów!
+    <div v-else class="empty-message">
+      <div class="empty-message-title">
+        Trochę tu pusto
+      </div>
+      Dodaj coś do listy zakupów
     </div>
 
     <BaseLink v-if="products && products.length > 0" color="primary" class="purchase-all-button" @click="purchaseAll">
@@ -129,6 +132,25 @@ export default {
 <style lang="scss" scoped>
 .layout__page__content {
   margin-bottom: 88px;
+  flex-direction: column;
+  display: flex;
+  flex: 1;
+}
+
+.empty-message {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 0.875rem;
+
+  .empty-message-title {
+    margin-bottom: 1rem;
+    font-weight: bold;
+    font-size: 1rem;
+  }
 }
 
 .product-list-filter {
