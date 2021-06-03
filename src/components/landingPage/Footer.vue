@@ -3,23 +3,23 @@
     <div class="footer-logo">
       <Logotype class="logo" />
     </div>
-    <div class="links">
+    <div class="footer-links">
       <router-link :to="{ name: TERMS }" #default="{ href, navigate}" custom>
-        <BaseLink :href="href" @click="navigate($event)" class="link" color="text-secondary">
+        <BaseLink :href="href" @click="navigate($event)" class="footer-link" color="text-secondary">
           Regulamin
         </BaseLink>
       </router-link>
       <router-link :to="{ name: PRIVACY_POLICY }" #default="{ href, navigate}" custom>
-        <BaseLink :href="href" @click="navigate($event)" class="link" color="text-secondary">
+        <BaseLink :href="href" @click="navigate($event)" class="footer-link" color="text-secondary">
           Polityka prywatności
         </BaseLink>
       </router-link>
       <router-link :to="{ name: ADD_BLOG }" #default="{ href, navigate}" custom>
-        <BaseLink :href="href" @click="navigate($event)" class="link" color="text-secondary">
+        <BaseLink :href="href" @click="navigate($event)" class="footer-link" color="text-secondary">
           Dodaj blog
         </BaseLink>
       </router-link>
-      <BaseLink :href="contactHref" class="link" color="text-secondary">
+      <BaseLink :href="contactHref" class="footer-link" color="text-secondary">
         Kontakt
       </BaseLink>
     </div>
@@ -64,31 +64,34 @@ export default {
     padding-top: 32px;
   }
 
+  .logo {
+    width: 96px;
+    line-height: 1;
+
+    :deep(.a) {
+      fill: currentColor;
+    }
+  }
+
+  .footer-links {
+    margin: 0 -0.75rem;
+  }
+
+  .footer-link {
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1.25;
+    margin: 0.5rem 0.75rem;
+    display: inline-block;
+  }
+
   @media (max-width: 720px) {
     flex-direction: column;
     align-items: flex-start;
-  }
-}
 
-.logo {
-  width: 96px;
-
-  ::v-deep(.a) {
-    fill: currentColor;
-  }
-}
-
-.link {
-  font-size: 0.75rem;
-  font-weight: 600;
-  line-height: 1.25;
-
-  @media (max-width: 720px) {
-    font-size: 0.75rem;
-  }
-
-  & + & {
-    margin-left: 1.5rem;
+    .footer-links {
+      margin-top: 1rem;
+    }
   }
 }
 </style>
