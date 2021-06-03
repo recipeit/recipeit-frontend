@@ -1,6 +1,11 @@
 const SentryWebpackPlugin = require('@sentry/webpack-plugin')
 const { DefinePlugin } = require('webpack')
 const { execSync } = require('child_process')
+const { buildMarkdowns } = require('./src/markdowns')
+
+const isProduction = process.env.NODE_ENV === 'production'
+
+buildMarkdowns(!isProduction)
 
 const commitHash = execSync('git rev-parse HEAD').toString()
 
@@ -24,7 +29,7 @@ module.exports = {
       })
     )
 
-    if (process.env.NODE_ENV === 'production') {
+    if (isProduction) {
       config.plugins.push(
         new SentryWebpackPlugin({
           authToken: process.env.SENTRY_AUTH_TOKEN,

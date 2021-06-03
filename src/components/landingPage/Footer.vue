@@ -4,14 +4,19 @@
       <Logotype class="logo" />
     </div>
     <div class="links">
-      <router-link :to="{ name: 'terms' }" #default="{ href, navigate}" custom>
+      <router-link :to="{ name: TERMS }" #default="{ href, navigate}" custom>
         <BaseLink :href="href" @click="navigate($event)" class="link" color="text-secondary">
           Regulamin
         </BaseLink>
       </router-link>
-      <router-link :to="{ name: 'privacy-policy' }" #default="{ href, navigate}" custom>
+      <router-link :to="{ name: PRIVACY_POLICY }" #default="{ href, navigate}" custom>
         <BaseLink :href="href" @click="navigate($event)" class="link" color="text-secondary">
           Polityka prywatności
+        </BaseLink>
+      </router-link>
+      <router-link :to="{ name: ADD_BLOG }" #default="{ href, navigate}" custom>
+        <BaseLink :href="href" @click="navigate($event)" class="link" color="text-secondary">
+          Dodaj blog
         </BaseLink>
       </router-link>
       <BaseLink :href="contactHref" class="link" color="text-secondary">
@@ -22,6 +27,7 @@
 </template>
 
 <script>
+import { TERMS, PRIVACY_POLICY, ADD_BLOG } from '@/router/names'
 import { CONTACT_MAIL_ADDRESS } from '@/configs/emails'
 import Logotype from '@/components/Logotype'
 
@@ -37,7 +43,10 @@ export default {
     const contactHref = `mailto:${CONTACT_MAIL_ADDRESS}`
 
     return {
-      contactHref
+      contactHref,
+      TERMS,
+      PRIVACY_POLICY,
+      ADD_BLOG
     }
   }
 }
@@ -50,7 +59,7 @@ export default {
   justify-content: space-between;
   align-items: center;
 
-  &.footer-with-border {
+  &.footer--bordered {
     border-top: 1px solid var(--color-border);
     padding-top: 32px;
   }
@@ -70,7 +79,8 @@ export default {
 }
 
 .link {
-  font-size: 0.875rem;
+  font-size: 0.75rem;
+  font-weight: 600;
   line-height: 1.25;
 
   @media (max-width: 720px) {
@@ -78,7 +88,7 @@ export default {
   }
 
   & + & {
-    margin-left: 1rem;
+    margin-left: 1.5rem;
   }
 }
 </style>

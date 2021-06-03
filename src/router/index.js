@@ -5,6 +5,7 @@ import { USER_AUTH_STATE } from '@/store/modules/user'
 import identityApi from '@/api/identityApi'
 import progressbarPlugin from '@/plugins/progressbar'
 import {
+  ADD_BLOG,
   APP,
   APP_ACCOUNT,
   APP_ALMOST_AVAILABLE,
@@ -90,6 +91,13 @@ const routes = [
     props: true,
     meta: { hideCookiesModal: true },
     component: () => import(/* webpackChunkName: "terms" */ '@/views/PrivacyPolicy.vue')
+  },
+  {
+    path: '/add-blog',
+    name: ADD_BLOG,
+    props: true,
+    meta: { hideCookiesModal: true },
+    component: () => import(/* webpackChunkName: "add-blog" */ '@/views/AddBlog.vue')
   },
   {
     path: '/app',

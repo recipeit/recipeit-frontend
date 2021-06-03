@@ -1,6 +1,7 @@
 export const LANDING_PAGE = 'landing-page'
 export const TERMS = 'terms'
 export const PRIVACY_POLICY = 'privacy-policy'
+export const ADD_BLOG = 'add-blog'
 
 export const APP = 'app'
 export const APP_HOME = 'home'

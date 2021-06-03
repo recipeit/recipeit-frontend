@@ -4,7 +4,6 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "prebuild": "node src/prebuild.mjs",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "db": "json-server --watch db.json"
@@ -41,6 +40,8 @@
     "@vue/compiler-sfc": "^3.0.11",
     "@vue/eslint-config-prettier": "^6.0.0",
     "babel-eslint": "^10.1.0",
+    "chokidar": "^3.5.1",
+    "colors": "^1.4.0",
     "eslint": "^6.7.2",
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-vue": "^7.9.0",
