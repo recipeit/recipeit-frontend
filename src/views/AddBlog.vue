@@ -67,5 +67,11 @@ export default {
   ::v-deep(ul > li) {
     margin: 0.75rem 0;
   }
+
+  :deep(a) {
+    text-decoration: none;
+    font-weight: bold;
+    color: var(--color-primary);
+  }
 }
 </style>
