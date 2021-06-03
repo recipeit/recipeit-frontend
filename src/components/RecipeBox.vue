@@ -1,5 +1,5 @@
 <template>
-  <router-link :to="{ name: APP_RECIPE, params: { recipeId } }" v-slot="{ href, navigate }" custom>
+  <router-link :to="{ name: APP_RECIPE, params: { recipeId, recipeName } }" v-slot="{ href, navigate }" custom>
     <a :href="href" @click="navigate($event)" class="recipe-box">
       <div class="recipe-box__image-container">
         <div class="recipe-box__image-container__image">

@@ -3,6 +3,7 @@ import userApi from '@/api/userApi'
 import { ToastType } from '@/plugins/toast/toastType'
 import toastPlugin from '@/plugins/toast'
 import router from '@/router'
+import { THEMES, THEME_DEFAULT, THEME_STORAGE_KEY } from '@/configs/theme'
 
 export const USER_AUTH_STATE = {
   USER_APP_INITIAL: 'USER_APP_INITIAL',
@@ -12,6 +13,8 @@ export const USER_AUTH_STATE = {
 }
 
 export const MUTATIONS = {
+  SET_THEME: 'SET_THEME',
+
   SET_USER_PROFILE: 'SET_USER_PROFILE',
   SET_USER_AUTH_STATE: 'SET_USER_AUTH_STATE',
 
@@ -27,6 +30,7 @@ export const MUTATIONS = {
 export default {
   namespaced: true,
   state: {
+    theme: null,
     userProfile: undefined,
     userAuthState: USER_AUTH_STATE.USER_APP_INITIAL,
     userAuthenticatedLazy: false,
@@ -35,6 +39,10 @@ export default {
     // userTokenRefreshing: false
   },
   mutations: {
+    [MUTATIONS.SET_THEME](state, theme) {
+      state.theme = theme
+    },
+
     [MUTATIONS.SET_USER_PROFILE](state, profile) {
       state.userProfile = profile
     },
@@ -74,6 +82,19 @@ export default {
     }
   },
   actions: {
+    initTheme({ commit }) {
+      let currentTheme = localStorage.getItem(THEME_STORAGE_KEY)
+      if (!currentTheme || !THEMES.includes(currentTheme)) {
+        currentTheme = THEME_DEFAULT
+      }
+      commit(MUTATIONS.SET_THEME, currentTheme)
+    },
+    setTheme({ commit }, theme) {
+      if (THEMES.includes(theme)) {
+        commit(MUTATIONS.SET_THEME, theme)
+        localStorage.setItem(THEME_STORAGE_KEY, theme)
+      }
+    },
     fetchUserProfile({ commit, dispatch }, { getInitUserData }) {
       return new Promise((resolve, reject) => {
         identityApi

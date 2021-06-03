@@ -27,6 +27,8 @@ import Modal from './plugins/global-sheet-modal/Modal.vue'
 import { useRoute } from 'vue-router'
 import { APP_HOME, AUTH_LOGIN } from './router/names'
 import { useMeta } from 'vue-meta'
+import { useStore } from 'vuex'
+import { THEME_HTML_ATTRIBUTE } from './configs/theme'
 
 const TITLE_TEMPLATE = 'Recipeit - Znajdź przepis ze swoich składników'
 const TITLE_SMALL_TEMPLATE = 'Recipeit'
@@ -40,11 +42,14 @@ export default {
     Modal
   },
   setup() {
+    const store = useStore()
     const route = useRoute()
     const update = updateSW()
     const data = reactive({
       showGDPRModal: false
     })
+
+    store.dispatch('user/initTheme')
 
     const allowedGDPRModalRoute = computed(() => !route.meta?.hideCookiesModal)
 
@@ -56,10 +61,14 @@ export default {
       }
     })
 
-    // TODO theme inside computed meta
-    useMeta({
-      title: ''
-    })
+    const computedMeta = computed(() => ({
+      title: '',
+      htmlAttrs: {
+        [THEME_HTML_ATTRIBUTE]: store.state.user.theme
+      }
+    }))
+
+    useMeta(computedMeta)
 
     return {
       ...toRefs(data),
@@ -72,10 +81,6 @@ export default {
   data: () => ({
     fetchedInitialUserProfile: false
   }),
-  beforeCreate() {
-    const currentTheme = localStorage.getItem('theme')
-    document.documentElement.setAttribute('theme', currentTheme || 'light')
-  },
   created() {
     this.$store
       .dispatch('user/fetchUserProfile', { getInitUserData: true })

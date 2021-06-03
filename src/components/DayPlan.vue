@@ -39,7 +39,11 @@
             <div class="time-of-day__title">{{ $t(`timeOfDay.${key}`) }}</div>
             <div class="time-of-day__recipes">
               <div href="#" class="time-of-day__recipe" v-for="recipe in recipes" :key="recipe.id">
-                <router-link :to="{ name: APP_RECIPE, params: { recipeId: recipe.recipeId } }" v-slot="{ href, navigate }" custom>
+                <router-link
+                  :to="{ name: APP_RECIPE, params: { recipeId: recipe.recipeId, recipeName: recipe.name } }"
+                  v-slot="{ href, navigate }"
+                  custom
+                >
                   <BaseLink :href="href" @click="navigate($event)" class="time-of-day__recipe__link">
                     {{ recipe.name }}
                   </BaseLink>

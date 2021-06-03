@@ -93,7 +93,6 @@ export default {
 
     onBeforeMount(() => {
       window.addEventListener('resize', onResizeWindow)
-      // document.documentElement.setAttribute('landing-page', true)
     })
 
     onMounted(() => {
@@ -102,7 +101,6 @@ export default {
 
     onBeforeUnmount(() => {
       window.removeEventListener('resize', onResizeWindow)
-      // document.documentElement.removeAttribute('landing-page')
     })
 
     return {

@@ -22,7 +22,7 @@
     </BaseLink>
     <div class="settings-row">
       <div class="settings-row__value settings-row__value--theme">
-        <BaseSelect placeholder="Motyw" :options="themes" :value="selectedTheme" @change="updateTheme($event)" :searchable="false">
+        <BaseSelect placeholder="Motyw" :options="THEMES" :value="selectedTheme" @change="updateTheme($event)" :searchable="false">
           <template #label="{ option }">{{ $t(`themes.${option}`) }}</template>
           <template #option="{ option }">{{ $t(`themes.${option}`) }}</template>
         </BaseSelect>
@@ -77,18 +77,11 @@ import PageHeader from '@/components/PageHeader'
 import { markRaw, ref } from 'vue'
 import { mapState, useStore } from 'vuex'
 import { useMeta } from 'vue-meta'
-
-const themes = ['dark', 'light', 'system']
+import { THEMES } from '@/configs/theme'
 
 export default {
   name: 'MyAccount',
   components: { PageHeader },
-  beforeMount() {
-    const currentTheme = localStorage.getItem('theme')
-    if (currentTheme) {
-      this.selectedTheme = currentTheme
-    }
-  },
   computed: {
     ...mapState({
       hiddenRecipes: state => state.user.hiddenRecipeIds,
@@ -140,14 +133,13 @@ export default {
     })
 
     const store = useStore()
-    const currentTheme = localStorage.getItem('theme') || 'system'
+    const currentTheme = store.state.user.theme
     const selectedTheme = ref(currentTheme)
 
     function updateTheme(value) {
-      if (value && themes.includes(value)) {
+      if (value && THEMES.includes(value)) {
         selectedTheme.value = value
-        localStorage.setItem('theme', value)
-        document.documentElement.setAttribute('theme', value)
+        store.dispatch('user/setTheme', value)
       }
     }
 
@@ -164,7 +156,7 @@ export default {
       updateTheme,
       unhideRecipe,
       unhideBlog,
-      themes
+      THEMES
     }
   }
 }

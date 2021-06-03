@@ -57,7 +57,11 @@
           </div>
         </div>
         <div class="recipe__author">
-          <router-link :to="{ name: 'blog', params: { blogId: recipe.author.blogId } }" v-slot="{ href, navigate }" custom>
+          <router-link
+            :to="{ name: 'blog', params: { blogId: recipe.author.blogId, blogName: recipe.author.blog.name } }"
+            v-slot="{ href, navigate }"
+            custom
+          >
             <BaseLink :href="href" @click="navigate($event)" color="text-secondary">
               <span v-if="recipe.author.name" class="recipe__author__name">{{ recipe.author.name }}, </span>
               <span class="recipe__author__blog-name">{{ recipe.author.blog.name }}</span>
@@ -155,6 +159,9 @@ export default {
     recipeId: {
       type: String,
       required: true
+    },
+    recipeName: {
+      type: String
     }
   },
   components: {
@@ -179,11 +186,9 @@ export default {
     })
 
     const computedMeta = computed(() => {
-      return data.recipe
-        ? {
-            title: data.recipe.name
-          }
-        : {}
+      return {
+        title: data.recipe?.name || props.recipeName
+      }
     })
 
     useMeta(computedMeta)

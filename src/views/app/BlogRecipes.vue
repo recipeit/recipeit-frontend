@@ -73,6 +73,9 @@ export default {
     blogId: {
       type: String,
       required: true
+    },
+    blogName: {
+      type: String
     }
   },
   components: {
@@ -91,11 +94,9 @@ export default {
     })
 
     const computedMeta = computed(() => {
-      return blogDetails.value
-        ? {
-            title: blogDetails.value.name
-          }
-        : {}
+      return {
+        title: blogDetails.value?.name || props.blogName
+      }
     })
 
     useMeta(computedMeta)
