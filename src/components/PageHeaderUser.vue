@@ -3,7 +3,8 @@
     <BaseMenu>
       <template #toggle="{ focused }">
         <div :class="['page-header-user__avatar', { 'page-header-user__avatar--focused': focused }]">
-          <BaseImageLazyload :src="userImageUrl" alt="" />
+          <BaseIcon v-if="userProfile && !userProfile.imageUrl" class="no-avatar-icon" icon="user" weight="semi-bold" />
+          <BaseImageLazyload v-else :src="userProfile?.imageUrl" alt="" />
         </div>
       </template>
       <template #dropdown>
@@ -25,9 +26,6 @@ export default {
   setup() {
     const store = useStore()
     const userProfile = computed(() => store.state.user.userProfile)
-    const userImageUrl = computed(() => {
-      return userProfile.value?.imageUrl || 'https://sprm.org.pl/wp-content/uploads/2018/04/User-icon.png'
-    })
 
     const logout = () => {
       store.dispatch('user/logout', true)
@@ -36,7 +34,6 @@ export default {
     return {
       APP_ACCOUNT,
       userProfile,
-      userImageUrl,
       logout
     }
   }
@@ -63,6 +60,15 @@ export default {
       height: 100%;
       width: 100%;
       object-fit: cover;
+    }
+
+    .no-avatar-icon {
+      width: 100%;
+      height: 100%;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      color: var(--color-text-secondary);
     }
   }
 }
