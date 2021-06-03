@@ -4,7 +4,12 @@
     <div class="popular-categories-container">
       <ul v-if="popularCategories" class="popular-categories">
         <li v-for="category in popularCategories" :key="category.key" class="popular-category-container">
-          <PopularCategory :categoryKey="category.key" :categoryValue="category.value" :categoryGroup="category.categoryGroup" />
+          <PopularCategory
+            :page="page"
+            :categoryKey="category.key"
+            :categoryValue="category.value"
+            :categoryGroup="category.categoryGroup"
+          />
         </li>
       </ul>
     </div>
@@ -12,15 +17,18 @@
 </template>
 
 <script>
-import { onBeforeMount } from '@vue/runtime-core'
+import { computed, onBeforeMount } from '@vue/runtime-core'
 import { ref } from 'vue'
+import { APP_COOK_IT, APP_RECIPES } from '@/router/names'
 import recipeApi from '@/api/recipeApi'
 import SectionTitle from '@/components/SectionTitle'
 import PopularCategory from '@/components/PopularCategory'
+import { useStore } from 'vuex'
 
 export default {
   components: { SectionTitle, PopularCategory },
   setup() {
+    const store = useStore()
     const popularCategories = ref(null)
 
     onBeforeMount(async () => {
@@ -28,8 +36,13 @@ export default {
       popularCategories.value = data
     })
 
+    const page = computed(() => {
+      return store.state.myKitchen.products ? APP_COOK_IT : APP_RECIPES
+    })
+
     return {
-      popularCategories
+      popularCategories,
+      page
     }
   }
 }

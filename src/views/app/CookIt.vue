@@ -44,7 +44,7 @@
                 wyczyścić filtry
               </BaseLink>
               , przeszukać całą
-              <router-link :to="{ name: 'recipes' }" v-slot="{ href, navigate }" custom>
+              <router-link :to="{ name: 'recipes', query: $route.query }" v-slot="{ href, navigate }" custom>
                 <BaseLink :href="href" @click="navigate($event)" class="empty-list-message-link" color="primary">bazę przepisów</BaseLink>
               </router-link>
               , bądź sprawdzić
@@ -61,7 +61,7 @@
                 wyczyścić filtry
               </BaseLink>
               lub sprawdzić całą
-              <router-link :to="{ name: 'recipes' }" v-slot="{ href, navigate }" custom>
+              <router-link :to="{ name: 'recipes', query: $route.query }" v-slot="{ href, navigate }" custom>
                 <BaseLink :href="href" @click="navigate($event)" class="empty-list-message-link" color="primary">bazę przepisów</BaseLink>
               </router-link>
               .

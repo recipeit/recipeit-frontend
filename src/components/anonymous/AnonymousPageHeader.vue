@@ -1,25 +1,25 @@
 <template>
   <header class="header">
     <div class="header-container">
-      <router-link :to="{ name: 'landing-page' }" class="logo-link">
+      <router-link :to="{ name: LANDING_PAGE }" class="logo-link">
         <Logotype class="logo" />
       </router-link>
       <div class="header-buttons">
         <template v-if="userAuthenticatedLazy">
-          <router-link :to="{ name: 'home' }" v-slot="{ href, navigate }" custom>
-            <BaseButton class="header-button" tag="a" :href="href" @click="navigate($event)" raised color="primary" size="small">
+          <router-link :to="{ name: APP_HOME }" v-slot="{ href, navigate }" custom>
+            <BaseButton class="header-button" tag="a" :href="href" @click="navigate($event)" raised color="primary">
               Wróć do aplikacji
             </BaseButton>
           </router-link>
         </template>
         <template v-else>
-          <router-link :to="{ name: 'login' }" v-slot="{ href, navigate }" custom>
-            <BaseButton class="header-button" tag="a" :href="href" @click="navigate($event)" stroked size="small">
+          <router-link :to="{ name: AUTH_LOGIN }" v-slot="{ href, navigate }" custom>
+            <BaseButton class="header-button" tag="a" :href="href" @click="navigate($event)" stroked>
               Zaloguj się
             </BaseButton>
           </router-link>
-          <router-link :to="{ name: 'register' }" v-slot="{ href, navigate }" custom>
-            <BaseButton class="header-button" tag="a" :href="href" @click="navigate($event)" raised color="primary" size="small">
+          <router-link :to="{ name: AUTH_REGISTER }" v-slot="{ href, navigate }" custom>
+            <BaseButton class="header-button" tag="a" :href="href" @click="navigate($event)" raised color="primary">
               Utwórz konto
             </BaseButton>
           </router-link>
@@ -30,15 +30,24 @@
 </template>
 
 <script>
+import { LANDING_PAGE, AUTH_LOGIN, AUTH_REGISTER, APP_HOME } from '@/router/names'
 import Logotype from '@/components/Logotype'
-import { mapState } from 'vuex'
+import { useStore } from 'vuex'
+import { computed } from '@vue/runtime-core'
 
 export default {
   components: { Logotype },
-  computed: {
-    ...mapState({
-      userAuthenticatedLazy: state => state.user.userAuthenticatedLazy
-    })
+  setup() {
+    const store = useStore()
+    const userAuthenticatedLazy = computed(() => store.state.user.userAuthenticatedLazy)
+
+    return {
+      userAuthenticatedLazy,
+      LANDING_PAGE,
+      AUTH_REGISTER,
+      AUTH_LOGIN,
+      APP_HOME
+    }
   }
 }
 </script>
@@ -78,6 +87,7 @@ export default {
     .header-button {
       padding-left: 1rem;
       padding-right: 1rem;
+      height: 40px;
     }
   }
 }

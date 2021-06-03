@@ -2,6 +2,7 @@ import recipeApi from '@/api/recipeApi'
 import userApi from '@/api/userApi'
 import { ToastType } from '@/plugins/toast/toastType'
 import toastPlugin from '@/plugins/toast'
+import { FINISHED_DIRECTIONS_STORAGE_KEY } from '@/configs/storage'
 
 export const MUTATIONS = {
   SET_FAVOURITE_RECIPES_IDS: 'SET_FAVOURITE_RECIPES_IDS',
@@ -15,7 +16,7 @@ export const MUTATIONS = {
   SET_FINISHED_DIRECTIONS_FOR_RECIPE: 'SET_FINISHED_DIRECTIONS_FOR_RECIPE'
 }
 
-const storageFinishedDirections = localStorage.getItem('finishedDirections')
+const storageFinishedDirections = localStorage.getItem(FINISHED_DIRECTIONS_STORAGE_KEY)
 const parsedStorageFinishedDirections = storageFinishedDirections ? JSON.parse(storageFinishedDirections) : {}
 
 export default {
@@ -146,10 +147,10 @@ export default {
 
     setFinishedDirectionsForRecipe({ commit }, { recipeId, finishedDirections }) {
       commit(MUTATIONS.SET_FINISHED_DIRECTIONS_FOR_RECIPE, { recipeId, finishedDirections })
-      const existedLocalStorageItem = localStorage.getItem('finishedDirections')
+      const existedLocalStorageItem = localStorage.getItem(FINISHED_DIRECTIONS_STORAGE_KEY)
       const parsedLocalStorage = existedLocalStorageItem ? JSON.parse(existedLocalStorageItem) : {}
-      parsedLocalStorage[recipeId] = finishedDirections // TODO remove when empty
-      localStorage.setItem('finishedDirections', JSON.stringify(parsedLocalStorage))
+      parsedLocalStorage[recipeId] = finishedDirections?.length > 0 ? finishedDirections : undefined
+      localStorage.setItem(FINISHED_DIRECTIONS_STORAGE_KEY, JSON.stringify(parsedLocalStorage))
     }
   },
   getters: {

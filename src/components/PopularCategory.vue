@@ -1,5 +1,5 @@
 <template>
-  <router-link :to="{ name: APP_COOK_IT, query: { [`filters.${categoryGroup}`]: categoryKey } }" #default="{ href, navigate }" custom>
+  <router-link :to="{ name: page, query: { [`filters.${categoryGroup}`]: categoryKey } }" #default="{ href, navigate }" custom>
     <a :href="href" @click="navigate($event)" class="category">
       <BaseImageLazyload class="category-image" :src="imageUrl" />
       <div>
@@ -15,6 +15,7 @@ import { APP_COOK_IT } from '@/router/names'
 
 export default {
   props: {
+    page: String,
     categoryKey: Number,
     categoryValue: String,
     categoryGroup: String

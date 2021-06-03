@@ -186,9 +186,8 @@ export default {
     })
 
     const computedMeta = computed(() => {
-      return {
-        title: data.recipe?.name || props.recipeName
-      }
+      const title = data.recipe?.name || props.recipeName
+      return title ? { title } : {}
     })
 
     useMeta(computedMeta)

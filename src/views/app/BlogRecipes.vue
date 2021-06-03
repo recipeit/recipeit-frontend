@@ -94,9 +94,8 @@ export default {
     })
 
     const computedMeta = computed(() => {
-      return {
-        title: blogDetails.value?.name || props.blogName
-      }
+      const title = blogDetails.value?.name || props.blogName
+      return title ? { title } : {}
     })
 
     useMeta(computedMeta)

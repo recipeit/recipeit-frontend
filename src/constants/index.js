@@ -105,7 +105,7 @@ export function parseFilters(filters) {
   if (typeof filters === 'object' && filters !== null) {
     Object.keys(filters).forEach(group => {
       if (filters[group] && filters[group].length > 0) {
-        renamedFilters[`filters.${group}`] = filters[group].join(',')
+        renamedFilters[`filters.${group.toLowerCase()}`] = filters[group].join(',')
       }
     })
   }
