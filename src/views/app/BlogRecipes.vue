@@ -152,6 +152,8 @@ export default {
 
   @media (min-width: 721px) {
     margin-top: 0;
+    margin-left: 0;
+    margin-right: 0;
   }
 
   &::before {

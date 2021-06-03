@@ -2,7 +2,7 @@
   <div class="blog-details">
     <div class="blog-info">
       <h1 class="blog-name">{{ blog.name }}</h1>
-      <BaseLink :href="blog.url" class="blog-url" color="text-secondary">{{ blog.url }}</BaseLink>
+      <BaseLink :href="blog.url" target="_blank" class="blog-url" color="text-secondary">{{ blog.url }}</BaseLink>
     </div>
   </div>
 </template>
