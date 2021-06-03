@@ -25,15 +25,12 @@
           </BaseMenu>
         </div>
         <div class="header-avatar-container">
-          <BaseImageLazyload
-            class="header-avatar"
-            :src="'https://sprm.org.pl/wp-content/uploads/2018/04/User-icon.png'"
-            :alt="blogDetails?.name"
-          />
+          <BaseIcon v-if="blogDetails && !blogDetails.imageUrl" class="no-avatar-icon" icon="user" weight="semi-bold" />
+          <BaseImageLazyload v-else class="header-avatar" :src="blogDetails?.imageUrl" alt="" />
         </div>
       </div>
       <RecipeParallaxImage class="header-image">
-        <BaseImageLazyload src="https://maspex.com/wp-content/uploads/2020/07/EITFood-keyimage1-LR.jpg" />
+        <BaseImageLazyload :src="blogBgUrl" />
       </RecipeParallaxImage>
     </div>
 
@@ -66,6 +63,7 @@ import BlogDetails from '@/components/BlogDetails'
 import InvisibleBlogInfoModal from '@/components/modals/InvisibleBlogInfoModal'
 import recipePagedList from './composable/recipePagedList'
 import { useMeta } from 'vue-meta'
+import blogBgUrl from '@/assets/img/blog-bg.webp'
 
 export default {
   name: 'Recipes',
@@ -102,7 +100,8 @@ export default {
 
     return {
       blogDetails,
-      recipesList
+      recipesList,
+      blogBgUrl
     }
   },
   computed: {
@@ -222,16 +221,25 @@ export default {
     z-index: 1;
     position: absolute;
     bottom: 0;
-    left: 32px;
-  }
-
-  &-avatar {
-    height: 80px;
-    width: 80px;
+    left: 50%;
+    transform: translateX(-50%);
     border-radius: 80px;
     overflow: hidden;
     background-color: var(--color-image-background);
+    height: 80px;
+    width: 80px;
 
+    .no-avatar-icon {
+      width: 100%;
+      height: 100%;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.75rem;
+      color: var(--color-text-secondary);
+    }
+  }
+
+  &-avatar {
     ::v-deep(img) {
       height: 100%;
       width: 100%;
