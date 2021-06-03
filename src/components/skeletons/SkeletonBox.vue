@@ -1,9 +1,16 @@
 <template>
-  <div class="skeleton-box" />
+  <div :class="{ 'skeleton-box': true, 'skeleton-box--animate': animate }" />
 </template>
 
 <script>
-export default {}
+export default {
+  props: {
+    animate: {
+      type: Boolean,
+      default: true
+    }
+  }
+}
 </script>
 
 <style lang="scss">
@@ -17,19 +24,21 @@ export default {}
   //   background-color: var(--background-);
   // }
 
-  &::after {
-    content: '';
-    display: block;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background-image: linear-gradient(90deg, transparent, var(--color-text-secondary), transparent);
-    background-size: 100vw 100vh;
-    background-attachment: fixed;
-    background-position-x: -100vw;
-    background-repeat: no-repeat;
-    animation: loading 1s infinite;
-    opacity: 0.1;
+  &.skeleton-box--animate {
+    &::after {
+      content: '';
+      display: block;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-image: linear-gradient(90deg, transparent, var(--color-text-secondary), transparent);
+      background-size: 100vw 100vh;
+      background-attachment: fixed;
+      background-position-x: -100vw;
+      background-repeat: no-repeat;
+      animation: loading 1s infinite;
+      opacity: 0.1;
+    }
   }
 
   @keyframes loading {

@@ -24,6 +24,7 @@
           <SkeletonRecipeBox />
         </li>
       </template>
+      <slot v-else-if="recipes.items && recipes.totalCount === 0" name="empty-list" />
     </ul>
     <div v-if="errors" class="recipes-errors">
       <div class="recipes-errors-message">

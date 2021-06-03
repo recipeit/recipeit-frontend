@@ -64,7 +64,12 @@
         <div v-else key="no-plans" class="no-plans-message">
           <!-- WHEN CURRENT DAY IS NEXT 7 DAYS INCLUDING TODAY -->
           <template v-if="currentDay.type === DayType.TODAY || currentDay.type === DayType.THIS_WEEK">
-            Zaplanuj przepis na ten dzień!
+            <span v-if="currentDay.type === DayType.TODAY">
+              Zaplanuj przepis na dzisiaj!
+            </span>
+            <span v-else>
+              Zaplanuj przepis na ten dzień!
+            </span>
             <router-link :to="{ name: APP_COOK_IT }" v-slot="{ href, navigate }" custom>
               <BaseButton tag="a" :href="href" @click="navigate($event)" class="no-plans-message-button" raised color="primary">
                 <BaseIcon class="no-plans-message-button-icon" icon="search" weight="semi-bold" />

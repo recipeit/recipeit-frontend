@@ -35,6 +35,8 @@ import _ from 'lodash'
 import { computed, ref, watch } from '@vue/runtime-core'
 import { useStore } from 'vuex'
 import SectionTitle from '@/components/SectionTitle'
+import { useToast } from '@/plugins/toast'
+import { ToastType } from '@/plugins/toast/toastType'
 
 export default {
   components: { SectionTitle },
@@ -50,7 +52,7 @@ export default {
   },
   setup(props) {
     const store = useStore()
-    // const modal = useModal()
+    const toast = useToast()
 
     const finishedDirections = ref(store.getters['recipes/getFinishedDirectionsForRecipe'](props.recipeId) || [])
 
@@ -71,19 +73,7 @@ export default {
       const remaining = _.difference(allIndexes.value, newValue)
       if (!remaining || remaining.length === 0) {
         finishedDirections.value = []
-        // modal.show(
-        //   markRaw(Dialog),
-        //   {
-        //     title: 'Zrobione',
-        //     content: 'Udało Ci się ukończyć cały przepis',
-        //     secondaryText: 'OK!'
-        //   },
-        //   {
-        //     close: () => {
-        //       finishedDirections.value = []
-        //     }
-        //   }
-        // )
+        toast.show('Super! Udało Ci się ukończyć przepis', ToastType.SUCCESS)
       }
     })
 

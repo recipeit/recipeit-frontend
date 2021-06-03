@@ -12,7 +12,13 @@
       :errors="favouriteRecipesErrors"
       @showAll="showAllFavourites()"
       @reload-with-query="loadFavouriteRecipes()"
-    />
+    >
+      <template #empty-list>
+        <li v-for="i in 3" :key="i" class="empty-list-item">
+          <AddToFavouriteRecipeBox />
+        </li>
+      </template>
+    </HorizontalRecipesList>
   </div>
 </template>
 
@@ -25,9 +31,10 @@ import { RecipeList } from '@/constants'
 import HorizontalRecipesList from '@/components/HorizontalRecipesList'
 import SectionTitle from '@/components/SectionTitle'
 import { APP_FAVOURITES } from '@/router/names'
+import AddToFavouriteRecipeBox from './AddToFavouriteRecipeBox.vue'
 
 export default {
-  components: { HorizontalRecipesList, SectionTitle },
+  components: { HorizontalRecipesList, SectionTitle, AddToFavouriteRecipeBox },
   setup() {
     const favouriteRecipes = ref(new RecipeList())
     const favouriteRecipesErrors = ref(new RecipeList())
@@ -67,4 +74,14 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.empty-list-item {
+  width: 150px;
+  max-width: calc((100% - 64px) * 0.4);
+  flex-shrink: 0;
+
+  & + & {
+    margin-left: 16px;
+  }
+}
+</style>
