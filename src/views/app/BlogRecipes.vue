@@ -151,6 +151,10 @@ export default {
   position: relative;
   margin: -32px -32px 16px -32px;
 
+  @media (min-width: 721px) {
+    margin-top: 0;
+  }
+
   &::before {
     content: '';
     z-index: 1;
@@ -162,6 +166,10 @@ export default {
     min-height: 32px;
     border-radius: 32px 32px 0 0;
     background-color: var(--color-background);
+
+    @media (min-width: 721px) {
+      content: none;
+    }
   }
 
   &-buttons {
@@ -192,6 +200,11 @@ export default {
   &-image {
     position: relative;
     height: 196px;
+
+    @media (min-width: 721px) {
+      border-radius: 32px;
+      margin-bottom: 40px;
+    }
 
     &:after {
       content: '';

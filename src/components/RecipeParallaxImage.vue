@@ -44,6 +44,10 @@ export default {
       height: 100%;
       object-fit: cover;
     }
+
+    @media (min-width: 721px) {
+      transform: none !important;
+    }
   }
 }
 </style>
