@@ -15,6 +15,8 @@ FROM nginx:stable-alpine as production-stage
 COPY --from=build-stage /app/dist /app/dist
 VOLUME /app/dist/static
 COPY nginx.conf /etc/nginx/nginx.conf
-COPY .cert/fullchain.pem /etc/letsencrypt/live/test.recipeit.pl/fullchain.pem
-COPY .cert/privkey.pem /etc/letsencrypt/live/test.recipeit.pl/privkey.pem
+COPY .cert.test/fullchain.pem /etc/letsencrypt/live/test.recipeit.pl/fullchain.pem
+COPY .cert.test/privkey.pem /etc/letsencrypt/live/test.recipeit.pl/privkey.pem
+COPY .cert/fullchain.pem /etc/letsencrypt/live/recipeit.pl/fullchain.pem
+COPY .cert/privkey.pem /etc/letsencrypt/live/recipeit.pl/privkey.pem
 CMD ["nginx", "-g", "daemon off;"]
