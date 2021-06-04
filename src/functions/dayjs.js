@@ -1,12 +1,14 @@
 import dayjs from 'dayjs'
 import calendar from 'dayjs/plugin/calendar'
 import duration from 'dayjs/plugin/duration'
+import relativeTime from 'dayjs/plugin/relativeTime'
 import isToday from 'dayjs/plugin/isToday'
 import updateLocale from 'dayjs/plugin/updateLocale'
 import 'dayjs/locale/pl'
 
 dayjs.extend(calendar)
 dayjs.extend(duration)
+dayjs.extend(relativeTime)
 dayjs.extend(isToday)
 dayjs.extend(updateLocale)
 

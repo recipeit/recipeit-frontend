@@ -133,8 +133,10 @@ export default {
   justify-content: center;
   text-align: center;
   font-size: 0.875rem;
+  color: var(--color-text-secondary);
 
   .empty-message-title {
+    color: var(--color-text-primary);
     margin-bottom: 1rem;
     font-weight: bold;
     font-size: 1rem;

@@ -57,5 +57,6 @@ export default {
 .blog-url {
   font-size: 0.75rem;
   font-weight: bold;
+  margin-top: 4px;
 }
 </style>

@@ -33,12 +33,12 @@
         <div class="recipe__header-pills">
           <div v-if="cookingHours" class="recipe__header-pill">
             <BaseIcon class="recipe__header-pill__icon" icon="clock" weight="semi-bold" />
-            {{ cookingHours }} h
+            {{ cookingHours }}
           </div>
-          <div v-if="recipe.details.servings" class="recipe__header-pill">
+          <!-- <div v-if="recipe.details.servings" class="recipe__header-pill">
             <BaseIcon class="recipe__header-pill__icon" icon="user" weight="semi-bold" />
             {{ $tc('shared.servings', recipe.details.servings) }}
-          </div>
+          </div> -->
           <BaseButton class="recipe__header-pill-button" color="primary" raised @click="openPlanRecipeModal()">
             <BaseIcon class="recipe__header-pill-button__icon" icon="clock" weight="semi-bold" />
             Zaplanuj
@@ -268,8 +268,20 @@ export default {
       return this.isRecipeHidden || this.isBlogHidden
     },
     cookingHours() {
-      if (this.recipe && this.recipe.cookingMinutes) {
-        return dayjs.duration(this.recipe.cookingMinutes, 'minutes').format('H:mm')
+      const {
+        recipe,
+        recipe: { cookingMinutes }
+      } = this
+
+      if (recipe && cookingMinutes) {
+        const duration = dayjs.duration(cookingMinutes, 'minutes')
+
+        if (cookingMinutes < 60) {
+          return duration.humanize()
+        } else if (cookingMinutes === 60) {
+          return '1 godzina'
+        }
+        return `${duration.format('H:mm')} godz.`
       }
       return null
     },
