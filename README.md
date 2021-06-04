@@ -33,6 +33,7 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 ```sh
 apk add certbot certbot-nginx
 mkdir /etc/letsencrypt
-certbot --nginx -d test.recipeit.pl -d www.test.recipeit.pl
+certbot --nginx -d recipeit.pl -d www.recipeit.pl
+certbot -d *.recipeit.pl -d recipeit.pl --manual --preferred-challenges dns certonly
 0 12 * * * /usr/bin/certbot renew --quiet
 ```
