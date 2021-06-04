@@ -27,4 +27,5 @@ pnpm-debug.log*
 .firebase
 
 .cert
+.cert.test
 .sentryclirc
