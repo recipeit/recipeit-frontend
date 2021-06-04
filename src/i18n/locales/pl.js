@@ -278,7 +278,7 @@ export default {
       Sauces: 'Sosy',
       Legumes: 'Rośliny strączkowe',
       Alcohol: 'Alkohol',
-      Soup: 'Zupy',
+      FoodAdditives: 'Dodatki spożywcze',
       Nuts: 'Orzechy',
       DairyAlternatives: 'Zamienniki nabiału',
       DessertsAndSnacks: 'Desery i przekąski',

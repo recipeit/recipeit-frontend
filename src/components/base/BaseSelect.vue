@@ -333,7 +333,9 @@ export default {
       // })
     },
     async selectOption(newValue) {
-      await this.hide()
+      if (!this.multiple) {
+        await this.hide()
+      }
 
       const { value, getKeyFromValue } = this
 

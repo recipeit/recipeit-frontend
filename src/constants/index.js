@@ -145,7 +145,7 @@ export const PRODUCT_GROUP_ICONS = {
   Sauces: 'sauces',
   Legumes: 'legumes',
   Alcohol: 'alcohol',
-  Soup: 'soup',
+  FoodAdditives: 'soup',
   Nuts: 'nuts',
   DairyAlternatives: 'dairy-alternatives',
   DessertsAndSnacks: 'dessert',
