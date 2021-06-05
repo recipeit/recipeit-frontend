@@ -150,11 +150,18 @@ export default {
         Vegetarian: 'Wegetariańska'
       },
       Allergens: {
-        Dairy: 'Nabiał',
-        Gluten: 'Gluten',
+        Milk: 'Produkty mleczne',
         Eggs: 'Jajka',
+        Soy: 'Soja',
+        Gluten: 'Gluten',
+        Crustaceans: 'Skorupiaki',
         Fishes: 'Ryby',
-        Nuts: 'Orzechy'
+        Peanuts: 'Orzechy arachidowe (ziemne)',
+        Nuts: 'Orzechy',
+        Celery: 'Seler',
+        Mustard: 'Gorczyca',
+        Sesame: 'Sezam',
+        Molluscs: 'Mięczaki'
       }
     },
     unitsShort: {

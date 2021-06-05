@@ -51,7 +51,7 @@
         </BaseLink>
 
         <div class="recipe__header">
-          <h2 class="recipe__header__title">{{ recipe.name }}</h2>
+          <h1 class="recipe__header__title">{{ recipe.name }}</h1>
           <div class="recipe__header__actions">
             <FavouriteIcon :isFavourite="isFavourite" @removed="deleteFromFavourites" @added="addToFavourites" />
           </div>
@@ -518,7 +518,7 @@ export default {
     &__title {
       margin: 0;
       font-size: 1.25rem;
-      line-height: 1.75rem;
+      line-height: 1.5rem;
 
       #{ $root }--hidden & {
         color: var(--color-text-secondary);
@@ -529,7 +529,7 @@ export default {
       display: flex;
       align-items: center;
       font-size: 24px;
-      height: 1.75rem;
+      height: 1.5rem;
 
       & {
         margin-left: 16px;
@@ -538,7 +538,7 @@ export default {
   }
 
   &__tags {
-    margin-top: 12px;
+    margin-top: 1rem;
     display: flex;
     flex-wrap: nowrap;
     overflow: auto;
@@ -582,7 +582,7 @@ export default {
   // }
 
   &__author {
-    margin-top: 4px;
+    margin-top: 0.5rem;
 
     &__name {
       font-weight: 700;
