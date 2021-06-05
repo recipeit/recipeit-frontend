@@ -152,16 +152,16 @@ export default {
       Allergens: {
         Milk: 'Produkty mleczne',
         Eggs: 'Jajka',
-        Soy: 'Soja',
         Gluten: 'Gluten',
-        Crustaceans: 'Skorupiaki',
         Fishes: 'Ryby',
-        Peanuts: 'Orzechy arachidowe (ziemne)',
+        Molluscs: 'Mięczaki',
+        Crustaceans: 'Skorupiaki',
+        Peanuts: 'Orzechy ziemne',
         Nuts: 'Orzechy',
         Celery: 'Seler',
         Mustard: 'Gorczyca',
         Sesame: 'Sezam',
-        Molluscs: 'Mięczaki'
+        Soy: 'Soja'
       }
     },
     unitsShort: {
