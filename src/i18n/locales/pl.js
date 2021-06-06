@@ -150,7 +150,7 @@ export default {
         Vegetarian: 'Wegetariańska'
       },
       Allergens: {
-        Milk: 'Produkty mleczne',
+        Milk: 'Mleko',
         Eggs: 'Jajka',
         Gluten: 'Gluten',
         Fishes: 'Ryby',
