@@ -81,26 +81,24 @@ export default {
   data: () => ({
     fetchedInitialUserProfile: false
   }),
-  created() {
-    this.$store
-      .dispatch('user/fetchUserProfile', { getInitUserData: true })
-      .then(async () => {
-        if (
-          !location.pathname.startsWith('/app') &&
-          !location.pathname.startsWith('/terms') &&
-          !location.pathname.startsWith('/privacy-policy')
-        ) {
-          await this.$router.replace({ name: APP_HOME })
-        }
-      })
-      .catch(async () => {
-        if (location.pathname.startsWith('/app')) {
-          await this.$router.replace({ name: AUTH_LOGIN })
-        }
-      })
-      .finally(() => {
-        this.fetchedInitialUserProfile = true
-      })
+  async created() {
+    try {
+      await this.$store.dispatch('user/fetchUserProfile', { getInitUserData: true })
+      if (
+        !location.pathname.startsWith('/app') &&
+        !location.pathname.startsWith('/terms') &&
+        !location.pathname.startsWith('/privacy-policy') &&
+        !location.pathname.startsWith('/add-blog')
+      ) {
+        await this.$router.replace({ name: APP_HOME })
+      }
+    } catch {
+      if (location.pathname.startsWith('/app')) {
+        await this.$router.replace({ name: AUTH_LOGIN })
+      }
+    } finally {
+      this.fetchedInitialUserProfile = true
+    }
   }
 }
 </script>

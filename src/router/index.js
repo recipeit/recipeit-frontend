@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import modalPlugin from '@/plugins/global-sheet-modal'
 import store from '@/store'
 import { USER_AUTH_STATE } from '@/store/modules/user'
-import identityApi from '@/api/identityApi'
+// import identityApi from '@/api/identityApi'
 import progressbarPlugin from '@/plugins/progressbar'
 import {
   ADD_BLOG,
@@ -32,8 +32,15 @@ import {
   TERMS
 } from './names'
 
+const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
+
 const forceIsAuthenticated = async () => {
-  const userAuthState = store.getters['user/currentUserAuthState']
+  let userAuthState = store.getters['user/currentUserAuthState']
+
+  while (userAuthState === USER_AUTH_STATE.USER_APP_INITIAL) {
+    await sleep(50)
+    userAuthState = store.getters['user/currentUserAuthState']
+  }
 
   if (userAuthState === USER_AUTH_STATE.USER_LOGGED_IN) {
     return true
@@ -44,7 +51,7 @@ const forceIsAuthenticated = async () => {
   }
 
   try {
-    await identityApi.profile()
+    await store.dispatch('user/fetchUserProfile')
     return true
   } catch {
     return false

@@ -95,23 +95,22 @@ export default {
         localStorage.setItem(THEME_STORAGE_KEY, theme)
       }
     },
-    fetchUserProfile({ commit, dispatch }, { getInitUserData }) {
-      return new Promise((resolve, reject) => {
-        identityApi
-          .profile()
-          .then(response => {
-            const { userProfile } = response.data
-            commit(MUTATIONS.SET_USER_PROFILE, userProfile)
-            commit(MUTATIONS.SET_USER_AUTH_STATE, USER_AUTH_STATE.USER_LOGGED_IN)
-            if (getInitUserData) {
-              dispatch('getInitUserData')
-            }
-            resolve()
-          })
-          .catch(error => {
-            reject(error)
-          })
-      })
+    async fetchUserProfile({ commit, dispatch }, { getInitUserData } = {}) {
+      try {
+        const {
+          data: { userProfile }
+        } = await identityApi.profile()
+
+        commit(MUTATIONS.SET_USER_PROFILE, userProfile)
+        commit(MUTATIONS.SET_USER_AUTH_STATE, USER_AUTH_STATE.USER_LOGGED_IN)
+
+        if (getInitUserData) {
+          dispatch('getInitUserData')
+        }
+      } catch (e) {
+        commit(MUTATIONS.SET_USER_AUTH_STATE, USER_AUTH_STATE.USER_LOGGED_OUT)
+        throw new Error(e)
+      }
     },
     register(_, { email, password, confirmPassword, recaptchaToken }) {
       return new Promise((resolve, reject) => {
