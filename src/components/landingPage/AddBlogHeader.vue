@@ -27,7 +27,7 @@ export default {
 
 <style lang="scss" scoped>
 .footer-auth {
-  // padding: 0 1.5rem;
+  padding: 0 2rem;
   // text-align: center;
 
   .footer-auth-header {
@@ -51,6 +51,7 @@ export default {
     position: relative;
     overflow: hidden;
     padding: 4rem 3rem;
+    max-width: calc(960px - 4rem);
     // padding-top: 4rem;
     // padding-bottom: 4rem;
   }
@@ -85,6 +86,21 @@ export default {
 
     .footer-auth-container {
       border-radius: 0;
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
+
+    .footer-auth-content {
+      margin-right: 30%;
+    }
+
+    .footer-auth-background {
+      left: 0;
+      transform: translate(35%);
+
+      :deep(img) {
+        object-position: 50% calc(50% + 32px);
+      }
     }
 
     .benefit-list {

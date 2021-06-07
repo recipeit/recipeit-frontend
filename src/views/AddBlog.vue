@@ -1,8 +1,8 @@
 <template>
   <AnonymousPage>
-    <!-- <template #header> -->
-    <AddBlogHeader />
-    <!-- </template> -->
+    <template #header>
+      <AddBlogHeader />
+    </template>
     <div class="add-blog" v-html="ADD_BLOG_HTML" />
   </AnonymousPage>
 </template>
