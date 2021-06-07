@@ -1,5 +1,6 @@
 <template>
   <AnonymousPageHeader />
+  <slot name="header" />
   <div class="page-container">
     <slot />
     <Footer class="footer" />

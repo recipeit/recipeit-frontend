@@ -1,5 +1,8 @@
 <template>
   <AnonymousPage>
+    <!-- <template #header> -->
+    <AddBlogHeader />
+    <!-- </template> -->
     <div class="add-blog" v-html="ADD_BLOG_HTML" />
   </AnonymousPage>
 </template>
@@ -7,10 +10,11 @@
 <script>
 import { useMeta } from 'vue-meta'
 import AnonymousPage from '@/layouts/AnonymousPage'
+import AddBlogHeader from '@/components/landingPage/AddBlogHeader'
 import ADD_BLOG_HTML from 'html-loader!@/assets/docs/addblog/addblog.html'
 
 export default {
-  components: { AnonymousPage },
+  components: { AnonymousPage, AddBlogHeader },
   setup() {
     useMeta({
       title: 'Dodaj blog'
