@@ -1,6 +1,7 @@
 <template>
   <div :class="classList">
-    <img :src="renderSrc" @load="onLoadHandler($event)" @error="onErrorHandler($event)" />
+    <img :src="renderSrc" class="image" @load="onLoadHandler($event)" @error="onErrorHandler($event)" />
+    <img v-if="blurredBackground" class="blurred-background" :src="renderSrc" />
   </div>
 </template>
 
@@ -12,12 +13,18 @@ export default {
       type: String,
       required: true
     },
-    errorPlaceholder: String,
+    errorPlaceholder: {
+      type: String
+    },
     intersectionOptions: {
       type: Object,
       default: () => ({
         rootMargin: `0px 0px 100px 0px`
       })
+    },
+    blurredBackground: {
+      type: Boolean,
+      default: false
     }
   },
   data: () => ({
@@ -45,7 +52,8 @@ export default {
       return {
         'base-image-lazyload': true,
         'base-image-lazyload--loaded': this.loaded,
-        'base-image-lazyload--error': this.error
+        'base-image-lazyload--error': this.error,
+        'base-image-lazyload--with-blurred-background': this.blurredBackground
       }
     }
   },
@@ -67,15 +75,38 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$blurred-background-distance: -16px;
+
 .base-image-lazyload {
-  img {
+  &.base-image-lazyload--with-blurred-background {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .image {
+    opacity: 0;
+    @include transition(opacity);
+  }
+
+  .blurred-background {
+    display: none;
+    filter: blur(8px);
+    position: absolute;
+    top: $blurred-background-distance;
+    left: $blurred-background-distance;
+    right: $blurred-background-distance;
+    bottom: $blurred-background-distance;
+    width: calc(100% - #{2 * $blurred-background-distance});
+    height: calc(100% - #{2 * $blurred-background-distance});
+    z-index: -1;
     opacity: 0;
     @include transition(opacity);
   }
 
   &--loaded,
   &--error {
-    & img {
+    .image,
+    .blurred-background {
       opacity: 1;
     }
   }

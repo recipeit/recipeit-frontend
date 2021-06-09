@@ -59,7 +59,7 @@ export default {
     bottom: 0;
     z-index: 0;
 
-    ::v-deep(img) {
+    :deep(.image) {
       object-fit: cover;
       height: 100%;
       width: 100%;

@@ -47,7 +47,7 @@ export default {
     overflow: hidden;
     background-color: var(--color-image-background);
 
-    ::v-deep(img) {
+    :deep(.image) {
       object-fit: cover;
       height: 100%;
       width: 100%;

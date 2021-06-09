@@ -92,7 +92,7 @@ export default {
   text-decoration: none;
   color: inherit;
 
-  &:hover &__image-container__image ::v-deep(img) {
+  &:hover &__image-container__image :deep(.image) {
     transform: scale(1.1);
   }
 
@@ -110,7 +110,7 @@ export default {
       padding-bottom: 100%;
       background-color: var(--color-image-background);
 
-      ::v-deep(img) {
+      :deep(.image) {
         top: 0;
         left: 0;
         position: absolute;

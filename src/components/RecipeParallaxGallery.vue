@@ -23,7 +23,14 @@
       @touchend="isTouching = false"
       @touchcancel="isTouching = false"
     >
-      <BaseImageLazyload class="gallery-image" v-for="(image, index) in images" :key="index" :src="image.src" :ref="setImageRef" />
+      <BaseImageLazyload
+        class="gallery-image"
+        v-for="(image, index) in images"
+        :key="index"
+        :src="image.src"
+        :ref="setImageRef"
+        :blurredBackground="true"
+      />
     </div>
   </div>
 </template>
@@ -36,6 +43,10 @@ export default {
     images: {
       type: Array,
       required: true
+    },
+    firstImagePosition: {
+      type: String,
+      default: 'center'
     }
   },
   data() {
@@ -157,15 +168,17 @@ export default {
       position: absolute;
       top: 50%;
       z-index: 10;
-      height: 3rem;
+      height: 2.5rem;
       width: 2.5rem;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 2.5rem;
+      font-size: 1.5rem;
       transform: translateY(-25%);
-      opacity: 0.5;
-      background: transparent;
+      opacity: 0.75;
+      background-color: rgba(var(--color-background-rgb), 0.25);
+      color: var(--color-text-primary);
+      border-radius: 48px;
       border: none;
       @include transition(opacity);
 
@@ -197,6 +210,7 @@ export default {
     z-index: 1;
     left: 50%;
     transform: translateX(-50%);
+    text-align: center;
   }
 
   .gallery-indicator {
@@ -253,10 +267,23 @@ export default {
     height: 100%;
     scroll-snap-stop: always;
 
-    ::v-deep(img) {
+    :deep(.image) {
       object-fit: cover;
       width: 100%;
       height: 100%;
+    }
+
+    @media (min-width: 721px) {
+      :deep(.image) {
+        object-fit: contain;
+      }
+
+      :deep(.blurred-background) {
+        display: block;
+        object-fit: cover;
+        // width: 100%;
+        // height: 100%;
+      }
     }
   }
 }

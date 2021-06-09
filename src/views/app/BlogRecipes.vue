@@ -242,7 +242,7 @@ export default {
   }
 
   &-avatar {
-    ::v-deep(img) {
+    :deep(.image) {
       height: 100%;
       width: 100%;
       object-fit: cover;
