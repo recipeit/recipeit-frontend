@@ -101,9 +101,9 @@ export default {
 
     const ingredients = computed(() => {
       return Object.fromEntries(
-        Object.keys(props.ingredientGroups).map(key => [
+        Object.entries(props.ingredientGroups).map(([key, value]) => [
           key,
-          props.ingredientGroups[key].map(ingredient => {
+          value.map(ingredient => {
             const { baseProductIdsArray } = ingredient
             let state
 
@@ -129,8 +129,8 @@ export default {
     const canAddAnythingToShoppingList = computed(() => {
       if (!ingredients.value) return false
 
-      return Object.keys(ingredients.value)
-        .flatMap(key => ingredients.value[key].map(i => i.state))
+      return Object.values(ingredients.value)
+        .flatMap(value => value.map(i => i.state))
         .includes('UNAVAILABLE')
     })
 

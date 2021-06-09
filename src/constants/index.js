@@ -103,9 +103,9 @@ export class RecipeList {
 export function parseFilters(filters) {
   let renamedFilters = {}
   if (typeof filters === 'object' && filters !== null) {
-    Object.keys(filters).forEach(group => {
-      if (filters[group] && filters[group].length > 0) {
-        renamedFilters[`filters.${group.toLowerCase()}`] = filters[group].join(',')
+    Object.entries(filters).forEach(([group, value]) => {
+      if (value && value.length > 0) {
+        renamedFilters[`filters.${group.toLowerCase()}`] = value.join(',')
       }
     })
   }
@@ -121,9 +121,9 @@ export function fetchRecipesQueryParams(orderMethod, filters, search) {
   }
 
   return Object.fromEntries(
-    Object.keys(paramsWithNullItems)
-      .filter(key => paramsWithNullItems[key] !== null)
-      .map(key => [key, paramsWithNullItems[key]])
+    Object.entries(paramsWithNullItems)
+      .filter(([, value]) => value !== null)
+      .map(([key]) => [key, paramsWithNullItems[key]])
   )
 }
 

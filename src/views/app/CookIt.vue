@@ -223,9 +223,7 @@ export default {
 
       if (query) {
         const queryParams = Object.fromEntries(
-          Object.keys(query)
-            .filter(key => key === 'search' || key === 'orderMethod' || key.startsWith('filters.'))
-            .map(key => [key, query[key]])
+          Object.entries(query).filter(([key]) => key === 'search' || key === 'orderMethod' || key.startsWith('filters.'))
         )
         fetchBothRecipesWithQuery(queryParams)
       } else {
