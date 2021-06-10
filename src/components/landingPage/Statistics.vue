@@ -190,12 +190,12 @@ export default {
     }
   }
 
-  &::after {
-    content: '';
-    display: block;
-    width: 20px;
-    height: 20px;
-    min-width: max(var(--half-width) - 480px - 2rem, 0.1px);
-  }
+  // &::after {
+  //   content: '';
+  //   display: block;
+  //   width: 20px;
+  //   height: 20px;
+  //   min-width: max(var(--half-width) - 480px - 2rem, 0.1px);
+  // }
 }
 </style>
