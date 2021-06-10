@@ -17,12 +17,12 @@ export default {
       const existedInstance = googleApi.auth2?.getAuthInstance()
       if (existedInstance) {
         resolve(existedInstance)
+      } else {
+        googleApi.load('auth2', () => {
+          googleApi.auth2.init(GOOGLE_AUTH_INIT_PARAMS)
+          resolve(googleApi.auth2.getAuthInstance())
+        })
       }
-
-      googleApi.load('auth2', () => {
-        googleApi.auth2.init(GOOGLE_AUTH_INIT_PARAMS)
-        resolve(googleApi.auth2.getAuthInstance())
-      })
     })
   },
 
