@@ -126,7 +126,7 @@
           </BaseLink>
         </div>
 
-        <!-- <BaseAdSenseAd /> -->
+        <BaseAdSenseAd />
       </div>
     </div>
     <div v-else>
