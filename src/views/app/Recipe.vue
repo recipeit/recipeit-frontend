@@ -152,6 +152,7 @@ import PlanRecipeModal from '@/components/modals/PlanRecipeModal'
 import InvisibleRecipeInfoModal from '@/components/modals/InvisibleRecipeInfoModal'
 import { parseFilters } from '@/constants'
 import { useMeta } from 'vue-meta'
+import { ERROR_ACTION_TAG_NAME } from '@/configs/error'
 
 export default {
   name: 'Recipe',
@@ -181,9 +182,16 @@ export default {
       finishedDirections: store.getters['recipes/getFinishedDirectionsForRecipe'](props.recipeId) || []
     })
 
-    store.dispatch('recipes/fetchDetailedRecipe', props.recipeId).then(rd => {
-      data.recipe = rd
-    })
+    store
+      .dispatch('recipes/fetchDetailedRecipe', props.recipeId)
+      .then(rd => {
+        data.recipe = rd
+      })
+      .catch(error => {
+        this.$errorHandler.captureError(error, {
+          [ERROR_ACTION_TAG_NAME]: 'recipe.fetchDetailedRecipe'
+        })
+      })
 
     const computedMeta = computed(() => {
       const title = data.recipe?.name || props.recipeName
@@ -198,16 +206,19 @@ export default {
   },
   data: component => ({
     fetchedData: false,
-    // recipe: null,
     finishedDirections: component.$store.getters['recipes/getFinishedDirectionsForRecipe'](component.recipeId) || []
   }),
   created() {
-    // this.$store.dispatch('recipes/fetchDetailedRecipe', this.recipeId).then(rd => {
-    //   this.recipe = rd
-    //   this.servings = rd.details.servings
-    // })
-    this.$store.dispatch('myKitchen/fetchProducts')
-    this.$store.dispatch('shoppingList/fetchProducts')
+    this.$store.dispatch('myKitchen/fetchProducts').catch(error => {
+      this.$errorHandler.captureError(error, {
+        [ERROR_ACTION_TAG_NAME]: 'recipe.fetchKitchenProducts'
+      })
+    })
+    this.$store.dispatch('shoppingList/fetchProducts').catch(error => {
+      this.$errorHandler.captureError(error, {
+        [ERROR_ACTION_TAG_NAME]: 'recipe.fetchShoppingListProducts'
+      })
+    })
   },
   methods: {
     navigateToRecipesWithCategoryFilter({ key, categoryGroup }) {

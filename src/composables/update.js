@@ -28,7 +28,7 @@ export default function() {
   document.addEventListener('swUpdated', updateAvailable, { once: true })
 
   // Prevent multiple refreshes
-  navigator.serviceWorker.addEventListener('controllerchange', () => {
+  navigator.serviceWorker?.addEventListener('controllerchange', () => {
     if (data.refreshing) return
     data.refreshing = true
     // Here the actual reload of the page occurs
