@@ -130,7 +130,6 @@ export default {
     //   }
     // },
     checkGalleryStoppedInMiddle() {
-      console.log('CHECK')
       if (!this.isTouching) {
         this.scrollTo(this.calculateCurrentIndex())
       }

@@ -9,8 +9,8 @@
     "db": "json-server --watch db.json"
   },
   "dependencies": {
-    "@sentry/browser": "^6.5.0",
-    "@sentry/tracing": "^6.5.0",
+    "@sentry/browser": "^6.7.1",
+    "@sentry/tracing": "^6.7.1",
     "@sentry/vue": "^6.5.0",
     "@vee-validate/rules": "^4.1.20",
     "axios": "^0.21.1",
@@ -29,7 +29,7 @@
     "yup": "^0.32.9"
   },
   "devDependencies": {
-    "@sentry/cli": "^1.65.0",
+    "@sentry/cli": "^1.66.0",
     "@sentry/webpack-plugin": "^1.15.1",
     "@vue/cli-plugin-babel": "^4.5.12",
     "@vue/cli-plugin-eslint": "^4.5.12",
