@@ -11,7 +11,7 @@
   "dependencies": {
     "@sentry/browser": "^6.7.1",
     "@sentry/tracing": "^6.7.1",
-    "@sentry/vue": "^6.5.0",
+    "@sentry/vue": "^6.7.1",
     "@vee-validate/rules": "^4.1.20",
     "axios": "^0.21.1",
     "core-js": "^3.11.1",
@@ -42,7 +42,6 @@
     "babel-eslint": "^10.1.0",
     "chokidar": "^3.5.1",
     "colors": "^1.4.0",
-    "dotenv": "^10.0.0",
     "eslint": "^6.7.2",
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-vue": "^7.9.0",
