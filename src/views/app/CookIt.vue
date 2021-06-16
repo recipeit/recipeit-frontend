@@ -108,6 +108,7 @@ import userApi from '@/api/userApi'
 import HorizontalRecipesList from '@/components/HorizontalRecipesList'
 import SectionTitle from '@/components/SectionTitle'
 import { useMeta } from 'vue-meta'
+import { ERROR_ACTION_TAG_NAME } from '@/configs/error'
 
 export default {
   name: 'CookIt',
@@ -153,12 +154,15 @@ export default {
         .then(({ data }) => {
           recipes.value.addFromApi(data)
         })
-        .catch(() => {
+        .catch(error => {
           recipes.value.fetching = false
           recipesErrors.value = {
             messageId: 'ERORR',
             from: 'LOAD-NEXT'
           }
+          this.$errorHandler.captureError(error, {
+            [ERROR_ACTION_TAG_NAME]: 'cookIt.fetchNextRecipes'
+          })
         })
     }
 
@@ -183,13 +187,16 @@ export default {
           const queryParams = fetchRecipesQueryParams(data.orderMethod, data.filters, data.search)
           router.replace({ query: queryParams })
         })
-        .catch(() => {
+        .catch(error => {
           recipes.value.fetching = false
           recipesErrors.value = {
             messageId: 'ERORR',
             from: 'RELOAD',
             query: queryParams
           }
+          this.$errorHandler.captureError(error, {
+            [ERROR_ACTION_TAG_NAME]: 'cookIt.fetchAvailableRecipesWithQuery'
+          })
         })
     }
 
@@ -203,13 +210,16 @@ export default {
         .then(resp => {
           almostAvailableRecipes.value.setFromApi(resp.data)
         })
-        .catch(() => {
+        .catch(error => {
           almostAvailableRecipes.value.fetching = false
           almostAvailableRecipesErrors.value = {
             messageId: 'ERORR',
             from: 'RELOAD',
             query: queryParams
           }
+          this.$errorHandler.captureError(error, {
+            [ERROR_ACTION_TAG_NAME]: 'cookIt.fetchAlmostAvailableRecipesWithQuery'
+          })
         })
     }
 

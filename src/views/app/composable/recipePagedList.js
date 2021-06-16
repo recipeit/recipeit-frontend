@@ -1,3 +1,4 @@
+import { ERROR_ACTION_TAG_NAME } from '@/configs/error'
 import { RecipeList } from '@/constants'
 import { onBeforeMount, ref } from '@vue/runtime-core'
 
@@ -26,12 +27,15 @@ export default function(apiEndpoint) {
       .then(({ data }) => {
         recipes.value.addFromApi(data)
       })
-      .catch(() => {
+      .catch(error => {
         recipes.value.fetching = false
         recipesErrors.value = {
           messageId: 'ERORR',
           from: 'LOAD-NEXT'
         }
+        this.$errorHandler.captureError(error, {
+          [ERROR_ACTION_TAG_NAME]: 'recipePagedList.fetchNextRecipes'
+        })
       })
   }
 
@@ -50,13 +54,16 @@ export default function(apiEndpoint) {
       .then(({ data }) => {
         recipes.value.setFromApi(data)
       })
-      .catch(() => {
+      .catch(error => {
         recipes.value.fetching = false
         recipesErrors.value = {
           messageId: 'ERORR',
           from: 'RELOAD',
           query: null
         }
+        this.$errorHandler.captureError(error, {
+          [ERROR_ACTION_TAG_NAME]: 'recipePagedList.fetchRecipesWithQuery'
+        })
       })
   }
 

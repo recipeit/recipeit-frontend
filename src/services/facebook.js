@@ -28,7 +28,7 @@ export default {
         if (authResponse?.accessToken) {
           resolve(authResponse.accessToken)
         } else {
-          reject()
+          reject(new Error('error during Facebook login'))
         }
       }, FACEBOOK_LOGIN_PARAMS)
     })

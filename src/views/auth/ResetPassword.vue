@@ -59,6 +59,7 @@ import { confirmNewPasswordSchema, newPasswordSchema } from '@/configs/schemas'
 import recaptcha from '@/services/recaptcha'
 import { RECAPTCHA_ACTIONS } from '@/configs/recaptcha'
 import Spinner from '@/components/Spinner'
+import { ERROR_ACTION_TAG_NAME } from '@/configs/error'
 
 export default {
   components: {
@@ -114,12 +115,18 @@ export default {
                 this.state = 'ERROR'
               }
             })
-            .catch(() => {
+            .catch(error => {
               this.state = 'ERROR'
+              this.$errorHandler.captureError(error, {
+                [ERROR_ACTION_TAG_NAME]: 'auth.resetPassword'
+              })
             })
         })
-        .catch(() => {
+        .catch(error => {
           this.state = 'ERROR'
+          this.$errorHandler.captureError(error, {
+            [ERROR_ACTION_TAG_NAME]: 'auth.resetPassword.recaptcha'
+          })
         })
     }
   }

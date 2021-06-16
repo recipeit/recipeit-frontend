@@ -41,7 +41,7 @@ export default {
           resolve(idToken)
         })
         .catch(() => {
-          reject()
+          reject(new Error('error during Google login'))
         })
     })
   }

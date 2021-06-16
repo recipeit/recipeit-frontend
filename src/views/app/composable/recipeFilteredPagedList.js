@@ -1,3 +1,4 @@
+import { ERROR_ACTION_TAG_NAME } from '@/configs/error'
 import { fetchRecipesQueryParams, RecipeList } from '@/constants'
 import { onBeforeMount, ref } from '@vue/runtime-core'
 import { useRoute, useRouter } from 'vue-router'
@@ -37,12 +38,15 @@ export default function(apiEndpoint) {
       .then(({ data }) => {
         recipes.value.addFromApi(data)
       })
-      .catch(() => {
+      .catch(error => {
         recipes.value.fetching = false
         recipesErrors.value = {
           messageId: 'ERORR',
           from: 'LOAD-NEXT'
         }
+        this.$errorHandler.captureError(error, {
+          [ERROR_ACTION_TAG_NAME]: 'recipeFilteredPagedList.fetchNextRecipes'
+        })
       })
   }
 
@@ -66,13 +70,16 @@ export default function(apiEndpoint) {
         const queryParams = fetchRecipesQueryParams(data.orderMethod, data.filters, data.search)
         router.replace({ query: queryParams })
       })
-      .catch(() => {
+      .catch(error => {
         recipes.value.fetching = false
         recipesErrors.value = {
           messageId: 'ERORR',
           from: 'RELOAD',
           query: queryParams
         }
+        this.$errorHandler.captureError(error, {
+          [ERROR_ACTION_TAG_NAME]: 'recipeFilteredPagedList.fetchRecipesWithQuery'
+        })
       })
   }
 

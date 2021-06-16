@@ -59,6 +59,7 @@ import RecaptchaBranding from '@/components/RecaptchaBranding'
 import recaptcha from '@/services/recaptcha'
 import { RECAPTCHA_ACTIONS } from '@/configs/recaptcha'
 import { useMeta } from 'vue-meta'
+import { ERROR_ACTION_TAG_NAME } from '@/configs/error'
 
 export default {
   components: {
@@ -98,13 +99,19 @@ export default {
             .dispatch('user/login', { ...values, recaptchaToken })
             .catch(errors => {
               this.errors = errors
+              this.$errorHandler.captureError(errors, {
+                [ERROR_ACTION_TAG_NAME]: 'auth.login'
+              })
             })
             .finally(() => {
               this.sending = false
             })
         })
-        .catch(() => {
+        .catch(error => {
           this.sending = false
+          this.$errorHandler.captureError(error, {
+            [ERROR_ACTION_TAG_NAME]: 'auth.login.recaptcha'
+          })
         })
     },
     goToRequestPasswordReset(email) {

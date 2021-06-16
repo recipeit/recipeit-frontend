@@ -61,6 +61,7 @@ import recaptcha from '@/services/recaptcha'
 import { RECAPTCHA_ACTIONS } from '@/configs/recaptcha'
 import RecaptchaBranding from '@/components/RecaptchaBranding'
 import { useMeta } from 'vue-meta'
+import { ERROR_ACTION_TAG_NAME } from '@/configs/error'
 
 export default {
   components: {
@@ -95,7 +96,7 @@ export default {
     this.state = 'BEFORE'
   },
   methods: {
-    requestPasswordReset({ email }) {
+    async requestPasswordReset({ email }) {
       this.state = 'SENDING'
 
       recaptcha
@@ -109,12 +110,18 @@ export default {
             .then(() => {
               this.state = 'SUCCESS'
             })
-            .catch(() => {
+            .catch(error => {
               this.state = 'ERROR'
+              this.$errorHandler.captureError(error, {
+                [ERROR_ACTION_TAG_NAME]: 'auth.requestPasswordReset'
+              })
             })
         })
-        .catch(() => {
+        .catch(error => {
           this.state = 'ERROR'
+          this.$errorHandler.captureError(error, {
+            [ERROR_ACTION_TAG_NAME]: 'auth.requestPasswordReset.recaptcha'
+          })
         })
     }
   }

@@ -49,6 +49,7 @@ import { RECAPTCHA_ACTIONS } from '@/configs/recaptcha'
 import { reactive, toRefs } from '@vue/reactivity'
 import { useRouter } from 'vue-router'
 import { AUTH_LOGIN } from '@/router/names'
+import { ERROR_ACTION_TAG_NAME } from '@/configs/error'
 
 export default {
   props: {
@@ -79,11 +80,17 @@ export default {
         try {
           await identityApi.sendConfirmationEmail({ email: props.email, recaptchaToken })
           data.secondEmailSent = true
-        } catch (err) {
-          data.errors = err?.response?.data?.errors
+        } catch (error) {
+          data.errors = error?.response?.data?.errors
+          this.$errorHandler.captureError(error, {
+            [ERROR_ACTION_TAG_NAME]: 'auth.registerSuccess.sendingSecondConfirmationEmail'
+          })
         }
-      } catch (e) {
+      } catch (error) {
         data.errors = ['ERROR']
+        this.$errorHandler.captureError(error, {
+          [ERROR_ACTION_TAG_NAME]: 'auth.registerSuccess.sendingSecondConfirmationEmail.recaptcha'
+        })
       } finally {
         data.sendingSecondEmail = false
       }

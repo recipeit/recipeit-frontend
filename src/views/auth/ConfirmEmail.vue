@@ -35,6 +35,7 @@
 <script>
 import identityApi from '@/api/identityApi'
 import Spinner from '@/components/Spinner'
+import { ERROR_ACTION_TAG_NAME } from '@/configs/error'
 
 export default {
   components: { Spinner },
@@ -58,11 +59,17 @@ export default {
             this.state = 'ERROR'
           }
         })
-        .catch(() => {
+        .catch(error => {
           this.state = 'ERROR'
+          this.$errorHandler.captureError(error, {
+            [ERROR_ACTION_TAG_NAME]: 'auth.confirmEmail'
+          })
         })
     } else {
       this.state = 'ERROR'
+      this.$errorHandler.captureError(new Error('missing email or token'), {
+        [ERROR_ACTION_TAG_NAME]: 'auth.confirmEmail.missingData'
+      })
     }
   }
 }
