@@ -14,8 +14,8 @@
 
     <template v-if="recipesList.recipes.value.items">
       <Grid class="grid" :length="recipesList.recipes.value.totalCount" :pageSize="12" :pageProvider="pageProvider">
-        <template v-slot:default="{ item, style }">
-          <RecipeBox :style="style" :key="item.id" :recipeId="item.id" :recipeName="item.name" :recipeRating="item.rating" />
+        <template v-slot:default="{ item: { id, name, rating }, style }">
+          <RecipeBox :style="style" :recipeId="id" :recipeName="name" :recipeRating="rating" />
         </template>
 
         <template v-slot:placeholder="{ style }">

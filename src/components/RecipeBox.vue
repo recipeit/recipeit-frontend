@@ -1,39 +1,37 @@
 <template>
-  <router-link :to="{ name: APP_RECIPE, params: { recipeId, recipeName } }" v-slot="{ href, navigate }" custom>
-    <a :href="href" @click="navigate($event)" class="recipe-box" :style="style">
-      <div class="recipe-box__image-container">
-        <div class="recipe-box__image-container__image">
-          <BaseImageLazyload :src="imageUrl" :alt="recipeName" />
-        </div>
+  <router-link class="recipe-box" :to="{ name: APP_RECIPE, params: { recipeId, recipeName } }">
+    <div class="recipe-box__image-container">
+      <div class="recipe-box__image-container__image">
+        <BaseImageLazyload :src="imageUrl" :alt="recipeName" />
+      </div>
 
-        <div v-if="showRecipeProps" class="recipe-box__props2">
-          <Rating v-if="recipeRating > 0" class="prop-rating" :value="recipeRating" />
-          <FavouriteIcon
-            class="prop-favourite"
-            :isFavourite="isFavourite"
-            @removed="deleteFromFavourites"
-            @added="addToFavourites"
-            @click.prevent
-            color="text-primary"
-          />
-        </div>
+      <div v-if="showRecipeProps" class="recipe-box__props2">
+        <!-- <Rating v-if="recipeRating > 0" class="prop-rating" :value="recipeRating" /> -->
+        <FavouriteIcon
+          class="prop-favourite"
+          :isFavourite="isFavourite"
+          @removed="deleteFromFavourites"
+          @added="addToFavourites"
+          @click.prevent
+          color="text-primary"
+        />
       </div>
-      <div class="recipe-box__name">
-        {{ recipeName }}
-      </div>
-    </a>
+    </div>
+    <div class="recipe-box__name">
+      {{ recipeName }}
+    </div>
   </router-link>
 </template>
 
 <script>
 import { mapState } from 'vuex'
-import Rating from '@/components/Rating'
+// import Rating from '@/components/Rating'
 import FavouriteIcon from '@/components/FavouriteIcon'
 import { APP_RECIPE } from '@/router/names'
 
 export default {
   components: {
-    Rating,
+    // Rating,
     FavouriteIcon
   },
   props: {
@@ -51,9 +49,6 @@ export default {
     showRecipeProps: {
       type: Boolean,
       default: true
-    },
-    style: {
-      type: [Object, String]
     }
   },
   setup() {

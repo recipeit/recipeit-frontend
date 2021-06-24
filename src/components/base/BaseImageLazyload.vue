@@ -70,6 +70,10 @@ export default {
 
       this.observer.observe(this.$el)
     }
+  },
+  beforeUnmount() {
+    this.observer.disconnect()
+    this.observer = null
   }
 }
 </script>
