@@ -1,6 +1,6 @@
 <template>
   <div :class="classList">
-    <img :src="renderSrc" class="image" @load="onLoadHandler($event)" @error="onErrorHandler($event)" />
+    <img v-if="visible" :src="renderSrc" class="image" @load.passive="onLoadHandler($event)" @error.passive="onErrorHandler($event)" />
     <img v-if="blurredBackground" class="blurred-background" :src="renderSrc" />
   </div>
 </template>
@@ -31,23 +31,43 @@ export default {
     observer: null,
     loaded: false,
     error: false,
-    renderSrc: null
+    visible: false
   }),
   methods: {
-    load() {
-      this.renderSrc = this.src
-    },
     onLoadHandler(event) {
       this.loaded = true
       this.$emit('load', event)
     },
     onErrorHandler(event) {
       this.error = true
-      this.renderSrc = this.src
       this.$emit('error', event)
+    },
+    reset() {
+      this.observer.disconnect()
+      this.observer = null
+      this.visible = false
+      this.loaded = false
+      this.error = false
+    },
+    init() {
+      if ('IntersectionObserver' in window) {
+        this.observer = new IntersectionObserver(entries => {
+          const image = entries[0]
+
+          if (image.isIntersecting) {
+            this.visible = true
+            this.observer.disconnect()
+          }
+        }, this.intersectionOptions)
+
+        this.observer.observe(this.$el)
+      }
     }
   },
   computed: {
+    renderSrc() {
+      return this.visible ? this.src : null
+    },
     classList() {
       return {
         'base-image-lazyload': true,
@@ -58,22 +78,19 @@ export default {
     }
   },
   mounted() {
-    if ('IntersectionObserver' in window) {
-      this.observer = new IntersectionObserver(entries => {
-        const image = entries[0]
-
-        if (image.isIntersecting) {
-          this.load()
-          this.observer.disconnect()
-        }
-      }, this.intersectionOptions)
-
-      this.observer.observe(this.$el)
-    }
+    this.init()
   },
   beforeUnmount() {
-    this.observer.disconnect()
-    this.observer = null
+    this.reset()
+  },
+  watch: {
+    src(newValue, oldValue) {
+      if (newValue && oldValue) {
+        console.log('src zmieniam')
+        this.reset()
+        this.init()
+      }
+    }
   }
 }
 </script>
