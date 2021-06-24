@@ -19,7 +19,7 @@ export default {
     intersectionOptions: {
       type: Object,
       default: () => ({
-        rootMargin: `0px 0px 100px 0px`
+        rootMargin: `100px`
       })
     },
     blurredBackground: {

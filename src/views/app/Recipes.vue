@@ -80,7 +80,11 @@ export default {
 
 .grid {
   display: grid;
-  grid-gap: 16px;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 1rem;
+
+  @media (min-width: 721px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 </style>
