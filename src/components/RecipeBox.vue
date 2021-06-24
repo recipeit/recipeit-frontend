@@ -1,6 +1,6 @@
 <template>
   <router-link :to="{ name: APP_RECIPE, params: { recipeId, recipeName } }" v-slot="{ href, navigate }" custom>
-    <a :href="href" @click="navigate($event)" class="recipe-box">
+    <a :href="href" @click="navigate($event)" class="recipe-box" :style="style">
       <div class="recipe-box__image-container">
         <div class="recipe-box__image-container__image">
           <BaseImageLazyload :src="imageUrl" :alt="recipeName" />
@@ -51,6 +51,9 @@ export default {
     showRecipeProps: {
       type: Boolean,
       default: true
+    },
+    style: {
+      type: [Object, String]
     }
   },
   setup() {
@@ -91,6 +94,7 @@ export default {
   // max-width: 192px;
   text-decoration: none;
   color: inherit;
+  cursor: pointer;
 
   &:hover &__image-container__image :deep(.image) {
     transform: scale(1.1);

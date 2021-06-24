@@ -14,6 +14,11 @@ export default function(apiEndpoint) {
     fetchNextRecipes(orderMethod, filters, search)
   }
 
+  const loadRecipesPage = async page => {
+    const { orderMethod, filters, search } = recipes.value
+    return await fetchRecipesPage(orderMethod, filters, search, page)
+  }
+
   const reloadRecipes = ({ orderMethod, filters, search }) => {
     fetchRecipes(orderMethod, filters, search)
   }
@@ -48,6 +53,34 @@ export default function(apiEndpoint) {
           [ERROR_ACTION_TAG_NAME]: 'recipeFilteredPagedList.fetchNextRecipes'
         })
       })
+  }
+
+  const fetchRecipesPage = async (orderMethod, filters, search, page) => {
+    // if (recipes.value.fetching) return
+    // recipes.value.fetching = true
+    // recipesErrors.value = null
+
+    const queryParams = fetchRecipesQueryParams(orderMethod, filters, search)
+
+    const query = {
+      ...queryParams,
+      pageNumber: page
+    }
+
+    try {
+      const { data } = await apiEndpoint(query)
+      // recipes.value.addFromApi(data)
+      return data.items
+    } catch (error) {
+      // recipes.value.fetching = false
+      // recipesErrors.value = {
+      //   messageId: 'ERORR',
+      //   from: 'LOAD-NEXT'
+      // }
+      // this.$errorHandler.captureError(error, {
+      //   [ERROR_ACTION_TAG_NAME]: 'recipeFilteredPagedList.fetchNextRecipes'
+      // })
+    }
   }
 
   const fetchRecipes = (orderMethod, filters, search) => {
@@ -97,6 +130,7 @@ export default function(apiEndpoint) {
   })
 
   return {
+    loadRecipesPage,
     loadNextRecipes,
     reloadRecipes,
     reloadRecipesWithQuery,

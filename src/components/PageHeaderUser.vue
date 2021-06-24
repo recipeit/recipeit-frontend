@@ -67,8 +67,8 @@ export default {
       height: 100%;
       align-items: center;
       justify-content: center;
-      font-size: 1.25rem;
-      color: var(--color-text-secondary);
+      font-size: 1rem;
+      color: var(--color-text-primary);
     }
   }
 }
