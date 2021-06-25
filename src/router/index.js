@@ -31,6 +31,8 @@ import {
   PRIVACY_POLICY,
   TERMS
 } from './names'
+// import eventHub from './eventHub'
+// import { nextTick } from 'vue'
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
 
@@ -127,21 +129,33 @@ const routes = [
       {
         path: 'recipes',
         name: APP_RECIPES,
+        meta: {
+          preventScroll: true
+        },
         component: () => import(/* webpackChunkName: "recipes" */ '@/views/app/Recipes.vue')
       },
       {
         path: 'favourites',
         name: APP_FAVOURITES,
+        meta: {
+          preventScroll: true
+        },
         component: () => import(/* webpackChunkName: "favourites" */ '@/views/app/Favourites.vue')
       },
       {
         path: 'cook-it',
         name: APP_COOK_IT,
+        meta: {
+          preventScroll: true
+        },
         component: () => import(/* webpackChunkName: "cook-it" */ '@/views/app/CookIt.vue')
       },
       {
         path: 'cook-it/almost-available',
         name: APP_ALMOST_AVAILABLE,
+        meta: {
+          preventScroll: true
+        },
         component: () => import(/* webpackChunkName: "cook-it" */ '@/views/app/cook-it/AlmostAvailableRecipes.vue')
       },
       {
@@ -168,11 +182,17 @@ const routes = [
       {
         path: 'hidden-blogs',
         name: APP_HIDDEN_BLOGS,
+        meta: {
+          preventScroll: true
+        },
         component: () => import(/* webpackChunkName: "account" */ '@/views/app/account/HiddenBlogs.vue')
       },
       {
         path: 'hidden-recipes',
         name: APP_HIDDEN_RECIPES,
+        meta: {
+          preventScroll: true
+        },
         component: () => import(/* webpackChunkName: "account" */ '@/views/app/account/HiddenRecipes.vue')
       },
       {
@@ -225,11 +245,27 @@ const routes = [
   }
 ]
 
+// if ('scrollRestoration' in window.history) {
+//   window.history.scrollRestoration = 'manual'
+// }
+
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
-  scrollBehavior() {
-    return { top: 0, behavior: 'smooth' }
+  // scrollBehavior: (to, from, savedPosition) =>
+  //   new Promise(resolve => {
+  //     const position = to.matched.some(m => m.meta.preventScroll) ? savedPosition : { x: 0, y: 0 }
+
+  //     eventHub.$once('triggerScroll', async () => {
+  //       await nextTick()
+  //       resolve(position)
+  //     })
+  //   })
+  scrollBehavior: () => {
+    return {
+      x: 0,
+      y: 0
+    }
   }
 })
 

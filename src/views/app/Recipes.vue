@@ -1,18 +1,18 @@
 <template>
-  <div class="layout__page__content">
+  <div class="layout__page__content" :style="initialStyle">
     <PageHeader :title="$t('recipes.title')" />
-    <!-- <GenericRecipesList
+    <GenericRecipesList
       :recipes="recipesList.recipes.value"
       :errors="recipesList.recipesErrors.value"
       @load-next="recipesList.loadNextRecipes()"
       @reload="recipesList.reloadRecipes($event)"
       @reload-with-query="recipesList.reloadRecipesWithQuery($event)"
-    /> -->
+    />
     <!-- <li class="recipes-list__list__item recipes-list__list__item--skeleton">
       <SkeletonRecipeBox />
     </li> -->
 
-    <template v-if="recipesList.recipes.value.items">
+    <!-- <template v-if="recipesList.recipes.value.items">
       <Grid class="grid" :length="recipesList.recipes.value.totalCount" :pageSize="12" :pageProvider="pageProvider">
         <template v-slot:default="{ item: { id, name, rating }, style }">
           <RecipeBox :style="style" :recipeId="id" :recipeName="name" :recipeRating="rating" />
@@ -26,28 +26,35 @@
           <SkeletonRecipeBox />
         </template>
       </Grid>
-    </template>
+    </template> -->
+    <!-- <div style="height: 6000px"></div> -->
   </div>
 </template>
 
 <script>
 import recipeApi from '@/api/recipeApi'
-// import GenericRecipesList from '@/components/GenericRecipesList'
+import GenericRecipesList from '@/components/GenericRecipesList'
 import PageHeader from '@/components/PageHeader'
 import recipeFilteredPagedList from './composable/recipeFilteredPagedList'
 import { useMeta } from 'vue-meta'
-import Grid from 'vue-virtual-scroll-grid'
-import RecipeBox from '@/components/RecipeBox'
-import SkeletonRecipeBox from '@/components/skeletons/SkeletonRecipeBox'
+import { ref } from '@vue/reactivity'
+// import Grid from 'vue-virtual-scroll-grid'
+// import RecipeBox from '@/components/RecipeBox'
+// import SkeletonRecipeBox from '@/components/skeletons/SkeletonRecipeBox'
 
 export default {
   name: 'Recipes',
   components: {
-    Grid,
-    // GenericRecipesList,
-    PageHeader,
-    RecipeBox,
-    SkeletonRecipeBox
+    // Grid,
+    GenericRecipesList,
+    PageHeader
+    // RecipeBox,
+    // SkeletonRecipeBox
+  },
+  props: {
+    savedPosition: {
+      type: String
+    }
   },
   setup() {
     useMeta({
@@ -64,10 +71,19 @@ export default {
         })
       })
 
+    const initialStyle = ref()
+
     return {
       recipesList,
-      pageProvider
+      pageProvider,
+      initialStyle
     }
+  },
+  beforeMount() {
+    // const { top } = history.state.scroll
+    // if (top) {
+    //   this.initialStyle = `min-height: ${top + window.innerHeight}px`
+    // }
   }
 }
 </script>
