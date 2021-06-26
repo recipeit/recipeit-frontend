@@ -14,7 +14,11 @@
 import SkeletonBox from './SkeletonBox'
 
 export default {
-  components: { SkeletonBox }
+  emits: ['on-before-moundt'],
+  components: { SkeletonBox },
+  mounted() {
+    this.$emit('on-before-moundt', this.$el)
+  }
 }
 </script>
 

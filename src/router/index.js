@@ -31,8 +31,8 @@ import {
   PRIVACY_POLICY,
   TERMS
 } from './names'
-// import eventHub from './eventHub'
-// import { nextTick } from 'vue'
+import eventHub from './eventHub'
+import { nextTick } from 'vue'
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
 
@@ -252,21 +252,15 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
-  // scrollBehavior: (to, from, savedPosition) =>
-  //   new Promise(resolve => {
-  //     const position = to.matched.some(m => m.meta.preventScroll) ? savedPosition : { x: 0, y: 0 }
+  scrollBehavior: (to, from, savedPosition) =>
+    new Promise(resolve => {
+      const position = to.matched.some(m => m.meta.preventScroll) ? savedPosition : { x: 0, y: 0 }
 
-  //     eventHub.$once('triggerScroll', async () => {
-  //       await nextTick()
-  //       resolve(position)
-  //     })
-  //   })
-  scrollBehavior: () => {
-    return {
-      x: 0,
-      y: 0
-    }
-  }
+      eventHub.$once('triggerScroll', async () => {
+        await nextTick()
+        resolve(position)
+      })
+    })
 })
 
 router.beforeEach((to, from, next) => {

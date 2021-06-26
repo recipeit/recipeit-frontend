@@ -1,13 +1,20 @@
 <template>
   <div class="layout__page__content" :style="initialStyle">
     <PageHeader :title="$t('recipes.title')" />
-    <GenericRecipesList
+
+    <div class="grid" ref="grid">
+      <template v-for="({ item, page }, index) in itemsList">
+        <RecipeBox v-if="item" :key="item.id" :recipeId="item.id || index + '2'" :recipeName="item.name || 'auua'" />
+        <SkeletonRecipeBox v-else :key="index" @on-before-moundt="dupsko(page, $event)" />
+      </template>
+    </div>
+    <!-- <GenericRecipesList
       :recipes="recipesList.recipes.value"
       :errors="recipesList.recipesErrors.value"
       @load-next="recipesList.loadNextRecipes()"
       @reload="recipesList.reloadRecipes($event)"
       @reload-with-query="recipesList.reloadRecipesWithQuery($event)"
-    />
+    /> -->
     <!-- <li class="recipes-list__list__item recipes-list__list__item--skeleton">
       <SkeletonRecipeBox />
     </li> -->
@@ -33,23 +40,24 @@
 
 <script>
 import recipeApi from '@/api/recipeApi'
-import GenericRecipesList from '@/components/GenericRecipesList'
+// import GenericRecipesList from '@/components/GenericRecipesList'
 import PageHeader from '@/components/PageHeader'
 import recipeFilteredPagedList from './composable/recipeFilteredPagedList'
 import { useMeta } from 'vue-meta'
 import { ref } from '@vue/reactivity'
+import { computed, onBeforeUnmount } from '@vue/runtime-core'
 // import Grid from 'vue-virtual-scroll-grid'
-// import RecipeBox from '@/components/RecipeBox'
-// import SkeletonRecipeBox from '@/components/skeletons/SkeletonRecipeBox'
+import RecipeBox from '@/components/RecipeBox'
+import SkeletonRecipeBox from '@/components/skeletons/SkeletonRecipeBox'
 
 export default {
   name: 'Recipes',
   components: {
     // Grid,
-    GenericRecipesList,
-    PageHeader
-    // RecipeBox,
-    // SkeletonRecipeBox
+    // GenericRecipesList,
+    PageHeader,
+    RecipeBox,
+    SkeletonRecipeBox
   },
   props: {
     savedPosition: {
@@ -65,25 +73,142 @@ export default {
 
     const pageProvider = pageNumber =>
       new Promise(resolve => {
-        recipesList.loadRecipesPage(pageNumber + 1).then(result => {
+        recipesList.loadRecipesPage(pageNumber).then(result => {
           // console.log('result', pageNumber + 1, pageSize, result)
           resolve(result)
         })
       })
 
-    const initialStyle = ref()
+    const initialHeight = ref()
+    const pages = ref({})
+    const requiredItems = ref(200)
+    const PAGE_SIZE = 12
+    const itemsCount = ref(300)
+
+    const itemsList = computed(() => {
+      const loadedPageNumbers = Object.keys(pages.value).map(e => parseInt(e))
+      const lastLoadedPage = loadedPageNumbers?.length > 0 ? Math.max(...loadedPageNumbers) : 0
+
+      // console.log('loadedPageNumbers', loadedPageNumbers)
+      // console.log('lastLoadedPagelastLoadedPage', lastLoadedPage)
+
+      let result = []
+      for (var i = 1; i <= lastLoadedPage + 1; i++) {
+        const loadedPage = pages.value[i]
+        if (loadedPage?.length > 0) {
+          result.push(...loadedPage.map(item => ({ page: i, item })))
+        } else {
+          result.push(...Array(PAGE_SIZE).fill({ page: i, item: null }))
+        }
+      }
+
+      let additionalItems = 0
+
+      if (requiredItems.value > result.length) {
+        // czyli chcemy żeby było więcej dorzucone
+        if (itemsCount.value) {
+          // czyli już zaczytaliśmy jakąś stronkę
+          if (itemsCount.value > result.length) {
+            // weryfikujemy czy jeszcze jest co wczytywać
+            additionalItems = Math.min(itemsCount.value, requiredItems.value) - result.length
+            // blokujemy opcję dorenderowania elementów które nie istnieją
+          }
+        } else {
+          // czyli jest to inital state, nie wiemy ile elementów ma lista
+          additionalItems = requiredItems.value - result.length
+        }
+      }
+
+      const additionalPages = Math.ceil(additionalItems / PAGE_SIZE)
+
+      for (var j = 1; j <= additionalPages; j++) {
+        if (j === additionalPages) {
+          result.push(...Array(additionalItems % PAGE_SIZE || PAGE_SIZE).fill({ page: j, item: null }))
+        } else {
+          result.push(...Array(PAGE_SIZE).fill({ page: j, item: null }))
+        }
+      }
+
+      console.log(additionalItems)
+
+      return result
+    })
+
+    // pages.value[1] = Array(PAGE_SIZE).fill({ a: 'a' })
+    // pages.value[6] = Array(PAGE_SIZE).fill({ a: 'b' })
+    // pages.value[3] = Array(PAGE_SIZE).fill({ a: 'c' })
+
+    const intersectionObservers = {}
+    const dupsko = (pageNumber, el) => {
+      let observer = intersectionObservers[pageNumber]
+
+      if (!observer) {
+        observer = new IntersectionObserver(
+          ([entry]) => {
+            if (entry && entry.isIntersecting) {
+              // console.log('auuu')
+              pageProvider(pageNumber).then(result => {
+                pages.value[pageNumber] = result
+              })
+              // this.$emit('intersect')
+              observer.disconnect()
+            }
+          },
+          { rootMargin: '256px' }
+        )
+
+        intersectionObservers[pageNumber] = observer
+      }
+
+      // console.log(el)
+      if (el) {
+        observer.observe(el)
+      }
+    }
+
+    onBeforeUnmount(() => {
+      Object.values(intersectionObservers).forEach(observer => {
+        observer?.disconnect()
+      })
+    })
+
+    const initialStyle = computed(() => {
+      if (initialHeight.value) {
+        return `min-height: ${initialHeight.value}px`
+      }
+      return null
+    })
 
     return {
       recipesList,
       pageProvider,
-      initialStyle
+      initialHeight,
+      initialStyle,
+      pages,
+      requiredItems,
+      itemsList,
+      dupsko
     }
   },
   beforeMount() {
-    // const { top } = history.state.scroll
-    // if (top) {
-    //   this.initialStyle = `min-height: ${top + window.innerHeight}px`
-    // }
+    const { top } = history.state?.scroll || {}
+    if (top) {
+      this.initialHeight = top + window.innerHeight
+    }
+  },
+  mounted() {
+    const { initialHeight } = this
+    if (initialHeight) {
+      const { offsetHeight } = this.$refs.grid?.children[0] || {}
+
+      const rows = Math.ceil(initialHeight / (offsetHeight + 16))
+
+      if (window.innerWidth >= 720) {
+        this.requiredItems = rows * 3
+      } else {
+        this.requiredItems = rows * 2
+      }
+    }
   }
 }
 </script>
