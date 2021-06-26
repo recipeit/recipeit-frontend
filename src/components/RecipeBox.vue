@@ -131,6 +131,7 @@ export default {
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    height: 2.5em;
   }
 
   &__props {

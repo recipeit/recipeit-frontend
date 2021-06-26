@@ -14,7 +14,7 @@
 import SkeletonBox from './SkeletonBox'
 
 export default {
-  emits: ['on-before-moundt'],
+  emits: ['element-mounted'],
   components: { SkeletonBox },
   props: {
     animate: {
@@ -23,7 +23,7 @@ export default {
     }
   },
   mounted() {
-    this.$emit('on-before-moundt', this.$el)
+    this.$emit('element-mounted', this.$el)
   }
 }
 </script>
