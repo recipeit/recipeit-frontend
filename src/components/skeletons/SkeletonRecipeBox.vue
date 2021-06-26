@@ -14,16 +14,15 @@
 import SkeletonBox from './SkeletonBox'
 
 export default {
-  emits: ['element-mounted'],
   components: { SkeletonBox },
   props: {
     animate: {
       type: Boolean,
       default: true
+    },
+    page: {
+      type: Number
     }
-  },
-  mounted() {
-    this.$emit('element-mounted', this.$el)
   }
 }
 </script>

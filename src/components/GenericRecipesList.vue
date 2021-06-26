@@ -59,7 +59,7 @@
       <div class="recipes-list__list" ref="grid">
         <template v-for="({ item, page }, index) in itemsList">
           <RecipeBox v-if="item" :key="item.id" :recipeId="item.id" :recipeName="item.name" />
-          <SkeletonRecipeBox v-else :key="index" :animate="false" @element-mounted="skeletonBoxMountedHandler(page, $event)" />
+          <SkeletonRecipeBox v-else :key="`${page}_${index}`" :page="page" :animate="false" :ref="skeletonBoxMountedHandler" />
         </template>
       </div>
 
@@ -238,7 +238,7 @@ export default {
 
       for (var j = 1; j <= additionalPages; j++) {
         const itemsCountToAdd = j === additionalPages ? additionalItems % PAGE_SIZE || PAGE_SIZE : PAGE_SIZE
-        result.push(...Array(itemsCountToAdd).fill({ page: j, item: null }))
+        result.push(...Array(itemsCountToAdd).fill({ page: lastLoadedPage + j, item: null }))
       }
 
       return result
@@ -246,8 +246,13 @@ export default {
 
     const intersectionObservers = {}
     const fetchingPages = {}
-    const skeletonBoxMountedHandler = (pageNumber, el) => {
-      let observer = intersectionObservers[pageNumber]
+    const skeletonBoxMountedHandler = el => {
+      if (!el) {
+        return
+      }
+
+      const { page: pageNumber, $el } = el
+      var observer = intersectionObservers[pageNumber]
 
       if (!observer) {
         observer = new IntersectionObserver(
@@ -272,8 +277,8 @@ export default {
         intersectionObservers[pageNumber] = observer
       }
 
-      if (el) {
-        observer.observe(el)
+      if ($el) {
+        observer.observe($el)
       }
     }
 
@@ -329,7 +334,10 @@ export default {
       initialStyle,
       requiredItems,
       itemsList,
-      skeletonBoxMountedHandler
+      skeletonBoxMountedHandler,
+
+      intersectionObservers,
+      fetchingPages
     }
   }
 }

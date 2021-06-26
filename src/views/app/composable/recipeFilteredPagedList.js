@@ -56,8 +56,8 @@ export default function(apiEndpoint) {
   }
 
   const fetchRecipesPage = async (orderMethod, filters, search, page) => {
-    if (recipes.value.fetching) return
-    recipes.value.fetching = true
+    // if (recipes.value.fetching) return
+    // recipes.value.fetching = true
     recipesErrors.value = null
 
     const queryParams = fetchRecipesQueryParams(orderMethod, filters, search)
@@ -71,7 +71,6 @@ export default function(apiEndpoint) {
       const { data } = await apiEndpoint(query)
       recipes.value.addFromApi(data)
     } catch (error) {
-      recipes.value.fetching = false
       recipesErrors.value = {
         messageId: 'ERORR',
         from: 'LOAD'
@@ -79,7 +78,11 @@ export default function(apiEndpoint) {
       this.$errorHandler.captureError(error, {
         [ERROR_ACTION_TAG_NAME]: 'recipeFilteredPagedList.fetchRecipesPage'
       })
+
+      return new Error(error)
     }
+
+    return true
 
     // apiEndpoint(query)
     //   .then(({ data }) => {
