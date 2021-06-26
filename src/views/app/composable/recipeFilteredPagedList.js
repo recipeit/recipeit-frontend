@@ -56,9 +56,9 @@ export default function(apiEndpoint) {
   }
 
   const fetchRecipesPage = async (orderMethod, filters, search, page) => {
-    // if (recipes.value.fetching) return
-    // recipes.value.fetching = true
-    // recipesErrors.value = null
+    if (recipes.value.fetching) return
+    recipes.value.fetching = true
+    recipesErrors.value = null
 
     const queryParams = fetchRecipesQueryParams(orderMethod, filters, search)
 
@@ -69,18 +69,32 @@ export default function(apiEndpoint) {
 
     try {
       const { data } = await apiEndpoint(query)
-      // recipes.value.addFromApi(data)
-      return data.items
+      recipes.value.addFromApi(data)
     } catch (error) {
-      // recipes.value.fetching = false
-      // recipesErrors.value = {
-      //   messageId: 'ERORR',
-      //   from: 'LOAD-NEXT'
-      // }
-      // this.$errorHandler.captureError(error, {
-      //   [ERROR_ACTION_TAG_NAME]: 'recipeFilteredPagedList.fetchNextRecipes'
-      // })
+      recipes.value.fetching = false
+      recipesErrors.value = {
+        messageId: 'ERORR',
+        from: 'LOAD'
+      }
+      this.$errorHandler.captureError(error, {
+        [ERROR_ACTION_TAG_NAME]: 'recipeFilteredPagedList.fetchRecipesPage'
+      })
     }
+
+    // apiEndpoint(query)
+    //   .then(({ data }) => {
+    //     recipes.value.addFromApi(data)
+    //   })
+    //   .catch(error => {
+    //     recipes.value.fetching = false
+    //     recipesErrors.value = {
+    //       messageId: 'ERORR',
+    //       from: 'LOAD'
+    //     }
+    //     this.$errorHandler.captureError(error, {
+    //       [ERROR_ACTION_TAG_NAME]: 'recipeFilteredPagedList.fetchRecipesPage'
+    //     })
+    //   })
   }
 
   const fetchRecipes = (orderMethod, filters, search) => {

@@ -28,6 +28,7 @@ export class RecipeList {
     this.fetching = false
     this.pagesTo = null
     this.items = null
+    this.pagedItems = {}
     this.totalPages = null
     this.totalCount = null
     this.hasNext = null
@@ -54,7 +55,10 @@ export class RecipeList {
     defaultOrderMethod
   }) {
     this.fetching = fetching
-    this.items = items
+    this.items = [...items]
+    this.pagedItems = {
+      [currentPage]: items
+    }
     this.pagesTo = currentPage
     this.totalPages = totalPages
     this.totalCount = totalCount
@@ -84,8 +88,9 @@ export class RecipeList {
     if (this.items !== null) {
       this.items.push(...items)
     } else {
-      this.items = items
+      this.items = [...items]
     }
+    this.pagedItems[currentPage] = items
     this.fetching = fetching
     this.pagesTo = currentPage
     this.totalPages = totalPages

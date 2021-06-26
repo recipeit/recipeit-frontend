@@ -1,20 +1,21 @@
 <template>
-  <div class="layout__page__content" :style="initialStyle">
+  <div class="layout__page__content">
     <PageHeader :title="$t('recipes.title')" />
 
-    <div class="grid" ref="grid">
+    <!-- <div class="grid" ref="grid">
       <template v-for="({ item, page }, index) in itemsList">
-        <RecipeBox v-if="item" :key="item.id" :recipeId="item.id || index + '2'" :recipeName="item.name || 'auua'" />
-        <SkeletonRecipeBox :animate="false" v-else :key="index" @element-mounted="skeletonBoxMountedHandler(page, $event)" />
+        <RecipeBox v-if="item" :key="item.id" :recipeId="item.id" :recipeName="item.name" />
+        <SkeletonRecipeBox v-else :key="index" :animate="false" @element-mounted="skeletonBoxMountedHandler(page, $event)" />
       </template>
-    </div>
-    <!-- <GenericRecipesList
+    </div> -->
+
+    <GenericRecipesList
       :recipes="recipesList.recipes.value"
       :errors="recipesList.recipesErrors.value"
-      @load-next="recipesList.loadNextRecipes()"
+      :loadHandler="pageNumber => recipesList.loadRecipesPage(pageNumber)"
       @reload="recipesList.reloadRecipes($event)"
       @reload-with-query="recipesList.reloadRecipesWithQuery($event)"
-    /> -->
+    />
     <!-- <li class="recipes-list__list__item recipes-list__list__item--skeleton">
       <SkeletonRecipeBox />
     </li> -->
@@ -40,24 +41,24 @@
 
 <script>
 import recipeApi from '@/api/recipeApi'
-// import GenericRecipesList from '@/components/GenericRecipesList'
+import GenericRecipesList from '@/components/GenericRecipesList'
 import PageHeader from '@/components/PageHeader'
 import recipeFilteredPagedList from './composable/recipeFilteredPagedList'
 import { useMeta } from 'vue-meta'
-import { ref } from '@vue/reactivity'
-import { computed, onBeforeMount, onBeforeUnmount, onMounted } from '@vue/runtime-core'
+// import { ref } from '@vue/reactivity'
+// import { computed, onBeforeMount, onBeforeUnmount, onMounted } from '@vue/runtime-core'
 // import Grid from 'vue-virtual-scroll-grid'
-import RecipeBox from '@/components/RecipeBox'
-import SkeletonRecipeBox from '@/components/skeletons/SkeletonRecipeBox'
+// import RecipeBox from '@/components/RecipeBox'
+// import SkeletonRecipeBox from '@/components/skeletons/SkeletonRecipeBox'
 
 export default {
   name: 'Recipes',
   components: {
     // Grid,
-    // GenericRecipesList,
-    PageHeader,
-    RecipeBox,
-    SkeletonRecipeBox
+    GenericRecipesList,
+    PageHeader
+    // RecipeBox,
+    // SkeletonRecipeBox
   },
   props: {
     savedPosition: {
@@ -71,130 +72,133 @@ export default {
 
     const recipesList = recipeFilteredPagedList(recipeApi.getRecipes)
 
-    const grid = ref()
-    const initialHeight = ref()
-    const pages = ref({})
-    const requiredItems = ref()
-    const PAGE_SIZE = 12
-    const itemsCount = ref()
+    // to props
+    // const pages = ref({})
+    // const PAGE_SIZE = 12
+    // const itemsCount = ref()
 
-    const itemsList = computed(() => {
-      const loadedPageNumbers = Object.keys(pages.value).map(e => parseInt(e))
-      const lastLoadedPage = loadedPageNumbers?.length > 0 ? Math.max(...loadedPageNumbers) : 0
+    // const grid = ref()
+    // const initialHeight = ref()
+    // const requiredItems = ref()
 
-      const result = []
-      for (var i = 1; i <= lastLoadedPage + 1; i++) {
-        const loadedPage = pages.value[i]
-        if (loadedPage?.length > 0) {
-          result.push(...loadedPage.map(item => ({ page: i, item })))
-        } else {
-          result.push(...Array(PAGE_SIZE).fill({ page: i, item: null }))
-        }
-      }
+    // const itemsList = computed(() => {
+    //   const loadedPageNumbers = Object.keys(pages.value).map(e => parseInt(e))
+    //   const lastLoadedPage = loadedPageNumbers?.length > 0 ? Math.max(...loadedPageNumbers) : 0
 
-      let additionalItems = 0
-      if (requiredItems.value > result.length) {
-        // czyli chcemy żeby było więcej dorzucone
-        if (itemsCount.value) {
-          // czyli już zaczytaliśmy jakąś stronkę
-          if (itemsCount.value > result.length) {
-            // weryfikujemy czy jeszcze jest co wczytywać
-            additionalItems = Math.min(itemsCount.value, requiredItems.value) - result.length
-            // blokujemy opcję dorenderowania elementów które nie istnieją
-          }
-        } else {
-          // czyli jest to inital state, nie wiemy ile elementów ma lista
-          additionalItems = requiredItems.value - result.length
-        }
-      }
+    //   const result = []
+    //   for (var i = 1; i <= lastLoadedPage + 1; i++) {
+    //     const loadedPage = pages.value[i]
+    //     if (loadedPage?.length > 0) {
+    //       result.push(...loadedPage.map(item => ({ page: i, item })))
+    //     } else {
+    //       result.push(...Array(PAGE_SIZE).fill({ page: i, item: null }))
+    //     }
+    //   }
 
-      const additionalPages = Math.ceil(additionalItems / PAGE_SIZE)
+    //   let additionalItems = 0
+    //   if (requiredItems.value > result.length) {
+    //     // czyli chcemy żeby było więcej dorzucone
+    //     if (itemsCount.value) {
+    //       // czyli już zaczytaliśmy jakąś stronkę
+    //       if (itemsCount.value > result.length) {
+    //         // weryfikujemy czy jeszcze jest co wczytywać
+    //         additionalItems = Math.min(itemsCount.value, requiredItems.value) - result.length
+    //         // blokujemy opcję dorenderowania elementów które nie istnieją
+    //       }
+    //     } else {
+    //       // czyli jest to inital state, nie wiemy ile elementów ma lista
+    //       additionalItems = requiredItems.value - result.length
+    //     }
+    //   }
 
-      for (var j = 1; j <= additionalPages; j++) {
-        const itemsCountToAdd = j === additionalPages ? additionalItems % PAGE_SIZE || PAGE_SIZE : PAGE_SIZE
-        result.push(...Array(itemsCountToAdd).fill({ page: j, item: null }))
-      }
+    //   const additionalPages = Math.ceil(additionalItems / PAGE_SIZE)
 
-      return result
-    })
+    //   for (var j = 1; j <= additionalPages; j++) {
+    //     const itemsCountToAdd = j === additionalPages ? additionalItems % PAGE_SIZE || PAGE_SIZE : PAGE_SIZE
+    //     result.push(...Array(itemsCountToAdd).fill({ page: j, item: null }))
+    //   }
 
-    const intersectionObservers = {}
-    const fetchingPages = {}
-    const skeletonBoxMountedHandler = (pageNumber, el) => {
-      let observer = intersectionObservers[pageNumber]
+    //   return result
+    // })
 
-      if (!observer) {
-        observer = new IntersectionObserver(
-          ([entry]) => {
-            if (entry && entry.isIntersecting) {
-              if (!fetchingPages[pageNumber]) {
-                fetchingPages[pageNumber] = true
-                recipesList
-                  .loadRecipesPage(pageNumber)
-                  .then(result => {
-                    pages.value[pageNumber] = result
-                    observer.disconnect()
-                  })
-                  .catch(() => {
-                    delete fetchingPages[pageNumber]
-                  })
-              }
-            }
-          },
-          { rootMargin: '256px' }
-        )
+    // const intersectionObservers = {}
+    // const fetchingPages = {}
+    // const skeletonBoxMountedHandler = (pageNumber, el) => {
+    //   let observer = intersectionObservers[pageNumber]
 
-        intersectionObservers[pageNumber] = observer
-      }
+    //   if (!observer) {
+    //     observer = new IntersectionObserver(
+    //       ([entry]) => {
+    //         if (entry && entry.isIntersecting) {
+    //           if (!fetchingPages[pageNumber]) {
+    //             fetchingPages[pageNumber] = true
+    //             recipesList
+    //               .loadRecipesPage(pageNumber)
+    //               .then(result => {
+    //                 pages.value[pageNumber] = result
+    //                 observer.disconnect()
+    //               })
+    //               .catch(() => {
+    //                 delete fetchingPages[pageNumber]
+    //               })
+    //           }
+    //         }
+    //       },
+    //       { rootMargin: '256px' }
+    //     )
 
-      if (el) {
-        observer.observe(el)
-      }
-    }
+    //     intersectionObservers[pageNumber] = observer
+    //   }
 
-    onBeforeMount(() => {
-      const { top } = history.state?.scroll || {}
-      if (top) {
-        initialHeight.value = top + window.innerHeight
-      }
-    })
+    //   if (el) {
+    //     observer.observe(el)
+    //   }
+    // }
 
-    onMounted(() => {
-      if (initialHeight.value) {
-        const { offsetHeight } = grid.value?.children[0] || {}
+    // onBeforeMount(() => {
+    //   const { top } = history.state?.scroll || {}
+    //   if (top) {
+    //     initialHeight.value = top + window.innerHeight
+    //   }
+    // })
 
-        const rows = Math.ceil(initialHeight.value / (offsetHeight + 16))
+    // onMounted(() => {
+    //   if (initialHeight.value) {
+    //     const { offsetWidth: gridWidth } = grid.value || {}
+    //     const { offsetHeight, offsetWidth } = grid.value?.children[0] || {}
 
-        if (window.innerWidth >= 720) {
-          requiredItems.value = rows * 3
-        } else {
-          requiredItems.value = rows * 2
-        }
-      }
-    })
+    //     const gridRowGap = parseFloat(getComputedStyle(grid.value).rowGap)
+    //     const gridColumnGap = parseFloat(getComputedStyle(grid.value).columnGap)
 
-    onBeforeUnmount(() => {
-      Object.values(intersectionObservers).forEach(observer => {
-        observer?.disconnect()
-      })
-    })
+    //     const rows = Math.ceil(initialHeight.value / (offsetHeight + gridRowGap))
+    //     const columns = Math.floor((gridWidth + gridColumnGap) / (offsetWidth + gridColumnGap))
 
-    const initialStyle = computed(() => {
-      if (initialHeight.value) {
-        return `min-height: ${initialHeight.value}px`
-      }
-      return null
-    })
+    //     requiredItems.value = rows * columns
+    //   }
+    // })
+
+    // onBeforeUnmount(() => {
+    //   Object.values(intersectionObservers).forEach(observer => {
+    //     observer?.disconnect()
+    //   })
+    // })
+
+    // const initialStyle = computed(() => {
+    //   if (initialHeight.value) {
+    //     return `min-height: ${initialHeight.value}px`
+    //   }
+    //   return null
+    // })
 
     return {
-      grid,
-      recipesList,
-      initialHeight,
-      initialStyle,
-      pages,
-      requiredItems,
-      itemsList,
-      skeletonBoxMountedHandler
+      recipesList
+      // pages
+      // grid,
+      // initialHeight,
+      // initialStyle,
+      // requiredItems,
+      // itemsList,
+      // skeletonBoxMountedHandler
     }
   }
 }
