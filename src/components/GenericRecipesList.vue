@@ -7,6 +7,7 @@
       :showFilterButton="true"
       :search="recipes.search"
       :fetching="recipes.fetching"
+      :fetchingPages="recipes.fetchingPages"
       :filters="recipes.filterOptions"
       :sortings="recipes.orderMethodOptions"
       :appliedFilters="recipes.filters"
@@ -36,13 +37,13 @@
 
     <template v-else>
       <div class="recipes-list__header">
-        <slot name="count" :count="recipes.totalCount" :fetching="recipes.fetching">
+        <slot name="count" :count="recipes.totalCount" :fetching="showFetchingInfo">
           <div class="recipes-list__header__total-count">
             <!-- <template v-if="recipes.totalCount !== null && !recipes.fetching"> -->
             <template v-if="recipes.totalCount !== null">
               {{ $tc('shared.recipes', recipes.totalCount) }}
             </template>
-            <template v-else-if="recipes.fetching">
+            <template v-else-if="showFetchingInfo">
               wczytuję
             </template>
           </div>
@@ -151,10 +152,12 @@ export default {
     }
 
     const onSearch = ({ orderMethod, filters, search }) => {
+      disconnectObservers()
       emit('reload', { orderMethod, filters, search })
     }
 
     const clearFilters = () => {
+      disconnectObservers()
       emit('reload', {})
     }
 
@@ -181,6 +184,7 @@ export default {
       const { from, query } = props.errors
 
       if (from === 'RELOAD') {
+        disconnectObservers()
         emit('reload-with-query', query)
       } else if (from === 'LOAD-NEXT') {
         emit('load-next')
@@ -208,7 +212,7 @@ export default {
       const loadedPageNumbers = Object.keys(props.recipes.pagedItems).map(e => parseInt(e))
       const lastLoadedPage = loadedPageNumbers?.length > 0 ? Math.max(...loadedPageNumbers) : 0
 
-      const result = []
+      let result = []
       for (var i = 1; i <= lastLoadedPage + 1; i++) {
         const loadedPage = props.recipes.pagedItems[i]
         if (loadedPage?.length > 0) {
@@ -216,6 +220,11 @@ export default {
         } else {
           result.push(...Array(PAGE_SIZE).fill({ page: i, item: null }))
         }
+      }
+
+      // TODO trzeba optymalniej, gdzieś na górze nie dodawać niepotrzebnych elementów
+      if (props.recipes.totalCount && result.length > props.recipes.totalCount) {
+        result = result.slice(0, props.recipes.totalCount)
       }
 
       let additionalItems = 0
@@ -244,8 +253,18 @@ export default {
       return result
     })
 
-    const intersectionObservers = {}
-    const fetchingPages = {}
+    const isInViewport = element => {
+      const rect = element.getBoundingClientRect()
+      return (
+        rect.top >= 0 &&
+        rect.left >= 0 &&
+        rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+        rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+      )
+    }
+
+    let intersectionObservers = {}
+    let fetchingPages = {}
     const skeletonBoxMountedHandler = el => {
       if (!el) {
         return
@@ -254,21 +273,26 @@ export default {
       const { page: pageNumber, $el } = el
       var observer = intersectionObservers[pageNumber]
 
+      const isIntersectingHandler = () => {
+        // console.log('sproboje ładować')
+        if (!fetchingPages[pageNumber]) {
+          fetchingPages[pageNumber] = true
+          props
+            .loadHandler(pageNumber)
+            .then(() => {
+              observer.disconnect()
+            })
+            .catch(() => {
+              delete fetchingPages[pageNumber]
+            })
+        }
+      }
+
       if (!observer) {
         observer = new IntersectionObserver(
           ([entry]) => {
             if (entry && entry.isIntersecting) {
-              if (!fetchingPages[pageNumber]) {
-                fetchingPages[pageNumber] = true
-                props
-                  .loadHandler(pageNumber)
-                  .then(() => {
-                    observer.disconnect()
-                  })
-                  .catch(() => {
-                    delete fetchingPages[pageNumber]
-                  })
-              }
+              isIntersectingHandler()
             }
           },
           { rootMargin: '256px' }
@@ -278,8 +302,20 @@ export default {
       }
 
       if ($el) {
-        observer.observe($el)
+        if (isInViewport($el)) {
+          isIntersectingHandler()
+        } else {
+          observer.observe($el)
+        }
       }
+    }
+
+    const disconnectObservers = () => {
+      Object.values(intersectionObservers).forEach(observer => {
+        observer?.disconnect()
+      })
+      // intersectionObservers = {} // POLEMIZOWAŁBYm
+      fetchingPages = {}
     }
 
     onBeforeMount(() => {
@@ -305,9 +341,7 @@ export default {
     })
 
     onBeforeUnmount(() => {
-      Object.values(intersectionObservers).forEach(observer => {
-        observer?.disconnect()
-      })
+      disconnectObservers()
     })
 
     const initialStyle = computed(() => {
@@ -315,6 +349,10 @@ export default {
         return `min-height: ${initialHeight.value}px`
       }
       return null
+    })
+
+    const showFetchingInfo = computed(() => {
+      return Object.values(props.recipes.fetchingPages).some(v => v) && Object.keys(props.recipes.pages || {}).length === 0
     })
 
     // END NEW
@@ -337,7 +375,8 @@ export default {
       skeletonBoxMountedHandler,
 
       intersectionObservers,
-      fetchingPages
+      fetchingPages,
+      showFetchingInfo
     }
   }
 }

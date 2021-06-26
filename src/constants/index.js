@@ -26,6 +26,7 @@ export const defaultRecipesSortingMethod = recipesSortingMethods[0]
 export class RecipeList {
   constructor() {
     this.fetching = false
+    this.fetchingPages = {}
     this.pagesTo = null
     this.items = null
     this.pagedItems = {}

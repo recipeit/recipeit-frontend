@@ -56,6 +56,7 @@ export default {
     defaultSorting: String,
     showFilterButton: Boolean,
     fetching: Boolean,
+    fetchingPages: Object,
     filtersCount: Number,
     error: Boolean
   },
@@ -66,9 +67,9 @@ export default {
     const searchString = ref(props.search)
 
     watch(
-      () => [props.search, props.fetching],
+      () => [props.search, props.fetchingPages],
       () => {
-        if (searchString.value !== props.search && !props.fetching) {
+        if (searchString.value !== props.search && !Object.values(props.fetchingPages).some(v => v)) {
           searchString.value = props.search
         }
       }
@@ -79,8 +80,11 @@ export default {
     }
   },
   methods: {
+    anyPageFetching() {
+      return Object.values(this.fetchingPages).some(v => v)
+    },
     openFilterModal() {
-      if (this.fetching) {
+      if (this.anyPageFetching()) {
         return
       }
 
@@ -128,7 +132,7 @@ export default {
       this.emitSearch()
     },
     emitSearch() {
-      if ((!this.searchString && !this.search === true) || this.searchString === this.search || this.fetching) {
+      if ((!this.searchString && !this.search === true) || this.searchString === this.search || this.anyPageFetching()) {
         return
       }
 

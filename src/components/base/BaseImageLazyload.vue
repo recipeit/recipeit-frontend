@@ -51,14 +51,32 @@ export default {
     },
     init() {
       if ('IntersectionObserver' in window) {
+        const isInViewport = element => {
+          const rect = element.getBoundingClientRect()
+          return (
+            rect.top >= 0 &&
+            rect.left >= 0 &&
+            rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+            rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+          )
+        }
+
+        const isIntersectingHandler = () => {
+          this.visible = true
+          this.observer.disconnect()
+        }
+
         this.observer = new IntersectionObserver(([image]) => {
           if (image.isIntersecting) {
-            this.visible = true
-            this.observer.disconnect()
+            isIntersectingHandler()
           }
         }, this.intersectionOptions)
 
-        this.observer.observe(this.$el)
+        if (isInViewport(this.$el)) {
+          isIntersectingHandler()
+        } else {
+          this.observer.observe(this.$el)
+        }
       }
     }
   },
@@ -84,7 +102,7 @@ export default {
   watch: {
     src(newValue, oldValue) {
       if (newValue && oldValue) {
-        console.log('src zmieniam')
+        // console.log('src zmieniam')
         this.reset()
         this.init()
       }

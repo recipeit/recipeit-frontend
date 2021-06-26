@@ -4,7 +4,7 @@
     <GenericRecipesList
       :recipes="recipesList.recipes.value"
       :errors="recipesList.recipesErrors.value"
-      @load-next="recipesList.loadNextRecipes()"
+      :loadHandler="pageNumber => recipesList.loadRecipesPage(pageNumber)"
       @reload="recipesList.reloadRecipes($event)"
       @reload-with-query="recipesList.reloadRecipesWithQuery($event)"
     >
