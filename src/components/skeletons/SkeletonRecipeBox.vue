@@ -1,11 +1,11 @@
 <template>
   <div class="skeleton-recipe-box">
     <div class="skeleton-recipe-box__image-container">
-      <SkeletonBox class="skeleton-recipe-box__image-container__image" />
+      <SkeletonBox :animate="animate" class="skeleton-recipe-box__image-container__image" />
     </div>
     <div class="skeleton-recipe-box__name">
-      <SkeletonBox class="skeleton-recipe-box__name__line" />
-      <SkeletonBox class="skeleton-recipe-box__name__line" />
+      <SkeletonBox :animate="animate" class="skeleton-recipe-box__name__line" />
+      <SkeletonBox :animate="animate" class="skeleton-recipe-box__name__line" />
     </div>
   </div>
 </template>
@@ -16,6 +16,12 @@ import SkeletonBox from './SkeletonBox'
 export default {
   emits: ['on-before-moundt'],
   components: { SkeletonBox },
+  props: {
+    animate: {
+      type: Boolean,
+      default: true
+    }
+  },
   mounted() {
     this.$emit('on-before-moundt', this.$el)
   }

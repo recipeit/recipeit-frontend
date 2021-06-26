@@ -5,7 +5,7 @@
     <div class="grid" ref="grid">
       <template v-for="({ item, page }, index) in itemsList">
         <RecipeBox v-if="item" :key="item.id" :recipeId="item.id || index + '2'" :recipeName="item.name || 'auua'" />
-        <SkeletonRecipeBox v-else :key="index" @on-before-moundt="dupsko(page, $event)" />
+        <SkeletonRecipeBox :animate="false" v-else :key="index" @on-before-moundt="dupsko(page, $event)" />
       </template>
     </div>
     <!-- <GenericRecipesList
