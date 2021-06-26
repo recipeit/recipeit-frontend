@@ -81,9 +81,9 @@ export default {
 
     const initialHeight = ref()
     const pages = ref({})
-    const requiredItems = ref(200)
+    const requiredItems = ref()
     const PAGE_SIZE = 12
-    const itemsCount = ref(300)
+    const itemsCount = ref()
 
     const itemsList = computed(() => {
       const loadedPageNumbers = Object.keys(pages.value).map(e => parseInt(e))
@@ -129,14 +129,10 @@ export default {
         }
       }
 
-      console.log(additionalItems)
+      // console.log(additionalItems)
 
       return result
     })
-
-    // pages.value[1] = Array(PAGE_SIZE).fill({ a: 'a' })
-    // pages.value[6] = Array(PAGE_SIZE).fill({ a: 'b' })
-    // pages.value[3] = Array(PAGE_SIZE).fill({ a: 'c' })
 
     const intersectionObservers = {}
     const dupsko = (pageNumber, el) => {
@@ -146,7 +142,7 @@ export default {
         observer = new IntersectionObserver(
           ([entry]) => {
             if (entry && entry.isIntersecting) {
-              // console.log('auuu')
+              // console.log('auuu', pageNumber)
               pageProvider(pageNumber).then(result => {
                 pages.value[pageNumber] = result
               })

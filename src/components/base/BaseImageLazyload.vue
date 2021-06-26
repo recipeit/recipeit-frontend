@@ -51,9 +51,7 @@ export default {
     },
     init() {
       if ('IntersectionObserver' in window) {
-        this.observer = new IntersectionObserver(entries => {
-          const image = entries[0]
-
+        this.observer = new IntersectionObserver(([image]) => {
           if (image.isIntersecting) {
             this.visible = true
             this.observer.disconnect()
