@@ -107,18 +107,14 @@
 </template>
 
 <script>
+import { useMeta } from 'vue-meta'
 import { computed } from 'vue'
-// import { useRoute, useRouter } from 'vue-router'
 import { useStore } from 'vuex'
-// import { fetchRecipesQueryParams } from '@/constants'
+import userApi from '@/api/userApi'
 import GenericRecipesList from '@/components/GenericRecipesList'
 import PageHeader from '@/components/PageHeader'
-import userApi from '@/api/userApi'
-
 import HorizontalRecipesList from '@/components/HorizontalRecipesList'
 import SectionTitle from '@/components/SectionTitle'
-import { useMeta } from 'vue-meta'
-// import { ERROR_ACTION_TAG_NAME } from '@/configs/error'
 import recipeFilteredPagedList from './composable/recipeFilteredPagedList'
 
 export default {
@@ -136,146 +132,20 @@ export default {
     const almostAvailableRecipesList = recipeFilteredPagedList(userApi.getAlmostAvailableRecipes)
     almostAvailableRecipesList.loadRecipesPage(1, false)
 
-    // const recipes = ref(new RecipeList())
-    // const recipesErrors = ref(null)
-
-    // const almostAvailableRecipes = ref(new RecipeList())
-    // const almostAvailableRecipesErrors = ref(null)
-
-    // const router = useRouter()
-    // const route = useRoute()
-
-    // const loadNextRecipes = () => {
-    //   const { orderMethod, filters, search } = recipes.value
-    //   fetchNextRecipes(orderMethod, filters, search)
-    // }
-
     const reloadRecipes = ({ orderMethod, filters, search }) => {
       const query = { orderMethod, filters, search }
-      // const queryParams = fetchRecipesQueryParams(orderMethod, filters, search)
 
       recipesList.reloadRecipes(query)
+
       almostAvailableRecipesList.reloadRecipes(query)
       almostAvailableRecipesList.loadRecipesPage(1, false)
-
-      // fetchRecipes(orderMethod, filters, search)
     }
-
-    // const fetchBothRecipesWithQuery = queryParams => {
-    //   recipesList.reloadRecipes
-    // fetchAvailableRecipesWithQuery(queryParams)
-    // fetchAlmostAvailableRecipesWithQuery(queryParams)
-    // }
-
-    // const fetchNextRecipes = (orderMethod, filters, search) => {
-    //   if (recipes.value.fetching) return
-    //   recipes.value.fetching = true
-    //   recipesErrors.value = null
-
-    //   const queryParams = fetchRecipesQueryParams(orderMethod, filters, search)
-
-    //   userApi
-    //     .getAvailableRecipes({
-    //       ...queryParams,
-    //       pageNumber: recipes.value.pagesTo + 1
-    //     })
-    //     .then(({ data }) => {
-    //       recipes.value.addFromApi(data)
-    //     })
-    //     .catch(error => {
-    //       recipes.value.fetching = false
-    //       recipesErrors.value = {
-    //         messageId: 'ERORR',
-    //         from: 'LOAD-NEXT'
-    //       }
-    //       this.$errorHandler.captureError(error, {
-    //         [ERROR_ACTION_TAG_NAME]: 'cookIt.fetchNextRecipes'
-    //       })
-    //     })
-    // }
-
-    // const fetchRecipes = (orderMethod, filters, search) => {
-    //   // if (recipes.value.fetching) return
-
-    //   const queryParams = fetchRecipesQueryParams(orderMethod, filters, search)
-
-    //   fetchBothRecipesWithQuery(queryParams)
-    // }
-
-    // const fetchAvailableRecipesWithQuery = queryParams => {
-    //   recipes.value = new RecipeList()
-    //   recipes.value.fetching = true
-    //   recipesErrors.value = null
-
-    //   userApi
-    //     .getAvailableRecipes(queryParams)
-    //     .then(({ data }) => {
-    //       recipes.value.setFromApi(data)
-
-    //       const queryParams = fetchRecipesQueryParams(data.orderMethod, data.filters, data.search)
-    //       router.replace({ query: queryParams })
-    //     })
-    //     .catch(error => {
-    //       recipes.value.fetching = false
-    //       recipesErrors.value = {
-    //         messageId: 'ERORR',
-    //         from: 'RELOAD',
-    //         query: queryParams
-    //       }
-    //       this.$errorHandler.captureError(error, {
-    //         [ERROR_ACTION_TAG_NAME]: 'cookIt.fetchAvailableRecipesWithQuery'
-    //       })
-    //     })
-    // }
-
-    // const fetchAlmostAvailableRecipesWithQuery = queryParams => {
-    //   almostAvailableRecipes.value = new RecipeList()
-    //   almostAvailableRecipes.value.fetching = true
-    //   almostAvailableRecipesErrors.value = null
-
-    //   userApi
-    //     .getAlmostAvailableRecipes(queryParams)
-    //     .then(resp => {
-    //       almostAvailableRecipes.value.setFromApi(resp.data)
-    //     })
-    //     .catch(error => {
-    //       almostAvailableRecipes.value.fetching = false
-    //       almostAvailableRecipesErrors.value = {
-    //         messageId: 'ERORR',
-    //         from: 'RELOAD',
-    //         query: queryParams
-    //       }
-    //       this.$errorHandler.captureError(error, {
-    //         [ERROR_ACTION_TAG_NAME]: 'cookIt.fetchAlmostAvailableRecipesWithQuery'
-    //       })
-    //     })
-    // }
-
-    // onBeforeMount(() => {
-    //   var { query } = route
-
-    //   if (query) {
-    //     const queryParams = Object.fromEntries(
-    //       Object.entries(query).filter(([key]) => key === 'search' || key === 'orderMethod' || key.startsWith('filters.'))
-    //     )
-    //     fetchBothRecipesWithQuery(queryParams)
-    //   } else {
-    //     fetchBothRecipesWithQuery()
-    //   }
-    // })
 
     return {
       kitchenProductsCount,
       recipesList,
       almostAvailableRecipesList,
       reloadRecipes
-      // loadNextRecipes,
-      // recipes,
-      // recipesErrors,
-      // almostAvailableRecipes,
-      // almostAvailableRecipesErrors,
-      // fetchAvailableRecipesWithQuery,
-      // fetchAlmostAvailableRecipesWithQuery
     }
   }
 }
