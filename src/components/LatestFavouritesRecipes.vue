@@ -4,14 +4,14 @@
       icon="heart"
       title="Ulubione"
       actionText="zobacz wszystkie"
-      :showAction="favouriteRecipes.items?.length > 0"
+      :showAction="favouriteRecipesList.recipes.value.pagedItems[1]?.length > 0"
       @action-click="showAllFavourites()"
     />
     <HorizontalRecipesList
-      :recipes="favouriteRecipes"
-      :errors="favouriteRecipesErrors"
-      @showAll="showAllFavourites()"
+      :recipes="favouriteRecipesList.recipes.value"
+      :errors="favouriteRecipesList.recipesErrors.value"
       @reload-with-query="loadFavouriteRecipes()"
+      @showAll="showAllFavourites()"
     >
       <template #empty-list>
         <li v-for="i in 3" :key="i" class="empty-list-item">
@@ -25,50 +25,35 @@
 <script>
 import { useRouter } from 'vue-router'
 import { onBeforeMount } from '@vue/runtime-core'
-import { ref } from 'vue'
 import userApi from '@/api/userApi'
-import { RecipeList } from '@/constants'
+import { APP_FAVOURITES } from '@/router/names'
 import HorizontalRecipesList from '@/components/HorizontalRecipesList'
 import SectionTitle from '@/components/SectionTitle'
-import { APP_FAVOURITES } from '@/router/names'
-import AddToFavouriteRecipeBox from './AddToFavouriteRecipeBox.vue'
+import AddToFavouriteRecipeBox from './AddToFavouriteRecipeBox'
+import recipePagedList from '@/views/app/composable/recipePagedList'
 
 export default {
   components: { HorizontalRecipesList, SectionTitle, AddToFavouriteRecipeBox },
   setup() {
-    const favouriteRecipes = ref(new RecipeList())
-    const favouriteRecipesErrors = ref(new RecipeList())
     const router = useRouter()
+    const favouriteRecipesList = recipePagedList(userApi.getFavouriteRecipes)
 
-    const loadFavouriteRecipes = async () => {
-      favouriteRecipes.value.fetching = true
-      favouriteRecipesErrors.value = null
-
-      try {
-        const { data } = await userApi.getFavouriteRecipes()
-        favouriteRecipes.value.setFromApi({ ...data, fetching: false })
-      } catch {
-        favouriteRecipes.value.fetching = false
-        favouriteRecipesErrors.value = {
-          messageId: 'ERORR',
-          from: 'RELOAD'
-        }
-      }
+    const loadFavouriteRecipes = () => {
+      favouriteRecipesList.loadRecipesPage(1, false)
     }
-
-    onBeforeMount(async () => {
-      await loadFavouriteRecipes()
-    })
 
     const showAllFavourites = () => {
       router.push({ name: APP_FAVOURITES })
     }
 
+    onBeforeMount(() => {
+      loadFavouriteRecipes()
+    })
+
     return {
-      favouriteRecipes,
-      favouriteRecipesErrors,
-      showAllFavourites,
-      loadFavouriteRecipes
+      favouriteRecipesList,
+      loadFavouriteRecipes,
+      showAllFavourites
     }
   }
 }

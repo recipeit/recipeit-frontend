@@ -64,29 +64,12 @@
         </template>
       </div>
 
-      <!-- <ul class="recipes-list__list">
-        <GenericRecipesListItem
-          v-for="recipe in recipes.items"
-          :key="recipe.id"
-          :recipeId="recipe.id"
-          :recipeName="recipe.name"
-          :recipeRating="recipe.rating"
-        />
-        <template v-if="recipes.fetching">
-          <li class="recipes-list__list__item recipes-list__list__item--skeleton" v-for="i in 12" :key="i">
-            <SkeletonRecipeBox />
-          </li>
-        </template>
-      </ul> -->
-
       <div v-if="errors" class="recipes-errors">
         <div class="recipes-errors-message">
           Wystąpił błąd podczas wczytywania
         </div>
         <BaseButton stroked @click="tryFetchOnError()">Spróbuj ponownie</BaseButton>
       </div>
-
-      <!-- <Observer v-if="!limitedItems && recipes.hasNext && errors === null" @intersect="loadNext" :options="{ rootMargin: '256px' }" /> -->
     </template>
   </div>
 </template>
@@ -96,8 +79,7 @@ import { RecipeList } from '@/constants'
 import RecipeBox from '@/components/RecipeBox'
 import SkeletonRecipeBox from '@/components/skeletons/SkeletonRecipeBox'
 import SearchWithFilter from '@/components/SearchWithFilter'
-// import Observer from './Observer'
-import { computed, onBeforeMount, onBeforeUnmount, onMounted, ref, watch } from '@vue/runtime-core'
+import { computed, nextTick, onBeforeMount, onBeforeUnmount, onMounted, ref, watch } from '@vue/runtime-core'
 
 const PAGE_SIZE = 12
 
@@ -136,20 +118,10 @@ export default {
       type: Function,
       required: true
     }
-    // reloadHandler: {
-    //   type: Promise,
-    //   required: true
-    // }
   },
   setup(props, { emit }) {
     const searchString = ref(props.recipes.search)
     const searchTimeoutCallback = ref(null)
-
-    const loadNext = () => {
-      if (!props.recipes.fetching && props.errors === null) {
-        // emit('load-next')
-      }
-    }
 
     const onSearch = ({ orderMethod, filters, search }) => {
       disconnectObservers()
@@ -337,6 +309,10 @@ export default {
         const columns = Math.floor((gridWidth + gridColumnGap) / (offsetWidth + gridColumnGap))
 
         requiredItems.value = rows * columns
+
+        nextTick().then(() => {
+          initialHeight.value = null
+        })
       }
     })
 
@@ -360,7 +336,6 @@ export default {
     return {
       searchString,
       searchTimeoutCallback,
-      loadNext,
       tryFetchOnError,
       onSearch,
       clearFilters,

@@ -11,7 +11,6 @@
         @reload-with-query="recipesList.reloadRecipesWithQuery($event)"
       >
         <!-- <template v-if="!(!almostAvailableRecipes.fetching && Object.keys(almostAvailableRecipesList.recipes.value.pagedItems).length === 0)" #above-list> -->
-        <!-- <template  #above-list> -->
         <template
           v-if="
             !(
