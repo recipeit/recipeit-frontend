@@ -46,7 +46,7 @@
       :recipes="recipesList.recipes.value"
       :errors="recipesList.recipesErrors.value"
       :showFilterButtons="false"
-      @load-next="recipesList.loadNextRecipes($event)"
+      :loadHandler="pageNumber => recipesList.loadRecipesPage(pageNumber)"
       @reload="recipesList.reloadRecipes()"
       @reload-with-query="recipesList.reloadRecipes()"
     />

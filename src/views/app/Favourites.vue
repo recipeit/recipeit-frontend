@@ -5,7 +5,8 @@
       :showFilterButtons="false"
       :recipes="recipesList.recipes.value"
       :errors="recipesList.recipesErrors.value"
-      @load-next="recipesList.loadNextRecipes()"
+      :loadHandler="pageNumber => recipesList.loadRecipesPage(pageNumber)"
+      @reload="recipesList.reloadRecipes()"
       @reload-with-query="recipesList.reloadRecipes()"
     />
   </div>

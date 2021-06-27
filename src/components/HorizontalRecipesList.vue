@@ -3,13 +3,13 @@
     <ul class="list">
       <GenericRecipesListItem
         class="list-item"
-        v-for="recipe in recipes.items"
-        :key="recipe.id"
-        :recipeId="recipe.id"
-        :recipeName="recipe.name"
-        :recipeRating="recipe.rating"
+        v-for="{ id, name, rating } in items"
+        :key="id"
+        :recipeId="id"
+        :recipeName="name"
+        :recipeRating="rating"
       />
-      <li v-if="recipes.items && recipes.totalCount > recipes.items.length" class="list-item" @click="$emit('showAll')">
+      <li v-if="items && recipes.totalCount > items.length" class="list-item" @click="$emit('showAll')">
         <div class="show-all-item">
           <div class="show-all-item-sizer">
             <BaseLink tag="button" class="show-all-item-button">
@@ -19,7 +19,7 @@
           </div>
         </div>
       </li>
-      <template v-if="recipes.fetching">
+      <template v-if="Object.values(recipes.fetchingPages).some(v => v)">
         <li class="list-item list-item--skeleton" v-for="i in 4" :key="i">
           <SkeletonRecipeBox />
         </li>
@@ -61,6 +61,11 @@ export default {
       if (from === 'RELOAD') {
         this.$emit('reload-with-query', query)
       }
+    }
+  },
+  computed: {
+    items() {
+      return this.recipes?.pagedItems[1] || []
     }
   }
 }

@@ -24,7 +24,7 @@ export const recipesSortingMethods = [
 export const defaultRecipesSortingMethod = recipesSortingMethods[0]
 
 export class RecipeList {
-  constructor() {
+  constructor(orderMethod, filters, search) {
     this.fetching = false
     this.fetchingPages = {}
     this.pagesTo = null
@@ -33,9 +33,9 @@ export class RecipeList {
     this.totalPages = null
     this.totalCount = null
     this.hasNext = null
-    this.search = null
-    this.filters = {}
-    this.orderMethod = null
+    this.search = search || null
+    this.filters = filters || {}
+    this.orderMethod = orderMethod || null
     this.filterOptions = null
     this.orderMethodOptions = null
     this.defaultOrderMethod = null
