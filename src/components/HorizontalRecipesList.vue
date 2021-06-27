@@ -20,7 +20,7 @@
         </div>
       </li>
       <template v-if="Object.values(recipes.fetchingPages).some(v => v)">
-        <li class="list-item list-item--skeleton" v-for="i in 4" :key="i">
+        <li class="list-item list-item--skeleton" v-for="i in 6" :key="i">
           <SkeletonRecipeBox />
         </li>
       </template>

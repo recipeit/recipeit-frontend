@@ -352,7 +352,7 @@ export default {
     })
 
     const showFetchingInfo = computed(() => {
-      return Object.values(props.recipes.fetchingPages).some(v => v) && Object.keys(props.recipes.pages || {}).length === 0
+      return Object.values(props.recipes.fetchingPages).some(v => v) && Object.keys(props.recipes.pagedItems || {}).length === 0
     })
 
     // END NEW
