@@ -28,8 +28,8 @@
           <BaseImageLazyload class="header-avatar" :src="avatarUrl" :errorPlaceholder="avatarErrorUrl" alt="" />
         </div>
       </div>
-      <RecipeParallaxImage class="header-image">
-        <BaseImageLazyload class="header-image-image" :src="backgroundUrl" :errorPlaceholder="backgroundErrorUrl" />
+      <RecipeParallaxImage class="header-background-container">
+        <BaseImageLazyload class="header-background" :src="backgroundUrl" :errorPlaceholder="backgroundErrorUrl" />
       </RecipeParallaxImage>
     </div>
 
@@ -204,7 +204,7 @@ export default {
     transform: rotate(180deg); // TODO arrow ikonki
   }
 
-  &-image {
+  &-background-container {
     position: relative;
     height: 196px;
     width: 100%;
@@ -214,21 +214,11 @@ export default {
       border-radius: 32px;
       margin-bottom: 40px;
     }
+  }
 
-    &-image {
-      height: 100%;
-    }
-
-    // &:after {
-    //   content: '';
-    //   position: absolute;
-    //   top: 0;
-    //   left: 0;
-    //   right: 0;
-    //   bottom: 0;
-    //   background-color: var(--color-background);
-    //   opacity: 0.5;
-    // }
+  &-background {
+    height: 100%;
+    width: 100%;
   }
 
   &-avatar-container {
@@ -256,6 +246,9 @@ export default {
   }
 
   &-avatar {
+    height: 100%;
+    width: 100%;
+
     :deep(.image) {
       height: 100%;
       width: 100%;
