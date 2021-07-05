@@ -26,6 +26,7 @@ import CookiesModal from './components/modals/CookiesModal'
 import Modal from './plugins/global-sheet-modal/Modal.vue'
 import { useRoute } from 'vue-router'
 import { APP_HOME, AUTH_LOGIN } from './router/names'
+import { LOGGED_IN_ALLOWED } from './router/paths'
 import { useMeta } from 'vue-meta'
 import { useStore } from 'vuex'
 import { THEME_HTML_ATTRIBUTE } from './configs/theme'
@@ -84,12 +85,7 @@ export default {
   async created() {
     try {
       await this.$store.dispatch('user/fetchUserProfile', { getInitUserData: true })
-      if (
-        !location.pathname.startsWith('/app') &&
-        !location.pathname.startsWith('/terms') &&
-        !location.pathname.startsWith('/privacy-policy') &&
-        !location.pathname.startsWith('/add-blog')
-      ) {
+      if (!LOGGED_IN_ALLOWED.some(path => location.pathname.startsWith(path))) {
         await this.$router.replace({ name: APP_HOME })
       }
     } catch {

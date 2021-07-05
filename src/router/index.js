@@ -1,38 +1,14 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { nextTick } from 'vue'
+
 import modalPlugin from '@/plugins/global-sheet-modal'
+import progressbarPlugin from '@/plugins/progressbar'
+
 import store from '@/store'
 import { USER_AUTH_STATE } from '@/store/modules/user'
-// import identityApi from '@/api/identityApi'
-import progressbarPlugin from '@/plugins/progressbar'
-import {
-  ADD_BLOG,
-  APP,
-  APP_ACCOUNT,
-  APP_ALMOST_AVAILABLE,
-  APP_BLOG,
-  APP_COOK_IT,
-  APP_FAVOURITES,
-  APP_HELP,
-  APP_HIDDEN_BLOGS,
-  APP_HIDDEN_RECIPES,
-  APP_HOME,
-  APP_MY_KITCHEN,
-  APP_RECIPE,
-  APP_RECIPES,
-  APP_SHOPPING_LIST,
-  AUTH,
-  AUTH_CONFIRM_EMAIL,
-  AUTH_LOGIN,
-  AUTH_REGISTER,
-  AUTH_REGISTER_SUCCESS,
-  AUTH_REQUEST_PASSWORD_RESET,
-  AUTH_RESET_PASSWORD,
-  LANDING_PAGE,
-  PRIVACY_POLICY,
-  TERMS
-} from './names'
+
+import * as NAMES from './names'
 import eventHub from './eventHub'
-import { nextTick } from 'vue'
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
 
@@ -64,7 +40,7 @@ const onlyAnonymousGuard = async (to, from, next) => {
   const isAuthenticated = await forceIsAuthenticated()
 
   if (isAuthenticated) {
-    next({ name: 'home' })
+    next({ name: NAMES.APP_HOME })
   } else {
     next()
   }
@@ -76,169 +52,156 @@ const onlyAuthenticated = async (to, from, next) => {
   if (isAuthenticated) {
     next()
   } else {
-    next({ name: 'login' })
+    next({ name: NAMES.AUTH_LOGIN })
   }
 }
 
 const routes = [
   {
     path: '/',
-    name: LANDING_PAGE,
+    name: NAMES.LANDING_PAGE,
     beforeEnter: onlyAnonymousGuard,
     component: () => import(/* webpackChunkName: "landing" */ '@/views/LandingPage.vue')
   },
   {
     path: '/terms',
-    name: TERMS,
+    name: NAMES.TERMS,
     props: true,
     meta: { hideCookiesModal: true },
     component: () => import(/* webpackChunkName: "terms" */ '@/views/Terms.vue')
   },
   {
     path: '/privacy-policy',
-    name: PRIVACY_POLICY,
+    name: NAMES.PRIVACY_POLICY,
     props: true,
     meta: { hideCookiesModal: true },
     component: () => import(/* webpackChunkName: "terms" */ '@/views/PrivacyPolicy.vue')
   },
   {
     path: '/add-blog',
-    name: ADD_BLOG,
+    name: NAMES.ADD_BLOG,
     props: true,
     meta: { hideCookiesModal: true },
     component: () => import(/* webpackChunkName: "add-blog" */ '@/views/AddBlog.vue')
   },
   {
     path: '/app',
-    name: APP,
+    name: NAMES.APP,
     beforeEnter: onlyAuthenticated,
     component: () => import(/* webpackChunkName: "app" */ '@/views/App.vue'),
     children: [
       {
         path: '',
         alias: 'home',
-        name: APP_HOME,
+        name: NAMES.APP_HOME,
         component: () => import(/* webpackChunkName: "home" */ '@/views/app/Home.vue')
       },
       {
         path: 'recipe/:recipeId',
-        name: APP_RECIPE,
+        name: NAMES.APP_RECIPE,
         props: true,
         component: () => import(/* webpackChunkName: "recipe" */ '@/views/app/Recipe.vue')
       },
       {
         path: 'recipes',
-        name: APP_RECIPES,
-        meta: {
-          preventScroll: true
-        },
+        name: NAMES.APP_RECIPES,
+        meta: { preventScroll: true },
         component: () => import(/* webpackChunkName: "recipes" */ '@/views/app/Recipes.vue')
       },
       {
         path: 'favourites',
-        name: APP_FAVOURITES,
-        meta: {
-          preventScroll: true
-        },
+        name: NAMES.APP_FAVOURITES,
+        meta: { preventScroll: true },
         component: () => import(/* webpackChunkName: "favourites" */ '@/views/app/Favourites.vue')
       },
       {
         path: 'cook-it',
-        name: APP_COOK_IT,
-        meta: {
-          preventScroll: true
-        },
+        name: NAMES.APP_COOK_IT,
+        meta: { preventScroll: true },
         component: () => import(/* webpackChunkName: "cook-it" */ '@/views/app/CookIt.vue')
       },
       {
         path: 'cook-it/almost-available',
-        name: APP_ALMOST_AVAILABLE,
-        meta: {
-          preventScroll: true
-        },
+        name: NAMES.APP_ALMOST_AVAILABLE,
+        meta: { preventScroll: true },
         component: () => import(/* webpackChunkName: "cook-it" */ '@/views/app/cook-it/AlmostAvailableRecipes.vue')
       },
       {
         path: 'my-kitchen',
-        name: APP_MY_KITCHEN,
+        name: NAMES.APP_MY_KITCHEN,
         component: () => import(/* webpackChunkName: "my-kitchen" */ '@/views/app/MyKitchen.vue')
       },
       {
         path: 'shopping-list',
-        name: APP_SHOPPING_LIST,
+        name: NAMES.APP_SHOPPING_LIST,
         component: () => import(/* webpackChunkName: "shopping-list" */ '@/views/app/ShoppingList.vue')
       },
       {
         path: 'account',
-        name: APP_ACCOUNT,
+        name: NAMES.APP_ACCOUNT,
         component: () => import(/* webpackChunkName: "account" */ '@/views/app/Account.vue')
       },
       {
         path: 'blog/:blogId',
-        name: APP_BLOG,
+        name: NAMES.APP_BLOG,
         props: true,
+        meta: { preventScroll: true },
         component: () => import(/* webpackChunkName: "account" */ '@/views/app/BlogRecipes.vue')
       },
       {
         path: 'hidden-blogs',
-        name: APP_HIDDEN_BLOGS,
-        meta: {
-          preventScroll: true
-        },
+        name: NAMES.APP_HIDDEN_BLOGS,
         component: () => import(/* webpackChunkName: "account" */ '@/views/app/account/HiddenBlogs.vue')
       },
       {
         path: 'hidden-recipes',
-        name: APP_HIDDEN_RECIPES,
-        meta: {
-          preventScroll: true
-        },
+        name: NAMES.APP_HIDDEN_RECIPES,
         component: () => import(/* webpackChunkName: "account" */ '@/views/app/account/HiddenRecipes.vue')
       },
       {
         path: 'help',
-        name: APP_HELP,
+        name: NAMES.APP_HELP,
         component: () => import(/* webpackChunkName: "help" */ '@/views/app/Help.vue')
       }
     ]
   },
   {
     path: '/auth',
-    name: AUTH,
+    name: NAMES.AUTH,
     beforeEnter: onlyAnonymousGuard,
     component: () => import(/* webpackChunkName: "auth" */ '@/views/Auth.vue'),
     children: [
       {
         path: '',
         alias: 'login',
-        name: AUTH_LOGIN,
+        name: NAMES.AUTH_LOGIN,
         component: () => import(/* webpackChunkName: "auth" */ '@/views/auth/Login.vue')
       },
       {
         path: 'register',
-        name: AUTH_REGISTER,
+        name: NAMES.AUTH_REGISTER,
         component: () => import(/* webpackChunkName: "auth" */ '@/views/auth/Register.vue')
       },
       {
         path: 'register-success',
-        name: AUTH_REGISTER_SUCCESS,
+        name: NAMES.AUTH_REGISTER_SUCCESS,
         props: true,
         component: () => import(/* webpackChunkName: "auth" */ '@/views/auth/RegisterSuccess.vue')
       },
       {
         path: 'request-password-reset',
-        name: AUTH_REQUEST_PASSWORD_RESET,
+        name: NAMES.AUTH_REQUEST_PASSWORD_RESET,
         props: true,
         component: () => import(/* webpackChunkName: "auth" */ '@/views/auth/RequestPasswordReset.vue')
       },
       {
         path: 'reset-password',
-        name: AUTH_RESET_PASSWORD,
+        name: NAMES.AUTH_RESET_PASSWORD,
         component: () => import(/* webpackChunkName: "auth" */ '@/views/auth/ResetPassword.vue')
       },
       {
         path: 'confirm-email',
-        name: AUTH_CONFIRM_EMAIL,
+        name: NAMES.AUTH_CONFIRM_EMAIL,
         component: () => import(/* webpackChunkName: "auth" */ '@/views/auth/ConfirmEmail.vue')
       }
     ]

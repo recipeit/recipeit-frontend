@@ -25,12 +25,11 @@
           </BaseMenu>
         </div>
         <div class="header-avatar-container">
-          <BaseIcon v-if="blogDetails && !blogDetails.imageUrl" class="no-avatar-icon" icon="user" weight="semi-bold" />
-          <BaseImageLazyload v-else class="header-avatar" :src="blogDetails?.imageUrl" alt="" />
+          <BaseImageLazyload class="header-avatar" :src="avatarUrl" :errorPlaceholder="avatarErrorUrl" alt="" />
         </div>
       </div>
       <RecipeParallaxImage class="header-image">
-        <BaseImageLazyload :src="blogBgUrl" />
+        <BaseImageLazyload :src="backgroundUrl" :errorPlaceholder="backgroundErrorUrl" />
       </RecipeParallaxImage>
     </div>
 
@@ -63,7 +62,8 @@ import BlogDetails from '@/components/BlogDetails'
 import InvisibleBlogInfoModal from '@/components/modals/InvisibleBlogInfoModal'
 import recipePagedList from './composable/recipePagedList'
 import { useMeta } from 'vue-meta'
-import blogBgUrl from '@/assets/img/blog-bg.webp'
+import avatarErrorUrl from '@/assets/img/blog-avatar.webp'
+import backgroundErrorUrl from '@/assets/img/blog-bg.webp'
 
 export default {
   name: 'Recipes',
@@ -91,6 +91,9 @@ export default {
       })
     })
 
+    const backgroundUrl = computed(() => `/static/blogs/${props.blogId}/background.webp`)
+    const avatarUrl = computed(() => `/static/blogs/${props.blogId}/avatar.webp`)
+
     const computedMeta = computed(() => {
       const title = blogDetails.value?.name || props.blogName
       return title ? { title } : {}
@@ -101,7 +104,10 @@ export default {
     return {
       blogDetails,
       recipesList,
-      blogBgUrl
+      avatarUrl,
+      backgroundUrl,
+      avatarErrorUrl,
+      backgroundErrorUrl
     }
   },
   computed: {
@@ -201,22 +207,24 @@ export default {
   &-image {
     position: relative;
     height: 196px;
+    width: 100%;
+    background-color: var(--color-image-background);
 
     @media (min-width: 721px) {
       border-radius: 32px;
       margin-bottom: 40px;
     }
 
-    &:after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: var(--color-background);
-      opacity: 0.5;
-    }
+    // &:after {
+    //   content: '';
+    //   position: absolute;
+    //   top: 0;
+    //   left: 0;
+    //   right: 0;
+    //   bottom: 0;
+    //   background-color: var(--color-background);
+    //   opacity: 0.5;
+    // }
   }
 
   &-avatar-container {
@@ -230,6 +238,8 @@ export default {
     background-color: var(--color-image-background);
     height: 80px;
     width: 80px;
+    border: 4px solid var(--color-background);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
 
     .no-avatar-icon {
       width: 100%;

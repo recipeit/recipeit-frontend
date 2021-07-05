@@ -45,41 +45,41 @@ export default {
         title: 'Dodaj swoje produkty',
         description:
           'Stwórz listę produktów, które masz w swojej kuchni. Możesz je uzupełnić o szczegóły, takie jak ilość czy data ważności!',
-        image: require('@/assets/img/landing-page/kitchen.png')
+        image: require('@/assets/img/landing-page/kitchen.webp')
       },
       {
         title: 'Sprawdź co możesz z nich przygotować',
         description:
           'Nie pozwól aby produkty, które kupiłeś, się przeterminowały. Recipeit pokaże Ci, co możesz przygotować z tego, co już masz!',
-        image: require('@/assets/img/landing-page/recipes.png')
+        image: require('@/assets/img/landing-page/recipes.webp')
       },
       {
         title: 'Przygotuj posiłek',
         description:
           'Lista składników, liczba porcji, czas czy szczegółowa instrukcja przygotowania podzielona na osobne kroki. Wszystko to w Recipeit!',
-        image: require('@/assets/img/landing-page/recipe.png')
+        image: require('@/assets/img/landing-page/recipe.webp')
       },
       {
         title: 'Stwórz listę zakupów',
         description: 'Czegos Ci brakuje? Chcesz ugotować danie, ale nie masz potrzebnych składników? Dodaj je do listy zakupów!',
-        image: require('@/assets/img/landing-page/shopping.png')
+        image: require('@/assets/img/landing-page/shopping.webp')
       },
       {
         title: 'Filtruj przepisy',
         description:
           'Szukasz czegoś konkretnego? Masz na coś alergię? Potrzebujesz przepis z konkretnymi składnikami? Skorzystaj z dedykowanych filtrów!',
-        image: require('@/assets/img/landing-page/filters.png')
+        image: require('@/assets/img/landing-page/filters.webp')
       },
       {
         title: 'Zaplanuj przepis na później',
         description: 'Znalazłeś przepis, ale nie chcesz go przygotowywać już teraz? Dodaj go do planu dnia, bądź nawet tygodnia!',
-        image: require('@/assets/img/landing-page/plan.png')
+        image: require('@/assets/img/landing-page/plan.webp')
       },
       {
         title: 'Dodawaj do ulubionych',
         description:
           'Każdy ma taki przepis, który uwielbia często przygotowywać. Z listą ulubionych przepisów, ich znalezienie jest błyskawiczne!',
-        image: require('@/assets/img/landing-page/favourites.png')
+        image: require('@/assets/img/landing-page/favourites.webp')
       }
     ]
 

@@ -82,7 +82,7 @@ export default {
   },
   computed: {
     renderSrc() {
-      return this.visible ? this.src : null
+      return this.visible ? (this.error ? this.errorPlaceholder : this.src) : null
     },
     classList() {
       return {
@@ -115,6 +115,8 @@ export default {
 $blurred-background-distance: -16px;
 
 .base-image-lazyload {
+  font-size: 0;
+
   &.base-image-lazyload--with-blurred-background {
     position: relative;
     overflow: hidden;

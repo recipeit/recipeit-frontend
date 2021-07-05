@@ -74,23 +74,23 @@ module.exports = {
       background_color: '#FFFFFF',
       icons: [
         {
-          src: '/img/icons/android-chrome-192x192.png',
+          src: '/pwa/icons/android-chrome-192x192.png',
           type: 'image/png',
           sizes: '192x192'
         },
         {
-          src: '/img/icons/android-chrome-512x512.png',
+          src: '/pwa/icons/android-chrome-512x512.png',
           type: 'image/png',
           sizes: '512x512'
         },
         {
-          src: '/img/icons/pwa-maskable-192x192.png',
+          src: '/pwa/icons/pwa-maskable-192x192.png',
           type: 'image/png',
           sizes: '192x192',
           purpose: 'any maskable'
         },
         {
-          src: '/img/icons/pwa-maskable-512x512.png',
+          src: '/pwa/icons/pwa-maskable-512x512.png',
           type: 'image/png',
           sizes: '512x512',
           purpose: 'any maskable'
@@ -100,17 +100,17 @@ module.exports = {
         'Znajdź przepis ze swoich składników! Nie pozwól aby Twoje produkty się przeterminowały. Recipeit pokaże Ci, co możesz z nich przygotować.',
       screenshots: [
         {
-          src: '/img/screenshots/recipe.png',
+          src: '/pwa/screenshots/recipe.png',
           type: 'image/png',
           sizes: '750x1440'
         },
         {
-          src: '/img/screenshots/recipes.png',
+          src: '/pwa/screenshots/recipes.png',
           type: 'image/png',
           sizes: '750x1440'
         },
         {
-          src: '/img/screenshots/kitchen.png',
+          src: '/pwa/screenshots/kitchen.png',
           type: 'image/png',
           sizes: '750x1440'
         }
