@@ -29,7 +29,7 @@
         </div>
       </div>
       <RecipeParallaxImage class="header-image">
-        <BaseImageLazyload :src="backgroundUrl" :errorPlaceholder="backgroundErrorUrl" />
+        <BaseImageLazyload class="header-image-image" :src="backgroundUrl" :errorPlaceholder="backgroundErrorUrl" />
       </RecipeParallaxImage>
     </div>
 
@@ -213,6 +213,10 @@ export default {
     @media (min-width: 721px) {
       border-radius: 32px;
       margin-bottom: 40px;
+    }
+
+    &-image {
+      height: 100%;
     }
 
     // &:after {
