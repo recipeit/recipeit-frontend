@@ -69,7 +69,7 @@ module.exports = {
       name: 'Recipeit',
       short_name: 'Recipeit',
       start_url: '.',
-      theme_color: '#FFFFFF',
+      // theme_color: '#FFFFFF',
       display: 'standalone',
       background_color: '#FFFFFF',
       icons: [
@@ -117,7 +117,7 @@ module.exports = {
       ],
       categories: ['food', 'shopping', 'productivity']
     },
-    themeColor: '#FFFFFF',
+    themeColor: null,
     msTileColor: '#FFFFFF',
     appleMobileWebAppCapable: 'yes',
     appleMobileWebAppStatusBarStyle: 'black',

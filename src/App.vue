@@ -21,7 +21,7 @@ import AppLoading from '@/components/AppLoading'
 import MessageContainer from '@/components/MessageContainer'
 import UpdateMessage from '@/components/messages/UpdateMessage'
 import updateSW from './composables/update'
-import { computed, onBeforeMount, reactive, toRefs } from '@vue/runtime-core'
+import { computed, onBeforeMount, reactive, toRefs, watchEffect } from '@vue/runtime-core'
 import CookiesModal from './components/modals/CookiesModal'
 import Modal from './plugins/global-sheet-modal/Modal.vue'
 import { useRoute } from 'vue-router'
@@ -76,12 +76,19 @@ export default {
       return exactTheme.value === THEME_LIGHT ? THEME_LIGHT_COLOR : THEME_DARK_COLOR
     })
 
+    watchEffect(() => {
+      const themeMeta = document.querySelector('meta[name=theme-color]')
+
+      if (themeMeta) {
+        themeMeta.content = themeColor.value
+      }
+    })
+
     const computedMeta = computed(() => ({
       title: '',
       htmlAttrs: {
         [THEME_HTML_ATTRIBUTE]: store.state.user.theme
-      },
-      meta: [{ name: 'theme-color', content: themeColor.value }]
+      }
     }))
 
     useMeta(computedMeta)
