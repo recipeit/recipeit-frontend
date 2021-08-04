@@ -29,7 +29,7 @@ import { APP_HOME, AUTH_LOGIN } from './router/names'
 import { LOGGED_IN_ALLOWED } from './router/paths'
 import { useMeta } from 'vue-meta'
 import { useStore } from 'vuex'
-import { THEME_HTML_ATTRIBUTE } from './configs/theme'
+import { EXACT_THEMES, THEME_DARK, THEME_DARK_COLOR, THEME_HTML_ATTRIBUTE, THEME_LIGHT, THEME_LIGHT_COLOR } from './configs/theme'
 
 const TITLE_TEMPLATE = 'Recipeit - Znajdź przepis ze swoich składników'
 const TITLE_SMALL_TEMPLATE = 'Recipeit'
@@ -62,11 +62,26 @@ export default {
       }
     })
 
+    const exactTheme = computed(() => {
+      const { theme } = store.state.user
+
+      if (EXACT_THEMES.includes(theme)) {
+        return theme
+      }
+
+      return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? THEME_DARK : THEME_LIGHT
+    })
+
+    const themeColor = computed(() => {
+      return exactTheme.value === THEME_LIGHT ? THEME_LIGHT_COLOR : THEME_DARK_COLOR
+    })
+
     const computedMeta = computed(() => ({
       title: '',
       htmlAttrs: {
         [THEME_HTML_ATTRIBUTE]: store.state.user.theme
-      }
+      },
+      meta: [{ name: 'theme-color', content: themeColor.value }]
     }))
 
     useMeta(computedMeta)
