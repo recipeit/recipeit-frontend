@@ -115,6 +115,7 @@ export default {
       this.$refs.images.style.transform = `translate3d(0, ${transformValue}px ,0)`
     },
     calculateCurrentIndex() {
+      if (!this.$refs.images) return 0
       const { scrollLeft, scrollWidth } = this.$refs.images
       return Math.round((scrollLeft / scrollWidth) * this.images.length)
     },

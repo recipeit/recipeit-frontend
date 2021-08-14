@@ -1,10 +1,12 @@
 import { ERROR_ACTION_TAG_NAME } from '@/configs/error'
 import { RecipeList } from '@/constants'
 import { ref } from '@vue/runtime-core'
+import { useErrorHandler } from '@/error'
 
 export default function(apiEndpoint) {
   const recipes = ref(new RecipeList())
   const recipesErrors = ref(null)
+  const errorHandler = useErrorHandler()
 
   const loadRecipesPage = async page => {
     return await fetchRecipesPage(page)
@@ -34,7 +36,7 @@ export default function(apiEndpoint) {
         from: 'LOAD'
       }
 
-      this.$errorHandler.captureError(error, {
+      errorHandler.captureError(error, {
         [ERROR_ACTION_TAG_NAME]: 'recipePagedList.fetchRecipesPage'
       })
 

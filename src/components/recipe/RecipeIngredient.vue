@@ -153,7 +153,7 @@ export default {
   },
   computed: {
     ...mapState({
-      baseProducts: state => state.ingredients.baseProducts
+      baseProducts: state => state.ingredients.baseProducts || []
     }),
     name() {
       const { ingredient } = this

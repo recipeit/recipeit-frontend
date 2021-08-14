@@ -132,6 +132,12 @@ $border-offset: 3px;
     }
   }
 
+  &:not(&--finished) ~ &--finished {
+    &::before {
+      background-color: var(--color-border);
+    }
+  }
+
   &--selected {
     font-weight: bold;
   }
