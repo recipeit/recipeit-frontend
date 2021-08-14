@@ -110,7 +110,7 @@ $border-offset: 3px;
     width: 2px;
     background-color: var(--color-border);
     position: absolute;
-    left: 7px;
+    left: 9px;
     border-radius: 2px;
     top: 26px + $border-offset;
     bottom: -16px + $border-offset;
@@ -147,8 +147,13 @@ $border-offset: 3px;
   }
 
   :deep(.checkbox__input) {
-    margin-top: 5px;
-    margin-bottom: 5px;
+    margin-top: 3px;
+    margin-bottom: 3px;
+    width: 20px;
+    min-width: 20px;
+    height: 20px;
+    border-radius: 20px;
+    margin-right: 12px;
   }
 
   :deep(.checkbox__label) {
