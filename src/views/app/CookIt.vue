@@ -47,7 +47,7 @@
         <template #empty-with-filters>
           <div class="empty-list-message">
             <p class="empty-list-message-title">Nie znaleźliśmy przepisów dla użytych filtrów</p>
-            <p v-if="almostAvailableRecipes.items?.length > 0" class="empty-list-message-sub">
+            <p v-if="almostAvailableRecipesList.recipes.value.totalCount" class="empty-list-message-sub">
               Możesz
               <BaseLink tag="button" @click="reloadRecipes({})" class="empty-list-message-link" color="primary">
                 wyczyścić filtry
