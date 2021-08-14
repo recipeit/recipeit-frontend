@@ -14,7 +14,7 @@ module.exports = {
   css: {
     loaderOptions: {
       scss: {
-        prependData: `
+        additionalData: `
           @use 'sass:math';
           @import '@/styles/non-rendered';
         `
@@ -128,5 +128,6 @@ module.exports = {
       maskIcon: 'img/icons/safari-pinned-tab.svg',
       msTileImage: 'img/icons/msapplication-icon-144x144.png'
     }
-  }
+  },
+  transpileDependencies: ['vue-meta']
 }
