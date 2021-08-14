@@ -87,6 +87,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// default 0px offset == 5px margin
+$border-offset: 3px;
+
 .recipe-directions-list {
   label {
     display: flex;
@@ -99,11 +102,34 @@ export default {
 }
 
 .recipe-directions-list-item {
+  position: relative;
   @include transition((color, text-decoration));
+
+  &::before {
+    content: '';
+    width: 2px;
+    background-color: var(--color-border);
+    position: absolute;
+    left: 7px;
+    border-radius: 2px;
+    top: 26px + $border-offset;
+    bottom: -16px + $border-offset;
+    @include transition((background-color));
+  }
+
+  &:last-of-type {
+    &::before {
+      content: none;
+    }
+  }
 
   &--finished {
     color: var(--color-text-secondary);
     text-decoration: line-through;
+
+    &::before {
+      background-color: var(--color-primary);
+    }
   }
 
   &--selected {
