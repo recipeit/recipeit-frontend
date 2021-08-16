@@ -408,7 +408,7 @@ export default {
   font-size: 0.875rem;
   line-height: 1.5;
   margin: -32px -32px 0 -32px;
-  overflow: hidden;
+  // overflow: hidden;
 
   @media (min-width: 721px) {
     margin: 0;

@@ -50,6 +50,9 @@
 <script>
 import { computed, ref } from '@vue/runtime-core'
 import { useStore } from 'vuex'
+
+import { INGREDIENT_USER_STATES } from '@/configs/recipeIngredient'
+
 import SectionTitle from '@/components/SectionTitle'
 import RecipeIngredient from '@/components/recipe/RecipeIngredient'
 
@@ -108,13 +111,13 @@ export default {
             let state
 
             if (!baseProductIdsArray) {
-              state = 'NONE'
+              state = INGREDIENT_USER_STATES.NONE
             } else if (isInMyKitchen(baseProductIdsArray)) {
-              state = 'IN_KITCHEN'
+              state = INGREDIENT_USER_STATES.IN_KITCHEN
             } else if (isInShoppingList(baseProductIdsArray)) {
-              state = 'IN_SHOPPING_LIST'
+              state = INGREDIENT_USER_STATES.IN_SHOPPING_LIST
             } else {
-              state = 'UNAVAILABLE'
+              state = INGREDIENT_USER_STATES.UNAVAILABLE
             }
 
             return {
@@ -131,7 +134,7 @@ export default {
 
       return Object.values(ingredients.value)
         .flatMap(value => value.map(i => i.state))
-        .includes('UNAVAILABLE')
+        .includes(INGREDIENT_USER_STATES.UNAVAILABLE)
     })
 
     const addMissingIngredientsToShoppingList = async () => {

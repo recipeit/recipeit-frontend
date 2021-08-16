@@ -9,38 +9,46 @@
       <span v-if="ingredient.optional" class="ingredient-optional">opcjonalnie</span>
     </span>
     <div class="state-container">
-      <BaseLink tag="button" v-if="ingredient.state === 'IN_KITCHEN'" class="state state--available" @click="stateClickHandler()">
-        <BaseIcon class="state-icon state-icon--small" icon="check" weight="semi-bold" />
-      </BaseLink>
+      <Popper :content="actionPopperContent" hover arrow>
+        <BaseLink tag="button" v-if="ingredient.state === 'IN_KITCHEN'" class="state state--available" @click="stateClickHandler()">
+          <BaseIcon class="state-icon state-icon--small" icon="check" weight="semi-bold" />
+        </BaseLink>
 
-      <BaseButton
-        v-else-if="ingredient.state === 'IN_SHOPPING_LIST' || ingredient.state === 'UNAVAILABLE'"
-        class="state"
-        subtle
-        :color="ingredient.state === 'IN_SHOPPING_LIST' ? 'primary' : 'accent'"
-        :disabled="showLoadingState"
-        @click="stateClickHandler()"
-      >
-        <BaseIcon class="state-icon" icon="basket" />
-        <BaseIcon
-          class="state-icon state-icon--small state-icon--less-space"
-          :icon="ingredient.state === 'IN_SHOPPING_LIST' ? 'check' : 'plus'"
-          weight="semi-bold"
-        />
-      </BaseButton>
+        <BaseButton
+          v-else-if="ingredient.state === 'IN_SHOPPING_LIST' || ingredient.state === 'UNAVAILABLE'"
+          class="state"
+          subtle
+          :color="ingredient.state === 'IN_SHOPPING_LIST' ? 'primary' : 'accent'"
+          :disabled="showLoadingState"
+          @click="stateClickHandler()"
+        >
+          <BaseIcon class="state-icon" icon="basket" />
+          <BaseIcon
+            class="state-icon state-icon--small state-icon--less-space"
+            :icon="ingredient.state === 'IN_SHOPPING_LIST' ? 'check' : 'plus'"
+            weight="semi-bold"
+          />
+        </BaseButton>
+      </Popper>
     </div>
   </li>
 </template>
 
 <script>
-import { ToastType } from '@/plugins/toast/toastType'
+import Popper from 'vue3-popper'
 import { mapState } from 'vuex'
 import { markRaw } from '@vue/runtime-core'
+
+import { ToastType } from '@/plugins/toast/toastType'
 import { stringifiedAmount } from '@/functions/amount'
 import SelectBaseProductFromArrayModal from '@/components/modals/SelectBaseProductFromArrayModal'
 import Dialog from '@/components/modals/Dialog'
+import { INGREDIENT_USER_STATES } from '@/configs/recipeIngredient'
 
 export default {
+  components: {
+    Popper
+  },
   props: {
     ingredient: {
       type: Object,
@@ -59,17 +67,16 @@ export default {
     loading: false
   }),
   methods: {
-    addSingleProductToShoppingList(product) {
+    async addSingleProductToShoppingList(product) {
       this.loading = true
 
-      this.$store
-        .dispatch('shoppingList/addProduct', product)
-        .catch(() => {
-          this.$toast.show('Nie udało się dodać produktu do listy zakupów', ToastType.ERROR)
-        })
-        .finally(() => {
-          this.loading = false
-        })
+      try {
+        await this.$store.dispatch('shoppingList/addProduct', product)
+      } catch {
+        this.$toast.show('Nie udało się dodać produktu do listy zakupów', ToastType.ERROR)
+      } finally {
+        this.loading = false
+      }
     },
     addProductToShoppingList() {
       const { ingredient } = this
@@ -102,10 +109,13 @@ export default {
     stateClickHandler() {
       const { ingredient } = this
 
-      if (ingredient.state === 'IN_KITCHEN' || ingredient.state === 'IN_SHOPPING_LIST') {
-        const title = ingredient.state === 'IN_KITCHEN' ? 'Posiadasz już ten produkt' : 'Posiadasz już ten produkt na liście zakupów'
+      if ([INGREDIENT_USER_STATES.IN_KITCHEN, INGREDIENT_USER_STATES.IN_SHOPPING_LIST].includes(ingredient.state)) {
+        const title =
+          ingredient.state === INGREDIENT_USER_STATES.IN_KITCHEN
+            ? 'Posiadasz już ten produkt'
+            : 'Posiadasz już ten produkt na liście zakupów'
         const content =
-          ingredient.state === 'IN_KITCHEN'
+          ingredient.state === INGREDIENT_USER_STATES.IN_KITCHEN
             ? 'Czy mimo to, chcesz dodać do listy zakupów?'
             : 'Czy mimo to, chcesz dodać go jeszcze raz do listy zakupów?'
         this.$modal.show(
@@ -124,7 +134,7 @@ export default {
             }
           }
         )
-      } else if (ingredient.state === 'UNAVAILABLE') {
+      } else if (ingredient.state === INGREDIENT_USER_STATES.UNAVAILABLE) {
         this.addProductToShoppingList()
         // } else if (ingredient.baseProductIdsArray.length > 1) {
         //   this.$modal.show(
@@ -178,13 +188,31 @@ export default {
       return 1
     },
     showLoadingState() {
-      return this.loading || (this.allAdding && this.ingredient.state === 'UNAVAILABLE')
+      return this.loading || (this.allAdding && this.ingredient.state === INGREDIENT_USER_STATES.UNAVAILABLE)
+    },
+    actionPopperContent() {
+      const { state } = this.ingredient
+
+      if (state === INGREDIENT_USER_STATES.IN_KITCHEN) {
+        return 'Posiadasz ten produkt w swojej kuchni'
+      }
+      if (state === INGREDIENT_USER_STATES.IN_SHOPPING_LIST) {
+        return 'Posiadasz ten produkt na liście zakupów'
+      }
+      if (state === INGREDIENT_USER_STATES.UNAVAILABLE) {
+        return 'Dodaj do listy zakupów'
+      }
+      return null
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+:deep(.popper) {
+  font-size: 0.75rem;
+}
+
 .ingredient {
   display: flex;
   align-items: center;
@@ -227,6 +255,7 @@ export default {
     min-width: 64px;
     display: flex;
     justify-content: flex-end;
+    line-height: 1;
   }
 
   .state {

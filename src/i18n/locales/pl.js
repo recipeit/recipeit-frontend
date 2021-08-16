@@ -1,6 +1,7 @@
 import errorCodes from '@/constants/errorCodes'
 import timesOfDay from '@/constants/timesOfDay'
 import recipeCategories from '@/constants/recipeCategories'
+import { ADDITIONAL_AMOUNT_VALUES } from '@/configs/amount'
 
 export default {
   messages: {
@@ -197,7 +198,9 @@ export default {
       leaf: 'liścia | liść | liście | liści',
       sachet: 'saszetki | saszetka | saszetki | saszetek',
       jar: 'słoika | słoik | słoiki | słoików',
-      bucket: 'wiaderka | wiaderko | wiaderka | wiaderek'
+      bucket: 'wiaderka | wiaderko | wiaderka | wiaderek',
+      sprig: 'gałązki | gałązka | gałązki | gałązek',
+      drop: 'kropli | kropla | krople | kropli'
     },
     units: {
       milligram: 'miligrama | miligram | miligramy | miligramów',
@@ -229,10 +232,12 @@ export default {
       stalk: 'łodygi | łodyga | łodygi | łodyg',
       cube: 'kostki | kostka | kostki | kostek',
       can: 'puszki | puszka | puszki | puszek',
-      leaf: 'liśca | liść | liście | liści',
+      leaf: 'liścia | liść | liście | liści',
       sachet: 'saszetki | saszetka | saszetki | saszetek',
       jar: 'słoika | słoik | słoiki | słoików',
-      bucket: 'wiaderka | wiaderko | wiaderka | wiaderek'
+      bucket: 'wiaderka | wiaderko | wiaderka | wiaderek',
+      sprig: 'gałązki | gałązka | gałązki | gałązek',
+      drop: 'kropli | kropla | krople | kropli'
     },
     unitGroups: {
       weight: 'waga',
@@ -298,6 +303,10 @@ export default {
 
     if (decimal) {
       return 0
+    }
+
+    if (ADDITIONAL_AMOUNT_VALUES.includes(choice)) {
+      return 3
     }
 
     if (absChoice === 1) {
