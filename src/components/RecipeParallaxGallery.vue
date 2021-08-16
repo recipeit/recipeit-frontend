@@ -273,18 +273,18 @@ export default {
       height: 100%;
     }
 
-    @media (min-width: 721px) {
-      :deep(.image) {
-        object-fit: contain;
-      }
-
-      :deep(.blurred-background) {
-        display: block;
-        object-fit: cover;
-        // width: 100%;
-        // height: 100%;
-      }
+    // @media (min-width: 721px) {
+    :deep(.image) {
+      object-fit: contain;
     }
+
+    :deep(.blurred-background) {
+      display: block;
+      object-fit: cover;
+      // width: 100%;
+      // height: 100%;
+    }
+    // }
   }
 }
 </style>
