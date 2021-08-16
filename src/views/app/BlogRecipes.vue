@@ -260,8 +260,8 @@ export default {
 .hidden-bar {
   font-size: 0.875rem;
   font-weight: bold;
-  margin-left: 0;
-  margin-right: 0;
+  margin-left: auto;
+  margin-right: auto;
   padding: 0.5rem 0;
   line-height: 1rem;
   display: flex;
