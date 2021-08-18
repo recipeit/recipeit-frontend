@@ -79,7 +79,7 @@ export default {
 
   &__item {
     flex: 1;
-    padding: 28px 0;
+    padding: 16px 0;
     text-align: center;
     font-size: 1.5rem;
     color: var(--color-link-text-primary-color);
@@ -95,7 +95,16 @@ export default {
     }
 
     .item-name {
-      display: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      line-height: 1;
+      font-size: 0.625rem;
+      opacity: 0.75;
+      margin-top: 0.5rem;
+      height: 2em;
+      padding: 0 0.25rem;
     }
 
     &:hover {
@@ -143,8 +152,12 @@ export default {
 
       .item-name {
         display: inline-block;
-        margin-left: 1rem;
+        margin: 0 0 0 1rem;
         font-size: 0.875rem;
+        text-align: left;
+        padding: 0;
+        opacity: 1;
+        height: auto;
       }
 
       .item-icon {

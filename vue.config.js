@@ -69,7 +69,7 @@ module.exports = {
       name: 'Recipeit',
       short_name: 'Recipeit',
       start_url: '.',
-      // theme_color: '#FFFFFF',
+      theme_color: '#FFFFFF',
       display: 'standalone',
       background_color: '#FFFFFF',
       icons: [
