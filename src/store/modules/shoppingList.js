@@ -22,14 +22,22 @@ export default {
       if (!state.products) {
         state.products = [product]
       } else {
-        state.products.push(product)
+        var existingIndex = state.products.findIndex(({ id }) => id === product.id)
+
+        if (existingIndex >= 0) {
+          state.products[existingIndex] = product
+        } else {
+          state.products.push(product)
+        }
       }
     },
     [MUTATIONS.ADD_PRODUCTS](state, products) {
       if (!state.products) {
         state.products = products
       } else {
-        state.products = state.products.concat(products)
+        var newProductsIds = products.map(({ id }) => id)
+        var currentProductsWithoutUpdated = state.products.filter(({ id }) => !newProductsIds.includes(id))
+        state.products = currentProductsWithoutUpdated.concat(products)
       }
     },
     [MUTATIONS.UPDATE_PRODUCT_FROM_SHOPPING_LIST](state, product) {
