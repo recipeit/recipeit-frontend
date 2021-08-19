@@ -25,7 +25,9 @@ export default {
         var existingIndex = state.products.findIndex(({ id }) => id === product.id)
 
         if (existingIndex >= 0) {
-          state.products[existingIndex] = product
+          Object.entries(product).forEach(([key, value]) => {
+            state.products[existingIndex][key] = value
+          })
         } else {
           state.products.push(product)
         }
@@ -43,11 +45,9 @@ export default {
     [MUTATIONS.UPDATE_PRODUCT_FROM_SHOPPING_LIST](state, product) {
       var productIndex = state.products.findIndex(p => p.id === product.id)
       if (productIndex >= 0) {
-        for (var prop in product) {
-          if (Object.prototype.hasOwnProperty.call(product, prop)) {
-            state.products[productIndex][prop] = product[prop]
-          }
-        }
+        Object.entries(product).forEach(([key, value]) => {
+          state.products[productIndex][key] = value
+        })
       }
     },
     [MUTATIONS.REMOVE_PRODUCT_FROM_SHOPPING_LIST](state, id) {
