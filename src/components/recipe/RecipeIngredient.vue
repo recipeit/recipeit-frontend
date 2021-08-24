@@ -9,32 +9,31 @@
       <span v-if="ingredient.optional" class="ingredient-optional">opcjonalnie</span>
     </span>
     <div class="state-container">
-      <BaseLink
-        tag="button"
-        v-if="ingredient.state === 'IN_KITCHEN'"
-        class="state state--available"
-        @click="stateClickHandler()"
-        v-tooltip="actionPopperContent"
-      >
-        <BaseIcon class="state-icon state-icon--small" icon="check" weight="semi-bold" />
-      </BaseLink>
+      <VTooltip class="huja">
+        <BaseLink tag="button" v-if="ingredient.state === 'IN_KITCHEN'" class="state state--available" @click="stateClickHandler()">
+          <BaseIcon class="state-icon state-icon--small" icon="check" weight="semi-bold" />
+        </BaseLink>
 
-      <BaseButton
-        v-else-if="ingredient.state === 'IN_SHOPPING_LIST' || ingredient.state === 'UNAVAILABLE'"
-        class="state"
-        subtle
-        :color="ingredient.state === 'IN_SHOPPING_LIST' ? 'primary' : 'accent'"
-        :disabled="showLoadingState"
-        @click="stateClickHandler()"
-        v-tooltip="actionPopperContent"
-      >
-        <BaseIcon class="state-icon" icon="basket" />
-        <BaseIcon
-          class="state-icon state-icon--small state-icon--less-space"
-          :icon="ingredient.state === 'IN_SHOPPING_LIST' ? 'check' : 'plus'"
-          weight="semi-bold"
-        />
-      </BaseButton>
+        <BaseButton
+          v-else-if="ingredient.state === 'IN_SHOPPING_LIST' || ingredient.state === 'UNAVAILABLE'"
+          class="state"
+          subtle
+          :color="ingredient.state === 'IN_SHOPPING_LIST' ? 'primary' : 'accent'"
+          :disabled="showLoadingState"
+          @click="stateClickHandler()"
+        >
+          <BaseIcon class="state-icon" icon="basket" />
+          <BaseIcon
+            class="state-icon state-icon--small state-icon--less-space"
+            :icon="ingredient.state === 'IN_SHOPPING_LIST' ? 'check' : 'plus'"
+            weight="semi-bold"
+          />
+        </BaseButton>
+
+        <template #popper>
+          {{ actionPopperContent }}
+        </template>
+      </VTooltip>
     </div>
   </li>
 </template>
@@ -253,6 +252,7 @@ export default {
     display: flex;
     justify-content: flex-end;
     line-height: 1;
+    margin-right: -4px;
   }
 
   .state {
@@ -265,7 +265,6 @@ export default {
     padding: 4px 8px;
     cursor: pointer;
     transition: all 0.3s ease;
-    margin-right: -4px;
     justify-content: center;
 
     &--available {
