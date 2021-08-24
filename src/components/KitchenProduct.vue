@@ -1,5 +1,5 @@
 <template>
-  <Product :product="product" @click="openEditModal">
+  <Product :product="product" @click="openEditModal()">
     <div class="actions" @click.stop>
       <BaseButton
         class="purchase-button"

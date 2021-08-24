@@ -1,7 +1,7 @@
 <template>
   <div class="rating">
-    <BaseIcon icon="star" class="rating__icon" />
-    <div class="rating__value">{{ value }}</div>
+    <BaseIcon icon="star" class="rating-icon" />
+    <div class="rating-value">{{ value }}</div>
   </div>
 </template>
 
@@ -21,13 +21,13 @@ export default {
   display: flex;
   align-items: center;
 
-  &__icon {
+  .rating-icon {
     font-size: 16px;
     color: var(--color-yellow);
     margin-right: 4px;
   }
 
-  &__value {
+  .rating-value {
     font-size: 12px;
     font-weight: 700;
   }

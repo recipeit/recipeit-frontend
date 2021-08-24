@@ -17,9 +17,9 @@
   color: var(--color-text-secondary);
   font-size: 0.625rem;
   line-height: 1.5;
-}
 
-.recaptcha-branding-link {
-  font-weight: bold;
+  .recaptcha-branding-link {
+    font-weight: bold;
+  }
 }
 </style>

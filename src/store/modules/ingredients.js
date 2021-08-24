@@ -20,19 +20,19 @@ export default {
     }
   },
   actions: {
-    fetchBaseProducts({ commit, state }) {
+    async fetchBaseProducts({ commit, state }) {
       if (state.baseProducts) return
 
-      ingredientsApi.getAllBaseProducts().then(({ data }) => {
-        commit(MUTATIONS.SET_BASE_INGREDIENTS, data)
-      })
+      const { data: baseIngredients } = await ingredientsApi.getAllBaseProducts()
+
+      commit(MUTATIONS.SET_BASE_INGREDIENTS, baseIngredients)
     },
-    fetchUnitsGroupedByMeasurement({ commit, state }) {
+    async fetchUnitsGroupedByMeasurement({ commit, state }) {
       if (state.units) return
 
-      ingredientsApi.getAllUnitKeysGroupedByMeasurement().then(({ data }) => {
-        commit(MUTATIONS.SET_UNITS, data)
-      })
+      const { data: unitGroups } = await ingredientsApi.getAllUnitKeysGroupedByMeasurement()
+
+      commit(MUTATIONS.SET_UNITS, unitGroups)
     }
   }
 }

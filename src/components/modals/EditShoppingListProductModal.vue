@@ -4,8 +4,8 @@
       <BaseModalTitle>Edytuj produkt</BaseModalTitle>
     </BaseModalHeader>
     <BaseModalBody>
-      <Form :id="formID" @submit="editProduct($event)" :validation-schema="schema" :initial-values="initialValues" v-slot="{ values }">
-        <ProductModalForm :amount="values.amount" />
+      <Form :id="formID" @submit="editProduct($event)" :validation-schema="schema" :initial-values="initialValues">
+        <ProductModalForm />
         <!-- <BaseInput class="form-row" label="Dodatkowa nazwa" type="text" v-model="editedProduct.name"/> -->
       </Form>
     </BaseModalBody>

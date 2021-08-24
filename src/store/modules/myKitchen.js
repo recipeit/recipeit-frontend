@@ -71,7 +71,7 @@ export default {
         myKitchenApi
           .addProductToMyKitchen(product, expirationDates)
           .then(resp => {
-            commit(MUTATIONS.ADD_PRODUCTS, resp.data)
+            commit(MUTATIONS.ADD_PRODUCT, resp.data)
             resolve()
           })
           .catch(error => reject(error))

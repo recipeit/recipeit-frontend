@@ -80,7 +80,6 @@ export default {
         recipeApi
           .addMissingIngredientsToShoppingList(recipeId)
           .then(({ data: products }) => {
-            console.log(products)
             if (products) {
               commit(MUTATIONS.ADD_PRODUCTS, products)
             }

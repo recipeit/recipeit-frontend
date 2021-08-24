@@ -1,18 +1,3 @@
-export const units = [
-  {
-    groupKey: 'weight',
-    groupValues: ['milligram', 'gram', 'kilogram', 'dekagram']
-  },
-  {
-    groupKey: 'volume',
-    groupValues: ['cup', 'milliliter', 'deciliter', 'liter', 'tablespoon', 'teaspoon']
-  },
-  {
-    groupKey: 'other',
-    groupValues: ['clove', 'piece', 'grain', 'package', 'pinch', 'handful', 'slice', 'breadslice', 'bunch']
-  }
-]
-
 export const recipesSortingMethods = [
   'NameAscending',
   'NameDescending',

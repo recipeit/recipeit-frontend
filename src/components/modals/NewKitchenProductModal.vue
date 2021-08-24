@@ -4,8 +4,8 @@
       <BaseModalTitle>Dodaj nowy produkt</BaseModalTitle>
     </BaseModalHeader>
     <BaseModalBody>
-      <Form :id="formID" @submit="addProduct($event)" :validation-schema="schema" v-slot="{ values }">
-        <ProductModalForm :productAutofocus="true" :amount="values.amount" />
+      <Form :id="formID" @submit="addProduct($event)" :validation-schema="schema" :initial-values="initialValues">
+        <ProductModalForm :productAutofocus="true" />
         <!-- <BaseInput class="form-row" label="Dodatkowa nazwa" type="text" v-model="newProduct.name"/> -->
         <ExpirationDatesFormSection v-model="expirationDatesForm" />
       </Form>
@@ -77,6 +77,11 @@ export default {
         .finally(() => {
           this.sending = false
         })
+    }
+  },
+  beforeCreate() {
+    this.initialValues = {
+      unit: 'piece'
     }
   }
 }

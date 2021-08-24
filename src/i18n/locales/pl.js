@@ -240,6 +240,7 @@ export default {
       drop: 'kropli | kropla | krople | kropli'
     },
     unitGroups: {
+      popular: 'popularne',
       weight: 'waga',
       volume: 'objętość',
       length: 'długość',

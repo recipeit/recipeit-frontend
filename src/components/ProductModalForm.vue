@@ -3,11 +3,11 @@
     <BaseSelect
       placeholder="Produkt"
       class="form-row"
-      v-autofocus="productAutofocus"
+      :autofocus="productAutofocus"
       trackBy="id"
       label="name"
       :options="baseProductsGrouped"
-      :limit="25"
+      :limit="100"
       :searchable="true"
       :errors="errors"
       v-bind="field"
@@ -59,10 +59,7 @@ export default {
   emits: ['update:baseProductId', 'update:unit'],
   components: { Field, ProductIcon },
   props: {
-    productAutofocus: Boolean,
-    baseProductId: [String, Number],
-    amount: [String, Number],
-    unit: String
+    productAutofocus: Boolean
   },
   setup(props) {
     const store = useStore()

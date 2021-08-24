@@ -110,6 +110,7 @@
 <script>
 import uniqueID from '@/functions/uniqueID'
 import { nextTick } from 'vue'
+import { setFocus } from '@/directives/autofocus'
 
 function isEmpty(opt) {
   if (opt === 0) return false
@@ -186,6 +187,10 @@ export default {
         if (isEmpty(option)) return ''
         return label ? option[label] : option
       }
+    },
+    autofocus: {
+      type: Boolean,
+      default: false
     }
   },
   data: component => ({
@@ -298,21 +303,21 @@ export default {
     updateSearch(query) {
       this.search = query
     },
-    open() {
+    async open() {
       if (this.opened) return
 
       this.opened = true
       this.adjustPosition()
 
-      this.$nextTick(() => {
-        this.scrollOptionsToTop()
-        if (this.searchable) {
-          this.$refs.search && this.$refs.search.focus()
-        } else {
-          this.$refs.select && this.$refs.select.focus()
-        }
-        this.$emit('focus')
-      })
+      await nextTick()
+
+      this.scrollOptionsToTop()
+      if (this.searchable) {
+        this.$refs.search?.focus()
+      } else {
+        this.$refs.select?.focus()
+      }
+      this.$emit('focus')
     },
     async hide() {
       if (!this.opened) return
@@ -322,15 +327,13 @@ export default {
 
       // TODO gdzieś błąd z tym, że po zaznaczeniu wartości, menu się chowa, ale dalej gdzieś zostaje focus
 
-      // this.$nextTick(() => {
       await nextTick()
       if (this.searchable) {
-        this.$refs.search && this.$refs.search.blur()
+        this.$refs.search?.blur()
       } else {
-        this.$refs.select && this.$refs.select.blur()
+        this.$refs.select?.blur()
       }
       this.$emit('blur')
-      // })
     },
     async selectOption(newValue) {
       if (!this.multiple) {
@@ -453,6 +456,11 @@ export default {
       // } else {
       return this.preferredOpenDirection === OPEN_DIRECTIONS.ABOVE
       // }
+    }
+  },
+  mounted() {
+    if (this.autofocus) {
+      setFocus(this.$refs.select)
     }
   },
   watch: {
