@@ -101,6 +101,7 @@ export default {
       text-align: center;
       line-height: 1;
       font-size: 0.625rem;
+      font-weight: 600;
       opacity: 0.75;
       margin-top: 0.5rem;
       height: 2em;
@@ -132,7 +133,7 @@ export default {
       color: var(--color-primary);
 
       .item-icon {
-        transform: scale(1.5);
+        transform: scale(1.25);
       }
     }
   }
