@@ -9,7 +9,7 @@
     </router-link>
     <router-link :to="{ name: APP_RECIPES }" class="navigation-bar__item">
       <BaseIcon class="item-icon" icon="cookbook" />
-      <span class="item-name">Baza przepisów</span>
+      <span class="item-name">Przepisy</span>
     </router-link>
     <router-link :to="{ name: APP_COOK_IT }" class="navigation-bar__item">
       <!-- <BaseIcon class="item-icon"icon="chef-hat" weight="fill" /> -->
@@ -18,11 +18,11 @@
     </router-link>
     <router-link :to="{ name: APP_MY_KITCHEN }" class="navigation-bar__item">
       <BaseIcon class="item-icon" icon="food" />
-      <span class="item-name">Moja kuchnia</span>
+      <span class="item-name">Kuchnia</span>
     </router-link>
     <router-link :to="{ name: APP_SHOPPING_LIST }" class="navigation-bar__item">
       <BaseIcon class="item-icon" icon="basket" />
-      <span class="item-name">Lista zakupów</span>
+      <span class="item-name">Zakupy</span>
     </router-link>
   </div>
 </template>
