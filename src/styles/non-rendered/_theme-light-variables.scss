@@ -150,6 +150,10 @@ $color-theme: (
       'contrast': functions.buttonStrokedVariables($black)
     )
   ),
+  'popper': (
+    'background': rgba(#000, 0.85),
+    'color': #fff
+  ),
   'scrollbar-background': $gray-extra-light,
   'scrollbar-thumb': $gray-light,
   'scrollbar-thumb-hover': darken($gray-light, 10)

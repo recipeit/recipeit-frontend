@@ -9,33 +9,37 @@
       <span v-if="ingredient.optional" class="ingredient-optional">opcjonalnie</span>
     </span>
     <div class="state-container">
-      <Popper :content="actionPopperContent" hover arrow>
-        <BaseLink tag="button" v-if="ingredient.state === 'IN_KITCHEN'" class="state state--available" @click="stateClickHandler()">
-          <BaseIcon class="state-icon state-icon--small" icon="check" weight="semi-bold" />
-        </BaseLink>
+      <BaseLink
+        tag="button"
+        v-if="ingredient.state === 'IN_KITCHEN'"
+        class="state state--available"
+        @click="stateClickHandler()"
+        v-tooltip="actionPopperContent"
+      >
+        <BaseIcon class="state-icon state-icon--small" icon="check" weight="semi-bold" />
+      </BaseLink>
 
-        <BaseButton
-          v-else-if="ingredient.state === 'IN_SHOPPING_LIST' || ingredient.state === 'UNAVAILABLE'"
-          class="state"
-          subtle
-          :color="ingredient.state === 'IN_SHOPPING_LIST' ? 'primary' : 'accent'"
-          :disabled="showLoadingState"
-          @click="stateClickHandler()"
-        >
-          <BaseIcon class="state-icon" icon="basket" />
-          <BaseIcon
-            class="state-icon state-icon--small state-icon--less-space"
-            :icon="ingredient.state === 'IN_SHOPPING_LIST' ? 'check' : 'plus'"
-            weight="semi-bold"
-          />
-        </BaseButton>
-      </Popper>
+      <BaseButton
+        v-else-if="ingredient.state === 'IN_SHOPPING_LIST' || ingredient.state === 'UNAVAILABLE'"
+        class="state"
+        subtle
+        :color="ingredient.state === 'IN_SHOPPING_LIST' ? 'primary' : 'accent'"
+        :disabled="showLoadingState"
+        @click="stateClickHandler()"
+        v-tooltip="actionPopperContent"
+      >
+        <BaseIcon class="state-icon" icon="basket" />
+        <BaseIcon
+          class="state-icon state-icon--small state-icon--less-space"
+          :icon="ingredient.state === 'IN_SHOPPING_LIST' ? 'check' : 'plus'"
+          weight="semi-bold"
+        />
+      </BaseButton>
     </div>
   </li>
 </template>
 
 <script>
-import Popper from 'vue3-popper'
 import { mapState } from 'vuex'
 import { markRaw } from '@vue/runtime-core'
 
@@ -46,9 +50,6 @@ import Dialog from '@/components/modals/Dialog'
 import { INGREDIENT_USER_STATES } from '@/configs/recipeIngredient'
 
 export default {
-  components: {
-    Popper
-  },
   props: {
     ingredient: {
       type: Object,
@@ -209,10 +210,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-:deep(.popper) {
-  font-size: 0.75rem;
-}
-
 .ingredient {
   display: flex;
   align-items: center;

@@ -156,6 +156,10 @@ $color-theme: (
       'contrast': functions.buttonStrokedVariables($text-primary)
     )
   ),
+  'popper': (
+    'background': rgba($text-primary, 0.9),
+    'color': $background
+  ),
   'scrollbar-background': $background-lighter,
   'scrollbar-thumb': #343d44,
   'scrollbar-thumb-hover': lighten(#343d44, 10)

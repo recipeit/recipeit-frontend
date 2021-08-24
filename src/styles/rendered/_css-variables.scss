@@ -16,33 +16,15 @@
   }
 }
 
-$popper-dark: (
-  'background-color': #cedeeb,
-  'background-color-hover': #cedeeb,
-  'text-color': darken(#272c30, 7),
-  'border-radius': 24px,
-  'padding': 10px 12px
-);
-
-$popper-light: (
-  'background-color': #333,
-  'background-color-hover': #333,
-  'text-color': #fff,
-  'border-radius': 24px,
-  'padding': 10px 12px
-);
-
 @each $theme, $map in $color-themes {
   @if $theme == light {
     :root,
     :root[theme='#{ $theme }'] {
       @include recc('--color', $map);
-      @include recc('--popper-theme', $popper-light);
     }
   } @else {
     :root[theme='#{ $theme }']:not([landing-page]) {
       @include recc('--color', $map);
-      @include recc('--popper-theme', $popper-dark);
     }
   }
 }

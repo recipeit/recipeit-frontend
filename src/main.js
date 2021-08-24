@@ -3,6 +3,8 @@ import { upperFirst, camelCase } from 'lodash'
 import * as Sentry from '@sentry/browser'
 import { Integrations } from '@sentry/tracing'
 import { createApp } from 'vue'
+import VTooltip from 'v-tooltip'
+import 'v-tooltip/dist/v-tooltip.css'
 import './registerServiceWorker'
 import App from './App'
 import GlobalSheetModal from './plugins/global-sheet-modal'
@@ -48,6 +50,7 @@ const progressbarOptions = {
 }
 
 app
+  .use(VTooltip)
   .use(GlobalSheetModal)
   .use(Clipboard)
   .use(Progressbar, progressbarOptions)
