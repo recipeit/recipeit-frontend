@@ -104,7 +104,7 @@ export default {
       font-weight: 600;
       opacity: 0.75;
       margin-top: 0.5rem;
-      height: 2em;
+      height: 1.5em;
       padding: 0 0.25rem;
     }
 
@@ -133,7 +133,7 @@ export default {
       color: var(--color-primary);
 
       .item-icon {
-        transform: scale(1.25);
+        transform: scale(1.2);
       }
     }
   }
@@ -155,6 +155,7 @@ export default {
         display: inline-block;
         margin: 0 0 0 1rem;
         font-size: 0.875rem;
+        font-weight: 500;
         text-align: left;
         padding: 0;
         opacity: 1;
