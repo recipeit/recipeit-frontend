@@ -28,7 +28,7 @@
     </div>
 
     <div class="floating-action-button-container">
-      <BaseButton class="gtm_my-kitchen-add-product-button" raised color="primary" @click="newProduct()">
+      <BaseButton class="gtm_my-kitchen-add-product-button floating-action-button" raised color="primary" @click="newProduct()">
         <BaseIcon class="floating-action-button__icon" icon="plus" weight="semi-bold" />
         {{ $t('shared.addProduct') }}
       </BaseButton>
@@ -192,6 +192,8 @@ export default {
 }
 
 .floating-action-button {
+  white-space: nowrap;
+
   &__icon {
     margin-right: 0.5rem;
     font-size: 1rem;
