@@ -1,23 +1,36 @@
 <template>
   <Product :product="product" @click="openEditModal()">
     <div class="actions" @click.stop>
-      <BaseButton
-        class="purchase-button"
-        subtle
-        :color="isInShoppingList ? 'primary' : 'accent'"
-        :disabled="addToShoppingListLoading"
-        @click.prevent.stop="addToShoppingList()"
-      >
-        <BaseIcon class="purchase-button-icon" icon="basket" />
-        <BaseIcon
-          class="purchase-button-icon purchase-button-icon--small purchase-button-icon--less-space"
-          :icon="isInShoppingList ? 'check' : 'plus'"
-          weight="semi-bold"
-        />
-      </BaseButton>
-      <a class="remove-button" @click.prevent.stop="deleteProduct()">
-        <BaseIcon icon="trash" weight="semi-bold" />
-      </a>
+      <VTooltip>
+        <BaseButton
+          class="purchase-button"
+          subtle
+          :color="isInShoppingList ? 'primary' : 'accent'"
+          :disabled="addToShoppingListLoading"
+          @click.prevent.stop="addToShoppingList()"
+        >
+          <BaseIcon class="purchase-button-icon" icon="basket" />
+          <BaseIcon
+            class="purchase-button-icon purchase-button-icon--small purchase-button-icon--less-space"
+            :icon="isInShoppingList ? 'check' : 'plus'"
+            weight="semi-bold"
+          />
+        </BaseButton>
+
+        <template #popper>
+          {{ purchaseButtonTooltip }}
+        </template>
+      </VTooltip>
+
+      <VTooltip>
+        <a class="remove-button" @click.prevent.stop="deleteProduct()">
+          <BaseIcon icon="trash" weight="semi-bold" />
+        </a>
+
+        <template #popper>
+          Usuń produkt
+        </template>
+      </VTooltip>
     </div>
   </Product>
 </template>
@@ -49,6 +62,9 @@ export default {
     }),
     isInShoppingList() {
       return !!this.shoppingListProducts?.find(p => p.baseProductId === this.product.baseProductId)
+    },
+    purchaseButtonTooltip() {
+      return this.isInShoppingList ? 'Posiadasz ten produkt na liście zakupów' : 'Dodaj do listy zakupów'
     }
   },
   methods: {

@@ -164,6 +164,7 @@ export default {
   }
 
   &__input {
+    min-width: 0;
     height: 100%;
     padding: 8px;
     padding-left: 2px;
@@ -172,6 +173,8 @@ export default {
     background: transparent;
     font-weight: inherit;
     font-family: inherit;
+    white-space: nowrap;
+    text-overflow: ellipsis;
     font-size: 12px;
     color: var(--color-text-primary);
 
@@ -194,6 +197,7 @@ export default {
     padding: 0 12px;
     height: 32px;
     min-width: 32px;
+    flex-shrink: 0;
 
     &__icon {
       // font-size: 1.5rem;

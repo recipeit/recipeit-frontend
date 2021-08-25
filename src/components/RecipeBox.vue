@@ -132,6 +132,7 @@ export default {
     -webkit-box-orient: vertical;
     overflow: hidden;
     height: 2.5em;
+    word-break: break-all;
   }
 
   &__props {

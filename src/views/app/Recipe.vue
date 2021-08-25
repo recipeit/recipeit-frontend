@@ -554,8 +554,12 @@ export default {
     flex-wrap: nowrap;
     overflow: auto;
     gap: 8px;
+    margin-left: -32px;
+    margin-right: -32px;
+    padding: 0 32px;
 
     button {
+      white-space: nowrap;
       text-transform: uppercase;
       font-size: 0.625rem;
       font-weight: bold;

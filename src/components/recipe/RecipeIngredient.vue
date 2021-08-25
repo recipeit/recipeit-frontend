@@ -9,7 +9,7 @@
       <span v-if="ingredient.optional" class="ingredient-optional">opcjonalnie</span>
     </span>
     <div class="state-container">
-      <VTooltip class="huja">
+      <VTooltip>
         <BaseLink tag="button" v-if="ingredient.state === 'IN_KITCHEN'" class="state state--available" @click="stateClickHandler()">
           <BaseIcon class="state-icon state-icon--small" icon="check" weight="semi-bold" />
         </BaseLink>

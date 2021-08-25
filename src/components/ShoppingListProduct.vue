@@ -4,12 +4,26 @@
       <!-- <div class="actions__remove" @click="deleteProduct">usuń</div>
       <div class="actions__decrement" @click="decreaseAmount">-</div>
       <div class="actions__increment" @click="increaseAmount">+</div> -->
-      <a class="remove-button" @click.prevent.stop="deleteProduct()">
-        <BaseIcon icon="trash" weight="semi-bold" />
-      </a>
-      <a class="purchase-button" @click.prevent.stop="$emit('purchase')">
-        <BaseIcon icon="check" weight="semi-bold" />
-      </a>
+
+      <VTooltip>
+        <a class="remove-button" @click.prevent.stop="deleteProduct()">
+          <BaseIcon icon="trash" weight="semi-bold" />
+        </a>
+
+        <template #popper>
+          Usuń produkt
+        </template>
+      </VTooltip>
+
+      <VTooltip>
+        <a class="purchase-button" @click.prevent.stop="$emit('purchase')">
+          <BaseIcon icon="check" weight="semi-bold" />
+        </a>
+
+        <template #popper>
+          Dodaj produkt do kuchni
+        </template>
+      </VTooltip>
     </div>
   </Product>
 </template>
