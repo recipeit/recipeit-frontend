@@ -430,10 +430,12 @@ export default {
   flex-direction: column;
   text-align: center;
   flex: 1;
+  line-height: 2.25;
 
   &-title {
     margin-bottom: 1rem;
     font-size: 0.875rem;
+    line-height: 1.5;
   }
 }
 

@@ -194,10 +194,12 @@ export default {
   align-items: center;
   justify-content: center;
   text-align: center;
+  line-height: 2.25;
 
   &-title {
     margin-bottom: 1rem;
     font-size: 0.875rem;
+    line-height: 1.5;
   }
 
   &-link {
