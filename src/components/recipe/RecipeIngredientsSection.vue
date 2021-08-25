@@ -27,7 +27,9 @@
     </SectionTitle>
     <div class="recipe__ingredient-groups">
       <div class="recipe__ingredient-group" v-for="(list, groupName) in ingredients" :key="groupName">
-        <div v-if="groupName" class="recipe-ingredients-group-name">{{ groupName }}</div>
+        <div v-if="groupName" class="recipe-ingredients-group-name">
+          <span class="first-lowercase">{{ groupName }}</span>
+        </div>
         <ul class="recipe__ingredients-list">
           <RecipeIngredient
             v-for="ingredient in list"
@@ -204,6 +206,12 @@ export default {
   min-height: 2rem;
   font-weight: bold;
   gap: 1rem;
+
+  .first-lowercase {
+    &::first-letter {
+      text-transform: lowercase;
+    }
+  }
 
   &:before,
   &:after {
