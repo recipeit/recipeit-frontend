@@ -200,6 +200,7 @@ export default {
   margin-top: 0.5rem;
   display: flex;
   align-items: center;
+  text-align: center;
   min-height: 2rem;
   font-weight: bold;
   gap: 1rem;
@@ -210,6 +211,7 @@ export default {
     height: 1px;
     flex: 1;
     background: var(--color-border);
+    min-width: 1rem;
   }
 }
 
