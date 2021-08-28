@@ -4,8 +4,7 @@
       <div class="footer-auth-content">
         <h1 class="footer-auth-header">Dodaj blog</h1>
         <p class="footer-auth-description">
-          Jeżeli tworzysz blog kulinarny, na którym publikujsz swoje przepisy, możesz dodać go do Recipeit. Poniżej znajduje się instrukcja,
-          jak to zrobić.
+          Jeżeli tworzysz blog kulinarny, na którym publikujsz swoje przepisy, dodaj go do Recipeit i zdobądź nowych czytelników!
         </p>
       </div>
       <BaseImageLazyload :src="BackgroundUrl" class="footer-auth-background" />
