@@ -67,7 +67,7 @@ $color: #000;
   .footer-auth-background {
     position: absolute;
     top: -64px;
-    left: 40%;
+    left: 45%;
     right: 0;
     bottom: 0;
     // opacity: 0.75;
