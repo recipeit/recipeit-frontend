@@ -15,13 +15,12 @@
 
 <script>
 import Container from './Container'
-// import BackgroundUrl from '@/assets/img/add-blog.jpg'
+import BackgroundUrl from '@/assets/img/add-blog-new.jpg'
 
 export default {
   components: { Container },
   setup: () => ({
-    BackgroundUrl:
-      'https://image.shutterstock.com/shutterstock/photos/1896336256/display_1500/stock-photo-young-woman-using-a-tablet-computer-to-cook-in-her-kitchen-at-home-healthy-food-concept-1896336256.jpg'
+    BackgroundUrl
   })
 }
 </script>
@@ -68,7 +67,7 @@ $color: #000;
 
   .footer-auth-background {
     position: absolute;
-    top: -20px;
+    top: -64px;
     left: 40%;
     right: 0;
     bottom: 0;
@@ -110,7 +109,7 @@ $color: #000;
 
     .footer-auth-background {
       left: 0;
-      top: -80px;
+      top: -120px;
       transform: translate(35%);
 
       :deep(img) {
