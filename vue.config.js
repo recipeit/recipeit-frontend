@@ -100,17 +100,17 @@ module.exports = {
         'Znajdź przepis ze swoich składników! Nie pozwól aby Twoje produkty się przeterminowały. Recipeit pokaże Ci, co możesz z nich przygotować.',
       screenshots: [
         {
-          src: '/pwa/screenshots/recipe.png',
+          src: '/pwa/screenshots/recipe.jpg',
           type: 'image/png',
           sizes: '750x1440'
         },
         {
-          src: '/pwa/screenshots/recipes.png',
+          src: '/pwa/screenshots/recipes.jpg',
           type: 'image/png',
           sizes: '750x1440'
         },
         {
-          src: '/pwa/screenshots/kitchen.png',
+          src: '/pwa/screenshots/kitchen.jpg',
           type: 'image/png',
           sizes: '750x1440'
         }
