@@ -61,7 +61,7 @@ export default {
       },
       {
         title: 'Stwórz listę zakupów',
-        description: 'Czegos Ci brakuje? Chcesz ugotować danie, ale nie masz potrzebnych składników? Dodaj je do listy zakupów!',
+        description: 'Czegoś Ci brakuje? Chcesz ugotować danie, ale nie masz potrzebnych składników? Dodaj je do listy zakupów!',
         image: require('@/assets/img/landing-page/shopping.webp')
       },
       {

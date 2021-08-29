@@ -44,12 +44,12 @@ export default {
     font-size: 1.5rem;
     color: #fff;
     line-height: 1.15;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
     font-weight: bold;
   }
 
   .button {
-    margin: 0 0.5rem;
+    margin: 0.5rem;
 
     &.button--main {
       background-color: $light-theme-primary;
@@ -74,7 +74,7 @@ export default {
     position: relative;
     overflow: hidden;
     padding-top: 4rem;
-    padding-bottom: 4rem;
+    padding-bottom: 3.5rem;
   }
 
   .footer-auth-content {
