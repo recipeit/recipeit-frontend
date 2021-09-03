@@ -85,7 +85,7 @@
             >
               {{
                 CATEGORY_GROUPS.includes(groupValue)
-                  ? $t(`recipeCategory.${option.value}`)
+                  ? $t(`recipeCategory.${option.value}`).replace('Kuchnia ', '')
                   : $t(`recipeFilterOptions.${groupValue}.${option.value}`)
               }}
             </BasePillCheckbox>
