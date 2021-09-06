@@ -27,12 +27,14 @@ module.exports = {
 
     config.plugins.push(
       new GoogleFontsPlugin({
-        fonts: [{
-          family: 'Montserrat',
-          display: 'swap',
-          variants: ['500', '600', '700'],
-          subsets: ['latin', 'latin-ext']
-        }]
+        fonts: [
+          {
+            family: 'Montserrat',
+            display: 'swap',
+            variants: ['500', '600', '700'],
+            subsets: ['latin', 'latin-ext']
+          }
+        ]
       })
     )
 
@@ -94,6 +96,11 @@ module.exports = {
           src: '/pwa/icons/favicon-32x32.png',
           type: 'image/png',
           sizes: '32x32'
+        },
+        {
+          src: '/pwa/icons/favicon-48x48.png',
+          type: 'image/png',
+          sizes: '48x48'
         },
         {
           src: '/pwa/icons/android-chrome-192x192.png',
