@@ -1,4 +1,5 @@
 const SentryWebpackPlugin = require('@sentry/webpack-plugin')
+const GoogleFontsPlugin = require('@beyonk/google-fonts-webpack-plugin')
 const { execSync } = require('child_process')
 const { buildMarkdowns } = require('./src/markdowns')
 
@@ -23,6 +24,12 @@ module.exports = {
   },
   configureWebpack: config => {
     config.devtool = 'source-map'
+
+    config.plugins.push(
+      new GoogleFontsPlugin({
+        fonts: [{ family: 'Montserrat', variants: ['500', '600'], display: 'swap' }]
+      })
+    )
 
     if (isProduction) {
       config.plugins.push(
