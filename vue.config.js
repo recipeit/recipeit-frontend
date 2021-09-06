@@ -88,16 +88,6 @@ module.exports = {
       background_color: '#FFFFFF',
       icons: [
         {
-          src: '/pwa/icons/favicon-16x16.png',
-          type: 'image/png',
-          sizes: '16x16'
-        },
-        {
-          src: '/pwa/icons/favicon-32x32.png',
-          type: 'image/png',
-          sizes: '32x32'
-        },
-        {
           src: '/pwa/icons/favicon-48x48.png',
           type: 'image/png',
           sizes: '48x48'
