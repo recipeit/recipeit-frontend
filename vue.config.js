@@ -151,11 +151,12 @@ module.exports = {
     appleMobileWebAppCapable: 'yes',
     appleMobileWebAppStatusBarStyle: 'black',
     iconPaths: {
-      favicon32: 'img/icons/favicon-32x32.png',
-      favicon16: 'img/icons/favicon-16x16.png',
-      appleTouchIcon: 'img/icons/apple-touch-icon-152x152.png',
-      maskIcon: 'img/icons/safari-pinned-tab.svg',
-      msTileImage: 'img/icons/msapplication-icon-144x144.png'
+      favicon48: 'pwa/icons/favicon-48x48.png',
+      favicon32: 'pwa/icons/favicon-32x32.png',
+      favicon16: 'pwa/icons/favicon-16x16.png',
+      appleTouchIcon: 'pwa/icons/apple-touch-icon-152x152.png',
+      maskIcon: 'pwa/icons/safari-pinned-tab.svg',
+      msTileImage: 'pwa/icons/msapplication-icon-144x144.png'
     }
   },
   transpileDependencies: ['vue-meta']
