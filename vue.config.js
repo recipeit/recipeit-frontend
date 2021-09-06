@@ -25,11 +25,12 @@ module.exports = {
   configureWebpack: config => {
     config.devtool = 'source-map'
 
-    config.plugins.push(
-      new GoogleFontsPlugin({
-        fonts: [{ family: 'Montserrat', variants: ['500', '600'], display: 'swap' }]
-      })
-    )
+    // config.plugins.push(
+    //   new GoogleFontsPlugin({
+    //     local: false,
+    //     fonts: [{ family: 'Montserrat', variants: ['500', '600', '700'], display: 'swap' }]
+    //   })
+    // )
 
     if (isProduction) {
       config.plugins.push(
