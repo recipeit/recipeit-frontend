@@ -1,5 +1,6 @@
 import { createMetaManager, defaultConfig } from 'vue-meta'
-import { upperFirst, camelCase } from 'lodash'
+import upperFirst from 'lodash.upperfirst'
+import camelCase from 'lodash.camelcase'
 import * as Sentry from '@sentry/browser'
 import { Integrations } from '@sentry/tracing'
 import { createApp } from 'vue'

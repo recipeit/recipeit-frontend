@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import { kebabCase } from 'lodash'
+import kebabCase from 'lodash.kebabcase'
 import { PRODUCT_GROUP_ICONS } from '@/constants'
 
 export default {
