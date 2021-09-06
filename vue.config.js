@@ -25,12 +25,16 @@ module.exports = {
   configureWebpack: config => {
     config.devtool = 'source-map'
 
-    // config.plugins.push(
-    //   new GoogleFontsPlugin({
-    //     local: false,
-    //     fonts: [{ family: 'Montserrat', variants: ['500', '600', '700'], display: 'swap' }]
-    //   })
-    // )
+    config.plugins.push(
+      new GoogleFontsPlugin({
+        fonts: [{
+          family: 'Montserrat',
+          display: 'swap',
+          variants: ['500', '600', '700'],
+          subsets: ['latin', 'latin-ext']
+        }]
+      })
+    )
 
     if (isProduction) {
       config.plugins.push(
@@ -76,11 +80,21 @@ module.exports = {
     manifestOptions: {
       name: 'Recipeit',
       short_name: 'Recipeit',
-      start_url: '.',
+      start_url: 'https://recipeit.pl',
       theme_color: '#FFFFFF',
       display: 'standalone',
       background_color: '#FFFFFF',
       icons: [
+        {
+          src: '/pwa/icons/favicon-16x16.png',
+          type: 'image/png',
+          sizes: '16x16'
+        },
+        {
+          src: '/pwa/icons/favicon-32x32.png',
+          type: 'image/png',
+          sizes: '32x32'
+        },
         {
           src: '/pwa/icons/android-chrome-192x192.png',
           type: 'image/png',
