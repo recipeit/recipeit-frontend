@@ -129,7 +129,7 @@ export default {
             .dispatch('user/register', {
               ...valus,
               recaptchaToken,
-              registerToken: this.token.value
+              registerToken: this.token
             })
             .catch(errors => {
               this.errors = errors
