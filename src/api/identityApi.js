@@ -12,11 +12,11 @@ export default {
   logout() {
     return apiClient.post(`/${route}/logout`)
   },
-  facebookAuth(accessToken) {
-    return apiClient.post(`/${route}/social/facebook`, { accessToken })
+  facebookAuth(userData) {
+    return apiClient.post(`/${route}/social/facebook`, userData)
   },
-  googleAuth(idToken) {
-    return apiClient.post(`/${route}/social/google`, { idToken })
+  googleAuth(userData) {
+    return apiClient.post(`/${route}/social/google`, userData)
   },
   refresh(tokenData) {
     return apiClient.post(`/${route}/refresh`, tokenData)

@@ -71,8 +71,11 @@ import * as yup from 'yup'
 import recaptcha from '@/services/recaptcha'
 import RecaptchaBranding from '@/components/RecaptchaBranding'
 import { RECAPTCHA_ACTIONS } from '@/configs/recaptcha'
+import { ref } from 'vue'
 import { useMeta } from 'vue-meta'
 import { ERROR_ACTION_TAG_NAME } from '@/configs/error'
+import { onBeforeMount } from '@vue/runtime-core'
+import { useRoute } from 'vue-router'
 
 export default {
   components: {
@@ -82,6 +85,8 @@ export default {
     Form
   },
   setup() {
+    const route = useRoute()
+
     useMeta({
       title: 'Zarejestruj się'
     })
@@ -92,15 +97,25 @@ export default {
       confirmPassword: confirmNewPasswordSchema('password')
     })
 
+    const enableRegister = ref(false)
+    const token = ref('')
+
+    onBeforeMount(() => {
+      const { registerToken } = route.query
+      enableRegister.value = registerToken !== undefined
+      token.value = registerToken
+    })
+
     return {
-      schema
+      schema,
+      enableRegister,
+      token
     }
   },
   data: () => ({
     errors: null,
     sending: false,
-    socialSending: false,
-    enableRegister: false
+    socialSending: false
   }),
   methods: {
     register(valus) {
@@ -113,7 +128,8 @@ export default {
           this.$store
             .dispatch('user/register', {
               ...valus,
-              recaptchaToken
+              recaptchaToken,
+              registerToken: this.token
             })
             .catch(errors => {
               this.errors = errors

@@ -75,7 +75,7 @@ export default {
       return this.favouriteRecipesIds?.find(id => id === this.recipeId) !== undefined
     },
     imageUrl() {
-      return `/static/recipes/${this.recipeId}/thumb.webp`
+      return `/static/recipes/${this.recipeId}/thumb.webp?v=1`
     }
   }
 }

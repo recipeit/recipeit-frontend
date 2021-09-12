@@ -1,4 +1,5 @@
 export const recipesSortingMethods = [
+  'Newest',
   'NameAscending',
   'NameDescending',
   'TimeAscending',

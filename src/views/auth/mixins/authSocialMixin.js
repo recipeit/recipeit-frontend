@@ -16,8 +16,9 @@ export default {
     async loginFacebook() {
       this.facebookSending = true
       try {
+        const { registerToken } = this.$route.query
         const accessToken = await FacebookService.login()
-        await this.$store.dispatch('user/facebookAuth', accessToken)
+        await this.$store.dispatch('user/facebookAuth', { accessToken, registerToken })
       } catch (error) {
         this.$toast.show('Wystąpił problem podczas próby logowania', ToastType.ERROR)
         this.$errorHandler.captureError(error, {
@@ -30,8 +31,9 @@ export default {
     async loginGoogle() {
       this.googleSending = true
       try {
+        const { registerToken } = this.$route.query
         const accessToken = await GoogleService.login()
-        await this.$store.dispatch('user/googleAuth', accessToken)
+        await this.$store.dispatch('user/googleAuth', { accessToken, registerToken })
       } catch (error) {
         this.$toast.show('Wystąpił problem podczas próby logowania', ToastType.ERROR)
         this.$errorHandler.captureError(error, {

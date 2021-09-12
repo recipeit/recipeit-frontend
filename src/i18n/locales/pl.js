@@ -50,6 +50,7 @@ export default {
       purchaseAllDialogTitle: 'Czy na pewno chcesz przenieść {products} do swojej kuchni?'
     },
     recipesSortingMethods: {
+      Newest: 'najnowszych',
       NameAscending: 'nazwy: od A do Z',
       NameDescending: 'nazwy: od Z do A',
       TimePreparingAscending: 'czasu przygotowania: rosnąco',

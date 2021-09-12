@@ -2,8 +2,8 @@
   <div class="layout__page__content home-page">
     <PageHeader :title="$t(welcomeType)" />
     <DayPlan />
-    <LatestFavouritesRecipes />
     <PopularCategories />
+    <LatestFavouritesRecipes />
   </div>
 </template>
 
