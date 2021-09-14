@@ -12,8 +12,8 @@
         <BaseLink tag="button" class="card-link" color="primary" @click="openChangePasswordModal()">zmień hasło</BaseLink>
       </div>
       <div class="avatar">
-        <BaseIcon v-if="userProfile && !userProfile.imageUrl" class="no-avatar-icon" icon="user" weight="semi-bold" />
-        <BaseImageLazyload v-else :src="userProfile?.imageUrl" alt="" />
+        <BaseImageLazyload v-if="avatarSrc" :src="avatarSrc" alt="" />
+        <span v-else v-html="defaultAvatar" class="no-avatar-icon" />
       </div>
     </div>
 
@@ -70,6 +70,7 @@
 </template>
 
 <script>
+import defaultAvatar from '@/assets/img/avatar.svg?inline'
 import CustomizeCookiesModal from '@/components/modals/CustomizeCookiesModal'
 import ChangePasswordModal from '@/components/modals/ChangePasswordModal'
 import ForgotPasswordModal from '@/components/modals/ForgotPasswordModal'
@@ -88,7 +89,10 @@ export default {
       hiddenRecipes: state => state.user.hiddenRecipeIds,
       hiddenBlogs: state => state.user.hiddenBlogIds,
       userProfile: state => state.user.userProfile
-    })
+    }),
+    avatarSrc() {
+      return this.userProfile?.imageUrl
+    }
   },
   methods: {
     openChangePasswordModal() {
@@ -157,7 +161,8 @@ export default {
       updateTheme,
       unhideRecipe,
       unhideBlog,
-      THEMES
+      THEMES,
+      defaultAvatar
     }
   }
 }

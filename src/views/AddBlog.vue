@@ -4,6 +4,12 @@
       <AddBlogHeader />
     </template>
     <div class="add-blog" v-html="ADD_BLOG_HTML" />
+    <div>
+      <div class="banner-group" v-for="{ urls, size, height, width } in bannerList" :key="size">
+        <span class="banner-size">{{ size }}</span>
+        <AddBlogBanner class="banner-item" v-for="url in urls" :key="url" :url="url" :height="height" :width="width" />
+      </div>
+    </div>
   </AnonymousPage>
 </template>
 
@@ -12,16 +18,33 @@ import { useMeta } from 'vue-meta'
 import AnonymousPage from '@/layouts/AnonymousPage'
 import AddBlogHeader from '@/components/landingPage/AddBlogHeader'
 import ADD_BLOG_HTML from 'html-loader!@/assets/docs/addblog/addblog.html'
+import AddBlogBanner from '@/components/AddBlogBanner'
 
 export default {
-  components: { AnonymousPage, AddBlogHeader },
+  components: { AnonymousPage, AddBlogHeader, AddBlogBanner },
   setup() {
     useMeta({
       title: 'Dodaj blog'
     })
 
+    const bannerList = [
+      {
+        size: '128x48px',
+        width: '128px',
+        height: '48px',
+        urls: ['/banner/128x48/banner_bialy.png', '/banner/128x48/banner_czarny.png', '/banner/128x48/banner_zielony.png']
+      },
+      {
+        size: '256x96px',
+        width: '256px',
+        height: '96px',
+        urls: ['/banner/256x96/banner_bialy.png', '/banner/256x96/banner_czarny.png', '/banner/256x96/banner_zielony.png']
+      }
+    ]
+
     return {
-      ADD_BLOG_HTML
+      ADD_BLOG_HTML,
+      bannerList
     }
   }
 }
@@ -77,5 +100,24 @@ export default {
     font-weight: bold;
     color: var(--color-primary);
   }
+}
+
+.banner-item {
+  margin-top: 12px;
+
+  & + & {
+    margin-top: 24px;
+  }
+}
+
+.banner-group {
+  & + & {
+    margin-top: 24px;
+  }
+}
+
+.banner-size {
+  font-size: 0.875rem;
+  font-weight: 600;
 }
 </style>

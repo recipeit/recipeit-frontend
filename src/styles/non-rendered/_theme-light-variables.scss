@@ -156,5 +156,6 @@ $color-theme: (
   ),
   'scrollbar-background': $gray-extra-light,
   'scrollbar-thumb': lighten($gray, 15),
-  'scrollbar-thumb-hover': lighten($gray, 5)
+  'scrollbar-thumb-hover': lighten($gray, 5),
+  'avatar-background': #ddf9d4
 );

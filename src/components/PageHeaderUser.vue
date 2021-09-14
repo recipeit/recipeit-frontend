@@ -3,8 +3,8 @@
     <BaseMenu>
       <template #toggle="{ focused }">
         <div :class="['page-header-user__avatar', { 'page-header-user__avatar--focused': focused }]">
-          <BaseIcon v-if="userProfile && !userProfile.imageUrl" class="no-avatar-icon" icon="user" weight="semi-bold" />
-          <BaseImageLazyload v-else :src="userProfile?.imageUrl" alt="" />
+          <BaseImageLazyload v-if="avatarSrc" :src="avatarSrc" alt="" />
+          <span v-else v-html="defaultAvatar" class="no-avatar-icon" />
         </div>
       </template>
       <template #dropdown>
@@ -18,14 +18,19 @@
 </template>
 
 <script>
-import { APP_ACCOUNT } from '@/router/names'
 import { useStore } from 'vuex'
 import { computed } from '@vue/runtime-core'
+import defaultAvatar from '@/assets/img/avatar.svg?inline'
+import { APP_ACCOUNT } from '@/router/names'
 
 export default {
   setup() {
     const store = useStore()
+
     const userProfile = computed(() => store.state.user.userProfile)
+    const avatarSrc = computed(() => {
+      return userProfile.value?.imageUrl
+    })
 
     const logout = () => {
       store.dispatch('user/logout', true)
@@ -34,6 +39,8 @@ export default {
     return {
       APP_ACCOUNT,
       userProfile,
+      avatarSrc,
+      defaultAvatar,
       logout
     }
   }

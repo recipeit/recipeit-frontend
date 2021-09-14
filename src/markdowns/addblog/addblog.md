@@ -6,7 +6,7 @@ Jeżeli tworzysz blog kulinarny, na którym publikujsz swoje przepisy, możesz d
 
 Aby zgłosić swój blog, postępuj według poniższych wskazówek.
 
-1. Umieść na swoim blogu jedną z naszych grafik. Znajdziesz je w sekcji **Grafiki do pobrania**.
+1. Umieść na swoim blogu jeden z bannerów z sekcji **Grafiki do pobrania**.
 
 1. Ustaw swój kanał RSS bloga tak, aby znalazły się w nim wszystkie Twoje przepisy. Umożliwi nam to ich prawidłowe pobranie.
 
