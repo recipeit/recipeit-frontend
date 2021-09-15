@@ -27,6 +27,7 @@ module.exports = {
 
     config.plugins.push(
       new GoogleFontsPlugin({
+        noLocalInCss: true,
         fonts: [
           {
             family: 'Montserrat',
