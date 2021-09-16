@@ -102,7 +102,8 @@ export default {
 
     onBeforeMount(() => {
       const { registerToken } = route.query
-      enableRegister.value = registerToken !== undefined
+      enableRegister.value =
+        registerToken !== undefined || !['https://recipeit.pl', 'https://www.recipeit.pl'].includes(window.location.origin)
       token.value = registerToken
     })
 

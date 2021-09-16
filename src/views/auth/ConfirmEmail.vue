@@ -10,7 +10,7 @@
     <div v-else-if="state === 'SUCCESS'">
       Udało się! Teraz możesz się zalogować
       <div>
-        <router-link :to="{ name: 'login' }" v-slot="{ href, navigate }" custom>
+        <router-link :to="{ name: 'login', params: { email } }" v-slot="{ href, navigate }" custom>
           <BaseButton tag="a" class="login-button" :href="href" @click="navigate($event)" raised color="primary">
             Zaloguj się
           </BaseButton>
@@ -40,7 +40,8 @@ import { ERROR_ACTION_TAG_NAME } from '@/configs/error'
 export default {
   components: { Spinner },
   data: () => ({
-    state: 'LOADING'
+    state: 'LOADING',
+    email: null
   }),
   mounted() {
     this.state = 'LOADING'
@@ -55,6 +56,7 @@ export default {
         .then(resp => {
           if (resp.data.success) {
             this.state = 'SUCCESS'
+            this.email = email
           } else {
             this.state = 'ERROR'
           }

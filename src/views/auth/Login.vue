@@ -12,12 +12,20 @@
 
     <!-- <p>lub za pomocą adresu email</p> -->
 
-    <Form @submit="login($event)" :validation-schema="schema" v-slot="{ values }">
+    <Form @submit="login($event)" :validation-schema="schema" :initial-values="initialValues" v-slot="{ values }">
       <Field name="email" v-slot="{ field, errors }">
         <BaseInput class="form-row" label="E-mail" type="text" v-bind="field" :errors="errors" :disabled="anySending" />
       </Field>
       <Field name="password" v-slot="{ field, errors }">
-        <BaseInput class="form-row" label="Hasło" type="password" v-bind="field" :errors="errors" :disabled="anySending" />
+        <BaseInput
+          class="form-row"
+          label="Hasło"
+          type="password"
+          v-bind="field"
+          :errors="errors"
+          :disabled="anySending"
+          :autofocus="hasInitialEmail"
+        />
       </Field>
       <BaseButton
         class="form-row auth-main__content__submit"
@@ -68,7 +76,13 @@ export default {
     Field,
     Form
   },
-  setup() {
+  props: {
+    email: {
+      type: String,
+      default: ''
+    }
+  },
+  setup(props) {
     useMeta({
       title: 'Zaloguj się'
     })
@@ -78,8 +92,16 @@ export default {
       password: passwordSchema()
     })
 
+    const initialValues = {
+      email: props.email
+    }
+
+    const hasInitialEmail = !!props.email
+
     return {
-      schema
+      schema,
+      initialValues,
+      hasInitialEmail
     }
   },
   data: () => ({

@@ -175,6 +175,7 @@ const routes = [
         path: '',
         alias: 'login',
         name: NAMES.AUTH_LOGIN,
+        props: true,
         component: () => import(/* webpackChunkName: "auth" */ '@/views/auth/Login.vue')
       },
       {
