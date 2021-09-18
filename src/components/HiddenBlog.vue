@@ -1,7 +1,7 @@
 <template>
   <router-link :to="{ name: APP_BLOG, params: { blogId: blog.id, blogName: blog.name } }" v-slot="{ href, navigate }" custom>
     <a :href="href" @click="navigate($event)" class="hidden-blog">
-      <BaseImageLazyload :src="blog.imageUrl" :alt="blog.name" class="hidden-blog__image" />
+      <BaseImageLazyload :src="avatarUrl" :errorPlaceholder="avatarErrorUrl" :alt="blog.name" class="hidden-blog__image" />
       <div class="hidden-blog__details">
         <div class="hidden-blog__name">{{ blog.name }}</div>
         <div class="hidden-blog__url">{{ blog.url }}</div>
@@ -17,6 +17,8 @@
 
 <script>
 import { APP_BLOG } from '@/router/names'
+import { computed } from '@vue/reactivity'
+import avatarErrorUrl from '@/assets/img/blog-avatar.webp'
 
 export default {
   props: {
@@ -25,9 +27,13 @@ export default {
       required: true
     }
   },
-  setup() {
+  setup(props) {
+    const avatarUrl = computed(() => `/static/blogs/${props.blog.id}/avatar.webp`)
+
     return {
-      APP_BLOG
+      APP_BLOG,
+      avatarUrl,
+      avatarErrorUrl
     }
   }
 }
