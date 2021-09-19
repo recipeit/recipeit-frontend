@@ -17,18 +17,18 @@
 </template>
 
 <script>
-import { computed, onBeforeMount } from '@vue/runtime-core'
+import { onBeforeMount } from '@vue/runtime-core'
 import { ref } from 'vue'
-import { APP_COOK_IT, APP_RECIPES } from '@/router/names'
+import { APP_RECIPES } from '@/router/names'
 import recipeApi from '@/api/recipeApi'
 import SectionTitle from '@/components/SectionTitle'
 import PopularCategory from '@/components/PopularCategory'
-import { useStore } from 'vuex'
+// import { useStore } from 'vuex'
 
 export default {
   components: { SectionTitle, PopularCategory },
   setup() {
-    const store = useStore()
+    // const store = useStore()
     const popularCategories = ref(null)
 
     onBeforeMount(async () => {
@@ -36,9 +36,11 @@ export default {
       popularCategories.value = data
     })
 
-    const page = computed(() => {
-      return store.state.myKitchen.products ? APP_COOK_IT : APP_RECIPES
-    })
+    const page = APP_RECIPES
+
+    // const page = computed(() => {
+    //   return store.state.myKitchen.products ? APP_COOK_IT : APP_RECIPES
+    // })
 
     return {
       popularCategories,
