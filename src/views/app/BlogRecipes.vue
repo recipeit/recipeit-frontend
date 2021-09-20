@@ -155,9 +155,9 @@ export default {
   flex-direction: column;
 
   .error-page {
+    flex: 1;
     display: flex;
     flex-direction: column;
-    height: 100%;
     justify-content: center;
     align-items: center;
     text-align: center;
