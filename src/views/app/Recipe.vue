@@ -364,6 +364,9 @@ export default {
 
 <style lang="scss" scoped>
 .recipe-page {
+  display: flex;
+  flex-direction: column;
+
   .error-page {
     display: flex;
     flex-direction: column;

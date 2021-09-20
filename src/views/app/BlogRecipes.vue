@@ -151,6 +151,9 @@ export default {
 
 <style lang="scss" scoped>
 .blog-recipes {
+  display: flex;
+  flex-direction: column;
+
   .error-page {
     display: flex;
     flex-direction: column;
