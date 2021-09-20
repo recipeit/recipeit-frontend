@@ -30,6 +30,7 @@
         :src="image.src"
         :ref="setImageRef"
         :blurredBackground="true"
+        :error-placeholder="placeholder"
       />
     </div>
   </div>
@@ -37,6 +38,13 @@
 
 <script>
 import debounce from 'lodash.debounce'
+import { useStore } from 'vuex'
+import { computed } from '@vue/reactivity'
+
+import { THEME_DARK } from '@/configs/theme'
+
+import placeholderLight from '@/assets/img/placeholders/recipe-image.webp'
+import placeholderDark from '@/assets/img/placeholders/recipe-image-dark.webp'
 
 export default {
   props: {
@@ -50,11 +58,16 @@ export default {
     }
   },
   data() {
+    const store = useStore()
+
+    const placeholder = computed(() => (store.state.user.theme === THEME_DARK ? placeholderDark : placeholderLight))
+
     return {
       currentImageIndex: 0,
       isTouching: false,
       onScrollTimeout: null,
-      imageRefs: []
+      imageRefs: [],
+      placeholder
     }
   },
   beforeUpdate() {

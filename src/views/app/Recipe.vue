@@ -1,6 +1,17 @@
 <template>
-  <div class="layout__page__content">
-    <div v-if="recipe && recipe.details" :class="['recipe', { 'recipe--hidden': isHidden }]">
+  <div class="layout__page__content recipe-page">
+    <div v-if="errors" class="error-page">
+      <img class="error-image" src="@/assets/img/broccoli-sad.svg" alt="" />
+      <span class="error-text">
+        Ojjj... nie znaleźliśmy takiego przepisu
+      </span>
+      <router-link :to="{ name: APP_HOME }" v-slot="{ href, navigate }" custom>
+        <BaseButton tag="a" :href="href" @click="navigate($event)" class="recipe-button" stroked>
+          Wróć na stronę główną
+        </BaseButton>
+      </router-link>
+    </div>
+    <div v-else-if="recipe && recipe.details" :class="['recipe', { 'recipe--hidden': isHidden }]">
       <div class="recipe__image-container">
         <div class="recipe__image-container__buttons">
           <BaseLink class="recipe__image-container__button" @click="back()" tag="button">
@@ -153,6 +164,8 @@ import InvisibleRecipeInfoModal from '@/components/modals/InvisibleRecipeInfoMod
 import { parseFilters } from '@/constants'
 import { useMeta } from 'vue-meta'
 import { ERROR_ACTION_TAG_NAME } from '@/configs/error'
+import { CONTACT_MAIL_ADDRESS } from '@/configs/emails'
+import { APP_COOK_IT, APP_HOME } from '@/router/names'
 
 export default {
   name: 'Recipe',
@@ -177,6 +190,7 @@ export default {
     const store = useStore()
 
     const data = reactive({
+      errors: false,
       fetchedData: false,
       recipe: null,
       finishedDirections: store.getters['recipes/getFinishedDirectionsForRecipe'](props.recipeId) || []
@@ -188,6 +202,7 @@ export default {
         data.recipe = rd
       })
       .catch(error => {
+        data.errors = true
         this.$errorHandler.captureError(error, {
           [ERROR_ACTION_TAG_NAME]: 'recipe.fetchDetailedRecipe'
         })
@@ -201,13 +216,10 @@ export default {
     useMeta(computedMeta)
 
     return {
-      ...toRefs(data)
+      ...toRefs(data),
+      APP_HOME
     }
   },
-  data: component => ({
-    fetchedData: false,
-    finishedDirections: component.$store.getters['recipes/getFinishedDirectionsForRecipe'](component.recipeId) || []
-  }),
   created() {
     this.$store.dispatch('myKitchen/fetchProducts').catch(error => {
       this.$errorHandler.captureError(error, {
@@ -222,7 +234,7 @@ export default {
   },
   methods: {
     navigateToRecipesWithCategoryFilter({ key, categoryGroup }) {
-      this.$router.push({ name: 'cook-it', query: parseFilters({ [categoryGroup]: [key] }) })
+      this.$router.push({ name: APP_COOK_IT, query: parseFilters({ [categoryGroup]: [key] }) })
     },
     back() {
       this.$router.go(-1)
@@ -306,17 +318,20 @@ export default {
     //   return _.min(_.difference(this.allIndexes, this.finishedDirections))
     // },
     images() {
-      if (!this.recipe) return null
+      const { recipe, recipeId } = this
 
-      return [...Array(this.recipe.imagesCount).keys()].map(i => ({
-        src: `/static/recipes/${this.recipeId}/${i + 1}.webp`
+      if (!recipe) return null
+
+      const imagesCount = Math.max(recipe.imagesCount, 1)
+
+      return [...Array(imagesCount).keys()].map(i => ({
+        src: `/static/recipes/${recipeId}/${i + 1}.webp`
       }))
     },
     reportLinkHref() {
-      const mail = 'kontakt@recipeit.pl'
       const subject = `Błąd w przepisie [ID=${this.recipeId}]`
 
-      return `mailto:${mail}?subject=${subject}`
+      return `mailto:${CONTACT_MAIL_ADDRESS}?subject=${subject}`
     }
   },
   watch: {
@@ -348,6 +363,29 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.recipe-page {
+  .error-page {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    .error-image {
+      width: 96px;
+    }
+
+    .error-text {
+      margin-top: 16px;
+    }
+
+    .recipe-button {
+      margin-top: 16px;
+    }
+  }
+}
+
 .plan-button,
 .update-button {
   width: 100%;

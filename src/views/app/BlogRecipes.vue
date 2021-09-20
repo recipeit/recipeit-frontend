@@ -1,54 +1,67 @@
 <template>
-  <div class="layout__page__content">
-    <div class="header">
-      <div class="header-container">
-        <div class="header-buttons">
-          <BaseLink class="header-button" @click="$router.go(-1)" tag="button">
-            <BaseIcon icon="arrow-right" weight="regular" />
-          </BaseLink>
-          <BaseMenu>
-            <template #toggle>
-              <BaseLink class="header-button" tag="button">
-                <BaseIcon icon="dots-horizontal" weight="regular" />
-              </BaseLink>
-            </template>
-            <template #dropdown>
-              <BaseMenuList>
-                <BaseMenuLink v-if="!isHidden" @click="changeBlogVisibility(false)">Ukryj ten blog</BaseMenuLink>
-                <BaseMenuLink v-else @click="changeBlogVisibility(true)">Pokazuj ten blog</BaseMenuLink>
-
-                <BaseMenuSeparator />
-
-                <BaseMenuLink @click="copyLinkToClipboard()">Skopiuj link do blogu</BaseMenuLink>
-              </BaseMenuList>
-            </template>
-          </BaseMenu>
-        </div>
-        <div class="header-avatar-container">
-          <BaseImageLazyload class="header-avatar" :src="avatarUrl" :errorPlaceholder="avatarErrorUrl" alt="" />
-        </div>
-      </div>
-      <RecipeParallaxImage class="header-background-container">
-        <BaseImageLazyload class="header-background" :src="backgroundUrl" :errorPlaceholder="backgroundErrorUrl" />
-      </RecipeParallaxImage>
+  <div class="layout__page__content blog-recipes">
+    <div v-if="errors" class="error-page">
+      <img class="error-image" src="@/assets/img/broccoli-sad.svg" alt="" />
+      <span class="error-text">
+        Ojjj... nie znaleźliśmy takiego blogu
+      </span>
+      <router-link :to="{ name: APP_HOME }" v-slot="{ href, navigate }" custom>
+        <BaseButton tag="a" :href="href" @click="navigate($event)" class="recipe-button" stroked>
+          Wróć na stronę główną
+        </BaseButton>
+      </router-link>
     </div>
+    <template v-else>
+      <div class="header">
+        <div class="header-container">
+          <div class="header-buttons">
+            <BaseLink class="header-button" @click="$router.go(-1)" tag="button">
+              <BaseIcon icon="arrow-right" weight="regular" />
+            </BaseLink>
+            <BaseMenu>
+              <template #toggle>
+                <BaseLink class="header-button" tag="button">
+                  <BaseIcon icon="dots-horizontal" weight="regular" />
+                </BaseLink>
+              </template>
+              <template #dropdown>
+                <BaseMenuList>
+                  <BaseMenuLink v-if="!isHidden" @click="changeBlogVisibility(false)">Ukryj ten blog</BaseMenuLink>
+                  <BaseMenuLink v-else @click="changeBlogVisibility(true)">Pokazuj ten blog</BaseMenuLink>
 
-    <BaseLink tag="button" class="hidden-bar" v-if="isHidden" color="red" @click="showInvisibleInfoModal()">
-      <BaseIcon class="hidden-bar-icon" icon="eye-hidden" weight="semi-bold" />
-      Ten blog jest ukryty
-    </BaseLink>
+                  <BaseMenuSeparator />
 
-    <BlogDetails v-if="blogDetails" :blog="blogDetails" class="blog-details-row" />
-    <div v-else>...wczytuję</div>
+                  <BaseMenuLink @click="copyLinkToClipboard()">Skopiuj link do blogu</BaseMenuLink>
+                </BaseMenuList>
+              </template>
+            </BaseMenu>
+          </div>
+          <div class="header-avatar-container">
+            <BaseImageLazyload class="header-avatar" :src="avatarUrl" :errorPlaceholder="avatarErrorUrl" alt="" />
+          </div>
+        </div>
+        <RecipeParallaxImage class="header-background-container">
+          <BaseImageLazyload class="header-background" :src="backgroundUrl" :errorPlaceholder="backgroundErrorUrl" />
+        </RecipeParallaxImage>
+      </div>
 
-    <GenericRecipesList
-      :recipes="recipesList.recipes.value"
-      :errors="recipesList.recipesErrors.value"
-      :showFilterButtons="false"
-      :loadHandler="pageNumber => recipesList.loadRecipesPage(pageNumber)"
-      @reload="recipesList.reloadRecipes()"
-      @reload-with-query="recipesList.reloadRecipes()"
-    />
+      <BaseLink tag="button" class="hidden-bar" v-if="isHidden" color="red" @click="showInvisibleInfoModal()">
+        <BaseIcon class="hidden-bar-icon" icon="eye-hidden" weight="semi-bold" />
+        Ten blog jest ukryty
+      </BaseLink>
+
+      <BlogDetails v-if="blogDetails" :blog="blogDetails" class="blog-details-row" />
+      <div v-else>...wczytuję</div>
+
+      <GenericRecipesList
+        :recipes="recipesList.recipes.value"
+        :errors="recipesList.recipesErrors.value"
+        :showFilterButtons="false"
+        :loadHandler="pageNumber => recipesList.loadRecipesPage(pageNumber)"
+        @reload="recipesList.reloadRecipes()"
+        @reload-with-query="recipesList.reloadRecipes()"
+      />
+    </template>
   </div>
 </template>
 
@@ -83,12 +96,18 @@ export default {
   },
   setup(props) {
     const blogDetails = ref(null)
+    const errors = ref(false)
     const recipesList = recipePagedList(queryParams => blogApi.getBlogRecipes(props.blogId, queryParams))
 
     onBeforeMount(() => {
-      blogApi.getBlogDetails(props.blogId).then(({ data }) => {
-        blogDetails.value = data
-      })
+      blogApi
+        .getBlogDetails(props.blogId)
+        .then(({ data }) => {
+          blogDetails.value = data
+        })
+        .catch(() => {
+          errors.value = true
+        })
     })
 
     const backgroundUrl = computed(() => `/static/blogs/${props.blogId}/background.webp`)
@@ -107,7 +126,8 @@ export default {
       avatarUrl,
       backgroundUrl,
       avatarErrorUrl,
-      backgroundErrorUrl
+      backgroundErrorUrl,
+      errors
     }
   },
   computed: {
@@ -130,6 +150,29 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.blog-recipes {
+  .error-page {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    .error-image {
+      width: 96px;
+    }
+
+    .error-text {
+      margin-top: 16px;
+    }
+
+    .recipe-button {
+      margin-top: 16px;
+    }
+  }
+}
+
 .recipes-page {
   &__header {
     margin-bottom: 16px;
