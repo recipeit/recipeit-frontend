@@ -2,7 +2,7 @@
   <router-link class="recipe-box" :to="{ name: APP_RECIPE, params: { recipeId, recipeName } }">
     <div class="recipe-box__image-container">
       <div class="recipe-box__image-container__image">
-        <BaseImageLazyload :src="imageUrl" :alt="recipeName" />
+        <BaseImageLazyload :src="imageUrl" :alt="recipeName" :error-placeholder="placeholder" />
       </div>
 
       <div v-if="showRecipeProps" class="recipe-box__props2">
@@ -24,10 +24,14 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, useStore } from 'vuex'
 // import Rating from '@/components/Rating'
 import FavouriteIcon from '@/components/FavouriteIcon'
 import { APP_RECIPE } from '@/router/names'
+import placeholderLight from '@/assets/img/placeholders/recipe-box.webp'
+import placeholderDark from '@/assets/img/placeholders/recipe-box-dark.webp'
+import { computed } from '@vue/reactivity'
+import { THEME_DARK } from '@/configs/theme'
 
 export default {
   components: {
@@ -52,8 +56,13 @@ export default {
     }
   },
   setup() {
+    const store = useStore()
+
+    const placeholder = computed(() => (store.state.user.theme === THEME_DARK ? placeholderDark : placeholderLight))
+
     return {
-      APP_RECIPE
+      APP_RECIPE,
+      placeholder
     }
   },
   methods: {
