@@ -1,6 +1,6 @@
 <template>
   <li class="recipes-list-item">
-    <RecipeBox :recipeId="recipeId" :recipeName="recipeName" :recipeRating="recipeRating" />
+    <RecipeBox :recipeId="recipeId" :recipeSlug="recipeSlug" :recipeName="recipeName" :recipeRating="recipeRating" />
   </li>
 </template>
 
@@ -11,6 +11,10 @@ export default {
   components: { RecipeBox },
   props: {
     recipeId: {
+      type: String,
+      required: true
+    },
+    recipeSlug: {
       type: String,
       required: true
     },
