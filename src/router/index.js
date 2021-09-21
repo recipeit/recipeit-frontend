@@ -78,66 +78,66 @@ const routes = [
     component: () => import(/* webpackChunkName: "terms" */ '@/views/PrivacyPolicy.vue')
   },
   {
-    path: '/add-blog',
+    path: '/dodaj-blog',
     name: NAMES.ADD_BLOG,
     props: true,
     meta: { hideCookiesModal: true },
     component: () => import(/* webpackChunkName: "add-blog" */ '@/views/AddBlog.vue')
   },
   {
-    path: '/app',
+    path: '/apka',
     name: NAMES.APP,
     beforeEnter: onlyAuthenticated,
     component: () => import(/* webpackChunkName: "app" */ '@/views/App.vue'),
     children: [
       {
         path: '',
-        alias: 'home',
+        alias: 'kokpit',
         name: NAMES.APP_HOME,
         component: () => import(/* webpackChunkName: "home" */ '@/views/app/Home.vue')
       },
       {
-        path: 'recipe/:recipeId',
+        path: 'przepis/:recipeId',
         name: NAMES.APP_RECIPE,
         props: true,
         component: () => import(/* webpackChunkName: "recipe" */ '@/views/app/Recipe.vue')
       },
       {
-        path: 'recipes',
+        path: 'przepisy',
         name: NAMES.APP_RECIPES,
         meta: { preventScroll: true },
         component: () => import(/* webpackChunkName: "recipes" */ '@/views/app/Recipes.vue')
       },
       {
-        path: 'favourites',
+        path: 'ulubione',
         name: NAMES.APP_FAVOURITES,
         meta: { preventScroll: true },
         component: () => import(/* webpackChunkName: "favourites" */ '@/views/app/Favourites.vue')
       },
       {
-        path: 'cook-it',
+        path: 'ugotuj-to',
         name: NAMES.APP_COOK_IT,
         meta: { preventScroll: true },
         component: () => import(/* webpackChunkName: "cook-it" */ '@/views/app/CookIt.vue')
       },
       {
-        path: 'cook-it/almost-available',
+        path: 'ugotuj-to/dokup',
         name: NAMES.APP_ALMOST_AVAILABLE,
         meta: { preventScroll: true },
         component: () => import(/* webpackChunkName: "cook-it" */ '@/views/app/cook-it/AlmostAvailableRecipes.vue')
       },
       {
-        path: 'my-kitchen',
+        path: 'kuchnia',
         name: NAMES.APP_MY_KITCHEN,
         component: () => import(/* webpackChunkName: "my-kitchen" */ '@/views/app/MyKitchen.vue')
       },
       {
-        path: 'shopping-list',
+        path: 'zakupy',
         name: NAMES.APP_SHOPPING_LIST,
         component: () => import(/* webpackChunkName: "shopping-list" */ '@/views/app/ShoppingList.vue')
       },
       {
-        path: 'account',
+        path: 'konto',
         name: NAMES.APP_ACCOUNT,
         component: () => import(/* webpackChunkName: "account" */ '@/views/app/Account.vue')
       },
@@ -149,17 +149,17 @@ const routes = [
         component: () => import(/* webpackChunkName: "account" */ '@/views/app/BlogRecipes.vue')
       },
       {
-        path: 'hidden-blogs',
+        path: 'ukryte-blogi',
         name: NAMES.APP_HIDDEN_BLOGS,
         component: () => import(/* webpackChunkName: "account" */ '@/views/app/account/HiddenBlogs.vue')
       },
       {
-        path: 'hidden-recipes',
+        path: 'ukryte-przepisy',
         name: NAMES.APP_HIDDEN_RECIPES,
         component: () => import(/* webpackChunkName: "account" */ '@/views/app/account/HiddenRecipes.vue')
       },
       {
-        path: 'help',
+        path: 'pomoc',
         name: NAMES.APP_HELP,
         component: () => import(/* webpackChunkName: "help" */ '@/views/app/Help.vue')
       }

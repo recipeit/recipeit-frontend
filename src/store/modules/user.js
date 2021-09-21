@@ -4,6 +4,7 @@ import { ToastType } from '@/plugins/toast/toastType'
 import toastPlugin from '@/plugins/toast'
 import router from '@/router'
 import { THEMES, THEME_DEFAULT, THEME_STORAGE_KEY } from '@/configs/theme'
+import { APP } from '@/router/paths'
 
 export const USER_AUTH_STATE = {
   USER_APP_INITIAL: 'USER_APP_INITIAL',
@@ -233,7 +234,7 @@ export default {
           commit(MUTATIONS.SET_USER_AUTH_STATE, USER_AUTH_STATE.USER_LOGGED_OUT)
           // console.log(router.currentRoute.value.fullPath)
           // console.log(location.pathname)
-          if (location.pathname.startsWith('/app')) {
+          if (location.pathname.startsWith(APP)) {
             sessionStorage.setItem('LOGIN_REDIRECT', location.pathname)
           }
           dispatch('logout')
@@ -268,7 +269,7 @@ export default {
       commit(MUTATIONS.SET_USER_PROFILE, null)
       commit(MUTATIONS.SET_USER_AUTH_STATE, USER_AUTH_STATE.USER_LOGGED_OUT)
 
-      if (location.pathname.startsWith('/app')) {
+      if (location.pathname.startsWith(APP)) {
         if (!withoutRedirect) {
           sessionStorage.setItem('LOGIN_REDIRECT', location.pathname)
         }

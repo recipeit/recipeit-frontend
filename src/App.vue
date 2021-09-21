@@ -111,7 +111,7 @@ export default {
         await this.$router.replace({ name: APP_HOME })
       }
     } catch {
-      if (location.pathname.startsWith('/app')) {
+      if (location.pathname.startsWith('/apka')) {
         await this.$router.replace({ name: AUTH_LOGIN })
       }
     } finally {
