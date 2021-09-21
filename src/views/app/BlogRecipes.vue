@@ -77,6 +77,7 @@ import recipePagedList from './composable/recipePagedList'
 import { useMeta } from 'vue-meta'
 import avatarErrorUrl from '@/assets/img/blog-avatar.webp'
 import backgroundErrorUrl from '@/assets/img/blog-bg.webp'
+import { ToastType } from '@/plugins/toast/toastType'
 
 export default {
   name: 'Recipes',
@@ -135,15 +136,31 @@ export default {
       isBlogHiddenGetter: 'user/isBlogHidden'
     }),
     isHidden() {
-      return this.isBlogHiddenGetter(this.blogId)
+      if (this.blogDetails) {
+        return this.isBlogHiddenGetter(this.blogDetails.id)
+      }
+      return false
     }
   },
   methods: {
     changeBlogVisibility(visible) {
-      this.$store.dispatch('user/changeBlogVisibility', { blogId: this.blogId, visible })
+      if (this.blogDetails) {
+        this.$store.dispatch('user/changeBlogVisibility', { blogId: this.blogDetails.id, visible })
+      }
     },
     showInvisibleInfoModal() {
       this.$modal.show(markRaw(InvisibleBlogInfoModal), {}, {})
+    },
+    copyLinkToClipboard() {
+      const url = window.location.origin + this.$route.path
+
+      if (!url) {
+        this.$toast.show('Nie udało się skopiować do schowka', ToastType.ERROR)
+      } else if (this.$clipboard(url)) {
+        this.$toast.show('Skopiowano do schowka', ToastType.SUCCESS)
+      } else {
+        this.$toast.show('Nie udało się skopiować do schowka', ToastType.ERROR)
+      }
     }
   }
 }

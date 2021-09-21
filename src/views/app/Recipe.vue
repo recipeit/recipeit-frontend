@@ -69,7 +69,7 @@
         </div>
         <div class="recipe__author">
           <router-link
-            :to="{ name: 'blog', params: { blogId: recipe.author.blogId, blogName: recipe.author.blog.name } }"
+            :to="{ name: 'blog', params: { blogId: recipe.author.blog.slug || recipe.author.blog.id, blogName: recipe.author.blog.name } }"
             v-slot="{ href, navigate }"
             custom
           >
@@ -268,7 +268,7 @@ export default {
       }
     },
     changeBlogVisibility(visible) {
-      this.$store.dispatch('user/changeBlogVisibility', { blogId: this.recipe.author.blogId, visible })
+      this.$store.dispatch('user/changeBlogVisibility', { blogId: this.recipe.author.blog.id, visible })
     },
     showInvisibleInfoModal() {
       this.$modal.show(markRaw(InvisibleRecipeInfoModal), {}, {})
