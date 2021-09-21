@@ -10,8 +10,8 @@ export default function() {
   // Store the SW registration so we can send it a message
   // We use `updateExists` to control whatever alert, toast, dialog, etc we want to use
   // To alert the user there is an update they need to refresh for
-  const updateAvailable = event => {
-    data.registration = event.detail
+  const updateAvailable = ({ detail }) => {
+    data.registration = detail
     data.updateExists = true
   }
 

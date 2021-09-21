@@ -3,9 +3,6 @@ import apiClient from './apiClient'
 const route = 'user'
 
 export default {
-  // updateKitchenByRecipe(id) {
-  //   return apiClient.post(`/${route}/${id}/update-kitchen`, null)
-  // },
   getAvailableRecipes(queryParams) {
     return apiClient.get(`/${route}/available-recipes`, {
       params: queryParams

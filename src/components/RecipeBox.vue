@@ -1,5 +1,5 @@
 <template>
-  <router-link class="recipe-box" :to="{ name: APP_RECIPE, params: { recipeId, recipeName } }">
+  <router-link class="recipe-box" :to="{ name: APP_RECIPE, params: { recipeId: recipeSlug, recipeName } }">
     <div class="recipe-box__image-container">
       <div class="recipe-box__image-container__image">
         <BaseImageLazyload :src="imageUrl" :alt="recipeName" :error-placeholder="placeholder" />
@@ -40,6 +40,10 @@ export default {
   },
   props: {
     recipeId: {
+      type: String,
+      required: true
+    },
+    recipeSlug: {
       type: String,
       required: true
     },

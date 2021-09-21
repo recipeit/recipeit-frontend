@@ -193,13 +193,14 @@ export default {
       errors: false,
       fetchedData: false,
       recipe: null,
-      finishedDirections: store.getters['recipes/getFinishedDirectionsForRecipe'](props.recipeId) || []
+      finishedDirections: []
     })
 
     store
       .dispatch('recipes/fetchDetailedRecipe', props.recipeId)
       .then(rd => {
         data.recipe = rd
+        data.finishedDirections = store.getters['recipes/getFinishedDirectionsForRecipe'](rd.id) || []
       })
       .catch(error => {
         data.errors = true
@@ -257,10 +258,14 @@ export default {
       }
     },
     openPlanRecipeModal() {
-      this.$modal.show(markRaw(PlanRecipeModal), { recipeId: this.recipeId }, {})
+      if (this.recipe) {
+        this.$modal.show(markRaw(PlanRecipeModal), { recipeId: this.recipe.id }, {})
+      }
     },
     changeRecipeVisibility(visible) {
-      this.$store.dispatch('user/changeRecipeVisibility', { recipeId: this.recipeId, visible })
+      if (this.recipe) {
+        this.$store.dispatch('user/changeRecipeVisibility', { recipeId: this.recipe.id, visible })
+      }
     },
     changeBlogVisibility(visible) {
       this.$store.dispatch('user/changeBlogVisibility', { blogId: this.recipe.author.blogId, visible })
@@ -279,7 +284,10 @@ export default {
     }),
 
     isRecipeHidden() {
-      return this.isRecipeHiddenGetter(this.recipeId)
+      if (this.recipe) {
+        return this.isRecipeHiddenGetter(this.recipe.id)
+      }
+      return false
     },
     isBlogHidden() {
       if (this.recipe) {
@@ -318,18 +326,24 @@ export default {
     //   return _.min(_.difference(this.allIndexes, this.finishedDirections))
     // },
     images() {
-      const { recipe, recipeId } = this
+      const { recipe } = this
 
       if (!recipe) return null
 
       const imagesCount = Math.max(recipe.imagesCount, 1)
 
       return [...Array(imagesCount).keys()].map(i => ({
-        src: `/static/recipes/${recipeId}/${i + 1}.webp`
+        src: `/static/recipes/${recipe.id}/${i + 1}.webp`
       }))
     },
     reportLinkHref() {
-      const subject = `Błąd w przepisie [ID=${this.recipeId}]`
+      const { recipe } = this
+
+      if (!recipe) {
+        return ''
+      }
+
+      const subject = `Błąd w przepisie [ID=${recipe.id}]`
 
       return `mailto:${CONTACT_MAIL_ADDRESS}?subject=${subject}`
     }

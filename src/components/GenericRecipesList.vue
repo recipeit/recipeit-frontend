@@ -59,7 +59,7 @@
 
       <div class="recipes-list__list" ref="grid">
         <template v-for="({ item, page }, index) in itemsList">
-          <RecipeBox v-if="item" :key="item.id" :recipeId="item.id" :recipeName="item.name" />
+          <RecipeBox v-if="item" :key="item.id" :recipeId="item.id" :recipeSlug="item.slug || item.id" :recipeName="item.name" />
           <SkeletonRecipeBox v-else :key="`${page}_${index}`" :page="page" :animate="false" :ref="skeletonBoxMountedHandler" />
         </template>
       </div>

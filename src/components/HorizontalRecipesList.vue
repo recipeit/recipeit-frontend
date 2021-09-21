@@ -3,9 +3,10 @@
     <ul class="list">
       <GenericRecipesListItem
         class="list-item"
-        v-for="{ id, name, rating } in items"
+        v-for="{ id, slug, name, rating } in items"
         :key="id"
         :recipeId="id"
+        :recipeSlug="slug || id"
         :recipeName="name"
         :recipeRating="rating"
       />

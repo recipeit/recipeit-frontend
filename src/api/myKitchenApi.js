@@ -9,9 +9,6 @@ export default {
   getProductExpirationDates(id) {
     return apiClient.get(`/${route}/products/${id}/expiration-dates`)
   },
-  // addProductsToMyKitchen(products) {
-  //   return apiClient.post(`/${route}/products`, products)
-  // },
   addProductToMyKitchen(product, expirationDates) {
     return apiClient.post(`/${route}/products`, { product, expirationDates })
   },
