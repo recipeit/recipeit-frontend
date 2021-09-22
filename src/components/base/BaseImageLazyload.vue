@@ -43,7 +43,7 @@ export default {
       this.$emit('error', event)
     },
     reset() {
-      this.observer.disconnect()
+      this.observer?.disconnect()
       this.observer = null
       this.visible = false
       this.loaded = false
@@ -94,15 +94,17 @@ export default {
     }
   },
   mounted() {
-    this.init()
+    if (this.src) {
+      this.init()
+    }
   },
   beforeUnmount() {
     this.reset()
   },
   watch: {
     src(newValue, oldValue) {
-      if (newValue && oldValue) {
-        // console.log('src zmieniam')
+      if (newValue !== oldValue) {
+        console.log('src zmieniam', newValue)
         this.reset()
         this.init()
       }

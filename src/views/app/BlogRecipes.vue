@@ -111,8 +111,21 @@ export default {
         })
     })
 
-    const backgroundUrl = computed(() => `/static/blogs/${props.blogId}/background.webp`)
-    const avatarUrl = computed(() => `/static/blogs/${props.blogId}/avatar.webp`)
+    const backgroundUrl = computed(() => {
+      const { id } = blogDetails.value || {}
+      if (id) {
+        return `/static/blogs/${id}/background.webp`
+      }
+      return null
+    })
+
+    const avatarUrl = computed(() => {
+      const { id } = blogDetails.value || {}
+      if (id) {
+        return `/static/blogs/${id}/avatar.webp`
+      }
+      return null
+    })
 
     const computedMeta = computed(() => {
       const title = blogDetails.value?.name || props.blogName
