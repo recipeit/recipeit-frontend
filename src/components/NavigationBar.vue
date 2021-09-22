@@ -5,7 +5,7 @@
     </router-link>
     <router-link :to="{ name: APP_HOME }" class="navigation-bar__item">
       <BaseIcon class="item-icon" icon="home" />
-      <span class="item-name">Kokpit</span>
+      <span class="item-name">Start</span>
     </router-link>
     <router-link :to="{ name: APP_RECIPES }" class="navigation-bar__item">
       <BaseIcon class="item-icon" icon="cookbook" />

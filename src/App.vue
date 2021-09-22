@@ -25,8 +25,7 @@ import { computed, onBeforeMount, reactive, toRefs, watchEffect } from '@vue/run
 import CookiesModal from './components/modals/CookiesModal'
 import Modal from './plugins/global-sheet-modal/Modal.vue'
 import { useRoute } from 'vue-router'
-import { APP_HOME, AUTH_LOGIN } from './router/names'
-import { LOGGED_IN_ALLOWED, APP as PATH_APP } from './router/paths'
+import { APP_HOME, APP_ROUTE_NAMES, AUTH_LOGIN, LOGGED_USER_ALLOWED_ROUTE_NAMES } from './router/names'
 import { useMeta } from 'vue-meta'
 import { useStore } from 'vuex'
 import { EXACT_THEMES, THEME_DARK, THEME_DARK_COLOR, THEME_HTML_ATTRIBUTE, THEME_LIGHT, THEME_LIGHT_COLOR } from './configs/theme'
@@ -105,13 +104,15 @@ export default {
     fetchedInitialUserProfile: false
   }),
   async created() {
+    const { name: routeName } = this.$route
+
     try {
       await this.$store.dispatch('user/fetchUserProfile', { getInitUserData: true })
-      if (!LOGGED_IN_ALLOWED.some(path => location.pathname.startsWith(path))) {
+      if (!LOGGED_USER_ALLOWED_ROUTE_NAMES.includes(routeName)) {
         await this.$router.replace({ name: APP_HOME })
       }
     } catch {
-      if (location.pathname.startsWith(PATH_APP)) {
+      if (APP_ROUTE_NAMES.includes(routeName)) {
         await this.$router.replace({ name: AUTH_LOGIN })
       }
     } finally {

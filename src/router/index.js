@@ -94,8 +94,8 @@ const routes = [
     component: () => import(/* webpackChunkName: "app" */ '@/views/App.vue'),
     children: [
       {
-        path: '',
-        alias: PATHS.APP_HOME,
+        alias: '',
+        path: PATHS.APP_HOME,
         name: NAMES.APP_HOME,
         component: () => import(/* webpackChunkName: "home" */ '@/views/app/Home.vue')
       },
@@ -175,9 +175,9 @@ const routes = [
     component: () => import(/* webpackChunkName: "auth" */ '@/views/Auth.vue'),
     children: [
       {
+        alias: '',
         path: PATHS.AUTH_LOGIN,
         name: NAMES.AUTH_LOGIN,
-        alias: '',
         props: true,
         component: () => import(/* webpackChunkName: "auth" */ '@/views/auth/Login.vue')
       },
