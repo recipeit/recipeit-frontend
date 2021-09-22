@@ -3,7 +3,7 @@ export const TERMS = '/terms'
 export const PRIVACY_POLICY = '/privacy-policy'
 export const ADD_BLOG = '/dodaj-blog'
 
-export const APP = '/a'
+export const APP = '/apka'
 
 export const NOT_FOUND = '/:pathMatch(.*)*'
 
