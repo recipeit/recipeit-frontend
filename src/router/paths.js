@@ -23,7 +23,7 @@ export const AUTH_LOGIN = '/logowanie'
 export const AUTH_REGISTER = '/rejestracja'
 export const AUTH_REGISTER_SUCCESS = '/udana-rejestracja'
 export const AUTH_REQUEST_PASSWORD_RESET = '/zapomnialem-hasla'
-export const AUTH_RESET_PASSWORD = '/resetowanie-hasła'
+export const AUTH_RESET_PASSWORD = '/resetowanie-hasla'
 export const AUTH_CONFIRM_EMAIL = '/potwierdzenie-email'
 
 export const NOT_FOUND = '/:pathMatch(.*)*'
