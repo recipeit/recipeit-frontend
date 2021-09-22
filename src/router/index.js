@@ -8,6 +8,7 @@ import store from '@/store'
 import { USER_AUTH_STATE } from '@/store/modules/user'
 
 import * as NAMES from './names'
+import * as PATHS from './paths'
 import eventHub from './eventHub'
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
@@ -85,7 +86,7 @@ const routes = [
     component: () => import(/* webpackChunkName: "add-blog" */ '@/views/AddBlog.vue')
   },
   {
-    path: '/apka',
+    path: PATHS.APP,
     name: NAMES.APP,
     beforeEnter: onlyAuthenticated,
     component: () => import(/* webpackChunkName: "app" */ '@/views/App.vue'),
@@ -206,6 +207,11 @@ const routes = [
         component: () => import(/* webpackChunkName: "auth" */ '@/views/auth/ConfirmEmail.vue')
       }
     ]
+  },
+  {
+    path: PATHS.NOT_FOUND, //will match everything and put it under `$route.params.pathMatch`
+    name: NAMES.NOT_FOUND,
+    component: () => import(/* webpackChunkName: "not-found" */ '@/views/NotFound.vue')
   }
 ]
 

@@ -26,7 +26,7 @@ import CookiesModal from './components/modals/CookiesModal'
 import Modal from './plugins/global-sheet-modal/Modal.vue'
 import { useRoute } from 'vue-router'
 import { APP_HOME, AUTH_LOGIN } from './router/names'
-import { LOGGED_IN_ALLOWED } from './router/paths'
+import { LOGGED_IN_ALLOWED, APP as PATH_APP } from './router/paths'
 import { useMeta } from 'vue-meta'
 import { useStore } from 'vuex'
 import { EXACT_THEMES, THEME_DARK, THEME_DARK_COLOR, THEME_HTML_ATTRIBUTE, THEME_LIGHT, THEME_LIGHT_COLOR } from './configs/theme'
@@ -111,7 +111,7 @@ export default {
         await this.$router.replace({ name: APP_HOME })
       }
     } catch {
-      if (location.pathname.startsWith('/apka')) {
+      if (location.pathname.startsWith(PATH_APP)) {
         await this.$router.replace({ name: AUTH_LOGIN })
       }
     } finally {

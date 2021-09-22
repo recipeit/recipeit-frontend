@@ -25,3 +25,5 @@ export const AUTH_REGISTER_SUCCESS = 'register-success'
 export const AUTH_REQUEST_PASSWORD_RESET = 'request-password-reset'
 export const AUTH_RESET_PASSWORD = 'reset-password'
 export const AUTH_CONFIRM_EMAIL = 'confirm-email'
+
+export const NOT_FOUND = 'not-found'
