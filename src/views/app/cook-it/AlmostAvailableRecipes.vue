@@ -1,6 +1,6 @@
 <template>
   <div class="layout__page__content">
-    <PageHeader title="Lista przepisów" :backButton="true" :search="true" />
+    <PageHeader title="Dokup i ugotuj" :backButton="true" :search="true" />
     <GenericRecipesList
       :recipes="recipesList.recipes.value"
       :errors="recipesList.recipesErrors.value"
