@@ -24,7 +24,7 @@ import updateSW from './composables/update'
 import { computed, onBeforeMount, reactive, toRefs, watchEffect } from '@vue/runtime-core'
 import CookiesModal from './components/modals/CookiesModal'
 import Modal from './plugins/global-sheet-modal/Modal.vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { APP_HOME, APP_ROUTE_NAMES, AUTH_LOGIN, LOGGED_USER_ALLOWED_ROUTE_NAMES } from './router/names'
 import { useMeta } from 'vue-meta'
 import { useStore } from 'vuex'
@@ -44,9 +44,11 @@ export default {
   setup() {
     const store = useStore()
     const route = useRoute()
+    const router = useRouter()
     const update = updateSW()
     const data = reactive({
-      showGDPRModal: false
+      showGDPRModal: false,
+      fetchedInitialUserProfile: false
     })
 
     store.dispatch('user/initTheme')
@@ -92,6 +94,51 @@ export default {
 
     useMeta(computedMeta)
 
+    const initRoute = async () => {
+      let userFetchSuccess = false
+
+      try {
+        await store.dispatch('user/fetchUserProfile', { getInitUserData: true })
+        userFetchSuccess = true
+      } catch {
+        userFetchSuccess = false
+      }
+
+      var stopped = false
+
+      const stop = watchEffect(async () => {
+        if (stopped) {
+          if (typeof stop === 'function') {
+            stop()
+          }
+          return
+        }
+
+        const routeName = route.name
+        console.log({ routeName })
+
+        if (routeName) {
+          if (typeof stop === 'function') {
+            stop()
+          }
+          stopped = true
+
+          if (userFetchSuccess) {
+            if (!LOGGED_USER_ALLOWED_ROUTE_NAMES.includes(routeName)) {
+              await router.replace({ name: APP_HOME })
+            }
+          } else {
+            if (APP_ROUTE_NAMES.includes(routeName)) {
+              await router.replace({ name: AUTH_LOGIN })
+            }
+          }
+          data.fetchedInitialUserProfile = true
+        }
+      })
+    }
+
+    initRoute()
+
     return {
       ...toRefs(data),
       allowedGDPRModalRoute,
@@ -99,26 +146,24 @@ export default {
       TITLE_TEMPLATE,
       TITLE_SMALL_TEMPLATE
     }
-  },
-  data: () => ({
-    fetchedInitialUserProfile: false
-  }),
-  async created() {
-    const { name: routeName } = this.$route
-
-    try {
-      await this.$store.dispatch('user/fetchUserProfile', { getInitUserData: true })
-      if (!LOGGED_USER_ALLOWED_ROUTE_NAMES.includes(routeName)) {
-        await this.$router.replace({ name: APP_HOME })
-      }
-    } catch {
-      if (APP_ROUTE_NAMES.includes(routeName)) {
-        await this.$router.replace({ name: AUTH_LOGIN })
-      }
-    } finally {
-      this.fetchedInitialUserProfile = true
-    }
   }
+  // data: () => ({
+  //   fetchedInitialUserProfile: false
+  // }),
+  // async created() {
+  //   try {
+  //     await this.$store.dispatch('user/fetchUserProfile', { getInitUserData: true })
+  //     if (!LOGGED_USER_ALLOWED_ROUTE_NAMES.includes(routeName)) {
+  //       await this.$router.replace({ name: APP_HOME })
+  //     }
+  //   } catch {
+  //     if (APP_ROUTE_NAMES.includes(routeName)) {
+  //       await this.$router.replace({ name: AUTH_LOGIN })
+  //     }
+  //   } finally {
+  //     this.fetchedInitialUserProfile = true
+  //   }
+  // }
 }
 </script>
 

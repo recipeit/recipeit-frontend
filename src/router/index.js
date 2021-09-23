@@ -211,7 +211,7 @@ const routes = [
     ]
   },
   {
-    path: PATHS.NOT_FOUND, //will match everything and put it under `$route.params.pathMatch`
+    path: PATHS.NOT_FOUND,
     name: NAMES.NOT_FOUND,
     component: () => import(/* webpackChunkName: "not-found" */ '@/views/NotFound.vue')
   }
