@@ -171,7 +171,6 @@ const routes = [
   {
     path: PATHS.AUTH,
     name: NAMES.AUTH,
-    beforeEnter: onlyAnonymousGuard,
     component: () => import(/* webpackChunkName: "auth" */ '@/views/Auth.vue'),
     children: [
       {
@@ -179,23 +178,27 @@ const routes = [
         path: PATHS.AUTH_LOGIN,
         name: NAMES.AUTH_LOGIN,
         props: true,
+        beforeEnter: onlyAnonymousGuard,
         component: () => import(/* webpackChunkName: "auth" */ '@/views/auth/Login.vue')
       },
       {
         path: PATHS.AUTH_REGISTER,
         name: NAMES.AUTH_REGISTER,
+        beforeEnter: onlyAnonymousGuard,
         component: () => import(/* webpackChunkName: "auth" */ '@/views/auth/Register.vue')
       },
       {
         path: PATHS.AUTH_REGISTER_SUCCESS,
         name: NAMES.AUTH_REGISTER_SUCCESS,
         props: true,
+        beforeEnter: onlyAnonymousGuard,
         component: () => import(/* webpackChunkName: "auth" */ '@/views/auth/RegisterSuccess.vue')
       },
       {
         path: PATHS.AUTH_REQUEST_PASSWORD_RESET,
         name: NAMES.AUTH_REQUEST_PASSWORD_RESET,
         props: true,
+        beforeEnter: onlyAnonymousGuard,
         component: () => import(/* webpackChunkName: "auth" */ '@/views/auth/RequestPasswordReset.vue')
       },
       {
@@ -206,6 +209,7 @@ const routes = [
       {
         path: PATHS.AUTH_CONFIRM_EMAIL,
         name: NAMES.AUTH_CONFIRM_EMAIL,
+        beforeEnter: onlyAnonymousGuard,
         component: () => import(/* webpackChunkName: "auth" */ '@/views/auth/ConfirmEmail.vue')
       }
     ]
