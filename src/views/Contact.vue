@@ -47,12 +47,12 @@ export default {
 
   .header {
     font-size: 1.25rem;
-    margin: 0 1rem 0 0;
+    margin: 0 0 1.5rem 0;
   }
 
   .sub-header {
     font-size: 1rem;
-    margin: 2.5rem 0 1rem 0;
+    margin: 3rem 0 1.5rem 0;
   }
 
   .list {
