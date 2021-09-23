@@ -48,9 +48,9 @@
 
     <h3>Inne</h3>
     <p>
-      <router-link :to="{ name: 'creators', params: { returnUrl: $route.fullPath } }" v-slot="{ href, navigate }" custom>
+      <router-link :to="{ name: 'contact', params: { returnUrl: $route.fullPath } }" v-slot="{ href, navigate }" custom>
         <BaseLink :href="href" @click="navigate($event)" class="card-link" color="primary">
-          Twórcy
+          Kontakt
         </BaseLink>
       </router-link>
     </p>

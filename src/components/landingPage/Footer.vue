@@ -19,15 +19,17 @@
           Dodaj blog
         </BaseLink>
       </router-link>
-      <BaseLink :href="contactHref" class="footer-link" color="text-secondary">
-        Kontakt
-      </BaseLink>
+      <router-link :to="{ name: CONTACT }" #default="{ href, navigate}" custom>
+        <BaseLink :href="href" @click="navigate($event)" class="footer-link" color="text-secondary">
+          Kontakt
+        </BaseLink>
+      </router-link>
     </div>
   </footer>
 </template>
 
 <script>
-import { TERMS, PRIVACY_POLICY, ADD_BLOG } from '@/router/names'
+import { TERMS, PRIVACY_POLICY, ADD_BLOG, CONTACT } from '@/router/names'
 import { CONTACT_MAIL_ADDRESS } from '@/configs/emails'
 import Logotype from '@/components/Logotype'
 
@@ -46,7 +48,8 @@ export default {
       contactHref,
       TERMS,
       PRIVACY_POLICY,
-      ADD_BLOG
+      ADD_BLOG,
+      CONTACT
     }
   }
 }

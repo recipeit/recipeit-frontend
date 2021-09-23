@@ -2,7 +2,7 @@ export const LANDING_PAGE = '/'
 export const TERMS = '/regulamin'
 export const PRIVACY_POLICY = '/polityka-prywatnosci'
 export const ADD_BLOG = '/dodaj-blog'
-export const CREATORS = '/tworcy'
+export const CONTACT = '/kontakt'
 
 export const APP = '/apka'
 export const APP_HOME = '/start'

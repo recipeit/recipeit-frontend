@@ -2,7 +2,7 @@ export const LANDING_PAGE = 'landing-page'
 export const TERMS = 'terms'
 export const PRIVACY_POLICY = 'privacy-policy'
 export const ADD_BLOG = 'add-blog'
-export const CREATORS = 'creators'
+export const CONTACT = 'contact'
 
 export const APP = 'app'
 export const APP_HOME = 'home'
@@ -50,7 +50,7 @@ export const LOGGED_USER_ALLOWED_ROUTE_NAMES = [
   TERMS,
   PRIVACY_POLICY,
   ADD_BLOG,
-  CREATORS,
+  CONTACT,
   NOT_FOUND,
   AUTH_RESET_PASSWORD
 ]

@@ -88,10 +88,10 @@ const routes = [
     component: () => import(/* webpackChunkName: "add-blog" */ '@/views/AddBlog.vue')
   },
   {
-    path: PATHS.CREATORS,
-    name: NAMES.CREATORS,
+    path: PATHS.CONTACT,
+    name: NAMES.CONTACT,
     meta: { hideCookiesModal: true },
-    component: () => import(/* webpackChunkName: "creators" */ '@/views/Creators.vue')
+    component: () => import(/* webpackChunkName: "contact" */ '@/views/Contact.vue')
   },
   {
     path: PATHS.APP,
