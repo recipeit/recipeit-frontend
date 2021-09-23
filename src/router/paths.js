@@ -2,6 +2,7 @@ export const LANDING_PAGE = '/'
 export const TERMS = '/regulamin'
 export const PRIVACY_POLICY = '/polityka-prywatnosci'
 export const ADD_BLOG = '/dodaj-blog'
+export const CREATORS = '/tworcy'
 
 export const APP = '/apka'
 export const APP_HOME = '/start'
@@ -46,15 +47,4 @@ export const APP_PATHS = [
   APP_HIDDEN_BLOGS,
   APP_HIDDEN_RECIPES,
   APP_HELP
-]
-
-export const LOGGED_USER_DISALLOWED_PATHS = [
-  LANDING_PAGE,
-  AUTH,
-  AUTH_LOGIN,
-  AUTH_REGISTER,
-  AUTH_REGISTER_SUCCESS,
-  AUTH_REQUEST_PASSWORD_RESET,
-  AUTH_CONFIRM_EMAIL
-  // AUTH_RESET_PASSWORD
 ]

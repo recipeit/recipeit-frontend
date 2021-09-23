@@ -88,6 +88,12 @@ const routes = [
     component: () => import(/* webpackChunkName: "add-blog" */ '@/views/AddBlog.vue')
   },
   {
+    path: PATHS.CREATORS,
+    name: NAMES.CREATORS,
+    meta: { hideCookiesModal: true },
+    component: () => import(/* webpackChunkName: "creators" */ '@/views/Creators.vue')
+  },
+  {
     path: PATHS.APP,
     name: NAMES.APP,
     beforeEnter: onlyAuthenticated,
