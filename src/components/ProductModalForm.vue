@@ -108,17 +108,17 @@ export default {
     //   newValue => component.emit('update:unit', newValue)
     // )
 
-    function print(test) {
-      console.log(test)
-    }
+    // function print(test) {
+    //   console.log(test)
+    // }
 
     return {
       // localProduct,
       units,
       baseProductsGrouped,
       unitLabelAmount,
-      unitCustomLabel,
-      print
+      unitCustomLabel
+      // print
     }
   }
 }

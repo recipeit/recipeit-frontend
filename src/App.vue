@@ -115,7 +115,6 @@ export default {
         }
 
         const routeName = route.name
-        console.log({ routeName })
 
         if (routeName) {
           if (typeof stop === 'function') {

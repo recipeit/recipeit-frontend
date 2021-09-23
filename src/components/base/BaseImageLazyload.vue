@@ -104,7 +104,6 @@ export default {
   watch: {
     src(newValue, oldValue) {
       if (newValue !== oldValue) {
-        console.log('src zmieniam', newValue)
         this.reset()
         this.init()
       }
