@@ -2,9 +2,9 @@
   <div class="footer-auth">
     <Container class="footer-auth-container">
       <div class="footer-auth-content">
-        <div class="footer-auth-header">
+        <h2 class="footer-auth-header">
           Zacznij korzystać z Recipeit już teraz!
-        </div>
+        </h2>
         <div class="footer-auth-buttons">
           <router-link :to="{ name: 'register' }" v-slot="{ href, navigate }" custom>
             <BaseButton class="button button--main" tag="a" :href="href" @click="navigate($event)">
@@ -44,7 +44,7 @@ export default {
     font-size: 1.5rem;
     color: #fff;
     line-height: 1.15;
-    margin-bottom: 1rem;
+    margin: 0 0 1rem 0;
     font-weight: bold;
   }
 

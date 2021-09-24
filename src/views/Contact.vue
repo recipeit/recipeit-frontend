@@ -9,6 +9,12 @@
         </BaseLink>
       </p>
 
+      <h2 class="sub-header">Bądź na bierząco</h2>
+      <p class="social-list">
+        <a target="_blank" class="social-logo" :href="FACEBOOK_PROFILE_URL" v-html="FacebookLogo" />
+        <a target="_blank" class="social-logo" :href="INSTAGRAM_PROFILE_URL" v-html="InstagramLogo" />
+      </p>
+
       <h2 class="sub-header">Twórcy aplikacji</h2>
       <p>
         <b>Kamil Golec</b>, <b>Alicja Wołoszyn</b> i <b>Jakub Kozłowski</b>. To właśnie oni poświęcili swój czas i wiedzę na rozwój
@@ -20,8 +26,14 @@
 
 <script>
 import { useMeta } from 'vue-meta'
-import AnonymousPage from '@/layouts/AnonymousPage'
+
 import { CONTACT_MAIL_ADDRESS } from '@/configs/emails'
+import { FACEBOOK_PROFILE_URL, INSTAGRAM_PROFILE_URL } from '@/configs/socialMedia'
+
+import FacebookLogo from '@/assets/logos/facebook.svg?inline'
+import InstagramLogo from '@/assets/logos/instagram.svg?inline'
+
+import AnonymousPage from '@/layouts/AnonymousPage'
 
 export default {
   components: { AnonymousPage },
@@ -34,7 +46,11 @@ export default {
 
     return {
       contactHref,
-      CONTACT_MAIL_ADDRESS
+      CONTACT_MAIL_ADDRESS,
+      FacebookLogo,
+      InstagramLogo,
+      FACEBOOK_PROFILE_URL,
+      INSTAGRAM_PROFILE_URL
     }
   }
 }
@@ -66,6 +82,17 @@ export default {
 
   .link {
     font-weight: 700;
+  }
+
+  .social-list {
+    display: flex;
+    // justify-content: center;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .social-logo {
+    width: 32px;
   }
 }
 </style>
