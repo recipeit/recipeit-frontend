@@ -147,25 +147,23 @@
 </template>
 
 <script>
-// import SectionTitle from '@/components/SectionTitle'
+import { computed, markRaw, reactive, toRefs } from '@vue/runtime-core'
+import { mapGetters, mapState, useStore } from 'vuex'
+import { useMeta } from 'vue-meta'
+
 import RecipeParallaxGallery from '@/components/RecipeParallaxGallery'
 import RecipeIngredientsSection from '@/components/recipe/RecipeIngredientsSection'
 import RecipeDirectionsSection from '@/components/recipe/RecipeDirectionsSection'
 import dayjs from '@/functions/dayjs'
-import { computed, markRaw, reactive, toRefs } from 'vue'
-// import _ from 'lodash'
-import { mapGetters, mapState, useStore } from 'vuex'
 import FavouriteIcon from '@/components/FavouriteIcon'
 import Rating from '@/components/Rating'
-// import Dialog from '@/components/modals/Dialog'
 import { ToastType } from '@/plugins/toast/toastType'
 import PlanRecipeModal from '@/components/modals/PlanRecipeModal'
 import InvisibleRecipeInfoModal from '@/components/modals/InvisibleRecipeInfoModal'
 import { parseFilters } from '@/constants'
-import { useMeta } from 'vue-meta'
 import { ERROR_ACTION_TAG_NAME } from '@/configs/error'
 import { CONTACT_MAIL_ADDRESS } from '@/configs/emails'
-import { APP_COOK_IT, APP_HOME } from '@/router/names'
+import { APP_HOME, APP_RECIPES } from '@/router/names'
 
 export default {
   name: 'Recipe',
@@ -235,7 +233,7 @@ export default {
   },
   methods: {
     navigateToRecipesWithCategoryFilter({ key, categoryGroup }) {
-      this.$router.push({ name: APP_COOK_IT, query: parseFilters({ [categoryGroup]: [key] }) })
+      this.$router.push({ name: APP_RECIPES, query: parseFilters({ [categoryGroup]: [key] }) })
     },
     back() {
       this.$router.go(-1)
