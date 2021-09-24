@@ -32,15 +32,12 @@
         </template>
 
         <template #count="{ count, fetching }">
-          <div v-if="count !== null && !fetching" class="recipes-count">
+          <div v-if="count !== 0" class="recipes-count" :class="{ 'hide-text': fetching }">
             <BaseIcon class="recipes-count-icon" icon="chef-hat" />
             <span>
               Znaleźliśmy <b>{{ $tc('shared.recipes', count) }}</b
-              >, które możesz przygotować z tego, co juz masz!
+              >, {{ count === 1 ? 'który' : 'które' }} możesz przygotować z tego, co juz masz!
             </span>
-          </div>
-          <div v-else-if="fetching" class="recipes-count-loading">
-            wczytuję
           </div>
         </template>
 
@@ -176,10 +173,23 @@ export default {
   border-radius: 1.5rem;
   color: var(--color-primary);
   font-weight: 500;
+  font-size: 0.75rem;
   background-color: var(--color-button-subtle-primary-background);
   display: flex;
   align-items: center;
   width: 100%;
+
+  @include transition((background-color, color, opacity, visibility));
+
+  &.hide-text {
+    color: transparent;
+    background-color: var(--color-image-background);
+
+    * {
+      visibility: hidden;
+      opacity: 0;
+    }
+  }
 
   &-icon {
     font-size: 1.5rem;

@@ -36,9 +36,9 @@
 </template>
 
 <script>
-import { markRaw, watch } from 'vue'
+import { markRaw, watch, ref } from '@vue/runtime-core'
+
 import FilterModal from './modals/FilterModal'
-import { ref } from 'vue'
 import { ToastType } from '@/plugins/toast/toastType'
 
 export default {

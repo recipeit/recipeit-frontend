@@ -64,18 +64,18 @@
 </template>
 
 <script>
+import { onBeforeMount, ref } from '@vue/runtime-core'
+import { useMeta } from 'vue-meta'
+import { useRoute } from 'vue-router'
 import { Field, Form } from 'vee-validate'
+import * as yup from 'yup'
+
 import AuthSocialList from './AuthSocialList'
 import { emailSchema, newPasswordSchema, confirmNewPasswordSchema } from '@/configs/schemas'
-import * as yup from 'yup'
 import recaptcha from '@/services/recaptcha'
 import RecaptchaBranding from '@/components/RecaptchaBranding'
 import { RECAPTCHA_ACTIONS } from '@/configs/recaptcha'
-import { ref } from 'vue'
-import { useMeta } from 'vue-meta'
 import { ERROR_ACTION_TAG_NAME } from '@/configs/error'
-import { onBeforeMount } from '@vue/runtime-core'
-import { useRoute } from 'vue-router'
 
 export default {
   components: {

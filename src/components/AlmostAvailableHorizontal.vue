@@ -7,8 +7,8 @@
 
 <script>
 import { useRouter } from 'vue-router'
-import { onBeforeMount } from '@vue/runtime-core'
-import { ref } from 'vue'
+import { onBeforeMount, ref } from '@vue/runtime-core'
+
 import userApi from '@/api/userApi'
 import { RecipeList } from '@/constants'
 import HorizontalRecipesList from '@/components/HorizontalRecipesList'

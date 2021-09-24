@@ -17,8 +17,8 @@
 </template>
 
 <script>
-import { onBeforeMount } from '@vue/runtime-core'
-import { ref } from 'vue'
+import { onBeforeMount, ref } from '@vue/runtime-core'
+
 import { APP_RECIPES } from '@/router/names'
 import recipeApi from '@/api/recipeApi'
 import SectionTitle from '@/components/SectionTitle'

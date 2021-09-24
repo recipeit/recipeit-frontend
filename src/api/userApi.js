@@ -3,6 +3,11 @@ import apiClient from './apiClient'
 const route = 'user'
 
 export default {
+  getAvailableRecipesCount(queryParams) {
+    return apiClient.get(`/${route}/available-recipes/count`, {
+      params: queryParams
+    })
+  },
   getAvailableRecipes(queryParams) {
     return apiClient.get(`/${route}/available-recipes`, {
       params: queryParams

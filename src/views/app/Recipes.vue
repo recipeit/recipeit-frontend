@@ -6,18 +6,37 @@
       :recipes="recipesList.recipes.value"
       :errors="recipesList.recipesErrors.value"
       :loadHandler="pageNumber => recipesList.loadRecipesPage(pageNumber)"
-      @reload="recipesList.reloadRecipes($event)"
-      @reload-with-query="recipesList.reloadRecipesWithQuery($event)"
-    />
+      @reload="reloadRecipes($event)"
+      @reload-with-query="reloadRecipesWithQuery($event)"
+    >
+      <template #above-list>
+        <div v-if="availableRecipesCount !== 0" class="recipes-count" :class="{ 'hide-text': availableRecipesCount === null }">
+          <BaseIcon class="recipes-count-icon" icon="chef-hat" />
+          <span>
+            <b>{{ $tc('shared.recipes', availableRecipesCount) }}</b> z tej listy możesz przygotować z produktów które masz!
+            <router-link :to="{ name: 'cook-it', query: $route.query }" v-slot="{ href, navigate }" custom>
+              <BaseLink :href="href" @click="navigate($event)" color="primary" class="cook-it-link">
+                <template v-if="availableRecipesCount === 1">Sprawdź jaki</template>
+                <template v-else>Sprawdź jakie</template>
+              </BaseLink>
+            </router-link>
+          </span>
+        </div>
+      </template>
+    </GenericRecipesList>
   </div>
 </template>
 
 <script>
+import { ref } from '@vue/runtime-core'
+import { useMeta } from 'vue-meta'
+
 import recipeApi from '@/api/recipeApi'
 import GenericRecipesList from '@/components/GenericRecipesList'
 import PageHeader from '@/components/PageHeader'
 import recipeFilteredPagedList from './composable/recipeFilteredPagedList'
-import { useMeta } from 'vue-meta'
+import userApi from '@/api/userApi'
+import { fetchRecipesQueryParams } from '@/constants'
 
 export default {
   name: 'Recipes',
@@ -35,10 +54,37 @@ export default {
       title: 'Baza przepisów'
     })
 
+    const availableRecipesCount = ref(null)
+
     const recipesList = recipeFilteredPagedList(recipeApi.getRecipes)
 
+    const fetchAvailableRecipesCount = async ({ orderMethod, filters, search } = {}) => {
+      availableRecipesCount.value = null
+
+      var queryParams = fetchRecipesQueryParams(orderMethod, filters, search)
+
+      var { data } = await userApi.getAvailableRecipesCount(queryParams)
+
+      availableRecipesCount.value = data
+    }
+
+    const reloadRecipes = event => {
+      fetchAvailableRecipesCount(event)
+      recipesList.reloadRecipes(event)
+    }
+
+    const reloadRecipesWithQuery = event => {
+      fetchAvailableRecipesCount(event)
+      recipesList.reloadRecipesWithQuery(event)
+    }
+
+    fetchAvailableRecipesCount(event)
+
     return {
-      recipesList
+      recipesList,
+      reloadRecipes,
+      reloadRecipesWithQuery,
+      availableRecipesCount
     }
   }
 }
@@ -48,5 +94,40 @@ export default {
 .layout__page__content {
   display: flex;
   flex-direction: column;
+}
+
+.recipes-count {
+  margin-bottom: 1rem;
+  padding: 1.25rem 1.5rem;
+  border-radius: 1.5rem;
+  color: var(--color-primary);
+  font-weight: 500;
+  font-size: 0.75rem;
+  background-color: var(--color-button-subtle-primary-background);
+  display: flex;
+  align-items: center;
+  width: 100%;
+
+  @include transition((background-color, color, opacity, visibility));
+
+  &.hide-text {
+    color: transparent;
+    background-color: var(--color-image-background);
+
+    * {
+      visibility: hidden;
+      opacity: 0;
+    }
+  }
+
+  &-icon {
+    font-size: 1.5rem;
+    margin-right: 1rem;
+  }
+
+  .cook-it-link {
+    font-weight: 700;
+    text-decoration: underline;
+  }
 }
 </style>

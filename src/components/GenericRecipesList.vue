@@ -44,7 +44,7 @@
               {{ $tc('shared.recipes', recipes.totalCount) }}
             </template>
             <template v-else-if="showFetchingInfo">
-              wczytuję
+              <SkeletonBox class="total-count-skeleton" />
             </template>
           </div>
         </slot>
@@ -80,6 +80,7 @@ import RecipeBox from '@/components/RecipeBox'
 import SkeletonRecipeBox from '@/components/skeletons/SkeletonRecipeBox'
 import SearchWithFilter from '@/components/SearchWithFilter'
 import { computed, nextTick, onBeforeMount, onBeforeUnmount, onMounted, ref, watch } from '@vue/runtime-core'
+import SkeletonBox from '@/components/skeletons/SkeletonBox'
 
 const PAGE_SIZE = 12
 
@@ -88,8 +89,10 @@ export default {
   components: {
     SearchWithFilter,
     SkeletonRecipeBox,
-    RecipeBox
+    RecipeBox,
     // Observer
+
+    SkeletonBox
   },
   props: {
     recipes: {
@@ -362,6 +365,13 @@ export default {
   display: flex;
   flex-direction: column;
   flex: 1;
+
+  .total-count-skeleton {
+    height: 12px;
+    margin: 0.375em 0;
+    border-radius: 8px;
+    width: 88px;
+  }
 
   &__filter {
     margin-bottom: 1rem;

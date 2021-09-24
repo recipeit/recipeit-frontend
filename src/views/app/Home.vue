@@ -8,8 +8,8 @@
 </template>
 
 <script>
-import { onBeforeMount } from '@vue/runtime-core'
-import { ref } from 'vue'
+import { onBeforeMount, ref } from '@vue/runtime-core'
+
 import PageHeader from '@/components/PageHeader'
 import DayPlan from '@/components/DayPlan'
 import LatestFavouritesRecipes from '@/components/LatestFavouritesRecipes'

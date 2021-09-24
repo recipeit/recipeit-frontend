@@ -9,7 +9,7 @@
       @reload-with-query="recipesList.reloadRecipesWithQuery($event)"
     >
       <template #count="{ count, fetching}">
-        <div v-if="count !== null && !fetching" class="recipes-count">
+        <div v-if="count !== 0" class="recipes-count" :class="{ 'hide-text': fetching }">
           <BaseIcon class="recipes-count-icon" icon="basket" />
           <span>
             Znaleźliśmy <b>{{ $tc('shared.recipes', count) }}</b
@@ -100,6 +100,18 @@ export default {
   display: flex;
   align-items: center;
   width: 100%;
+
+  @include transition((background-color, color, opacity, visibility));
+
+  &.hide-text {
+    color: transparent;
+    background-color: var(--color-image-background);
+
+    * {
+      visibility: hidden;
+      opacity: 0;
+    }
+  }
 
   &-icon {
     font-size: 1.5rem;
