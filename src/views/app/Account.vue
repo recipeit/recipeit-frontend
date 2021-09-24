@@ -73,24 +73,34 @@
         Usuń konto
       </BaseLink>
     </p>
+
+    <div class="footer-logo">
+      <Logotype class="logo" />
+      <span class="copyright-text">
+        {{ COPYRIGHT_TEXT }}
+      </span>
+    </div>
   </div>
 </template>
 
 <script>
+import { markRaw, ref } from '@vue/runtime-core'
+import { mapState, useStore } from 'vuex'
+import { useMeta } from 'vue-meta'
+
 import defaultAvatar from '@/assets/img/avatar.svg?inline'
 import CustomizeCookiesModal from '@/components/modals/CustomizeCookiesModal'
 import ChangePasswordModal from '@/components/modals/ChangePasswordModal'
 import ForgotPasswordModal from '@/components/modals/ForgotPasswordModal'
 import DeleteAccountModal from '@/components/modals/DeleteAccountModal'
 import PageHeader from '@/components/PageHeader'
-import { markRaw, ref } from 'vue'
-import { mapState, useStore } from 'vuex'
-import { useMeta } from 'vue-meta'
+import Logotype from '@/components/Logotype'
 import { THEMES } from '@/configs/theme'
+import { COPYRIGHT_TEXT } from '@/constants'
 
 export default {
   name: 'MyAccount',
-  components: { PageHeader },
+  components: { PageHeader, Logotype },
   computed: {
     ...mapState({
       hiddenRecipes: state => state.user.hiddenRecipeIds,
@@ -164,6 +174,7 @@ export default {
     }
 
     return {
+      COPYRIGHT_TEXT,
       selectedTheme,
       updateTheme,
       unhideRecipe,
@@ -176,80 +187,107 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-h3 {
-  font-size: 0.875rem;
-  font-weight: bold;
-  margin-top: 3rem;
-}
+.my-account-page {
+  h3 {
+    font-size: 0.875rem;
+    font-weight: bold;
+    margin-top: 3rem;
+  }
 
-.settings-row {
-  display: flex;
-  font-size: 0.875rem;
-  margin-top: 1rem;
-
-  &__name {
-    flex: 1;
+  .settings-row {
     display: flex;
-    align-items: center;
-    min-height: 48px;
-  }
+    font-size: 0.875rem;
+    margin-top: 1rem;
 
-  &__value {
-    flex: 1;
-  }
-}
-
-.card-label {
-  font-size: 12px;
-  color: var(--color-text-secondary);
-
-  &:not(:first-child) {
-    margin-top: 0.5rem;
-  }
-}
-
-.card-value {
-  font-size: 14px;
-
-  &--disabled {
-    color: var(--color-text-secondary);
-  }
-}
-
-.profile {
-  display: flex;
-
-  .avatar {
-    height: 64px;
-    width: 64px;
-    border-radius: 64px;
-    overflow: hidden;
-    background-color: var(--color-border);
-
-    :deep(img) {
-      height: 100%;
-      width: 100%;
-      object-fit: cover;
+    &__name {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      min-height: 48px;
     }
 
-    .no-avatar-icon {
-      width: 100%;
-      height: 100%;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.75rem;
+    &__value {
+      flex: 1;
+    }
+  }
+
+  .card-label {
+    font-size: 12px;
+    color: var(--color-text-secondary);
+
+    &:not(:first-child) {
+      margin-top: 0.5rem;
+    }
+  }
+
+  .card-value {
+    font-size: 14px;
+
+    &--disabled {
       color: var(--color-text-secondary);
     }
   }
 
-  .card {
-    margin-right: 16px;
-    flex: 1;
-  }
-}
+  .profile {
+    display: flex;
 
-.card-link {
-  font-weight: bold;
-  font-size: 0.75rem;
+    .avatar {
+      height: 64px;
+      width: 64px;
+      border-radius: 64px;
+      overflow: hidden;
+      background-color: var(--color-border);
+
+      :deep(img) {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+      }
+
+      .no-avatar-icon {
+        width: 100%;
+        height: 100%;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.75rem;
+        color: var(--color-text-secondary);
+      }
+    }
+
+    .card {
+      margin-right: 16px;
+      flex: 1;
+    }
+  }
+
+  .card-link {
+    font-weight: bold;
+    font-size: 0.75rem;
+  }
+
+  .footer-logo {
+    display: flex;
+    align-items: center;
+    color: var(--color-text-secondary);
+    border-top: 1px solid var(--color-border);
+    padding: 32px 0;
+    margin-top: 32px;
+
+    .copyright-text {
+      margin-left: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      line-height: 1.25;
+    }
+
+    .logo {
+      width: 96px;
+      line-height: 1;
+
+      :deep(.a) {
+        fill: currentColor;
+      }
+    }
+  }
 }
 </style>

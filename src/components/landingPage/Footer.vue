@@ -2,6 +2,9 @@
   <footer :class="{ footer: true, 'footer--bordered': border }">
     <div class="footer-logo">
       <Logotype class="logo" />
+      <span class="copyright-text">
+        {{ COPYRIGHT_TEXT }}
+      </span>
     </div>
     <div class="footer-links">
       <router-link :to="{ name: TERMS }" #default="{ href, navigate}" custom>
@@ -31,6 +34,7 @@
 <script>
 import { TERMS, PRIVACY_POLICY, ADD_BLOG, CONTACT } from '@/router/names'
 import Logotype from '@/components/Logotype'
+import { COPYRIGHT_TEXT } from '@/constants'
 
 export default {
   components: { Logotype },
@@ -45,7 +49,8 @@ export default {
       TERMS,
       PRIVACY_POLICY,
       ADD_BLOG,
-      CONTACT
+      CONTACT,
+      COPYRIGHT_TEXT
     }
   }
 }
@@ -61,6 +66,18 @@ export default {
   &.footer--bordered {
     border-top: 1px solid var(--color-border);
     padding-top: 32px;
+  }
+
+  .footer-logo {
+    display: flex;
+    align-items: center;
+  }
+
+  .copyright-text {
+    margin-left: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1.25;
   }
 
   .logo {

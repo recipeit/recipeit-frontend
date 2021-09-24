@@ -143,3 +143,6 @@ export const PRODUCT_GROUP_ICONS = {
   DessertsAndSnacks: 'dessert',
   Beverages: 'beverages'
 }
+
+const copyrightYears = [...new Set([2021, new Date().getFullYear()])]
+export const COPYRIGHT_TEXT = `© ${copyrightYears.join(' - ')}`
