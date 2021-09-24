@@ -4,7 +4,7 @@
       <h1 class="header">Kontakt</h1>
       <p>
         Chcesz się skontaktować? Napisz na
-        <BaseLink :href="contactHref" class="link" color="primary">
+        <BaseLink :href="CONTACT_HREF" class="link" color="primary">
           {{ CONTACT_MAIL_ADDRESS }}
         </BaseLink>
       </p>
@@ -27,7 +27,7 @@
 <script>
 import { useMeta } from 'vue-meta'
 
-import { CONTACT_MAIL_ADDRESS } from '@/configs/emails'
+import { CONTACT_MAIL_ADDRESS, CONTACT_HREF } from '@/configs/emails'
 import { FACEBOOK_PROFILE_URL, INSTAGRAM_PROFILE_URL } from '@/configs/socialMedia'
 
 import FacebookLogo from '@/assets/logos/facebook.svg?inline'
@@ -39,14 +39,12 @@ export default {
   components: { AnonymousPage },
   setup() {
     useMeta({
-      title: 'Twórcy'
+      title: 'Kontakt'
     })
 
-    const contactHref = `mailto:${CONTACT_MAIL_ADDRESS}`
-
     return {
-      contactHref,
       CONTACT_MAIL_ADDRESS,
+      CONTACT_HREF,
       FacebookLogo,
       InstagramLogo,
       FACEBOOK_PROFILE_URL,

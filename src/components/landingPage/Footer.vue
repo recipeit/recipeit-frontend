@@ -30,7 +30,6 @@
 
 <script>
 import { TERMS, PRIVACY_POLICY, ADD_BLOG, CONTACT } from '@/router/names'
-import { CONTACT_MAIL_ADDRESS } from '@/configs/emails'
 import Logotype from '@/components/Logotype'
 
 export default {
@@ -42,10 +41,7 @@ export default {
     }
   },
   setup() {
-    const contactHref = `mailto:${CONTACT_MAIL_ADDRESS}`
-
     return {
-      contactHref,
       TERMS,
       PRIVACY_POLICY,
       ADD_BLOG,
