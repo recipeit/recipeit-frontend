@@ -35,7 +35,7 @@
           <div v-if="count !== 0" class="recipes-count" :class="{ 'hide-text': fetching }">
             <BaseIcon class="recipes-count-icon" icon="chef-hat" />
             <span>
-              Znaleźliśmy <b>{{ $tc('shared.recipes', count) }}</b
+              Znaleźliśmy <b>{{ $tc('shared.recipes', count || 1) }}</b
               >, {{ count === 1 ? 'który' : 'które' }} możesz przygotować z tego, co juz masz!
             </span>
           </div>

@@ -12,7 +12,7 @@
         <div v-if="count !== 0" class="recipes-count" :class="{ 'hide-text': fetching }">
           <BaseIcon class="recipes-count-icon" icon="basket" />
           <span>
-            Znaleźliśmy <b>{{ $tc('shared.recipes', count) }}</b
+            Znaleźliśmy <b>{{ $tc('shared.recipes', count || 1) }}</b
             >, które możesz przygotować po dokupieniu paru składników
           </span>
         </div>

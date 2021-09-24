@@ -13,7 +13,7 @@
         <div v-if="availableRecipesCount !== 0" class="recipes-count" :class="{ 'hide-text': availableRecipesCount === null }">
           <BaseIcon class="recipes-count-icon" icon="chef-hat" />
           <span>
-            <b>{{ $tc('shared.recipes', availableRecipesCount) }}</b> z tej listy możesz przygotować z produktów które masz!
+            <b>{{ $tc('shared.recipes', availableRecipesCount || 1) }}</b> z tej listy możesz przygotować z produktów które masz!
             <router-link :to="{ name: 'cook-it', query: $route.query }" v-slot="{ href, navigate }" custom>
               <BaseLink :href="href" @click="navigate($event)" color="primary" class="cook-it-link">
                 <template v-if="availableRecipesCount === 1">Sprawdź jaki</template>
