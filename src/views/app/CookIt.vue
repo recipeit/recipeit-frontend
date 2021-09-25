@@ -43,6 +43,7 @@
 
         <template #empty-with-filters>
           <div class="empty-list-message">
+            <img class="empty-list-message-image" src="@/assets/img/broccoli-sad.svg" alt="" />
             <p class="empty-list-message-title">Nie znaleźliśmy przepisów dla użytych filtrów</p>
             <p v-if="almostAvailableRecipesList.recipes.value.totalCount" class="empty-list-message-sub">
               Możesz
@@ -78,6 +79,7 @@
 
         <template #empty-without-filters>
           <div v-if="kitchenProductsCount === 0" class="empty-list-message">
+            <img class="empty-list-message-image" src="@/assets/img/broccoli-happy.svg" alt="" />
             <p class="empty-list-message-title">Najpierw dodaj coś do swojej kuchni</p>
             <router-link :to="{ name: 'my-kitchen' }" v-slot="{ href, navigate }" custom>
               <BaseButton tag="a" :href="href" @click="navigate($event)" stroked>
@@ -87,6 +89,7 @@
           </div>
 
           <div v-else class="empty-list-message">
+            <img class="empty-list-message-image" src="@/assets/img/broccoli-sad.svg" alt="" />
             <p class="empty-list-message-title">Nie znaleźliśmy przepisów pasujących do Twoich produktów</p>
             <p class="empty-list-message-sub">
               <router-link :to="{ name: 'almost-available', query: $route.query }" v-slot="{ href, navigate }" custom>
@@ -206,17 +209,21 @@ export default {
   text-align: center;
   line-height: 2.25;
 
-  &-title {
+  .empty-list-message-image {
+    width: 96px;
+  }
+
+  .empty-list-message-title {
     margin-bottom: 1rem;
     font-size: 0.875rem;
     line-height: 1.5;
   }
 
-  &-link {
+  .empty-list-message-link {
     font-weight: bold;
   }
 
-  &-sub {
+  .empty-list-message-sub {
     font-size: 0.75rem;
   }
 }

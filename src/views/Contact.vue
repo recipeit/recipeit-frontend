@@ -91,6 +91,15 @@ export default {
 
   .social-logo {
     width: 32px;
+
+    @include transition((opacity));
+
+    @include cursor-only {
+      &:hover,
+      &:focus {
+        opacity: 0.75;
+      }
+    }
   }
 }
 </style>

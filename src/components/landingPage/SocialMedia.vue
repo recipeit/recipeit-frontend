@@ -52,6 +52,15 @@ export default {
   .social-logo {
     width: 32px;
     margin: 12px;
+
+    @include transition((opacity));
+
+    @include cursor-only {
+      &:hover,
+      &:focus {
+        opacity: 0.75;
+      }
+    }
   }
 }
 </style>

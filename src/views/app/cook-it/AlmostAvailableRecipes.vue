@@ -1,5 +1,5 @@
 <template>
-  <div class="layout__page__content">
+  <div class="layout__page__content almost-available-recipes">
     <PageHeader title="Dokup i ugotuj" :backButton="true" :search="true" />
     <GenericRecipesList
       :recipes="recipesList.recipes.value"
@@ -23,6 +23,7 @@
 
       <template #empty-with-filters>
         <div class="empty-list-message">
+          <img class="empty-list-message-image" src="@/assets/img/broccoli-sad.svg" alt="" />
           <p class="empty-list-message-title">Nie znaleźliśmy przepisów dla użytych filtrów</p>
           <p class="empty-list-message-sub">
             Możesz <BaseLink class="empty-list-message-link" color="primary">wyczyścić filtry</BaseLink> lub sprawdzić całą
@@ -33,6 +34,7 @@
 
       <template #empty-without-filters>
         <div v-if="kitchenProductsCount === 0" class="empty-list-message">
+          <img class="empty-list-message-image" src="@/assets/img/broccoli-happy.svg" alt="" />
           <p class="empty-list-message-title">Najpierw dodaj coś do swojej kuchni</p>
           <router-link :to="{ name: 'my-kitchen' }" v-slot="{ href, navigate }" custom>
             <BaseButton tag="a" :href="href" @click="navigate($event)" stroked>
@@ -42,6 +44,7 @@
         </div>
 
         <div v-else class="empty-list-message">
+          <img class="empty-list-message-image" src="@/assets/img/broccoli-sad.svg" alt="" />
           <p class="empty-list-message-title">Nie znaleźliśmy przepisów pasujących do Twoich produktów</p>
           <p class="empty-list-message-sub">
             Możesz <BaseLink class="empty-list-message-link" color="primary">wyczyścić filtry</BaseLink> lub sprawdzić całą
@@ -86,36 +89,64 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.layout__page__content {
+.almost-available-recipes {
   display: flex;
   flex-direction: column;
-}
 
-.recipes-count {
-  padding: 1.25rem 1.5rem;
-  border-radius: 1.5rem;
-  color: var(--color-primary);
-  font-weight: 500;
-  background-color: var(--color-button-subtle-primary-background);
-  display: flex;
-  align-items: center;
-  width: 100%;
+  .empty-list-message {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    line-height: 2.25;
 
-  @include transition((background-color, color, opacity, visibility));
+    .empty-list-message-image {
+      width: 96px;
+    }
 
-  &.hide-text {
-    color: transparent;
-    background-color: var(--color-image-background);
+    .empty-list-message-title {
+      margin-bottom: 1rem;
+      font-size: 0.875rem;
+      line-height: 1.5;
+    }
 
-    * {
-      visibility: hidden;
-      opacity: 0;
+    .empty-list-message-link {
+      font-weight: bold;
+    }
+
+    .empty-list-message-sub {
+      font-size: 0.75rem;
     }
   }
 
-  &-icon {
-    font-size: 1.5rem;
-    margin-right: 1rem;
+  .recipes-count {
+    padding: 1.25rem 1.5rem;
+    border-radius: 1.5rem;
+    color: var(--color-primary);
+    font-weight: 500;
+    background-color: var(--color-button-subtle-primary-background);
+    display: flex;
+    align-items: center;
+    width: 100%;
+
+    @include transition((background-color, color, opacity, visibility));
+
+    &.hide-text {
+      color: transparent;
+      background-color: var(--color-image-background);
+
+      * {
+        visibility: hidden;
+        opacity: 0;
+      }
+    }
+
+    &-icon {
+      font-size: 1.5rem;
+      margin-right: 1rem;
+    }
   }
 }
 </style>

@@ -23,6 +23,7 @@
     <template v-if="recipes.totalCount === 0 && !recipes.fetching">
       <slot v-if="filtersCount > 0 || recipes.search" name="empty-with-filters">
         <div class="empty-list-message">
+          <img class="empty-list-message-image" src="@/assets/img/broccoli-sad.svg" alt="" />
           <p class="empty-list-message-title">Nie znaleźliśmy przepisów dla użytych filtrów</p>
           <BaseButton stroked @click="clearFilters()">Wyczyść filtry</BaseButton>
         </div>
@@ -30,6 +31,7 @@
 
       <slot v-else name="empty-without-filters">
         <div class="empty-list-message">
+          <img class="empty-list-message-image" src="@/assets/img/broccoli-sad.svg" alt="" />
           <p class="empty-list-message-title">Nie znaleźliśmy przepisów pasujących do Twoich produktów</p>
         </div>
       </slot>
@@ -442,7 +444,11 @@ export default {
   flex: 1;
   line-height: 2.25;
 
-  &-title {
+  .empty-list-message-image {
+    width: 96px;
+  }
+
+  .empty-list-message-title {
     margin-bottom: 1rem;
     font-size: 0.875rem;
     line-height: 1.5;

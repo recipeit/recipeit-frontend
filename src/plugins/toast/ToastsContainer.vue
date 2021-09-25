@@ -25,7 +25,14 @@ export default {
   },
   data() {
     return {
-      toasts: []
+      toasts: [
+        {
+          id: '1212343',
+          message: 'huj',
+          type: 'info',
+          seconds: 123124312
+        }
+      ]
     }
   },
   methods: {
@@ -56,6 +63,10 @@ export default {
   right: 0;
   pointer-events: none;
   z-index: 10000;
+
+  @media (max-width: 720px) {
+    margin-bottom: 80px;
+  }
 
   &__item {
     padding: 0 1rem 1rem 1rem;
