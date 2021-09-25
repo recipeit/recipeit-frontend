@@ -58,7 +58,8 @@ export default {
     .add-animation-circle {
       animation: add-zoom 2s ease alternate 1;
     }
-    .a {
+
+    .add-animation-path {
       animation: add-dash 2s ease alternate 1;
     }
   }
