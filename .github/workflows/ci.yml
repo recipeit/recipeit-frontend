@@ -2,7 +2,7 @@ name: Deploy to staging
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, deploy-staging ]
 
 jobs:
   build:
