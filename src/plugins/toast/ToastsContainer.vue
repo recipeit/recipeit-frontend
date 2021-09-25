@@ -25,14 +25,7 @@ export default {
   },
   data() {
     return {
-      toasts: [
-        {
-          id: '1212343',
-          message: 'huj',
-          type: 'info',
-          seconds: 123124312
-        }
-      ]
+      toasts: []
     }
   },
   methods: {
