@@ -2,7 +2,7 @@
   <div class="layout">
     <div class="layout__page">
       <router-view v-slot="{ Component }">
-        <transition name="page-component-fade" mode="out-in" @after-leave="routerEventHub.$emit('triggerScroll')">
+        <transition name="page-component-fade" mode="out-in" @after-leave="eventHub.$emit('triggerScroll')">
           <component :is="Component" />
         </transition>
       </router-view>
@@ -13,7 +13,7 @@
 
 <script>
 import NavigationBar from '@/components/NavigationBar'
-import routerEventHub from '@/router/eventHub'
+import eventHub from '@/services/eventHub'
 
 export default {
   components: {
@@ -21,7 +21,7 @@ export default {
   },
   setup() {
     return {
-      routerEventHub
+      eventHub
     }
   }
 }

@@ -17,11 +17,15 @@
       <span class="item-name">Ugotuj to!</span>
     </router-link>
     <router-link :to="{ name: APP_MY_KITCHEN }" class="navigation-bar__item">
-      <BaseIcon class="item-icon" icon="food" />
+      <NavigationBarAnimatedIcon ref="myKitchenIcon">
+        <BaseIcon class="item-icon" icon="food" />
+      </NavigationBarAnimatedIcon>
       <span class="item-name">Kuchnia</span>
     </router-link>
     <router-link :to="{ name: APP_SHOPPING_LIST }" class="navigation-bar__item">
-      <BaseIcon class="item-icon" icon="basket" />
+      <NavigationBarAnimatedIcon ref="shoppingListIcon">
+        <BaseIcon class="item-icon" icon="basket" />
+      </NavigationBarAnimatedIcon>
       <span class="item-name">Zakupy</span>
     </router-link>
   </div>
@@ -30,18 +34,46 @@
 <script>
 import Logotype from '@/components/Logotype'
 import { APP_COOK_IT, APP_HOME, APP_MY_KITCHEN, APP_RECIPES, APP_SHOPPING_LIST } from '@/router/names'
+import NavigationBarAnimatedIcon from '@/components/NavigationBarAnimatedIcon'
+import { ref } from '@vue/reactivity'
+import eventHub from '@/services/eventHub'
+import { useRoute } from 'vue-router'
 
 export default {
   components: {
-    Logotype
+    Logotype,
+    NavigationBarAnimatedIcon
   },
   setup() {
+    const route = useRoute()
+
+    const myKitchenIcon = ref(null)
+    const shoppingListIcon = ref(null)
+
+    const runAddToKitchenAnimation = () => {
+      if (route.name !== APP_MY_KITCHEN) {
+        myKitchenIcon.value?.startAnimation()
+      }
+    }
+    const runAddToShoppingListAnimation = () => {
+      if (route.name !== APP_SHOPPING_LIST) {
+        shoppingListIcon.value?.startAnimation()
+      }
+    }
+
+    eventHub.$on('add-to-kitchen', runAddToKitchenAnimation)
+    eventHub.$on('add-to-shopping-list', runAddToShoppingListAnimation)
+
     return {
       APP_HOME,
       APP_RECIPES,
       APP_COOK_IT,
       APP_MY_KITCHEN,
-      APP_SHOPPING_LIST
+      APP_SHOPPING_LIST,
+      runAddToKitchenAnimation,
+      runAddToShoppingListAnimation,
+      myKitchenIcon,
+      shoppingListIcon
     }
   }
 }

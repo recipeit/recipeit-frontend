@@ -9,7 +9,7 @@ import { USER_AUTH_STATE } from '@/store/modules/user'
 
 import * as NAMES from './names'
 import * as PATHS from './paths'
-import eventHub from './eventHub'
+import eventHub from '@/services/eventHub'
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
 

@@ -1,5 +1,6 @@
 import recipeApi from '@/api/recipeApi'
 import shoppingListApi from '@/api/shoppingListApi'
+import eventHub from '@/services/eventHub'
 
 export const MUTATIONS = {
   SET_PRODUCTS: 'SET_PRODUCTS',
@@ -70,6 +71,7 @@ export default {
           .addProductToShoppingList(product)
           .then(resp => {
             commit(MUTATIONS.ADD_PRODUCT, resp.data)
+            eventHub.$emit('add-to-shopping-list')
             resolve()
           })
           .catch(error => reject(error))
@@ -82,6 +84,7 @@ export default {
           .then(({ data: products }) => {
             if (products) {
               commit(MUTATIONS.ADD_PRODUCTS, products)
+              eventHub.$emit('add-to-shopping-list')
             }
             resolve(products)
           })

@@ -1,4 +1,5 @@
 import myKitchenApi from '@/api/myKitchenApi'
+import eventHub from '@/services/eventHub'
 
 export const MUTATIONS = {
   SET_PRODUCTS: 'SET_PRODUCTS',
@@ -61,6 +62,7 @@ export default {
           .addProductsToMyKitchen(products)
           .then(resp => {
             commit(MUTATIONS.ADD_PRODUCTS, resp.data)
+            eventHub.$emit('add-to-kitchen')
             resolve()
           })
           .catch(error => reject(error))
@@ -72,6 +74,7 @@ export default {
           .addProductToMyKitchen(product, expirationDates)
           .then(resp => {
             commit(MUTATIONS.ADD_PRODUCT, resp.data)
+            eventHub.$emit('add-to-kitchen')
             resolve()
           })
           .catch(error => reject(error))
@@ -101,9 +104,11 @@ export default {
     },
     includeProductToList({ commit }, product) {
       commit(MUTATIONS.ADD_PRODUCT, product)
+      eventHub.$emit('add-to-kitchen')
     },
     includeProductsToList({ commit }, products) {
       commit(MUTATIONS.ADD_PRODUCTS, products)
+      eventHub.$emit('add-to-kitchen')
     },
     resetUserData({ commit }) {
       commit(MUTATIONS.SET_PRODUCTS, null)
