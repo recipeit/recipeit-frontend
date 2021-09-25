@@ -88,7 +88,7 @@ export default {
 
   .add-animation-path {
     fill: none;
-    stroke: #fff;
+    stroke: var(--color-background);
     stroke-linecap: round;
     stroke-linejoin: round;
     stroke-width: 3px;
