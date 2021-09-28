@@ -31,22 +31,23 @@ export default {
     margin-bottom: 48px;
   }
 
-  &-text {
+  .section-text {
     flex: 1;
+    margin: 0 16px 0 0;
   }
 
-  &-title {
+  .section-title {
     margin-top: 0;
     font-size: 2rem;
     line-height: 1.15;
   }
 
-  &-description {
+  .section-description {
     font-size: 0.875rem;
     color: var(--color-text-dark);
   }
 
-  &-image {
+  .section-image {
     flex: 1;
     height: 720px;
     text-align: right;
@@ -63,20 +64,23 @@ export default {
     height: 100%;
   }
 
-  &--inverse {
+  .section--inverse {
     flex-direction: row-reverse;
 
     .section-image {
       text-align: left;
+    }
+
+    .section-text {
+      margin: 0 0 0 16px;
     }
   }
 
   @media (max-width: 720px) {
     flex-direction: column;
     align-items: flex-start;
-    // text-align: center;
 
-    &-image {
+    .section-image {
       flex: initial;
       height: auto;
       width: 240px;
@@ -87,6 +91,10 @@ export default {
         width: 100%;
         border-radius: 1.5rem;
       }
+    }
+
+    .section-text {
+      margin: 0;
     }
 
     .image {

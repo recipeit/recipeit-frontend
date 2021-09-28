@@ -29,14 +29,18 @@
 
 <script>
 import { ref } from '@vue/runtime-core'
+import { useRoute } from 'vue-router'
 import { useMeta } from 'vue-meta'
 
+import { fetchRecipesQueryParams, queryParamsFromRouteQuery } from '@/constants'
+
 import recipeApi from '@/api/recipeApi'
+import userApi from '@/api/userApi'
+
+import recipeFilteredPagedList from '@/views/app/composable/recipeFilteredPagedList'
+
 import GenericRecipesList from '@/components/GenericRecipesList'
 import PageHeader from '@/components/PageHeader'
-import recipeFilteredPagedList from './composable/recipeFilteredPagedList'
-import userApi from '@/api/userApi'
-import { fetchRecipesQueryParams } from '@/constants'
 
 export default {
   name: 'Recipes',
@@ -53,6 +57,7 @@ export default {
     useMeta({
       title: 'Baza przepisów'
     })
+    const route = useRoute()
 
     const availableRecipesCount = ref(null)
 
@@ -61,9 +66,9 @@ export default {
     const fetchAvailableRecipesCount = async ({ orderMethod, filters, search } = {}) => {
       availableRecipesCount.value = null
 
-      var queryParams = fetchRecipesQueryParams(orderMethod, filters, search)
+      const queryParams = fetchRecipesQueryParams(orderMethod, filters, search)
 
-      var { data } = await userApi.getAvailableRecipesCount(queryParams)
+      const { data } = await userApi.getAvailableRecipesCount(queryParams)
 
       availableRecipesCount.value = data
     }
@@ -78,7 +83,8 @@ export default {
       recipesList.reloadRecipesWithQuery(event)
     }
 
-    fetchAvailableRecipesCount(event)
+    const initialQueryParams = queryParamsFromRouteQuery(route.query)
+    fetchAvailableRecipesCount(initialQueryParams)
 
     return {
       recipesList,

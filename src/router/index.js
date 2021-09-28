@@ -236,12 +236,17 @@ const router = createRouter({
   routes,
   scrollBehavior: (to, from, savedPosition) =>
     new Promise(resolve => {
+      const fromAppToApp = [to.name, from.name].every(name => NAMES.APP_ROUTE_NAMES.includes(name))
       const position = to.matched.some(m => m.meta.preventScroll) ? savedPosition : { top: 0 }
 
-      eventHub.$once('triggerScroll', async () => {
-        await nextTick()
+      if (fromAppToApp) {
+        eventHub.$once('triggerScroll', async () => {
+          await nextTick()
+          resolve(position)
+        })
+      } else {
         resolve(position)
-      })
+      }
     })
 })
 

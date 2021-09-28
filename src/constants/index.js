@@ -92,7 +92,7 @@ export class RecipeList {
   }
 }
 
-export function parseFilters(filters) {
+export const parseFilters = filters => {
   let renamedFilters = {}
   if (typeof filters === 'object' && filters !== null) {
     Object.entries(filters).forEach(([group, value]) => {
@@ -104,7 +104,7 @@ export function parseFilters(filters) {
   return renamedFilters
 }
 
-export function fetchRecipesQueryParams(orderMethod, filters, search) {
+export const fetchRecipesQueryParams = (orderMethod, filters, search) => {
   const paramsWithNullItems = {
     // pageNumber: null,
     search: search,
@@ -117,6 +117,16 @@ export function fetchRecipesQueryParams(orderMethod, filters, search) {
       .filter(([, value]) => value !== null)
       .map(([key]) => [key, paramsWithNullItems[key]])
   )
+}
+
+export const queryParamsFromRouteQuery = routeQuery => {
+  if (routeQuery) {
+    return Object.fromEntries(
+      Object.entries(routeQuery).filter(([key]) => key === 'search' || key === 'orderMethod' || key.startsWith('filters.'))
+    )
+  }
+
+  return null
 }
 
 export const STORAGE_TOKEN = 'token'

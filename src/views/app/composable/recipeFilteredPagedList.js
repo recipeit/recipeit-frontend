@@ -1,10 +1,10 @@
 import { ERROR_ACTION_TAG_NAME } from '@/configs/error'
-import { fetchRecipesQueryParams, RecipeList } from '@/constants'
+import { fetchRecipesQueryParams, queryParamsFromRouteQuery, RecipeList } from '@/constants'
 import { onBeforeMount, ref } from '@vue/runtime-core'
 import { useRoute, useRouter } from 'vue-router'
 import { useErrorHandler } from '@/error'
 
-export default function(apiEndpoint) {
+export default apiEndpoint => {
   const recipes = ref(new RecipeList())
   const initialQueryParams = ref(null)
   const recipesErrors = ref(null)
@@ -71,13 +71,7 @@ export default function(apiEndpoint) {
   }
 
   onBeforeMount(() => {
-    var { query } = route
-
-    if (query) {
-      initialQueryParams.value = Object.fromEntries(
-        Object.entries(query).filter(([key]) => key === 'search' || key === 'orderMethod' || key.startsWith('filters.'))
-      )
-    }
+    initialQueryParams.value = queryParamsFromRouteQuery(route.query)
   })
 
   return {

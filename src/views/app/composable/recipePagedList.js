@@ -4,7 +4,7 @@ import { ERROR_ACTION_TAG_NAME } from '@/configs/error'
 import { RecipeList } from '@/constants'
 import { useErrorHandler } from '@/error'
 
-export default function(apiEndpoint) {
+export default apiEndpoint => {
   const recipes = ref(new RecipeList())
   const recipesErrors = ref(null)
   const errorHandler = useErrorHandler()

@@ -38,9 +38,10 @@
 </template>
 
 <script>
-import SkeletonRecipeBox from '@/components/skeletons/SkeletonRecipeBox'
 import { RecipeList } from '@/constants'
-import GenericRecipesListItem from './GenericRecipesListItem.vue'
+
+import SkeletonRecipeBox from '@/components/skeletons/SkeletonRecipeBox'
+import GenericRecipesListItem from '@/components/GenericRecipesListItem'
 
 export default {
   emits: ['showAll'],

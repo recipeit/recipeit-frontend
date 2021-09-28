@@ -2,6 +2,7 @@ import axios from 'axios'
 import store from '@/store'
 import { API_DEV_BASE_URL_SSL, API_PROD_BASE_URL } from '@/configs/api'
 import * as Sentry from '@sentry/browser'
+import { IDENTITY_URLS } from './identityApi'
 
 const apiClient = axios.create({
   baseURL: process.env.NODE_ENV === 'production' ? API_PROD_BASE_URL : API_DEV_BASE_URL_SSL,
@@ -21,7 +22,7 @@ apiClient.interceptors.response.use(
     const originalRequest = error.config
 
     // Prevent infinite loops
-    if (error.response?.status === 401 && originalRequest.url.includes('/identity/refresh-cookie')) {
+    if (error.response?.status === 401 && originalRequest.url.includes(IDENTITY_URLS.REFRESH_COOKIE)) {
       return Promise.reject(error)
     }
 
@@ -31,12 +32,12 @@ apiClient.interceptors.response.use(
         .then(response => {
           if (response?.isFetching !== true) {
             onRefreshed(true)
-            subscribers = []
+            // subscribers = []
           }
         })
         .catch(() => {
           onRefreshed(false)
-          subscribers = []
+          // subscribers = []
           // Sentry.captureException(error)
         })
 
@@ -65,6 +66,7 @@ function subscribeTokenRefresh(cb) {
 
 function onRefreshed(success) {
   subscribers.map(cb => cb(success))
+  subscribers = []
 }
 
 export default apiClient
