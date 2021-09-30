@@ -5,6 +5,7 @@
       class="form-row"
       :autofocus="productAutofocus"
       trackBy="id"
+      searchBy="variants"
       label="name"
       :options="baseProductsGrouped"
       :limit="100"

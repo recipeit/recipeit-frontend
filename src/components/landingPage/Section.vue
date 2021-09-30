@@ -64,7 +64,7 @@ export default {
     height: 100%;
   }
 
-  .section--inverse {
+  &.section--inverse {
     flex-direction: row-reverse;
 
     .section-image {
@@ -93,13 +93,16 @@ export default {
       }
     }
 
-    .section-text {
-      margin: 0;
-    }
+    &,
+    &.section--inverse {
+      .section-text {
+        margin: 0;
+      }
 
-    .image {
-      height: auto;
-      width: 100%;
+      .image {
+        height: auto;
+        width: 100%;
+      }
     }
   }
 }

@@ -163,6 +163,9 @@ export default {
     trackBy: {
       type: String
     },
+    searchBy: {
+      type: String
+    },
     label: {
       type: String
     },
@@ -188,6 +191,7 @@ export default {
         return label ? option[label] : option
       }
     },
+
     autofocus: {
       type: Boolean,
       default: false
@@ -389,7 +393,8 @@ export default {
       )
     },
     filterOptions(options) {
-      return options.filter(option => includes(this.customLabel(option, this.label), this.search))
+      const { searchBy } = this
+      return options.filter(option => includes(searchBy ? option[searchBy] : this.customLabel(option, this.label), this.search))
     },
     scrollOptionsToTop() {
       if (this.$refs.options) {
