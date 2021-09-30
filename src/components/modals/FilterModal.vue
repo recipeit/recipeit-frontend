@@ -53,6 +53,7 @@
               multiPlaceholder="dodaj kolejny składnik"
               class="form-row"
               trackBy="id"
+              searchBy="variants"
               label="name"
               defaultOpenDirection="above"
               :options="baseProductsGrouped"
