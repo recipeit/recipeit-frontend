@@ -118,10 +118,23 @@ function isEmpty(opt) {
   return !opt
 }
 
+function normalizePolishString(value) {
+  return value
+    .replace('ą', 'a')
+    .replace('ć', 'c')
+    .replace('ę', 'e')
+    .replace('ł', 'l')
+    .replace('ń', 'n')
+    .replace('ó', 'o')
+    .replace('ś', 's')
+    .replace('ż', 'z')
+    .replace('ź', 'z')
+}
+
 function includes(str, query) {
   /* istanbul ignore else */
   if (!query) return true
-  return str.toLowerCase().includes(query.toLowerCase())
+  return normalizePolishString(str.toLowerCase()).includes(normalizePolishString(query.toLowerCase()))
   // if (str === undefined) str = 'undefined'
   // if (str === null) str = 'null'
   // if (str === false) str = 'false'
