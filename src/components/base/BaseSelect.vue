@@ -120,21 +120,29 @@ function isEmpty(opt) {
 
 function normalizePolishString(value) {
   return value
-    .replace('ą', 'a')
-    .replace('ć', 'c')
-    .replace('ę', 'e')
-    .replace('ł', 'l')
-    .replace('ń', 'n')
-    .replace('ó', 'o')
-    .replace('ś', 's')
-    .replace('ż', 'z')
-    .replace('ź', 'z')
+    .replaceAll('ą', 'a')
+    .replaceAll('ć', 'c')
+    .replaceAll('ę', 'e')
+    .replaceAll('ł', 'l')
+    .replaceAll('ń', 'n')
+    .replaceAll('ó', 'o')
+    .replaceAll('ś', 's')
+    .replaceAll('ż', 'z')
+    .replaceAll('ź', 'z')
 }
 
 function includes(str, query) {
   /* istanbul ignore else */
   if (!query) return true
-  return normalizePolishString(str.toLowerCase()).includes(normalizePolishString(query.toLowerCase()))
+
+  const e1 = normalizePolishString(str.toLowerCase())
+  const e2 = normalizePolishString(query.trim().toLowerCase())
+
+  if (e1.includes('mas')) {
+    console.log({ str, e1, e2 })
+  }
+
+  return e1.includes(e2)
   // if (str === undefined) str = 'undefined'
   // if (str === null) str = 'null'
   // if (str === false) str = 'false'
