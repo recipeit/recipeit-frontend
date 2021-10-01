@@ -36,6 +36,7 @@ import { markRaw } from '@vue/reactivity'
 import GDPRService from '@/services/gdpr'
 
 export default {
+  emits: ['close'],
   setup(_, { emit }) {
     const modal = useModal()
 

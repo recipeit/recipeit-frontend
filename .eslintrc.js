@@ -11,7 +11,15 @@ module.exports = {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'vue/no-v-html': 0,
-    'vue/require-default-prop': 0
+    'vue/require-default-prop': 0,
+    'prettier/prettier': [
+        'error',
+        {
+          'singleQuote': true,
+          'semi': false,
+          'printWidth': 140
+        }
+    ],
   },
   globals: {
     __BUILD_VERSION__: true
