@@ -60,7 +60,7 @@
               :multiple="true"
               :searchable="true"
               @click.stop
-              :limit="25"
+              :limit="100"
               :value="selected[OPTION_KEYS.BASE_PRODUCTS]"
               @change="selected[OPTION_KEYS.BASE_PRODUCTS] = $event"
               groupLabel="groupKey"

@@ -112,14 +112,14 @@ import uniqueID from '@/functions/uniqueID'
 import { nextTick } from 'vue'
 import { setFocus } from '@/directives/autofocus'
 
-function isEmpty(opt) {
+const isEmpty = opt => {
   if (opt === 0) return false
   if (Array.isArray(opt) && opt.length === 0) return true
   return !opt
 }
 
-function normalizePolishString(value) {
-  return value
+const normalizePolishString = value =>
+  value
     .replaceAll('ą', 'a')
     .replaceAll('ć', 'c')
     .replaceAll('ę', 'e')
@@ -129,25 +129,14 @@ function normalizePolishString(value) {
     .replaceAll('ś', 's')
     .replaceAll('ż', 'z')
     .replaceAll('ź', 'z')
-}
 
-function includes(str, query) {
-  /* istanbul ignore else */
+const includes = (str, query) => {
   if (!query) return true
 
-  const e1 = normalizePolishString(str.toLowerCase())
-  const e2 = normalizePolishString(query.trim().toLowerCase())
+  const valueNormalizedString = normalizePolishString(str.toLowerCase())
+  const queryNormalizedString = normalizePolishString(query.trim().toLowerCase())
 
-  if (e1.includes('mas')) {
-    console.log({ str, e1, e2 })
-  }
-
-  return e1.includes(e2)
-  // if (str === undefined) str = 'undefined'
-  // if (str === null) str = 'null'
-  // if (str === false) str = 'false'
-  // const text = str.toString().toLowerCase()
-  // return text.indexOf(query.trim()) !== -1
+  return valueNormalizedString.includes(queryNormalizedString)
 }
 
 const OPEN_DIRECTIONS = {
