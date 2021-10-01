@@ -1,5 +1,5 @@
 <template>
-  <sheet-modal-content>
+  <SheetModalContent>
     <BaseModalHeader @close="$emit('close')">
       <BaseModalTitle class="title">Czy na pewno chcesz usunąć konto?</BaseModalTitle>
     </BaseModalHeader>
@@ -10,9 +10,9 @@
       <p class="message">
         Jeżeli dalej chcesz usunąć swoje konto, wprowadź kod <b class="code">{{ code }}</b> w poniższe pole.
       </p>
-      <Form class="form" :id="formID" @submit="deleteAccount($event)" :validation-schema="schema">
+      <Form :id="formID" class="form" :validation-schema="schema" @submit="deleteAccount($event)">
         <BaseInput class="form-row" label="E-mail" type="text" :disabled="true" :value="email" />
-        <Field name="code" v-slot="{ field, errors }">
+        <Field v-slot="{ field, errors }" name="code">
           <BaseInput class="form-row" label="Kod" type="text" v-bind="field" :errors="errors" />
         </Field>
       </Form>
@@ -30,7 +30,7 @@
         {{ 'Usuń konto' }}
       </BaseButton>
     </BaseModalFooter>
-  </sheet-modal-content>
+  </SheetModalContent>
 </template>
 
 <script>
@@ -45,7 +45,6 @@ import { RECAPTCHA_ACTIONS } from '@/configs/recaptcha'
 import RecaptchaBranding from '@/components/RecaptchaBranding'
 
 export default {
-  emits: ['close'],
   components: { RecaptchaBranding, Field, Form },
   props: {
     email: {
@@ -53,6 +52,7 @@ export default {
       required: true
     }
   },
+  emits: ['close'],
   setup(props, component) {
     const store = useStore()
     const formID = 'form-' + uniqueID().getID()

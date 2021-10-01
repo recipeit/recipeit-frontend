@@ -5,14 +5,13 @@
   <span class="favourite" v-else @click="$emit('added')">
     <BaseIcon icon="heart" />
   </span> -->
-  <BaseLink class="favourite" tag="button" @click="onClick()" :color="isFavourite ? 'red' : color">
+  <BaseLink class="favourite" tag="button" :color="isFavourite ? 'red' : color" @click="onClick()">
     <BaseIcon :icon="isFavourite ? 'heart-full' : 'heart'" />
   </BaseLink>
 </template>
 
 <script>
 export default {
-  emits: ['added', 'removed'],
   props: {
     isFavourite: {
       type: Boolean,
@@ -23,6 +22,7 @@ export default {
       default: 'text-secondary'
     }
   },
+  emits: ['added', 'removed'],
   methods: {
     onClick() {
       if (this.isFavourite) {

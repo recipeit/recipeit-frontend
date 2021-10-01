@@ -1,6 +1,6 @@
 <template>
-  <router-link :to="{ name: page, query: { [`filters.${categoryGroup}`]: categoryKey } }" #default="{ href, navigate }" custom>
-    <a :href="href" @click="navigate($event)" class="category">
+  <router-link v-slot="{ href, navigate }" :to="{ name: page, query: { [`filters.${categoryGroup}`]: categoryKey } }" custom>
+    <a :href="href" class="category" @click="navigate($event)">
       <BaseImageLazyload class="category-image" :src="imageUrl" />
       <div>
         <span class="category-name">{{ $t(`recipeCategory.${categoryValue}`) }}</span>

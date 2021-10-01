@@ -4,16 +4,16 @@
   </div>
   <div v-if="!(expirationDateObjects && expirationDateObjects.length === 0)" class="form-row">
     <div v-if="expirationDateObjects === null" class="expiration-date-list">
-      <BaseButton class="expiration-date-list__item" subtle color="primary" size="small" v-for="i in 3" :key="i" />
+      <BaseButton v-for="i in 3" :key="i" class="expiration-date-list__item" subtle color="primary" size="small" />
     </div>
     <div v-else class="expiration-date-list">
       <BaseButton
+        v-for="(date, index) in expirationDateObjects"
+        :key="index"
         class="expiration-date-list__item"
         subtle
         :color="isExpiredDate(date) ? 'danger' : 'contrast'"
         size="small"
-        v-for="(date, index) in expirationDateObjects"
-        :key="index"
         @click.stop="deleteExpirationDateAt(index)"
       >
         {{ formattedExpirationDate(date) }}

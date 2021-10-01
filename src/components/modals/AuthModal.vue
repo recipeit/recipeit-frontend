@@ -1,9 +1,9 @@
 <template>
-  <sheet-modal-content>
+  <SheetModalContent>
     <BaseModalBody>
       <Authorization />
     </BaseModalBody>
-  </sheet-modal-content>
+  </SheetModalContent>
 </template>
 
 <script>

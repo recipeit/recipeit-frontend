@@ -1,5 +1,5 @@
 <template>
-  <sheet-modal-content>
+  <SheetModalContent>
     <BaseModalHeader @close="$emit('close')">
       <BaseModalTitle>{{ $t('filterModal.title') }}</BaseModalTitle>
     </BaseModalHeader>
@@ -10,9 +10,9 @@
             placeholder="Sortuj wg."
             class="form-row"
             :value="orderSelected"
-            @change="orderSelectedChanged($event)"
             :options="orderOptions"
             :searchable="false"
+            @change="orderSelectedChanged($event)"
           >
             <template #label="{ option }">{{ $t(`recipesSortingMethods.${option}`) }}</template>
             <template #option="{ option }">{{ $t(`recipesSortingMethods.${option}`) }}</template>
@@ -23,10 +23,10 @@
             <div class="filter__group__name">{{ $t(`recipeFilterGroups.${groupValue}`) }}</div>
             <transition name="fade">
               <BaseLink
+                v-if="selected[groupValue] && selected[groupValue].length > 0"
                 tag="button"
                 color="primary"
                 class="filter__group__clear"
-                v-if="selected[groupValue] && selected[groupValue].length > 0"
                 @click.stop="clearFilterGroup(groupValue)"
               >
                 wyczyść
@@ -50,21 +50,21 @@
             </div> -->
             <BaseSelect
               placeholder="Dodaj składnik"
-              multiPlaceholder="dodaj kolejny składnik"
+              multi-placeholder="dodaj kolejny składnik"
               class="form-row"
-              trackBy="id"
-              searchBy="variants"
+              track-by="id"
+              search-by="variants"
               label="name"
-              defaultOpenDirection="above"
+              default-open-direction="above"
               :options="baseProductsGrouped"
               :multiple="true"
               :searchable="true"
-              @click.stop
               :limit="100"
               :value="selected[OPTION_KEYS.BASE_PRODUCTS]"
+              group-label="groupKey"
+              group-values="groupValues"
+              @click.stop
               @change="selected[OPTION_KEYS.BASE_PRODUCTS] = $event"
-              groupLabel="groupKey"
-              groupValues="groupValues"
             >
               <template #groupLabel="{ label }">
                 <span class="category-group">
@@ -102,7 +102,7 @@
         {{ $t('filterModal.submitButton') }}
       </BaseButton>
     </BaseModalFooter>
-  </sheet-modal-content>
+  </SheetModalContent>
 </template>
 
 <script>
@@ -118,7 +118,6 @@ const OPTION_KEYS = {
 const CATEGORY_GROUPS = ['Daytime', 'Type', 'Occasion', 'Cuisine']
 
 export default {
-  emits: ['close'],
   components: {
     ProductIcon
   },
@@ -138,6 +137,7 @@ export default {
       type: String
     }
   },
+  emits: ['close'],
   setup(props, { emit }) {
     const store = useStore()
     const baseProducts = computed(() => store.state.ingredients.baseProducts)

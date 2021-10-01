@@ -3,8 +3,8 @@
     <SectionTitle
       icon="heart"
       title="Ulubione"
-      actionText="zobacz wszystkie"
-      :showAction="favouriteRecipesList.recipes.value.pagedItems[1]?.length > 0"
+      action-text="zobacz wszystkie"
+      :show-action="favouriteRecipesList.recipes.value.pagedItems[1]?.length > 0"
       @action-click="showAllFavourites()"
     />
     <HorizontalRecipesList

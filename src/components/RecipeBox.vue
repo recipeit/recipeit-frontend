@@ -9,11 +9,11 @@
         <!-- <Rating v-if="recipeRating > 0" class="prop-rating" :value="recipeRating" /> -->
         <FavouriteIcon
           class="prop-favourite"
-          :isFavourite="isFavourite"
+          :is-favourite="isFavourite"
+          color="text-primary"
           @removed="deleteFromFavourites"
           @added="addToFavourites"
           @click.prevent
-          color="text-primary"
         />
       </div>
     </div>

@@ -1,5 +1,5 @@
 <template>
-  <component v-blur-on-click :is="tag" :class="classList">
+  <component :is="tag" v-blur-on-click :class="classList">
     <slot />
   </component>
 </template>

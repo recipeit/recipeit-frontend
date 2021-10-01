@@ -21,8 +21,8 @@
       size="small"
       :subtle="true"
       :color="filtersCount > 0 ? 'primary' : 'contrast'"
-      @click="openFilterModal()"
       :disabled="error"
+      @click="openFilterModal()"
     >
       <BaseIcon class="recipes-list-search__filter-button__icon" icon="filter" weight="semi-bold" />
       <span>Filtry</span>
@@ -42,7 +42,6 @@ import FilterModal from './modals/FilterModal'
 import { ToastType } from '@/plugins/toast/toastType'
 
 export default {
-  emits: ['search'],
   props: {
     placeholder: {
       type: String,
@@ -60,9 +59,7 @@ export default {
     filtersCount: Number,
     error: Boolean
   },
-  data: () => ({
-    searchTimeoutCallback: null
-  }),
+  emits: ['search'],
   setup(props) {
     const searchString = ref(props.search)
 
@@ -79,6 +76,9 @@ export default {
       searchString
     }
   },
+  data: () => ({
+    searchTimeoutCallback: null
+  }),
   methods: {
     anyPageFetching() {
       return Object.values(this.fetchingPages).some(v => v)

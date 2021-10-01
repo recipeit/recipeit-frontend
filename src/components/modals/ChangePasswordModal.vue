@@ -1,22 +1,22 @@
 <template>
-  <sheet-modal-content>
+  <SheetModalContent>
     <BaseModalHeader @close="$emit('close')">
       <BaseModalTitle>Zmień hasło</BaseModalTitle>
     </BaseModalHeader>
     <BaseModalBody>
-      <Form :id="formID" @submit="changePassword($event)" :validation-schema="schema">
+      <Form :id="formID" :validation-schema="schema" @submit="changePassword($event)">
         <BaseInput class="form-row" label="E-mail" type="text" :disabled="true" :value="email" />
-        <Field type="password" name="currentPassword" v-slot="{ field, errors }">
+        <Field v-slot="{ field, errors }" type="password" name="currentPassword">
           <BaseInput class="form-row" label="Obecne hasło" type="password" v-bind="field" :errors="errors" />
         </Field>
         <BaseLink tag="button" class="forgot-password-button" color="primary" @click="forgotPassword()">
           nie pamiętasz hasła?
         </BaseLink>
 
-        <Field type="password" name="newPassword" v-slot="{ field, errors }">
+        <Field v-slot="{ field, errors }" type="password" name="newPassword">
           <BaseInput class="form-row" label="Nowe hasło" type="password" v-bind="field" :errors="errors" />
         </Field>
-        <Field type="password" name="newPasswordConfirmation" v-slot="{ field, errors }">
+        <Field v-slot="{ field, errors }" type="password" name="newPasswordConfirmation">
           <BaseInput class="form-row" label="Potwierdź nowe hasło" type="password" v-bind="field" :errors="errors" />
         </Field>
       </Form>
@@ -34,7 +34,7 @@
         {{ 'Zapisz' }}
       </BaseButton>
     </BaseModalFooter>
-  </sheet-modal-content>
+  </SheetModalContent>
 </template>
 
 <script>
@@ -55,13 +55,13 @@ export default {
     Field,
     Form
   },
-  emits: ['close'],
   props: {
     email: {
       type: String,
       required: true
     }
   },
+  emits: ['close'],
   setup(props, { emit }) {
     const toast = useToast()
     const formID = 'form-' + uniqueID().getID()

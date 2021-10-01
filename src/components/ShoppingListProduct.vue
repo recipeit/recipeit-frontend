@@ -34,7 +34,6 @@ import Product from '@/components/Product'
 import EditShoppingListProductModal from './modals/EditShoppingListProductModal'
 
 export default {
-  emits: ['purchase'],
   components: {
     Product
   },
@@ -44,6 +43,7 @@ export default {
       required: true
     }
   },
+  emits: ['purchase'],
   methods: {
     deleteProduct() {
       this.$store.dispatch('shoppingList/deleteProductFromShoppingList', this.product.id)

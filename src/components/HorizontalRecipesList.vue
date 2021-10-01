@@ -2,13 +2,13 @@
   <div class="list-container">
     <ul class="list">
       <GenericRecipesListItem
-        class="list-item"
         v-for="{ id, slug, name, rating } in items"
         :key="id"
-        :recipeId="id"
-        :recipeSlug="slug || id"
-        :recipeName="name"
-        :recipeRating="rating"
+        class="list-item"
+        :recipe-id="id"
+        :recipe-slug="slug || id"
+        :recipe-name="name"
+        :recipe-rating="rating"
       />
       <li v-if="items && recipes.totalCount > items.length" class="list-item" @click="$emit('showAll')">
         <div class="show-all-item">
@@ -21,7 +21,7 @@
         </div>
       </li>
       <template v-if="Object.values(recipes.fetchingPages).some(v => v)">
-        <li class="list-item list-item--skeleton" v-for="i in 6" :key="i">
+        <li v-for="i in 6" :key="i" class="list-item list-item--skeleton">
           <SkeletonRecipeBox />
         </li>
       </template>
@@ -44,7 +44,6 @@ import SkeletonRecipeBox from '@/components/skeletons/SkeletonRecipeBox'
 import GenericRecipesListItem from '@/components/GenericRecipesListItem'
 
 export default {
-  emits: ['showAll'],
   components: { SkeletonRecipeBox, GenericRecipesListItem },
   props: {
     recipes: {
@@ -55,6 +54,12 @@ export default {
       default: null
     }
   },
+  emits: ['showAll'],
+  computed: {
+    items() {
+      return this.recipes?.pagedItems[1] || []
+    }
+  },
   methods: {
     tryFetchOnError() {
       if (this.errors === null) return
@@ -63,11 +68,6 @@ export default {
       if (from === 'RELOAD') {
         this.$emit('reload-with-query', query)
       }
-    }
-  },
-  computed: {
-    items() {
-      return this.recipes?.pagedItems[1] || []
     }
   }
 }

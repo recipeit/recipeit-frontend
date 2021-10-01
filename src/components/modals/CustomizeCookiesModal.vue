@@ -1,10 +1,10 @@
 <template>
-  <sheet-modal-content>
+  <SheetModalContent>
     <BaseModalHeader @close="$emit('close')">
       <BaseModalTitle>Ustawienia ciasteczek</BaseModalTitle>
     </BaseModalHeader>
     <BaseModalBody>
-      <BaseCheckbox class="checkbox" :modelValue="true" :disabled="true">
+      <BaseCheckbox class="checkbox" :model-value="true" :disabled="true">
         <template #label>
           <div>
             Wymagane ciasteczka
@@ -15,7 +15,7 @@
         </template>
       </BaseCheckbox>
 
-      <BaseCheckbox class="checkbox" v-model="consents" :value="COOKIES_ANALYTICS_COOKIE_NAME">
+      <BaseCheckbox v-model="consents" class="checkbox" :value="COOKIES_ANALYTICS_COOKIE_NAME">
         <template #label>
           <div>
             Analityczne ciasteczka
@@ -32,7 +32,7 @@
         Zapisz
       </BaseButton>
     </BaseModalFooter>
-  </sheet-modal-content>
+  </SheetModalContent>
 </template>
 
 <script>
@@ -41,6 +41,7 @@ import { COOKIES_ANALYTICS_COOKIE_NAME } from '@/configs/cookies'
 import GDPRService from '@/services/gdpr'
 
 export default {
+  emits: ['close'],
   setup(_, { emit }) {
     const data = reactive({
       consents: GDPRService.getAcceptedCookies()

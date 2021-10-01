@@ -4,16 +4,16 @@
       v-if="showFilterButtons"
       class="recipes-list__filter"
       placeholder="Szukaj przepisu"
-      :showFilterButton="true"
+      :show-filter-button="true"
       :search="recipes.search"
       :fetching="recipes.fetching"
-      :fetchingPages="recipes.fetchingPages"
+      :fetching-pages="recipes.fetchingPages"
       :filters="recipes.filterOptions"
       :sortings="recipes.orderMethodOptions"
-      :appliedFilters="recipes.filters"
-      :appliedSorting="recipes.orderMethod"
-      :defaultSorting="recipes.defaultOrderMethod"
-      :filtersCount="filtersCount"
+      :applied-filters="recipes.filters"
+      :applied-sorting="recipes.orderMethod"
+      :default-sorting="recipes.defaultOrderMethod"
+      :filters-count="filtersCount"
       :error="!!errors"
       @search="onSearch($event)"
     />
@@ -51,18 +51,18 @@
           </div>
         </slot>
         <div v-if="showAllLink" class="recipes-list__header__show-all">
-          <router-link :to="showAllLink" v-slot="{ href, navigate }" custom>
-            <BaseLink :href="href" @click="navigate($event)" color="primary" class="recipes-list__header__show-all__button">
+          <router-link v-slot="{ href, navigate }" :to="showAllLink" custom>
+            <BaseLink :href="href" color="primary" class="recipes-list__header__show-all__button" @click="navigate($event)">
               {{ $t('shared.seeAll') }}
             </BaseLink>
           </router-link>
         </div>
       </div>
 
-      <div class="recipes-list__list" ref="grid">
+      <div ref="grid" class="recipes-list__list">
         <template v-for="({ item, page }, index) in itemsList">
-          <RecipeBox v-if="item" :key="item.id" :recipeId="item.id" :recipeSlug="item.slug || item.id" :recipeName="item.name" />
-          <SkeletonRecipeBox v-else :key="`${page}_${index}`" :page="page" :animate="false" :ref="skeletonBoxMountedHandler" />
+          <RecipeBox v-if="item" :key="item.id" :recipe-id="item.id" :recipe-slug="item.slug || item.id" :recipe-name="item.name" />
+          <SkeletonRecipeBox v-else :key="`${page}_${index}`" :ref="skeletonBoxMountedHandler" :page="page" :animate="false" />
         </template>
       </div>
 
@@ -87,7 +87,6 @@ import SkeletonBox from '@/components/skeletons/SkeletonBox'
 const PAGE_SIZE = 12
 
 export default {
-  emits: ['reload', 'load'],
   components: {
     SearchWithFilter,
     SkeletonRecipeBox,
@@ -124,6 +123,7 @@ export default {
       required: true
     }
   },
+  emits: ['reload', 'load'],
   setup(props, { emit }) {
     const searchString = ref(props.recipes.search)
     const searchTimeoutCallback = ref(null)

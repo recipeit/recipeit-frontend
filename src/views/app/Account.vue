@@ -1,6 +1,6 @@
 <template>
   <div class="layout__page__content my-account-page">
-    <PageHeader :title="'Moje konto'" :backButton="true" :show-user="false" />
+    <PageHeader :title="'Moje konto'" :back-button="true" :show-user="false" />
 
     <div class="profile">
       <div class="card">
@@ -13,17 +13,17 @@
       </div>
       <div class="avatar">
         <BaseImageLazyload v-if="avatarSrc" :src="avatarSrc" alt="" />
-        <span v-else v-html="defaultAvatar" class="no-avatar-icon" />
+        <span v-else class="no-avatar-icon" v-html="defaultAvatar" />
       </div>
     </div>
 
     <h3>Preferencje</h3>
-    <BaseLink tag="button" @click="openCustomizeCookiesModal()" class="card-link" color="primary">
+    <BaseLink tag="button" class="card-link" color="primary" @click="openCustomizeCookiesModal()">
       Zarządzaj ciasteczkami
     </BaseLink>
     <div class="settings-row">
       <div class="settings-row__value settings-row__value--theme">
-        <BaseSelect placeholder="Motyw" :options="THEMES" :value="selectedTheme" @change="updateTheme($event)" :searchable="false">
+        <BaseSelect placeholder="Motyw" :options="THEMES" :value="selectedTheme" :searchable="false" @change="updateTheme($event)">
           <template #label="{ option }">{{ $t(`themes.${option}`) }}</template>
           <template #option="{ option }">{{ $t(`themes.${option}`) }}</template>
         </BaseSelect>
@@ -32,15 +32,15 @@
 
     <h3>Ukryta zawartość</h3>
     <p>
-      <router-link :to="{ name: 'hidden-blogs' }" v-slot="{ href, navigate }" custom>
-        <BaseLink :href="href" @click="navigate($event)" class="card-link" color="primary">
+      <router-link v-slot="{ href, navigate }" :to="{ name: 'hidden-blogs' }" custom>
+        <BaseLink :href="href" class="card-link" color="primary" @click="navigate($event)">
           Zarządzaj ukrytymi blogami
         </BaseLink>
       </router-link>
     </p>
     <p>
-      <router-link :to="{ name: 'hidden-recipes' }" v-slot="{ href, navigate }" custom>
-        <BaseLink :href="href" @click="navigate($event)" class="card-link" color="primary">
+      <router-link v-slot="{ href, navigate }" :to="{ name: 'hidden-recipes' }" custom>
+        <BaseLink :href="href" class="card-link" color="primary" @click="navigate($event)">
           Zarządzaj ukrytymi przepisami
         </BaseLink>
       </router-link>
@@ -48,28 +48,28 @@
 
     <h3>Inne</h3>
     <p>
-      <router-link :to="{ name: 'contact', params: { returnUrl: $route.fullPath } }" v-slot="{ href, navigate }" custom>
-        <BaseLink :href="href" @click="navigate($event)" class="card-link" color="primary">
+      <router-link v-slot="{ href, navigate }" :to="{ name: 'contact', params: { returnUrl: $route.fullPath } }" custom>
+        <BaseLink :href="href" class="card-link" color="primary" @click="navigate($event)">
           Kontakt
         </BaseLink>
       </router-link>
     </p>
     <p>
-      <router-link :to="{ name: 'terms', params: { returnUrl: $route.fullPath } }" v-slot="{ href, navigate }" custom>
-        <BaseLink :href="href" @click="navigate($event)" class="card-link" color="primary">
+      <router-link v-slot="{ href, navigate }" :to="{ name: 'terms', params: { returnUrl: $route.fullPath } }" custom>
+        <BaseLink :href="href" class="card-link" color="primary" @click="navigate($event)">
           Regulamin
         </BaseLink>
       </router-link>
     </p>
     <p>
-      <router-link :to="{ name: 'privacy-policy', params: { returnUrl: $route.fullPath } }" v-slot="{ href, navigate }" custom>
-        <BaseLink :href="href" @click="navigate($event)" class="card-link" color="primary">
+      <router-link v-slot="{ href, navigate }" :to="{ name: 'privacy-policy', params: { returnUrl: $route.fullPath } }" custom>
+        <BaseLink :href="href" class="card-link" color="primary" @click="navigate($event)">
           Polityka prywatności
         </BaseLink>
       </router-link>
     </p>
     <p>
-      <BaseLink tag="button" @click="openDeleteAccountModal()" class="card-link" color="red">
+      <BaseLink tag="button" class="card-link" color="red" @click="openDeleteAccountModal()">
         Usuń konto
       </BaseLink>
     </p>

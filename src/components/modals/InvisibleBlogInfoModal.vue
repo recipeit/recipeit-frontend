@@ -1,5 +1,5 @@
 <template>
-  <sheet-modal-content>
+  <SheetModalContent>
     <BaseModalHeader @close="$emit('close')">
       <BaseModalTitle><BaseIcon class="header-icon" icon="eye-hidden" weight="semi-bold" />Ukryty blog - co oznacza?</BaseModalTitle>
     </BaseModalHeader>
@@ -12,8 +12,8 @@
       </p>
       <p class="paragraph">
         Listę ukrytych przepisów i blogów znajdziesz w
-        <router-link :to="{ name: 'account', params: { closeModalAndGo: true } }" v-slot="{ href, navigate }" custom>
-          <BaseLink :href="href" @click="navigate($event)" color="primary">swoim koncie</BaseLink>
+        <router-link v-slot="{ href, navigate }" :to="{ name: 'account', params: { closeModalAndGo: true } }" custom>
+          <BaseLink :href="href" color="primary" @click="navigate($event)">swoim koncie</BaseLink>
         </router-link>
       </p>
     </BaseModalBody>
@@ -22,7 +22,7 @@
         OK!
       </BaseButton>
     </BaseModalFooter>
-  </sheet-modal-content>
+  </SheetModalContent>
 </template>
 
 <script>

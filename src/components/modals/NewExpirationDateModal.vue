@@ -1,36 +1,36 @@
 <template>
-  <sheet-modal-content>
+  <SheetModalContent>
     <BaseModalHeader @close="$emit('close')">
       <BaseModalTitle>Nowa data ważności</BaseModalTitle>
     </BaseModalHeader>
     <BaseModalBody>
-      <form :id="formID" @submit="addExpirationDate($event)" class="form-columns">
+      <form :id="formID" class="form-columns" @submit="addExpirationDate($event)">
         <BaseSelect
           :searchable="false"
           placeholder="Rok"
           :value="yearValue"
-          @change="yearOnChange"
-          @blur="yearOnBlur"
           :errors="yearErrors"
           :options="years"
+          @change="yearOnChange"
+          @blur="yearOnBlur"
         />
         <BaseSelect
           :searchable="false"
           placeholder="Miesiąc"
           :value="monthValue"
-          @change="monthOnChange"
-          @blur="monthOnBlur"
           :errors="monthErrors"
           :options="months"
+          @change="monthOnChange"
+          @blur="monthOnBlur"
         />
         <BaseSelect
           :searchable="false"
           placeholder="Dzień"
           :value="dayValue"
-          @change="dayOnChange"
-          @blur="dayOnBlur"
           :errors="dayErrors"
           :options="days"
+          @change="dayOnChange"
+          @blur="dayOnBlur"
         />
       </form>
     </BaseModalBody>
@@ -40,7 +40,7 @@
         {{ $t('shared.addExpirationDate') }}
       </BaseButton>
     </BaseModalFooter>
-  </sheet-modal-content>
+  </SheetModalContent>
 </template>
 
 <script>

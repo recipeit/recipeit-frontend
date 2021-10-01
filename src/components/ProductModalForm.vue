@@ -1,20 +1,20 @@
 <template>
-  <Field type="text" name="baseProduct" v-slot="{ field, errors }">
+  <Field v-slot="{ field, errors }" type="text" name="baseProduct">
     <BaseSelect
       placeholder="Produkt"
       class="form-row"
       :autofocus="productAutofocus"
-      trackBy="id"
-      searchBy="variants"
+      track-by="id"
+      search-by="variants"
       label="name"
       :options="baseProductsGrouped"
       :limit="100"
       :searchable="true"
       :errors="errors"
       v-bind="field"
+      group-label="groupKey"
+      group-values="groupValues"
       @click.stop
-      groupLabel="groupKey"
-      groupValues="groupValues"
     >
       <template #groupLabel="{ label }">
         <span class="category-group">
@@ -26,10 +26,10 @@
   </Field>
 
   <div class="form-row form-columns">
-    <Field type="text" name="amount" v-slot="{ field, errors }">
+    <Field v-slot="{ field, errors }" type="text" name="amount">
       <BaseInput class="amount-input" label="Ilość" type="number" v-bind="field" :errors="errors" />
     </Field>
-    <Field type="text" name="unit" v-slot="{ field, errors }">
+    <Field v-slot="{ field, errors }" type="text" name="unit">
       <BaseSelect
         placeholder="Jednostka"
         :options="units"
@@ -37,8 +37,8 @@
         :custom-label="unitCustomLabel"
         :errors="errors"
         v-bind="field"
-        groupLabel="groupKey"
-        groupValues="groupValues"
+        group-label="groupKey"
+        group-values="groupValues"
       >
         <template #label="{ option }">{{ $tc(`units.${option}`, unitLabelAmount) }}</template>
         <template #option="{ option }">{{ $tc(`units.${option}`, unitLabelAmount) }}</template>
@@ -57,11 +57,11 @@ import ProductIcon from '@/components/ProductIcon'
 // import { units } from '@/constants'
 
 export default {
-  emits: ['update:baseProductId', 'update:unit'],
   components: { Field, ProductIcon },
   props: {
     productAutofocus: Boolean
   },
+  emits: ['update:baseProductId', 'update:unit'],
   setup(props) {
     const store = useStore()
     // const baseProducts = computed(() => store.state.ingredients.baseProducts)

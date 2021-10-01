@@ -1,5 +1,5 @@
 <template>
-  <sheet-modal-content>
+  <SheetModalContent>
     <BaseModalHeader @close="$emit('close', false)">
       <BaseModalTitle>{{ title }}</BaseModalTitle>
     </BaseModalHeader>
@@ -12,12 +12,11 @@
         {{ primaryText }}
       </BaseButton>
     </BaseModalFooter>
-  </sheet-modal-content>
+  </SheetModalContent>
 </template>
 
 <script>
 export default {
-  emits: ['close'],
   props: {
     title: {
       type: String
@@ -32,6 +31,7 @@ export default {
       type: String
     }
   },
+  emits: ['close'],
   methods: {
     primaryClick() {
       this.$emit('close', true)

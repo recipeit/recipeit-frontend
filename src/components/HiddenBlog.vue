@@ -1,7 +1,7 @@
 <template>
-  <router-link :to="{ name: APP_BLOG, params: { blogId: blog.slug || blog.id, blogName: blog.name } }" v-slot="{ href, navigate }" custom>
-    <a :href="href" @click="navigate($event)" class="hidden-blog">
-      <BaseImageLazyload :src="avatarUrl" :errorPlaceholder="avatarErrorUrl" :alt="blog.name" class="hidden-blog__image" />
+  <router-link v-slot="{ href, navigate }" :to="{ name: APP_BLOG, params: { blogId: blog.slug || blog.id, blogName: blog.name } }" custom>
+    <a :href="href" class="hidden-blog" @click="navigate($event)">
+      <BaseImageLazyload :src="avatarUrl" :error-placeholder="avatarErrorUrl" :alt="blog.name" class="hidden-blog__image" />
       <div class="hidden-blog__details">
         <div class="hidden-blog__name">{{ blog.name }}</div>
         <div class="hidden-blog__url">{{ blog.url }}</div>

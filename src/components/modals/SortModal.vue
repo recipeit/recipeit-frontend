@@ -1,5 +1,5 @@
 <template>
-  <sheet-modal-content>
+  <SheetModalContent>
     <BaseModalHeader @close="$emit('close')">
       <BaseModalTitle>{{ $t('sortModal.title') }}</BaseModalTitle>
     </BaseModalHeader>
@@ -21,12 +21,11 @@
         </template>
       </div>
     </BaseModalBody>
-  </sheet-modal-content>
+  </SheetModalContent>
 </template>
 
 <script>
 export default {
-  emits: ['close'],
   props: {
     options: {
       type: Array,
@@ -35,7 +34,8 @@ export default {
     defaultSelected: {
       type: String
     }
-  }
+  },
+  emits: ['close']
 }
 </script>
 

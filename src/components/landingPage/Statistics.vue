@@ -3,15 +3,15 @@
     <Container class="header-container">
       <div class="header">Czy wiesz, że...</div>
       <div class="controls">
-        <BaseLink tag="button" class="control-left" @click="scrollLeft()" :disabled="scrollLeftButtonDisabled">
+        <BaseLink tag="button" class="control-left" :disabled="scrollLeftButtonDisabled" @click="scrollLeft()">
           <BaseIcon icon="arrow-right" />
         </BaseLink>
-        <BaseLink tag="button" class="control-right" @click="scrollRight()" :disabled="scrollRightButtonDisabled">
+        <BaseLink tag="button" class="control-right" :disabled="scrollRightButtonDisabled" @click="scrollRight()">
           <BaseIcon icon="arrow-right" />
         </BaseLink>
       </div>
     </Container>
-    <div class="statistics-cards" ref="statisticCards" @scroll="handleControlsDisability()">
+    <div ref="statisticCards" class="statistics-cards" @scroll="handleControlsDisability()">
       <StatisticsCard v-for="(statistic, index) in statistics" :key="index" :icon="statistic.icon" :description="statistic.description" />
     </div>
     <Container class="statistics-footer-container">

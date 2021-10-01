@@ -8,7 +8,6 @@
 
 <script>
 export default {
-  emits: ['update:modelValue'],
   props: {
     excluding: { type: Boolean },
     value: { type: [String, Number] },
@@ -17,6 +16,7 @@ export default {
     trueValue: { default: true },
     falseValue: { default: false }
   },
+  emits: ['update:modelValue'],
   computed: {
     isChecked() {
       if (this.modelValue instanceof Array) {

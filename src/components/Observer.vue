@@ -4,8 +4,8 @@
 
 <script>
 export default {
-  emits: ['intersect'],
   props: ['options'],
+  emits: ['intersect'],
   data: () => ({
     observer: null
   }),

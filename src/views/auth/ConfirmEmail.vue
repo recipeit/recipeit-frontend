@@ -10,8 +10,8 @@
     <div v-else-if="state === 'SUCCESS'">
       Udało się! Teraz możesz się zalogować
       <div>
-        <router-link :to="{ name: 'login', params: { email } }" v-slot="{ href, navigate }" custom>
-          <BaseButton tag="a" class="login-button" :href="href" @click="navigate($event)" raised color="primary">
+        <router-link v-slot="{ href, navigate }" :to="{ name: 'login', params: { email } }" custom>
+          <BaseButton tag="a" class="login-button" :href="href" raised color="primary" @click="navigate($event)">
             Zaloguj się
           </BaseButton>
         </router-link>
@@ -21,8 +21,8 @@
     <div v-else>
       Coś poszło nie tak
       <div>
-        <router-link :to="{ name: 'login' }" v-slot="{ href, navigate }" custom>
-          <BaseButton tag="a" class="login-button" :href="href" @click="navigate($event)" stroked>
+        <router-link v-slot="{ href, navigate }" :to="{ name: 'login' }" custom>
+          <BaseButton tag="a" class="login-button" :href="href" stroked @click="navigate($event)">
             <BaseIcon class="login-button-icon" icon="arrow-left" weight="semi-bold" />
             Wróć do logowania
           </BaseButton>

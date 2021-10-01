@@ -4,8 +4,8 @@
     <span class="not-found-text">
       Ojjj... nie znaleźliśmy takiej strony
     </span>
-    <router-link :to="{ name: LANDING_PAGE }" v-slot="{ href, navigate }" custom>
-      <BaseButton tag="a" :href="href" @click="navigate($event)" class="not-found-button" stroked>
+    <router-link v-slot="{ href, navigate }" :to="{ name: LANDING_PAGE }" custom>
+      <BaseButton tag="a" :href="href" class="not-found-button" stroked @click="navigate($event)">
         Wróć na stronę główną
       </BaseButton>
     </router-link>

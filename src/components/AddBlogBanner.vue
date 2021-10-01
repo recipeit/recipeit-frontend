@@ -5,7 +5,7 @@
       <code class="banner-item-code">
         {{ code }}
       </code>
-      <button @click="copyToClipboard()" class="banner-item-copy" :class="{ copied }">
+      <button class="banner-item-copy" :class="{ copied }" @click="copyToClipboard()">
         {{ copied ? 'skopiowano do schowka' : 'kopiuj' }}
       </button>
     </div>

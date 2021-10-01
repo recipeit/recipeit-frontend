@@ -5,7 +5,7 @@
     <GenericRecipesList
       :recipes="recipesList.recipes.value"
       :errors="recipesList.recipesErrors.value"
-      :loadHandler="pageNumber => recipesList.loadRecipesPage(pageNumber)"
+      :load-handler="pageNumber => recipesList.loadRecipesPage(pageNumber)"
       @reload="reloadRecipes($event)"
       @reload-with-query="reloadRecipesWithQuery($event)"
     >
@@ -14,8 +14,8 @@
           <BaseIcon class="recipes-count-icon" icon="chef-hat" />
           <span>
             <b>{{ $tc('shared.recipes', availableRecipesCount) }}</b> z tej listy możesz przygotować z produktów które masz!
-            <router-link :to="{ name: 'cook-it', query: $route.query }" v-slot="{ href, navigate }" custom>
-              <BaseLink :href="href" @click="navigate($event)" color="primary" class="cook-it-link">
+            <router-link v-slot="{ href, navigate }" :to="{ name: 'cook-it', query: $route.query }" custom>
+              <BaseLink :href="href" color="primary" class="cook-it-link" @click="navigate($event)">
                 <template v-if="availableRecipesCount === 1">Sprawdź jaki</template>
                 <template v-else>Sprawdź jakie</template>
               </BaseLink>

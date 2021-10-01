@@ -1,5 +1,5 @@
 <template>
-  <sheet-modal-content>
+  <SheetModalContent>
     <div class="upper-icon-container">
       <BaseIcon class="upper-icon" weight="custom" icon="cookies" />
     </div>
@@ -13,8 +13,8 @@
       </p>
       <p class="paragraph">
         Więcej informacji znajdziesz w naszej
-        <router-link :to="{ name: 'privacy-policy' }" v-slot="{ href, navigate }" custom>
-          <BaseLink :href="href" @click="navigate($event)" color="primary">polityce prywatności</BaseLink>.
+        <router-link v-slot="{ href, navigate }" :to="{ name: 'privacy-policy' }" custom>
+          <BaseLink :href="href" color="primary" @click="navigate($event)">polityce prywatności</BaseLink>.
         </router-link>
       </p>
     </BaseModalBody>
@@ -26,7 +26,7 @@
         Akceptuję
       </BaseButton>
     </BaseModalFooter>
-  </sheet-modal-content>
+  </SheetModalContent>
 </template>
 
 <script>

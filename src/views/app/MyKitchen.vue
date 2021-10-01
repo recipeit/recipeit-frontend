@@ -6,7 +6,7 @@
 
     <div v-if="groupedProducts === null">...wczytuję</div>
     <ul v-else-if="groupedProducts.length > 0" class="product-list-groups">
-      <li class="product-list-group" v-for="products in groupedProducts" :key="products[0]">
+      <li v-for="products in groupedProducts" :key="products[0]" class="product-list-group">
         <div class="product-list-group__title">
           <ProductIcon class="product-list-group__title__icon" :group="products[0]" />
           <div class="product-list-group__title__name">
@@ -14,7 +14,7 @@
           </div>
         </div>
         <ul class="product-list">
-          <li class="product-list__item" v-for="product in products[1]" :key="product.id">
+          <li v-for="product in products[1]" :key="product.id" class="product-list__item">
             <KitchenProduct :product="product" @add-to-shopping-list="addToShoppingList(product)" />
           </li>
         </ul>
@@ -85,15 +85,15 @@ export default {
         .value()
     }
   },
-  beforeMount() {
-    this.tryFetchInitialData()
-  },
   watch: {
     userAuthenticatedLazy(newValue) {
       if (newValue && !this.fetchedData) {
         this.tryFetchInitialData()
       }
     }
+  },
+  beforeMount() {
+    this.tryFetchInitialData()
   },
   methods: {
     tryFetchInitialData() {

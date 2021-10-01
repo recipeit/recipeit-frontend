@@ -5,8 +5,8 @@
       <span class="error-text">
         Ojjj... nie znaleźliśmy takiego blogu
       </span>
-      <router-link :to="{ name: APP_HOME }" v-slot="{ href, navigate }" custom>
-        <BaseButton tag="a" :href="href" @click="navigate($event)" class="recipe-button" stroked>
+      <router-link v-slot="{ href, navigate }" :to="{ name: APP_HOME }" custom>
+        <BaseButton tag="a" :href="href" class="recipe-button" stroked @click="navigate($event)">
           Wróć na stronę główną
         </BaseButton>
       </router-link>
@@ -15,7 +15,7 @@
       <div class="header">
         <div class="header-container">
           <div class="header-buttons">
-            <BaseLink class="header-button" @click="$router.go(-1)" tag="button">
+            <BaseLink class="header-button" tag="button" @click="$router.go(-1)">
               <BaseIcon icon="arrow-right" weight="regular" />
             </BaseLink>
             <BaseMenu>
@@ -37,15 +37,15 @@
             </BaseMenu>
           </div>
           <div class="header-avatar-container">
-            <BaseImageLazyload class="header-avatar" :src="avatarUrl" :errorPlaceholder="avatarErrorUrl" alt="" />
+            <BaseImageLazyload class="header-avatar" :src="avatarUrl" :error-placeholder="avatarErrorUrl" alt="" />
           </div>
         </div>
         <RecipeParallaxImage class="header-background-container">
-          <BaseImageLazyload class="header-background" :src="backgroundUrl" :errorPlaceholder="backgroundErrorUrl" />
+          <BaseImageLazyload class="header-background" :src="backgroundUrl" :error-placeholder="backgroundErrorUrl" />
         </RecipeParallaxImage>
       </div>
 
-      <BaseLink tag="button" class="hidden-bar" v-if="isHidden" color="red" @click="showInvisibleInfoModal()">
+      <BaseLink v-if="isHidden" tag="button" class="hidden-bar" color="red" @click="showInvisibleInfoModal()">
         <BaseIcon class="hidden-bar-icon" icon="eye-hidden" weight="semi-bold" />
         Ten blog jest ukryty
       </BaseLink>
@@ -56,8 +56,8 @@
       <GenericRecipesList
         :recipes="recipesList.recipes.value"
         :errors="recipesList.recipesErrors.value"
-        :showFilterButtons="false"
-        :loadHandler="pageNumber => recipesList.loadRecipesPage(pageNumber)"
+        :show-filter-buttons="false"
+        :load-handler="pageNumber => recipesList.loadRecipesPage(pageNumber)"
         @reload="recipesList.reloadRecipes()"
         @reload-with-query="recipesList.reloadRecipes()"
       />
@@ -81,6 +81,11 @@ import { ToastType } from '@/plugins/toast/toastType'
 
 export default {
   name: 'Recipes',
+  components: {
+    RecipeParallaxImage,
+    GenericRecipesList,
+    BlogDetails
+  },
   props: {
     blogId: {
       type: String,
@@ -89,11 +94,6 @@ export default {
     blogName: {
       type: String
     }
-  },
-  components: {
-    RecipeParallaxImage,
-    GenericRecipesList,
-    BlogDetails
   },
   setup(props) {
     const blogDetails = ref(null)

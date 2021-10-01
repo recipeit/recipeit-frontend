@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: 'sheet-modal-content'
+  name: 'SheetModalContent'
 }
 </script>
 

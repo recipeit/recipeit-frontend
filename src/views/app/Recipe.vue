@@ -5,8 +5,8 @@
       <span class="error-text">
         Ojjj... nie znaleźliśmy takiego przepisu
       </span>
-      <router-link :to="{ name: APP_HOME }" v-slot="{ href, navigate }" custom>
-        <BaseButton tag="a" :href="href" @click="navigate($event)" class="recipe-button" stroked>
+      <router-link v-slot="{ href, navigate }" :to="{ name: APP_HOME }" custom>
+        <BaseButton tag="a" :href="href" class="recipe-button" stroked @click="navigate($event)">
           Wróć na stronę główną
         </BaseButton>
       </router-link>
@@ -14,7 +14,7 @@
     <div v-else-if="recipe && recipe.details" :class="['recipe', { 'recipe--hidden': isHidden }]">
       <div class="recipe__image-container">
         <div class="recipe__image-container__buttons">
-          <BaseLink class="recipe__image-container__button" @click="back()" tag="button">
+          <BaseLink class="recipe__image-container__button" tag="button" @click="back()">
             <BaseIcon icon="arrow-right" weight="regular" />
           </BaseLink>
           <BaseMenu>
@@ -56,7 +56,7 @@
           </BaseButton>
         </div>
 
-        <BaseLink tag="button" class="recipe__hidden-bar" v-if="isHidden" color="red" @click="showInvisibleInfoModal()">
+        <BaseLink v-if="isHidden" tag="button" class="recipe__hidden-bar" color="red" @click="showInvisibleInfoModal()">
           <BaseIcon class="recipe__hidden-bar__icon" icon="eye-hidden" weight="semi-bold" />
           Ten przepis jest ukryty
         </BaseLink>
@@ -64,16 +64,16 @@
         <div class="recipe__header">
           <h1 class="recipe__header__title">{{ recipe.name }}</h1>
           <div class="recipe__header__actions">
-            <FavouriteIcon :isFavourite="isFavourite" @removed="deleteFromFavourites" @added="addToFavourites" />
+            <FavouriteIcon :is-favourite="isFavourite" @removed="deleteFromFavourites" @added="addToFavourites" />
           </div>
         </div>
         <div class="recipe__author">
           <router-link
-            :to="{ name: 'blog', params: { blogId: recipe.author.blog.slug || recipe.author.blog.id, blogName: recipe.author.blog.name } }"
             v-slot="{ href, navigate }"
+            :to="{ name: 'blog', params: { blogId: recipe.author.blog.slug || recipe.author.blog.id, blogName: recipe.author.blog.name } }"
             custom
           >
-            <BaseLink :href="href" @click="navigate($event)" color="text-secondary">
+            <BaseLink :href="href" color="text-secondary" @click="navigate($event)">
               <span v-if="recipe.author.name" class="recipe__author__name">{{ recipe.author.name }}, </span>
               <span class="recipe__author__blog-name">{{ recipe.author.blog.name }}</span>
             </BaseLink>
@@ -85,11 +85,11 @@
             <Rating :value="recipe.rating" />
           </BaseButton>
           <BaseButton
+            v-for="category in recipe.details.categoriesWithGroups"
+            :key="category.key"
             subtle
             color="accent"
             size="small"
-            v-for="category in recipe.details.categoriesWithGroups"
-            :key="category.key"
             @click="navigateToRecipesWithCategoryFilter(category)"
           >
             {{ $t(`recipeCategory.${category.value}`) }}
@@ -97,27 +97,27 @@
         </div>
 
         <RecipeIngredientsSection
-          :recipeId="recipe.id"
+          :recipe-id="recipe.id"
           :servings="recipe.details.servings"
-          :ingredientGroups="recipe.details.ingredientGroups"
+          :ingredient-groups="recipe.details.ingredientGroups"
         />
 
         <div v-if="recipe.details.introductionParagraphs" class="recipe-introduction">
-          <p class="recipe-paragraph" v-for="(paragraph, index) in recipe.details.introductionParagraphs" :key="index">
+          <p v-for="(paragraph, index) in recipe.details.introductionParagraphs" :key="index" class="recipe-paragraph">
             {{ paragraph }}
           </p>
         </div>
 
-        <RecipeDirectionsSection :recipeId="recipe.id" :directions="recipe.details.directionsParagraphs" />
+        <RecipeDirectionsSection :recipe-id="recipe.id" :directions="recipe.details.directionsParagraphs" />
 
         <div v-if="!recipe.details.summaryParagraphs" class="recipe-summary">
-          <p class="recipe-paragraph" v-for="(paragraph, index) in recipe.details.summaryParagraphs" :key="index">
+          <p v-for="(paragraph, index) in recipe.details.summaryParagraphs" :key="index" class="recipe-paragraph">
             {{ paragraph }}
           </p>
         </div>
 
         <div v-if="recipe.details.footerParagraphs" class="recipe-footer">
-          <p class="recipe-paragraph" v-for="(paragraph, index) in recipe.details.footerParagraphs" :key="index">
+          <p v-for="(paragraph, index) in recipe.details.footerParagraphs" :key="index" class="recipe-paragraph">
             {{ paragraph }}
           </p>
         </div>
@@ -128,7 +128,7 @@
             <BaseIcon class="plan-button__icon" icon="clock" /> Zaplanuj na później
           </BaseButton>
 
-          <BaseButton target="_blank" v-if="recipe.url" :href="recipe.url" tag="a" class="original-link" stroked>
+          <BaseButton v-if="recipe.url" target="_blank" :href="recipe.url" tag="a" class="original-link" stroked>
             <BaseIcon class="plan-button__icon" icon="arrow-right" /> Przejdź do oryginału
           </BaseButton>
 
@@ -167,6 +167,14 @@ import { APP_HOME, APP_RECIPES } from '@/router/names'
 
 export default {
   name: 'Recipe',
+  components: {
+    // SectionTitle,
+    FavouriteIcon,
+    RecipeParallaxGallery,
+    RecipeIngredientsSection,
+    RecipeDirectionsSection,
+    Rating
+  },
   props: {
     recipeId: {
       type: String,
@@ -175,14 +183,6 @@ export default {
     recipeName: {
       type: String
     }
-  },
-  components: {
-    // SectionTitle,
-    FavouriteIcon,
-    RecipeParallaxGallery,
-    RecipeIngredientsSection,
-    RecipeDirectionsSection,
-    Rating
   },
   setup(props) {
     const store = useStore()

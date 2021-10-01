@@ -21,7 +21,6 @@
 
 <script>
 export default {
-  emits: ['update:modelValue'],
   props: {
     value: [String, Number],
     modelValue: { default: '' },
@@ -37,6 +36,7 @@ export default {
       default: false
     }
   },
+  emits: ['update:modelValue'],
   data: () => ({
     focused: false
   }),

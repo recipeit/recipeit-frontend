@@ -3,12 +3,12 @@
     <template v-if="state === 'BEFORE'">
       <h1>Zmiana hasła</h1>
 
-      <Form @submit="resetPassword($event)" :validation-schema="schema">
+      <Form :validation-schema="schema" @submit="resetPassword($event)">
         <BaseInput class="form-row" label="E-mail" type="text" :value="email" :disabled="true" />
-        <Field name="password" type="password" v-slot="{ field, errors }">
+        <Field v-slot="{ field, errors }" name="password" type="password">
           <BaseInput class="form-row" label="Hasło" type="password" v-bind="field" :errors="errors" />
         </Field>
-        <Field name="confirmPassword" type="password" v-slot="{ field, errors }">
+        <Field v-slot="{ field, errors }" name="confirmPassword" type="password">
           <BaseInput class="form-row" label="Potwierdź hasło" type="password" v-bind="field" :errors="errors" />
         </Field>
         <BaseButton class="form-row auth-main__content__submit" raised color="primary" type="submit">Zmień hasło</BaseButton>
@@ -28,8 +28,8 @@
       <h1>Hasło zostało zmienione</h1>
 
       <div>
-        <router-link :to="{ name: 'login' }" v-slot="{ href, navigate }" custom>
-          <BaseButton tag="a" class="login-button" :href="href" @click="navigate($event)" raised color="primary">
+        <router-link v-slot="{ href, navigate }" :to="{ name: 'login' }" custom>
+          <BaseButton tag="a" class="login-button" :href="href" raised color="primary" @click="navigate($event)">
             Zaloguj się
           </BaseButton>
         </router-link>
@@ -40,8 +40,8 @@
       <h1>Wystąpił błąd</h1>
 
       <div>
-        <router-link :to="{ name: 'login' }" v-slot="{ href, navigate }" custom>
-          <BaseButton tag="a" class="login-button" :href="href" @click="navigate($event)" stroked>
+        <router-link v-slot="{ href, navigate }" :to="{ name: 'login' }" custom>
+          <BaseButton tag="a" class="login-button" :href="href" stroked @click="navigate($event)">
             <BaseIcon class="login-button-icon" icon="arrow-left" weight="semi-bold" />
             Wróć do logowania
           </BaseButton>

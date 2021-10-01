@@ -6,7 +6,7 @@
       <GenericRecipesList
         :recipes="recipesList.recipes.value"
         :errors="recipesList.recipesErrors.value"
-        :loadHandler="pageNumber => recipesList.loadRecipesPage(pageNumber)"
+        :load-handler="pageNumber => recipesList.loadRecipesPage(pageNumber)"
         @reload="reloadRecipes($event)"
         @reload-with-query="recipesList.reloadRecipesWithQuery($event)"
       >
@@ -47,16 +47,16 @@
             <p class="empty-list-message-title">Nie znaleźliśmy przepisów dla użytych filtrów</p>
             <p v-if="almostAvailableRecipesList.recipes.value.totalCount" class="empty-list-message-sub">
               Możesz
-              <BaseLink tag="button" @click="reloadRecipes({})" class="empty-list-message-link" color="primary">
+              <BaseLink tag="button" class="empty-list-message-link" color="primary" @click="reloadRecipes({})">
                 wyczyścić filtry
               </BaseLink>
               , przeszukać całą
-              <router-link :to="{ name: 'recipes', query: $route.query }" v-slot="{ href, navigate }" custom>
-                <BaseLink :href="href" @click="navigate($event)" class="empty-list-message-link" color="primary">bazę przepisów</BaseLink>
+              <router-link v-slot="{ href, navigate }" :to="{ name: 'recipes', query: $route.query }" custom>
+                <BaseLink :href="href" class="empty-list-message-link" color="primary" @click="navigate($event)">bazę przepisów</BaseLink>
               </router-link>
               , bądź sprawdzić
-              <router-link :to="{ name: 'almost-available', query: $route.query }" v-slot="{ href, navigate }" custom>
-                <BaseLink :href="href" @click="navigate($event)" class="empty-list-message-link" color="primary">
+              <router-link v-slot="{ href, navigate }" :to="{ name: 'almost-available', query: $route.query }" custom>
+                <BaseLink :href="href" class="empty-list-message-link" color="primary" @click="navigate($event)">
                   propozycje przepisów
                 </BaseLink>
               </router-link>
@@ -64,12 +64,12 @@
             </p>
             <p v-else class="empty-list-message-sub">
               Możesz
-              <BaseLink tag="button" @click="reloadRecipes({})" class="empty-list-message-link" color="primary">
+              <BaseLink tag="button" class="empty-list-message-link" color="primary" @click="reloadRecipes({})">
                 wyczyścić filtry
               </BaseLink>
               lub sprawdzić całą
-              <router-link :to="{ name: 'recipes', query: $route.query }" v-slot="{ href, navigate }" custom>
-                <BaseLink :href="href" @click="navigate($event)" class="empty-list-message-link" color="primary">bazę przepisów</BaseLink>
+              <router-link v-slot="{ href, navigate }" :to="{ name: 'recipes', query: $route.query }" custom>
+                <BaseLink :href="href" class="empty-list-message-link" color="primary" @click="navigate($event)">bazę przepisów</BaseLink>
               </router-link>
               .
             </p>
@@ -81,8 +81,8 @@
           <div v-if="kitchenProductsCount === 0" class="empty-list-message">
             <img class="empty-list-message-image" src="@/assets/img/broccoli-happy.svg" alt="" />
             <p class="empty-list-message-title">Najpierw dodaj coś do swojej kuchni</p>
-            <router-link :to="{ name: 'my-kitchen' }" v-slot="{ href, navigate }" custom>
-              <BaseButton tag="a" :href="href" @click="navigate($event)" stroked>
+            <router-link v-slot="{ href, navigate }" :to="{ name: 'my-kitchen' }" custom>
+              <BaseButton tag="a" :href="href" stroked @click="navigate($event)">
                 Przejdź do kuchni
               </BaseButton>
             </router-link>
@@ -92,8 +92,8 @@
             <img class="empty-list-message-image" src="@/assets/img/broccoli-sad.svg" alt="" />
             <p class="empty-list-message-title">Nie znaleźliśmy przepisów pasujących do Twoich produktów</p>
             <p class="empty-list-message-sub">
-              <router-link :to="{ name: 'almost-available', query: $route.query }" v-slot="{ href, navigate }" custom>
-                <BaseLink :href="href" @click="navigate($event)" color="primary" class="empty-list-message-link">
+              <router-link v-slot="{ href, navigate }" :to="{ name: 'almost-available', query: $route.query }" custom>
+                <BaseLink :href="href" color="primary" class="empty-list-message-link" @click="navigate($event)">
                   Zobacz propozycje przepisów
                 </BaseLink> </router-link
               >, które przygotujesz po dokupieniu paru składników

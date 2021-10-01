@@ -4,7 +4,7 @@
       <template #toggle="{ focused }">
         <div :class="['page-header-user__avatar', { 'page-header-user__avatar--focused': focused }]">
           <BaseImageLazyload v-if="avatarSrc" :src="avatarSrc" alt="" />
-          <span v-else v-html="defaultAvatar" class="no-avatar-icon" />
+          <span v-else class="no-avatar-icon" v-html="defaultAvatar" />
         </div>
       </template>
       <template #dropdown>

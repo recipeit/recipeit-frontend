@@ -7,10 +7,10 @@
 <script>
 import BaseLink from './BaseLink'
 export default {
+  components: { BaseLink },
   props: {
     color: String
-  },
-  components: { BaseLink }
+  }
 }
 </script>
 

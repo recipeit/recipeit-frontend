@@ -1,6 +1,6 @@
 <template>
   <div class="layout__page__content">
-    <PageHeader title="Ukryte blogi" :backButton="true" />
+    <PageHeader title="Ukryte blogi" :back-button="true" />
     <div v-if="hiddenBlogs === null">
       ...wczytuje
     </div>
@@ -34,6 +34,11 @@ export default {
   data: () => ({
     hiddenBlogs: null
   }),
+  beforeMount() {
+    userApi.getHiddenBlogs().then(({ data }) => {
+      this.hiddenBlogs = data.blogs || []
+    })
+  },
   methods: {
     unhideBlog(id) {
       this.$store.dispatch('user/changeBlogVisibility', { blogId: id, visible: true }).then(() => {
@@ -41,11 +46,6 @@ export default {
         this.hiddenBlogs.splice(index, 1)
       })
     }
-  },
-  beforeMount() {
-    userApi.getHiddenBlogs().then(({ data }) => {
-      this.hiddenBlogs = data.blogs || []
-    })
   }
 }
 </script>

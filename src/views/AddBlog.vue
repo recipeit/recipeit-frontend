@@ -5,9 +5,9 @@
     </template>
     <div class="add-blog" v-html="ADD_BLOG_HTML" />
     <div>
-      <div class="banner-group" v-for="{ urls, size, height, width } in bannerList" :key="size">
+      <div v-for="{ urls, size, height, width } in bannerList" :key="size" class="banner-group">
         <span class="banner-size">{{ size }}</span>
-        <AddBlogBanner class="banner-item" v-for="url in urls" :key="url" :url="url" :height="height" :width="width" />
+        <AddBlogBanner v-for="url in urls" :key="url" class="banner-item" :url="url" :height="height" :width="width" />
       </div>
     </div>
   </AnonymousPage>

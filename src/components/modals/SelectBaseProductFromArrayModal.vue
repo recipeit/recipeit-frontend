@@ -1,5 +1,5 @@
 <template>
-  <sheet-modal-content>
+  <SheetModalContent>
     <BaseModalHeader @close="$emit('close')">
       <BaseModalTitle>Co chcesz kupić?</BaseModalTitle>
     </BaseModalHeader>
@@ -21,7 +21,7 @@
         Anuluj
       </BaseButton>
     </BaseModalFooter>
-  </sheet-modal-content>
+  </SheetModalContent>
 </template>
 
 <script>
@@ -29,13 +29,13 @@ import { useStore } from 'vuex'
 import { computed } from '@vue/runtime-core'
 
 export default {
-  emits: ['close'],
   props: {
     ids: {
       type: String,
       required: true
     }
   },
+  emits: ['close'],
   setup(props) {
     const store = useStore()
     const products = computed(() =>

@@ -1,6 +1,6 @@
 <template>
-  <div class="parallax-image" ref="block">
-    <div class="parallax-image__image" ref="image">
+  <div ref="block" class="parallax-image">
+    <div ref="image" class="parallax-image__image">
       <slot />
     </div>
   </div>

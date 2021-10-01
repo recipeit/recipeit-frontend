@@ -6,9 +6,9 @@
         <li v-for="category in popularCategories" :key="category.key" class="popular-category-container">
           <PopularCategory
             :page="page"
-            :categoryKey="category.key"
-            :categoryValue="category.value"
-            :categoryGroup="category.categoryGroup"
+            :category-key="category.key"
+            :category-value="category.value"
+            :category-group="category.categoryGroup"
           />
         </li>
       </ul>

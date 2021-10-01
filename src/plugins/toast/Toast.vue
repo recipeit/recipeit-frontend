@@ -7,7 +7,7 @@
     <BaseLink v-if="!cancellable" tag="button" class="toast__close" color="text-secondary" @click="hide()">
       <BaseIcon icon="close" weight="semi-bold" />
     </BaseLink>
-    <BaseLink tag="button" v-else class="toast__cancel" color="primary" @click="cancel()">
+    <BaseLink v-else tag="button" class="toast__cancel" color="primary" @click="cancel()">
       cofnij
     </BaseLink>
   </div>
@@ -17,7 +17,6 @@
 import { ToastType } from './toastType'
 
 export default {
-  emits: ['hide'],
   props: {
     id: {
       type: [String, Number],
@@ -38,10 +37,23 @@ export default {
     cancellable: Boolean,
     cancelCallback: Function
   },
+  emits: ['hide'],
   data() {
     return {
       timer: null
     }
+  },
+  computed: {
+    icon() {
+      const { type } = this
+      if (type === ToastType.SUCCESS) return 'small-check'
+      if (type === ToastType.WARNING) return 'warning'
+      if (type === ToastType.ERROR) return 'small-close'
+      return 'info'
+    }
+  },
+  mounted() {
+    this.setTimer()
   },
   methods: {
     hide() {
@@ -66,18 +78,6 @@ export default {
       }
       this.hide()
     }
-  },
-  computed: {
-    icon() {
-      const { type } = this
-      if (type === ToastType.SUCCESS) return 'small-check'
-      if (type === ToastType.WARNING) return 'warning'
-      if (type === ToastType.ERROR) return 'small-close'
-      return 'info'
-    }
-  },
-  mounted() {
-    this.setTimer()
   }
 }
 </script>

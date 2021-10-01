@@ -4,22 +4,22 @@
 
     <p class="subtitle">
       lub
-      <router-link :to="{ name: 'login' }" v-slot="{ href, navigate }" custom>
-        <BaseLink :href="href" @click="navigate($event)" color="primary">
+      <router-link v-slot="{ href, navigate }" :to="{ name: 'login' }" custom>
+        <BaseLink :href="href" color="primary" @click="navigate($event)">
           zaloguj na swoje konto
         </BaseLink>
       </router-link>
     </p>
 
     <template v-if="enableRegister">
-      <Form @submit="register($event)" :validation-schema="schema">
-        <Field name="email" v-slot="{ field, errors }">
+      <Form :validation-schema="schema" @submit="register($event)">
+        <Field v-slot="{ field, errors }" name="email">
           <BaseInput class="form-row" label="E-mail" type="text" v-bind="field" :errors="errors" :disabled="anySending" />
         </Field>
-        <Field name="password" v-slot="{ field, errors }">
+        <Field v-slot="{ field, errors }" name="password">
           <BaseInput class="form-row" label="Hasło" type="password" v-bind="field" :errors="errors" :disabled="anySending" />
         </Field>
-        <Field name="confirmPassword" v-slot="{ field, errors }">
+        <Field v-slot="{ field, errors }" name="confirmPassword">
           <BaseInput class="form-row" label="Potwierdź hasło" type="password" v-bind="field" :errors="errors" :disabled="anySending" />
         </Field>
         <BaseButton
@@ -42,14 +42,14 @@
 
       <div class="auth-main__content__terms">
         Rejestrując się akceptujesz
-        <router-link :to="{ name: 'terms' }" v-slot="{ href, navigate }" custom>
-          <BaseLink class="auth-main__content__terms__link" :href="href" @click="navigate($event)" color="text-secondary">
+        <router-link v-slot="{ href, navigate }" :to="{ name: 'terms' }" custom>
+          <BaseLink class="auth-main__content__terms__link" :href="href" color="text-secondary" @click="navigate($event)">
             regulamin
           </BaseLink>
         </router-link>
         oraz
-        <router-link :to="{ name: 'privacy-policy' }" v-slot="{ href, navigate }" custom>
-          <BaseLink class="auth-main__content__terms__link" :href="href" @click="navigate($event)" color="text-secondary">
+        <router-link v-slot="{ href, navigate }" :to="{ name: 'privacy-policy' }" custom>
+          <BaseLink class="auth-main__content__terms__link" :href="href" color="text-secondary" @click="navigate($event)">
             politykę prywatności
           </BaseLink>
         </router-link>
@@ -118,6 +118,11 @@ export default {
     sending: false,
     socialSending: false
   }),
+  computed: {
+    anySending() {
+      return this.sending || this.socialSending
+    }
+  },
   methods: {
     register(valus) {
       this.sending = true
@@ -148,11 +153,6 @@ export default {
             [ERROR_ACTION_TAG_NAME]: 'auth.register.recaptcha'
           })
         })
-    }
-  },
-  computed: {
-    anySending() {
-      return this.sending || this.socialSending
     }
   }
 }

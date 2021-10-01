@@ -9,7 +9,7 @@
         </BaseLink>
       </p>
 
-      <h2 class="sub-header">Bądź na bierząco</h2>
+      <h2 class="sub-header">Bądź na bieżąco</h2>
       <p class="social-list">
         <a target="_blank" class="social-logo" :href="FACEBOOK_PROFILE_URL" v-html="FacebookLogo" />
         <a target="_blank" class="social-logo" :href="INSTAGRAM_PROFILE_URL" v-html="InstagramLogo" />

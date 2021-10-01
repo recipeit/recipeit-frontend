@@ -7,23 +7,23 @@
       </span>
     </div>
     <div class="footer-links">
-      <router-link :to="{ name: TERMS }" #default="{ href, navigate}" custom>
-        <BaseLink :href="href" @click="navigate($event)" class="footer-link" color="text-secondary">
+      <router-link v-slot="{ href, navigate }" :to="{ name: TERMS }" custom>
+        <BaseLink :href="href" class="footer-link" color="text-secondary" @click="navigate($event)">
           Regulamin
         </BaseLink>
       </router-link>
-      <router-link :to="{ name: PRIVACY_POLICY }" #default="{ href, navigate}" custom>
-        <BaseLink :href="href" @click="navigate($event)" class="footer-link" color="text-secondary">
+      <router-link v-slot="{ href, navigate }" :to="{ name: PRIVACY_POLICY }" custom>
+        <BaseLink :href="href" class="footer-link" color="text-secondary" @click="navigate($event)">
           Polityka prywatności
         </BaseLink>
       </router-link>
-      <router-link :to="{ name: ADD_BLOG }" #default="{ href, navigate}" custom>
-        <BaseLink :href="href" @click="navigate($event)" class="footer-link" color="text-secondary">
+      <router-link v-slot="{ href, navigate }" :to="{ name: ADD_BLOG }" custom>
+        <BaseLink :href="href" class="footer-link" color="text-secondary" @click="navigate($event)">
           Dodaj blog
         </BaseLink>
       </router-link>
-      <router-link :to="{ name: CONTACT }" #default="{ href, navigate}" custom>
-        <BaseLink :href="href" @click="navigate($event)" class="footer-link" color="text-secondary">
+      <router-link v-slot="{ href, navigate }" :to="{ name: CONTACT }" custom>
+        <BaseLink :href="href" class="footer-link" color="text-secondary" @click="navigate($event)">
           Kontakt
         </BaseLink>
       </router-link>

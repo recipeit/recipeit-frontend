@@ -3,8 +3,8 @@
     <h1>Zaloguj się</h1>
     <p class="subtitle">
       lub
-      <router-link :to="{ name: 'register' }" v-slot="{ href, navigate }" custom>
-        <BaseLink :href="href" @click="navigate($event)" color="primary">
+      <router-link v-slot="{ href, navigate }" :to="{ name: 'register' }" custom>
+        <BaseLink :href="href" color="primary" @click="navigate($event)">
           utwórz konto
         </BaseLink>
       </router-link>
@@ -12,11 +12,11 @@
 
     <!-- <p>lub za pomocą adresu email</p> -->
 
-    <Form @submit="login($event)" :validation-schema="schema" :initial-values="initialValues" v-slot="{ values }">
-      <Field name="email" v-slot="{ field, errors }">
+    <Form v-slot="{ values }" :validation-schema="schema" :initial-values="initialValues" @submit="login($event)">
+      <Field v-slot="{ field, errors }" name="email">
         <BaseInput class="form-row" label="E-mail" type="text" v-bind="field" :errors="errors" :disabled="anySending" />
       </Field>
-      <Field name="password" v-slot="{ field, errors }">
+      <Field v-slot="{ field, errors }" name="password">
         <BaseInput
           class="form-row"
           label="Hasło"
@@ -109,6 +109,11 @@ export default {
     sending: false,
     socialSending: false
   }),
+  computed: {
+    anySending() {
+      return this.sending || this.socialSending
+    }
+  },
   methods: {
     login(values) {
       this.errors = null
@@ -138,11 +143,6 @@ export default {
     },
     goToRequestPasswordReset(email) {
       this.$router.push({ name: 'request-password-reset', params: { initialEmail: email || '' } })
-    }
-  },
-  computed: {
-    anySending() {
-      return this.sending || this.socialSending
     }
   }
 }

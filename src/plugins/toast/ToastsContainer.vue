@@ -1,13 +1,13 @@
 <template>
   <transition-group name="toast-list" tag="div" class="toasts-container">
-    <div class="toasts-container__item" v-for="toast in toasts" :key="toast.id">
+    <div v-for="toast in toasts" :key="toast.id" class="toasts-container__item">
       <Toast
+        :id="toast.id"
         :message="toast.message"
         :type="toast.type"
-        :id="toast.id"
         :seconds="toast.seconds"
         :cancellable="toast.cancellable"
-        :cancelCallback="toast.onCancel"
+        :cancel-callback="toast.onCancel"
         @hide="removeToast(toast.id)"
       />
     </div>
@@ -19,7 +19,7 @@ import uniqueID from '@/functions/uniqueID'
 import Toast from './Toast'
 
 export default {
-  name: 'toasts-container',
+  name: 'ToastsContainer',
   components: {
     Toast
   },
@@ -27,6 +27,9 @@ export default {
     return {
       toasts: []
     }
+  },
+  created() {
+    this.$toast._setGlobalToastsContainer(this)
   },
   methods: {
     appendToast(message, type, seconds) {
@@ -41,9 +44,6 @@ export default {
         this.toasts.splice(index, 1)
       }
     }
-  },
-  created() {
-    this.$toast._setGlobalToastsContainer(this)
   }
 }
 </script>

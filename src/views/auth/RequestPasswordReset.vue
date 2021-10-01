@@ -5,8 +5,8 @@
     <template v-if="state === 'BEFORE' || state === 'SENDING'">
       <p class="subtitle">Wprowadź adres e-mail, aby zresetować hasło. Może być konieczne sprawdzenie folderu ze spamem.</p>
 
-      <Form @submit="requestPasswordReset($event)" :validation-schema="schema" :initial-values="initialValues">
-        <Field name="email" v-slot="{ field, errors }">
+      <Form :validation-schema="schema" :initial-values="initialValues" @submit="requestPasswordReset($event)">
+        <Field v-slot="{ field, errors }" name="email">
           <BaseInput class="form-row" label="E-mail" v-bind="field" :errors="errors" :disabled="state === 'SENDING'" />
         </Field>
 
@@ -14,8 +14,8 @@
           <BaseButton class="form-row auth-main__content__submit" raised color="primary" type="submit" :loading="state === 'SENDING'">
             Prześlij
           </BaseButton>
-          <router-link :to="{ name: 'login' }" v-slot="{ href, navigate }" custom>
-            <BaseButton tag="a" class="return-button" :href="href" @click="navigate($event)" stroked>
+          <router-link v-slot="{ href, navigate }" :to="{ name: 'login' }" custom>
+            <BaseButton tag="a" class="return-button" :href="href" stroked @click="navigate($event)">
               <BaseIcon class="return-button-icon" icon="arrow-left" weight="semi-bold" />
               Wróć
             </BaseButton>
@@ -29,8 +29,8 @@
     <template v-else-if="state === 'SUCCESS'">
       Sprawdź swoją skrzynkę pocztową!
       <div class="buttons">
-        <router-link :to="{ name: 'login' }" v-slot="{ href, navigate }" custom>
-          <BaseButton tag="a" class="return-button-only" :href="href" @click="navigate($event)" stroked>
+        <router-link v-slot="{ href, navigate }" :to="{ name: 'login' }" custom>
+          <BaseButton tag="a" class="return-button-only" :href="href" stroked @click="navigate($event)">
             <BaseIcon class="return-button-icon" icon="arrow-left" weight="semi-bold" />
             Wróć
           </BaseButton>
@@ -41,8 +41,8 @@
     <template v-else>
       Wystąpił błąd
       <div class="buttons">
-        <router-link :to="{ name: 'login' }" v-slot="{ href, navigate }" custom>
-          <BaseButton tag="a" class="return-button-only" :href="href" @click="navigate($event)" stroked>
+        <router-link v-slot="{ href, navigate }" :to="{ name: 'login' }" custom>
+          <BaseButton tag="a" class="return-button-only" :href="href" stroked @click="navigate($event)">
             <BaseIcon class="return-button-icon" icon="arrow-left" weight="semi-bold" />
             Wróć
           </BaseButton>

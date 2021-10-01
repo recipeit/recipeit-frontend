@@ -16,8 +16,8 @@ import LatestFavouritesRecipes from '@/components/LatestFavouritesRecipes'
 import PopularCategories from '@/components/PopularCategories'
 
 export default {
-  components: { PageHeader, DayPlan, LatestFavouritesRecipes, PopularCategories },
   name: 'Home',
+  components: { PageHeader, DayPlan, LatestFavouritesRecipes, PopularCategories },
   setup() {
     const welcomeType = ref('')
 

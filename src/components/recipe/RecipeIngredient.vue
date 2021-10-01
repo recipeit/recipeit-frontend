@@ -10,7 +10,7 @@
     </span>
     <div class="state-container">
       <VTooltip>
-        <BaseLink tag="button" v-if="ingredient.state === 'IN_KITCHEN'" class="state state--available" @click="stateClickHandler()">
+        <BaseLink v-if="ingredient.state === 'IN_KITCHEN'" tag="button" class="state state--available" @click="stateClickHandler()">
           <BaseIcon class="state-icon state-icon--small" icon="check" weight="semi-bold" />
         </BaseLink>
 

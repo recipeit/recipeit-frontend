@@ -14,7 +14,6 @@
 const sizes = ['regular', 'large']
 
 export default {
-  emits: ['action-click'],
   props: {
     icon: String,
     title: String,
@@ -27,7 +26,8 @@ export default {
       type: String,
       validator: value => !value || sizes.includes(value)
     }
-  }
+  },
+  emits: ['action-click']
 }
 </script>
 

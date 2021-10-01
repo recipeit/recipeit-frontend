@@ -3,28 +3,28 @@
     <SectionTitle
       size="large"
       title="Przygotowanie"
-      :showAction="finishedDirections?.length > 0"
-      actionText="usuń znaczniki"
+      :show-action="finishedDirections?.length > 0"
+      action-text="usuń znaczniki"
       @action-click="resetFinishedDirections()"
     />
     <div v-if="directions?.length > 1" class="recipe-directions-list">
       <BaseCheckbox
         v-for="(paragraph, index) in directions"
         :key="index"
+        v-model="finishedDirections"
         :class="{
           'recipe-directions-list-item': true,
           'recipe-directions-list-item--selected': index === selectedDirection,
           'recipe-directions-list-item--finished': finishedDirections.includes(index)
         }"
         :value="index"
-        v-model="finishedDirections"
       >
         <template #label>
           <div>{{ paragraph }}</div>
         </template>
       </BaseCheckbox>
     </div>
-    <p class="recipe-single-direction" v-else-if="directions?.length === 1">
+    <p v-else-if="directions?.length === 1" class="recipe-single-direction">
       {{ directions[0] }}
     </p>
   </div>

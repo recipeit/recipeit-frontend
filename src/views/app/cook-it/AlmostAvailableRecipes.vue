@@ -1,10 +1,10 @@
 <template>
   <div class="layout__page__content almost-available-recipes">
-    <PageHeader title="Dokup i ugotuj" :backButton="true" :search="true" />
+    <PageHeader title="Dokup i ugotuj" :back-button="true" :search="true" />
     <GenericRecipesList
       :recipes="recipesList.recipes.value"
       :errors="recipesList.recipesErrors.value"
-      :loadHandler="pageNumber => recipesList.loadRecipesPage(pageNumber)"
+      :load-handler="pageNumber => recipesList.loadRecipesPage(pageNumber)"
       @reload="recipesList.reloadRecipes($event)"
       @reload-with-query="recipesList.reloadRecipesWithQuery($event)"
     >
@@ -36,8 +36,8 @@
         <div v-if="kitchenProductsCount === 0" class="empty-list-message">
           <img class="empty-list-message-image" src="@/assets/img/broccoli-happy.svg" alt="" />
           <p class="empty-list-message-title">Najpierw dodaj coś do swojej kuchni</p>
-          <router-link :to="{ name: 'my-kitchen' }" v-slot="{ href, navigate }" custom>
-            <BaseButton tag="a" :href="href" @click="navigate($event)" stroked>
+          <router-link v-slot="{ href, navigate }" :to="{ name: 'my-kitchen' }" custom>
+            <BaseButton tag="a" :href="href" stroked @click="navigate($event)">
               Przejdź do kuchni
             </BaseButton>
           </router-link>

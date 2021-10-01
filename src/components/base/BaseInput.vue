@@ -6,6 +6,7 @@
       </label>
       <input
         :id="id"
+        v-autofocus="autofocus"
         :type="type"
         :tabindex="tabindex"
         :placeholder="placeholder"
@@ -13,14 +14,13 @@
         :disabled="disabled"
         :aria-describedby="errors ? erorrsID : null"
         :aria-invalid="errors ? true : null"
-        v-autofocus="autofocus"
         @focus.stop="setFocus()"
         @blur.stop="setBlur()"
       />
     </div>
     <div v-if="errors" class="base-input__errors">
       <slot name="errors">
-        <ul class="base-input__errors__list" :id="erorrsID">
+        <ul :id="erorrsID" class="base-input__errors__list">
           <li v-for="(error, i) in errors" :key="i">{{ $t(`errorCode.${error}`) }}</li>
         </ul>
       </slot>
@@ -32,7 +32,6 @@
 import uniqueID from '@/functions/uniqueID'
 
 export default {
-  emits: ['focus', 'blur'],
   model: {
     prop: 'value',
     event: 'input'
@@ -63,20 +62,11 @@ export default {
       default: false
     }
   },
+  emits: ['focus', 'blur'],
   data: () => ({
     focused: false,
     id: 'base-input-' + uniqueID().getID()
   }),
-  methods: {
-    setFocus() {
-      this.focused = true
-      this.$emit('focus')
-    },
-    setBlur() {
-      this.focused = false
-      this.$emit('blur')
-    }
-  },
   computed: {
     baseInputClasses() {
       return {
@@ -95,6 +85,16 @@ export default {
       if (stringValue === undefined) return false
       if (stringValue === '') return false
       return true
+    }
+  },
+  methods: {
+    setFocus() {
+      this.focused = true
+      this.$emit('focus')
+    },
+    setBlur() {
+      this.focused = false
+      this.$emit('blur')
     }
   }
 }

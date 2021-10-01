@@ -1,11 +1,11 @@
 <template>
   <div class="layout__page__content">
-    <PageHeader title="Ulubione" :backButton="true" />
+    <PageHeader title="Ulubione" :back-button="true" />
     <GenericRecipesList
-      :showFilterButtons="false"
+      :show-filter-buttons="false"
       :recipes="recipesList.recipes.value"
       :errors="recipesList.recipesErrors.value"
-      :loadHandler="pageNumber => recipesList.loadRecipesPage(pageNumber)"
+      :load-handler="pageNumber => recipesList.loadRecipesPage(pageNumber)"
       @reload="recipesList.reloadRecipes()"
       @reload-with-query="recipesList.reloadRecipes()"
     />

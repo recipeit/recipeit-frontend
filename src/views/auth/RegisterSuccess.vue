@@ -6,8 +6,8 @@
       Sprawdź swoją skrzynkę pocztową. Może być konieczne sprawdzenie folderu ze spamem.
 
       <div>
-        <router-link :to="{ name: 'login' }" v-slot="{ href, navigate }" custom>
-          <BaseButton tag="a" class="login-button" :href="href" @click="navigate($event)" stroked>
+        <router-link v-slot="{ href, navigate }" :to="{ name: 'login' }" custom>
+          <BaseButton tag="a" class="login-button" :href="href" stroked @click="navigate($event)">
             <BaseIcon class="login-button-icon" icon="arrow-left" weight="semi-bold" />
             Wróć do logowania
           </BaseButton>
@@ -20,8 +20,8 @@
       Sprawdź swoją skrzynkę pocztową. Może być konieczne sprawdzenie folderu ze spamem.
 
       <div>
-        <router-link :to="{ name: 'login' }" v-slot="{ href, navigate }" custom>
-          <BaseButton tag="a" class="login-button" :href="href" @click="navigate($event)" stroked>
+        <router-link v-slot="{ href, navigate }" :to="{ name: 'login' }" custom>
+          <BaseButton tag="a" class="login-button" :href="href" stroked @click="navigate($event)">
             <BaseIcon class="login-button-icon" icon="arrow-left" weight="semi-bold" />
             Wróć do logowania
           </BaseButton>
@@ -32,7 +32,7 @@
         <span>
           Nie otrzymałeś wiadomości?
         </span>
-        <BaseLink tag="button" color="primary" @click="sendConfirmationEmail()" :disabled="sendingSecondEmail">Wyślij jeszcze raz</BaseLink>
+        <BaseLink tag="button" color="primary" :disabled="sendingSecondEmail" @click="sendConfirmationEmail()">Wyślij jeszcze raz</BaseLink>
 
         <ul v-if="errors" class="auth-main__content__errors">
           <li v-for="(error, index) in errors" :key="index">{{ $t(`errorCode.${error}`) }}</li>

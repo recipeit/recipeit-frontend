@@ -218,7 +218,7 @@ const Plugin = {
       }
     }
 
-    app.component('vue-progress-bar', View)
+    app.component('VueProgressBar', View)
     app.config.globalProperties.$progress = $progress
 
     Plugin.progressbar = $progress

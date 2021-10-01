@@ -22,25 +22,25 @@
         </span>
         <template v-else-if="multiple" class="test-multiselect-pills">
           <BaseButton
+            v-for="singleValue in value"
+            :key="trackBy ? singleValue[trackBy] : singleValue"
             subtle
             class="test-multiselect-pill"
             color="primary"
             size="small"
-            v-for="singleValue in value"
-            :key="trackBy ? singleValue[trackBy] : singleValue"
             @click="selectOption(singleValue)"
           >
             {{ label ? singleValue[label] : value }}
             <BaseIcon class="test-multiselect-pill-close" icon="close" weight="semi-bold" />
           </BaseButton>
-          <span class="multi-placeholder" v-if="multiPlaceholder && showSelectedValue">{{ multiPlaceholder }}</span>
+          <span v-if="multiPlaceholder && showSelectedValue" class="multi-placeholder">{{ multiPlaceholder }}</span>
         </template>
         <template v-if="searchable">
           <input
             v-show="opened"
+            ref="search"
             :value="search"
             class="base-select__field__input"
-            ref="search"
             tabindex="0"
             @change.stop
             @input.stop="updateSearch($event.target.value)"
@@ -56,13 +56,13 @@
       </div>
       <transition name="fade">
         <div
-          ref="options"
           v-show="opened"
-          @mousedown.prevent
+          ref="options"
           :class="['base-select__options', { 'base-select__options--above': isAbove }]"
           :style="{ maxHeight: optimizedHeight + 'px' }"
+          @mousedown.prevent
         >
-          <ul class="base-select__options__list" v-if="filteredOptionsLimited && filteredOptionsLimited.length > 0">
+          <ul v-if="filteredOptionsLimited && filteredOptionsLimited.length > 0" class="base-select__options__list">
             <li
               v-for="(option, index) in filteredOptionsLimited"
               :key="option"
@@ -73,20 +73,20 @@
                 'base-select__options__list__item--label': option.isLabel
               }"
             >
-              <div class="base-select__options__list__group-label" v-if="option.isLabel">
+              <div v-if="option.isLabel" class="base-select__options__list__group-label">
                 <slot name="groupLabel" :label="option['groupLabel']">
                   {{ option['groupLabel'] }}
                 </slot>
               </div>
-              <div class="base-select__options__list__option" v-else @mouseenter.self="pointerSet(index)" @click="selectOption(option)">
+              <div v-else class="base-select__options__list__option" @mouseenter.self="pointerSet(index)" @click="selectOption(option)">
                 <slot name="option" :option="option" :search="search" :index="index">
                   {{ label ? option[label] : option }}
                 </slot>
               </div>
             </li>
             <li
-              class="base-select__options__list__others-item"
               v-if="filteredOptions && filteredOptions.length > filteredOptionsLimited.length"
+              class="base-select__options__list__others-item"
             >
               i {{ filteredOptions.length - filteredOptionsLimited.length }} innnych opcji
             </li>
@@ -99,7 +99,7 @@
     </div>
     <div v-if="errors && errors.length > 0" class="base-select__errors">
       <slot name="errors">
-        <ul class="base-select__errors__list" :id="erorrsID">
+        <ul :id="erorrsID" class="base-select__errors__list">
           <li v-for="(error, i) in errors" :key="i">{{ $t(`errorCode.${error}`) }}</li>
         </ul>
       </slot>
@@ -145,7 +145,6 @@ const OPEN_DIRECTIONS = {
 }
 
 export default {
-  emits: ['change', 'blur', 'focus'],
   model: {
     prop: 'value',
     event: 'change'
@@ -207,6 +206,7 @@ export default {
       default: false
     }
   },
+  emits: ['change', 'blur', 'focus'],
   data: component => ({
     search: '',
     opened: false,
@@ -215,6 +215,92 @@ export default {
     pointer: null,
     id: 'base-select-' + uniqueID().getID()
   }),
+  computed: {
+    erorrsID() {
+      return `${this.id}-errors`
+    },
+    isGrouped() {
+      return this.groupLabel && this.groupValues
+    },
+    placeholderAsLabel() {
+      if (this.multiple) {
+        return this.searchable
+          ? this.opened || (this.value !== null && this.value.length > 0)
+          : this.value !== null && this.value.length > 0
+      }
+      return this.searchable ? this.opened || this.value !== null : this.value !== null
+    },
+    showSelectedValue() {
+      if (this.multiple) {
+        return this.searchable ? !this.opened && this.value !== null && this.value.length > 0 : this.value !== null && this.value.length > 0
+      }
+      return this.searchable ? !this.opened && this.value !== null : this.value !== null
+    },
+    filteredOptions() {
+      if (!this.searchable || !this.search) return this.isGrouped ? this.plainOptions(this.options) : this.options
+      else if (this.isGrouped) {
+        const filteredGroups = this.options.map(group => {
+          const filteredValues = this.filterOptions(group[this.groupValues])
+          return filteredValues.length > 0
+            ? {
+                [this.groupLabel]: group[this.groupLabel],
+                [this.groupValues]: filteredValues
+              }
+            : []
+        })
+        return this.plainOptions(filteredGroups)
+      } else {
+        return this.filterOptions(this.options)
+      }
+    },
+    filteredOptionsLimited() {
+      if (this.limit) {
+        let limit = this.limit
+        if (this.filteredOptions && this.filteredOptions[limit - 1]?.isLabel) {
+          limit++
+        }
+        return this.filteredOptions?.slice(0, limit)
+      }
+      return this.filteredOptions
+    },
+    isAbove() {
+      // if (this.openDirection === 'above' || this.openDirection === 'top') {
+      //   return true
+      // } else if (
+      //   this.openDirection === 'below' ||
+      //   this.openDirection === 'bottom'
+      // ) {
+      //   return false
+      // } else {
+      return this.preferredOpenDirection === OPEN_DIRECTIONS.ABOVE
+      // }
+    }
+  },
+  watch: {
+    filteredOptionsLimited() {
+      this.pointerAdjust()
+      this.scrollOptionsToTop()
+    },
+    options() {
+      // TODO multiple
+      // TODO grouped
+      if (this.multiple) {
+        // if (this.value) {
+        //   const newValue = this.value.filter(o => this.options.includes(this.value))
+        //   this.$emit('change', newList)
+        // }
+      } else {
+        if (this.value && !this.options.includes(this.value)) {
+          this.selectOption(null)
+        }
+      }
+    }
+  },
+  mounted() {
+    if (this.autofocus) {
+      setFocus(this.$refs.select)
+    }
+  },
   methods: {
     isOptionSelected(option) {
       const { getKeyFromValue, value } = this
@@ -409,92 +495,6 @@ export default {
     scrollOptionsToTop() {
       if (this.$refs.options) {
         this.$refs.options.scrollTop = 0
-      }
-    }
-  },
-  computed: {
-    erorrsID() {
-      return `${this.id}-errors`
-    },
-    isGrouped() {
-      return this.groupLabel && this.groupValues
-    },
-    placeholderAsLabel() {
-      if (this.multiple) {
-        return this.searchable
-          ? this.opened || (this.value !== null && this.value.length > 0)
-          : this.value !== null && this.value.length > 0
-      }
-      return this.searchable ? this.opened || this.value !== null : this.value !== null
-    },
-    showSelectedValue() {
-      if (this.multiple) {
-        return this.searchable ? !this.opened && this.value !== null && this.value.length > 0 : this.value !== null && this.value.length > 0
-      }
-      return this.searchable ? !this.opened && this.value !== null : this.value !== null
-    },
-    filteredOptions() {
-      if (!this.searchable || !this.search) return this.isGrouped ? this.plainOptions(this.options) : this.options
-      else if (this.isGrouped) {
-        const filteredGroups = this.options.map(group => {
-          const filteredValues = this.filterOptions(group[this.groupValues])
-          return filteredValues.length > 0
-            ? {
-                [this.groupLabel]: group[this.groupLabel],
-                [this.groupValues]: filteredValues
-              }
-            : []
-        })
-        return this.plainOptions(filteredGroups)
-      } else {
-        return this.filterOptions(this.options)
-      }
-    },
-    filteredOptionsLimited() {
-      if (this.limit) {
-        let limit = this.limit
-        if (this.filteredOptions && this.filteredOptions[limit - 1]?.isLabel) {
-          limit++
-        }
-        return this.filteredOptions?.slice(0, limit)
-      }
-      return this.filteredOptions
-    },
-    isAbove() {
-      // if (this.openDirection === 'above' || this.openDirection === 'top') {
-      //   return true
-      // } else if (
-      //   this.openDirection === 'below' ||
-      //   this.openDirection === 'bottom'
-      // ) {
-      //   return false
-      // } else {
-      return this.preferredOpenDirection === OPEN_DIRECTIONS.ABOVE
-      // }
-    }
-  },
-  mounted() {
-    if (this.autofocus) {
-      setFocus(this.$refs.select)
-    }
-  },
-  watch: {
-    filteredOptionsLimited() {
-      this.pointerAdjust()
-      this.scrollOptionsToTop()
-    },
-    options() {
-      // TODO multiple
-      // TODO grouped
-      if (this.multiple) {
-        // if (this.value) {
-        //   const newValue = this.value.filter(o => this.options.includes(this.value))
-        //   this.$emit('change', newList)
-        // }
-      } else {
-        if (this.value && !this.options.includes(this.value)) {
-          this.selectOption(null)
-        }
       }
     }
   }

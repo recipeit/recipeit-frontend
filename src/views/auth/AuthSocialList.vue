@@ -1,10 +1,10 @@
 <template>
   <div class="social-list">
-    <BaseButton class="social-button" stroked @click="loginFacebook()" :disabled="anySending ? true : null" :loading="facebookSending">
+    <BaseButton class="social-button" stroked :disabled="anySending ? true : null" :loading="facebookSending" @click="loginFacebook()">
       <div class="social-logo" v-html="FacebookLogo" />
       Kontynuuj z Facebook
     </BaseButton>
-    <BaseButton class="social-button" stroked @click="loginGoogle()" :disabled="anySending ? true : null" :loading="googleSending">
+    <BaseButton class="social-button" stroked :disabled="anySending ? true : null" :loading="googleSending" @click="loginGoogle()">
       <div class="social-logo" v-html="GoogleLogo" />
       Kontynuuj z Google
     </BaseButton>
@@ -17,8 +17,8 @@ import FacebookLogo from '@/assets/logos/facebook.svg?inline'
 import GoogleLogo from '@/assets/logos/google.svg?inline'
 
 export default {
-  emits: ['lockInputs', 'unlockInputs'],
   mixins: [authSocialMixin],
+  emits: ['lockInputs', 'unlockInputs'],
   setup() {
     return {
       FacebookLogo,

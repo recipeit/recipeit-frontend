@@ -19,7 +19,7 @@
       <slot name="toggle" :focused="toggleFocused" />
     </div>
     <transition name="slide-in">
-      <div ref="dropdownContainer" v-show="opened" class="menu__dropdown-container">
+      <div v-show="opened" ref="dropdownContainer" class="menu__dropdown-container">
         <slot name="dropdown" />
       </div>
     </transition>

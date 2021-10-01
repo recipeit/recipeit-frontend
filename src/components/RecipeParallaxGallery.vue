@@ -1,18 +1,18 @@
 <template>
   <div ref="block" class="recipe-parallax-gallery">
     <div class="gallery-controls">
-      <button class="gallery-control-left" @click.prevent="showPrev()" :disabled="isCurrentImageFirst ? true : null">
+      <button class="gallery-control-left" :disabled="isCurrentImageFirst ? true : null" @click.prevent="showPrev()">
         <BaseIcon icon="angle-left" />
       </button>
-      <button class="gallery-control-right" @click.prevent="showNext()" :disabled="isCurrentImageLast ? true : null">
+      <button class="gallery-control-right" :disabled="isCurrentImageLast ? true : null" @click.prevent="showNext()">
         <BaseIcon icon="angle-right" />
       </button>
     </div>
     <div v-if="images?.length > 1" class="gallery-indicators">
       <span
-        :class="['gallery-indicator', { 'gallery-indicator--current': currentImageIndex === index }]"
         v-for="(_, index) in images"
         :key="index"
+        :class="['gallery-indicator', { 'gallery-indicator--current': currentImageIndex === index }]"
         @click="scrollTo(index)"
       />
     </div>
@@ -24,12 +24,12 @@
       @touchcancel="isTouching = false"
     >
       <BaseImageLazyload
-        class="gallery-image"
         v-for="(image, index) in images"
         :key="index"
-        :src="image.src"
         :ref="setImageRef"
-        :blurredBackground="true"
+        class="gallery-image"
+        :src="image.src"
+        :blurred-background="true"
         :error-placeholder="placeholder"
       />
     </div>
@@ -68,6 +68,14 @@ export default {
       onScrollTimeout: null,
       imageRefs: [],
       placeholder
+    }
+  },
+  computed: {
+    isCurrentImageLast() {
+      return this.currentImageIndex + 1 === this.images.length
+    },
+    isCurrentImageFirst() {
+      return this.currentImageIndex === 0
     }
   },
   beforeUpdate() {
@@ -147,14 +155,6 @@ export default {
       if (!this.isTouching) {
         this.scrollTo(this.calculateCurrentIndex())
       }
-    }
-  },
-  computed: {
-    isCurrentImageLast() {
-      return this.currentImageIndex + 1 === this.images.length
-    },
-    isCurrentImageFirst() {
-      return this.currentImageIndex === 0
     }
   }
 }

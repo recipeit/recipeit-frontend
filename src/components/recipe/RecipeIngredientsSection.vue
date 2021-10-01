@@ -17,8 +17,8 @@
           class="servings-button servings-button--right"
           subtle
           color="primary"
-          @click="increaseServings()"
           :disabled="localServings >= 100"
+          @click="increaseServings()"
         >
           <BaseIcon icon="plus" weight="semi-bold" />
         </BaseButton>
@@ -26,7 +26,7 @@
       </template>
     </SectionTitle>
     <div class="recipe__ingredient-groups">
-      <div class="recipe__ingredient-group" v-for="(list, groupName) in ingredients" :key="groupName">
+      <div v-for="(list, groupName) in ingredients" :key="groupName" class="recipe__ingredient-group">
         <div v-if="groupName" class="recipe-ingredients-group-name">
           <span class="first-lowercase">{{ groupName }}</span>
         </div>
@@ -34,9 +34,9 @@
           <RecipeIngredient
             v-for="ingredient in list"
             :key="ingredient.id"
-            :amountFactor="amountFactor"
+            :amount-factor="amountFactor"
             :ingredient="ingredient"
-            :allAdding="allIngredientsAdding"
+            :all-adding="allIngredientsAdding"
           />
         </ul>
       </div>

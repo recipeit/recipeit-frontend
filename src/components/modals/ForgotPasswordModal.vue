@@ -1,5 +1,5 @@
 <template>
-  <sheet-modal-content>
+  <SheetModalContent>
     <BaseModalHeader @close="$emit('close')">
       <BaseModalTitle>Przypomnienie hasła</BaseModalTitle>
     </BaseModalHeader>
@@ -33,7 +33,7 @@
         </BaseButton>
       </template>
     </BaseModalFooter>
-  </sheet-modal-content>
+  </SheetModalContent>
 </template>
 
 <script>
@@ -44,7 +44,6 @@ import { RECAPTCHA_ACTIONS } from '@/configs/recaptcha'
 import RecaptchaBranding from '@/components/RecaptchaBranding'
 
 export default {
-  emits: ['close'],
   components: {
     RecaptchaBranding
   },
@@ -54,6 +53,7 @@ export default {
       required: true
     }
   },
+  emits: ['close'],
   setup(props) {
     const data = reactive({
       sending: false,

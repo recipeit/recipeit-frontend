@@ -6,20 +6,20 @@
       </router-link>
       <div class="header-buttons">
         <template v-if="userAuthenticatedLazy">
-          <router-link :to="{ name: APP_HOME }" v-slot="{ href, navigate }" custom>
-            <BaseButton class="header-button" tag="a" :href="href" @click="navigate($event)" raised color="primary">
+          <router-link v-slot="{ href, navigate }" :to="{ name: APP_HOME }" custom>
+            <BaseButton class="header-button" tag="a" :href="href" raised color="primary" @click="navigate($event)">
               Wróć do aplikacji
             </BaseButton>
           </router-link>
         </template>
         <template v-else>
-          <router-link :to="{ name: AUTH_LOGIN }" v-slot="{ href, navigate }" custom>
-            <BaseButton class="header-button" tag="a" :href="href" @click="navigate($event)" stroked>
+          <router-link v-slot="{ href, navigate }" :to="{ name: AUTH_LOGIN }" custom>
+            <BaseButton class="header-button" tag="a" :href="href" stroked @click="navigate($event)">
               Zaloguj się
             </BaseButton>
           </router-link>
-          <router-link :to="{ name: AUTH_REGISTER }" v-slot="{ href, navigate }" custom>
-            <BaseButton class="header-button" tag="a" :href="href" @click="navigate($event)" raised color="primary">
+          <router-link v-slot="{ href, navigate }" :to="{ name: AUTH_REGISTER }" custom>
+            <BaseButton class="header-button" tag="a" :href="href" raised color="primary" @click="navigate($event)">
               Utwórz konto
             </BaseButton>
           </router-link>

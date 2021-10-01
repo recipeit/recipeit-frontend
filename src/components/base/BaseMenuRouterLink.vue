@@ -1,5 +1,5 @@
 <template>
-  <router-link :to="to" v-slot="{ href, navigate }" custom>
+  <router-link v-slot="{ href, navigate }" :to="to" custom>
     <BaseMenuLink :href="href" @click="navigate($event)"><slot /></BaseMenuLink>
   </router-link>
 </template>

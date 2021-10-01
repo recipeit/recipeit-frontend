@@ -1,6 +1,6 @@
 <template>
   <div class="layout__page__content">
-    <PageHeader title="Ukryte przepisy" :backButton="true" />
+    <PageHeader title="Ukryte przepisy" :back-button="true" />
     <div v-if="hiddenRecipes === null">
       ...wczytuje
     </div>
@@ -34,6 +34,11 @@ export default {
   data: () => ({
     hiddenRecipes: null
   }),
+  beforeMount() {
+    userApi.getHiddenRecipes().then(({ data }) => {
+      this.hiddenRecipes = data.recipes || []
+    })
+  },
   methods: {
     unhideRecipe(id) {
       this.$store.dispatch('user/changeRecipeVisibility', { recipeId: id, visible: true }).then(() => {
@@ -41,11 +46,6 @@ export default {
         this.hiddenRecipes.splice(index, 1)
       })
     }
-  },
-  beforeMount() {
-    userApi.getHiddenRecipes().then(({ data }) => {
-      this.hiddenRecipes = data.recipes || []
-    })
   }
 }
 </script>

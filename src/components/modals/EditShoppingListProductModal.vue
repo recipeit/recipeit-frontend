@@ -1,10 +1,10 @@
 <template>
-  <sheet-modal-content>
+  <SheetModalContent>
     <BaseModalHeader @close="$emit('close')">
       <BaseModalTitle>Edytuj produkt</BaseModalTitle>
     </BaseModalHeader>
     <BaseModalBody>
-      <Form :id="formID" @submit="editProduct($event)" :validation-schema="schema" :initial-values="initialValues">
+      <Form :id="formID" :validation-schema="schema" :initial-values="initialValues" @submit="editProduct($event)">
         <ProductModalForm />
         <!-- <BaseInput class="form-row" label="Dodatkowa nazwa" type="text" v-model="editedProduct.name"/> -->
       </Form>
@@ -17,7 +17,7 @@
         {{ 'Edytuj' }}
       </BaseButton>
     </BaseModalFooter>
-  </sheet-modal-content>
+  </SheetModalContent>
 </template>
 
 <script>
@@ -30,7 +30,6 @@ import uniqueID from '@/functions/uniqueID'
 
 export default {
   components: { Form, ProductModalForm },
-  emits: ['close'],
   props: {
     product: {
       type: Object,
@@ -38,6 +37,7 @@ export default {
     },
     expirationDates: [Array, null]
   },
+  emits: ['close'],
   setup(props, component) {
     const store = useStore()
     const baseProducts = computed(() => store.state.ingredients.baseProducts)

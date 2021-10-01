@@ -1,6 +1,6 @@
 <template>
   <li class="recipes-list-item">
-    <RecipeBox :recipeId="recipeId" :recipeSlug="recipeSlug" :recipeName="recipeName" :recipeRating="recipeRating" />
+    <RecipeBox :recipe-id="recipeId" :recipe-slug="recipeSlug" :recipe-name="recipeName" :recipe-rating="recipeRating" />
   </li>
 </template>
 

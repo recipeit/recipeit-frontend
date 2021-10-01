@@ -1,22 +1,22 @@
 <template>
-  <sheet-modal-content>
+  <SheetModalContent>
     <BaseModalHeader @close="$emit('close')">
       <BaseModalTitle>Zaplanuj przepis</BaseModalTitle>
     </BaseModalHeader>
     <BaseModalBody>
-      <Form :id="formID" @submit="planRecipe($event)" :validation-schema="schema" :initial-values="initialValues" class="form-columns">
-        <Field name="day" v-slot="{ field, errors }">
+      <Form :id="formID" :validation-schema="schema" :initial-values="initialValues" class="form-columns" @submit="planRecipe($event)">
+        <Field v-slot="{ field, errors }" name="day">
           <BaseSelect
             :searchable="false"
             placeholder="Dzień"
             :errors="errors"
             :options="days"
             v-bind="field"
-            trackBy="value"
+            track-by="value"
             label="label"
           />
         </Field>
-        <Field name="timeOfDay" v-slot="{ field, errors }">
+        <Field v-slot="{ field, errors }" name="timeOfDay">
           <BaseSelect :searchable="false" placeholder="Pora dnia" v-bind="field" :errors="errors" :options="timesOfDay">
             <template #label="{ option }">{{ $t(`timeOfDay.${option}`) }}</template>
             <template #option="{ option }">{{ $t(`timeOfDay.${option}`) }}</template>
@@ -33,7 +33,7 @@
         {{ $t('shared.planRecipe') }}
       </BaseButton>
     </BaseModalFooter>
-  </sheet-modal-content>
+  </SheetModalContent>
 </template>
 
 <script>
@@ -45,7 +45,6 @@ import timesOfDayConst from '@/constants/timesOfDay'
 import { reactive, ref } from 'vue'
 
 export default {
-  emits: ['close'],
   components: {
     Field,
     Form
@@ -56,6 +55,7 @@ export default {
       required: true
     }
   },
+  emits: ['close'],
   setup() {
     const formID = 'form-' + uniqueID().getID()
     const timesOfDay = Object.keys(timesOfDayConst)

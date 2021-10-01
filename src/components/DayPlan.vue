@@ -1,10 +1,10 @@
 <template>
-  <div class="day-plan" v-if="currentDay">
+  <div v-if="currentDay" class="day-plan">
     <SectionTitle
       icon="clock"
       title="Twój plan dnia"
-      actionText="pokaż dzisiaj"
-      :showAction="showBackToToday"
+      action-text="pokaż dzisiaj"
+      :show-action="showBackToToday"
       @action-click="backToToday()"
     />
     <transition name="fade" mode="out-in">
@@ -12,7 +12,6 @@
         <div class="day-plan__new-header">
           <div class="new-header-list">
             <div
-              @click="setDay(day.dayjs, 'fade')"
               v-for="day in daysList"
               :key="day.key"
               :class="[
@@ -23,6 +22,7 @@
                   'new-header-day--before-today': day.type === DayType.PAST
                 }
               ]"
+              @click="setDay(day.dayjs, 'fade')"
             >
               <div class="new-header-day-weekday">{{ day.weekday }}</div>
               <div class="new-header-day-monthday">{{ day.monthday }}</div>
@@ -35,16 +35,16 @@
         </div>
 
         <div v-else-if="anyPlannedRecipesInDay" class="day-plan__times-of-day">
-          <div class="time-of-day" v-for="(recipes, key) in currentDayPlan" :key="key">
+          <div v-for="(recipes, key) in currentDayPlan" :key="key" class="time-of-day">
             <div class="time-of-day__title">{{ $t(`timeOfDay.${key}`) }}</div>
             <div class="time-of-day__recipes">
-              <div href="#" class="time-of-day__recipe" v-for="recipe in recipes" :key="recipe.id">
+              <div v-for="recipe in recipes" :key="recipe.id" href="#" class="time-of-day__recipe">
                 <router-link
-                  :to="{ name: APP_RECIPE, params: { recipeId: recipe.recipeId, recipeName: recipe.name } }"
                   v-slot="{ href, navigate }"
+                  :to="{ name: APP_RECIPE, params: { recipeId: recipe.recipeId, recipeName: recipe.name } }"
                   custom
                 >
-                  <BaseLink :href="href" @click="navigate($event)" class="time-of-day__recipe__link">
+                  <BaseLink :href="href" class="time-of-day__recipe__link" @click="navigate($event)">
                     {{ recipe.name }}
                   </BaseLink>
                 </router-link>
@@ -70,8 +70,8 @@
             <span v-else>
               Zaplanuj przepis na ten dzień!
             </span>
-            <router-link :to="{ name: APP_RECIPES }" v-slot="{ href, navigate }" custom>
-              <BaseButton tag="a" :href="href" @click="navigate($event)" class="no-plans-message-button" raised color="primary">
+            <router-link v-slot="{ href, navigate }" :to="{ name: APP_RECIPES }" custom>
+              <BaseButton tag="a" :href="href" class="no-plans-message-button" raised color="primary" @click="navigate($event)">
                 <BaseIcon class="no-plans-message-button-icon" icon="search" weight="semi-bold" />
                 Przeglądaj przepisy
               </BaseButton>
@@ -125,9 +125,6 @@ export default {
       currendDaySlideType: null
     }
   },
-  beforeMount() {
-    this.backToToday()
-  },
   computed: {
     anyPlannedRecipesInDay() {
       const { currentDayPlan } = this
@@ -143,6 +140,9 @@ export default {
     showBackToToday() {
       return this.currentDay && this.currentDay.type !== DayType.TODAY
     }
+  },
+  beforeMount() {
+    this.backToToday()
   },
   methods: {
     dayType(day, today) {

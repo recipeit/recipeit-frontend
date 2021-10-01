@@ -3,7 +3,7 @@
     v-for="modal in modals"
     :key="modal.id"
     :opened="modal.opened"
-    :blockCloseOnBackdrop="modal.blockCloseOnBackdrop"
+    :block-close-on-backdrop="modal.blockCloseOnBackdrop"
     @close="close(modal.id)"
     @closed="afterModalTransitionLeave(modal.id)"
   >
@@ -16,13 +16,13 @@ import Modal from './Modal'
 import { nextId } from './utils'
 
 export default {
-  name: 'global-sheet-modal-container',
-  data: () => ({
-    modals: []
-  }),
+  name: 'GlobalSheetModalContainer',
   components: {
     Modal
   },
+  data: () => ({
+    modals: []
+  }),
   computed: {
     anyModalOpened() {
       return this.modals.filter(m => m.opened).length > 0
@@ -38,6 +38,18 @@ export default {
       document.body.style.overflowY = value ? 'hidden' : null
       document.body.style.paddingRight = value && bodyRequireScroll ? `${scrollWidth}px` : null
     }
+  },
+  created() {
+    this.$modal._setGlobalModalContainer(this)
+    document.addEventListener('keyup', e => {
+      if (e.keyCode === 27 && this.anyModalOpened) {
+        const opened = this.modals.filter(m => m.opened)
+        const modal = opened[opened.length - 1]
+        if (!modal.blockCloseOnBackdrop) {
+          this.$modal.hide(opened[opened.length - 1].id)
+        }
+      }
+    })
   },
   methods: {
     add(component, props = {}, events = {}, { blockCloseOnBackdrop } = {}) {
@@ -75,18 +87,6 @@ export default {
         this.modals.splice(index, 1)
       }
     }
-  },
-  created() {
-    this.$modal._setGlobalModalContainer(this)
-    document.addEventListener('keyup', e => {
-      if (e.keyCode === 27 && this.anyModalOpened) {
-        const opened = this.modals.filter(m => m.opened)
-        const modal = opened[opened.length - 1]
-        if (!modal.blockCloseOnBackdrop) {
-          this.$modal.hide(opened[opened.length - 1].id)
-        }
-      }
-    })
   }
 }
 </script>

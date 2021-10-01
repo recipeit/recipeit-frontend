@@ -7,7 +7,6 @@
 
 <script>
 export default {
-  emits: ['load', 'error'],
   props: {
     src: {
       type: String,
@@ -27,12 +26,42 @@ export default {
       default: false
     }
   },
+  emits: ['load', 'error'],
   data: () => ({
     observer: null,
     loaded: false,
     error: false,
     visible: false
   }),
+  computed: {
+    renderSrc() {
+      return this.visible ? (this.error ? this.errorPlaceholder : this.src) : null
+    },
+    classList() {
+      return {
+        'base-image-lazyload': true,
+        'base-image-lazyload--loaded': this.loaded,
+        'base-image-lazyload--error': this.error,
+        'base-image-lazyload--with-blurred-background': this.blurredBackground
+      }
+    }
+  },
+  watch: {
+    src(newValue, oldValue) {
+      if (newValue !== oldValue) {
+        this.reset()
+        this.init()
+      }
+    }
+  },
+  mounted() {
+    if (this.src) {
+      this.init()
+    }
+  },
+  beforeUnmount() {
+    this.reset()
+  },
   methods: {
     onLoadHandler(event) {
       this.loaded = true
@@ -77,35 +106,6 @@ export default {
         } else {
           this.observer.observe(this.$el)
         }
-      }
-    }
-  },
-  computed: {
-    renderSrc() {
-      return this.visible ? (this.error ? this.errorPlaceholder : this.src) : null
-    },
-    classList() {
-      return {
-        'base-image-lazyload': true,
-        'base-image-lazyload--loaded': this.loaded,
-        'base-image-lazyload--error': this.error,
-        'base-image-lazyload--with-blurred-background': this.blurredBackground
-      }
-    }
-  },
-  mounted() {
-    if (this.src) {
-      this.init()
-    }
-  },
-  beforeUnmount() {
-    this.reset()
-  },
-  watch: {
-    src(newValue, oldValue) {
-      if (newValue !== oldValue) {
-        this.reset()
-        this.init()
       }
     }
   }

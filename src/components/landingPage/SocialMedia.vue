@@ -1,7 +1,7 @@
 <template>
   <Container class="social-media">
     <h2 class="header">
-      Bądź na bierząco
+      Bądź na bieżąco
     </h2>
     <div class="social-list">
       <a target="_blank" class="social-logo" :href="FACEBOOK_PROFILE_URL" v-html="FacebookLogo" />

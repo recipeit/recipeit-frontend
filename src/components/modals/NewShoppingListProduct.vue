@@ -1,11 +1,11 @@
 <template>
-  <sheet-modal-content>
+  <SheetModalContent>
     <BaseModalHeader @close="$emit('close')">
       <BaseModalTitle>Dodaj nowy produkt</BaseModalTitle>
     </BaseModalHeader>
     <BaseModalBody>
-      <Form ref="form" :id="formID" @submit="addProduct($event)" :validation-schema="schema">
-        <ProductModalForm :productAutofocus="true" />
+      <Form :id="formID" ref="form" :validation-schema="schema" @submit="addProduct($event)">
+        <ProductModalForm :product-autofocus="true" />
         <!-- <BaseInput class="form-row" label="Dodatkowa nazwa" type="text" v-model="newProduct.name"/> -->
       </Form>
     </BaseModalBody>
@@ -15,7 +15,7 @@
         {{ $t('shared.addProduct') }}
       </BaseButton>
     </BaseModalFooter>
-  </sheet-modal-content>
+  </SheetModalContent>
 </template>
 
 <script>
@@ -25,8 +25,8 @@ import uniqueID from '@/functions/uniqueID'
 import ProductModalForm from '@/components/ProductModalForm'
 
 export default {
-  emits: ['close'],
   components: { Form, ProductModalForm },
+  emits: ['close'],
   data: () => ({
     sending: false,
     formID: 'form-' + uniqueID().getID(),
@@ -44,6 +44,9 @@ export default {
       unit: Yup.object().nullable()
     })
   }),
+  beforeCreate() {
+    this.DEFAULT_UNIT = 'piece'
+  },
   methods: {
     addProduct({ baseProduct, amount, unit }) {
       this.sending = true
@@ -68,9 +71,6 @@ export default {
           this.sending = false
         })
     }
-  },
-  beforeCreate() {
-    this.DEFAULT_UNIT = 'piece'
   }
 }
 </script>

@@ -33,7 +33,6 @@
 
 <script>
 export default {
-  emits: ['close', 'closed'],
   props: {
     opened: {
       type: Boolean,
@@ -44,6 +43,7 @@ export default {
       default: false
     }
   },
+  emits: ['close', 'closed'],
   data: () => ({
     modalClosing: false,
     modalOpening: false,
@@ -52,6 +52,17 @@ export default {
     offset: null,
     transformTop: null
   }),
+  computed: {
+    scrollerStyle() {
+      if (this.isDown && this.transformTop && this.transformTop >= 0 && this.$refs.scroller.scrollTop === 0) {
+        return {
+          transform: `translate3d(0, ${this.transformTop}px, 0)`,
+          'transition-duration': '0ms'
+        }
+      }
+      return null
+    }
+  },
   methods: {
     maybeClose(e) {
       if (!this.blockCloseOnBackdrop && this.$refs.modal && !this.$refs.modal.contains(e.target)) {
@@ -132,17 +143,6 @@ export default {
         }
       }
       return false
-    }
-  },
-  computed: {
-    scrollerStyle() {
-      if (this.isDown && this.transformTop && this.transformTop >= 0 && this.$refs.scroller.scrollTop === 0) {
-        return {
-          transform: `translate3d(0, ${this.transformTop}px, 0)`,
-          'transition-duration': '0ms'
-        }
-      }
-      return null
     }
   }
 }

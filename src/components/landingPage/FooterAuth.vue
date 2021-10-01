@@ -6,12 +6,12 @@
           Zacznij korzystać z Recipeit już teraz!
         </h2>
         <div class="footer-auth-buttons">
-          <router-link :to="{ name: 'register' }" v-slot="{ href, navigate }" custom>
+          <router-link v-slot="{ href, navigate }" :to="{ name: 'register' }" custom>
             <BaseButton class="button button--main" tag="a" :href="href" @click="navigate($event)">
               Utwórz konto
             </BaseButton>
           </router-link>
-          <router-link :to="{ name: 'login' }" v-slot="{ href, navigate }" custom>
+          <router-link v-slot="{ href, navigate }" :to="{ name: 'login' }" custom>
             <BaseButton class="button button--secondary" tag="a" :href="href" @click="navigate($event)">
               Zaloguj się
             </BaseButton>

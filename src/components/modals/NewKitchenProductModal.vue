@@ -1,11 +1,11 @@
 <template>
-  <sheet-modal-content>
+  <SheetModalContent>
     <BaseModalHeader @close="$emit('close')">
       <BaseModalTitle>Dodaj nowy produkt</BaseModalTitle>
     </BaseModalHeader>
     <BaseModalBody>
-      <Form :id="formID" @submit="addProduct($event)" :validation-schema="schema" :initial-values="initialValues">
-        <ProductModalForm :productAutofocus="true" />
+      <Form :id="formID" :validation-schema="schema" :initial-values="initialValues" @submit="addProduct($event)">
+        <ProductModalForm :product-autofocus="true" />
         <!-- <BaseInput class="form-row" label="Dodatkowa nazwa" type="text" v-model="newProduct.name"/> -->
         <ExpirationDatesFormSection v-model="expirationDatesForm" />
       </Form>
@@ -16,7 +16,7 @@
         {{ $t('shared.addProduct') }}
       </BaseButton>
     </BaseModalFooter>
-  </sheet-modal-content>
+  </SheetModalContent>
 </template>
 
 <script>
@@ -27,8 +27,8 @@ import ExpirationDatesFormSection from './ExpirationDatesFormSection'
 import ProductModalForm from '@/components/ProductModalForm'
 
 export default {
-  emits: ['close'],
   components: { Form, ExpirationDatesFormSection, ProductModalForm },
+  emits: ['close'],
   data: component => ({
     sending: false,
     newProduct: component.emptyProduct(),
@@ -48,6 +48,11 @@ export default {
       unit: Yup.object().nullable()
     })
   }),
+  beforeCreate() {
+    this.initialValues = {
+      unit: 'piece'
+    }
+  },
   methods: {
     emptyProduct() {
       return {
@@ -77,11 +82,6 @@ export default {
         .finally(() => {
           this.sending = false
         })
-    }
-  },
-  beforeCreate() {
-    this.initialValues = {
-      unit: 'piece'
     }
   }
 }
