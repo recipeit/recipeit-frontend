@@ -16,7 +16,8 @@
 </template>
 
 <script>
-import { computed } from '@vue/runtime-core'
+import { computed } from 'vue'
+
 import { stringifiedAmount } from '@/functions/amount'
 
 export default {

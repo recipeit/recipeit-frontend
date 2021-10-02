@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import { computed, ref } from '@vue/runtime-core'
+import { computed, ref } from 'vue'
 import { useStore } from 'vuex'
 
 import { INGREDIENT_USER_STATES } from '@/configs/recipeIngredient'
@@ -59,7 +59,7 @@ import SectionTitle from '@/components/SectionTitle'
 import RecipeIngredient from '@/components/recipe/RecipeIngredient'
 
 export default {
-  components: { SectionTitle, RecipeIngredient },
+  components: { RecipeIngredient, SectionTitle },
   props: {
     recipeId: {
       type: String,

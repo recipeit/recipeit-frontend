@@ -7,6 +7,7 @@
 
 <script>
 import Spinner from '@/components/Spinner'
+
 const validTags = ['button', 'a']
 
 export default {
@@ -57,7 +58,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @mixin button-raised($colorsMap) {
   $background: #{map-get($colorsMap, 'background')};
   $background-hover: #{map-get($colorsMap, 'background-hover')};

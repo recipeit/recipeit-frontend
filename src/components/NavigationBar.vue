@@ -32,12 +32,15 @@
 </template>
 
 <script>
-import Logotype from '@/components/Logotype'
-import { APP_COOK_IT, APP_HOME, APP_MY_KITCHEN, APP_RECIPES, APP_SHOPPING_LIST } from '@/router/names'
-import NavigationBarAnimatedIcon from '@/components/NavigationBarAnimatedIcon'
-import { ref } from '@vue/reactivity'
-import eventHub from '@/services/eventHub'
+import { ref } from 'vue'
 import { useRoute } from 'vue-router'
+
+import { APP_COOK_IT, APP_HOME, APP_MY_KITCHEN, APP_RECIPES, APP_SHOPPING_LIST } from '@/router/names'
+
+import eventHub from '@/services/eventHub'
+
+import Logotype from '@/components/Logotype'
+import NavigationBarAnimatedIcon from '@/components/NavigationBarAnimatedIcon'
 
 export default {
   components: {

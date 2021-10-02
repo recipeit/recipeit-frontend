@@ -4,12 +4,6 @@
   </div>
 </template>
 
-<script>
-// export default {
-
-// }
-</script>
-
 <style lang="scss" scoped>
 .message {
   max-width: 960px;

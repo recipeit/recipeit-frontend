@@ -30,10 +30,12 @@
 </template>
 
 <script>
-import { LANDING_PAGE, AUTH_LOGIN, AUTH_REGISTER, APP_HOME } from '@/router/names'
-import Logotype from '@/components/Logotype'
+import { computed } from 'vue'
 import { useStore } from 'vuex'
-import { computed } from '@vue/runtime-core'
+
+import { LANDING_PAGE, AUTH_LOGIN, AUTH_REGISTER, APP_HOME } from '@/router/names'
+
+import Logotype from '@/components/Logotype'
 
 export default {
   components: { Logotype },

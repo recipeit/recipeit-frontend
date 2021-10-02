@@ -28,8 +28,9 @@
 </template>
 
 <script>
-import Logotype from '@/components/Logotype'
 import BackgroundUrl from '@/assets/img/splash.webp'
+
+import Logotype from '@/components/Logotype'
 
 export default {
   components: {

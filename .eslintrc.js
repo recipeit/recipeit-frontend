@@ -13,13 +13,13 @@ module.exports = {
     'vue/no-v-html': 0,
     'vue/require-default-prop': 0,
     'prettier/prettier': [
-        'error',
-        {
-          'singleQuote': true,
-          'semi': false,
-          'printWidth': 140
-        }
-    ],
+      'error',
+      {
+        singleQuote: true,
+        semi: false,
+        printWidth: 140
+      }
+    ]
   },
   globals: {
     __BUILD_VERSION__: true

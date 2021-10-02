@@ -19,8 +19,9 @@
 </template>
 
 <script>
+import { computed } from 'vue'
+
 import { APP_RECIPE } from '@/router/names'
-import { computed } from '@vue/reactivity'
 
 export default {
   props: {
@@ -29,6 +30,7 @@ export default {
       required: true
     }
   },
+  emits: ['unhide'],
   setup(props) {
     const miniatureUrl = computed(() => `/static/recipes/${props.recipe.id}/thumb.webp?v=1`)
 

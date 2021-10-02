@@ -23,17 +23,21 @@
 </template>
 
 <script>
+import { onBeforeMount } from 'vue'
 import { useRouter } from 'vue-router'
-import { onBeforeMount } from '@vue/runtime-core'
+
 import userApi from '@/api/userApi'
+
 import { APP_FAVOURITES } from '@/router/names'
-import HorizontalRecipesList from '@/components/HorizontalRecipesList'
-import SectionTitle from '@/components/SectionTitle'
-import AddToFavouriteRecipeBox from './AddToFavouriteRecipeBox'
+
 import recipePagedList from '@/views/app/composable/recipePagedList'
 
+import AddToFavouriteRecipeBox from '@/components/AddToFavouriteRecipeBox'
+import HorizontalRecipesList from '@/components/HorizontalRecipesList'
+import SectionTitle from '@/components/SectionTitle'
+
 export default {
-  components: { HorizontalRecipesList, SectionTitle, AddToFavouriteRecipeBox },
+  components: { AddToFavouriteRecipeBox, HorizontalRecipesList, SectionTitle },
   setup() {
     const router = useRouter()
     const favouriteRecipesList = recipePagedList(userApi.getFavouriteRecipes)

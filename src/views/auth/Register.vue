@@ -34,8 +34,8 @@
         </BaseButton>
       </Form>
 
-      <ul v-if="errors" class="auth-main__content__errors">
-        <li v-for="(error, index) in errors" :key="index">{{ $t(`errorCode.${error}`) }}</li>
+      <ul v-if="errorList" class="auth-main__content__errors">
+        <li v-for="(error, index) in errorList" :key="index">{{ $t(`errorCode.${error}`) }}</li>
       </ul>
 
       <AuthSocialList @lockInputs="socialSending = true" @unlockInputs="socialSending = false" />
@@ -64,18 +64,21 @@
 </template>
 
 <script>
-import { onBeforeMount, ref } from '@vue/runtime-core'
+import { Field, Form } from 'vee-validate'
+import { onBeforeMount, ref } from 'vue'
 import { useMeta } from 'vue-meta'
 import { useRoute } from 'vue-router'
-import { Field, Form } from 'vee-validate'
 import * as yup from 'yup'
 
-import AuthSocialList from './AuthSocialList'
-import { emailSchema, newPasswordSchema, confirmNewPasswordSchema } from '@/configs/schemas'
-import recaptcha from '@/services/recaptcha'
-import RecaptchaBranding from '@/components/RecaptchaBranding'
-import { RECAPTCHA_ACTIONS } from '@/configs/recaptcha'
 import { ERROR_ACTION_TAG_NAME } from '@/configs/error'
+import { RECAPTCHA_ACTIONS } from '@/configs/recaptcha'
+import { emailSchema, newPasswordSchema, confirmNewPasswordSchema } from '@/configs/schemas'
+
+import recaptcha from '@/services/recaptcha'
+
+import AuthSocialList from '@/views/auth/AuthSocialList'
+
+import RecaptchaBranding from '@/components/RecaptchaBranding'
 
 export default {
   components: {
@@ -114,7 +117,7 @@ export default {
     }
   },
   data: () => ({
-    errors: null,
+    errorList: null,
     sending: false,
     socialSending: false
   }),
@@ -126,7 +129,7 @@ export default {
   methods: {
     register(valus) {
       this.sending = true
-      this.errors = null
+      this.errorList = null
 
       recaptcha
         .execute(RECAPTCHA_ACTIONS.REGISTER)
@@ -138,7 +141,7 @@ export default {
               registerToken: this.token
             })
             .catch(errors => {
-              this.errors = errors
+              this.errorList = errors
               this.$errorHandler.captureError(errors, {
                 [ERROR_ACTION_TAG_NAME]: 'auth.register'
               })

@@ -106,15 +106,18 @@
 </template>
 
 <script>
-import { useMeta } from 'vue-meta'
 import { computed } from 'vue'
 import { useStore } from 'vuex'
+import { useMeta } from 'vue-meta'
+
 import userApi from '@/api/userApi'
+
+import recipeFilteredPagedList from '@/views/app/composable/recipeFilteredPagedList'
+
 import GenericRecipesList from '@/components/GenericRecipesList'
-import PageHeader from '@/components/PageHeader'
 import HorizontalRecipesList from '@/components/HorizontalRecipesList'
+import PageHeader from '@/components/PageHeader'
 import SectionTitle from '@/components/SectionTitle'
-import recipeFilteredPagedList from './composable/recipeFilteredPagedList'
 
 export default {
   name: 'CookIt',

@@ -11,6 +11,7 @@
 
 <script>
 import { CATEGORY_IMAGES } from '@/configs/recipeCategories'
+
 import { APP_COOK_IT } from '@/router/names'
 
 export default {

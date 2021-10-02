@@ -16,19 +16,25 @@
 </template>
 
 <script>
+import { computed, onBeforeMount, reactive, toRefs, watchEffect } from 'vue'
+import { useStore } from 'vuex'
+import { useMeta } from 'vue-meta'
+import { useRoute, useRouter } from 'vue-router'
+
+import updateSW from '@/composables/update'
+
+import { EXACT_THEMES, THEME_DARK, THEME_DARK_COLOR, THEME_HTML_ATTRIBUTE, THEME_LIGHT, THEME_LIGHT_COLOR } from '@/configs/theme'
+
+import Modal from '@/plugins/global-sheet-modal/Modal'
+
+import { APP_HOME, APP_ROUTE_NAMES, AUTH_LOGIN, LOGGED_USER_ALLOWED_ROUTE_NAMES } from '@/router/names'
+
 import GDPRService from '@/services/gdpr'
+
 import AppLoading from '@/components/AppLoading'
 import MessageContainer from '@/components/MessageContainer'
 import UpdateMessage from '@/components/messages/UpdateMessage'
-import updateSW from './composables/update'
-import { computed, onBeforeMount, reactive, toRefs, watchEffect } from '@vue/runtime-core'
-import CookiesModal from './components/modals/CookiesModal'
-import Modal from './plugins/global-sheet-modal/Modal.vue'
-import { useRoute, useRouter } from 'vue-router'
-import { APP_HOME, APP_ROUTE_NAMES, AUTH_LOGIN, LOGGED_USER_ALLOWED_ROUTE_NAMES } from './router/names'
-import { useMeta } from 'vue-meta'
-import { useStore } from 'vuex'
-import { EXACT_THEMES, THEME_DARK, THEME_DARK_COLOR, THEME_HTML_ATTRIBUTE, THEME_LIGHT, THEME_LIGHT_COLOR } from './configs/theme'
+import CookiesModal from '@/components/modals/CookiesModal'
 
 const TITLE_TEMPLATE = 'Recipeit - Znajdź przepis ze swoich składników'
 const TITLE_SMALL_TEMPLATE = 'Recipeit'

@@ -36,12 +36,17 @@
 <script>
 import { Field, Form } from 'vee-validate'
 import { onBeforeMount, reactive, toRefs } from 'vue'
-import uniqueID from '@/functions/uniqueID'
-import identityApi from '@/api/identityApi'
 import { useStore } from 'vuex'
 import * as Yup from 'yup'
-import recaptcha from '@/services/recaptcha'
+
+import identityApi from '@/api/identityApi'
+
 import { RECAPTCHA_ACTIONS } from '@/configs/recaptcha'
+
+import uniqueID from '@/functions/uniqueID'
+
+import recaptcha from '@/services/recaptcha'
+
 import RecaptchaBranding from '@/components/RecaptchaBranding'
 
 export default {

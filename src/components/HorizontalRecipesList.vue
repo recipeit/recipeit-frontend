@@ -40,11 +40,11 @@
 <script>
 import { RecipeList } from '@/constants'
 
-import SkeletonRecipeBox from '@/components/skeletons/SkeletonRecipeBox'
 import GenericRecipesListItem from '@/components/GenericRecipesListItem'
+import SkeletonRecipeBox from '@/components/skeletons/SkeletonRecipeBox'
 
 export default {
-  components: { SkeletonRecipeBox, GenericRecipesListItem },
+  components: { GenericRecipesListItem, SkeletonRecipeBox },
   props: {
     recipes: {
       type: RecipeList
@@ -54,7 +54,7 @@ export default {
       default: null
     }
   },
-  emits: ['showAll'],
+  emits: ['showAll', 'reload-with-query'],
   computed: {
     items() {
       return this.recipes?.pagedItems[1] || []

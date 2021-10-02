@@ -12,9 +12,10 @@
 </template>
 
 <script>
-import authSocialMixin from './mixins/authSocialMixin'
 import FacebookLogo from '@/assets/logos/facebook.svg?inline'
 import GoogleLogo from '@/assets/logos/google.svg?inline'
+
+import authSocialMixin from '@/views/auth/mixins/authSocialMixin'
 
 export default {
   mixins: [authSocialMixin],

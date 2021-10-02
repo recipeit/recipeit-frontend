@@ -19,9 +19,11 @@
 </template>
 
 <script>
-import * as Yup from 'yup'
 import { Form } from 'vee-validate'
+import * as Yup from 'yup'
+
 import uniqueID from '@/functions/uniqueID'
+
 import ProductModalForm from '@/components/ProductModalForm'
 
 export default {

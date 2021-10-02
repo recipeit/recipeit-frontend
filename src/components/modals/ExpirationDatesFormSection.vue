@@ -31,11 +31,11 @@
 </template>
 
 <script>
+import { markRaw } from 'vue'
+
 import dayjs from '@/functions/dayjs'
 
-import { markRaw } from 'vue'
-// import myKitchenApi from '@/api/myKitchenApi'
-import NewExpirationDateModal from './NewExpirationDateModal'
+import NewExpirationDateModal from '@/components/modals/NewExpirationDateModal'
 
 export default {
   // emits: [update:],
@@ -43,6 +43,7 @@ export default {
     productId: String,
     modelValue: [Array, null]
   },
+  emits: ['update:modelValue'],
   // beforeMount() {
   //   if (this.productId) {
   //     myKitchenApi.getProductExpirationDates(this.productId).then(response => {

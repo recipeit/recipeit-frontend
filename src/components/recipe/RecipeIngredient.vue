@@ -39,14 +39,17 @@
 </template>
 
 <script>
+import { markRaw } from 'vue'
 import { mapState } from 'vuex'
-import { markRaw } from '@vue/runtime-core'
+
+import { INGREDIENT_USER_STATES } from '@/configs/recipeIngredient'
+
+import { stringifiedAmount } from '@/functions/amount'
 
 import { ToastType } from '@/plugins/toast/toastType'
-import { stringifiedAmount } from '@/functions/amount'
-import SelectBaseProductFromArrayModal from '@/components/modals/SelectBaseProductFromArrayModal'
+
 import Dialog from '@/components/modals/Dialog'
-import { INGREDIENT_USER_STATES } from '@/configs/recipeIngredient'
+import SelectBaseProductFromArrayModal from '@/components/modals/SelectBaseProductFromArrayModal'
 
 export default {
   props: {
@@ -66,6 +69,50 @@ export default {
   data: () => ({
     loading: false
   }),
+  computed: {
+    ...mapState({
+      baseProducts: state => state.ingredients.baseProducts || []
+    }),
+    name() {
+      const { ingredient } = this
+      if (ingredient.name) return ingredient.name
+      return this.baseProducts.find(p => p.id === ingredient.mainBaseProductId)?.name
+    },
+    computedAmount() {
+      if (!this.ingredient.amount) return null
+
+      let amount = stringifiedAmount(this.ingredient.amount * this.amountFactor)
+      if (this.ingredient.amountMax) {
+        amount += ` - ${stringifiedAmount(this.ingredient.amountMax * this.amountFactor)}`
+      }
+
+      return amount
+    },
+    unitTranslationAmount() {
+      const amount = this.ingredient.amountMax || this.ingredient.amount
+      if (amount) {
+        return amount * this.amountFactor
+      }
+      return 1
+    },
+    showLoadingState() {
+      return this.loading || (this.allAdding && this.ingredient.state === INGREDIENT_USER_STATES.UNAVAILABLE)
+    },
+    actionPopperContent() {
+      const { state } = this.ingredient
+
+      if (state === INGREDIENT_USER_STATES.IN_KITCHEN) {
+        return 'Posiadasz ten produkt w swojej kuchni'
+      }
+      if (state === INGREDIENT_USER_STATES.IN_SHOPPING_LIST) {
+        return 'Posiadasz ten produkt na liście zakupów'
+      }
+      if (state === INGREDIENT_USER_STATES.UNAVAILABLE) {
+        return 'Dodaj do listy zakupów'
+      }
+      return null
+    }
+  },
   methods: {
     async addSingleProductToShoppingList(product) {
       this.loading = true
@@ -159,50 +206,6 @@ export default {
         //   const { name, unit, mainBaseProductId: baseProductId } = ingredient
         //   this.addSingleProductToShoppingList({ name, amount, unit, baseProductId })
       }
-    }
-  },
-  computed: {
-    ...mapState({
-      baseProducts: state => state.ingredients.baseProducts || []
-    }),
-    name() {
-      const { ingredient } = this
-      if (ingredient.name) return ingredient.name
-      return this.baseProducts.find(p => p.id === ingredient.mainBaseProductId)?.name
-    },
-    computedAmount() {
-      if (!this.ingredient.amount) return null
-
-      let amount = stringifiedAmount(this.ingredient.amount * this.amountFactor)
-      if (this.ingredient.amountMax) {
-        amount += ` - ${stringifiedAmount(this.ingredient.amountMax * this.amountFactor)}`
-      }
-
-      return amount
-    },
-    unitTranslationAmount() {
-      const amount = this.ingredient.amountMax || this.ingredient.amount
-      if (amount) {
-        return amount * this.amountFactor
-      }
-      return 1
-    },
-    showLoadingState() {
-      return this.loading || (this.allAdding && this.ingredient.state === INGREDIENT_USER_STATES.UNAVAILABLE)
-    },
-    actionPopperContent() {
-      const { state } = this.ingredient
-
-      if (state === INGREDIENT_USER_STATES.IN_KITCHEN) {
-        return 'Posiadasz ten produkt w swojej kuchni'
-      }
-      if (state === INGREDIENT_USER_STATES.IN_SHOPPING_LIST) {
-        return 'Posiadasz ten produkt na liście zakupów'
-      }
-      if (state === INGREDIENT_USER_STATES.UNAVAILABLE) {
-        return 'Dodaj do listy zakupów'
-      }
-      return null
     }
   }
 }

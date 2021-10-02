@@ -5,9 +5,11 @@
 </template>
 
 <script>
-import AnonymousPage from '@/layouts/AnonymousPage'
-import PRIVACY_POLICY_HTML from 'html-loader!@/assets/docs/privacypolicy/privacypolicy_v1.html'
 import { useMeta } from 'vue-meta'
+
+import PRIVACY_POLICY_HTML from 'html-loader!@/assets/docs/privacypolicy/privacypolicy_v1.html'
+
+import AnonymousPage from '@/layouts/AnonymousPage'
 
 export default {
   components: { AnonymousPage },

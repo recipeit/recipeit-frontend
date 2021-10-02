@@ -1,9 +1,12 @@
 <template>
   <div :style="finalStyle" />
 </template>
+
 <script>
 import { inject, computed } from 'vue'
+
 const inBrowser = typeof window !== 'undefined'
+
 export default {
   name: 'VueProgress',
   serverCacheKey: () => 'Progress',

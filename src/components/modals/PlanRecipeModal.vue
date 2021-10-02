@@ -23,7 +23,7 @@
           </BaseSelect>
         </Field>
       </Form>
-      <div v-for="(error, i) in errors" :key="i" class="error">
+      <div v-for="(error, i) in errorList" :key="i" class="error">
         {{ error }}
       </div>
     </BaseModalBody>
@@ -37,12 +37,14 @@
 </template>
 
 <script>
-import * as Yup from 'yup'
 import { Field, Form } from 'vee-validate'
-import uniqueID from '@/functions/uniqueID'
-import dayjs from '@/functions/dayjs'
-import timesOfDayConst from '@/constants/timesOfDay'
 import { reactive, ref } from 'vue'
+import * as Yup from 'yup'
+
+import timesOfDayConst from '@/constants/timesOfDay'
+
+import dayjs from '@/functions/dayjs'
+import uniqueID from '@/functions/uniqueID'
 
 export default {
   components: {
@@ -72,7 +74,7 @@ export default {
       day: days[0],
       timeOfDay: timesOfDay[0]
     }
-    const errors = reactive(null)
+    const errorList = reactive(null)
     const schema = Yup.object({
       day: Yup.object()
         .required('REQUIRED')
@@ -89,7 +91,7 @@ export default {
       days,
       timesOfDay,
       initialValues,
-      errors,
+      errorList,
       sending,
       schema
     }
@@ -97,7 +99,7 @@ export default {
   methods: {
     planRecipe({ day, timeOfDay }) {
       this.sending = true
-      this.errors = null
+      this.errorList = null
 
       const preparedData = {
         recipeId: this.recipeId,
@@ -111,12 +113,12 @@ export default {
           if (data.success) {
             this.$emit('close')
           } else {
-            this.errors = data.errors || ['coś poszło nie tak']
+            this.errorList = data.errors || ['coś poszło nie tak']
           }
         })
         .catch(error => {
           const responseErrors = error.response?.data?.errors
-          this.errors = responseErrors || ['coś poszło nie tak']
+          this.errorList = responseErrors || ['coś poszło nie tak']
         })
         .finally(() => {
           this.sending = false

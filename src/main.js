@@ -1,23 +1,31 @@
-import { createMetaManager, defaultConfig } from 'vue-meta'
-import upperFirst from 'lodash.upperfirst'
-import camelCase from 'lodash.camelcase'
 import * as Sentry from '@sentry/browser'
 import { Integrations } from '@sentry/tracing'
+import camelCase from 'lodash.camelcase'
+import upperFirst from 'lodash.upperfirst'
 import { createApp } from 'vue'
+import { createMetaManager, defaultConfig } from 'vue-meta'
 import VTooltip from 'v-tooltip'
 import 'v-tooltip/dist/v-tooltip.css'
-import './registerServiceWorker'
-import App from './App'
-import GlobalSheetModal from './plugins/global-sheet-modal'
-import Clipboard from './plugins/clipboard'
-import Progressbar from './plugins/progressbar'
-import Toast from './plugins/toast'
-import error from './error'
-import router from './router'
-import store from './store'
-import i18n from './i18n'
-import blurOnClick from './directives/blurOnClick'
-import autofocus from './directives/autofocus'
+
+import autofocus from '@/directives/autofocus'
+import blurOnClick from '@/directives/blurOnClick'
+
+import error from '@/error'
+
+import i18n from '@/i18n'
+
+import Clipboard from '@/plugins/clipboard'
+import GlobalSheetModal from '@/plugins/global-sheet-modal'
+import Progressbar from '@/plugins/progressbar'
+import Toast from '@/plugins/toast'
+
+import '@/registerServiceWorker'
+
+import router from '@/router'
+
+import store from '@/store'
+
+import App from '@/App'
 
 const useSentry = process.env.NODE_ENV === 'production'
 

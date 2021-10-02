@@ -24,14 +24,17 @@
 </template>
 
 <script>
+import { computed } from 'vue'
 import { mapState, useStore } from 'vuex'
-// import Rating from '@/components/Rating'
-import FavouriteIcon from '@/components/FavouriteIcon'
-import { APP_RECIPE } from '@/router/names'
-import placeholderLight from '@/assets/img/placeholders/recipe-box.webp'
+
 import placeholderDark from '@/assets/img/placeholders/recipe-box-dark.webp'
-import { computed } from '@vue/reactivity'
+import placeholderLight from '@/assets/img/placeholders/recipe-box.webp'
+
 import { THEME_DARK } from '@/configs/theme'
+
+import { APP_RECIPE } from '@/router/names'
+
+import FavouriteIcon from '@/components/FavouriteIcon'
 
 export default {
   components: {
@@ -69,17 +72,6 @@ export default {
       placeholder
     }
   },
-  methods: {
-    showDetails() {
-      this.$router.push({ name: APP_RECIPE, params: { recipeId: this.recipeId } })
-    },
-    addToFavourites() {
-      this.$store.dispatch('recipes/addToFavourites', this.recipeId)
-    },
-    deleteFromFavourites() {
-      this.$store.dispatch('recipes/deleteFromFavourites', this.recipeId)
-    }
-  },
   computed: {
     ...mapState({
       favouriteRecipesIds: state => state.recipes.favouriteRecipesIds
@@ -89,6 +81,17 @@ export default {
     },
     imageUrl() {
       return `/static/recipes/${this.recipeId}/thumb.webp?v=1`
+    }
+  },
+  methods: {
+    showDetails() {
+      this.$router.push({ name: APP_RECIPE, params: { recipeId: this.recipeId } })
+    },
+    addToFavourites() {
+      this.$store.dispatch('recipes/addToFavourites', this.recipeId)
+    },
+    deleteFromFavourites() {
+      this.$store.dispatch('recipes/deleteFromFavourites', this.recipeId)
     }
   }
 }

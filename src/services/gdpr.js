@@ -1,6 +1,8 @@
-import { COOKIES_ANALYTICS_COOKIE_NAME, COOKIES_MESSAGE_COOKIE_NAME } from '@/configs/cookies'
-import { ref } from '@vue/reactivity'
 import Cookies from 'js-cookie'
+import { ref } from 'vue'
+
+import { COOKIES_ANALYTICS_COOKIE_NAME, COOKIES_MESSAGE_COOKIE_NAME } from '@/configs/cookies'
+
 import AnalyticsService from '@/services/analytics'
 
 const GDPR_OPTIONS = [COOKIES_ANALYTICS_COOKIE_NAME]

@@ -1,4 +1,4 @@
-import ToastsContainer from './ToastsContainer'
+import ToastsContainer from '@/plugins/toast/ToastsContainer'
 
 const Plugin = {
   toast: null,

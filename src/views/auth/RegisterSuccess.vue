@@ -43,13 +43,17 @@
 </template>
 
 <script>
-import identityApi from '@/api/identityApi'
-import recaptcha from '@/services/recaptcha'
-import { RECAPTCHA_ACTIONS } from '@/configs/recaptcha'
-import { reactive, toRefs } from '@vue/reactivity'
+import { reactive, toRefs } from 'vue'
 import { useRouter } from 'vue-router'
-import { AUTH_LOGIN } from '@/router/names'
+
+import identityApi from '@/api/identityApi'
+
 import { ERROR_ACTION_TAG_NAME } from '@/configs/error'
+import { RECAPTCHA_ACTIONS } from '@/configs/recaptcha'
+
+import { AUTH_LOGIN } from '@/router/names'
+
+import recaptcha from '@/services/recaptcha'
 
 export default {
   props: {

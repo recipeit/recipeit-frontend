@@ -23,15 +23,17 @@
 
 <script>
 import { Form } from 'vee-validate'
-import { useStore } from 'vuex'
 import { computed, reactive, ref, toRefs } from 'vue'
-import ExpirationDatesFormSection from './ExpirationDatesFormSection'
-import ProductModalForm from '@/components/ProductModalForm'
-import uniqueID from '@/functions/uniqueID'
+import { useStore } from 'vuex'
 import * as Yup from 'yup'
 
+import uniqueID from '@/functions/uniqueID'
+
+import ProductModalForm from '@/components/ProductModalForm'
+import ExpirationDatesFormSection from '@/components/modals/ExpirationDatesFormSection'
+
 export default {
-  components: { Form, ExpirationDatesFormSection, ProductModalForm },
+  components: { Form, ProductModalForm, ExpirationDatesFormSection },
   props: {
     product: {
       type: Object,

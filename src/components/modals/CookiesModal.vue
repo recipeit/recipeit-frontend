@@ -30,10 +30,13 @@
 </template>
 
 <script>
+import { markRaw } from 'vue'
+
 import { useModal } from '@/plugins/global-sheet-modal'
-import CustomizeCookiesModal from './CustomizeCookiesModal'
-import { markRaw } from '@vue/reactivity'
+
 import GDPRService from '@/services/gdpr'
+
+import CustomizeCookiesModal from '@/components/modals/CustomizeCookiesModal'
 
 export default {
   emits: ['close'],

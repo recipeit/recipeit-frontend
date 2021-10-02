@@ -28,14 +28,14 @@
 </template>
 
 <script>
-import { ref } from '@vue/runtime-core'
-import { useRoute } from 'vue-router'
+import { ref } from 'vue'
 import { useMeta } from 'vue-meta'
-
-import { fetchRecipesQueryParams, queryParamsFromRouteQuery } from '@/constants'
+import { useRoute } from 'vue-router'
 
 import recipeApi from '@/api/recipeApi'
 import userApi from '@/api/userApi'
+
+import { fetchRecipesQueryParams, queryParamsFromRouteQuery } from '@/constants'
 
 import recipeFilteredPagedList from '@/views/app/composable/recipeFilteredPagedList'
 

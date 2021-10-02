@@ -39,16 +39,18 @@
 </template>
 
 <script>
+import _ from 'lodash'
 import { markRaw, ref } from 'vue'
 import { mapState } from 'vuex'
-import _ from 'lodash'
+import { useMeta } from 'vue-meta'
+
+import PageHeader from '@/components/PageHeader'
+import ProductIcon from '@/components/ProductIcon'
 import ShoppingListProduct from '@/components/ShoppingListProduct'
 import Dialog from '@/components/modals/Dialog'
-import PageHeader from '@/components/PageHeader'
-import { PRODUCT_GROUP_ICONS } from '@/constants'
 import NewShoppingListProduct from '@/components/modals/NewShoppingListProduct'
-import ProductIcon from '@/components/ProductIcon'
-import { useMeta } from 'vue-meta'
+
+import { PRODUCT_GROUP_ICONS } from '@/constants'
 
 export default {
   name: 'ShoppingList',
@@ -70,6 +72,31 @@ export default {
       searchString,
       PRODUCT_GROUP_ICONS
     }
+  },
+  computed: {
+    ...mapState({
+      products: state => state.shoppingList.products
+    }),
+    filteredProducts() {
+      if (!this.products) return null
+      if (!this.searchString) return this.products
+
+      return this.products.filter(p => p.baseProductName.toLowerCase().includes(this.searchString.toLowerCase()))
+    },
+    groupedProducts() {
+      if (!this.filteredProducts) return null
+      return _(this.filteredProducts)
+        .sortBy(item => item.baseProductName)
+        .groupBy(item => item.category)
+        .toPairs()
+        .sortBy(group => this.$t(`productCategory.${group[0]}`))
+        .value()
+    }
+  },
+  beforeMount() {
+    this.$store.dispatch('ingredients/fetchBaseProducts')
+    this.$store.dispatch('ingredients/fetchUnitsGroupedByMeasurement')
+    this.$store.dispatch('shoppingList/fetchProducts')
   },
   methods: {
     newProduct() {
@@ -100,31 +127,6 @@ export default {
     onSearch({ search }) {
       this.searchString = search
     }
-  },
-  computed: {
-    ...mapState({
-      products: state => state.shoppingList.products
-    }),
-    filteredProducts() {
-      if (!this.products) return null
-      if (!this.searchString) return this.products
-
-      return this.products.filter(p => p.baseProductName.toLowerCase().includes(this.searchString.toLowerCase()))
-    },
-    groupedProducts() {
-      if (!this.filteredProducts) return null
-      return _(this.filteredProducts)
-        .sortBy(item => item.baseProductName)
-        .groupBy(item => item.category)
-        .toPairs()
-        .sortBy(group => this.$t(`productCategory.${group[0]}`))
-        .value()
-    }
-  },
-  beforeMount() {
-    this.$store.dispatch('ingredients/fetchBaseProducts')
-    this.$store.dispatch('ingredients/fetchUnitsGroupedByMeasurement')
-    this.$store.dispatch('shoppingList/fetchProducts')
   }
 }
 </script>

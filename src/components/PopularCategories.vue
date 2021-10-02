@@ -17,16 +17,17 @@
 </template>
 
 <script>
-import { onBeforeMount, ref } from '@vue/runtime-core'
+import { onBeforeMount, ref } from 'vue'
+
+import recipeApi from '@/api/recipeApi'
 
 import { APP_RECIPES } from '@/router/names'
-import recipeApi from '@/api/recipeApi'
-import SectionTitle from '@/components/SectionTitle'
+
 import PopularCategory from '@/components/PopularCategory'
-// import { useStore } from 'vuex'
+import SectionTitle from '@/components/SectionTitle'
 
 export default {
-  components: { SectionTitle, PopularCategory },
+  components: { PopularCategory, SectionTitle },
   setup() {
     // const store = useStore()
     const popularCategories = ref(null)

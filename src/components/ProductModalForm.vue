@@ -53,8 +53,8 @@ import _ from 'lodash'
 import { Field } from 'vee-validate'
 import { computed } from 'vue'
 import { useStore } from 'vuex'
+
 import ProductIcon from '@/components/ProductIcon'
-// import { units } from '@/constants'
 
 export default {
   components: { Field, ProductIcon },

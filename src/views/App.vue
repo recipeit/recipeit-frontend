@@ -12,8 +12,9 @@
 </template>
 
 <script>
-import NavigationBar from '@/components/NavigationBar'
 import eventHub from '@/services/eventHub'
+
+import NavigationBar from '@/components/NavigationBar'
 
 export default {
   components: {

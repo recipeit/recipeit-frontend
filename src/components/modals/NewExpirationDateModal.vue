@@ -44,15 +44,16 @@
 </template>
 
 <script>
-import * as Yup from 'yup'
 import { useField, useForm } from 'vee-validate'
+import { computed } from 'vue'
+import * as Yup from 'yup'
+
 import dayjs from '@/functions/dayjs'
 import uniqueID from '@/functions/uniqueID'
-import { computed } from 'vue'
 
 export default {
   emits: ['close'],
-  setup(props, { emit }) {
+  setup(_, { emit }) {
     const formID = 'form-' + uniqueID().getID()
     const currentYear = dayjs().year()
 

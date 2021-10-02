@@ -107,8 +107,9 @@
 
 <script>
 import _ from 'lodash'
-import { computed, reactive, toRefs } from '@vue/runtime-core'
+import { computed, reactive, toRefs } from 'vue'
 import { useStore } from 'vuex'
+
 import ProductIcon from '@/components/ProductIcon'
 
 const OPTION_KEYS = {

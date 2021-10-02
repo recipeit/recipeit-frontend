@@ -6,8 +6,9 @@
 </template>
 
 <script>
-import Spinner from '@/components/Spinner'
 import logo from '@/assets/logo.svg?inline'
+
+import Spinner from '@/components/Spinner'
 
 export default {
   components: {

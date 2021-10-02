@@ -1,4 +1,5 @@
 import { GOOGLE_API_URL, GOOGLE_AUTH_INIT_PARAMS, GOOGLE_AUTH_SIGN_IN_PARAMS } from '@/configs/google'
+
 import loadScript from '@/functions/loadScript'
 
 export default {

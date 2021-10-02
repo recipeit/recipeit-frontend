@@ -16,9 +16,11 @@
 </template>
 
 <script>
-import { APP_BLOG } from '@/router/names'
-import { computed } from '@vue/reactivity'
+import { computed } from 'vue'
+
 import avatarErrorUrl from '@/assets/img/blog-avatar.webp'
+
+import { APP_BLOG } from '@/router/names'
 
 export default {
   props: {
@@ -27,6 +29,7 @@ export default {
       required: true
     }
   },
+  emits: ['unhide'],
   setup(props) {
     const avatarUrl = computed(() => `/static/blogs/${props.blog.id}/avatar.webp`)
 

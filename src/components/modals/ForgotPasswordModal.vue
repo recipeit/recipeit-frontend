@@ -38,9 +38,13 @@
 
 <script>
 import { onBeforeMount, reactive, toRefs } from 'vue'
+
 import identityApi from '@/api/identityApi'
-import recaptcha from '@/services/recaptcha'
+
 import { RECAPTCHA_ACTIONS } from '@/configs/recaptcha'
+
+import recaptcha from '@/services/recaptcha'
+
 import RecaptchaBranding from '@/components/RecaptchaBranding'
 
 export default {

@@ -1,5 +1,6 @@
 import { reactive, nextTick } from 'vue'
-import View from './vue3-progressbar.vue'
+
+import View from '@/plugins/progressbar/vue3-progressbar'
 
 // eslint-disable-next-line no-unused-vars
 function assign(target, source) {

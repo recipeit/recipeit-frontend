@@ -32,9 +32,11 @@
 </template>
 
 <script>
-import { TERMS, PRIVACY_POLICY, ADD_BLOG, CONTACT } from '@/router/names'
-import Logotype from '@/components/Logotype'
 import { COPYRIGHT_TEXT } from '@/constants'
+
+import { TERMS, PRIVACY_POLICY, ADD_BLOG, CONTACT } from '@/router/names'
+
+import Logotype from '@/components/Logotype'
 
 export default {
   components: { Logotype },

@@ -15,10 +15,13 @@
 
 <script>
 import { useMeta } from 'vue-meta'
-import AnonymousPage from '@/layouts/AnonymousPage'
-import AddBlogHeader from '@/components/landingPage/AddBlogHeader'
+
 import ADD_BLOG_HTML from 'html-loader!@/assets/docs/addblog/addblog.html'
+
+import AnonymousPage from '@/layouts/AnonymousPage'
+
 import AddBlogBanner from '@/components/AddBlogBanner'
+import AddBlogHeader from '@/components/landingPage/AddBlogHeader'
 
 export default {
   components: { AnonymousPage, AddBlogHeader, AddBlogBanner },

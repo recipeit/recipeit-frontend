@@ -54,14 +54,18 @@
 
 <script>
 import { Field, Form } from 'vee-validate'
-import * as yup from 'yup'
-import identityApi from '@/api/identityApi'
-import { emailSchema } from '@/configs/schemas'
-import recaptcha from '@/services/recaptcha'
-import { RECAPTCHA_ACTIONS } from '@/configs/recaptcha'
-import RecaptchaBranding from '@/components/RecaptchaBranding'
 import { useMeta } from 'vue-meta'
+import * as yup from 'yup'
+
+import identityApi from '@/api/identityApi'
+
 import { ERROR_ACTION_TAG_NAME } from '@/configs/error'
+import { RECAPTCHA_ACTIONS } from '@/configs/recaptcha'
+import { emailSchema } from '@/configs/schemas'
+
+import recaptcha from '@/services/recaptcha'
+
+import RecaptchaBranding from '@/components/RecaptchaBranding'
 
 export default {
   components: {

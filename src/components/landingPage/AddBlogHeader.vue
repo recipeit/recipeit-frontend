@@ -13,8 +13,9 @@
 </template>
 
 <script>
-import Container from './Container'
 import BackgroundUrl from '@/assets/img/add-blog-new.jpg'
+
+import Container from '@/components/landingPage/Container'
 
 export default {
   components: { Container },

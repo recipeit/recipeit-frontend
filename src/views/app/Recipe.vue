@@ -147,23 +147,28 @@
 </template>
 
 <script>
-import { computed, markRaw, reactive, toRefs } from '@vue/runtime-core'
+import { computed, markRaw, reactive, toRefs } from 'vue'
 import { mapGetters, mapState, useStore } from 'vuex'
 import { useMeta } from 'vue-meta'
 
-import RecipeParallaxGallery from '@/components/RecipeParallaxGallery'
-import RecipeIngredientsSection from '@/components/recipe/RecipeIngredientsSection'
-import RecipeDirectionsSection from '@/components/recipe/RecipeDirectionsSection'
+import { CONTACT_MAIL_ADDRESS } from '@/configs/emails'
+import { ERROR_ACTION_TAG_NAME } from '@/configs/error'
+
+import { parseFilters } from '@/constants'
+
 import dayjs from '@/functions/dayjs'
+
+import { ToastType } from '@/plugins/toast/toastType'
+
+import { APP_HOME, APP_RECIPES } from '@/router/names'
+
 import FavouriteIcon from '@/components/FavouriteIcon'
 import Rating from '@/components/Rating'
-import { ToastType } from '@/plugins/toast/toastType'
-import PlanRecipeModal from '@/components/modals/PlanRecipeModal'
+import RecipeParallaxGallery from '@/components/RecipeParallaxGallery'
 import InvisibleRecipeInfoModal from '@/components/modals/InvisibleRecipeInfoModal'
-import { parseFilters } from '@/constants'
-import { ERROR_ACTION_TAG_NAME } from '@/configs/error'
-import { CONTACT_MAIL_ADDRESS } from '@/configs/emails'
-import { APP_HOME, APP_RECIPES } from '@/router/names'
+import PlanRecipeModal from '@/components/modals/PlanRecipeModal'
+import RecipeDirectionsSection from '@/components/recipe/RecipeDirectionsSection'
+import RecipeIngredientsSection from '@/components/recipe/RecipeIngredientsSection'
 
 export default {
   name: 'Recipe',
@@ -217,59 +222,6 @@ export default {
     return {
       ...toRefs(data),
       APP_HOME
-    }
-  },
-  created() {
-    this.$store.dispatch('myKitchen/fetchProducts').catch(error => {
-      this.$errorHandler.captureError(error, {
-        [ERROR_ACTION_TAG_NAME]: 'recipe.fetchKitchenProducts'
-      })
-    })
-    this.$store.dispatch('shoppingList/fetchProducts').catch(error => {
-      this.$errorHandler.captureError(error, {
-        [ERROR_ACTION_TAG_NAME]: 'recipe.fetchShoppingListProducts'
-      })
-    })
-  },
-  methods: {
-    navigateToRecipesWithCategoryFilter({ key, categoryGroup }) {
-      this.$router.push({ name: APP_RECIPES, query: parseFilters({ [categoryGroup]: [key] }) })
-    },
-    back() {
-      this.$router.go(-1)
-    },
-    addToFavourites() {
-      this.$store.dispatch('recipes/addToFavourites', this.recipe.id)
-    },
-    deleteFromFavourites() {
-      this.$store.dispatch('recipes/deleteFromFavourites', this.recipe.id)
-    },
-    copyLinkToClipboard() {
-      const url = window.location.origin + this.$route.path
-
-      if (!url) {
-        this.$toast.show('Nie udało się skopiować do schowka', ToastType.ERROR)
-      } else if (this.$clipboard(url)) {
-        this.$toast.show('Skopiowano do schowka', ToastType.SUCCESS)
-      } else {
-        this.$toast.show('Nie udało się skopiować do schowka', ToastType.ERROR)
-      }
-    },
-    openPlanRecipeModal() {
-      if (this.recipe) {
-        this.$modal.show(markRaw(PlanRecipeModal), { recipeId: this.recipe.id }, {})
-      }
-    },
-    changeRecipeVisibility(visible) {
-      if (this.recipe) {
-        this.$store.dispatch('user/changeRecipeVisibility', { recipeId: this.recipe.id, visible })
-      }
-    },
-    changeBlogVisibility(visible) {
-      this.$store.dispatch('user/changeBlogVisibility', { blogId: this.recipe.author.blog.id, visible })
-    },
-    showInvisibleInfoModal() {
-      this.$modal.show(markRaw(InvisibleRecipeInfoModal), {}, {})
     }
   },
   computed: {
@@ -346,30 +298,58 @@ export default {
       return `mailto:${CONTACT_MAIL_ADDRESS}?subject=${subject}`
     }
   },
-  watch: {
-    // finishedDirections(finishedDirections) {
-    //   this.$store.dispatch('recipes/setFinishedDirectionsForRecipe', { recipeId: this.recipeId, finishedDirections })
-    //   const remaining = _.difference(this.allIndexes, finishedDirections)
-    //   if (!remaining || remaining.length === 0) {
-    //     this.$modal.show(
-    //       markRaw(Dialog),
-    //       {
-    //         title: 'Zrobione!',
-    //         content: 'Czy chcesz zaaktualizować produkty w swojej kuchni?',
-    //         secondaryText: this.$t('shared.no'),
-    //         primaryText: this.$t('shared.yes')
-    //       },
-    //       {
-    //         close: updateKitchen => {
-    //           if (updateKitchen) {
-    //             alert('Update kitchen')
-    //           }
-    //           this.finishedDirections = []
-    //         }
-    //       }
-    //     )
-    //   }
-    // }
+  created() {
+    this.$store.dispatch('myKitchen/fetchProducts').catch(error => {
+      this.$errorHandler.captureError(error, {
+        [ERROR_ACTION_TAG_NAME]: 'recipe.fetchKitchenProducts'
+      })
+    })
+    this.$store.dispatch('shoppingList/fetchProducts').catch(error => {
+      this.$errorHandler.captureError(error, {
+        [ERROR_ACTION_TAG_NAME]: 'recipe.fetchShoppingListProducts'
+      })
+    })
+  },
+  methods: {
+    navigateToRecipesWithCategoryFilter({ key, categoryGroup }) {
+      this.$router.push({ name: APP_RECIPES, query: parseFilters({ [categoryGroup]: [key] }) })
+    },
+    back() {
+      this.$router.go(-1)
+    },
+    addToFavourites() {
+      this.$store.dispatch('recipes/addToFavourites', this.recipe.id)
+    },
+    deleteFromFavourites() {
+      this.$store.dispatch('recipes/deleteFromFavourites', this.recipe.id)
+    },
+    copyLinkToClipboard() {
+      const url = window.location.origin + this.$route.path
+
+      if (!url) {
+        this.$toast.show('Nie udało się skopiować do schowka', ToastType.ERROR)
+      } else if (this.$clipboard(url)) {
+        this.$toast.show('Skopiowano do schowka', ToastType.SUCCESS)
+      } else {
+        this.$toast.show('Nie udało się skopiować do schowka', ToastType.ERROR)
+      }
+    },
+    openPlanRecipeModal() {
+      if (this.recipe) {
+        this.$modal.show(markRaw(PlanRecipeModal), { recipeId: this.recipe.id }, {})
+      }
+    },
+    changeRecipeVisibility(visible) {
+      if (this.recipe) {
+        this.$store.dispatch('user/changeRecipeVisibility', { recipeId: this.recipe.id, visible })
+      }
+    },
+    changeBlogVisibility(visible) {
+      this.$store.dispatch('user/changeBlogVisibility', { blogId: this.recipe.author.blog.id, visible })
+    },
+    showInvisibleInfoModal() {
+      this.$modal.show(markRaw(InvisibleRecipeInfoModal), {}, {})
+    }
   }
 }
 </script>

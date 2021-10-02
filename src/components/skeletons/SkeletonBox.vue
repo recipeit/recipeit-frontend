@@ -13,7 +13,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .skeleton-box {
   position: relative;
   background-color: var(--color-image-background);

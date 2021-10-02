@@ -38,8 +38,8 @@
         Zaloguj się
       </BaseButton>
 
-      <ul v-if="errors" class="auth-main__content__errors">
-        <li v-for="(error, index) in errors" :key="index">{{ $t(`errorCode.${error}`) }}</li>
+      <ul v-if="errorList" class="auth-main__content__errors">
+        <li v-for="(error, index) in errorList" :key="index">{{ $t(`errorCode.${error}`) }}</li>
       </ul>
 
       <BaseLink
@@ -60,14 +60,18 @@
 
 <script>
 import { Field, Form } from 'vee-validate'
-import AuthSocialList from './AuthSocialList'
-import * as yup from 'yup'
-import { emailSchema, passwordSchema } from '@/configs/schemas'
-import RecaptchaBranding from '@/components/RecaptchaBranding'
-import recaptcha from '@/services/recaptcha'
-import { RECAPTCHA_ACTIONS } from '@/configs/recaptcha'
 import { useMeta } from 'vue-meta'
+import * as yup from 'yup'
+
 import { ERROR_ACTION_TAG_NAME } from '@/configs/error'
+import { RECAPTCHA_ACTIONS } from '@/configs/recaptcha'
+import { emailSchema, passwordSchema } from '@/configs/schemas'
+
+import recaptcha from '@/services/recaptcha'
+
+import AuthSocialList from '@/views/auth/AuthSocialList'
+
+import RecaptchaBranding from '@/components/RecaptchaBranding'
 
 export default {
   components: {
@@ -105,7 +109,7 @@ export default {
     }
   },
   data: () => ({
-    errors: null,
+    errorList: null,
     sending: false,
     socialSending: false
   }),
@@ -116,7 +120,7 @@ export default {
   },
   methods: {
     login(values) {
-      this.errors = null
+      this.errorList = null
       this.sending = true
 
       recaptcha
@@ -125,7 +129,7 @@ export default {
           this.$store
             .dispatch('user/login', { ...values, recaptchaToken })
             .catch(errors => {
-              this.errors = errors
+              this.errorList = errors
               this.$errorHandler.captureError(errors, {
                 [ERROR_ACTION_TAG_NAME]: 'auth.login'
               })

@@ -1,4 +1,3 @@
-// import ToastsContainer from './ToastsContainer'
 const cssText = 'position:fixed;pointer-events:none;z-index:-9999;opacity:0;'
 const copyErrorMessage = 'Failed to copy value to clipboard. Unknown type.'
 

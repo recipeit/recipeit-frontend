@@ -6,8 +6,10 @@
 
 <script>
 import { useMeta } from 'vue-meta'
-import AnonymousPage from '@/layouts/AnonymousPage'
+
 import TERMS_HTML from 'html-loader!@/assets/docs/terms/terms_v1.html'
+
+import AnonymousPage from '@/layouts/AnonymousPage'
 
 export default {
   components: { AnonymousPage },

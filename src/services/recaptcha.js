@@ -1,4 +1,5 @@
 import { RECAPTCHA_URL, RECAPTCHA_SITEKEY } from '@/configs/recaptcha'
+
 import loadScript from '@/functions/loadScript'
 
 export default {

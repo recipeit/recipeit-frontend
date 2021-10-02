@@ -32,11 +32,13 @@
 
 <script>
 import _ from 'lodash'
-import { computed, ref, watch } from '@vue/runtime-core'
+import { computed, ref, watch } from 'vue'
 import { useStore } from 'vuex'
-import SectionTitle from '@/components/SectionTitle'
+
 import { useToast } from '@/plugins/toast'
 import { ToastType } from '@/plugins/toast/toastType'
+
+import SectionTitle from '@/components/SectionTitle'
 
 export default {
   components: { SectionTitle },

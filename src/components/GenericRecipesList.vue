@@ -77,12 +77,14 @@
 </template>
 
 <script>
+import { computed, nextTick, onBeforeMount, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+
 import { RecipeList } from '@/constants'
+
 import RecipeBox from '@/components/RecipeBox'
-import SkeletonRecipeBox from '@/components/skeletons/SkeletonRecipeBox'
 import SearchWithFilter from '@/components/SearchWithFilter'
-import { computed, nextTick, onBeforeMount, onBeforeUnmount, onMounted, ref, watch } from '@vue/runtime-core'
 import SkeletonBox from '@/components/skeletons/SkeletonBox'
+import SkeletonRecipeBox from '@/components/skeletons/SkeletonRecipeBox'
 
 const PAGE_SIZE = 12
 
@@ -123,7 +125,7 @@ export default {
       required: true
     }
   },
-  emits: ['reload', 'load'],
+  emits: ['reload', 'load', 'reload-with-query', 'load-next'],
   setup(props, { emit }) {
     const searchString = ref(props.recipes.search)
     const searchTimeoutCallback = ref(null)

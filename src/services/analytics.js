@@ -1,4 +1,5 @@
 import { ANALYTICS_ID, ANALYTICS_URL } from '@/configs/analytics'
+
 import loadScript from '@/functions/loadScript'
 
 export default {

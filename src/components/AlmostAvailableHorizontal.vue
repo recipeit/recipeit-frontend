@@ -6,14 +6,17 @@
 </template>
 
 <script>
+import { onBeforeMount, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { onBeforeMount, ref } from '@vue/runtime-core'
 
 import userApi from '@/api/userApi'
+
 import { RecipeList } from '@/constants'
+
+import { APP_FAVOURITES } from '@/router/names'
+
 import HorizontalRecipesList from '@/components/HorizontalRecipesList'
 import SectionTitle from '@/components/SectionTitle'
-import { APP_FAVOURITES } from '@/router/names'
 
 export default {
   components: { HorizontalRecipesList, SectionTitle },

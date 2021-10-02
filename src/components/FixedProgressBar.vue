@@ -1,14 +1,10 @@
-<style>
-.__cov-progress {
-  opacity: 1;
-  z-index: 999999;
-}
-</style>
 <template>
   <div class="__cov-progress" :style="style" />
 </template>
+
 <script>
 const inBrowser = typeof window !== 'undefined'
+
 export default {
   name: 'VueProgress',
   serverCacheKey: () => 'Progress',
@@ -73,3 +69,10 @@ export default {
   }
 }
 </script>
+
+<style>
+.__cov-progress {
+  opacity: 1;
+  z-index: 999999;
+}
+</style>

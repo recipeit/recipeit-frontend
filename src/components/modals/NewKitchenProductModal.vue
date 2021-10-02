@@ -20,14 +20,16 @@
 </template>
 
 <script>
-import * as Yup from 'yup'
 import { Form } from 'vee-validate'
+import * as Yup from 'yup'
+
 import uniqueID from '@/functions/uniqueID'
-import ExpirationDatesFormSection from './ExpirationDatesFormSection'
+
 import ProductModalForm from '@/components/ProductModalForm'
+import ExpirationDatesFormSection from '@/components/modals/ExpirationDatesFormSection'
 
 export default {
-  components: { Form, ExpirationDatesFormSection, ProductModalForm },
+  components: { Form, ProductModalForm, ExpirationDatesFormSection },
   emits: ['close'],
   data: component => ({
     sending: false,

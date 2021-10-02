@@ -36,8 +36,10 @@
 </template>
 
 <script>
-import { reactive, toRefs } from '@vue/reactivity'
+import { reactive, toRefs } from 'vue'
+
 import { COOKIES_ANALYTICS_COOKIE_NAME } from '@/configs/cookies'
+
 import GDPRService from '@/services/gdpr'
 
 export default {

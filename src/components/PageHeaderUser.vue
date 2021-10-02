@@ -18,9 +18,11 @@
 </template>
 
 <script>
+import { computed } from 'vue'
 import { useStore } from 'vuex'
-import { computed } from '@vue/runtime-core'
+
 import defaultAvatar from '@/assets/img/avatar.svg?inline'
+
 import { APP_ACCOUNT } from '@/router/names'
 
 export default {

@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import Authorization from '../Authorization'
+import Authorization from '@/components/Authorization'
 
 export default {
   components: { Authorization }

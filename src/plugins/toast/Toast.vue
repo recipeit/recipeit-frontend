@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { ToastType } from './toastType'
+import { ToastType } from '@/plugins/toast/toastType'
 
 export default {
   props: {

@@ -36,10 +36,11 @@
 </template>
 
 <script>
-import { markRaw, watch, ref } from '@vue/runtime-core'
+import { markRaw, watch, ref } from 'vue'
 
-import FilterModal from './modals/FilterModal'
 import { ToastType } from '@/plugins/toast/toastType'
+
+import FilterModal from '@/components/modals/FilterModal'
 
 export default {
   props: {

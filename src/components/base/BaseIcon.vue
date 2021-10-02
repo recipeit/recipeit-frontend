@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import icons from './icons'
+import icons from '@/components/base/icons'
 
 export default {
   props: {

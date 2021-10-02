@@ -108,9 +108,11 @@
 </template>
 
 <script>
-import uniqueID from '@/functions/uniqueID'
 import { nextTick } from 'vue'
+
 import { setFocus } from '@/directives/autofocus'
+
+import uniqueID from '@/functions/uniqueID'
 
 const isEmpty = opt => {
   if (opt === 0) return false
@@ -162,7 +164,10 @@ export default {
     limit: {
       type: Number
     },
-    value: { default: null },
+    value: {
+      type: [String, Object],
+      default: null
+    },
     options: {
       type: Array,
       required: true

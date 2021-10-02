@@ -16,7 +16,8 @@
 
 <script>
 import uniqueID from '@/functions/uniqueID'
-import Toast from './Toast'
+
+import Toast from '@/plugins/toast/Toast'
 
 export default {
   name: 'ToastsContainer',

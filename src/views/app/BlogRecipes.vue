@@ -68,16 +68,21 @@
 <script>
 import { computed, markRaw, onBeforeMount, ref } from 'vue'
 import { mapGetters } from 'vuex'
-import blogApi from '@/api/blogApi'
-import RecipeParallaxImage from '@/components/RecipeParallaxImage'
-import GenericRecipesList from '@/components/GenericRecipesList'
-import BlogDetails from '@/components/BlogDetails'
-import InvisibleBlogInfoModal from '@/components/modals/InvisibleBlogInfoModal'
-import recipePagedList from './composable/recipePagedList'
 import { useMeta } from 'vue-meta'
+
+import blogApi from '@/api/blogApi'
+
 import avatarErrorUrl from '@/assets/img/blog-avatar.webp'
 import backgroundErrorUrl from '@/assets/img/blog-bg.webp'
+
 import { ToastType } from '@/plugins/toast/toastType'
+
+import recipePagedList from '@/views/app/composable/recipePagedList'
+
+import BlogDetails from '@/components/BlogDetails'
+import GenericRecipesList from '@/components/GenericRecipesList'
+import RecipeParallaxImage from '@/components/RecipeParallaxImage'
+import InvisibleBlogInfoModal from '@/components/modals/InvisibleBlogInfoModal'
 
 export default {
   name: 'Recipes',

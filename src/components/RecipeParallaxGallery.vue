@@ -38,13 +38,13 @@
 
 <script>
 import debounce from 'lodash.debounce'
+import { computed } from 'vue'
 import { useStore } from 'vuex'
-import { computed } from '@vue/reactivity'
+
+import placeholderDark from '@/assets/img/placeholders/recipe-image-dark.webp'
+import placeholderLight from '@/assets/img/placeholders/recipe-image.webp'
 
 import { THEME_DARK } from '@/configs/theme'
-
-import placeholderLight from '@/assets/img/placeholders/recipe-image.webp'
-import placeholderDark from '@/assets/img/placeholders/recipe-image-dark.webp'
 
 export default {
   props: {

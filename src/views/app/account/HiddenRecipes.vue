@@ -16,10 +16,12 @@
 </template>
 
 <script>
+import { useMeta } from 'vue-meta'
+
+import userApi from '@/api/userApi'
+
 import PageHeader from '@/components/PageHeader'
 import HiddenRecipe from '@/components/HiddenRecipe'
-import userApi from '@/api/userApi'
-import { useMeta } from 'vue-meta'
 
 export default {
   components: {

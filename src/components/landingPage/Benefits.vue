@@ -15,11 +15,11 @@
 </template>
 
 <script>
-import Container from './Container'
-import Benefit from './Benefit'
+import Benefit from '@/components/landingPage/Benefit'
+import Container from '@/components/landingPage/Container'
 
 export default {
-  components: { Container, Benefit },
+  components: { Benefit, Container },
   setup() {
     const benefits = [
       {

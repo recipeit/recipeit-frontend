@@ -39,14 +39,20 @@
 
 <script>
 import { Field, Form } from 'vee-validate'
-import { useToast } from '@/plugins/toast'
 import { onBeforeMount, reactive, toRefs } from 'vue'
-import uniqueID from '@/functions/uniqueID'
-import identityApi from '@/api/identityApi'
-import { ToastType } from '@/plugins/toast/toastType'
 import * as Yup from 'yup'
-import recaptcha from '@/services/recaptcha'
+
+import identityApi from '@/api/identityApi'
+
 import { RECAPTCHA_ACTIONS } from '@/configs/recaptcha'
+
+import uniqueID from '@/functions/uniqueID'
+
+import { useToast } from '@/plugins/toast'
+import { ToastType } from '@/plugins/toast/toastType'
+
+import recaptcha from '@/services/recaptcha'
+
 import RecaptchaBranding from '@/components/RecaptchaBranding'
 
 export default {

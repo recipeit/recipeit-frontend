@@ -19,8 +19,9 @@
 </template>
 
 <script>
-import Logotype from '@/components/Logotype'
 import BackgroundUrl from '@/assets/img/auth.webp'
+
+import Logotype from '@/components/Logotype'
 
 export default {
   components: { Logotype },
@@ -30,7 +31,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .logo {
   width: 128px;
 }

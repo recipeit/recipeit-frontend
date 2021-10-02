@@ -1,8 +1,10 @@
 import recipeApi from '@/api/recipeApi'
 import userApi from '@/api/userApi'
-import { ToastType } from '@/plugins/toast/toastType'
-import toastPlugin from '@/plugins/toast'
+
 import { FINISHED_DIRECTIONS_STORAGE_KEY } from '@/configs/storage'
+
+import toastPlugin from '@/plugins/toast'
+import { ToastType } from '@/plugins/toast/toastType'
 
 export const MUTATIONS = {
   SET_FAVOURITE_RECIPES_IDS: 'SET_FAVOURITE_RECIPES_IDS',

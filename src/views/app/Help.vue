@@ -9,9 +9,11 @@
 </template>
 
 <script>
-import { CONTACT_MAIL_ADDRESS } from '@/configs/emails'
-import PageHeader from '@/components/PageHeader'
 import { useMeta } from 'vue-meta'
+
+import { CONTACT_MAIL_ADDRESS } from '@/configs/emails'
+
+import PageHeader from '@/components/PageHeader'
 
 export default {
   name: 'Help',
@@ -29,5 +31,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped></style>

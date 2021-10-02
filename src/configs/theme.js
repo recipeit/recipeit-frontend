@@ -10,4 +10,5 @@ export const THEME_DARK_COLOR = '#171a1c'
 
 export const THEME_DEFAULT = THEME_LIGHT
 export const THEME_HTML_ATTRIBUTE = 'theme'
-export { THEME_STORAGE_KEY } from './storage'
+
+export { THEME_STORAGE_KEY } from '@/configs/storage'

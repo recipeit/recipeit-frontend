@@ -10,7 +10,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .sheet-modal-content {
   background-color: var(--color-background);
   border-radius: 32px 32px 0 0;

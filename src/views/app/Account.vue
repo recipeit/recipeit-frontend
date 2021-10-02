@@ -84,23 +84,61 @@
 </template>
 
 <script>
-import { markRaw, ref } from '@vue/runtime-core'
+import { markRaw, ref } from 'vue'
 import { mapState, useStore } from 'vuex'
 import { useMeta } from 'vue-meta'
 
 import defaultAvatar from '@/assets/img/avatar.svg?inline'
-import CustomizeCookiesModal from '@/components/modals/CustomizeCookiesModal'
-import ChangePasswordModal from '@/components/modals/ChangePasswordModal'
-import ForgotPasswordModal from '@/components/modals/ForgotPasswordModal'
-import DeleteAccountModal from '@/components/modals/DeleteAccountModal'
-import PageHeader from '@/components/PageHeader'
-import Logotype from '@/components/Logotype'
+
 import { THEMES } from '@/configs/theme'
+
 import { COPYRIGHT_TEXT } from '@/constants'
+
+import Logotype from '@/components/Logotype'
+import PageHeader from '@/components/PageHeader'
+
+import ChangePasswordModal from '@/components/modals/ChangePasswordModal'
+import CustomizeCookiesModal from '@/components/modals/CustomizeCookiesModal'
+import DeleteAccountModal from '@/components/modals/DeleteAccountModal'
+import ForgotPasswordModal from '@/components/modals/ForgotPasswordModal'
 
 export default {
   name: 'MyAccount',
   components: { PageHeader, Logotype },
+  setup() {
+    useMeta({
+      title: 'Moje konto'
+    })
+
+    const store = useStore()
+    const currentTheme = store.state.user.theme
+    const selectedTheme = ref(currentTheme)
+
+    function updateTheme(value) {
+      if (value && THEMES.includes(value)) {
+        selectedTheme.value = value
+        store.dispatch('user/setTheme', value)
+      }
+    }
+
+    function unhideRecipe(recipeId) {
+      store.dispatch('user/changeRecipeVisibility', { recipeId, visible: true })
+    }
+
+    function unhideBlog(blogId) {
+      store.dispatch('user/changeBlogVisibility', { blogId, visible: true })
+    }
+
+    return {
+      COPYRIGHT_TEXT,
+      selectedTheme,
+      updateTheme,
+      unhideRecipe,
+      unhideBlog,
+      THEMES,
+      defaultAvatar
+    }
+  },
   computed: {
     ...mapState({
       hiddenRecipes: state => state.user.hiddenRecipeIds,
@@ -147,40 +185,6 @@ export default {
     },
     openCustomizeCookiesModal() {
       this.$modal.show(markRaw(CustomizeCookiesModal), {}, {})
-    }
-  },
-  setup() {
-    useMeta({
-      title: 'Moje konto'
-    })
-
-    const store = useStore()
-    const currentTheme = store.state.user.theme
-    const selectedTheme = ref(currentTheme)
-
-    function updateTheme(value) {
-      if (value && THEMES.includes(value)) {
-        selectedTheme.value = value
-        store.dispatch('user/setTheme', value)
-      }
-    }
-
-    function unhideRecipe(recipeId) {
-      store.dispatch('user/changeRecipeVisibility', { recipeId, visible: true })
-    }
-
-    function unhideBlog(blogId) {
-      store.dispatch('user/changeBlogVisibility', { blogId, visible: true })
-    }
-
-    return {
-      COPYRIGHT_TEXT,
-      selectedTheme,
-      updateTheme,
-      unhideRecipe,
-      unhideBlog,
-      THEMES,
-      defaultAvatar
     }
   }
 }

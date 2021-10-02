@@ -54,12 +54,16 @@
 <script>
 import { Field, Form } from 'vee-validate'
 import * as Yup from 'yup'
+
 import identityApi from '@/api/identityApi'
-import { confirmNewPasswordSchema, newPasswordSchema } from '@/configs/schemas'
-import recaptcha from '@/services/recaptcha'
-import { RECAPTCHA_ACTIONS } from '@/configs/recaptcha'
-import Spinner from '@/components/Spinner'
+
 import { ERROR_ACTION_TAG_NAME } from '@/configs/error'
+import { RECAPTCHA_ACTIONS } from '@/configs/recaptcha'
+import { confirmNewPasswordSchema, newPasswordSchema } from '@/configs/schemas'
+
+import recaptcha from '@/services/recaptcha'
+
+import Spinner from '@/components/Spinner'
 
 export default {
   components: {

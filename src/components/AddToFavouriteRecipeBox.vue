@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import SkeletonBox from './skeletons/SkeletonBox'
+import SkeletonBox from '@/components/skeletons/SkeletonBox'
 
 export default {
   components: { SkeletonBox }

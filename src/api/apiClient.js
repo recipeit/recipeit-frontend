@@ -1,8 +1,11 @@
-import axios from 'axios'
-import store from '@/store'
-import { API_DEV_BASE_URL_SSL, API_PROD_BASE_URL } from '@/configs/api'
 import * as Sentry from '@sentry/browser'
-import { IDENTITY_URLS } from './identityApi'
+import axios from 'axios'
+
+import { IDENTITY_URLS } from '@/api/identityApi'
+
+import { API_DEV_BASE_URL_SSL, API_PROD_BASE_URL } from '@/configs/api'
+
+import store from '@/store'
 
 const apiClient = axios.create({
   baseURL: process.env.NODE_ENV === 'production' ? API_PROD_BASE_URL : API_DEV_BASE_URL_SSL,

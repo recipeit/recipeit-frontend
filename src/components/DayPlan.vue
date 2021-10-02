@@ -89,11 +89,15 @@
 </template>
 
 <script>
-import dayjs from '@/functions/dayjs'
 import userApi from '@/api/userApi'
+
+import dayjs from '@/functions/dayjs'
+
 import { ToastType } from '@/plugins/toast/toastType'
-import SectionTitle from '@/components/SectionTitle'
+
 import { APP_RECIPES, APP_RECIPE } from '@/router/names'
+
+import SectionTitle from '@/components/SectionTitle'
 
 const SlideType = {
   PREVIOUS: 'previous',

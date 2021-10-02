@@ -37,11 +37,14 @@
 
 <script>
 import { markRaw } from 'vue'
-import Product from '@/components/Product'
-import EditKitchenProductModal from './modals/EditKitchenProductModal'
-import myKitchenApi from '@/api/myKitchenApi'
-import { ToastType } from '@/plugins/toast/toastType'
 import { mapState } from 'vuex'
+
+import myKitchenApi from '@/api/myKitchenApi'
+
+import { ToastType } from '@/plugins/toast/toastType'
+
+import Product from '@/components/Product'
+import EditKitchenProductModal from '@/components/modals/EditKitchenProductModal'
 
 export default {
   components: {

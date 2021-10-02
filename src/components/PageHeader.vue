@@ -17,7 +17,8 @@
 </template>
 
 <script>
-import PageHeaderUser from './PageHeaderUser'
+import PageHeaderUser from '@/components/PageHeaderUser'
+
 export default {
   components: { PageHeaderUser },
   props: {
@@ -35,18 +36,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.fahade {
-  &-enter-active,
-  &-leave-active {
-    @include transition(opacity, 0.2s);
-  }
-
-  &-enter-from,
-  &-leave-to {
-    opacity: 0;
-  }
-}
-
 .page-header {
   position: relative;
   margin-bottom: 24px;

@@ -21,12 +21,14 @@
 </template>
 
 <script>
-import * as Yup from 'yup'
 import { Form } from 'vee-validate'
-import { useStore } from 'vuex'
 import { computed, reactive, ref, toRefs } from 'vue'
-import ProductModalForm from '@/components/ProductModalForm'
+import { useStore } from 'vuex'
+import * as Yup from 'yup'
+
 import uniqueID from '@/functions/uniqueID'
+
+import ProductModalForm from '@/components/ProductModalForm'
 
 export default {
   components: { Form, ProductModalForm },

@@ -57,13 +57,16 @@
 </template>
 
 <script>
-import GenericRecipesList from '@/components/GenericRecipesList'
-import PageHeader from '@/components/PageHeader'
-import userApi from '@/api/userApi'
-import recipeFilteredPagedList from '../composable/recipeFilteredPagedList'
-import { computed } from '@vue/runtime-core'
+import { computed } from 'vue'
 import { useStore } from 'vuex'
 import { useMeta } from 'vue-meta'
+
+import userApi from '@/api/userApi'
+
+import recipeFilteredPagedList from '@/views/app/composable/recipeFilteredPagedList'
+
+import GenericRecipesList from '@/components/GenericRecipesList'
+import PageHeader from '@/components/PageHeader'
 
 export default {
   name: 'AlmostAvailableRecipes',

@@ -1,9 +1,12 @@
 import identityApi from '@/api/identityApi'
 import userApi from '@/api/userApi'
-import { ToastType } from '@/plugins/toast/toastType'
-import toastPlugin from '@/plugins/toast'
-import router from '@/router'
+
 import { THEMES, THEME_DEFAULT, THEME_STORAGE_KEY } from '@/configs/theme'
+
+import toastPlugin from '@/plugins/toast'
+import { ToastType } from '@/plugins/toast/toastType'
+
+import router from '@/router'
 import { APP_PATHS } from '@/router/paths'
 
 export const USER_AUTH_STATE = {

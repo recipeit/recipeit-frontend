@@ -21,10 +21,11 @@
 </template>
 
 <script>
-import { onBeforeMount, onBeforeUnmount, onMounted, ref } from '@vue/runtime-core'
-import Container from './Container'
-import StatisticsCard from './StatisticsCard'
 import debounce from 'lodash.debounce'
+import { onBeforeMount, onBeforeUnmount, onMounted, ref } from 'vue'
+
+import Container from '@/components/landingPage/Container'
+import StatisticsCard from '@/components/landingPage/StatisticsCard'
 
 export default {
   components: { Container, StatisticsCard },

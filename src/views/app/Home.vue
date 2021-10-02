@@ -8,11 +8,11 @@
 </template>
 
 <script>
-import { onBeforeMount, ref } from '@vue/runtime-core'
+import { onBeforeMount, ref } from 'vue'
 
-import PageHeader from '@/components/PageHeader'
 import DayPlan from '@/components/DayPlan'
 import LatestFavouritesRecipes from '@/components/LatestFavouritesRecipes'
+import PageHeader from '@/components/PageHeader'
 import PopularCategories from '@/components/PopularCategories'
 
 export default {

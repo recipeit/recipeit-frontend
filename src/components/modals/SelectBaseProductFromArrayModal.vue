@@ -25,8 +25,8 @@
 </template>
 
 <script>
+import { computed } from 'vue'
 import { useStore } from 'vuex'
-import { computed } from '@vue/runtime-core'
 
 export default {
   props: {

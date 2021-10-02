@@ -30,8 +30,9 @@
 
 <script>
 import { markRaw } from 'vue'
+
 import Product from '@/components/Product'
-import EditShoppingListProductModal from './modals/EditShoppingListProductModal'
+import EditShoppingListProductModal from '@/components/modals/EditShoppingListProductModal'
 
 export default {
   components: {

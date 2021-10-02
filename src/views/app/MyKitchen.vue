@@ -37,15 +37,16 @@
 </template>
 
 <script>
+import _ from 'lodash'
 import { markRaw } from 'vue'
 import { mapState } from 'vuex'
-import _ from 'lodash'
+import { useMeta } from 'vue-meta'
+
 import KitchenProduct from '@/components/KitchenProduct'
-import NewKitchenProductModal from '@/components/modals/NewKitchenProductModal'
 import PageHeader from '@/components/PageHeader'
 import ProductIcon from '@/components/ProductIcon'
 import SearchWithFilter from '@/components/SearchWithFilter'
-import { useMeta } from 'vue-meta'
+import NewKitchenProductModal from '@/components/modals/NewKitchenProductModal'
 
 export default {
   name: 'MyKitchen',

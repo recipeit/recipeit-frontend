@@ -22,17 +22,17 @@
 </template>
 
 <script>
-import { onBeforeMount, onBeforeUnmount, onMounted, ref } from '@vue/runtime-core'
+import { onBeforeMount, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useMeta } from 'vue-meta'
 
-import Splash from '@/components/landingPage/Splash'
-import Section from '@/components/landingPage/Section'
-import Footer from '@/components/landingPage/Footer'
-import Container from '@/components/landingPage/Container'
-import Statistics from '@/components/landingPage/Statistics'
 import Benefits from '@/components/landingPage/Benefits'
+import Container from '@/components/landingPage/Container'
+import Footer from '@/components/landingPage/Footer'
 import FooterAuth from '@/components/landingPage/FooterAuth'
+import Section from '@/components/landingPage/Section'
 import SocialMedia from '@/components/landingPage/SocialMedia'
+import Splash from '@/components/landingPage/Splash'
+import Statistics from '@/components/landingPage/Statistics'
 
 export default {
   components: { Section, Splash, Footer, Container, Statistics, Benefits, FooterAuth, SocialMedia },

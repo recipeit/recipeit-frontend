@@ -12,8 +12,8 @@
 </template>
 
 <script>
-import Modal from './Modal'
-import { nextId } from './utils'
+import Modal from '@/plugins/global-sheet-modal/Modal'
+import { nextId } from '@/plugins/global-sheet-modal/utils'
 
 export default {
   name: 'GlobalSheetModalContainer',
@@ -91,9 +91,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
-$transition-length: 0.3s ease;
-
+<style lang="scss" scoped>
 .modal-fade-enter-active,
 .modal-fade-leave-active {
   transition: all 0.2s ease;
@@ -101,11 +99,5 @@ $transition-length: 0.3s ease;
 .modal-fade-enter-from,
 .modal-fade-leave-to {
   opacity: 0;
-}
-.modal-fade-enter-from {
-  // transform: translateX(8px);
-}
-.modal-fade-leave-to {
-  // transform: translateX(-8px);
 }
 </style>

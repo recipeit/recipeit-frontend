@@ -1,15 +1,16 @@
-import { createRouter, createWebHistory } from 'vue-router'
 import { nextTick } from 'vue'
+import { createRouter, createWebHistory } from 'vue-router'
 
 import modalPlugin from '@/plugins/global-sheet-modal'
 import progressbarPlugin from '@/plugins/progressbar'
 
+import * as NAMES from '@/router/names'
+import * as PATHS from '@/router/paths'
+
+import eventHub from '@/services/eventHub'
+
 import store from '@/store'
 import { USER_AUTH_STATE } from '@/store/modules/user'
-
-import * as NAMES from './names'
-import * as PATHS from './paths'
-import eventHub from '@/services/eventHub'
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
 

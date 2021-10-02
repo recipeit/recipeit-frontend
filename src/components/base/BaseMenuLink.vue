@@ -5,7 +5,8 @@
 </template>
 
 <script>
-import BaseLink from './BaseLink'
+import BaseLink from '@/components/base/BaseLink'
+
 export default {
   components: { BaseLink },
   props: {

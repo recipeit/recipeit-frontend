@@ -1,5 +1,6 @@
 import recipeApi from '@/api/recipeApi'
 import shoppingListApi from '@/api/shoppingListApi'
+
 import eventHub from '@/services/eventHub'
 
 export const MUTATIONS = {

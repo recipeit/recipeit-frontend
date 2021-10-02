@@ -34,8 +34,10 @@
 
 <script>
 import identityApi from '@/api/identityApi'
-import Spinner from '@/components/Spinner'
+
 import { ERROR_ACTION_TAG_NAME } from '@/configs/error'
+
+import Spinner from '@/components/Spinner'
 
 export default {
   components: { Spinner },

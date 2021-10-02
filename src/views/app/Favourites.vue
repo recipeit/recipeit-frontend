@@ -13,11 +13,14 @@
 </template>
 
 <script>
+import { useMeta } from 'vue-meta'
+
+import userApi from '@/api/userApi'
+
+import recipePagedList from '@/views/app/composable/recipePagedList'
+
 import GenericRecipesList from '@/components/GenericRecipesList'
 import PageHeader from '@/components/PageHeader'
-import userApi from '@/api/userApi'
-import recipePagedList from './composable/recipePagedList'
-import { useMeta } from 'vue-meta'
 
 export default {
   name: 'AvailableRecipes',
