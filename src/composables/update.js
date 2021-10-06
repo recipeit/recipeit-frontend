@@ -2,6 +2,7 @@ import { reactive, toRefs } from 'vue'
 
 export default function() {
   const data = reactive({
+    userInteracted: false,
     refreshing: false,
     registration: null,
     updateExists: false
@@ -12,7 +13,12 @@ export default function() {
   // To alert the user there is an update they need to refresh for
   const updateAvailable = ({ detail }) => {
     data.registration = detail
-    data.updateExists = true
+
+    if (data.userInteracted) {
+      data.updateExists = true
+    } else {
+      refreshApp()
+    }
   }
 
   // Called when the user accepts the update
@@ -34,6 +40,27 @@ export default function() {
     // Here the actual reload of the page occurs
     window.location.reload()
   })
+
+  const handleInteraction = () => {
+    data.userInteracted = true
+    removeInteractionEvents()
+  }
+
+  const setInteractionEvents = () => {
+    document.addEventListener('scroll', handleInteraction)
+    document.body.addEventListener('keydown', handleInteraction)
+    document.body.addEventListener('click', handleInteraction)
+    document.body.addEventListener('touchstart', handleInteraction)
+  }
+
+  const removeInteractionEvents = () => {
+    document.removeEventListener('scroll', handleInteraction)
+    document.body.removeEventListener('keydown', handleInteraction)
+    document.body.removeEventListener('click', handleInteraction)
+    document.body.removeEventListener('touchstart', handleInteraction)
+  }
+
+  setInteractionEvents()
 
   return {
     ...toRefs(data),
