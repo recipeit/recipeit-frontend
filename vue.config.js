@@ -34,7 +34,7 @@ module.exports = {
     //         family: 'Montserrat',
     //         display: 'swap',
     //         variants: ['500', '600', '700'],
-    //         subsets: ['latin', 'latin-ext']
+    //         subsets: ['latin', 'latin-ext'],
     //       }
     //     ]
     //   })
