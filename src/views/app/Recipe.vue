@@ -343,7 +343,7 @@ export default {
 
       const subject = `Błąd w przepisie [ID=${recipe.id}]`
 
-      return `mailto:${CONTACT_MAIL_ADDRESS}?subject=${subject}`
+      return `mailto:${CONTACT_MAIL_ADDRESS}?subject=${encodeURIComponent(subject)}`
     }
   },
   watch: {
