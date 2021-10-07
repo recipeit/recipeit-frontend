@@ -2,7 +2,6 @@ const SentryWebpackPlugin = require('@sentry/webpack-plugin')
 // const GoogleFontsPlugin = require('@beyonk/google-fonts-webpack-plugin')
 const { execSync } = require('child_process')
 const { buildMarkdowns } = require('./src/markdowns')
-const PATHS = require('./src/router/paths')
 
 const isProduction = process.env.NODE_ENV === 'production'
 
@@ -22,12 +21,12 @@ module.exports = {
       },
       urls: [
         `${baseUrl}/`,
-        `${baseUrl}${PATHS.AUTH_LOGIN}`,
-        `${baseUrl}${PATHS.AUTH_REGISTER}`,
-        `${baseUrl}${PATHS.ADD_BLOG}`,
-        `${baseUrl}${PATHS.TERMS}`,
-        `${baseUrl}${PATHS.PRIVACY_POLICY}`,
-        `${baseUrl}${PATHS.CONTACT}`
+        `${baseUrl}/logowanie`,
+        `${baseUrl}/rejestracja`,
+        `${baseUrl}/dodaj-blog`,
+        `${baseUrl}/regulamin`,
+        `${baseUrl}/polityka-prywatnosci`,
+        `${baseUrl}/kontakt`
       ]
     }
   },
