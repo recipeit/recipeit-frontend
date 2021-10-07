@@ -6,7 +6,8 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "db": "json-server --watch db.json"
+    "db": "json-server --watch db.json",
+    "sitemap": "vue-cli-service sitemap"
   },
   "dependencies": {
     "@beyonk/google-fonts-webpack-plugin": "^1.7.0",
@@ -59,6 +60,7 @@
     "prettier": "^1.19.1",
     "sass": "^1.42.1",
     "sass-loader": "^10.2.0",
-    "svg-inline-loader": "^0.8.2"
+    "svg-inline-loader": "^0.8.2",
+    "vue-cli-plugin-sitemap": "~2.3.0"
   }
 }

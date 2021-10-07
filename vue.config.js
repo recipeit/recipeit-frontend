@@ -2,6 +2,7 @@ const SentryWebpackPlugin = require('@sentry/webpack-plugin')
 // const GoogleFontsPlugin = require('@beyonk/google-fonts-webpack-plugin')
 const { execSync } = require('child_process')
 const { buildMarkdowns } = require('./src/markdowns')
+const PATHS = require('./src/router/paths')
 
 const isProduction = process.env.NODE_ENV === 'production'
 
@@ -11,7 +12,25 @@ process.env.VUE_APP_VERSION = execSync('git rev-parse HEAD')
   .toString()
   .trim()
 
+const baseUrl = 'https://recipeit.pl'
+
 module.exports = {
+  pluginOptions: {
+    sitemap: {
+      defaults: {
+        lastmod: new Date().toISOString()
+      },
+      urls: [
+        `${baseUrl}/`,
+        `${baseUrl}${PATHS.AUTH_LOGIN}`,
+        `${baseUrl}${PATHS.AUTH_REGISTER}`,
+        `${baseUrl}${PATHS.ADD_BLOG}`,
+        `${baseUrl}${PATHS.TERMS}`,
+        `${baseUrl}${PATHS.PRIVACY_POLICY}`,
+        `${baseUrl}${PATHS.CONTACT}`
+      ]
+    }
+  },
   css: {
     loaderOptions: {
       scss: {
