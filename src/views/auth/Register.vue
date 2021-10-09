@@ -11,63 +11,56 @@
       </router-link>
     </p>
 
-    <template v-if="enableRegister">
-      <Form :validation-schema="schema" @submit="register($event)">
-        <Field v-slot="{ field, errors }" name="email">
-          <BaseInput class="form-row" label="E-mail" type="text" v-bind="field" :errors="errors" :disabled="anySending" />
-        </Field>
-        <Field v-slot="{ field, errors }" name="password">
-          <BaseInput class="form-row" label="Hasło" type="password" v-bind="field" :errors="errors" :disabled="anySending" />
-        </Field>
-        <Field v-slot="{ field, errors }" name="confirmPassword">
-          <BaseInput class="form-row" label="Potwierdź hasło" type="password" v-bind="field" :errors="errors" :disabled="anySending" />
-        </Field>
-        <BaseButton
-          class="form-row auth-main__content__submit"
-          raised
-          color="primary"
-          type="submit"
-          :disabled="anySending"
-          :loading="sending"
-        >
-          Zarejestruj się
-        </BaseButton>
-      </Form>
+    <Form :validation-schema="schema" @submit="register($event)">
+      <Field v-slot="{ field, errors }" name="email">
+        <BaseInput class="form-row" label="E-mail" type="text" v-bind="field" :errors="errors" :disabled="anySending" />
+      </Field>
+      <Field v-slot="{ field, errors }" name="password">
+        <BaseInput class="form-row" label="Hasło" type="password" v-bind="field" :errors="errors" :disabled="anySending" />
+      </Field>
+      <Field v-slot="{ field, errors }" name="confirmPassword">
+        <BaseInput class="form-row" label="Potwierdź hasło" type="password" v-bind="field" :errors="errors" :disabled="anySending" />
+      </Field>
+      <BaseButton
+        class="form-row auth-main__content__submit"
+        raised
+        color="primary"
+        type="submit"
+        :disabled="anySending"
+        :loading="sending"
+      >
+        Zarejestruj się
+      </BaseButton>
+    </Form>
 
-      <ul v-if="errorList" class="auth-main__content__errors">
-        <li v-for="(error, index) in errorList" :key="index">{{ $t(`errorCode.${error}`) }}</li>
-      </ul>
+    <ul v-if="errorList" class="auth-main__content__errors">
+      <li v-for="(error, index) in errorList" :key="index">{{ $t(`errorCode.${error}`) }}</li>
+    </ul>
 
-      <AuthSocialList @lockInputs="socialSending = true" @unlockInputs="socialSending = false" />
+    <AuthSocialList @lockInputs="socialSending = true" @unlockInputs="socialSending = false" />
 
-      <div class="auth-main__content__terms">
-        Rejestrując się akceptujesz
-        <router-link v-slot="{ href, navigate }" :to="{ name: 'terms' }" custom>
-          <BaseLink class="auth-main__content__terms__link" :href="href" color="text-secondary" @click="navigate($event)">
-            regulamin
-          </BaseLink>
-        </router-link>
-        oraz
-        <router-link v-slot="{ href, navigate }" :to="{ name: 'privacy-policy' }" custom>
-          <BaseLink class="auth-main__content__terms__link" :href="href" color="text-secondary" @click="navigate($event)">
-            politykę prywatności
-          </BaseLink>
-        </router-link>
-      </div>
+    <div class="auth-main__content__terms">
+      Rejestrując się akceptujesz
+      <router-link v-slot="{ href, navigate }" :to="{ name: 'terms' }" custom>
+        <BaseLink class="auth-main__content__terms__link" :href="href" color="text-secondary" @click="navigate($event)">
+          regulamin
+        </BaseLink>
+      </router-link>
+      oraz
+      <router-link v-slot="{ href, navigate }" :to="{ name: 'privacy-policy' }" custom>
+        <BaseLink class="auth-main__content__terms__link" :href="href" color="text-secondary" @click="navigate($event)">
+          politykę prywatności
+        </BaseLink>
+      </router-link>
+    </div>
 
-      <RecaptchaBranding class="recaptcha-branding" />
-    </template>
-    <p v-else>
-      Rejestracja tymczasowo niedostępna
-    </p>
+    <RecaptchaBranding class="recaptcha-branding" />
   </div>
 </template>
 
 <script>
 import { Field, Form } from 'vee-validate'
-import { onBeforeMount, ref } from 'vue'
 import { useMeta } from 'vue-meta'
-import { useRoute } from 'vue-router'
 import * as yup from 'yup'
 
 import { ERROR_ACTION_TAG_NAME } from '@/configs/error'
@@ -88,8 +81,6 @@ export default {
     Form
   },
   setup() {
-    const route = useRoute()
-
     useMeta({
       title: 'Zarejestruj się'
     })
@@ -100,20 +91,8 @@ export default {
       confirmPassword: confirmNewPasswordSchema('password')
     })
 
-    const enableRegister = ref(false)
-    const token = ref('')
-
-    onBeforeMount(() => {
-      const { registerToken } = route.query
-      enableRegister.value =
-        registerToken !== undefined || !['https://recipeit.pl', 'https://www.recipeit.pl'].includes(window.location.origin)
-      token.value = registerToken
-    })
-
     return {
-      schema,
-      enableRegister,
-      token
+      schema
     }
   },
   data: () => ({
@@ -137,8 +116,7 @@ export default {
           this.$store
             .dispatch('user/register', {
               ...valus,
-              recaptchaToken,
-              registerToken: this.token
+              recaptchaToken
             })
             .catch(errors => {
               this.errorList = errors
