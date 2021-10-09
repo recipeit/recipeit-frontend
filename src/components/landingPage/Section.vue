@@ -77,24 +77,11 @@ export default {
   }
 
   @media (max-width: 720px) {
-    flex-direction: column;
-    align-items: flex-start;
-
-    .section-image {
-      flex: initial;
-      height: auto;
-      width: 240px;
-      margin-top: 1rem;
-
-      :deep(img) {
-        height: auto;
-        width: 100%;
-        border-radius: 1.5rem;
-      }
-    }
-
     &,
     &.section--inverse {
+      flex-direction: column;
+      align-items: flex-start;
+
       .section-text {
         margin: 0;
       }
@@ -102,6 +89,19 @@ export default {
       .image {
         height: auto;
         width: 100%;
+      }
+
+      .section-image {
+        flex: initial;
+        height: auto;
+        width: 240px;
+        margin-top: 1rem;
+
+        :deep(img) {
+          height: auto;
+          width: 100%;
+          border-radius: 1.5rem;
+        }
       }
     }
   }
