@@ -94,7 +94,7 @@ export default {
 
     const computedMeta = computed(() => ({
       title: '',
-      link: [{ rel: 'canonical', href: `${BASE_URL}/` }],
+      link: [{ rel: 'canonical', href: `${BASE_URL}` }],
       htmlAttrs: {
         [THEME_HTML_ATTRIBUTE]: store.state.user.theme
       }
