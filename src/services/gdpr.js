@@ -7,6 +7,46 @@ import AnalyticsService from '@/services/analytics'
 
 const GDPR_OPTIONS = [COOKIES_ANALYTICS_COOKIE_NAME]
 
+const detectRobot = userAgent => {
+  const robots = new RegExp(
+    [
+      /bot/,
+      /spider/,
+      /crawl/, // GENERAL TERMS
+      /APIs-Google/,
+      /AdsBot/,
+      /Googlebot/, // GOOGLE ROBOTS
+      /mediapartners/,
+      /Google Favicon/,
+      /FeedFetcher/,
+      /Google-Read-Aloud/,
+      /DuplexWeb-Google/,
+      /googleweblight/,
+      /bing/,
+      /yandex/,
+      /baidu/,
+      /duckduck/,
+      /yahoo/, // OTHER ENGINES
+      /ecosia/,
+      /ia_archiver/,
+      /facebook/,
+      /instagram/,
+      /pinterest/,
+      /reddit/, // SOCIAL MEDIA
+      /slack/,
+      /twitter/,
+      /whatsapp/,
+      /youtube/,
+      /semrush/ // OTHER
+    ]
+      .map(r => r.source)
+      .join('|'),
+    'i'
+  ) // BUILD REGEXP + "i" FLAG
+
+  return robots.test(userAgent)
+}
+
 const setGDPRCookie = (cookieName, value) => {
   if (value === true) {
     if (!GDPR_OPTIONS.includes(cookieName)) return
@@ -69,7 +109,10 @@ export default {
     this.setGDPRModalShowed()
   },
   showGDPRModal() {
-    return Cookies.get(COOKIES_MESSAGE_COOKIE_NAME) !== 'true' && !navigator.webdriver
+    const userAgent = navigator.userAgent
+    const isRobot = detectRobot(userAgent)
+
+    return Cookies.get(COOKIES_MESSAGE_COOKIE_NAME) !== 'true' && !isRobot
   },
   setGDPRModalShowed() {
     Cookies.set(COOKIES_MESSAGE_COOKIE_NAME, true, { expires: 365 })
