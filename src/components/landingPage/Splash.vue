@@ -8,7 +8,7 @@
         <Logotype class="logotype" />
       </header>
       <div class="main">
-        <h1 class="h1">Znajdź przepis<br />z tego co masz!</h1>
+        <h1 class="h1">1 Znajdź przepis<br />z tego co masz!</h1>
         <p class="description">Nie pozwól aby Twoje produkty się przeterminowały. Recipeit pokaże Ci, co możesz z nich przygotować</p>
         <div class="user-buttons">
           <router-link v-slot="{ href, navigate }" :to="{ name: 'register' }" custom>
