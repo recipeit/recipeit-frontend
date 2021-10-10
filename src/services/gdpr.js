@@ -69,7 +69,7 @@ export default {
     this.setGDPRModalShowed()
   },
   showGDPRModal() {
-    return Cookies.get(COOKIES_MESSAGE_COOKIE_NAME) !== 'true'
+    return Cookies.get(COOKIES_MESSAGE_COOKIE_NAME) !== 'true' && !navigator.webdriver
   },
   setGDPRModalShowed() {
     Cookies.set(COOKIES_MESSAGE_COOKIE_NAME, true, { expires: 365 })
