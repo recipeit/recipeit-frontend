@@ -47,41 +47,40 @@ export default {
       {
         title: 'Dodaj swoje produkty',
         description:
-          'Stwórz listę produktów, które masz w swojej kuchni. Możesz je uzupełnić o szczegóły, takie jak ilość czy data ważności!',
+          'Stwórz listę produktów, które masz w swojej kuchni. Możesz ją uzupełnić o szczegóły, takie jak ilość czy data ważności.',
         image: require('@/assets/img/landing-page/kitchen.webp')
       },
       {
         title: 'Sprawdź co możesz z nich przygotować',
         description:
-          'Nie pozwól aby produkty, które kupiłeś, się przeterminowały. Recipeit pokaże Ci, co możesz przygotować z tego, co już masz!',
+          'Dzięki temu Twoje produkty się nie przeterminują. A jeżeli planuejsz drobne zakupy, Recipeit pokaże przepisy w których brakuje tylko paru składników.',
         image: require('@/assets/img/landing-page/recipes.webp')
       },
       {
         title: 'Przygotuj posiłek',
-        description:
-          'Lista składników, liczba porcji, czas czy szczegółowa instrukcja przygotowania podzielona na osobne kroki. Wszystko to w Recipeit!',
+        description: 'Z pomocą specjalnego widoku przepisu sprawdzisz jakich składników potrzebujesz i jak przygotować wybraną potrawę.',
         image: require('@/assets/img/landing-page/recipe.webp')
       },
       {
         title: 'Stwórz listę zakupów',
-        description: 'Czegoś Ci brakuje? Chcesz ugotować danie, ale nie masz potrzebnych składników? Dodaj je do listy zakupów!',
+        description:
+          'Dodasz do niej produkty, których brakuje do przygotowania Twojego posiłku. Automatyczny podział na kategorie skróci wizytę w sklepie.',
         image: require('@/assets/img/landing-page/shopping.webp')
       },
       {
         title: 'Filtruj przepisy',
-        description:
-          'Szukasz czegoś konkretnego? Masz na coś alergię? Potrzebujesz przepis z konkretnymi składnikami? Skorzystaj z dedykowanych filtrów!',
+        description: 'Dzięki specjalnym filtrom znajdziesz przepisy, które będą dokładnie odpowiadać Twoim potrzebom.',
         image: require('@/assets/img/landing-page/filters.webp')
       },
       {
         title: 'Zaplanuj przepis na później',
-        description: 'Znalazłeś przepis, ale nie chcesz go przygotowywać już teraz? Dodaj go do planu dnia, bądź nawet tygodnia!',
+        description:
+          'Stwórz swój plan na najbliższe dni. Dzięki temu nie zapomnisz o potrawach, które chcesz przygotować ani o zakupach, jakie będą potrzebne.',
         image: require('@/assets/img/landing-page/plan.webp')
       },
       {
         title: 'Dodawaj do ulubionych',
-        description:
-          'Każdy ma taki przepis, który uwielbia często przygotowywać. Z listą ulubionych przepisów, ich znalezienie jest błyskawiczne!',
+        description: 'Lista ulubionych pozwoli Ci szybko wrócić do uwielbianych przepisów i przypomni jak je przygotować.',
         image: require('@/assets/img/landing-page/favourites.webp')
       }
     ]
