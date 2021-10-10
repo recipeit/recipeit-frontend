@@ -13,14 +13,14 @@ import { BASE_URL } from '@/configs/url'
 
 import AnonymousPage from '@/layouts/AnonymousPage'
 
-import { PRIVACY_POLICY } from '@/router/paths'
+import { TERMS } from '@/router/paths'
 
 export default {
   components: { AnonymousPage },
   setup() {
     useMeta({
       title: 'Regulamin',
-      link: [{ rel: 'canonical', href: `${BASE_URL}${PRIVACY_POLICY}` }]
+      link: [{ rel: 'canonical', href: `${BASE_URL}${TERMS}` }]
     })
 
     return {
