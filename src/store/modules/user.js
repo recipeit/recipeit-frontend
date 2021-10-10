@@ -116,10 +116,10 @@ export default {
         throw new Error(e)
       }
     },
-    register(_, { email, password, confirmPassword, recaptchaToken, registerToken }) {
+    register(_, { email, password, confirmPassword, recaptchaToken }) {
       return new Promise((resolve, reject) => {
         identityApi
-          .register({ email, password, confirmPassword, recaptchaToken, registerToken })
+          .register({ email, password, confirmPassword, recaptchaToken })
           .then(response => {
             const { success, errors } = response.data
 
@@ -174,12 +174,12 @@ export default {
           })
       })
     },
-    facebookAuth({ commit, dispatch }, { accessToken, registerToken }) {
+    facebookAuth({ commit, dispatch }, { accessToken }) {
       dispatch('recipes/resetUserData', {}, { root: true })
 
       return new Promise((resolve, reject) => {
         identityApi
-          .facebookAuth({ accessToken, registerToken })
+          .facebookAuth({ accessToken })
           .then(response => {
             const { userProfile } = response.data
             commit(MUTATIONS.SET_USER_PROFILE, userProfile)
@@ -199,12 +199,12 @@ export default {
           })
       })
     },
-    googleAuth({ commit, dispatch }, { idToken, registerToken }) {
+    googleAuth({ commit, dispatch }, { idToken }) {
       dispatch('recipes/resetUserData', {}, { root: true })
 
       return new Promise((resolve, reject) => {
         identityApi
-          .googleAuth({ idToken, registerToken })
+          .googleAuth({ idToken })
           .then(response => {
             const { userProfile } = response.data
             commit(MUTATIONS.SET_USER_PROFILE, userProfile)

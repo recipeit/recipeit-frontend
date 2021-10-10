@@ -32,8 +32,9 @@ export default {
     async loginGoogle() {
       this.googleSending = true
       try {
-        const accessToken = await GoogleService.login()
-        await this.$store.dispatch('user/googleAuth', { accessToken })
+        const idToken = await GoogleService.login()
+        console.log({ idToken })
+        await this.$store.dispatch('user/googleAuth', { idToken })
       } catch (error) {
         this.$toast.show('Wystąpił problem podczas próby logowania', ToastType.ERROR)
         this.$errorHandler.captureError(error, {
