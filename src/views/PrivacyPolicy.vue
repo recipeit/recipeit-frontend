@@ -9,13 +9,18 @@ import { useMeta } from 'vue-meta'
 
 import PRIVACY_POLICY_HTML from 'html-loader!@/assets/docs/privacypolicy/privacypolicy_v1.html'
 
+import { BASE_URL } from '@/configs/url'
+
 import AnonymousPage from '@/layouts/AnonymousPage'
+
+import { PRIVACY_POLICY } from '@/router/paths'
 
 export default {
   components: { AnonymousPage },
   setup() {
     useMeta({
-      title: 'Polityka Prywatności'
+      title: 'Polityka Prywatności',
+      link: [{ rel: 'canonical', href: `${BASE_URL}${PRIVACY_POLICY}` }]
     })
 
     return {

@@ -24,6 +24,7 @@ import { useRoute, useRouter } from 'vue-router'
 import updateSW from '@/composables/update'
 
 import { EXACT_THEMES, THEME_DARK, THEME_DARK_COLOR, THEME_HTML_ATTRIBUTE, THEME_LIGHT, THEME_LIGHT_COLOR } from '@/configs/theme'
+import { BASE_URL } from '@/configs/url'
 
 import Modal from '@/plugins/global-sheet-modal/Modal'
 
@@ -93,6 +94,7 @@ export default {
 
     const computedMeta = computed(() => ({
       title: '',
+      link: [{ rel: 'canonical', href: `${BASE_URL}/` }],
       htmlAttrs: {
         [THEME_HTML_ATTRIBUTE]: store.state.user.theme
       }

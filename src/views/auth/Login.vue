@@ -66,6 +66,9 @@ import * as yup from 'yup'
 import { ERROR_ACTION_TAG_NAME } from '@/configs/error'
 import { RECAPTCHA_ACTIONS } from '@/configs/recaptcha'
 import { emailSchema, passwordSchema } from '@/configs/schemas'
+import { BASE_URL } from '@/configs/url'
+
+import { AUTH_LOGIN } from '@/router/paths'
 
 import recaptcha from '@/services/recaptcha'
 
@@ -88,7 +91,8 @@ export default {
   },
   setup(props) {
     useMeta({
-      title: 'Zaloguj się'
+      title: 'Zaloguj się',
+      link: [{ rel: 'canonical', href: `${BASE_URL}${AUTH_LOGIN}` }]
     })
 
     const schema = yup.object({

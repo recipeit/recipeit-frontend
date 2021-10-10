@@ -66,6 +66,9 @@ import * as yup from 'yup'
 import { ERROR_ACTION_TAG_NAME } from '@/configs/error'
 import { RECAPTCHA_ACTIONS } from '@/configs/recaptcha'
 import { emailSchema, newPasswordSchema, confirmNewPasswordSchema } from '@/configs/schemas'
+import { BASE_URL } from '@/configs/url'
+
+import { AUTH_REGISTER } from '@/router/paths'
 
 import recaptcha from '@/services/recaptcha'
 
@@ -82,7 +85,8 @@ export default {
   },
   setup() {
     useMeta({
-      title: 'Zarejestruj się'
+      title: 'Zarejestruj się',
+      link: [{ rel: 'canonical', href: `${BASE_URL}${AUTH_REGISTER}` }]
     })
 
     const schema = yup.object({

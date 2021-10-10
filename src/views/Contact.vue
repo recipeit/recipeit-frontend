@@ -27,19 +27,23 @@
 <script>
 import { useMeta } from 'vue-meta'
 
-import { CONTACT_MAIL_ADDRESS, CONTACT_HREF } from '@/configs/emails'
-import { FACEBOOK_PROFILE_URL, INSTAGRAM_PROFILE_URL } from '@/configs/socialMedia'
-
 import FacebookLogo from '@/assets/logos/facebook.svg?inline'
 import InstagramLogo from '@/assets/logos/instagram.svg?inline'
 
+import { CONTACT_MAIL_ADDRESS, CONTACT_HREF } from '@/configs/emails'
+import { FACEBOOK_PROFILE_URL, INSTAGRAM_PROFILE_URL } from '@/configs/socialMedia'
+import { BASE_URL } from '@/configs/url'
+
 import AnonymousPage from '@/layouts/AnonymousPage'
+
+import { CONTACT } from '@/router/paths'
 
 export default {
   components: { AnonymousPage },
   setup() {
     useMeta({
-      title: 'Kontakt'
+      title: 'Kontakt',
+      link: [{ rel: 'canonical', href: `${BASE_URL}${CONTACT}` }]
     })
 
     return {

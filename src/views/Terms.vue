@@ -9,13 +9,18 @@ import { useMeta } from 'vue-meta'
 
 import TERMS_HTML from 'html-loader!@/assets/docs/terms/terms_v1.html'
 
+import { BASE_URL } from '@/configs/url'
+
 import AnonymousPage from '@/layouts/AnonymousPage'
+
+import { PRIVACY_POLICY } from '@/router/paths'
 
 export default {
   components: { AnonymousPage },
   setup() {
     useMeta({
-      title: 'Regulamin'
+      title: 'Regulamin',
+      link: [{ rel: 'canonical', href: `${BASE_URL}${PRIVACY_POLICY}` }]
     })
 
     return {

@@ -18,7 +18,11 @@ import { useMeta } from 'vue-meta'
 
 import ADD_BLOG_HTML from 'html-loader!@/assets/docs/addblog/addblog.html'
 
+import { BASE_URL } from '@/configs/url'
+
 import AnonymousPage from '@/layouts/AnonymousPage'
+
+import { ADD_BLOG } from '@/router/paths'
 
 import AddBlogBanner from '@/components/AddBlogBanner'
 import AddBlogHeader from '@/components/landingPage/AddBlogHeader'
@@ -27,7 +31,8 @@ export default {
   components: { AnonymousPage, AddBlogHeader, AddBlogBanner },
   setup() {
     useMeta({
-      title: 'Dodaj blog'
+      title: 'Dodaj blog',
+      link: [{ rel: 'canonical', href: `${BASE_URL}${ADD_BLOG}` }]
     })
 
     const bannerList = [
