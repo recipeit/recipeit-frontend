@@ -33,7 +33,6 @@ export default {
       this.googleSending = true
       try {
         const idToken = await GoogleService.login()
-        console.log({ idToken })
         await this.$store.dispatch('user/googleAuth', { idToken })
       } catch (error) {
         this.$toast.show('Wystąpił problem podczas próby logowania', ToastType.ERROR)
