@@ -33,14 +33,25 @@
 </template>
 
 <script>
+import { useMeta } from 'vue-meta'
+
 import identityApi from '@/api/identityApi'
 
 import { ERROR_ACTION_TAG_NAME } from '@/configs/error'
+import { BASE_URL } from '@/configs/url'
+
+import { AUTH_CONFIRM_EMAIL } from '@/router/paths'
 
 import Spinner from '@/components/Spinner'
 
 export default {
   components: { Spinner },
+  setup() {
+    useMeta({
+      title: 'Potwierdź adres email',
+      link: [{ rel: 'canonical', href: `${BASE_URL}${AUTH_CONFIRM_EMAIL}` }]
+    })
+  },
   data: () => ({
     state: 'LOADING',
     email: null

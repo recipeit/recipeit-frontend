@@ -53,6 +53,7 @@
 
 <script>
 import { Field, Form } from 'vee-validate'
+import { useMeta } from 'vue-meta'
 import * as Yup from 'yup'
 
 import identityApi from '@/api/identityApi'
@@ -60,6 +61,9 @@ import identityApi from '@/api/identityApi'
 import { ERROR_ACTION_TAG_NAME } from '@/configs/error'
 import { RECAPTCHA_ACTIONS } from '@/configs/recaptcha'
 import { confirmNewPasswordSchema, newPasswordSchema } from '@/configs/schemas'
+import { BASE_URL } from '@/configs/url'
+
+import { AUTH_RESET_PASSWORD } from '@/router/paths'
 
 import recaptcha from '@/services/recaptcha'
 
@@ -72,6 +76,11 @@ export default {
     Spinner
   },
   setup() {
+    useMeta({
+      title: 'Resetowanie hasła',
+      link: [{ rel: 'canonical', href: `${BASE_URL}${AUTH_RESET_PASSWORD}` }]
+    })
+
     const schema = Yup.object({
       password: newPasswordSchema(),
       confirmPassword: confirmNewPasswordSchema()

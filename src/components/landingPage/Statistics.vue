@@ -41,7 +41,7 @@ export default {
       },
       {
         icon: 'grains',
-        description: 'Najczęściej wyrzucamy <b>pieczywo</b> (62,9%), <b>świeże owoce</b> (57,4%) i <b>warzywa</b> (56,5%).'
+        description: 'Najczęściej wyrzucamy <b>pieczywo</b> (62,9%), <b>owoce</b> (57,4%) i <b>warzywa</b> (56,5%).'
       },
       {
         icon: 'clock',

@@ -13,10 +13,19 @@
 </template>
 
 <script>
+import { useMeta } from 'vue-meta'
+
+import { BASE_URL } from '@/configs/url'
+
 import { LANDING_PAGE } from '@/router/names'
 
 export default {
   setup() {
+    useMeta({
+      title: 'Nie znaleziono strony',
+      link: [{ rel: 'canonical', href: `${BASE_URL}/404` }]
+    })
+
     return {
       LANDING_PAGE
     }

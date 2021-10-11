@@ -25,6 +25,8 @@
 import { onBeforeMount, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useMeta } from 'vue-meta'
 
+import { BASE_URL } from '@/configs/url'
+
 import Benefits from '@/components/landingPage/Benefits'
 import Container from '@/components/landingPage/Container'
 import Footer from '@/components/landingPage/Footer'
@@ -38,6 +40,7 @@ export default {
   components: { Section, Splash, Footer, Container, Statistics, Benefits, FooterAuth, SocialMedia },
   setup() {
     useMeta({
+      link: [{ rel: 'canonical', href: `${BASE_URL}` }],
       htmlAttrs: {
         'landing-page': true
       }

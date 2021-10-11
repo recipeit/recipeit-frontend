@@ -62,6 +62,9 @@ import identityApi from '@/api/identityApi'
 import { ERROR_ACTION_TAG_NAME } from '@/configs/error'
 import { RECAPTCHA_ACTIONS } from '@/configs/recaptcha'
 import { emailSchema } from '@/configs/schemas'
+import { BASE_URL } from '@/configs/url'
+
+import { AUTH_REQUEST_PASSWORD_RESET } from '@/router/paths'
 
 import recaptcha from '@/services/recaptcha'
 
@@ -81,7 +84,8 @@ export default {
   },
   setup(props) {
     useMeta({
-      title: 'Zresetuj hasło'
+      title: 'Zapomniałem hasła',
+      link: [{ rel: 'canonical', href: `${BASE_URL}${AUTH_REQUEST_PASSWORD_RESET}` }]
     })
 
     const schema = yup.object({

@@ -44,14 +44,17 @@
 
 <script>
 import { reactive, toRefs } from 'vue'
+import { useMeta } from 'vue-meta'
 import { useRouter } from 'vue-router'
 
 import identityApi from '@/api/identityApi'
 
 import { ERROR_ACTION_TAG_NAME } from '@/configs/error'
 import { RECAPTCHA_ACTIONS } from '@/configs/recaptcha'
+import { BASE_URL } from '@/configs/url'
 
 import { AUTH_LOGIN } from '@/router/names'
+import { AUTH_REGISTER_SUCCESS } from '@/router/paths'
 
 import recaptcha from '@/services/recaptcha'
 
@@ -63,6 +66,11 @@ export default {
     }
   },
   setup(props) {
+    useMeta({
+      title: 'Udana rejestracja',
+      link: [{ rel: 'canonical', href: `${BASE_URL}${AUTH_REGISTER_SUCCESS}` }]
+    })
+
     if (!props.email) {
       const router = useRouter()
       router.push({ name: AUTH_LOGIN })
