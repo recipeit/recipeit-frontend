@@ -11,3 +11,7 @@ export const FACEBOOK_INIT_PARAMS = {
 export const FACEBOOK_LOGIN_PARAMS = {
   scope: FACEBOOK_LOGIN_SCOPE
 }
+export const FACEBOOK_RELOGIN_PARAMS = {
+  scope: 'email',
+  auth_type: 'rerequest'
+}

@@ -1,4 +1,4 @@
-import { FACEBOOK_SDK_URL, FACEBOOK_INIT_PARAMS, FACEBOOK_LOGIN_PARAMS } from '@/configs/facebook'
+import { FACEBOOK_SDK_URL, FACEBOOK_INIT_PARAMS, FACEBOOK_LOGIN_PARAMS, FACEBOOK_RELOGIN_PARAMS } from '@/configs/facebook'
 
 import loadScript from '@/functions/loadScript'
 
@@ -21,17 +21,20 @@ export default {
     await this.getFB()
   },
 
-  async login() {
+  async login(relogin) {
     const FB = await this.getFB()
 
     return new Promise((resolve, reject) => {
-      FB.login(({ authResponse }) => {
-        if (authResponse?.accessToken) {
-          resolve(authResponse.accessToken)
-        } else {
-          reject(new Error('error during Facebook login'))
-        }
-      }, FACEBOOK_LOGIN_PARAMS)
+      FB.login(
+        ({ authResponse }) => {
+          if (authResponse?.accessToken) {
+            resolve(authResponse.accessToken)
+          } else {
+            reject(new Error('error during Facebook login'))
+          }
+        },
+        relogin ? FACEBOOK_RELOGIN_PARAMS : FACEBOOK_LOGIN_PARAMS
+      )
     })
   }
 }
