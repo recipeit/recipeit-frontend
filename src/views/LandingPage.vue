@@ -61,7 +61,7 @@ export default {
       },
       {
         title: 'Przygotuj posiłek',
-        description: 'Z pomocą specjalnego widoku przepisu sprawdzisz jakich składników potrzebujesz i jak przygotować wybraną potrawę.',
+        description: 'Na specjalnym widoku przepisu sprawdzisz jakich składników potrzebujesz i jak przygotować wybraną potrawę.',
         image: require('@/assets/img/landing-page/recipe.webp')
       },
       {
@@ -72,13 +72,13 @@ export default {
       },
       {
         title: 'Filtruj przepisy',
-        description: 'Dzięki specjalnym filtrom znajdziesz przepisy, które będą dokładnie odpowiadać Twoim potrzebom.',
+        description: 'Dzięki dedykowanym filtrom znajdziesz przepisy, które będą dokładnie odpowiadać Twoim potrzebom.',
         image: require('@/assets/img/landing-page/filters.webp')
       },
       {
         title: 'Zaplanuj przepis na później',
         description:
-          'Stwórz swój plan na najbliższe dni. Dzięki temu nie zapomnisz o potrawach, które chcesz przygotować ani o zakupach, jakie będą potrzebne.',
+          'Stwórz swój plan na najbliższe dni. W ten sposób nie zapomnisz o potrawach, które chcesz przygotować, ani o zakupach, jakie będą potrzebne.',
         image: require('@/assets/img/landing-page/plan.webp')
       },
       {
