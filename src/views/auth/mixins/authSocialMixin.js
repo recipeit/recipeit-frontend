@@ -15,30 +15,23 @@ export default {
     // GoogleService.init() // because of cookies
   },
   methods: {
-    async loginFacebook(withRelogin) {
-      let relogin = false
-
+    async loginFacebook() {
       this.facebookSending = true
       try {
-        const accessToken = await FacebookService.login(withRelogin)
+        const accessToken = await FacebookService.login()
         await this.$store.dispatch('user/facebookAuth', { accessToken })
       } catch (errors) {
-        if (Array.isArray(errors) && errors.includes('EMAIL_NOT_IN_TOKEN')) {
-          relogin = true
-        } else {
-          this.$toast.show('Wystąpił problem podczas próby logowania', ToastType.ERROR)
-          this.$errorHandler.captureError(errors, {
-            [ERROR_ACTION_TAG_NAME]: 'authSocialMixin.loginFacebook'
-          })
-        }
+        const toastContent =
+          Array.isArray(errors) && errors.includes('EMAIL_NOT_IN_TOKEN')
+            ? 'Nie udało nam się uzyskać Twojego adresu email'
+            : 'Wystąpił problem podczas próby logowania'
+
+        this.$toast.show(toastContent, ToastType.ERROR)
+        this.$errorHandler.captureError(errors, {
+          [ERROR_ACTION_TAG_NAME]: 'authSocialMixin.loginFacebook'
+        })
       } finally {
         this.facebookSending = false
-      }
-
-      if (relogin) {
-        setTimeout(() => {
-          this.loginFacebook(true)
-        }, 1000)
       }
     },
     async loginGoogle() {
