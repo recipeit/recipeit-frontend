@@ -9,7 +9,8 @@ export const FACEBOOK_INIT_PARAMS = {
   xfbml: false
 }
 export const FACEBOOK_LOGIN_PARAMS = {
-  scope: FACEBOOK_LOGIN_SCOPE
+  scope: FACEBOOK_LOGIN_SCOPE,
+  return_scopes: true
 }
 export const FACEBOOK_RELOGIN_PARAMS = {
   scope: 'email',
