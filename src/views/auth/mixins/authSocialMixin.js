@@ -36,7 +36,9 @@ export default {
       }
 
       if (relogin) {
-        await this.loginFacebook(true)
+        setTimeout(() => {
+          this.loginFacebook(true)
+        }, 1000)
       }
     },
     async loginGoogle() {
