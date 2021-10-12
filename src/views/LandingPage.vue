@@ -67,7 +67,7 @@ export default {
       {
         title: 'Stwórz listę zakupów',
         description:
-          'Dodasz do niej produkty, których brakuje do przygotowania Twojego posiłku. Automatyczny podział na kategorie skróci wizytę w sklepie.',
+          'Dodasz do niej produkty, których brakuje do przygotowania Twojego posiłku. Recipeit automatycznie podzieli je na kategorie, co pomoże skrócić wizytę w sklepie.',
         image: require('@/assets/img/landing-page/shopping.webp')
       },
       {
