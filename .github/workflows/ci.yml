@@ -2,7 +2,13 @@ name: Deploy to staging
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, deploy-manual ]
+  workflow_dispatch:
+
+
+concurrency:
+  group: staging
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -19,4 +25,10 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2.3.4
     - name: Deploy with ssh
-      run: ssh -T ubuntu@${{ secrets.SSH_HOST }} < scripts/deploy.sh
+      run: |
+        ssh -T ubuntu@${{ secrets.SSH_HOST }} <<EOF
+        export GITHUB_BRANCH="${GITHUB_REF#refs/heads/}"
+        export GITHUB_SHA="$GITHUB_SHA"
+        $(cat ./scripts/deploy.sh)
+        EOF
+
