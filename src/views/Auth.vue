@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import BackgroundUrl from '@/assets/img/auth.webp'
+import BackgroundUrl from '@/assets/img/auth.jpg'
 
 import Logotype from '@/components/Logotype'
 
