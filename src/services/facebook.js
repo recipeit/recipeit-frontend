@@ -1,4 +1,4 @@
-import { FACEBOOK_SDK_URL, FACEBOOK_INIT_PARAMS, FACEBOOK_LOGIN_PARAMS, FACEBOOK_RELOGIN_PARAMS } from '@/configs/facebook'
+import { FACEBOOK_SDK_URL, FACEBOOK_INIT_PARAMS, FACEBOOK_LOGIN_PARAMS } from '@/configs/facebook'
 
 import loadScript from '@/functions/loadScript'
 
