@@ -27,6 +27,7 @@ export default {
     return new Promise((resolve, reject) => {
       FB.login(
         ({ authResponse }) => {
+          console.log({ authResponse })
           if (authResponse?.accessToken) {
             resolve(authResponse.accessToken)
           } else {
