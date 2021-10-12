@@ -17,12 +17,12 @@ Administrator danych przetwarza dane osobowe Użytkowników w celu:
 
 Dane osobowe Użytkowników są przetwarzane zgodnie z Rozporządzeniem Parlamentu Europejskiego i Rady (UE) 2016/679 z dnia 27 kwietnia 2016 r. w sprawie ochrony osób fizycznych w związku z przetwarzaniem danych osobowych i w sprawie swobodnego przepływu takich danych oraz uchylenia dyrektywy 95/46/WE (Dz.Urz.UE.L Nr 119, str. 1) (dalej również: „RODO”) oraz innymi aktualnie obowiązującymi, tj. przez cały okres przetwarzania określonych danych, przepisami prawa o ochronie danych osobowych.
 
-## 3. Dane, jakie przetwarzaamy
+## 3. Dane, jakie przetwarzamy
 
 Przetwarzaniu podlegają następujące dane Użytkowników:
 
-- adres poczty elektronicznel e-mail,
-- podstawowe dane osobowe dobrowolnie przekazywane w momencie rejestracji lub logowania za pomocą konta Facebook lub Google. Wchodzą w to imie, nazwisko, adres e-mail i zdjęcie profilowe, przy czym imię i nazwisko nie są nigdzie zapisywane i dalej przetwarzane w Aplikacji.
+- adres poczty elektronicznej e-mail,
+- podstawowe dane osobowe dobrowolnie przekazywane w momencie rejestracji lub logowania za pomocą konta Facebook lub Google. Wchodzą w to imię, nazwisko, adres e-mail i zdjęcie profilowe, przy czym imię i nazwisko nie są nigdzie zapisywane i dalej przetwarzane w Aplikacji.
 
 Wyżej wymienione dane osobowe są niezbędne do prawidłowego korzystania z zarejestrowanego Konta przez Użytkownika.
 
@@ -31,12 +31,12 @@ Wspomniane dane osobowe będą przetwarzane tak długo, jak jest to niezbędne d
 Aplikacja korzysta z usług Google Analytics do celów statystycznych. Pomaga to ulepszać Aplikację, szybciej znajdywać zaistniałe problemy i bardziej dopasowywać funkcje do potrzeb Użytkowników. Usługa ta umożliwia m.in.:
 
 - liczenie odwiedzin poszczególnych podstron
-- określenie, jakie elementy na stronie są klikane przez Uzytkowników,
+- określenie, jakie elementy na stronie są klikane przez Użytkowników,
 - określenie źródła ruchu.
 
 ### 3.1 Pliki "cookies"
 
-Aplikacja korzysta z plików "cookies". Służą one m.in. do zalogowania się i przechowywania sesji Użytkownika, weryfikacji wysyłanych formularzy, przechowywaniu preferencji i ustawień Uzytkowników oraz do celów analitycznych. Wykorzystywane są następujące pliki "cookies":
+Aplikacja korzysta z plików "cookies". Służą one m.in. do zalogowania się i przechowywania sesji Użytkownika, weryfikacji wysyłanych formularzy, przechowywaniu preferencji i ustawień Użytkowników oraz do celów analitycznych. Wykorzystywane są następujące pliki "cookies":
 
 - **X_ACCESS_TOKEN** (12 godzin), **X_REFRESH_TOKEN** (6 miesięcy) - logowanie, trzymanie sesji Użytkownika,
 - **recipeit_cookies_message** (365 dni) - ciasteczko które jest używane do określenia, czy użytkownik przeczytał i zaakceptował komunikat dotyczący ciasteczek,

@@ -36,7 +36,7 @@ import MessageContainer from '@/components/MessageContainer'
 import UpdateMessage from '@/components/messages/UpdateMessage'
 import CookiesModal from '@/components/modals/CookiesModal'
 
-const TITLE_TEMPLATE = 'Recipeit - Znajdź przepis ze swoich składników'
+const TITLE_TEMPLATE = 'Recipeit - Znajdź przepis ze swoich produktów'
 const TITLE_SMALL_TEMPLATE = 'Recipeit'
 
 export default {
