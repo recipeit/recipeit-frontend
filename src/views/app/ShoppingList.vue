@@ -2,6 +2,43 @@
   <div class="layout__page__content">
     <PageHeader :title="$t('shoppingList.title')" />
 
+    <BaseButton
+      v-show="!selectFocused"
+      class="add-product-button"
+      :class="{ hidden: isEmpty }"
+      stroked
+      color="primary"
+      @click="openAddProductSelect()"
+    >
+      <BaseIcon class="floating-action-button__icon" icon="plus" weight="semi-bold" />
+      {{ $t('shared.addProduct') }}
+    </BaseButton>
+
+    <BaseSelect
+      v-show="selectFocused"
+      ref="addProductSelect"
+      class="add-product-select"
+      placeholder="Dodaj produkt"
+      track-by="id"
+      search-by="variants"
+      label="name"
+      :options="baseProductsGrouped"
+      :limit="100"
+      :searchable="true"
+      group-label="groupKey"
+      group-values="groupValues"
+      @click.stop
+      @change="addProductFromSelect($event)"
+      @blur="selectFocused = false"
+    >
+      <template #groupLabel="{ label }">
+        <span class="category-group">
+          <ProductIcon class="category-group-icon" :group="label" />
+          {{ $t(`productCategory.${label}`) }}
+        </span>
+      </template>
+    </BaseSelect>
+
     <div v-if="groupedProducts === null">...wczytuję</div>
     <ul v-else-if="groupedProducts.length > 0" class="product-list-groups">
       <li v-for="products in groupedProducts" :key="products[0]" class="product-list-group">
@@ -23,32 +60,36 @@
         Trochę tu pusto
       </div>
       Dodaj coś do listy zakupów
+      <BaseButton class="add-product-button space-top" raised color="primary" @click="openAddProductSelect()">
+        <BaseIcon class="floating-action-button__icon" icon="plus" weight="semi-bold" />
+        {{ $t('shared.addProduct') }}
+      </BaseButton>
     </div>
 
     <BaseLink v-if="products && products.length > 0" color="primary" class="purchase-all-button" @click="purchaseAll">
       {{ $t('shoppingList.purchaseAllButton') }}
     </BaseLink>
 
-    <div class="floating-action-button-container">
+    <!-- <div class="floating-action-button-container">
       <BaseButton class="floating-action-button" raised color="primary" @click="newProduct()">
         <BaseIcon class="floating-action-button__icon" icon="plus" weight="semi-bold" />
         {{ $t('shared.addProduct') }}
       </BaseButton>
-    </div>
+    </div> -->
   </div>
 </template>
 
 <script>
 import _ from 'lodash'
-import { markRaw, ref } from 'vue'
-import { mapState } from 'vuex'
+import { computed, markRaw, nextTick, reactive, ref, toRefs } from 'vue'
+import { mapState, useStore } from 'vuex'
 import { useMeta } from 'vue-meta'
 
 import PageHeader from '@/components/PageHeader'
 import ProductIcon from '@/components/ProductIcon'
 import ShoppingListProduct from '@/components/ShoppingListProduct'
 import Dialog from '@/components/modals/Dialog'
-import NewShoppingListProduct from '@/components/modals/NewShoppingListProduct'
+// import NewShoppingListProduct from '@/components/modals/NewShoppingListProduct'
 
 import { PRODUCT_GROUP_ICONS } from '@/constants'
 
@@ -64,12 +105,47 @@ export default {
       title: 'Lista zakupów'
     })
 
-    const fetchedData = ref(false)
-    const searchString = ref(null)
+    const store = useStore()
+
+    const addProductSelect = ref(null)
+
+    const data = reactive({
+      fetchedData: false,
+      selectFocused: false
+    })
+
+    const baseProductsGrouped = computed(() =>
+      _(store.state.ingredients.baseProducts)
+        .groupBy(item => item.category)
+        .toPairs()
+        .value()
+        .map(pair => ({
+          groupKey: pair[0],
+          groupValues: pair[1]
+        }))
+    )
+
+    const addProductFromSelect = ({ id } = {}) => {
+      const requestData = {
+        baseProductId: id
+      }
+
+      store.dispatch('shoppingList/addProduct', requestData)
+    }
+
+    const openAddProductSelect = async () => {
+      data.selectFocused = true
+      await nextTick()
+      // console.log(addProductSelect)
+      addProductSelect.value?.setFocus()
+    }
 
     return {
-      fetchedData,
-      searchString,
+      ...toRefs(data),
+      addProductSelect,
+      baseProductsGrouped,
+      addProductFromSelect,
+      openAddProductSelect,
       PRODUCT_GROUP_ICONS
     }
   },
@@ -77,15 +153,22 @@ export default {
     ...mapState({
       products: state => state.shoppingList.products
     }),
+    isEmpty() {
+      return !(this.groupedProducts === null || this.groupedProducts.length > 0)
+    },
     filteredProducts() {
-      if (!this.products) return null
-      if (!this.searchString) return this.products
+      return this.products
+      // if (!this.products) return null
+      // if (!this.searchString) return this.products
 
-      return this.products.filter(p => p.baseProductName.toLowerCase().includes(this.searchString.toLowerCase()))
+      // return this.products.filter(p => p.baseProductName.toLowerCase().includes(this.searchString.toLowerCase()))
     },
     groupedProducts() {
-      if (!this.filteredProducts) return null
-      return _(this.filteredProducts)
+      const { filteredProducts } = this
+
+      if (!filteredProducts) return null
+
+      return _(filteredProducts)
         .sortBy(item => item.baseProductName)
         .groupBy(item => item.category)
         .toPairs()
@@ -99,9 +182,9 @@ export default {
     this.$store.dispatch('shoppingList/fetchProducts')
   },
   methods: {
-    newProduct() {
-      this.$modal.show(markRaw(NewShoppingListProduct), {}, {})
-    },
+    // newProduct() {
+    //   this.$modal.show(markRaw(NewShoppingListProduct), {}, {})
+    // },
     purchase(id) {
       this.$store.dispatch('shoppingList/purchaseProduct', id)
     },
@@ -123,15 +206,25 @@ export default {
           }
         }
       )
-    },
-    onSearch({ search }) {
-      this.searchString = search
     }
+    // onSearch({ search }) {
+    //   this.searchString = search
+    // }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+.category-group {
+  display: flex;
+  align-items: center;
+}
+
+.category-group-icon {
+  margin-right: 0.5rem;
+  font-size: 1.25rem;
+}
+
 .layout__page__content {
   margin-bottom: 88px;
   flex-direction: column;
@@ -157,7 +250,21 @@ export default {
   }
 }
 
-.product-list-filter {
+.add-product-button {
+  color: var(--color-primary);
+
+  &.hidden {
+    visibility: hidden;
+    opacity: 0;
+  }
+
+  &.space-top {
+    margin-top: 1.5rem;
+  }
+}
+
+.add-product-button,
+.add-product-select {
   margin-bottom: 1.5rem;
 }
 

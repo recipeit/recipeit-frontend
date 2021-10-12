@@ -2,7 +2,44 @@
   <div class="layout__page__content">
     <PageHeader :title="$t('myKitchen.title')" />
 
-    <SearchWithFilter class="product-list-filter" placeholder="Szukaj produktu" @search="onSearch($event)" />
+    <!-- <SearchWithFilter class="product-list-filter" placeholder="Szukaj produktu" @search="onSearch($event)" /> -->
+
+    <BaseButton
+      v-show="!selectFocused"
+      class="add-product-button"
+      :class="{ hidden: isEmpty }"
+      stroked
+      color="primary"
+      @click="openAddProductSelect()"
+    >
+      <BaseIcon class="floating-action-button__icon" icon="plus" weight="semi-bold" />
+      {{ $t('shared.addProduct') }}
+    </BaseButton>
+
+    <BaseSelect
+      v-show="selectFocused"
+      ref="addProductSelect"
+      class="add-product-select"
+      placeholder="Dodaj produkt"
+      track-by="id"
+      search-by="variants"
+      label="name"
+      :options="baseProductsGrouped"
+      :limit="100"
+      :searchable="true"
+      group-label="groupKey"
+      group-values="groupValues"
+      @click.stop
+      @change="addProductFromSelect($event)"
+      @blur="selectFocused = false"
+    >
+      <template #groupLabel="{ label }">
+        <span class="category-group">
+          <ProductIcon class="category-group-icon" :group="label" />
+          {{ $t(`productCategory.${label}`) }}
+        </span>
+      </template>
+    </BaseSelect>
 
     <div v-if="groupedProducts === null">...wczytuję</div>
     <ul v-else-if="groupedProducts.length > 0" class="product-list-groups">
@@ -25,60 +62,113 @@
         Trochę tu pusto
       </div>
       Dodaj to, co masz w swojej kuchni
-    </div>
-
-    <div class="floating-action-button-container">
-      <BaseButton class="gtm_my-kitchen-add-product-button floating-action-button" raised color="primary" @click="newProduct()">
+      <BaseButton class="add-product-button space-top" raised color="primary" @click="openAddProductSelect()">
         <BaseIcon class="floating-action-button__icon" icon="plus" weight="semi-bold" />
         {{ $t('shared.addProduct') }}
       </BaseButton>
     </div>
+
+    <!-- <div class="floating-action-button-container">
+      <BaseButton class="gtm_my-kitchen-add-product-button floating-action-button" raised color="primary" @click="newProduct()">
+        <BaseIcon class="floating-action-button__icon" icon="plus" weight="semi-bold" />
+        {{ $t('shared.addProduct') }}
+      </BaseButton>
+    </div> -->
   </div>
 </template>
 
 <script>
 import _ from 'lodash'
-import { markRaw } from 'vue'
-import { mapState } from 'vuex'
+import { computed, nextTick, reactive, ref, toRefs } from 'vue'
+import { mapState, useStore } from 'vuex'
 import { useMeta } from 'vue-meta'
 
 import KitchenProduct from '@/components/KitchenProduct'
 import PageHeader from '@/components/PageHeader'
 import ProductIcon from '@/components/ProductIcon'
-import SearchWithFilter from '@/components/SearchWithFilter'
-import NewKitchenProductModal from '@/components/modals/NewKitchenProductModal'
+// import SearchWithFilter from '@/components/SearchWithFilter'
+// import NewKitchenProductModal from '@/components/modals/NewKitchenProductModal'
 
 export default {
   name: 'MyKitchen',
   components: {
     KitchenProduct,
     PageHeader,
-    ProductIcon,
-    SearchWithFilter
+    ProductIcon
+    // SearchWithFilter
   },
   setup() {
     useMeta({
       title: 'Moja kuchnia'
     })
+
+    const store = useStore()
+
+    const addProductSelect = ref(null)
+
+    const data = reactive({
+      fetchedData: false,
+      selectFocused: false
+    })
+
+    const baseProductsGrouped = computed(() =>
+      _(store.state.ingredients.baseProducts)
+        .groupBy(item => item.category)
+        .toPairs()
+        .value()
+        .map(pair => ({
+          groupKey: pair[0],
+          groupValues: pair[1]
+        }))
+    )
+
+    const addProductFromSelect = ({ id } = {}) => {
+      const requestData = {
+        product: {
+          baseProductId: id
+        }
+      }
+
+      store.dispatch('myKitchen/addProduct', requestData)
+    }
+
+    const openAddProductSelect = async () => {
+      data.selectFocused = true
+      await nextTick()
+      // console.log(addProductSelect)
+      addProductSelect.value?.setFocus()
+    }
+
+    return {
+      ...toRefs(data),
+      addProductSelect,
+      baseProductsGrouped,
+      addProductFromSelect,
+      openAddProductSelect
+    }
   },
-  data: () => ({
-    fetchedData: false,
-    searchString: null
-  }),
   computed: {
     ...mapState({
       userAuthenticatedLazy: state => state.user.userAuthenticatedLazy,
       products: state => state.myKitchen.products
     }),
+    isEmpty() {
+      return !(this.groupedProducts === null || this.groupedProducts.length > 0)
+    },
     filteredProducts() {
-      if (!this.products) return null
-      if (!this.searchString) return this.products
+      // if (!this.products) return null
+      return this.products
 
-      return this.products.filter(p => p.baseProductName.toLowerCase().includes(this.searchString.toLowerCase()))
+      // if (!this.searchString) return this.products
+
+      // return this.products.filter(p => p.baseProductName.toLowerCase().includes(this.searchString.toLowerCase()))
     },
     groupedProducts() {
-      if (!this.filteredProducts) return null
-      return _(this.filteredProducts)
+      const { filteredProducts } = this
+
+      if (!filteredProducts) return null
+
+      return _(filteredProducts)
         .sortBy(item => item.baseProductName)
         .groupBy(item => item.category)
         .toPairs()
@@ -107,18 +197,28 @@ export default {
         this.$store.dispatch('shoppingList/fetchProducts')
         this.fetchedData = true
       }
-    },
-    newProduct() {
-      this.$modal.show(markRaw(NewKitchenProductModal), {}, {})
-    },
-    onSearch({ search }) {
-      this.searchString = search
     }
+    // newProduct() {
+    //   this.$modal.show(markRaw(NewKitchenProductModal), {}, {})
+    // }
+    // onSearch({ search }) {
+    //   this.searchString = search
+    // }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+.category-group {
+  display: flex;
+  align-items: center;
+}
+
+.category-group-icon {
+  margin-right: 0.5rem;
+  font-size: 1.25rem;
+}
+
 .layout__page__content {
   margin-bottom: 88px;
   flex-direction: column;
@@ -144,7 +244,21 @@ export default {
   }
 }
 
-.product-list-filter {
+.add-product-button {
+  color: var(--color-primary);
+
+  &.hidden {
+    visibility: hidden;
+    opacity: 0;
+  }
+
+  &.space-top {
+    margin-top: 1.5rem;
+  }
+}
+
+.add-product-button,
+.add-product-select {
   margin-bottom: 1.5rem;
 }
 

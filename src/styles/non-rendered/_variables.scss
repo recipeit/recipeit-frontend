@@ -71,11 +71,11 @@ $link-variables: (
 }
 
 $button-stroked-variables: (
-  'primary': buttonSubtleColorMap('primary'),
-  'accent': buttonSubtleColorMap('accent'),
-  'warning': buttonSubtleColorMap('warning'),
-  'danger': buttonSubtleColorMap('danger'),
-  'contrast': buttonSubtleColorMap('contrast')
+  'primary': buttonStrokedColorMap('primary'),
+  'accent': buttonStrokedColorMap('accent'),
+  'warning': buttonStrokedColorMap('warning'),
+  'danger': buttonStrokedColorMap('danger'),
+  'contrast': buttonStrokedColorMap('contrast')
 );
 
 @function buttonSubtleColorMap($color) {

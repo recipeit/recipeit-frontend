@@ -303,10 +303,13 @@ export default {
   },
   mounted() {
     if (this.autofocus) {
-      setFocus(this.$refs.select)
+      this.setFocus()
     }
   },
   methods: {
+    setFocus() {
+      setFocus(this.$refs.select)
+    },
     isOptionSelected(option) {
       const { getKeyFromValue, value } = this
       const optionKey = getKeyFromValue(option)

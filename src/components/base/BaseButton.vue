@@ -107,7 +107,9 @@ export default {
   }
 }
 
-@mixin button-stroked($color) {
+@mixin button-stroked($colorsMap) {
+  $color: #{map-get($colorsMap, 'color')};
+
   color: $color;
 }
 
@@ -186,7 +188,7 @@ export default {
   }
 
   &#{ $root }--stroked {
-    @include button-stroked(var(--color-text-primary));
+    color: var(--color-text-primary);
     background-color: transparent;
     border: 1px solid var(--color-border);
 
