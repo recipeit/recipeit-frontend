@@ -4,22 +4,23 @@
 
     <!-- <SearchWithFilter class="product-list-filter" placeholder="Szukaj produktu" @search="onSearch($event)" /> -->
 
-    <BaseButton
-      v-show="!selectFocused"
-      class="add-product-button"
-      :class="{ hidden: isEmpty }"
-      stroked
-      color="primary"
-      @click="openAddProductSelect()"
-    >
-      <BaseIcon class="floating-action-button__icon" icon="plus" weight="semi-bold" />
-      {{ $t('shared.addProduct') }}
-    </BaseButton>
+    <div class="add-product-button-container">
+      <BaseButton
+        v-show="!selectFocused && !isEmpty"
+        class="add-product-button absolute"
+        stroked
+        color="primary"
+        @click="openAddProductSelect()"
+      >
+        <BaseIcon class="floating-action-button__icon" icon="plus" weight="semi-bold" />
+        {{ $t('shared.addProduct') }}
+      </BaseButton>
+    </div>
 
     <BaseSelect
-      v-show="selectFocused"
       ref="addProductSelect"
       class="add-product-select"
+      :class="{ hidden: !selectFocused }"
       placeholder="Dodaj produkt"
       track-by="id"
       search-by="variants"
@@ -244,16 +245,29 @@ export default {
   }
 }
 
+.add-product-button-container {
+  position: relative;
+}
+
 .add-product-button {
   color: var(--color-primary);
 
+  &.space-top {
+    margin-top: 1.5rem;
+  }
+
+  &.absolute {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
+}
+
+.add-product-select {
   &.hidden {
     visibility: hidden;
     opacity: 0;
-  }
-
-  &.space-top {
-    margin-top: 1.5rem;
   }
 }
 
