@@ -13,6 +13,8 @@
 </template>
 
 <script>
+import { BASE_URL } from '@/configs/url'
+
 export default {
   props: {
     url: {
@@ -35,7 +37,7 @@ export default {
   },
   computed: {
     code() {
-      return `<a href="https://recipeit.pl"><img src="${this.url}" alt="Recipeit"/></a>`
+      return `<a href="${BASE_URL}"><img src="${BASE_URL}${this.url}" alt="Recipeit"/></a>`
     }
   },
   methods: {
