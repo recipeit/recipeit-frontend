@@ -116,20 +116,21 @@ export default {
         throw new Error(e)
       }
     },
-    register(_, { email, password, confirmPassword, recaptchaToken }) {
+    register({ dispatch }, { email, password, confirmPassword, recaptchaToken }) {
       return new Promise((resolve, reject) => {
         identityApi
           .register({ email, password, confirmPassword, recaptchaToken })
-          .then(response => {
+          .then(async response => {
             const { success, errors } = response.data
 
             if (success) {
-              router.push({
-                name: 'register-success',
-                params: {
-                  email
-                }
-              })
+              await dispatch('login', { email, password, recaptchaToken })
+              // router.push({
+              //   name: 'register-success',
+              //   params: {
+              //     email
+              //   }
+              // })
               resolve()
             } else {
               reject(errors)
