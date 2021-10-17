@@ -116,21 +116,25 @@ export default {
         throw new Error(e)
       }
     },
-    register({ dispatch }, { email, password, confirmPassword, recaptchaToken }) {
+    register({ commit, dispatch }, { email, password, confirmPassword, recaptchaToken }) {
       return new Promise((resolve, reject) => {
         identityApi
           .register({ email, password, confirmPassword, recaptchaToken })
           .then(async response => {
-            const { success, errors } = response.data
+            const { success, errors, userProfile } = response.data
 
             if (success) {
-              await dispatch('login', { email, password, recaptchaToken })
-              // router.push({
-              //   name: 'register-success',
-              //   params: {
-              //     email
-              //   }
-              // })
+              commit(MUTATIONS.SET_USER_PROFILE, userProfile)
+              commit(MUTATIONS.SET_USER_AUTH_STATE, USER_AUTH_STATE.USER_LOGGED_IN)
+              dispatch('getInitUserData')
+              const redirectUrl = sessionStorage.getItem('LOGIN_REDIRECT')
+              if (redirectUrl) {
+                router.push(redirectUrl)
+                sessionStorage.removeItem('LOGIN_REDIRECT')
+              } else {
+                router.push({ name: 'home' })
+              }
+
               resolve()
             } else {
               reject(errors)
