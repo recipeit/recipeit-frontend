@@ -120,10 +120,17 @@ export default {
       return new Promise((resolve, reject) => {
         identityApi
           .register({ email, password, confirmPassword, recaptchaToken })
-          .then(async response => {
-            const { success, errors, userProfile } = response.data
+          .then(response => {
+            const { userProfile, emailUnconfirmed } = response.data
 
-            if (success) {
+            if (emailUnconfirmed) {
+              router.push({
+                name: 'register-success',
+                params: {
+                  email
+                }
+              })
+            } else {
               commit(MUTATIONS.SET_USER_PROFILE, userProfile)
               commit(MUTATIONS.SET_USER_AUTH_STATE, USER_AUTH_STATE.USER_LOGGED_IN)
               dispatch('getInitUserData')
@@ -134,11 +141,8 @@ export default {
               } else {
                 router.push({ name: 'home' })
               }
-
-              resolve()
-            } else {
-              reject(errors)
             }
+            resolve()
           })
           .catch(error => {
             reject(error.response?.data?.errors)
