@@ -11,12 +11,11 @@
         @reload-with-query="recipesList.reloadRecipesWithQuery($event)"
       >
         <!-- <template v-if="!(!almostAvailableRecipes.fetching && Object.keys(almostAvailableRecipesList.recipes.value.pagedItems).length === 0)" #above-list> -->
+
         <template
           v-if="
-            !(
-              !Object.values(almostAvailableRecipesList.recipes.value.fetchingPages).some(v => v) &&
-              Object.keys(almostAvailableRecipesList.recipes.value.pagedItems).length === 0
-            )
+            Object.values(almostAvailableRecipesList.recipes.value.fetchingPages).some(v => v) ||
+              almostAvailableRecipesList.recipes.value.pagedItems['1']?.length > 0
           "
           #above-list
         >
