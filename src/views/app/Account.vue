@@ -48,6 +48,11 @@
 
     <h3>Inne</h3>
     <p>
+      <BaseLink :href="ARTICLES_PATH" class="card-link" color="primary">
+        Artykuły
+      </BaseLink>
+    </p>
+    <p>
       <router-link v-slot="{ href, navigate }" :to="{ name: 'contact', params: { returnUrl: $route.fullPath } }" custom>
         <BaseLink :href="href" class="card-link" color="primary" @click="navigate($event)">
           Kontakt
@@ -94,6 +99,8 @@ import { THEMES } from '@/configs/theme'
 
 import { COPYRIGHT_TEXT } from '@/constants'
 
+import { ARTICLES as ARTICLES_PATH } from '@/router/paths'
+
 import Logotype from '@/components/Logotype'
 import PageHeader from '@/components/PageHeader'
 
@@ -136,7 +143,8 @@ export default {
       unhideRecipe,
       unhideBlog,
       THEMES,
-      defaultAvatar
+      defaultAvatar,
+      ARTICLES_PATH
     }
   },
   computed: {

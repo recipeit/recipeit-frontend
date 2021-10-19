@@ -3,6 +3,7 @@ export const TERMS = '/regulamin'
 export const PRIVACY_POLICY = '/polityka-prywatnosci'
 export const ADD_BLOG = '/dodaj-blog'
 export const CONTACT = '/kontakt'
+export const ARTICLES = '/artykuly'
 
 export const APP = '/apka'
 export const APP_HOME = '/start'

@@ -7,12 +7,12 @@
         </h2>
         <div class="footer-auth-buttons">
           <router-link v-slot="{ href, navigate }" :to="{ name: 'register' }" custom>
-            <BaseButton class="button button--main" tag="a" :href="href" @click="navigate($event)">
+            <BaseButton class="button button--main" tag="span" :href="href" @click="navigate($event)">
               Utwórz konto
             </BaseButton>
           </router-link>
           <router-link v-slot="{ href, navigate }" :to="{ name: 'login' }" custom>
-            <BaseButton class="button button--secondary" tag="a" :href="href" @click="navigate($event)">
+            <BaseButton class="button button--secondary" tag="span" :href="href" @click="navigate($event)">
               Zaloguj się
             </BaseButton>
           </router-link>

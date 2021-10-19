@@ -4,8 +4,8 @@
       Bądź na bieżąco
     </h2>
     <div class="social-list">
-      <a target="_blank" class="social-logo" :href="FACEBOOK_PROFILE_URL" v-html="FacebookLogo" />
-      <a target="_blank" class="social-logo" :href="INSTAGRAM_PROFILE_URL" v-html="InstagramLogo" />
+      <span class="social-logo" @click="openSocialMediaPage(FACEBOOK_PROFILE_URL)" v-html="FacebookLogo" />
+      <span class="social-logo" @click="openSocialMediaPage(INSTAGRAM_PROFILE_URL)" v-html="InstagramLogo" />
     </div>
   </Container>
 </template>
@@ -22,11 +22,16 @@ export default {
   components: { Container },
 
   setup() {
+    const openSocialMediaPage = url => {
+      window.open(url, '_blank')
+    }
+
     return {
       FacebookLogo,
       InstagramLogo,
       FACEBOOK_PROFILE_URL,
-      INSTAGRAM_PROFILE_URL
+      INSTAGRAM_PROFILE_URL,
+      openSocialMediaPage
     }
   }
 }
@@ -52,6 +57,7 @@ export default {
   .social-logo {
     width: 32px;
     margin: 12px;
+    cursor: pointer;
 
     @include transition((opacity));
 

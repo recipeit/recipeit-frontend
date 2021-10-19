@@ -1,8 +1,9 @@
 <template>
   <header class="header">
     <div class="header-container">
-      <router-link :to="{ name: LANDING_PAGE }" class="logo-link">
+      <router-link :to="{ name: LANDING_PAGE }" class="logo-link" title="Recipeit">
         <Logotype class="logo" />
+        Recipeit
       </router-link>
       <div class="header-buttons">
         <template v-if="userAuthenticatedLazy">
@@ -64,6 +65,10 @@ export default {
     min-height: 80px;
     display: flex;
     align-items: center;
+  }
+
+  .logo-link {
+    font-size: 0;
   }
 
   .logo {

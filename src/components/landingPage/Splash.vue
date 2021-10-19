@@ -5,7 +5,10 @@
     </div>
     <div class="content">
       <header class="header">
-        <Logotype class="logotype" />
+        <router-link :to="{ name: LANDING_PAGE }" class="logo-link" title="Recipeit">
+          <Logotype class="logotype" />
+          Recipeit
+        </router-link>
       </header>
       <div class="main">
         <h1 class="h1">Znajdź przepis<br />z tego co masz!</h1>
@@ -30,6 +33,8 @@
 <script>
 import BackgroundUrl from '@/assets/img/splash.webp'
 
+import { LANDING_PAGE } from '@/router/names'
+
 import Logotype from '@/components/Logotype'
 
 export default {
@@ -37,7 +42,8 @@ export default {
     Logotype
   },
   setup: () => ({
-    BackgroundUrl
+    BackgroundUrl,
+    LANDING_PAGE
   })
 }
 </script>
@@ -114,6 +120,10 @@ export default {
   color: rgba(#fff, 0.75);
   margin-bottom: 3rem;
   max-width: 380px;
+}
+
+.logo-link {
+  font-size: 0;
 }
 
 .logotype {

@@ -19,15 +19,7 @@ module.exports = {
       defaults: {
         lastmod: new Date().toISOString()
       },
-      urls: [
-        `${baseUrl}/`,
-        `${baseUrl}/logowanie`,
-        `${baseUrl}/rejestracja`,
-        `${baseUrl}/dodaj-blog`,
-        `${baseUrl}/regulamin`,
-        `${baseUrl}/polityka-prywatnosci`,
-        `${baseUrl}/kontakt`
-      ]
+      urls: [`${baseUrl}/`, `${baseUrl}/dodaj-blog`, `${baseUrl}/kontakt`]
     }
   },
   css: {

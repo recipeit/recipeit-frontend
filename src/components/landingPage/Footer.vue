@@ -7,13 +7,16 @@
       </span>
     </div>
     <div class="footer-links">
+      <BaseLink :href="ARTICLES_PATH" class="footer-link" color="text-secondary">
+        Artykuły
+      </BaseLink>
       <router-link v-slot="{ href, navigate }" :to="{ name: TERMS }" custom>
-        <BaseLink :href="href" class="footer-link" color="text-secondary" @click="navigate($event)">
+        <BaseLink :href="href" tag="span" class="footer-link" color="text-secondary" @click="navigate($event)">
           Regulamin
         </BaseLink>
       </router-link>
       <router-link v-slot="{ href, navigate }" :to="{ name: PRIVACY_POLICY }" custom>
-        <BaseLink :href="href" class="footer-link" color="text-secondary" @click="navigate($event)">
+        <BaseLink :href="href" tag="span" class="footer-link" color="text-secondary" @click="navigate($event)">
           Polityka prywatności
         </BaseLink>
       </router-link>
@@ -35,6 +38,7 @@
 import { COPYRIGHT_TEXT } from '@/constants'
 
 import { TERMS, PRIVACY_POLICY, ADD_BLOG, CONTACT } from '@/router/names'
+import { ARTICLES as ARTICLES_PATH } from '@/router/paths'
 
 import Logotype from '@/components/Logotype'
 
@@ -52,7 +56,8 @@ export default {
       PRIVACY_POLICY,
       ADD_BLOG,
       CONTACT,
-      COPYRIGHT_TEXT
+      COPYRIGHT_TEXT,
+      ARTICLES_PATH
     }
   }
 }

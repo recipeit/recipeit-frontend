@@ -8,7 +8,7 @@
 <script>
 import Spinner from '@/components/Spinner'
 
-const validTags = ['button', 'a']
+const validTags = ['button', 'a', 'span']
 
 export default {
   components: { Spinner },

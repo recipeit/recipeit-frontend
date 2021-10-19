@@ -5,7 +5,7 @@
 </template>
 
 <script>
-const tagOptions = ['a', 'button']
+const tagOptions = ['a', 'button', 'span']
 const colorOptions = [null, 'primary', 'accent', 'text-primary', 'text-secondary', 'red']
 
 export default {

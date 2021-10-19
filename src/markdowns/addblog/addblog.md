@@ -12,6 +12,6 @@ Aby zgłosić swój blog, postępuj według poniższych wskazówek.
 
 1. Wyślij wiadomość e-mail na adres [kontakt@recipeit.pl](mailto:kontakt@recipeit.pl?subject=Zgłoszenie bloga). Powinna ona zawierać nazwę Twojego bloga, jego adres oraz ewentualne dodatowe informacje.
 
-Po wysłaniu zgłoszenia postaramy się odpowiedzieć na nie jak najszybciej. Pamiętaj, że wysyłając swoje zgłoszenie zgadzasz się z [regulaminem](/terms) aplikacji. Gdy tylko Twój blog pojawi się w Recipeit, natychmist poinformujemy Cię o tym fakcie.
+Po wysłaniu zgłoszenia postaramy się odpowiedzieć na nie jak najszybciej. Pamiętaj, że wysyłając swoje zgłoszenie zgadzasz się z regulaminem Recipeit. Gdy tylko Twój blog pojawi się w Recipeit, natychmist poinformujemy Cię o tym fakcie.
 
 ## Grafiki do pobrania
