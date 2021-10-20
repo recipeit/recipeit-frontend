@@ -122,15 +122,15 @@ const isEmpty = opt => {
 
 const normalizePolishString = value =>
   value
-    .replaceAll('ą', 'a')
-    .replaceAll('ć', 'c')
-    .replaceAll('ę', 'e')
-    .replaceAll('ł', 'l')
-    .replaceAll('ń', 'n')
-    .replaceAll('ó', 'o')
-    .replaceAll('ś', 's')
-    .replaceAll('ż', 'z')
-    .replaceAll('ź', 'z')
+    .replace(/ą/g, 'a')
+    .replace(/ć/g, 'c')
+    .replace(/ę/g, 'e')
+    .replace(/ł/g, 'l')
+    .replace(/ń/g, 'n')
+    .replace(/ó/g, 'o')
+    .replace(/ś/g, 's')
+    .replace(/ż/g, 'z')
+    .replace(/ź/g, 'z')
 
 const includes = (str, query) => {
   if (!query) return true

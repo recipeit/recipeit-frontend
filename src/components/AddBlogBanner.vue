@@ -1,6 +1,6 @@
 <template>
   <div class="banner-item">
-    <BaseImageLazyload :src="url" class="banner-item-img" :style="{ width, height }" />
+    <BaseImageLazyload :src="url" class="banner-item-img" :style="{ width }" />
     <div class="banner-item-code-container">
       <code class="banner-item-code">
         {{ code }}
@@ -64,10 +64,15 @@ export default {
   margin-bottom: 8px;
   flex-shrink: 0;
   background-color: var(--color-image-background);
+  max-width: 100%;
 
   @media (min-width: 721px) {
     margin-bottom: 0;
     margin-right: 24px;
+  }
+
+  :deep(img) {
+    max-width: 100%;
   }
 }
 
@@ -75,10 +80,12 @@ export default {
   padding: 12px 16px;
   background-color: var(--color-image-background);
   border-radius: 12px;
+  max-width: 100%;
 }
 
 .banner-item-code {
   display: block;
+  overflow-wrap: break-word;
 }
 
 .banner-item-copy {
