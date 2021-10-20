@@ -1,7 +1,7 @@
 <template>
   <section class="splash">
     <div class="background-image-container">
-      <BaseImageLazyload :src="BackgroundUrl" class="background-image" />
+      <img :src="BackgroundUrl" class="background-image" />
     </div>
     <div class="content">
       <header class="header">
