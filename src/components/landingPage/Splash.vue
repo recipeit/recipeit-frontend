@@ -1,8 +1,8 @@
 <template>
   <section class="splash">
-    <div class="background-image-container">
+    <!-- <div class="background-image-container">
       <img :src="BackgroundUrl" class="background-image" />
-    </div>
+    </div> -->
     <div class="content">
       <header class="header">
         <router-link :to="{ name: LANDING_PAGE }" class="logo-link" title="Recipeit">
