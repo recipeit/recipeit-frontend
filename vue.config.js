@@ -35,21 +35,6 @@ module.exports = {
   configureWebpack: config => {
     config.devtool = 'source-map'
 
-    // config.plugins.push(
-    //   new GoogleFontsPlugin({
-    //     noLocalInCss: true,
-    //     filename: 'fonts.10.css',
-    //     fonts: [
-    //       {
-    //         family: 'Montserrat',
-    //         display: 'swap',
-    //         variants: ['500', '600', '700'],
-    //         subsets: ['latin', 'latin-ext'],
-    //       }
-    //     ]
-    //   })
-    // )
-
     if (isProduction) {
       config.plugins.push(
         new SentryWebpackPlugin({
@@ -128,7 +113,7 @@ module.exports = {
         }
       ],
       description:
-        'Znajdź przepis ze swoich produktów! Nie pozwól aby Twoje produkty się przeterminowały. Recipeit pokaże Ci, co możesz z nich przygotować.',
+        'Znajdź przepis ze swoich składników! Nie pozwól aby Twoje produkty się przeterminowały. Recipeit pokaże Ci, co możesz przygotować z tego co masz w lodówce i w kuchni.',
       screenshots: [
         {
           src: '/pwa/screenshots/recipe.jpg',
