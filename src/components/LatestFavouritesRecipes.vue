@@ -4,7 +4,9 @@
       icon="heart"
       title="Ulubione"
       action-text="zobacz wszystkie"
-      :show-action="favouriteRecipesList.recipes.value.pagedItems[1]?.length > 0"
+      :show-action="
+        favouriteRecipesList.recipes.value.pagedItems[1]?.length > 0
+      "
       @action-click="showAllFavourites()"
     />
     <HorizontalRecipesList
@@ -23,44 +25,45 @@
 </template>
 
 <script>
-import { onBeforeMount } from 'vue'
-import { useRouter } from 'vue-router'
+// import { onBeforeMount } from "vue";
+// import { useRouter } from "vue-router";
 
-import userApi from '@/api/userApi'
+import userApi from "@/src/api/userApi";
 
-import { APP_FAVOURITES } from '@/router/names'
+import { APP_FAVOURITES } from "@/src/router/names";
 
-import recipePagedList from '@/views/app/composable/recipePagedList'
+import recipePagedList from "@/src/views/app/composable/recipePagedList";
 
-import AddToFavouriteRecipeBox from '@/components/AddToFavouriteRecipeBox'
-import HorizontalRecipesList from '@/components/HorizontalRecipesList'
-import SectionTitle from '@/components/SectionTitle'
+import AddToFavouriteRecipeBox from "@/src/components/AddToFavouriteRecipeBox";
+import HorizontalRecipesList from "@/src/components/HorizontalRecipesList";
+import SectionTitle from "@/src/components/SectionTitle";
 
 export default {
+  name: "LatestFavouritesRecipes",
   components: { AddToFavouriteRecipeBox, HorizontalRecipesList, SectionTitle },
   setup() {
-    const router = useRouter()
-    const favouriteRecipesList = recipePagedList(userApi.getFavouriteRecipes)
+    const router = useRouter();
+    const favouriteRecipesList = recipePagedList(userApi.getFavouriteRecipes);
 
     const loadFavouriteRecipes = () => {
-      favouriteRecipesList.loadRecipesPage(1, false)
-    }
+      favouriteRecipesList.loadRecipesPage(1, false);
+    };
 
     const showAllFavourites = () => {
-      router.push({ name: APP_FAVOURITES })
-    }
+      router.push({ name: APP_FAVOURITES });
+    };
 
     onBeforeMount(() => {
-      loadFavouriteRecipes()
-    })
+      loadFavouriteRecipes();
+    });
 
     return {
       favouriteRecipesList,
       loadFavouriteRecipes,
-      showAllFavourites
-    }
-  }
-}
+      showAllFavourites,
+    };
+  },
+};
 </script>
 
 <style lang="scss" scoped>

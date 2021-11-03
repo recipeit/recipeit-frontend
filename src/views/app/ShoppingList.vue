@@ -10,8 +10,12 @@
         color="primary"
         @click="openAddProductSelect()"
       >
-        <BaseIcon class="floating-action-button__icon" icon="plus" weight="semi-bold" />
-        {{ $t('shared.addProduct') }}
+        <BaseIcon
+          class="floating-action-button__icon"
+          icon="plus"
+          weight="semi-bold"
+        />
+        {{ $t("shared.addProduct") }}
       </BaseButton>
     </div>
 
@@ -42,16 +46,30 @@
 
     <div v-if="groupedProducts === null">...wczytuję</div>
     <ul v-else-if="groupedProducts.length > 0" class="product-list-groups">
-      <li v-for="products in groupedProducts" :key="products[0]" class="product-list-group">
+      <li
+        v-for="products in groupedProducts"
+        :key="products[0]"
+        class="product-list-group"
+      >
         <div class="product-list-group__title">
-          <ProductIcon class="product-list-group__title__icon" :group="products[0]" />
+          <ProductIcon
+            class="product-list-group__title__icon"
+            :group="products[0]"
+          />
           <div class="product-list-group__title__name">
             {{ $t(`productCategory.${products[0]}`) }}
           </div>
         </div>
         <ul class="product-list">
-          <li v-for="product in products[1]" :key="product.id" class="product-list__item">
-            <ShoppingListProduct :product="product" @purchase="purchase(product.id)" />
+          <li
+            v-for="product in products[1]"
+            :key="product.id"
+            class="product-list__item"
+          >
+            <ShoppingListProduct
+              :product="product"
+              @purchase="purchase(product.id)"
+            />
           </li>
         </ul>
       </li>
@@ -61,14 +79,28 @@
         Trochę tu pusto
       </div>
       Dodaj coś do listy zakupów
-      <BaseButton class="add-product-button space-top" raised color="primary" @click="openAddProductSelect()">
-        <BaseIcon class="floating-action-button__icon" icon="plus" weight="semi-bold" />
-        {{ $t('shared.addProduct') }}
+      <BaseButton
+        class="add-product-button space-top"
+        raised
+        color="primary"
+        @click="openAddProductSelect()"
+      >
+        <BaseIcon
+          class="floating-action-button__icon"
+          icon="plus"
+          weight="semi-bold"
+        />
+        {{ $t("shared.addProduct") }}
       </BaseButton>
     </div>
 
-    <BaseLink v-if="products && products.length > 0" color="primary" class="purchase-all-button" @click="purchaseAll">
-      {{ $t('shoppingList.purchaseAllButton') }}
+    <BaseLink
+      v-if="products && products.length > 0"
+      color="primary"
+      class="purchase-all-button"
+      @click="purchaseAll"
+    >
+      {{ $t("shoppingList.purchaseAllButton") }}
     </BaseLink>
 
     <!-- <div class="floating-action-button-container">
@@ -81,65 +113,65 @@
 </template>
 
 <script>
-import _ from 'lodash'
-import { computed, markRaw, nextTick, reactive, ref, toRefs } from 'vue'
-import { mapState, useStore } from 'vuex'
-import { useMeta } from 'vue-meta'
+import _ from "lodash";
+// import { computed, markRaw, nextTick, reactive, ref, toRefs } from "vue";
+import { mapState, useStore } from "vuex";
+// import { useMeta } from "vue-meta";
 
-import PageHeader from '@/components/PageHeader'
-import ProductIcon from '@/components/ProductIcon'
-import ShoppingListProduct from '@/components/ShoppingListProduct'
-import Dialog from '@/components/modals/Dialog'
-// import NewShoppingListProduct from '@/components/modals/NewShoppingListProduct'
+import PageHeader from "@/src/components/PageHeader";
+import ProductIcon from "@/src/components/ProductIcon";
+import ShoppingListProduct from "@/src/components/ShoppingListProduct";
+import Dialog from "@/src/components/modals/Dialog";
+// import NewShoppingListProduct from '@/src/components/modals/NewShoppingListProduct'
 
-import { PRODUCT_GROUP_ICONS } from '@/constants'
+import { PRODUCT_GROUP_ICONS } from "@/src/constants";
 
 export default {
-  name: 'ShoppingList',
+  name: "ShoppingList",
   components: {
     ShoppingListProduct,
     PageHeader,
-    ProductIcon
+    ProductIcon,
   },
   setup() {
     useMeta({
-      title: 'Lista zakupów'
-    })
+      title: "Lista zakupów",
+    });
 
-    const store = useStore()
+    const store = useStore();
 
-    const addProductSelect = ref(null)
+    const addProductSelect = ref(null);
 
     const data = reactive({
       fetchedData: false,
-      selectFocused: false
-    })
+      selectFocused: false,
+    });
 
     const baseProductsGrouped = computed(() =>
       _(store.state.ingredients.baseProducts)
-        .groupBy(item => item.category)
+        .groupBy((item) => item.category)
         .toPairs()
         .value()
-        .map(pair => ({
+        .map((pair) => ({
           groupKey: pair[0],
-          groupValues: pair[1]
+          groupValues: pair[1],
         }))
-    )
+    );
 
     const addProductFromSelect = ({ id } = {}) => {
       const requestData = {
-        baseProductId: id
-      }
+        baseProductId: id,
+      };
 
-      store.dispatch('shoppingList/addProduct', requestData)
-    }
+      store.dispatch("shoppingList/addProduct", requestData);
+    };
 
     const openAddProductSelect = async () => {
-      data.selectFocused = true
-      await nextTick()
+      data.selectFocused = true;
+      await nextTick();
       // console.log(addProductSelect)
-      addProductSelect.value?.setFocus()
-    }
+      addProductSelect.value?.setFocus();
+    };
 
     return {
       ...toRefs(data),
@@ -147,72 +179,74 @@ export default {
       baseProductsGrouped,
       addProductFromSelect,
       openAddProductSelect,
-      PRODUCT_GROUP_ICONS
-    }
+      PRODUCT_GROUP_ICONS,
+    };
   },
   computed: {
     ...mapState({
-      products: state => state.shoppingList.products
+      products: (state) => state.shoppingList.products,
     }),
     isEmpty() {
-      return !(this.groupedProducts === null || this.groupedProducts.length > 0)
+      return !(
+        this.groupedProducts === null || this.groupedProducts.length > 0
+      );
     },
     filteredProducts() {
-      return this.products
+      return this.products;
       // if (!this.products) return null
       // if (!this.searchString) return this.products
 
       // return this.products.filter(p => p.baseProductName.toLowerCase().includes(this.searchString.toLowerCase()))
     },
     groupedProducts() {
-      const { filteredProducts } = this
+      const { filteredProducts } = this;
 
-      if (!filteredProducts) return null
+      if (!filteredProducts) return null;
 
       return _(filteredProducts)
-        .sortBy(item => item.baseProductName)
-        .groupBy(item => item.category)
+        .sortBy((item) => item.baseProductName)
+        .groupBy((item) => item.category)
         .toPairs()
-        .sortBy(group => this.$t(`productCategory.${group[0]}`))
-        .value()
-    }
+        .sortBy((group) => this.$t(`productCategory.${group[0]}`))
+        .value();
+    },
   },
   beforeMount() {
-    this.$store.dispatch('ingredients/fetchBaseProducts')
-    this.$store.dispatch('ingredients/fetchUnitsGroupedByMeasurement')
-    this.$store.dispatch('shoppingList/fetchProducts')
+    this.$store.dispatch("ingredients/fetchBaseProducts");
+    this.$store.dispatch("ingredients/fetchUnitsGroupedByMeasurement");
+    this.$store.dispatch("shoppingList/fetchProducts");
   },
   methods: {
     // newProduct() {
     //   this.$modal.show(markRaw(NewShoppingListProduct), {}, {})
     // },
     purchase(id) {
-      this.$store.dispatch('shoppingList/purchaseProduct', id)
+      this.$store.dispatch("shoppingList/purchaseProduct", id);
     },
     purchaseAll() {
       this.$modal.show(
         markRaw(Dialog),
         {
-          title: this.$t('shoppingList.purchaseAllDialogTitle', {
-            products: this.$tc('shared.products', this.products.length)
+          title: this.$t("shoppingList.purchaseAllDialogTitle", {
+            products: this.$tc("shared.products", this.products.length),
           }),
-          secondaryText: this.$t('shared.no'),
-          primaryText: this.$t('shared.yes')
+          secondaryText: this.$t("shared.no"),
+          primaryText: this.$t("shared.yes"),
         },
         {
-          close: purchase => {
+          close: (purchase) => {
             if (purchase) {
-              this.$store.dispatch('shoppingList/purchaseAllProducts')
+              this.$store.dispatch("shoppingList/purchaseAllProducts");
             }
-          }
+          },
         }
-      )
-    }
+      );
+    },
     // onSearch({ search }) {
     //   this.searchString = search
     // }
-  }
-}
+  },
+};
 </script>
 
 <style lang="scss" scoped>

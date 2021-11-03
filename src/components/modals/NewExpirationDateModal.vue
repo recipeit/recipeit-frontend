@@ -4,7 +4,11 @@
       <BaseModalTitle>Nowa data ważności</BaseModalTitle>
     </BaseModalHeader>
     <BaseModalBody>
-      <form :id="formID" class="form-columns" @submit="addExpirationDate($event)">
+      <form
+        :id="formID"
+        class="form-columns"
+        @submit="addExpirationDate($event)"
+      >
         <BaseSelect
           :searchable="false"
           placeholder="Rok"
@@ -35,72 +39,89 @@
       </form>
     </BaseModalBody>
     <BaseModalFooter>
-      <BaseButton class="submit-button" raised color="primary" type="submit" :form="formID">
+      <BaseButton
+        class="submit-button"
+        raised
+        color="primary"
+        type="submit"
+        :form="formID"
+      >
         <BaseIcon class="submit-button__icon" icon="plus" weight="semi-bold" />
-        {{ $t('shared.addExpirationDate') }}
+        {{ $t("shared.addExpirationDate") }}
       </BaseButton>
     </BaseModalFooter>
   </SheetModalContent>
 </template>
 
 <script>
-import { useField, useForm } from 'vee-validate'
-import { computed } from 'vue'
-import * as Yup from 'yup'
+import { useField, useForm } from "vee-validate";
+// import { computed } from "vue";
+import * as Yup from "yup";
 
-import dayjs from '@/functions/dayjs'
-import uniqueID from '@/functions/uniqueID'
+import dayjs from "@/src/functions/dayjs";
+import uniqueID from "@/src/functions/uniqueID";
 
 export default {
-  emits: ['close'],
+  emits: ["close"],
   setup(_, { emit }) {
-    const formID = 'form-' + uniqueID().getID()
-    const currentYear = dayjs().year()
+    const formID = "form-" + uniqueID().getID();
+    const currentYear = dayjs().year();
 
     const myForm = useForm({
       initialValues: {
-        year: currentYear
-      }
-    })
-    const { value: yearValue, errors: yearErrors, handleBlur: yearOnBlur, handleChange: yearOnChange } = useField(
-      'year',
+        year: currentYear,
+      },
+    });
+    const {
+      value: yearValue,
+      errors: yearErrors,
+      handleBlur: yearOnBlur,
+      handleChange: yearOnChange,
+    } = useField(
+      "year",
       Yup.number()
-        .required('REQUIRED')
-        .typeError('REQUIRED'),
+        .required("REQUIRED")
+        .typeError("REQUIRED"),
       { myForm }
-    )
-    const { value: monthValue, errors: monthErrors, handleBlur: monthOnBlur, handleChange: monthOnChange } = useField(
-      'month',
+    );
+    const {
+      value: monthValue,
+      errors: monthErrors,
+      handleBlur: monthOnBlur,
+      handleChange: monthOnChange,
+    } = useField(
+      "month",
       Yup.number()
-        .required('REQUIRED')
-        .typeError('REQUIRED'),
+        .required("REQUIRED")
+        .typeError("REQUIRED"),
       { myForm }
-    )
-    const { value: dayValue, errors: dayErrors, handleBlur: dayOnBlur, handleChange: dayOnChange } = useField(
-      'day',
-      Yup.number().nullable(),
-      {
-        myForm
-      }
-    )
+    );
+    const {
+      value: dayValue,
+      errors: dayErrors,
+      handleBlur: dayOnBlur,
+      handleChange: dayOnChange,
+    } = useField("day", Yup.number().nullable(), {
+      myForm,
+    });
 
-    const years = Array.from({ length: 15 }, (_, i) => i + currentYear)
-    const months = Array.from({ length: 12 }, (_, i) => i + 1)
+    const years = Array.from({ length: 15 }, (_, i) => i + currentYear);
+    const months = Array.from({ length: 12 }, (_, i) => i + 1);
     const days = computed(() => {
-      const { year, month } = myForm.values
-      if (!year || !month) return []
+      const { year, month } = myForm.values;
+      if (!year || !month) return [];
 
-      const monthDays = dayjs(new Date(year, month - 1, 1)).daysInMonth()
-      return Array.from({ length: monthDays }, (_, i) => i + 1)
-    })
+      const monthDays = dayjs(new Date(year, month - 1, 1)).daysInMonth();
+      return Array.from({ length: monthDays }, (_, i) => i + 1);
+    });
 
-    const addExpirationDate = myForm.handleSubmit(values => {
-      let date = { ...values }
+    const addExpirationDate = myForm.handleSubmit((values) => {
+      let date = { ...values };
 
-      if (!date.day) date.day = 1
+      if (!date.day) date.day = 1;
 
-      emit('close', date)
-    })
+      emit("close", date);
+    });
 
     return {
       myForm,
@@ -120,10 +141,10 @@ export default {
       years,
       months,
       days,
-      addExpirationDate
-    }
-  }
-}
+      addExpirationDate,
+    };
+  },
+};
 </script>
 
 <style lang="scss" scoped>

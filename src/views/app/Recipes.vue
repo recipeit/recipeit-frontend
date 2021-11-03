@@ -5,21 +5,37 @@
     <GenericRecipesList
       :recipes="recipesList.recipes.value"
       :errors="recipesList.recipesErrors.value"
-      :load-handler="pageNumber => recipesList.loadRecipesPage(pageNumber)"
+      :load-handler="(pageNumber) => recipesList.loadRecipesPage(pageNumber)"
       @reload="reloadRecipes($event)"
       @reload-with-query="reloadRecipesWithQuery($event)"
     >
       <template #above-list>
-        <div v-if="availableRecipesCount !== 0" class="recipes-count" :class="{ 'hide-text': availableRecipesCount === null }">
+        <div
+          v-if="availableRecipesCount !== 0"
+          class="recipes-count"
+          :class="{ 'hide-text': availableRecipesCount === null }"
+        >
           <BaseIcon class="recipes-count-icon" icon="chef-hat" />
           <span>
-            <b>{{ $tc('shared.recipes', availableRecipesCount) }}</b> z tej listy możesz przygotować z produktów które masz!
-            <router-link v-slot="{ href, navigate }" :to="{ name: 'cook-it', query: $route.query }" custom>
-              <BaseLink :href="href" color="primary" class="cook-it-link" @click="navigate($event)">
-                <template v-if="availableRecipesCount === 1">Sprawdź jaki</template>
+            <b>{{ $tc("shared.recipes", availableRecipesCount) }}</b> z tej
+            listy możesz przygotować z produktów które masz!
+            <NuxtLink
+              v-slot="{ href, navigate }"
+              :to="{ path: '/ugotuj-to', query: $route.query }"
+              custom
+            >
+              <BaseLink
+                :href="href"
+                color="primary"
+                class="cook-it-link"
+                @click="navigate($event)"
+              >
+                <template v-if="availableRecipesCount === 1"
+                  >Sprawdź jaki</template
+                >
                 <template v-else>Sprawdź jakie</template>
               </BaseLink>
-            </router-link>
+            </NuxtLink>
           </span>
         </div>
       </template>
@@ -28,72 +44,79 @@
 </template>
 
 <script>
-import { ref } from 'vue'
-import { useMeta } from 'vue-meta'
-import { useRoute } from 'vue-router'
+// import { ref } from "vue";
+// import { useMeta } from "vue-meta";
+// import { useRoute } from "vue-router";
 
-import recipeApi from '@/api/recipeApi'
-import userApi from '@/api/userApi'
+import recipeApi from "@/src/api/recipeApi";
+import userApi from "@/src/api/userApi";
 
-import { fetchRecipesQueryParams, queryParamsFromRouteQuery } from '@/constants'
+import {
+  fetchRecipesQueryParams,
+  queryParamsFromRouteQuery,
+} from "@/src/constants";
 
-import recipeFilteredPagedList from '@/views/app/composable/recipeFilteredPagedList'
+import recipeFilteredPagedList from "@/src/views/app/composable/recipeFilteredPagedList";
 
-import GenericRecipesList from '@/components/GenericRecipesList'
-import PageHeader from '@/components/PageHeader'
+import GenericRecipesList from "@/src/components/GenericRecipesList";
+import PageHeader from "@/src/components/PageHeader";
 
 export default {
-  name: 'Recipes',
+  name: "Recipes",
   components: {
     GenericRecipesList,
-    PageHeader
+    PageHeader,
   },
   props: {
     savedPosition: {
-      type: String
-    }
+      type: String,
+    },
   },
   setup() {
     useMeta({
-      title: 'Baza przepisów'
-    })
-    const route = useRoute()
+      title: "Baza przepisów",
+    });
+    const route = useRoute();
 
-    const availableRecipesCount = ref(null)
+    const availableRecipesCount = ref(null);
 
-    const recipesList = recipeFilteredPagedList(recipeApi.getRecipes)
+    const recipesList = recipeFilteredPagedList(recipeApi.getRecipes);
 
-    const fetchAvailableRecipesCount = async ({ orderMethod, filters, search } = {}) => {
-      availableRecipesCount.value = null
+    const fetchAvailableRecipesCount = async ({
+      orderMethod,
+      filters,
+      search,
+    } = {}) => {
+      availableRecipesCount.value = null;
 
-      const queryParams = fetchRecipesQueryParams(orderMethod, filters, search)
+      const queryParams = fetchRecipesQueryParams(orderMethod, filters, search);
 
-      const { data } = await userApi.getAvailableRecipesCount(queryParams)
+      const { data } = await userApi.getAvailableRecipesCount(queryParams);
 
-      availableRecipesCount.value = data
-    }
+      availableRecipesCount.value = data;
+    };
 
-    const reloadRecipes = event => {
-      fetchAvailableRecipesCount(event)
-      recipesList.reloadRecipes(event)
-    }
+    const reloadRecipes = (event) => {
+      fetchAvailableRecipesCount(event);
+      recipesList.reloadRecipes(event);
+    };
 
-    const reloadRecipesWithQuery = event => {
-      fetchAvailableRecipesCount(event)
-      recipesList.reloadRecipesWithQuery(event)
-    }
+    const reloadRecipesWithQuery = (event) => {
+      fetchAvailableRecipesCount(event);
+      recipesList.reloadRecipesWithQuery(event);
+    };
 
-    const initialQueryParams = queryParamsFromRouteQuery(route.query)
-    fetchAvailableRecipesCount(initialQueryParams)
+    const initialQueryParams = queryParamsFromRouteQuery(route.query);
+    fetchAvailableRecipesCount(initialQueryParams);
 
     return {
       recipesList,
       reloadRecipes,
       reloadRecipesWithQuery,
-      availableRecipesCount
-    }
-  }
-}
+      availableRecipesCount,
+    };
+  },
+};
 </script>
 
 <style lang="scss" scoped>

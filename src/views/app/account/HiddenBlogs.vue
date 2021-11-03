@@ -16,40 +16,42 @@
 </template>
 
 <script>
-import { useMeta } from 'vue-meta'
+import { useMeta } from "vue-meta";
 
-import userApi from '@/api/userApi'
+import userApi from "@/src/api/userApi";
 
-import HiddenBlog from '@/components/HiddenBlog'
-import PageHeader from '@/components/PageHeader'
+import HiddenBlog from "@/src/components/HiddenBlog";
+import PageHeader from "@/src/components/PageHeader";
 
 export default {
   components: {
     PageHeader,
-    HiddenBlog
+    HiddenBlog,
   },
   setup() {
     useMeta({
-      title: 'Ukryte blogi'
-    })
+      title: "Ukryte blogi",
+    });
   },
   data: () => ({
-    hiddenBlogs: null
+    hiddenBlogs: null,
   }),
   beforeMount() {
     userApi.getHiddenBlogs().then(({ data }) => {
-      this.hiddenBlogs = data.blogs || []
-    })
+      this.hiddenBlogs = data.blogs || [];
+    });
   },
   methods: {
     unhideBlog(id) {
-      this.$store.dispatch('user/changeBlogVisibility', { blogId: id, visible: true }).then(() => {
-        const index = this.hiddenBlogs.findIndex(v => v.id === id)
-        this.hiddenBlogs.splice(index, 1)
-      })
-    }
-  }
-}
+      this.$store
+        .dispatch("user/changeBlogVisibility", { blogId: id, visible: true })
+        .then(() => {
+          const index = this.hiddenBlogs.findIndex((v) => v.id === id);
+          this.hiddenBlogs.splice(index, 1);
+        });
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>

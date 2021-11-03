@@ -1,10 +1,18 @@
 <template>
   <div ref="block" class="recipe-parallax-gallery">
     <div class="gallery-controls">
-      <button class="gallery-control-left" :disabled="isCurrentImageFirst ? true : null" @click.prevent="showPrev()">
+      <button
+        class="gallery-control-left"
+        :disabled="isCurrentImageFirst ? true : null"
+        @click.prevent="showPrev()"
+      >
         <BaseIcon icon="angle-left" />
       </button>
-      <button class="gallery-control-right" :disabled="isCurrentImageLast ? true : null" @click.prevent="showNext()">
+      <button
+        class="gallery-control-right"
+        :disabled="isCurrentImageLast ? true : null"
+        @click.prevent="showNext()"
+      >
         <BaseIcon icon="angle-right" />
       </button>
     </div>
@@ -12,7 +20,10 @@
       <span
         v-for="(_, index) in images"
         :key="index"
-        :class="['gallery-indicator', { 'gallery-indicator--current': currentImageIndex === index }]"
+        :class="[
+          'gallery-indicator',
+          { 'gallery-indicator--current': currentImageIndex === index },
+        ]"
         @click="scrollTo(index)"
       />
     </div>
@@ -37,113 +48,148 @@
 </template>
 
 <script>
-import debounce from 'lodash.debounce'
-import { computed } from 'vue'
-import { useStore } from 'vuex'
+import debounce from "lodash.debounce";
+// import { computed } from "vue";
+import { useStore } from "vuex";
 
-import placeholderDark from '@/assets/img/placeholders/recipe-image-dark.webp'
-import placeholderLight from '@/assets/img/placeholders/recipe-image.webp'
+import placeholderDark from "@/src/assets/img/placeholders/recipe-image-dark.webp";
+import placeholderLight from "@/src/assets/img/placeholders/recipe-image.webp";
 
-import { THEME_DARK } from '@/configs/theme'
+import { THEME_DARK } from "@/src/configs/theme";
 
 export default {
   props: {
     images: {
       type: Array,
-      required: true
+      required: true,
     },
     firstImagePosition: {
       type: String,
-      default: 'center'
-    }
+      default: "center",
+    },
   },
   data() {
-    const store = useStore()
+    const store = useStore();
 
-    const placeholder = computed(() => (store.state.user.theme === THEME_DARK ? placeholderDark : placeholderLight))
+    const placeholder = computed(() =>
+      store.state.user.theme === THEME_DARK ? placeholderDark : placeholderLight
+    );
 
     return {
       currentImageIndex: 0,
       isTouching: false,
       onScrollTimeout: null,
       imageRefs: [],
-      placeholder
-    }
+      placeholder,
+    };
   },
   computed: {
     isCurrentImageLast() {
-      return this.currentImageIndex + 1 === this.images.length
+      return this.currentImageIndex + 1 === this.images.length;
     },
     isCurrentImageFirst() {
-      return this.currentImageIndex === 0
-    }
+      return this.currentImageIndex === 0;
+    },
   },
   beforeUpdate() {
-    this.imageRefs = []
+    this.imageRefs = [];
   },
   mounted() {
-    this.imagesScrollHandler = debounce(this.imagesScrollHandlerDebounced, 200)
-    this.checkGalleryStoppedInMiddleHandler = debounce(this.checkGalleryStoppedInMiddle, 500)
-    this.windowScrollHandler()
+    this.imagesScrollHandler = debounce(this.imagesScrollHandlerDebounced, 200);
+    this.checkGalleryStoppedInMiddleHandler = debounce(
+      this.checkGalleryStoppedInMiddle,
+      500
+    );
+    this.windowScrollHandler();
 
-    window.addEventListener('scroll', this.windowScrollHandler, false)
-    window.addEventListener('resize', this.checkGalleryStoppedInMiddleHandler, false)
-    this.$refs.images.addEventListener('scroll', this.imagesScrollHandler, false)
-    this.$refs.images.addEventListener('scroll', this.checkGalleryStoppedInMiddleHandler, false)
+    window.addEventListener("scroll", this.windowScrollHandler, false);
+    window.addEventListener(
+      "resize",
+      this.checkGalleryStoppedInMiddleHandler,
+      false
+    );
+    this.$refs.images.addEventListener(
+      "scroll",
+      this.imagesScrollHandler,
+      false
+    );
+    this.$refs.images.addEventListener(
+      "scroll",
+      this.checkGalleryStoppedInMiddleHandler,
+      false
+    );
   },
   beforeUnmount() {
-    window.removeEventListener('scroll', this.windowScrollHandler, false)
-    window.removeEventListener('resize', this.checkGalleryStoppedInMiddleHandler, false)
-    this.$refs.images.removeEventListener('scroll', this.imagesScrollHandler, false)
-    this.$refs.images.removeEventListener('scroll', this.checkGalleryStoppedInMiddleHandler, false)
+    window.removeEventListener("scroll", this.windowScrollHandler, false);
+    window.removeEventListener(
+      "resize",
+      this.checkGalleryStoppedInMiddleHandler,
+      false
+    );
+    this.$refs.images.removeEventListener(
+      "scroll",
+      this.imagesScrollHandler,
+      false
+    );
+    this.$refs.images.removeEventListener(
+      "scroll",
+      this.checkGalleryStoppedInMiddleHandler,
+      false
+    );
   },
   methods: {
     setImageRef(el) {
-      const $el = el?.$el
+      const $el = el?.$el;
       if ($el) {
-        this.imageRefs.push($el)
+        this.imageRefs.push($el);
       }
     },
     showPrev() {
       if (this.currentImageIndex > 0) {
-        this.scrollTo(this.currentImageIndex - 1)
+        this.scrollTo(this.currentImageIndex - 1);
       }
     },
     showNext() {
       if (this.currentImageIndex < this.images.length) {
-        this.scrollTo(this.currentImageIndex + 1)
+        this.scrollTo(this.currentImageIndex + 1);
       }
     },
     scrollTo(index) {
-      if (!this.imageRefs) return
-      const imageEl = this.imageRefs[index]
+      if (!this.imageRefs) return;
+      const imageEl = this.imageRefs[index];
       if (imageEl) {
-        if (this.$refs.images && this.$refs.images.scrollLeft !== imageEl.offsetLeft) {
+        if (
+          this.$refs.images &&
+          this.$refs.images.scrollLeft !== imageEl.offsetLeft
+        ) {
           this.$refs.images?.scrollTo({
             left: imageEl.offsetLeft,
-            behavior: 'smooth'
-          })
+            behavior: "smooth",
+          });
         }
         if (this.currentImageIndex !== index) {
-          this.currentImageIndex = index
+          this.currentImageIndex = index;
         }
       }
     },
     windowScrollHandler() {
-      const parentHeight = this.$refs.block.offsetHeight
-      const scrollFactor = Math.max(0, Math.min(window.pageYOffset / parentHeight, 1))
-      const transformValue = (scrollFactor * parentHeight) / 2
-      this.$refs.images.style.transform = `translate3d(0, ${transformValue}px ,0)`
+      const parentHeight = this.$refs.block.offsetHeight;
+      const scrollFactor = Math.max(
+        0,
+        Math.min(window.pageYOffset / parentHeight, 1)
+      );
+      const transformValue = (scrollFactor * parentHeight) / 2;
+      this.$refs.images.style.transform = `translate3d(0, ${transformValue}px ,0)`;
     },
     calculateCurrentIndex() {
-      if (!this.$refs.images) return 0
-      const { scrollLeft, scrollWidth } = this.$refs.images
-      return Math.round((scrollLeft / scrollWidth) * this.images.length)
+      if (!this.$refs.images) return 0;
+      const { scrollLeft, scrollWidth } = this.$refs.images;
+      return Math.round((scrollLeft / scrollWidth) * this.images.length);
     },
     imagesScrollHandlerDebounced() {
-      const index = this.calculateCurrentIndex()
+      const index = this.calculateCurrentIndex();
       if (this.currentImageIndex !== index) {
-        this.currentImageIndex = index
+        this.currentImageIndex = index;
       }
     },
     // resizeHandlerDebounced() {
@@ -153,11 +199,11 @@ export default {
     // },
     checkGalleryStoppedInMiddle() {
       if (!this.isTouching) {
-        this.scrollTo(this.calculateCurrentIndex())
+        this.scrollTo(this.calculateCurrentIndex());
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>

@@ -24,7 +24,7 @@ html {
 body {
   overflow-y: scroll;
   overflow-x: hidden;
-  font-family: 'Montserrat', Helvetica, Arial, sans-serif;
+  font-family: "Montserrat", Helvetica, Arial, sans-serif;
   font-weight: 500;
   line-height: 1.75;
   -webkit-font-smoothing: antialiased;
@@ -60,7 +60,7 @@ body {
   // }
 }
 
-#app {
+#__nuxt {
   min-height: 100%;
   display: flex;
   flex-direction: column;

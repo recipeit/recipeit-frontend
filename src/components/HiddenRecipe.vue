@@ -1,12 +1,25 @@
 <template>
-  <router-link v-slot="{ href, navigate }" :to="{ name: APP_RECIPE, params: { recipeId: recipe.id, recipeName: recipe.name } }" custom>
+  <NuxtLink
+    v-slot="{ href, navigate }"
+    :to="{
+      path: '/przepis',
+      params: { recipeId: recipe.id, recipeName: recipe.name },
+    }"
+    custom
+  >
     <a :href="href" class="hidden-recipe" @click="navigate($event)">
-      <BaseImageLazyload :src="miniatureUrl" :alt="recipe.name" class="hidden-recipe__image" />
+      <BaseImageLazyload
+        :src="miniatureUrl"
+        :alt="recipe.name"
+        class="hidden-recipe__image"
+      />
       <div class="hidden-recipe__details">
         <div class="hidden-recipe__name">{{ recipe.name }}</div>
         <div class="hidden-recipe__author-section">
           <span class="hidden-recipe__author">{{ recipe.author.name }}</span
-          ><span class="hidden-recipe__blog">, {{ recipe.author.blog.name }}</span>
+          ><span class="hidden-recipe__blog"
+            >, {{ recipe.author.blog.name }}</span
+          >
         </div>
       </div>
       <div class="hidden-recipe__action">
@@ -15,31 +28,33 @@
         </button>
       </div>
     </a>
-  </router-link>
+  </NuxtLink>
 </template>
 
 <script>
-import { computed } from 'vue'
+// import { computed } from "vue";
 
-import { APP_RECIPE } from '@/router/names'
+import { APP_RECIPE } from "@/src/router/names";
 
 export default {
   props: {
     recipe: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
-  emits: ['unhide'],
+  emits: ["unhide"],
   setup(props) {
-    const miniatureUrl = computed(() => `/static/recipes/${props.recipe.id}/thumb.webp?v=1`)
+    const miniatureUrl = computed(
+      () => `/static/recipes/${props.recipe.id}/thumb.webp?v=1`
+    );
 
     return {
       APP_RECIPE,
-      miniatureUrl
-    }
-  }
-}
+      miniatureUrl,
+    };
+  },
+};
 </script>
 
 <style lang="scss" scoped>

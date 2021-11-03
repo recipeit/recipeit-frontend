@@ -1,14 +1,14 @@
 import * as Sentry from '@sentry/browser'
 import axios from 'axios'
 
-import { IDENTITY_URLS } from '@/api/identityApi'
+import { IDENTITY_URLS } from '@/src/api/identityApi'
 
-import { API_DEV_BASE_URL_SSL, API_PROD_BASE_URL } from '@/configs/api'
+import { API_DEV_BASE_URL_SSL, API_PROD_BASE_URL } from '@/src/configs/api'
 
-import store from '@/store'
+import store from '@/src/store'
 
 const apiClient = axios.create({
-  baseURL: process.env.NODE_ENV === 'production' ? API_PROD_BASE_URL : API_DEV_BASE_URL_SSL,
+  baseURL: process.env.NODE_ENV === 'production' ? API_DEV_BASE_URL_SSL : API_DEV_BASE_URL_SSL,
   withCredentials: true,
   timeout: 15000, // 15 seconds
   headers: {

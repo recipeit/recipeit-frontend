@@ -4,30 +4,33 @@
 
     <h3>FAQ</h3>
 
-    <p>Nie znalazłeś odpowiedzi? <BaseLink :href="contactUsHref" color="primary">Napisz do nas!</BaseLink></p>
+    <p>
+      Nie znalazłeś odpowiedzi?
+      <BaseLink :href="contactUsHref" color="primary">Napisz do nas!</BaseLink>
+    </p>
   </div>
 </template>
 
 <script>
-import { useMeta } from 'vue-meta'
+import { useMeta } from "vue-meta";
 
-import { CONTACT_MAIL_ADDRESS } from '@/configs/emails'
+import { CONTACT_MAIL_ADDRESS } from "@/src/configs/emails";
 
-import PageHeader from '@/components/PageHeader'
+import PageHeader from "@/src/components/PageHeader";
 
 export default {
-  name: 'Help',
+  name: "Help",
   components: { PageHeader },
   setup() {
     useMeta({
-      title: 'Pomoc'
-    })
+      title: "Pomoc",
+    });
 
-    const contactUsHref = `mailto:${CONTACT_MAIL_ADDRESS}`
+    const contactUsHref = `mailto:${CONTACT_MAIL_ADDRESS}`;
 
     return {
-      contactUsHref
-    }
-  }
-}
+      contactUsHref,
+    };
+  },
+};
 </script>

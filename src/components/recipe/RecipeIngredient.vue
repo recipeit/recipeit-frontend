@@ -4,21 +4,41 @@
       <span class="ingredient-name">{{ name }}</span>
       <template v-if="ingredient.amount && ingredient.amount !== 0">
         <span class="ingredient-amount">{{ computedAmount }}</span>
-        <span class="ingredient-unit"> {{ $tc(`unitsShort.${ingredient.unit}`, unitTranslationAmount) }}</span>
+        <span class="ingredient-unit">
+          {{
+            $tc(`unitsShort.${ingredient.unit}`, unitTranslationAmount)
+          }}</span
+        >
       </template>
-      <span v-if="ingredient.optional" class="ingredient-optional">opcjonalnie</span>
+      <span v-if="ingredient.optional" class="ingredient-optional"
+        >opcjonalnie</span
+      >
     </span>
     <div class="state-container">
       <VTooltip>
-        <BaseLink v-if="ingredient.state === 'IN_KITCHEN'" tag="button" class="state state--available" @click="stateClickHandler()">
-          <BaseIcon class="state-icon state-icon--small" icon="check" weight="semi-bold" />
+        <BaseLink
+          v-if="ingredient.state === 'IN_KITCHEN'"
+          tag="button"
+          class="state state--available"
+          @click="stateClickHandler()"
+        >
+          <BaseIcon
+            class="state-icon state-icon--small"
+            icon="check"
+            weight="semi-bold"
+          />
         </BaseLink>
 
         <BaseButton
-          v-else-if="ingredient.state === 'IN_SHOPPING_LIST' || ingredient.state === 'UNAVAILABLE'"
+          v-else-if="
+            ingredient.state === 'IN_SHOPPING_LIST' ||
+              ingredient.state === 'UNAVAILABLE'
+          "
           class="state"
           subtle
-          :color="ingredient.state === 'IN_SHOPPING_LIST' ? 'primary' : 'accent'"
+          :color="
+            ingredient.state === 'IN_SHOPPING_LIST' ? 'primary' : 'accent'
+          "
           :disabled="showLoadingState"
           @click="stateClickHandler()"
         >
@@ -39,150 +59,175 @@
 </template>
 
 <script>
-import { markRaw } from 'vue'
-import { mapState } from 'vuex'
+// import { markRaw } from "vue";
+import { mapState } from "vuex";
 
-import { INGREDIENT_USER_STATES } from '@/configs/recipeIngredient'
+import { INGREDIENT_USER_STATES } from "@/src/configs/recipeIngredient";
 
-import { stringifiedAmount } from '@/functions/amount'
+import { stringifiedAmount } from "@/src/functions/amount";
 
-import { ToastType } from '@/plugins/toast/toastType'
+import { ToastType } from "@/src/plugins/toast/toastType";
 
-import Dialog from '@/components/modals/Dialog'
-import SelectBaseProductFromArrayModal from '@/components/modals/SelectBaseProductFromArrayModal'
+import Dialog from "@/src/components/modals/Dialog";
+import SelectBaseProductFromArrayModal from "@/src/components/modals/SelectBaseProductFromArrayModal";
 
 export default {
   props: {
     ingredient: {
       type: Object,
-      required: true
+      required: true,
     },
     amountFactor: {
       type: Number,
-      default: 1
+      default: 1,
     },
     allAdding: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data: () => ({
-    loading: false
+    loading: false,
   }),
   computed: {
     ...mapState({
-      baseProducts: state => state.ingredients.baseProducts || []
+      baseProducts: (state) => state.ingredients.baseProducts || [],
     }),
     name() {
-      const { ingredient } = this
-      if (ingredient.name) return ingredient.name
-      return this.baseProducts.find(p => p.id === ingredient.mainBaseProductId)?.name
+      const { ingredient } = this;
+      if (ingredient.name) return ingredient.name;
+      return this.baseProducts.find(
+        (p) => p.id === ingredient.mainBaseProductId
+      )?.name;
     },
     computedAmount() {
-      if (!this.ingredient.amount) return null
+      if (!this.ingredient.amount) return null;
 
-      let amount = stringifiedAmount(this.ingredient.amount * this.amountFactor)
+      let amount = stringifiedAmount(
+        this.ingredient.amount * this.amountFactor
+      );
       if (this.ingredient.amountMax) {
-        amount += ` - ${stringifiedAmount(this.ingredient.amountMax * this.amountFactor)}`
+        amount += ` - ${stringifiedAmount(
+          this.ingredient.amountMax * this.amountFactor
+        )}`;
       }
 
-      return amount
+      return amount;
     },
     unitTranslationAmount() {
-      const amount = this.ingredient.amountMax || this.ingredient.amount
+      const amount = this.ingredient.amountMax || this.ingredient.amount;
       if (amount) {
-        return amount * this.amountFactor
+        return amount * this.amountFactor;
       }
-      return 1
+      return 1;
     },
     showLoadingState() {
-      return this.loading || (this.allAdding && this.ingredient.state === INGREDIENT_USER_STATES.UNAVAILABLE)
+      return (
+        this.loading ||
+        (this.allAdding &&
+          this.ingredient.state === INGREDIENT_USER_STATES.UNAVAILABLE)
+      );
     },
     actionPopperContent() {
-      const { state } = this.ingredient
+      const { state } = this.ingredient;
 
       if (state === INGREDIENT_USER_STATES.IN_KITCHEN) {
-        return 'Posiadasz ten produkt w swojej kuchni'
+        return "Posiadasz ten produkt w swojej kuchni";
       }
       if (state === INGREDIENT_USER_STATES.IN_SHOPPING_LIST) {
-        return 'Posiadasz ten produkt na liście zakupów'
+        return "Posiadasz ten produkt na liście zakupów";
       }
       if (state === INGREDIENT_USER_STATES.UNAVAILABLE) {
-        return 'Dodaj do listy zakupów'
+        return "Dodaj do listy zakupów";
       }
-      return null
-    }
+      return null;
+    },
   },
   methods: {
     async addSingleProductToShoppingList(product) {
-      this.loading = true
+      this.loading = true;
 
       try {
-        await this.$store.dispatch('shoppingList/addProduct', product)
+        await this.$store.dispatch("shoppingList/addProduct", product);
       } catch {
-        this.$toast.show('Nie udało się dodać produktu do listy zakupów', ToastType.ERROR)
+        this.$toast.show(
+          "Nie udało się dodać produktu do listy zakupów",
+          ToastType.ERROR
+        );
       } finally {
-        this.loading = false
+        this.loading = false;
       }
     },
     addProductToShoppingList() {
-      const { ingredient } = this
-      const amount = ingredient.amount ? ingredient.amount * this.amountFactor : null
+      const { ingredient } = this;
+      const amount = ingredient.amount
+        ? ingredient.amount * this.amountFactor
+        : null;
 
       if (ingredient.baseProductIdsArray.length > 1) {
         this.$modal.show(
           markRaw(SelectBaseProductFromArrayModal),
           {
-            ids: ingredient.baseProductIdsArray
+            ids: ingredient.baseProductIdsArray,
           },
           {
-            close: baseProductId => {
-              if (!baseProductId) return
-              const { name, unit } = ingredient
+            close: (baseProductId) => {
+              if (!baseProductId) return;
+              const { name, unit } = ingredient;
               this.addSingleProductToShoppingList({
                 name,
                 amount,
                 unit,
-                baseProductId
-              })
-            }
+                baseProductId,
+              });
+            },
           }
-        )
+        );
       } else {
-        const { name, unit, mainBaseProductId: baseProductId } = ingredient
-        this.addSingleProductToShoppingList({ name, amount, unit, baseProductId })
+        const { name, unit, mainBaseProductId: baseProductId } = ingredient;
+        this.addSingleProductToShoppingList({
+          name,
+          amount,
+          unit,
+          baseProductId,
+        });
       }
     },
     stateClickHandler() {
-      const { ingredient } = this
+      const { ingredient } = this;
 
-      if ([INGREDIENT_USER_STATES.IN_KITCHEN, INGREDIENT_USER_STATES.IN_SHOPPING_LIST].includes(ingredient.state)) {
+      if (
+        [
+          INGREDIENT_USER_STATES.IN_KITCHEN,
+          INGREDIENT_USER_STATES.IN_SHOPPING_LIST,
+        ].includes(ingredient.state)
+      ) {
         const title =
           ingredient.state === INGREDIENT_USER_STATES.IN_KITCHEN
-            ? 'Posiadasz już ten produkt'
-            : 'Posiadasz już ten produkt na liście zakupów'
+            ? "Posiadasz już ten produkt"
+            : "Posiadasz już ten produkt na liście zakupów";
         const content =
           ingredient.state === INGREDIENT_USER_STATES.IN_KITCHEN
-            ? 'Czy mimo to, chcesz dodać do listy zakupów?'
-            : 'Czy mimo to, chcesz dodać go jeszcze raz do listy zakupów?'
+            ? "Czy mimo to, chcesz dodać do listy zakupów?"
+            : "Czy mimo to, chcesz dodać go jeszcze raz do listy zakupów?";
         this.$modal.show(
           markRaw(Dialog),
           {
             title,
             content,
-            secondaryText: 'Nie',
-            primaryText: 'Tak'
+            secondaryText: "Nie",
+            primaryText: "Tak",
           },
           {
-            close: add => {
+            close: (add) => {
               if (add) {
-                this.addProductToShoppingList()
+                this.addProductToShoppingList();
               }
-            }
+            },
           }
-        )
+        );
       } else if (ingredient.state === INGREDIENT_USER_STATES.UNAVAILABLE) {
-        this.addProductToShoppingList()
+        this.addProductToShoppingList();
         // } else if (ingredient.baseProductIdsArray.length > 1) {
         //   this.$modal.show(
         //     markRaw(SelectBaseProductFromArrayModal),
@@ -206,9 +251,9 @@ export default {
         //   const { name, unit, mainBaseProductId: baseProductId } = ingredient
         //   this.addSingleProductToShoppingList({ name, amount, unit, baseProductId })
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>

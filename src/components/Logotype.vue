@@ -3,15 +3,15 @@
 </template>
 
 <script>
-import Logo from '@/assets/themed-logo.svg?inline'
+import Logo from "@/src/assets/themed-logo.svg?inline";
 
 export default {
   setup() {
     return {
-      Logo
-    }
-  }
-}
+      Logo,
+    };
+  },
+};
 </script>
 
 <style lang="scss" scoped>

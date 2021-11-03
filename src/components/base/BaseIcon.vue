@@ -3,30 +3,30 @@
 </template>
 
 <script>
-import icons from '@/components/base/icons'
+import icons from "@/src/components/base/icons";
 
 export default {
   props: {
     icon: {
       type: String,
-      required: true
+      required: true,
     },
     weight: {
       type: String,
-      default: 'regular'
-    }
+      default: "regular",
+    },
   },
   computed: {
     iconObject() {
       // if (typeof this.icon === 'string') {
-      const set = icons[this.weight]
-      return set ? set[this.icon] : null
+      const set = icons[this.weight];
+      return set ? set[this.icon] : null;
       // } else {
       //   return this.icon
       // }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>

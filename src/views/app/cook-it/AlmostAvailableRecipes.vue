@@ -4,15 +4,19 @@
     <GenericRecipesList
       :recipes="recipesList.recipes.value"
       :errors="recipesList.recipesErrors.value"
-      :load-handler="pageNumber => recipesList.loadRecipesPage(pageNumber)"
+      :load-handler="(pageNumber) => recipesList.loadRecipesPage(pageNumber)"
       @reload="recipesList.reloadRecipes($event)"
       @reload-with-query="recipesList.reloadRecipesWithQuery($event)"
     >
       <template #count="{ count, fetching}">
-        <div v-if="count !== 0" class="recipes-count" :class="{ 'hide-text': fetching }">
+        <div
+          v-if="count !== 0"
+          class="recipes-count"
+          :class="{ 'hide-text': fetching }"
+        >
           <BaseIcon class="recipes-count-icon" icon="basket" />
           <span>
-            Znaleźliśmy <b>{{ $tc('shared.recipes', count) }}</b
+            Znaleźliśmy <b>{{ $tc("shared.recipes", count) }}</b
             >, które możesz przygotować po dokupieniu paru składników
           </span>
         </div>
@@ -23,32 +27,66 @@
 
       <template #empty-with-filters>
         <div class="empty-list-message">
-          <img class="empty-list-message-image" src="@/assets/img/broccoli-sad.svg" alt="" />
-          <p class="empty-list-message-title">Nie znaleźliśmy przepisów dla użytych filtrów</p>
+          <img
+            class="empty-list-message-image"
+            src="@/src/assets/img/broccoli-sad.svg"
+            alt=""
+          />
+          <p class="empty-list-message-title">
+            Nie znaleźliśmy przepisów dla użytych filtrów
+          </p>
           <p class="empty-list-message-sub">
-            Możesz <BaseLink class="empty-list-message-link" color="primary">wyczyścić filtry</BaseLink> lub sprawdzić całą
-            <BaseLink class="empty-list-message-link" color="primary">bazę przepisów</BaseLink>.
+            Możesz
+            <BaseLink class="empty-list-message-link" color="primary"
+              >wyczyścić filtry</BaseLink
+            >
+            lub sprawdzić całą
+            <BaseLink class="empty-list-message-link" color="primary"
+              >bazę przepisów</BaseLink
+            >.
           </p>
         </div>
       </template>
 
       <template #empty-without-filters>
         <div v-if="kitchenProductsCount === 0" class="empty-list-message">
-          <img class="empty-list-message-image" src="@/assets/img/broccoli-happy.svg" alt="" />
-          <p class="empty-list-message-title">Najpierw dodaj coś do swojej kuchni</p>
-          <router-link v-slot="{ href, navigate }" :to="{ name: 'my-kitchen' }" custom>
+          <img
+            class="empty-list-message-image"
+            src="@/src/assets/img/broccoli-happy.svg"
+            alt=""
+          />
+          <p class="empty-list-message-title">
+            Najpierw dodaj coś do swojej kuchni
+          </p>
+          <NuxtLink
+            v-slot="{ href, navigate }"
+            :to="{ name: 'my-kitchen' }"
+            custom
+          >
             <BaseButton tag="a" :href="href" stroked @click="navigate($event)">
               Przejdź do kuchni
             </BaseButton>
-          </router-link>
+          </NuxtLink>
         </div>
 
         <div v-else class="empty-list-message">
-          <img class="empty-list-message-image" src="@/assets/img/broccoli-sad.svg" alt="" />
-          <p class="empty-list-message-title">Nie znaleźliśmy przepisów pasujących do Twoich produktów</p>
+          <img
+            class="empty-list-message-image"
+            src="@/src/assets/img/broccoli-sad.svg"
+            alt=""
+          />
+          <p class="empty-list-message-title">
+            Nie znaleźliśmy przepisów pasujących do Twoich produktów
+          </p>
           <p class="empty-list-message-sub">
-            Możesz <BaseLink class="empty-list-message-link" color="primary">wyczyścić filtry</BaseLink> lub sprawdzić całą
-            <BaseLink class="empty-list-message-link" color="primary">bazę przepisów</BaseLink>.
+            Możesz
+            <BaseLink class="empty-list-message-link" color="primary"
+              >wyczyścić filtry</BaseLink
+            >
+            lub sprawdzić całą
+            <BaseLink class="empty-list-message-link" color="primary"
+              >bazę przepisów</BaseLink
+            >.
           </p>
         </div>
       </template>
@@ -57,38 +95,42 @@
 </template>
 
 <script>
-import { computed } from 'vue'
-import { useStore } from 'vuex'
-import { useMeta } from 'vue-meta'
+// import { computed } from "vue";
+// import { useStore } from "vuex";
+// import { useMeta } from "vue-meta";
 
-import userApi from '@/api/userApi'
+import userApi from "@/src/api/userApi";
 
-import recipeFilteredPagedList from '@/views/app/composable/recipeFilteredPagedList'
+import recipeFilteredPagedList from "@/src/views/app/composable/recipeFilteredPagedList";
 
-import GenericRecipesList from '@/components/GenericRecipesList'
-import PageHeader from '@/components/PageHeader'
+import GenericRecipesList from "@/src/components/GenericRecipesList";
+import PageHeader from "@/src/components/PageHeader";
 
 export default {
-  name: 'AlmostAvailableRecipes',
+  name: "AlmostAvailableRecipes",
   components: {
     GenericRecipesList,
-    PageHeader
+    PageHeader,
   },
   setup() {
     useMeta({
-      title: 'Zrób drobne zakupy'
-    })
+      title: "Zrób drobne zakupy",
+    });
 
-    const store = useStore()
-    const kitchenProductsCount = computed(() => store.state.myKitchen.products?.length || 0)
-    const recipesList = recipeFilteredPagedList(userApi.getAlmostAvailableRecipes)
+    const store = useStore();
+    const kitchenProductsCount = computed(
+      () => store.state.myKitchen.products?.length || 0
+    );
+    const recipesList = recipeFilteredPagedList(
+      userApi.getAlmostAvailableRecipes
+    );
 
     return {
       kitchenProductsCount,
-      recipesList
-    }
-  }
-}
+      recipesList,
+    };
+  },
+};
 </script>
 
 <style lang="scss" scoped>

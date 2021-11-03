@@ -1,7 +1,10 @@
 <template>
   <div class="skeleton-recipe-box">
     <div class="skeleton-recipe-box__image-container">
-      <SkeletonBox :animate="animate" class="skeleton-recipe-box__image-container__image" />
+      <SkeletonBox
+        :animate="animate"
+        class="skeleton-recipe-box__image-container__image"
+      />
     </div>
     <div class="skeleton-recipe-box__name">
       <SkeletonBox :animate="animate" class="skeleton-recipe-box__name__line" />
@@ -11,20 +14,20 @@
 </template>
 
 <script>
-import SkeletonBox from '@/components/skeletons/SkeletonBox'
+import SkeletonBox from "@/src/components/skeletons/SkeletonBox";
 
 export default {
   components: { SkeletonBox },
   props: {
     animate: {
       type: Boolean,
-      default: true
+      default: true,
     },
     page: {
-      type: Number
-    }
-  }
-}
+      type: Number,
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>

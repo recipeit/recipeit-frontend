@@ -19,8 +19,8 @@
                 {
                   'new-header-day--selected': currentDay.key === day.key,
                   'new-header-day--today': day.type === DayType.TODAY,
-                  'new-header-day--before-today': day.type === DayType.PAST
-                }
+                  'new-header-day--before-today': day.type === DayType.PAST,
+                },
               ]"
               @click="setDay(day.dayjs, 'fade')"
             >
@@ -30,24 +30,41 @@
           </div>
         </div>
 
-        <div v-if="currentDayPlan === null">
-          wczytuję...
-        </div>
+        <div v-if="currentDayPlan === null">wczytuję...</div>
 
         <div v-else-if="anyPlannedRecipesInDay" class="day-plan__times-of-day">
-          <div v-for="(recipes, key) in currentDayPlan" :key="key" class="time-of-day">
+          <div
+            v-for="(recipes, key) in currentDayPlan"
+            :key="key"
+            class="time-of-day"
+          >
             <div class="time-of-day__title">{{ $t(`timeOfDay.${key}`) }}</div>
             <div class="time-of-day__recipes">
-              <div v-for="recipe in recipes" :key="recipe.id" href="#" class="time-of-day__recipe">
-                <router-link
+              <div
+                v-for="recipe in recipes"
+                :key="recipe.id"
+                href="#"
+                class="time-of-day__recipe"
+              >
+                <NuxtLink
                   v-slot="{ href, navigate }"
-                  :to="{ name: APP_RECIPE, params: { recipeId: recipe.recipeId, recipeName: recipe.name } }"
+                  :to="{
+                    path: '/przepis',
+                    params: {
+                      recipeId: recipe.recipeId,
+                      recipeName: recipe.name,
+                    },
+                  }"
                   custom
                 >
-                  <BaseLink :href="href" class="time-of-day__recipe__link" @click="navigate($event)">
+                  <BaseLink
+                    :href="href"
+                    class="time-of-day__recipe__link"
+                    @click="navigate($event)"
+                  >
                     {{ recipe.name }}
                   </BaseLink>
-                </router-link>
+                </NuxtLink>
                 <BaseLink
                   tag="button"
                   color="text-secondary"
@@ -63,23 +80,46 @@
 
         <div v-else key="no-plans" class="no-plans-message">
           <!-- WHEN CURRENT DAY IS NEXT 7 DAYS INCLUDING TODAY -->
-          <template v-if="currentDay.type === DayType.TODAY || currentDay.type === DayType.THIS_WEEK">
+          <template
+            v-if="
+              currentDay.type === DayType.TODAY ||
+              currentDay.type === DayType.THIS_WEEK
+            "
+          >
             <span v-if="currentDay.type === DayType.TODAY">
               Zaplanuj przepis na dzisiaj!
             </span>
-            <span v-else>
-              Zaplanuj przepis na ten dzień!
-            </span>
-            <router-link v-slot="{ href, navigate }" :to="{ name: APP_RECIPES }" custom>
-              <BaseButton tag="a" :href="href" class="no-plans-message-button" raised color="primary" @click="navigate($event)">
-                <BaseIcon class="no-plans-message-button-icon" icon="search" weight="semi-bold" />
+            <span v-else> Zaplanuj przepis na ten dzień! </span>
+            <NuxtLink
+              v-slot="{ href, navigate }"
+              :to="{ path: '/przepisy' }"
+              custom
+            >
+              <BaseButton
+                tag="a"
+                :href="href"
+                class="no-plans-message-button"
+                raised
+                color="primary"
+                @click="navigate($event)"
+              >
+                <BaseIcon
+                  class="no-plans-message-button-icon"
+                  icon="search"
+                  weight="semi-bold"
+                />
                 Przeglądaj przepisy
               </BaseButton>
-            </router-link>
+            </NuxtLink>
           </template>
 
           <!-- WHEN CURRENT DAY IS IN PAST OR IN FAR FUTURE  -->
-          <template v-else-if="currentDay.type === DayType.PAST || currentDay.type === DayType.FAR_FUTURE">
+          <template
+            v-else-if="
+              currentDay.type === DayType.PAST ||
+              currentDay.type === DayType.FAR_FUTURE
+            "
+          >
             Nie zaplanowałeś żadnego przepisu na ten dzień
           </template>
         </div>
@@ -89,138 +129,170 @@
 </template>
 
 <script>
-import userApi from '@/api/userApi'
+import userApi from "@/src/api/userApi";
 
-import dayjs from '@/functions/dayjs'
+import dayjs from "@/src/functions/dayjs";
 
-import { ToastType } from '@/plugins/toast/toastType'
+import { useToast } from "@/src/plugins/toast";
+import { ToastType } from "@/src/plugins/toast/toastType";
 
-import { APP_RECIPES, APP_RECIPE } from '@/router/names'
+import { APP_RECIPES, APP_RECIPE } from "@/src/router/names";
 
-import SectionTitle from '@/components/SectionTitle'
+import SectionTitle from "@/src/components/SectionTitle";
 
 const SlideType = {
-  PREVIOUS: 'previous',
-  NEXT: 'next',
-  FADE: 'fade'
-}
+  PREVIOUS: "previous",
+  NEXT: "next",
+  FADE: "fade",
+};
 
 const DayType = {
-  PAST: 'PAST',
-  TODAY: 'TODAY',
-  THIS_WEEK: 'THIS_WEEK',
-  FAR_FUTURE: 'FAR_FUTURE'
-}
+  PAST: "PAST",
+  TODAY: "TODAY",
+  THIS_WEEK: "THIS_WEEK",
+  FAR_FUTURE: "FAR_FUTURE",
+};
 
 export default {
+  name: "DayPlan",
   components: { SectionTitle },
-  setup() {
-    return {
-      APP_RECIPES,
-      APP_RECIPE,
-      DayType
-    }
-  },
-  data() {
-    return {
+  async setup() {
+    const toast = useToast();
+
+    const data = reactive({
       daysList: [],
       currentDay: null,
       currentDayPlan: null,
-      currendDaySlideType: null
-    }
-  },
-  computed: {
-    anyPlannedRecipesInDay() {
-      const { currentDayPlan } = this
-      return !!currentDayPlan && Object.keys(currentDayPlan).length > 0 && currentDayPlan.constructor === Object
-    },
-    noRecipesTemplateName() {
-      if (this.anyPlannedRecipesInDay || this.currentDay === null) return null
+      currendDaySlideType: null,
+    });
 
-      if (this.currentDay.type === 'PAST') return 'NO_RECIPES_IN_PAST'
-      if (this.currentDay.type === 'FAR_FUTURE') return 'NO_RECIPES_IN_FAR_FUTURE'
-      return 'ADD_RECIPES'
-    },
-    showBackToToday() {
-      return this.currentDay && this.currentDay.type !== DayType.TODAY
-    }
-  },
-  beforeMount() {
-    this.backToToday()
-  },
-  methods: {
-    dayType(day, today) {
-      if (day.isToday()) return 'TODAY'
-      if (day.isBefore(today, 'day')) return 'PAST'
+    const anyPlannedRecipesInDay = computed(() => {
+      const { currentDayPlan } = data;
+      return (
+        !!currentDayPlan &&
+        Object.keys(currentDayPlan).length > 0 &&
+        currentDayPlan.constructor === Object
+      );
+    });
 
-      const lastValidDay = today.add(7, 'days')
-      if (!day.isBefore(lastValidDay, 'day')) return 'FAR_FUTURE'
+    const noRecipesTemplateName = computed(() => {
+      if (anyPlannedRecipesInDay.value || data.currentDay === null) return null;
 
-      return 'THIS_WEEK'
-    },
-    backToToday() {
-      this.setDay(dayjs().startOf('day'), SlideType.FADE)
-    },
-    setDay(day, slideType) {
-      const today = dayjs().startOf('day')
+      if (data.currentDay.type === "PAST") return "NO_RECIPES_IN_PAST";
+      if (data.currentDay.type === "FAR_FUTURE")
+        return "NO_RECIPES_IN_FAR_FUTURE";
+      return "ADD_RECIPES";
+    });
 
-      this.daysList = [
-        day.subtract(1, 'day'),
+    const showBackToToday = computed(() => {
+      return data.currentDay?.type !== DayType.TODAY;
+    });
+
+    const dayType = (day, today) => {
+      if (day.isToday()) return "TODAY";
+      if (day.isBefore(today, "day")) return "PAST";
+
+      const lastValidDay = today.add(7, "days");
+      if (!day.isBefore(lastValidDay, "day")) return "FAR_FUTURE";
+
+      return "THIS_WEEK";
+    };
+
+    const backToToday = async () => {
+      await setDay(dayjs().startOf("day"), SlideType.FADE);
+    };
+
+    const setDay = async (day, slideType) => {
+      const today = dayjs().startOf("day");
+
+      data.daysList = [
+        day.subtract(1, "day"),
         day,
-        day.add(1, 'day'),
-        day.add(2, 'day'),
-        day.add(3, 'day'),
-        day.add(4, 'day'),
-        day.add(5, 'day'),
-        day.add(6, 'day'),
-        day.add(7, 'day'),
-        day.add(8, 'day'),
-        day.add(9, 'day'),
-        day.add(10, 'day')
-      ].map(day => ({
+        day.add(1, "day"),
+        day.add(2, "day"),
+        day.add(3, "day"),
+        day.add(4, "day"),
+        day.add(5, "day"),
+        day.add(6, "day"),
+        day.add(7, "day"),
+        day.add(8, "day"),
+        day.add(9, "day"),
+        day.add(10, "day"),
+      ].map((day) => ({
         dayjs: day,
-        key: day.format('YYYY-MM-DD'),
-        weekday: day.format('ddd'),
+        key: day.format("YYYY-MM-DD"),
+        weekday: day.format("ddd"),
         monthday: day.date(),
-        type: this.dayType(day, today)
-      }))
-      this.currendDaySlideType = slideType
-      this.currentDay = {
+        type: dayType(day, today),
+      }));
+      data.currendDaySlideType = slideType;
+      data.currentDay = {
         dayjs: day,
-        key: day.format('YYYY-MM-DD'),
+        key: day.format("YYYY-MM-DD"),
         name: day.calendar(),
-        type: this.dayType(day, today)
-      }
-      this.currentDayPlan = null
-      userApi.getPlannedRecipes(this.currentDay.key).then(resp => {
-        this.currentDayPlan = resp.data.dayPlan
-      })
-    },
-    previousDay() {
-      this.setDay(this.currentDay.dayjs.subtract(1, 'day'), SlideType.PREVIOUS)
-    },
-    nextDay() {
-      this.setDay(this.currentDay.dayjs.add(1, 'day'), SlideType.NEXT)
-    },
-    removePlannedRecipe(id, timeOfDay) {
-      userApi.removeRecipeFromPlanned(id).then(resp => {
-        if (resp.data) {
-          this.$toast.show('Usunięto zaplanowany przepis')
+        type: dayType(day, today),
+      };
+      data.currentDayPlan = null;
 
-          const set = this.currentDayPlan[timeOfDay]
+      console.log("O CO Z TYM CHODZI");
+      console.log("co2");
+      try {
+        const { data: respData } = await userApi.getPlannedRecipes(
+          data.currentDay.key
+        );
+        console.log("co", { respData });
+        data.currentDayPlan = respData.dayPlan;
+      } catch (e) {
+        console.log("errr", e);
+      }
+    };
+
+    const previousDay = () => {
+      setDay(data.currentDay.dayjs.subtract(1, "day"), SlideType.PREVIOUS);
+    };
+
+    const nextDay = () => {
+      setDay(data.currentDay.dayjs.add(1, "day"), SlideType.NEXT);
+    };
+
+    const removePlannedRecipe = (id, timeOfDay) => {
+      userApi.removeRecipeFromPlanned(id).then((resp) => {
+        if (resp.data) {
+          toast.show("Usunięto zaplanowany przepis");
+
+          const set = data.currentDayPlan[timeOfDay];
           if (set) {
-            const index = set.findIndex(v => v.id === id)
+            const index = set.findIndex((v) => v.id === id);
             if (index > -1) {
-              this.currentDayPlan[timeOfDay].splice(index, 1)
+              data.currentDayPlan[timeOfDay].splice(index, 1);
             }
           }
         } else {
-          this.$toast.show('Wystąpił błąd podczas usuwania', ToastType.ERROR)
+          toast.show("Wystąpił błąd podczas usuwania", ToastType.ERROR);
         }
-      })
-    }
-  }
-}
+      });
+    };
+
+    onBeforeMount(async () => {
+      await backToToday();
+    });
+
+    return {
+      ...toRefs(data),
+      anyPlannedRecipesInDay,
+      noRecipesTemplateName,
+      showBackToToday,
+      backToToday,
+      setDay,
+      previousDay,
+      nextDay,
+      removePlannedRecipe,
+      APP_RECIPES,
+      APP_RECIPE,
+      DayType,
+    };
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -277,14 +349,18 @@ export default {
     gap: 8px;
 
     &::after {
-      content: '';
+      content: "";
       position: absolute;
       right: 0;
       top: 0;
       bottom: 0;
       width: 64px;
       pointer-events: none;
-      background: linear-gradient(to right, transparent, var(--color-background));
+      background: linear-gradient(
+        to right,
+        transparent,
+        var(--color-background)
+      );
     }
 
     .new-header-day {

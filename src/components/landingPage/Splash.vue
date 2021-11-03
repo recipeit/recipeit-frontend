@@ -5,25 +5,38 @@
     </div>
     <div class="content">
       <header class="header">
-        <router-link :to="{ name: LANDING_PAGE }" class="logo-link" title="Recipeit">
+        <NuxtLink to="/" class="logo-link" title="Recipeit">
           <Logotype class="logotype" />
           Recipeit
-        </router-link>
+        </NuxtLink>
       </header>
       <div class="main">
         <h1 class="h1">Znajdź przepis<br />z tego co masz!</h1>
-        <p class="description">Nie pozwól aby Twoje produkty się przeterminowały. Recipeit pokaże Ci, co możesz z nich przygotować.</p>
+        <p class="description">
+          Nie pozwól aby Twoje produkty się przeterminowały. Recipeit pokaże Ci,
+          co możesz z nich przygotować.
+        </p>
         <div class="user-buttons">
-          <router-link v-slot="{ href, navigate }" :to="{ name: 'register' }" custom>
-            <BaseButton class="user-button user-button--main" tag="a" :href="href" @click="navigate($event)">
+          <NuxtLink v-slot="{ href, navigate }" to="/rejestracja" custom>
+            <BaseButton
+              class="user-button user-button--main"
+              tag="a"
+              :href="href"
+              @click="navigate($event)"
+            >
               Utwórz konto
             </BaseButton>
-          </router-link>
-          <router-link v-slot="{ href, navigate }" :to="{ name: 'login' }" custom>
-            <BaseButton class="user-button user-button--secondary" tag="a" :href="href" @click="navigate($event)">
+          </NuxtLink>
+          <NuxtLink v-slot="{ href, navigate }" to="/logowanie" custom>
+            <BaseButton
+              class="user-button user-button--secondary"
+              tag="a"
+              :href="href"
+              @click="navigate($event)"
+            >
               Zaloguj się
             </BaseButton>
-          </router-link>
+          </NuxtLink>
         </div>
       </div>
     </div>
@@ -31,21 +44,21 @@
 </template>
 
 <script>
-import BackgroundUrl from '@/assets/img/splash.webp'
+import BackgroundUrl from "@/src/assets/img/splash.webp";
 
-import { LANDING_PAGE } from '@/router/names'
+import { LANDING_PAGE } from "@/src/router/names";
 
-import Logotype from '@/components/Logotype'
+import Logotype from "@/src/components/Logotype";
 
 export default {
   components: {
-    Logotype
+    Logotype,
   },
   setup: () => ({
     BackgroundUrl,
-    LANDING_PAGE
-  })
-}
+    LANDING_PAGE,
+  }),
+};
 </script>
 
 <style lang="scss" scoped>
@@ -93,7 +106,7 @@ export default {
   &--secondary {
     border: 1px solid rgba(#fff, 0.35);
     color: #fff;
-    @include transition('border-color');
+    @include transition("border-color");
 
     &:hover {
       border-color: rgba(#fff, 0.45);
@@ -180,7 +193,7 @@ export default {
     height: calc(48px + 4rem);
 
     &::before {
-      content: '';
+      content: "";
       background: linear-gradient(rgba(#000, 0.5) 50%, rgba(#000, 0) 100%);
       position: absolute;
       top: 0;
@@ -213,7 +226,7 @@ export default {
     padding: 2rem;
 
     &::before {
-      content: '';
+      content: "";
       background: linear-gradient(rgba(#000, 0) 0%, rgba(#000, 0.5) 50%);
       position: absolute;
       top: 0;

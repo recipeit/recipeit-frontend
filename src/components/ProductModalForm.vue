@@ -27,7 +27,13 @@
 
   <div class="form-row form-columns">
     <Field v-slot="{ field, errors }" type="text" name="amount">
-      <BaseInput class="amount-input" label="Ilość" type="number" v-bind="field" :errors="errors" />
+      <BaseInput
+        class="amount-input"
+        label="Ilość"
+        type="number"
+        v-bind="field"
+        :errors="errors"
+      />
     </Field>
     <Field v-slot="{ field, errors }" type="text" name="unit">
       <BaseSelect
@@ -40,43 +46,49 @@
         group-label="groupKey"
         group-values="groupValues"
       >
-        <template #label="{ option }">{{ $tc(`units.${option}`, unitLabelAmount) }}</template>
-        <template #option="{ option }">{{ $tc(`units.${option}`, unitLabelAmount) }}</template>
-        <template #groupLabel="{ label }">{{ $t(`unitGroups.${label}`) }}</template>
+        <template #label="{ option }">{{
+          $tc(`units.${option}`, unitLabelAmount)
+        }}</template>
+        <template #option="{ option }">{{
+          $tc(`units.${option}`, unitLabelAmount)
+        }}</template>
+        <template #groupLabel="{ label }">{{
+          $t(`unitGroups.${label}`)
+        }}</template>
       </BaseSelect>
     </Field>
   </div>
 </template>
 
 <script>
-import _ from 'lodash'
-import { Field } from 'vee-validate'
-import { computed } from 'vue'
-import { useStore } from 'vuex'
+import _ from "lodash";
+import { Field } from "vee-validate";
+// import { computed } from "vue";
+import { useStore } from "vuex";
 
-import ProductIcon from '@/components/ProductIcon'
+import ProductIcon from "@/src/components/ProductIcon";
 
 export default {
   components: { Field, ProductIcon },
   props: {
-    productAutofocus: Boolean
+    productAutofocus: Boolean,
   },
-  emits: ['update:baseProductId', 'update:unit'],
+  emits: ["update:baseProductId", "update:unit"],
   setup(props) {
-    const store = useStore()
+    const store = useStore();
     // const baseProducts = computed(() => store.state.ingredients.baseProducts)
     const baseProductsGrouped = computed(() =>
       _(store.state.ingredients.baseProducts)
-        .groupBy(item => item.category)
+        .groupBy((item) => item.category)
         .toPairs()
         .value()
-        .map(pair => ({
+        .map((pair) => ({
           groupKey: pair[0],
-          groupValues: pair[1]
+          groupValues: pair[1],
         }))
-    )
+    );
 
-    const units = computed(() => store.state.ingredients.units)
+    const units = computed(() => store.state.ingredients.units);
 
     // const localProduct = reactive({
     //   selectedBaseProduct: props.baseProductId ? baseProducts.value?.find(p => p.id === props.baseProductId) : null,
@@ -84,10 +96,10 @@ export default {
     //   unit: props.unit
     // })
 
-    const unitLabelAmount = computed(() => parseFloat(props.amount) || 1)
+    const unitLabelAmount = computed(() => parseFloat(props.amount) || 1);
 
     function unitCustomLabel(value) {
-      return this.$tc(`units.${value}`, unitLabelAmount.value)
+      return this.$tc(`units.${value}`, unitLabelAmount.value);
     }
 
     // watch(
@@ -118,11 +130,11 @@ export default {
       units,
       baseProductsGrouped,
       unitLabelAmount,
-      unitCustomLabel
+      unitCustomLabel,
       // print
-    }
-  }
-}
+    };
+  },
+};
 </script>
 
 <style lang="scss" scoped>

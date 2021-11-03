@@ -29,51 +29,54 @@
 </template>
 
 <script>
-import { markRaw } from 'vue'
+// import { markRaw } from "vue";
 
-import Product from '@/components/Product'
-import EditShoppingListProductModal from '@/components/modals/EditShoppingListProductModal'
+import Product from "@/src/components/Product";
+import EditShoppingListProductModal from "@/src/components/modals/EditShoppingListProductModal";
 
 export default {
   components: {
-    Product
+    Product,
   },
   props: {
     product: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
-  emits: ['purchase'],
+  emits: ["purchase"],
   methods: {
     deleteProduct() {
-      this.$store.dispatch('shoppingList/deleteProductFromShoppingList', this.product.id)
+      this.$store.dispatch(
+        "shoppingList/deleteProductFromShoppingList",
+        this.product.id
+      );
     },
     increaseAmount() {
-      const amount = Math.round(this.product.amount + 1, 5)
-      this.putAmountChange(amount)
+      const amount = Math.round(this.product.amount + 1, 5);
+      this.putAmountChange(amount);
     },
     decreaseAmount() {
-      if (this.product.amount <= 1.0) return
-      const amount = Math.round(this.product.amount - 1, 5)
-      this.putAmountChange(amount)
+      if (this.product.amount <= 1.0) return;
+      const amount = Math.round(this.product.amount - 1, 5);
+      this.putAmountChange(amount);
     },
     putAmountChange(amount) {
-      var product = JSON.parse(JSON.stringify(this.product))
-      product.amount = amount
-      this.$store.dispatch('shoppingList/editProductFromShoppingList', product)
+      var product = JSON.parse(JSON.stringify(this.product));
+      product.amount = amount;
+      this.$store.dispatch("shoppingList/editProductFromShoppingList", product);
     },
     async openEditModal() {
       this.$modal.show(
         markRaw(EditShoppingListProductModal),
         {
-          product: this.product
+          product: this.product,
         },
         {}
-      )
-    }
-  }
-}
+      );
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>

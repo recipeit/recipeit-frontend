@@ -7,48 +7,74 @@
       </span>
     </div>
     <div class="footer-links">
-      <BaseLink :href="ARTICLES_PATH" class="footer-link" color="text-secondary">
+      <BaseLink
+        :href="ARTICLES_PATH"
+        class="footer-link"
+        color="text-secondary"
+      >
         Artykuły
       </BaseLink>
-      <router-link v-slot="{ href, navigate }" :to="{ name: TERMS }" custom>
-        <BaseLink :href="href" tag="span" class="footer-link" color="text-secondary" @click="navigate($event)">
+      <NuxtLink v-slot="{ href, navigate }" to="/regulamin" custom>
+        <BaseLink
+          :href="href"
+          tag="span"
+          class="footer-link"
+          color="text-secondary"
+          @click="navigate($event)"
+        >
           Regulamin
         </BaseLink>
-      </router-link>
-      <router-link v-slot="{ href, navigate }" :to="{ name: PRIVACY_POLICY }" custom>
-        <BaseLink :href="href" tag="span" class="footer-link" color="text-secondary" @click="navigate($event)">
+      </NuxtLink>
+      <NuxtLink v-slot="{ href, navigate }" to="/polityka-prywatnosci" custom>
+        <BaseLink
+          :href="href"
+          tag="span"
+          class="footer-link"
+          color="text-secondary"
+          @click="navigate($event)"
+        >
           Polityka prywatności
         </BaseLink>
-      </router-link>
-      <router-link v-slot="{ href, navigate }" :to="{ name: ADD_BLOG }" custom>
-        <BaseLink :href="href" class="footer-link" color="text-secondary" @click="navigate($event)">
+      </NuxtLink>
+      <NuxtLink v-slot="{ href, navigate }" to="/dodaj-blog" custom>
+        <BaseLink
+          :href="href"
+          class="footer-link"
+          color="text-secondary"
+          @click="navigate($event)"
+        >
           Dodaj blog
         </BaseLink>
-      </router-link>
-      <router-link v-slot="{ href, navigate }" :to="{ name: CONTACT }" custom>
-        <BaseLink :href="href" class="footer-link" color="text-secondary" @click="navigate($event)">
+      </NuxtLink>
+      <NuxtLink v-slot="{ href, navigate }" to="/kontakt" custom>
+        <BaseLink
+          :href="href"
+          class="footer-link"
+          color="text-secondary"
+          @click="navigate($event)"
+        >
           Kontakt
         </BaseLink>
-      </router-link>
+      </NuxtLink>
     </div>
   </footer>
 </template>
 
 <script>
-import { COPYRIGHT_TEXT } from '@/constants'
+import { COPYRIGHT_TEXT } from "@/src/constants";
 
-import { TERMS, PRIVACY_POLICY, ADD_BLOG, CONTACT } from '@/router/names'
-import { ARTICLES as ARTICLES_PATH } from '@/router/paths'
+import { TERMS, PRIVACY_POLICY, ADD_BLOG, CONTACT } from "@/src/router/names";
+import { ARTICLES as ARTICLES_PATH } from "@/src/router/paths";
 
-import Logotype from '@/components/Logotype'
+import Logotype from "@/src/components/Logotype";
 
 export default {
   components: { Logotype },
   props: {
     border: {
       type: Boolean,
-      default: true
-    }
+      default: true,
+    },
   },
   setup() {
     return {
@@ -57,10 +83,10 @@ export default {
       ADD_BLOG,
       CONTACT,
       COPYRIGHT_TEXT,
-      ARTICLES_PATH
-    }
-  }
-}
+      ARTICLES_PATH,
+    };
+  },
+};
 </script>
 
 <style lang="scss" scoped>

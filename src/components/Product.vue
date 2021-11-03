@@ -16,33 +16,33 @@
 </template>
 
 <script>
-import { computed } from 'vue'
+// import { computed } from "vue";
 
-import { stringifiedAmount } from '@/functions/amount'
+import { stringifiedAmount } from "@/src/functions/amount";
 
 export default {
   props: {
     product: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   setup(props) {
     const amount = computed(() => {
-      const { amount } = props.product
-      return amount > 0 ? stringifiedAmount(amount) : null
-    })
+      const { amount } = props.product;
+      return amount > 0 ? stringifiedAmount(amount) : null;
+    });
 
     return {
-      amount
-    }
-  }
+      amount,
+    };
+  },
   // computed: {
   // name() {
   // return this.product.name ? this.product.name : this.product.baseProductName
   // }
   // }
-}
+};
 </script>
 
 <style lang="scss" scoped>

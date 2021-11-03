@@ -1,9 +1,9 @@
 import Cookies from 'js-cookie'
 import { ref } from 'vue'
 
-import { COOKIES_ANALYTICS_COOKIE_NAME, COOKIES_MESSAGE_COOKIE_NAME } from '@/configs/cookies'
+import { COOKIES_ANALYTICS_COOKIE_NAME, COOKIES_MESSAGE_COOKIE_NAME } from '@/src/configs/cookies'
 
-import AnalyticsService from '@/services/analytics'
+import AnalyticsService from '@/src/services/analytics'
 
 const GDPR_OPTIONS = [COOKIES_ANALYTICS_COOKIE_NAME]
 

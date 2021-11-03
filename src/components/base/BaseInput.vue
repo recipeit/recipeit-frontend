@@ -21,7 +21,9 @@
     <div v-if="errors" class="base-input__errors">
       <slot name="errors">
         <ul :id="erorrsID" class="base-input__errors__list">
-          <li v-for="(error, i) in errors" :key="i">{{ $t(`errorCode.${error}`) }}</li>
+          <li v-for="(error, i) in errors" :key="i">
+            {{ $t(`errorCode.${error}`) }}
+          </li>
         </ul>
       </slot>
     </div>
@@ -29,75 +31,75 @@
 </template>
 
 <script>
-import uniqueID from '@/functions/uniqueID'
+import uniqueID from "@/src/functions/uniqueID";
 
 export default {
   model: {
-    prop: 'value',
-    event: 'input'
+    prop: "value",
+    event: "input",
   },
   props: {
     value: {
       type: [String, Number],
-      default: null
+      default: null,
     },
     errors: Array,
     placeholder: String,
     label: String,
     type: {
       type: String,
-      default: 'text',
-      validator: prop => ['text', 'password'].includes(prop)
+      default: "text",
+      validator: (prop) => ["text", "password"].includes(prop),
     },
     tabindex: {
       type: Number,
-      default: 0
+      default: 0,
     },
     autofocus: {
       type: Boolean,
-      default: false
+      default: false,
     },
     disabled: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
-  emits: ['focus', 'blur'],
+  emits: ["focus", "blur"],
   data: () => ({
     focused: false,
-    id: 'base-input-' + uniqueID().getID()
+    id: "base-input-" + uniqueID().getID(),
   }),
   computed: {
     baseInputClasses() {
       return {
-        'base-input': true,
-        'base-input--focus': this.focused,
-        'base-input--invalid': this.errors && this.errors.length > 0,
-        'base-input--disabled': this.disabled
-      }
+        "base-input": true,
+        "base-input--focus": this.focused,
+        "base-input--invalid": this.errors && this.errors.length > 0,
+        "base-input--disabled": this.disabled,
+      };
     },
     erorrsID() {
-      return `${this.id}-errors`
+      return `${this.id}-errors`;
     },
     hasValue() {
-      const stringValue = this.value?.toString()
-      if (stringValue === null) return false
-      if (stringValue === undefined) return false
-      if (stringValue === '') return false
-      return true
-    }
+      const stringValue = this.value?.toString();
+      if (stringValue === null) return false;
+      if (stringValue === undefined) return false;
+      if (stringValue === "") return false;
+      return true;
+    },
   },
   methods: {
     setFocus() {
-      this.focused = true
-      this.$emit('focus')
+      this.focused = true;
+      this.$emit("focus");
     },
     setBlur() {
-      this.focused = false
-      this.$emit('blur')
-    }
-  }
-}
+      this.focused = false;
+      this.$emit("blur");
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>

@@ -29,3 +29,8 @@ pnpm-debug.log*
 .cert
 .cert.test
 .sentryclirc
+
+*.log
+.nuxt
+nuxt.d.ts
+.output

@@ -7,88 +7,95 @@
     @close="close(modal.id)"
     @closed="afterModalTransitionLeave(modal.id)"
   >
-    <component :is="modal.component" v-bind="modal.props" v-on="modal.events" @close="close(modal.id)" />
+    <component
+      :is="modal.component"
+      v-bind="modal.props"
+      v-on="modal.events"
+      @close="close(modal.id)"
+    />
   </Modal>
 </template>
 
 <script>
-import Modal from '@/plugins/global-sheet-modal/Modal'
-import { nextId } from '@/plugins/global-sheet-modal/utils'
+import Modal from "@/src/plugins/global-sheet-modal/Modal";
+import { nextId } from "@/src/plugins/global-sheet-modal/utils";
 
 export default {
-  name: 'GlobalSheetModalContainer',
+  name: "GlobalSheetModalContainer",
   components: {
-    Modal
+    Modal,
   },
   data: () => ({
-    modals: []
+    modals: [],
   }),
   computed: {
     anyModalOpened() {
-      return this.modals.filter(m => m.opened).length > 0
+      return this.modals.filter((m) => m.opened).length > 0;
     },
     anyModalOpenedOrClosing() {
-      return this.modals.length > 0
-    }
+      return this.modals.length > 0;
+    },
   },
   watch: {
     anyModalOpenedOrClosing(value) {
-      const scrollWidth = window.innerWidth - document.body.offsetWidth
-      const bodyRequireScroll = document.body.scrollHeight > document.body.clientHeight
-      document.body.style.overflowY = value ? 'hidden' : null
-      document.body.style.paddingRight = value && bodyRequireScroll ? `${scrollWidth}px` : null
-    }
+      const scrollWidth = window.innerWidth - document.body.offsetWidth;
+      const bodyRequireScroll =
+        document.body.scrollHeight > document.body.clientHeight;
+      document.body.style.overflowY = value ? "hidden" : null;
+      document.body.style.paddingRight =
+        value && bodyRequireScroll ? `${scrollWidth}px` : null;
+    },
   },
   created() {
-    this.$modal._setGlobalModalContainer(this)
-    document.addEventListener('keyup', e => {
+    this.$modal._setGlobalModalContainer(this);
+    document.addEventListener("keyup", (e) => {
       if (e.keyCode === 27 && this.anyModalOpened) {
-        const opened = this.modals.filter(m => m.opened)
-        const modal = opened[opened.length - 1]
+        const opened = this.modals.filter((m) => m.opened);
+        const modal = opened[opened.length - 1];
         if (!modal.blockCloseOnBackdrop) {
-          this.$modal.hide(opened[opened.length - 1].id)
+          this.$modal.hide(opened[opened.length - 1].id);
         }
       }
-    })
+    });
   },
   methods: {
     add(component, props = {}, events = {}, { blockCloseOnBackdrop } = {}) {
-      const id = nextId()
+      const id = nextId();
       this.modals.push({
         id: id,
         opened: false,
         component: component,
         props: props,
         events: events,
-        blockCloseOnBackdrop: !!blockCloseOnBackdrop
-      })
+        blockCloseOnBackdrop: !!blockCloseOnBackdrop,
+      });
       this.$nextTick(() => {
-        this.open(id)
-      })
+        this.open(id);
+      });
     },
     remove(id) {
-      const index = this.modals.findIndex(v => v.id === id)
+      const index = this.modals.findIndex((v) => v.id === id);
       if (index !== -1) {
-        this.modals[index].opened = false
+        this.modals[index].opened = false;
       }
     },
     open(id) {
-      const index = this.modals.findIndex(v => v.id === id)
+      const index = this.modals.findIndex((v) => v.id === id);
       if (index !== -1) {
-        this.modals[index].opened = true
+        this.modals[index].opened = true;
       }
     },
     close(id) {
-      this.$modal.hide(id)
+      this.$modal.hide(id);
     },
     afterModalTransitionLeave(id) {
-      const index = this.modals.findIndex(v => v.id === id)
+      const index = this.modals.findIndex((v) => v.id === id);
       if (index !== -1) {
-        this.modals.splice(index, 1)
+        this.modals.splice(index, 1);
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>

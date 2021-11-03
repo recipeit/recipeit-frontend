@@ -2,14 +2,19 @@
   <div class="page-header-user">
     <BaseMenu>
       <template #toggle="{ focused }">
-        <div :class="['page-header-user__avatar', { 'page-header-user__avatar--focused': focused }]">
+        <div
+          :class="[
+            'page-header-user__avatar',
+            { 'page-header-user__avatar--focused': focused },
+          ]"
+        >
           <BaseImageLazyload v-if="avatarSrc" :src="avatarSrc" alt="" />
           <span v-else class="no-avatar-icon" v-html="defaultAvatar" />
         </div>
       </template>
       <template #dropdown>
         <BaseMenuList>
-          <BaseMenuRouterLink :to="{ name: APP_ACCOUNT }">Moje konto</BaseMenuRouterLink>
+          <BaseMenuRouterLink to="/konto">Moje konto</BaseMenuRouterLink>
           <BaseMenuLink color="red" @click="logout()">Wyloguj się</BaseMenuLink>
         </BaseMenuList>
       </template>
@@ -18,35 +23,35 @@
 </template>
 
 <script>
-import { computed } from 'vue'
-import { useStore } from 'vuex'
+// import { computed } from "vue";
+import { useStore } from "vuex";
 
-import defaultAvatar from '@/assets/img/avatar.svg?inline'
+import defaultAvatar from "@/src/assets/img/avatar.svg?inline";
 
-import { APP_ACCOUNT } from '@/router/names'
+import { APP_ACCOUNT } from "@/src/router/names";
 
 export default {
   setup() {
-    const store = useStore()
+    const store = useStore();
 
-    const userProfile = computed(() => store.state.user.userProfile)
+    const userProfile = computed(() => store.state.user.userProfile);
     const avatarSrc = computed(() => {
-      return userProfile.value?.imageUrl
-    })
+      return userProfile.value?.imageUrl;
+    });
 
     const logout = () => {
-      store.dispatch('user/logout', true)
-    }
+      store.dispatch("user/logout", true);
+    };
 
     return {
       APP_ACCOUNT,
       userProfile,
       avatarSrc,
       defaultAvatar,
-      logout
-    }
-  }
-}
+      logout,
+    };
+  },
+};
 </script>
 
 <style lang="scss" scoped>

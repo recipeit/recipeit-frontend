@@ -10,7 +10,11 @@
         :recipe-name="name"
         :recipe-rating="rating"
       />
-      <li v-if="items && recipes.totalCount > items.length" class="list-item" @click="$emit('showAll')">
+      <li
+        v-if="items && recipes.totalCount > items.length"
+        class="list-item"
+        @click="$emit('showAll')"
+      >
         <div class="show-all-item">
           <div class="show-all-item-sizer">
             <BaseLink tag="button" class="show-all-item-button">
@@ -20,57 +24,62 @@
           </div>
         </div>
       </li>
-      <template v-if="Object.values(recipes.fetchingPages).some(v => v)">
+      <template v-if="Object.values(recipes.fetchingPages).some((v) => v)">
         <li v-for="i in 6" :key="i" class="list-item list-item--skeleton">
           <SkeletonRecipeBox />
         </li>
       </template>
-      <slot v-else-if="recipes.items && recipes.totalCount === 0" name="empty-list" />
+      <slot
+        v-else-if="recipes.items && recipes.totalCount === 0"
+        name="empty-list"
+      />
     </ul>
     <div v-if="errors" class="recipes-errors">
       <div class="recipes-errors-message">
         <!-- {{ errors.messageId }} -->
         Wystąpił błąd podczas wczytywania
       </div>
-      <BaseButton stroked @click="tryFetchOnError()">Spróbuj ponownie</BaseButton>
+      <BaseButton stroked @click="tryFetchOnError()"
+        >Spróbuj ponownie</BaseButton
+      >
     </div>
   </div>
 </template>
 
 <script>
-import { RecipeList } from '@/constants'
+import { RecipeList } from "@/src/constants";
 
-import GenericRecipesListItem from '@/components/GenericRecipesListItem'
-import SkeletonRecipeBox from '@/components/skeletons/SkeletonRecipeBox'
+import GenericRecipesListItem from "@/src/components/GenericRecipesListItem";
+import SkeletonRecipeBox from "@/src/components/skeletons/SkeletonRecipeBox";
 
 export default {
   components: { GenericRecipesListItem, SkeletonRecipeBox },
   props: {
     recipes: {
-      type: RecipeList
+      type: RecipeList,
     },
     errors: {
       type: Object,
-      default: null
-    }
+      default: null,
+    },
   },
-  emits: ['showAll', 'reload-with-query'],
+  emits: ["showAll", "reload-with-query"],
   computed: {
     items() {
-      return this.recipes?.pagedItems[1] || []
-    }
+      return this.recipes?.pagedItems[1] || [];
+    },
   },
   methods: {
     tryFetchOnError() {
-      if (this.errors === null) return
-      const { from, query } = this.errors
+      if (this.errors === null) return;
+      const { from, query } = this.errors;
 
-      if (from === 'RELOAD') {
-        this.$emit('reload-with-query', query)
+      if (from === "RELOAD") {
+        this.$emit("reload-with-query", query);
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -95,7 +104,7 @@ export default {
 
   &::before,
   &::after {
-    content: '';
+    content: "";
     width: 32px;
     flex-shrink: 0;
 

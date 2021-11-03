@@ -1,36 +1,46 @@
 <template>
   <div class="not-found">
-    <img class="not-found-image" src="@/assets/img/broccoli-sad.svg" alt="" />
+    <img
+      class="not-found-image"
+      src="@/src/assets/img/broccoli-sad.svg"
+      alt=""
+    />
     <span class="not-found-text">
       Ojjj... nie znaleźliśmy takiej strony
     </span>
-    <router-link v-slot="{ href, navigate }" :to="{ name: LANDING_PAGE }" custom>
-      <BaseButton tag="a" :href="href" class="not-found-button" stroked @click="navigate($event)">
+    <NuxtLink v-slot="{ href, navigate }" :to="{ name: LANDING_PAGE }" custom>
+      <BaseButton
+        tag="a"
+        :href="href"
+        class="not-found-button"
+        stroked
+        @click="navigate($event)"
+      >
         Wróć na stronę główną
       </BaseButton>
-    </router-link>
+    </NuxtLink>
   </div>
 </template>
 
 <script>
-import { useMeta } from 'vue-meta'
+import { useMeta } from "vue-meta";
 
-import { BASE_URL } from '@/configs/url'
+import { BASE_URL } from "@/src/configs/url";
 
-import { LANDING_PAGE } from '@/router/names'
+import { LANDING_PAGE } from "@/src/router/names";
 
 export default {
   setup() {
     useMeta({
-      title: 'Nie znaleziono strony',
-      link: [{ rel: 'canonical', href: `${BASE_URL}/404` }]
-    })
+      title: "Nie znaleziono strony",
+      link: [{ rel: "canonical", href: `${BASE_URL}/404` }],
+    });
 
     return {
-      LANDING_PAGE
-    }
-  }
-}
+      LANDING_PAGE,
+    };
+  },
+};
 </script>
 
 <style lang="scss" scoped>

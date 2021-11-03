@@ -23,27 +23,45 @@
     <template v-if="recipes.totalCount === 0 && !recipes.fetching">
       <slot v-if="filtersCount > 0 || recipes.search" name="empty-with-filters">
         <div class="empty-list-message">
-          <img class="empty-list-message-image" src="@/assets/img/broccoli-sad.svg" alt="" />
-          <p class="empty-list-message-title">Nie znaleźliśmy przepisów dla użytych filtrów</p>
-          <BaseButton stroked @click="clearFilters()">Wyczyść filtry</BaseButton>
+          <img
+            class="empty-list-message-image"
+            src="@/src/assets/img/broccoli-sad.svg"
+            alt=""
+          />
+          <p class="empty-list-message-title">
+            Nie znaleźliśmy przepisów dla użytych filtrów
+          </p>
+          <BaseButton stroked @click="clearFilters()"
+            >Wyczyść filtry</BaseButton
+          >
         </div>
       </slot>
 
       <slot v-else name="empty-without-filters">
         <div class="empty-list-message">
-          <img class="empty-list-message-image" src="@/assets/img/broccoli-sad.svg" alt="" />
-          <p class="empty-list-message-title">Nie znaleźliśmy przepisów pasujących do Twoich produktów</p>
+          <img
+            class="empty-list-message-image"
+            src="@/src/assets/img/broccoli-sad.svg"
+            alt=""
+          />
+          <p class="empty-list-message-title">
+            Nie znaleźliśmy przepisów pasujących do Twoich produktów
+          </p>
         </div>
       </slot>
     </template>
 
     <template v-else>
       <div class="recipes-list__header">
-        <slot name="count" :count="recipes.totalCount" :fetching="showFetchingInfo">
+        <slot
+          name="count"
+          :count="recipes.totalCount"
+          :fetching="showFetchingInfo"
+        >
           <div class="recipes-list__header__total-count">
             <!-- <template v-if="recipes.totalCount !== null && !recipes.fetching"> -->
             <template v-if="recipes.totalCount !== null">
-              {{ $tc('shared.recipes', recipes.totalCount) }}
+              {{ $tc("shared.recipes", recipes.totalCount) }}
             </template>
             <template v-else-if="showFetchingInfo">
               <SkeletonBox class="total-count-skeleton" />
@@ -51,18 +69,35 @@
           </div>
         </slot>
         <div v-if="showAllLink" class="recipes-list__header__show-all">
-          <router-link v-slot="{ href, navigate }" :to="showAllLink" custom>
-            <BaseLink :href="href" color="primary" class="recipes-list__header__show-all__button" @click="navigate($event)">
-              {{ $t('shared.seeAll') }}
+          <NuxtLink v-slot="{ href, navigate }" :to="showAllLink" custom>
+            <BaseLink
+              :href="href"
+              color="primary"
+              class="recipes-list__header__show-all__button"
+              @click="navigate($event)"
+            >
+              {{ $t("shared.seeAll") }}
             </BaseLink>
-          </router-link>
+          </NuxtLink>
         </div>
       </div>
 
       <div ref="grid" class="recipes-list__list">
         <template v-for="({ item, page }, index) in itemsList">
-          <RecipeBox v-if="item" :key="item.id" :recipe-id="item.id" :recipe-slug="item.slug || item.id" :recipe-name="item.name" />
-          <SkeletonRecipeBox v-else :key="`${page}_${index}`" :ref="skeletonBoxMountedHandler" :page="page" :animate="false" />
+          <RecipeBox
+            v-if="item"
+            :key="item.id"
+            :recipe-id="item.id"
+            :recipe-slug="item.slug || item.id"
+            :recipe-name="item.name"
+          />
+          <SkeletonRecipeBox
+            v-else
+            :key="`${page}_${index}`"
+            :ref="skeletonBoxMountedHandler"
+            :page="page"
+            :animate="false"
+          />
         </template>
       </div>
 
@@ -70,23 +105,33 @@
         <div class="recipes-errors-message">
           Wystąpił błąd podczas wczytywania
         </div>
-        <BaseButton stroked @click="tryFetchOnError()">Spróbuj ponownie</BaseButton>
+        <BaseButton stroked @click="tryFetchOnError()"
+          >Spróbuj ponownie</BaseButton
+        >
       </div>
     </template>
   </div>
 </template>
 
 <script>
-import { computed, nextTick, onBeforeMount, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+// import {
+//   computed,
+//   nextTick,
+//   onBeforeMount,
+//   onBeforeUnmount,
+//   onMounted,
+//   ref,
+//   watch,
+// } from "vue";
 
-import { RecipeList } from '@/constants'
+import { RecipeList } from "@/src/constants";
 
-import RecipeBox from '@/components/RecipeBox'
-import SearchWithFilter from '@/components/SearchWithFilter'
-import SkeletonBox from '@/components/skeletons/SkeletonBox'
-import SkeletonRecipeBox from '@/components/skeletons/SkeletonRecipeBox'
+import RecipeBox from "@/src/components/RecipeBox";
+import SearchWithFilter from "@/src/components/SearchWithFilter";
+import SkeletonBox from "@/src/components/skeletons/SkeletonBox";
+import SkeletonRecipeBox from "@/src/components/skeletons/SkeletonRecipeBox";
 
-const PAGE_SIZE = 12
+const PAGE_SIZE = 12;
 
 export default {
   components: {
@@ -95,248 +140,279 @@ export default {
     RecipeBox,
     // Observer
 
-    SkeletonBox
+    SkeletonBox,
   },
   props: {
     recipes: {
       type: Object,
-      validator: value => value instanceof RecipeList
+      validator: (value) => value instanceof RecipeList,
     },
     errors: {
       type: Object,
-      default: null
+      default: null,
     },
     apiEndpoint: {
-      type: Function
+      type: Function,
     },
     showAllLink: {
-      type: [String, Object]
+      type: [String, Object],
     },
     limitedItems: {
       type: Number,
-      default: null
+      default: null,
     },
     showFilterButtons: {
       type: Boolean,
-      default: true
+      default: true,
     },
     loadHandler: {
       type: Function,
-      required: true
-    }
+      required: true,
+    },
   },
-  emits: ['reload', 'load', 'reload-with-query', 'load-next'],
+  emits: ["reload", "load", "reload-with-query", "load-next"],
   setup(props, { emit }) {
-    const searchString = ref(props.recipes.search)
-    const searchTimeoutCallback = ref(null)
+    const searchString = ref(props.recipes.search);
+    const searchTimeoutCallback = ref(null);
 
     const onSearch = ({ orderMethod, filters, search }) => {
-      disconnectObservers()
-      emit('reload', { orderMethod, filters, search })
-    }
+      disconnectObservers();
+      emit("reload", { orderMethod, filters, search });
+    };
 
     const clearFilters = () => {
-      disconnectObservers()
-      emit('reload', {})
-    }
+      disconnectObservers();
+      emit("reload", {});
+    };
 
     const countFilters = () => {
-      let count = 0
+      let count = 0;
 
-      const { filters: appliedFilters, orderMethod: appliedSorting, defaultOrderMethod: defaultSorting } = props.recipes
+      const {
+        filters: appliedFilters,
+        orderMethod: appliedSorting,
+        defaultOrderMethod: defaultSorting,
+      } = props.recipes;
 
-      if (typeof appliedFilters === 'object' && appliedFilters !== null) {
+      if (typeof appliedFilters === "object" && appliedFilters !== null) {
         count += Object.entries(appliedFilters)
-          .map(f => f[1].length)
-          .reduce((a, b) => a + b, 0)
+          .map((f) => f[1].length)
+          .reduce((a, b) => a + b, 0);
       }
 
       if (appliedSorting && appliedSorting !== defaultSorting) {
-        count++
+        count++;
       }
 
-      return count
-    }
+      return count;
+    };
 
     const tryFetchOnError = () => {
-      if (props.errors === null) return
-      const { from, query } = props.errors
+      if (props.errors === null) return;
+      const { from, query } = props.errors;
 
-      if (from === 'RELOAD') {
-        disconnectObservers()
-        emit('reload-with-query', query)
-      } else if (from === 'LOAD-NEXT') {
-        emit('load-next')
+      if (from === "RELOAD") {
+        disconnectObservers();
+        emit("reload-with-query", query);
+      } else if (from === "LOAD-NEXT") {
+        emit("load-next");
       }
-    }
+    };
 
-    const filtersCount = ref(countFilters())
+    const filtersCount = ref(countFilters());
 
     watch(
       () => [props.recipes.filters, props.recipes.orderMethod],
       () => {
         if (!props.recipes.fetching) {
-          filtersCount.value = countFilters()
+          filtersCount.value = countFilters();
         }
       }
-    )
+    );
 
     // NEW
 
-    const grid = ref()
-    const initialHeight = ref()
-    const requiredItems = ref()
+    const grid = ref();
+    const initialHeight = ref();
+    const requiredItems = ref();
 
     const itemsList = computed(() => {
-      const loadedPageNumbers = Object.keys(props.recipes.pagedItems).map(e => parseInt(e))
-      const lastLoadedPage = loadedPageNumbers?.length > 0 ? Math.max(...loadedPageNumbers) : 0
+      const loadedPageNumbers = Object.keys(props.recipes.pagedItems).map((e) =>
+        parseInt(e)
+      );
+      const lastLoadedPage =
+        loadedPageNumbers?.length > 0 ? Math.max(...loadedPageNumbers) : 0;
 
-      let result = []
+      let result = [];
       for (var i = 1; i <= lastLoadedPage + 1; i++) {
-        const loadedPage = props.recipes.pagedItems[i]
+        const loadedPage = props.recipes.pagedItems[i];
         if (loadedPage?.length > 0) {
-          result.push(...loadedPage.map(item => ({ page: i, item })))
+          result.push(...loadedPage.map((item) => ({ page: i, item })));
         } else {
-          result.push(...Array(PAGE_SIZE).fill({ page: i, item: null }))
+          result.push(...Array(PAGE_SIZE).fill({ page: i, item: null }));
         }
       }
 
       // TODO trzeba optymalniej, gdzieś na górze nie dodawać niepotrzebnych elementów
-      if (props.recipes.totalCount && result.length > props.recipes.totalCount) {
-        result = result.slice(0, props.recipes.totalCount)
+      if (
+        props.recipes.totalCount &&
+        result.length > props.recipes.totalCount
+      ) {
+        result = result.slice(0, props.recipes.totalCount);
       }
 
-      let additionalItems = 0
+      let additionalItems = 0;
       if (requiredItems.value > result.length) {
         // czyli chcemy żeby było więcej dorzucone
         if (props.recipes.totalCount) {
           // czyli już zaczytaliśmy jakąś stronkę
           if (props.recipes.totalCount > result.length) {
             // weryfikujemy czy jeszcze jest co wczytywać
-            additionalItems = Math.min(props.recipes.totalCount, requiredItems.value) - result.length
+            additionalItems =
+              Math.min(props.recipes.totalCount, requiredItems.value) -
+              result.length;
             // blokujemy opcję dorenderowania elementów które nie istnieją
           }
         } else {
           // czyli jest to inital state, nie wiemy ile elementów ma lista
-          additionalItems = requiredItems.value - result.length
+          additionalItems = requiredItems.value - result.length;
         }
       }
 
-      const additionalPages = Math.ceil(additionalItems / PAGE_SIZE)
+      const additionalPages = Math.ceil(additionalItems / PAGE_SIZE);
 
       for (var j = 1; j <= additionalPages; j++) {
-        const itemsCountToAdd = j === additionalPages ? additionalItems % PAGE_SIZE || PAGE_SIZE : PAGE_SIZE
-        result.push(...Array(itemsCountToAdd).fill({ page: lastLoadedPage + j, item: null }))
+        const itemsCountToAdd =
+          j === additionalPages
+            ? additionalItems % PAGE_SIZE || PAGE_SIZE
+            : PAGE_SIZE;
+        result.push(
+          ...Array(itemsCountToAdd).fill({
+            page: lastLoadedPage + j,
+            item: null,
+          })
+        );
       }
 
-      return result
-    })
+      return result;
+    });
 
-    const isInViewport = element => {
-      const rect = element.getBoundingClientRect()
+    const isInViewport = (element) => {
+      const rect = element.getBoundingClientRect();
       return (
         rect.top >= 0 &&
         rect.left >= 0 &&
-        rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-        rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-      )
-    }
+        rect.bottom <=
+          (window.innerHeight || document.documentElement.clientHeight) &&
+        rect.right <=
+          (window.innerWidth || document.documentElement.clientWidth)
+      );
+    };
 
-    let intersectionObservers = {}
-    let fetchingPages = {}
-    const skeletonBoxMountedHandler = el => {
+    let intersectionObservers = {};
+    let fetchingPages = {};
+    const skeletonBoxMountedHandler = (el) => {
       if (!el) {
-        return
+        return;
       }
 
-      const { page: pageNumber, $el } = el
-      var observer = intersectionObservers[pageNumber]
+      const { page: pageNumber, $el } = el;
+      var observer = intersectionObservers[pageNumber];
 
       const isIntersectingHandler = () => {
         // console.log('sproboje ładować')
         if (!fetchingPages[pageNumber]) {
-          fetchingPages[pageNumber] = true
+          fetchingPages[pageNumber] = true;
           props
             .loadHandler(pageNumber)
             .then(() => {
-              observer.disconnect()
+              observer.disconnect();
             })
             .catch(() => {
-              delete fetchingPages[pageNumber]
-            })
+              delete fetchingPages[pageNumber];
+            });
         }
-      }
+      };
 
       if (!observer) {
         observer = new IntersectionObserver(
           ([entry]) => {
             if (entry && entry.isIntersecting) {
-              isIntersectingHandler()
+              isIntersectingHandler();
             }
           },
-          { rootMargin: '256px' }
-        )
+          { rootMargin: "256px" }
+        );
 
-        intersectionObservers[pageNumber] = observer
+        intersectionObservers[pageNumber] = observer;
       }
 
       if ($el) {
         if (isInViewport($el)) {
-          isIntersectingHandler()
+          isIntersectingHandler();
         } else {
-          observer.observe($el)
+          observer.observe($el);
         }
       }
-    }
+    };
 
     const disconnectObservers = () => {
-      Object.values(intersectionObservers).forEach(observer => {
-        observer?.disconnect()
-      })
+      Object.values(intersectionObservers).forEach((observer) => {
+        observer?.disconnect();
+      });
       // intersectionObservers = {} // POLEMIZOWAŁBYm
-      fetchingPages = {}
-    }
+      fetchingPages = {};
+    };
 
     onBeforeMount(() => {
-      const { top } = history.state?.scroll || {}
+      const { top } = history.state?.scroll || {};
       if (top) {
-        initialHeight.value = top + window.innerHeight
+        initialHeight.value = top + window.innerHeight;
       }
-    })
+    });
 
     onMounted(() => {
       if (initialHeight.value) {
-        const { offsetWidth: gridWidth } = grid.value || {}
-        const { offsetHeight, offsetWidth } = grid.value?.children[0] || {}
+        const { offsetWidth: gridWidth } = grid.value || {};
+        const { offsetHeight, offsetWidth } = grid.value?.children[0] || {};
 
-        const gridRowGap = parseFloat(getComputedStyle(grid.value).rowGap)
-        const gridColumnGap = parseFloat(getComputedStyle(grid.value).columnGap)
+        const gridRowGap = parseFloat(getComputedStyle(grid.value).rowGap);
+        const gridColumnGap = parseFloat(
+          getComputedStyle(grid.value).columnGap
+        );
 
-        const rows = Math.ceil(initialHeight.value / (offsetHeight + gridRowGap))
-        const columns = Math.floor((gridWidth + gridColumnGap) / (offsetWidth + gridColumnGap))
+        const rows = Math.ceil(
+          initialHeight.value / (offsetHeight + gridRowGap)
+        );
+        const columns = Math.floor(
+          (gridWidth + gridColumnGap) / (offsetWidth + gridColumnGap)
+        );
 
-        requiredItems.value = rows * columns
+        requiredItems.value = rows * columns;
 
         nextTick().then(() => {
-          initialHeight.value = null
-        })
+          initialHeight.value = null;
+        });
       }
-    })
+    });
 
     onBeforeUnmount(() => {
-      disconnectObservers()
-    })
+      disconnectObservers();
+    });
 
     const initialStyle = computed(() => {
       if (initialHeight.value) {
-        return `min-height: ${initialHeight.value}px`
+        return `min-height: ${initialHeight.value}px`;
       }
-      return null
-    })
+      return null;
+    });
 
     const showFetchingInfo = computed(() => {
-      return Object.values(props.recipes.fetchingPages).some(v => v) && Object.keys(props.recipes.pagedItems || {}).length === 0
-    })
+      return (
+        Object.values(props.recipes.fetchingPages).some((v) => v) &&
+        Object.keys(props.recipes.pagedItems || {}).length === 0
+      );
+    });
 
     // END NEW
 
@@ -358,10 +434,10 @@ export default {
 
       intersectionObservers,
       fetchingPages,
-      showFetchingInfo
-    }
-  }
-}
+      showFetchingInfo,
+    };
+  },
+};
 </script>
 
 <style lang="scss" scoped>

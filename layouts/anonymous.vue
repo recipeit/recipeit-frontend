@@ -1,4 +1,5 @@
 <template>
+  <NuxtLink to="/start">START</NuxtLink>
   <AnonymousPageHeader />
   <slot name="header" />
   <div class="page-container">
@@ -8,12 +9,12 @@
 </template>
 
 <script>
-import AnonymousPageHeader from '@/components/anonymous/AnonymousPageHeader'
-import Footer from '@/components/landingPage/Footer'
+import AnonymousPageHeader from "@/src/components/anonymous/AnonymousPageHeader";
+import Footer from "@/src/components/landingPage/Footer";
 
 export default {
-  components: { AnonymousPageHeader, Footer }
-}
+  components: { AnonymousPageHeader, Footer },
+};
 </script>
 
 <style lang="scss" scoped>

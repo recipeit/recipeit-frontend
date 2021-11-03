@@ -1,71 +1,77 @@
 <template>
   <div class="navigation-bar">
-    <router-link :to="{ name: APP_HOME }" class="logo-link">
+    <NuxtLink to="/start" class="logo-link">
       <Logotype class="logo" />
-    </router-link>
-    <router-link :to="{ name: APP_HOME }" class="navigation-bar__item">
+    </NuxtLink>
+    <NuxtLink to="/start" class="navigation-bar__item">
       <BaseIcon class="item-icon" icon="home" />
       <span class="item-name">Start</span>
-    </router-link>
-    <router-link :to="{ name: APP_RECIPES }" class="navigation-bar__item">
+    </NuxtLink>
+    <NuxtLink to="/przepisy" class="navigation-bar__item">
       <BaseIcon class="item-icon" icon="cookbook" />
       <span class="item-name">Przepisy</span>
-    </router-link>
-    <router-link :to="{ name: APP_COOK_IT }" class="navigation-bar__item">
+    </NuxtLink>
+    <NuxtLink to="/ugotuj-to" class="navigation-bar__item">
       <!-- <BaseIcon class="item-icon"icon="chef-hat" weight="fill" /> -->
       <BaseIcon class="item-icon" icon="chef-hat" />
       <span class="item-name">Ugotuj to!</span>
-    </router-link>
-    <router-link :to="{ name: APP_MY_KITCHEN }" class="navigation-bar__item">
+    </NuxtLink>
+    <NuxtLink to="/kuchnia" class="navigation-bar__item">
       <NavigationBarAnimatedIcon ref="myKitchenIcon">
         <BaseIcon class="item-icon" icon="food" />
       </NavigationBarAnimatedIcon>
       <span class="item-name">Kuchnia</span>
-    </router-link>
-    <router-link :to="{ name: APP_SHOPPING_LIST }" class="navigation-bar__item">
+    </NuxtLink>
+    <NuxtLink to="/zakupy" class="navigation-bar__item">
       <NavigationBarAnimatedIcon ref="shoppingListIcon">
         <BaseIcon class="item-icon" icon="basket" />
       </NavigationBarAnimatedIcon>
       <span class="item-name">Zakupy</span>
-    </router-link>
+    </NuxtLink>
   </div>
 </template>
 
 <script>
-import { ref } from 'vue'
-import { useRoute } from 'vue-router'
+// import { ref } from "vue";
+// import { useRoute } from "vue-router";
 
-import { APP_COOK_IT, APP_HOME, APP_MY_KITCHEN, APP_RECIPES, APP_SHOPPING_LIST } from '@/router/names'
+import {
+  APP_COOK_IT,
+  APP_HOME,
+  APP_MY_KITCHEN,
+  APP_RECIPES,
+  APP_SHOPPING_LIST,
+} from "@/src/router/names";
 
-import eventHub from '@/services/eventHub'
+import eventHub from "@/src/services/eventHub";
 
-import Logotype from '@/components/Logotype'
-import NavigationBarAnimatedIcon from '@/components/NavigationBarAnimatedIcon'
+import Logotype from "@/src/components/Logotype";
+import NavigationBarAnimatedIcon from "@/src/components/NavigationBarAnimatedIcon";
 
 export default {
   components: {
     Logotype,
-    NavigationBarAnimatedIcon
+    NavigationBarAnimatedIcon,
   },
   setup() {
-    const route = useRoute()
+    const route = useRoute();
 
-    const myKitchenIcon = ref(null)
-    const shoppingListIcon = ref(null)
+    const myKitchenIcon = ref(null);
+    const shoppingListIcon = ref(null);
 
     const runAddToKitchenAnimation = () => {
       if (route.name !== APP_MY_KITCHEN) {
-        myKitchenIcon.value?.startAnimation()
+        myKitchenIcon.value?.startAnimation();
       }
-    }
+    };
     const runAddToShoppingListAnimation = () => {
       if (route.name !== APP_SHOPPING_LIST) {
-        shoppingListIcon.value?.startAnimation()
+        shoppingListIcon.value?.startAnimation();
       }
-    }
+    };
 
-    eventHub.$on('add-to-kitchen', runAddToKitchenAnimation)
-    eventHub.$on('add-to-shopping-list', runAddToShoppingListAnimation)
+    eventHub.$on("add-to-kitchen", runAddToKitchenAnimation);
+    eventHub.$on("add-to-shopping-list", runAddToShoppingListAnimation);
 
     return {
       APP_HOME,
@@ -76,10 +82,10 @@ export default {
       runAddToKitchenAnimation,
       runAddToShoppingListAnimation,
       myKitchenIcon,
-      shoppingListIcon
-    }
-  }
-}
+      shoppingListIcon,
+    };
+  },
+};
 </script>
 
 <style lang="scss" scoped>

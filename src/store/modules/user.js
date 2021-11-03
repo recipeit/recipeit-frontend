@@ -1,13 +1,15 @@
-import identityApi from '@/api/identityApi'
-import userApi from '@/api/userApi'
+import identityApi from '@/src/api/identityApi'
+import userApi from '@/src/api/userApi'
 
-import { THEMES, THEME_DEFAULT, THEME_STORAGE_KEY } from '@/configs/theme'
+import { THEMES, THEME_DEFAULT, THEME_STORAGE_KEY } from '@/src/configs/theme'
 
-import toastPlugin from '@/plugins/toast'
-import { ToastType } from '@/plugins/toast/toastType'
+import toastPlugin from '@/src/plugins/toast'
+import { ToastType } from '@/src/plugins/toast/toastType'
 
-import router from '@/router'
-import { APP_PATHS } from '@/router/paths'
+// import router from '@/src/router'
+import { APP_PATHS } from '@/src/router/paths'
+
+const clientLocalStorage = process.client ? localStorage : null
 
 export const USER_AUTH_STATE = {
   USER_APP_INITIAL: 'USER_APP_INITIAL',
@@ -31,7 +33,7 @@ export const MUTATIONS = {
   REMOVE_FROM_HIDDEN_BLOG_IDS: 'REMOVE_FROM_HIDDEN_BLOG_IDS'
 }
 
-export default {
+export default ({ router }) => ({
   namespaced: true,
   state: {
     theme: null,
@@ -87,7 +89,7 @@ export default {
   },
   actions: {
     initTheme({ commit }) {
-      let currentTheme = localStorage.getItem(THEME_STORAGE_KEY)
+      let currentTheme = clientLocalStorage?.getItem(THEME_STORAGE_KEY)
       if (!currentTheme || !THEMES.includes(currentTheme)) {
         currentTheme = THEME_DEFAULT
       }
@@ -96,7 +98,7 @@ export default {
     setTheme({ commit }, theme) {
       if (THEMES.includes(theme)) {
         commit(MUTATIONS.SET_THEME, theme)
-        localStorage.setItem(THEME_STORAGE_KEY, theme)
+        clientLocalStorage?.setItem(THEME_STORAGE_KEY, theme)
       }
     },
     async fetchUserProfile({ commit, dispatch }, { getInitUserData } = {}) {
@@ -116,7 +118,7 @@ export default {
         throw new Error(e)
       }
     },
-    register({ commit, dispatch }, { email, password, confirmPassword, recaptchaToken }) {
+    register({ commit, dispatch }, { email, password, confirmPassword, recaptchaToken }) {      
       return new Promise((resolve, reject) => {
         identityApi
           .register({ email, password, confirmPassword, recaptchaToken })
@@ -134,12 +136,12 @@ export default {
               commit(MUTATIONS.SET_USER_PROFILE, userProfile)
               commit(MUTATIONS.SET_USER_AUTH_STATE, USER_AUTH_STATE.USER_LOGGED_IN)
               dispatch('getInitUserData')
-              const redirectUrl = sessionStorage.getItem('LOGIN_REDIRECT')
+              const redirectUrl = sessionStorage?.getItem('LOGIN_REDIRECT')
               if (redirectUrl) {
                 router.push(redirectUrl)
-                sessionStorage.removeItem('LOGIN_REDIRECT')
+                sessionStorage?.removeItem('LOGIN_REDIRECT')
               } else {
-                router.push({ name: 'home' })
+                router.push({ path: '/start' })
               }
             }
             resolve()
@@ -168,12 +170,12 @@ export default {
               commit(MUTATIONS.SET_USER_PROFILE, userProfile)
               commit(MUTATIONS.SET_USER_AUTH_STATE, USER_AUTH_STATE.USER_LOGGED_IN)
               dispatch('getInitUserData')
-              const redirectUrl = sessionStorage.getItem('LOGIN_REDIRECT')
+              const redirectUrl = sessionStorage?.getItem('LOGIN_REDIRECT')
               if (redirectUrl) {
                 router.push(redirectUrl)
-                sessionStorage.removeItem('LOGIN_REDIRECT')
+                sessionStorage?.removeItem('LOGIN_REDIRECT')
               } else {
-                router.push({ name: 'home' })
+                router.push('/start')
               }
             }
             resolve()
@@ -194,12 +196,12 @@ export default {
             commit(MUTATIONS.SET_USER_PROFILE, userProfile)
             commit(MUTATIONS.SET_USER_AUTH_STATE, USER_AUTH_STATE.USER_LOGGED_IN)
             dispatch('getInitUserData')
-            const redirectUrl = sessionStorage.getItem('LOGIN_REDIRECT')
+            const redirectUrl = sessionStorage?.getItem('LOGIN_REDIRECT')
             if (redirectUrl) {
               router.push(redirectUrl)
-              sessionStorage.removeItem('LOGIN_REDIRECT')
+              sessionStorage?.removeItem('LOGIN_REDIRECT')
             } else {
-              router.push({ name: 'home' })
+              router.push({ path: '/start' })
             }
             resolve()
           })
@@ -219,12 +221,12 @@ export default {
             commit(MUTATIONS.SET_USER_PROFILE, userProfile)
             commit(MUTATIONS.SET_USER_AUTH_STATE, USER_AUTH_STATE.USER_LOGGED_IN)
             dispatch('getInitUserData')
-            const redirectUrl = sessionStorage.getItem('LOGIN_REDIRECT')
+            const redirectUrl = sessionStorage?.getItem('LOGIN_REDIRECT')
             if (redirectUrl) {
               router.push(redirectUrl)
-              sessionStorage.removeItem('LOGIN_REDIRECT')
+              sessionStorage?.removeItem('LOGIN_REDIRECT')
             } else {
-              router.push({ name: 'home' })
+              router.push({ path: '/start' })
             }
             resolve()
           })
@@ -246,7 +248,7 @@ export default {
           commit(MUTATIONS.SET_USER_AUTH_STATE, USER_AUTH_STATE.USER_LOGGED_OUT)
 
           if (APP_PATHS.some(path => location.pathname.startsWith(path))) {
-            sessionStorage.setItem('LOGIN_REDIRECT', location.pathname)
+            sessionStorage?.setItem('LOGIN_REDIRECT', location.pathname)
           }
 
           dispatch('logout')
@@ -283,9 +285,9 @@ export default {
 
       if (APP_PATHS.some(path => location.pathname.startsWith(path))) {
         if (!withoutRedirect) {
-          sessionStorage.setItem('LOGIN_REDIRECT', location.pathname)
+          sessionStorage?.setItem('LOGIN_REDIRECT', location.pathname)
         }
-        await router.push({ name: 'login' })
+        await router.push('/logowanie')
       }
 
       dispatch('shoppingList/resetUserData', {}, { root: true })
@@ -367,4 +369,4 @@ export default {
     isRecipeHidden: state => id => state.hiddenRecipeIds?.includes(id),
     isBlogHidden: state => id => state.hiddenBlogIds?.includes(id)
   }
-}
+})

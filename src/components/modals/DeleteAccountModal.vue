@@ -1,19 +1,40 @@
 <template>
   <SheetModalContent>
     <BaseModalHeader @close="$emit('close')">
-      <BaseModalTitle class="title">Czy na pewno chcesz usunąć konto?</BaseModalTitle>
+      <BaseModalTitle class="title"
+        >Czy na pewno chcesz usunąć konto?</BaseModalTitle
+      >
     </BaseModalHeader>
     <BaseModalBody>
       <p class="message">
-        <b>Nieodwracalnie</b> utracisz m.in. listy zakupów, Twoje produkty, Twój plan dnia czy listę ulubionych przepisów.
+        <b>Nieodwracalnie</b> utracisz m.in. listy zakupów, Twoje produkty, Twój
+        plan dnia czy listę ulubionych przepisów.
       </p>
       <p class="message">
-        Jeżeli dalej chcesz usunąć swoje konto, wprowadź kod <b class="code">{{ code }}</b> w poniższe pole.
+        Jeżeli dalej chcesz usunąć swoje konto, wprowadź kod
+        <b class="code">{{ code }}</b> w poniższe pole.
       </p>
-      <Form :id="formID" class="form" :validation-schema="schema" @submit="deleteAccount($event)">
-        <BaseInput class="form-row" label="E-mail" type="text" :disabled="true" :value="email" />
+      <Form
+        :id="formID"
+        class="form"
+        :validation-schema="schema"
+        @submit="deleteAccount($event)"
+      >
+        <BaseInput
+          class="form-row"
+          label="E-mail"
+          type="text"
+          :disabled="true"
+          :value="email"
+        />
         <Field v-slot="{ field, errors }" name="code">
-          <BaseInput class="form-row" label="Kod" type="text" v-bind="field" :errors="errors" />
+          <BaseInput
+            class="form-row"
+            label="Kod"
+            type="text"
+            v-bind="field"
+            :errors="errors"
+          />
         </Field>
       </Form>
       <div v-for="(error, i) in errors" :key="i" class="error">
@@ -26,107 +47,116 @@
       <BaseButton class="submit-button" stroked @click="$emit('close')">
         Nie chcę
       </BaseButton>
-      <BaseButton class="submit-button" raised color="danger" :form="formID" :loading="sending">
-        {{ 'Usuń konto' }}
+      <BaseButton
+        class="submit-button"
+        raised
+        color="danger"
+        :form="formID"
+        :loading="sending"
+      >
+        {{ "Usuń konto" }}
       </BaseButton>
     </BaseModalFooter>
   </SheetModalContent>
 </template>
 
 <script>
-import { Field, Form } from 'vee-validate'
-import { onBeforeMount, reactive, toRefs } from 'vue'
-import { useStore } from 'vuex'
-import * as Yup from 'yup'
+import { Field, Form } from "vee-validate";
+// import { onBeforeMount, reactive, toRefs } from "vue";
+import { useStore } from "vuex";
+import * as Yup from "yup";
 
-import identityApi from '@/api/identityApi'
+import identityApi from "@/src/api/identityApi";
 
-import { RECAPTCHA_ACTIONS } from '@/configs/recaptcha'
+import { RECAPTCHA_ACTIONS } from "@/src/configs/recaptcha";
 
-import uniqueID from '@/functions/uniqueID'
+import uniqueID from "@/src/functions/uniqueID";
 
-import recaptcha from '@/services/recaptcha'
+import recaptcha from "@/src/services/recaptcha";
 
-import RecaptchaBranding from '@/components/RecaptchaBranding'
+import RecaptchaBranding from "@/src/components/RecaptchaBranding";
 
 export default {
   components: { RecaptchaBranding, Field, Form },
   props: {
     email: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   },
-  emits: ['close'],
+  emits: ["close"],
   setup(props, component) {
-    const store = useStore()
-    const formID = 'form-' + uniqueID().getID()
+    const store = useStore();
+    const formID = "form-" + uniqueID().getID();
     const data = reactive({
       sending: false,
       errors: [],
-      code: ''
-    })
+      code: "",
+    });
 
     const schema = Yup.object().shape({
       code: Yup.string()
         .test({
-          name: 'codeMatches',
-          message: 'Wprowadź prawidłowy kod',
-          test: value => (value !== undefined ? value.toUpperCase() === data.code.toUpperCase() : true)
+          name: "codeMatches",
+          message: "Wprowadź prawidłowy kod",
+          test: (value) =>
+            value !== undefined
+              ? value.toUpperCase() === data.code.toUpperCase()
+              : true,
         })
-        .required('REQUIRED')
-    })
+        .required("REQUIRED"),
+    });
 
     const generateCode = () => {
       return Math.random()
         .toString(36)
         .substring(7)
-        .toUpperCase()
-    }
+        .toUpperCase();
+    };
 
     const deleteAccount = () => {
-      data.sending = true
-      data.errors = []
+      data.sending = true;
+      data.errors = [];
 
       recaptcha
         .execute(RECAPTCHA_ACTIONS.DELETE_ACCOUNT)
-        .then(recaptchaToken => {
+        .then((recaptchaToken) => {
           identityApi
             .deleteAccount({ recaptchaToken })
             .then(() => {
-              component.emit('close', { success: true })
-              store.dispatch('user/logout')
+              component.emit("close", { success: true });
+              store.dispatch("user/logout");
             })
-            .catch(error => {
-              data.code = generateCode()
-              const errors = error?.response?.data?.errors
+            .catch((error) => {
+              data.code = generateCode();
+              const errors = error?.response?.data?.errors;
               if (errors) {
-                data.errors = errors
+                data.errors = errors;
               }
             })
             .finally(() => {
-              data.sending = false
-            })
+              data.sending = false;
+            });
         })
         .catch(() => {
-          data.sending = false
-        })
-    }
+          data.sending = false;
+        });
+    };
 
     onBeforeMount(async () => {
-      data.code = generateCode()
-      await recaptcha.init()
-    })
+      data.code = generateCode();
+      await recaptcha.init();
+    });
 
     return {
       ...toRefs(data),
       generateCode,
       deleteAccount,
       schema,
-      formID
-    }
-  }
-}
+      formID,
+    };
+  },
+};
 </script>
 
 <style lang="scss" scoped>

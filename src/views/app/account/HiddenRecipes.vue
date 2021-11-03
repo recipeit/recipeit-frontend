@@ -5,7 +5,11 @@
       ...wczytuje
     </div>
     <ul v-else-if="hiddenRecipes.length > 0" class="recipes-list">
-      <li v-for="recipe in hiddenRecipes" :key="recipe.id" class="recipes-list-item">
+      <li
+        v-for="recipe in hiddenRecipes"
+        :key="recipe.id"
+        class="recipes-list-item"
+      >
         <HiddenRecipe :recipe="recipe" @unhide="unhideRecipe(recipe.id)" />
       </li>
     </ul>
@@ -16,40 +20,45 @@
 </template>
 
 <script>
-import { useMeta } from 'vue-meta'
+import { useMeta } from "vue-meta";
 
-import userApi from '@/api/userApi'
+import userApi from "@/src/api/userApi";
 
-import PageHeader from '@/components/PageHeader'
-import HiddenRecipe from '@/components/HiddenRecipe'
+import PageHeader from "@/src/components/PageHeader";
+import HiddenRecipe from "@/src/components/HiddenRecipe";
 
 export default {
   components: {
     PageHeader,
-    HiddenRecipe
+    HiddenRecipe,
   },
   setup() {
     useMeta({
-      title: 'Ukryte przepisy'
-    })
+      title: "Ukryte przepisy",
+    });
   },
   data: () => ({
-    hiddenRecipes: null
+    hiddenRecipes: null,
   }),
   beforeMount() {
     userApi.getHiddenRecipes().then(({ data }) => {
-      this.hiddenRecipes = data.recipes || []
-    })
+      this.hiddenRecipes = data.recipes || [];
+    });
   },
   methods: {
     unhideRecipe(id) {
-      this.$store.dispatch('user/changeRecipeVisibility', { recipeId: id, visible: true }).then(() => {
-        const index = this.hiddenRecipes.findIndex(v => v.id === id)
-        this.hiddenRecipes.splice(index, 1)
-      })
-    }
-  }
-}
+      this.$store
+        .dispatch("user/changeRecipeVisibility", {
+          recipeId: id,
+          visible: true,
+        })
+        .then(() => {
+          const index = this.hiddenRecipes.findIndex((v) => v.id === id);
+          this.hiddenRecipes.splice(index, 1);
+        });
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>

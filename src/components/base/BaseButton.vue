@@ -6,64 +6,64 @@
 </template>
 
 <script>
-import Spinner from '@/components/Spinner'
+import Spinner from "@/src/components/Spinner";
 
-const validTags = ['button', 'a', 'span']
+const validTags = ["button", "a", "span"];
 
 export default {
   components: { Spinner },
   props: {
     color: {
       type: String,
-      default: ''
+      default: "",
     },
     size: {
-      type: String
+      type: String,
     },
     stroked: {
-      type: Boolean
+      type: Boolean,
     },
     raised: {
-      type: Boolean
+      type: Boolean,
     },
     subtle: {
-      type: Boolean
+      type: Boolean,
     },
     anchorTag: {
       type: Boolean,
-      default: false
+      default: false,
     },
     tag: {
       type: String,
-      default: 'button',
-      validator: value => validTags.includes(value)
+      default: "button",
+      validator: (value) => validTags.includes(value),
     },
     loading: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   computed: {
     classList() {
       return [
-        this.color ? `button--${this.color}` : '',
-        this.stroked ? 'button--stroked' : '',
-        this.raised ? 'button--raised' : '',
-        this.subtle ? 'button--subtle' : '',
-        this.size === 'small' ? 'button--small' : '',
-        this.loading ? 'loading' : ''
-      ]
-    }
-  }
-}
+        this.color ? `button--${this.color}` : "",
+        this.stroked ? "button--stroked" : "",
+        this.raised ? "button--raised" : "",
+        this.subtle ? "button--subtle" : "",
+        this.size === "small" ? "button--small" : "",
+        this.loading ? "loading" : "",
+      ];
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
 @mixin button-raised($colorsMap) {
-  $background: #{map-get($colorsMap, 'background')};
-  $background-hover: #{map-get($colorsMap, 'background-hover')};
-  $background-active: #{map-get($colorsMap, 'background-active')};
-  $color: #{map-get($colorsMap, 'color')};
+  $background: #{map-get($colorsMap, "background")};
+  $background-hover: #{map-get($colorsMap, "background-hover")};
+  $background-active: #{map-get($colorsMap, "background-active")};
+  $color: #{map-get($colorsMap, "color")};
 
   background-color: $background;
   color: $color;
@@ -87,10 +87,10 @@ export default {
 
 @mixin button-subtle($colorsMap) {
   // $base-background-opacity: subtle-button-background-opacity($background);
-  $background: #{map-get($colorsMap, 'background')};
-  $background-hover: #{map-get($colorsMap, 'background-hover')};
-  $background-active: #{map-get($colorsMap, 'background-active')};
-  $color: #{map-get($colorsMap, 'color')};
+  $background: #{map-get($colorsMap, "background")};
+  $background-hover: #{map-get($colorsMap, "background-hover")};
+  $background-active: #{map-get($colorsMap, "background-active")};
+  $color: #{map-get($colorsMap, "color")};
 
   background-color: $background;
   color: $color;
@@ -108,7 +108,7 @@ export default {
 }
 
 @mixin button-stroked($colorsMap) {
-  $color: #{map-get($colorsMap, 'color')};
+  $color: #{map-get($colorsMap, "color")};
 
   color: $color;
 }
@@ -175,7 +175,7 @@ export default {
     color: var(--color-text-primary);
 
     @each $color, $value in $button-subtle-variables {
-      @if ($color == 'disabled') {
+      @if ($color == "disabled") {
         &[disabled] {
           @include button-subtle($value);
         }

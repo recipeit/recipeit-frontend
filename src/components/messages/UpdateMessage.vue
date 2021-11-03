@@ -4,18 +4,20 @@
       <div class="update-message-text">
         Dostępna jest aktualizacja aplikacji
       </div>
-      <BaseButton color="primary" size="small" raised @click="$emit('update')">Odśwież</BaseButton>
+      <BaseButton color="primary" size="small" raised @click="$emit('update')"
+        >Odśwież</BaseButton
+      >
     </div>
   </Message>
 </template>
 
 <script>
-import Message from '@/components/Message'
+import Message from "@/src/components/Message";
 
 export default {
   components: { Message },
-  emits: ['update']
-}
+  emits: ["update"],
+};
 </script>
 
 <style lang="scss" scoped>

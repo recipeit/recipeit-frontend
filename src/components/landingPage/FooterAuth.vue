@@ -6,16 +6,26 @@
           Zacznij korzystać z Recipeit już teraz!
         </h2>
         <div class="footer-auth-buttons">
-          <router-link v-slot="{ href, navigate }" :to="{ name: 'register' }" custom>
-            <BaseButton class="button button--main" tag="span" :href="href" @click="navigate($event)">
+          <NuxtLink v-slot="{ href, navigate }" to="/rejestracja" custom>
+            <BaseButton
+              class="button button--main"
+              tag="span"
+              :href="href"
+              @click="navigate($event)"
+            >
               Utwórz konto
             </BaseButton>
-          </router-link>
-          <router-link v-slot="{ href, navigate }" :to="{ name: 'login' }" custom>
-            <BaseButton class="button button--secondary" tag="span" :href="href" @click="navigate($event)">
+          </NuxtLink>
+          <NuxtLink v-slot="{ href, navigate }" to="/logowanie" custom>
+            <BaseButton
+              class="button button--secondary"
+              tag="span"
+              :href="href"
+              @click="navigate($event)"
+            >
               Zaloguj się
             </BaseButton>
-          </router-link>
+          </NuxtLink>
         </div>
       </div>
       <BaseImageLazyload :src="BackgroundUrl" class="footer-auth-background" />
@@ -24,16 +34,16 @@
 </template>
 
 <script>
-import BackgroundUrl from '@/assets/img/footer-auth.webp'
+import BackgroundUrl from "@/src/assets/img/footer-auth.webp";
 
-import Container from '@/components/landingPage/Container'
+import Container from "@/src/components/landingPage/Container";
 
 export default {
   components: { Container },
   setup: () => ({
-    BackgroundUrl
-  })
-}
+    BackgroundUrl,
+  }),
+};
 </script>
 
 <style lang="scss" scoped>
@@ -60,7 +70,7 @@ export default {
     &.button--secondary {
       border: 1px solid rgba(#fff, 0.35);
       color: #fff;
-      @include transition('border-color');
+      @include transition("border-color");
 
       &:hover {
         border-color: rgba(#fff, 0.45);

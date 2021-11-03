@@ -1,45 +1,48 @@
 <template>
   <div class="almost-available-horizontal">
     <SectionTitle icon="basket" :title="$t('cookIt.buyMissingIngredient')" />
-    <HorizontalRecipesList :recipes="favouriteRecipes" @showAll="showAllFavourites()" />
+    <HorizontalRecipesList
+      :recipes="favouriteRecipes"
+      @showAll="showAllFavourites()"
+    />
   </div>
 </template>
 
 <script>
-import { onBeforeMount, ref } from 'vue'
-import { useRouter } from 'vue-router'
+// import { onBeforeMount, ref } from "vue";
+// import { useRouter } from "vue-router";
 
-import userApi from '@/api/userApi'
+import userApi from "@/src/api/userApi";
 
-import { RecipeList } from '@/constants'
+import { RecipeList } from "@/src/constants";
 
-import { APP_FAVOURITES } from '@/router/names'
+import { APP_FAVOURITES } from "@/src/router/names";
 
-import HorizontalRecipesList from '@/components/HorizontalRecipesList'
-import SectionTitle from '@/components/SectionTitle'
+import HorizontalRecipesList from "@/src/components/HorizontalRecipesList";
+import SectionTitle from "@/src/components/SectionTitle";
 
 export default {
   components: { HorizontalRecipesList, SectionTitle },
   setup() {
-    const favouriteRecipes = ref(new RecipeList())
-    const router = useRouter()
+    const favouriteRecipes = ref(new RecipeList());
+    const router = useRouter();
 
     onBeforeMount(async () => {
-      favouriteRecipes.value.fetching = true
-      const { data } = await userApi.getFavouriteRecipes()
-      favouriteRecipes.value.setFromApi({ ...data, fetching: false })
-    })
+      favouriteRecipes.value.fetching = true;
+      const { data } = await userApi.getFavouriteRecipes();
+      favouriteRecipes.value.setFromApi({ ...data, fetching: false });
+    });
 
     const showAllFavourites = () => {
-      router.push({ name: APP_FAVOURITES })
-    }
+      router.push({ name: APP_FAVOURITES });
+    };
 
     return {
       favouriteRecipes,
-      showAllFavourites
-    }
-  }
-}
+      showAllFavourites,
+    };
+  },
+};
 </script>
 
 <style lang="scss" scoped>

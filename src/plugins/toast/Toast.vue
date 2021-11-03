@@ -1,85 +1,101 @@
 <template>
-  <div :class="['toast', `toast--${type}`]" @mouseenter="resetTimer()" @mouseleave="setTimer()">
+  <div
+    :class="['toast', `toast--${type}`]"
+    @mouseenter="resetTimer()"
+    @mouseleave="setTimer()"
+  >
     <BaseIcon class="toast__icon" :icon="icon" weight="bold" />
     <div class="toast__message">
       {{ message }}
     </div>
-    <BaseLink v-if="!cancellable" tag="button" class="toast__close" color="text-secondary" @click="hide()">
+    <BaseLink
+      v-if="!cancellable"
+      tag="button"
+      class="toast__close"
+      color="text-secondary"
+      @click="hide()"
+    >
       <BaseIcon icon="close" weight="semi-bold" />
     </BaseLink>
-    <BaseLink v-else tag="button" class="toast__cancel" color="primary" @click="cancel()">
+    <BaseLink
+      v-else
+      tag="button"
+      class="toast__cancel"
+      color="primary"
+      @click="cancel()"
+    >
       cofnij
     </BaseLink>
   </div>
 </template>
 
 <script>
-import { ToastType } from '@/plugins/toast/toastType'
+import { ToastType } from "@/src/plugins/toast/toastType";
 
 export default {
   props: {
     id: {
       type: [String, Number],
-      required: true
+      required: true,
     },
     type: {
       type: String,
-      default: ToastType.INFO
+      default: ToastType.INFO,
     },
     message: {
       type: String,
-      required: true
+      required: true,
     },
     seconds: {
       type: Number,
-      default: 5
+      default: 5,
     },
     cancellable: Boolean,
-    cancelCallback: Function
+    cancelCallback: Function,
   },
-  emits: ['hide'],
+  emits: ["hide"],
   data() {
     return {
-      timer: null
-    }
+      timer: null,
+    };
   },
   computed: {
     icon() {
-      const { type } = this
-      if (type === ToastType.SUCCESS) return 'small-check'
-      if (type === ToastType.WARNING) return 'warning'
-      if (type === ToastType.ERROR) return 'small-close'
-      return 'info'
-    }
+      const { type } = this;
+      if (type === ToastType.SUCCESS) return "small-check";
+      if (type === ToastType.WARNING) return "warning";
+      if (type === ToastType.ERROR) return "small-close";
+      return "info";
+    },
   },
   mounted() {
-    this.setTimer()
+    this.setTimer();
   },
   methods: {
     hide() {
-      this.$emit('hide')
+      this.$emit("hide");
     },
     setTimer() {
       if (this.timer) {
-        this.resetTimer()
+        this.resetTimer();
       }
 
       this.timer = setTimeout(() => {
-        this.hide()
-      }, this.seconds * 1000)
+        this.hide();
+      }, this.seconds * 1000);
     },
     resetTimer() {
-      clearTimeout(this.timer)
-      this.timer = null
+      clearTimeout(this.timer);
+      this.timer = null;
     },
     cancel() {
       if (this.cancelCallback) {
-        this.cancelCallback()
+        this.cancelCallback();
       }
-      this.hide()
-    }
-  }
-}
+      this.hide();
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>

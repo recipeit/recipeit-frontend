@@ -2,9 +2,19 @@
   <div class="form-row">
     <div class="expiration-date-title">Daty ważności</div>
   </div>
-  <div v-if="!(expirationDateObjects && expirationDateObjects.length === 0)" class="form-row">
+  <div
+    v-if="!(expirationDateObjects && expirationDateObjects.length === 0)"
+    class="form-row"
+  >
     <div v-if="expirationDateObjects === null" class="expiration-date-list">
-      <BaseButton v-for="i in 3" :key="i" class="expiration-date-list__item" subtle color="primary" size="small" />
+      <BaseButton
+        v-for="i in 3"
+        :key="i"
+        class="expiration-date-list__item"
+        subtle
+        color="primary"
+        size="small"
+      />
     </div>
     <div v-else class="expiration-date-list">
       <BaseButton
@@ -17,33 +27,50 @@
         @click.stop="deleteExpirationDateAt(index)"
       >
         {{ formattedExpirationDate(date) }}
-        <BaseIcon class="expiration-date-list__item__icon" icon="close" weight="semi-bold" />
+        <BaseIcon
+          class="expiration-date-list__item__icon"
+          icon="close"
+          weight="semi-bold"
+        />
       </BaseButton>
     </div>
   </div>
 
   <div class="form-row">
-    <BaseLink tag="button" color="primary" class="add-expiration-date-button" @click.prevent="openNewExpirationDateModal()">
-      <BaseIcon class="add-expiration-date-button__icon" icon="plus" weight="semi-bold" />
-      {{ expirationDateObjects && expirationDateObjects.length > 0 ? 'dodaj kolejną datę ważności' : 'dodaj datę ważności' }}
+    <BaseLink
+      tag="button"
+      color="primary"
+      class="add-expiration-date-button"
+      @click.prevent="openNewExpirationDateModal()"
+    >
+      <BaseIcon
+        class="add-expiration-date-button__icon"
+        icon="plus"
+        weight="semi-bold"
+      />
+      {{
+        expirationDateObjects && expirationDateObjects.length > 0
+          ? "dodaj kolejną datę ważności"
+          : "dodaj datę ważności"
+      }}
     </BaseLink>
   </div>
 </template>
 
 <script>
-import { markRaw } from 'vue'
+// import { markRaw } from "vue";
 
-import dayjs from '@/functions/dayjs'
+import dayjs from "@/src/functions/dayjs";
 
-import NewExpirationDateModal from '@/components/modals/NewExpirationDateModal'
+import NewExpirationDateModal from "@/src/components/modals/NewExpirationDateModal";
 
 export default {
   // emits: [update:],
   props: {
     productId: String,
-    modelValue: [Array, null]
+    modelValue: [Array, null],
   },
-  emits: ['update:modelValue'],
+  emits: ["update:modelValue"],
   // beforeMount() {
   //   if (this.productId) {
   //     myKitchenApi.getProductExpirationDates(this.productId).then(response => {
@@ -53,40 +80,46 @@ export default {
   // },
   computed: {
     expirationDateObjects() {
-      return this.modelValue?.map(date => dayjs(date)).sort((a, b) => (a.isAfter(b) ? 1 : -1))
-    }
+      return this.modelValue
+        ?.map((date) => dayjs(date))
+        .sort((a, b) => (a.isAfter(b) ? 1 : -1));
+    },
   },
   methods: {
     isExpiredDate(date) {
-      return date.isBefore(dayjs(), 'day')
+      return date.isBefore(dayjs(), "day");
     },
     formattedExpirationDate(date) {
-      return date.format('D MMMM YYYY')
+      return date.format("D MMMM YYYY");
     },
     deleteExpirationDateAt(index) {
-      const newDates = [...this.modelValue]
-      newDates.splice(index, 1)
-      this.$emit('update:modelValue', newDates)
+      const newDates = [...this.modelValue];
+      newDates.splice(index, 1);
+      this.$emit("update:modelValue", newDates);
     },
     openNewExpirationDateModal() {
-      const self = this
+      const self = this;
 
       this.$modal.show(
         markRaw(NewExpirationDateModal),
         {},
         {
-          close: date => {
-            if (!date) return
-            const { year, month, day } = date
-            const newDates = [...self.modelValue]
-            newDates.push(`${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`)
-            self.$emit('update:modelValue', newDates)
-          }
+          close: (date) => {
+            if (!date) return;
+            const { year, month, day } = date;
+            const newDates = [...self.modelValue];
+            newDates.push(
+              `${year}-${month
+                .toString()
+                .padStart(2, "0")}-${day.toString().padStart(2, "0")}`
+            );
+            self.$emit("update:modelValue", newDates);
+          },
         }
-      )
-    }
-  }
-}
+      );
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>

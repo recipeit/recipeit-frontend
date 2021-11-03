@@ -1,5 +1,5 @@
-import GlobalModalContainer from '@/plugins/global-sheet-modal/GlobalModalContainer'
-import ModalContent from '@/plugins/global-sheet-modal/ModalContent'
+import GlobalModalContainer from '@/src/plugins/global-sheet-modal/GlobalModalContainer'
+import ModalContent from '@/src/plugins/global-sheet-modal/ModalContent'
 
 const defaultOptions = {
   globalModalContainer: null

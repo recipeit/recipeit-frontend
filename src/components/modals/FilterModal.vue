@@ -1,7 +1,7 @@
 <template>
   <SheetModalContent>
     <BaseModalHeader @close="$emit('close')">
-      <BaseModalTitle>{{ $t('filterModal.title') }}</BaseModalTitle>
+      <BaseModalTitle>{{ $t("filterModal.title") }}</BaseModalTitle>
     </BaseModalHeader>
     <BaseModalBody>
       <div class="filters">
@@ -14,13 +14,29 @@
             :searchable="false"
             @change="orderSelectedChanged($event)"
           >
-            <template #label="{ option }">{{ $t(`recipesSortingMethods.${option}`) }}</template>
-            <template #option="{ option }">{{ $t(`recipesSortingMethods.${option}`) }}</template>
+            <template #label="{ option }">{{
+              $t(`recipesSortingMethods.${option}`)
+            }}</template>
+            <template #option="{ option }">{{
+              $t(`recipesSortingMethods.${option}`)
+            }}</template>
           </BaseSelect>
         </div>
-        <div v-for="(group, groupValue) in options" :key="groupValue" class="filter__group">
-          <div :class="{ filter__group__title: true, 'filter__group__title--no-margin': groupValue === OPTION_KEYS.BASE_PRODUCTS }">
-            <div class="filter__group__name">{{ $t(`recipeFilterGroups.${groupValue}`) }}</div>
+        <div
+          v-for="(group, groupValue) in options"
+          :key="groupValue"
+          class="filter__group"
+        >
+          <div
+            :class="{
+              filter__group__title: true,
+              'filter__group__title--no-margin':
+                groupValue === OPTION_KEYS.BASE_PRODUCTS,
+            }"
+          >
+            <div class="filter__group__name">
+              {{ $t(`recipeFilterGroups.${groupValue}`) }}
+            </div>
             <transition name="fade">
               <BaseLink
                 v-if="selected[groupValue] && selected[groupValue].length > 0"
@@ -86,7 +102,7 @@
             >
               {{
                 CATEGORY_GROUPS.includes(groupValue)
-                  ? $t(`recipeCategory.${option.value}`).replace('Kuchnia ', '')
+                  ? $t(`recipeCategory.${option.value}`).replace("Kuchnia ", "")
                   : $t(`recipeFilterOptions.${groupValue}.${option.value}`)
               }}
             </BasePillCheckbox>
@@ -95,121 +111,139 @@
       </div>
     </BaseModalBody>
     <BaseModalFooter :sticky="true">
-      <BaseButton class="submit-button" stroked color="white" @click="$emit('close')">
-        {{ $t('filterModal.cancelButton') }}
+      <BaseButton
+        class="submit-button"
+        stroked
+        color="white"
+        @click="$emit('close')"
+      >
+        {{ $t("filterModal.cancelButton") }}
       </BaseButton>
       <BaseButton class="submit-button" raised color="primary" @click="submit">
-        {{ $t('filterModal.submitButton') }}
+        {{ $t("filterModal.submitButton") }}
       </BaseButton>
     </BaseModalFooter>
   </SheetModalContent>
 </template>
 
 <script>
-import _ from 'lodash'
-import { computed, reactive, toRefs } from 'vue'
-import { useStore } from 'vuex'
+import _ from "lodash";
+// import { computed, reactive, toRefs } from "vue";
+import { useStore } from "vuex";
 
-import ProductIcon from '@/components/ProductIcon'
+import ProductIcon from "@/src/components/ProductIcon";
 
 const OPTION_KEYS = {
-  BASE_PRODUCTS: 'BaseProducts'
-}
+  BASE_PRODUCTS: "BaseProducts",
+};
 
-const CATEGORY_GROUPS = ['Daytime', 'Type', 'Occasion', 'Cuisine']
+const CATEGORY_GROUPS = ["Daytime", "Type", "Occasion", "Cuisine"];
 
 export default {
   components: {
-    ProductIcon
+    ProductIcon,
   },
   props: {
     options: {
       type: Object,
-      required: true
+      required: true,
     },
     orderOptions: {
       type: Object,
-      required: true
+      required: true,
     },
     defaultSelected: {
-      type: Object
+      type: Object,
     },
     defaultOrderSelected: {
-      type: String
-    }
+      type: String,
+    },
   },
-  emits: ['close'],
+  emits: ["close"],
   setup(props, { emit }) {
-    const store = useStore()
-    const baseProducts = computed(() => store.state.ingredients.baseProducts)
+    const store = useStore();
+    const baseProducts = computed(() => store.state.ingredients.baseProducts);
     const baseProductsGrouped = computed(() =>
       _(baseProducts.value)
-        .groupBy(item => item.category)
+        .groupBy((item) => item.category)
         .toPairs()
         .value()
-        .map(pair => ({
+        .map((pair) => ({
           groupKey: pair[0],
-          groupValues: pair[1]
+          groupValues: pair[1],
         }))
-    )
+    );
 
     // eslint-disable-next-line vue/no-setup-props-destructure
-    const { [OPTION_KEYS.BASE_PRODUCTS]: defaultSelectedBaseProductIds, ...rest } = props.defaultSelected
+    const {
+      [OPTION_KEYS.BASE_PRODUCTS]: defaultSelectedBaseProductIds,
+      ...rest
+    } = props.defaultSelected;
 
     const data = reactive({
       selectedTheme: [],
       selected: {
-        ...Object.fromEntries(Object.keys(props.options).map(o => [o, []])),
+        ...Object.fromEntries(Object.keys(props.options).map((o) => [o, []])),
         ...rest,
-        [OPTION_KEYS.BASE_PRODUCTS]: defaultSelectedBaseProductIds?.map(id => baseProducts.value?.find(p => p.id === id)) || []
+        [OPTION_KEYS.BASE_PRODUCTS]:
+          defaultSelectedBaseProductIds?.map((id) =>
+            baseProducts.value?.find((p) => p.id === id)
+          ) || [],
       },
-      orderSelected: props.defaultOrderSelected
-    })
+      orderSelected: props.defaultOrderSelected,
+    });
 
     const submit = () => {
-      const { [OPTION_KEYS.BASE_PRODUCTS]: selectedBaseProducts, ...restSelected } = data.selected
+      const {
+        [OPTION_KEYS.BASE_PRODUCTS]: selectedBaseProducts,
+        ...restSelected
+      } = data.selected;
 
-      emit('close', {
+      emit("close", {
         selected: {
           ...restSelected,
-          [OPTION_KEYS.BASE_PRODUCTS]: selectedBaseProducts.map(p => p.id)
+          [OPTION_KEYS.BASE_PRODUCTS]: selectedBaseProducts.map((p) => p.id),
         },
-        orderSelected: data.orderSelected
-      })
-    }
+        orderSelected: data.orderSelected,
+      });
+    };
 
-    const clearFilterGroup = groupValue => {
-      data.selected[groupValue] = []
-    }
+    const clearFilterGroup = (groupValue) => {
+      data.selected[groupValue] = [];
+    };
 
-    const orderSelectedChanged = newValue => {
-      data.orderSelected = newValue || props.defaultOrderSelected
-    }
+    const orderSelectedChanged = (newValue) => {
+      data.orderSelected = newValue || props.defaultOrderSelected;
+    };
 
-    const addSelectedBaseProduct = product => {
-      const productIndex = data.selected[OPTION_KEYS.BASE_PRODUCTS].findIndex(p => p.id === product.id)
+    const addSelectedBaseProduct = (product) => {
+      const productIndex = data.selected[OPTION_KEYS.BASE_PRODUCTS].findIndex(
+        (p) => p.id === product.id
+      );
       if (productIndex < 0) {
-        data.selected[OPTION_KEYS.BASE_PRODUCTS].push(product)
+        data.selected[OPTION_KEYS.BASE_PRODUCTS].push(product);
       }
-    }
+    };
 
-    const removeSelectedBaseProduct = id => {
-      const productIndex = data.selected[OPTION_KEYS.BASE_PRODUCTS].findIndex(p => p.id === id)
+    const removeSelectedBaseProduct = (id) => {
+      const productIndex = data.selected[OPTION_KEYS.BASE_PRODUCTS].findIndex(
+        (p) => p.id === id
+      );
       if (productIndex >= 0) {
-        data.selected[OPTION_KEYS.BASE_PRODUCTS].splice(productIndex, 1)
+        data.selected[OPTION_KEYS.BASE_PRODUCTS].splice(productIndex, 1);
       }
-    }
+    };
 
-    const orderedGroupOptions = groupKey => {
-      const options = props.options[groupKey]?.options
-      const defaultSelectedIds = props.defaultSelected[groupKey]
+    const orderedGroupOptions = (groupKey) => {
+      const options = props.options[groupKey]?.options;
+      const defaultSelectedIds = props.defaultSelected[groupKey];
       if (options) {
-        return _.sortBy(options, o => {
-          return !defaultSelectedIds?.includes(o.key)
-        })
+        return _.sortBy(options, (o) => {
+          return !defaultSelectedIds?.includes(o.key);
+        });
       }
-      return []
-    }
+      return [];
+    };
 
     const pillCheckboxClickHandler = () => {
       // TODO zeby nie scrollowało wertykalnie
@@ -218,7 +252,7 @@ export default {
       //     behavior: 'smooth'
       //   })
       // }, 500)
-    }
+    };
 
     return {
       ...toRefs(data),
@@ -231,10 +265,10 @@ export default {
       orderedGroupOptions,
       pillCheckboxClickHandler,
       OPTION_KEYS,
-      CATEGORY_GROUPS
-    }
-  }
-}
+      CATEGORY_GROUPS,
+    };
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -322,7 +356,7 @@ export default {
 
       &::before,
       &::after {
-        content: '';
+        content: "";
         width: 32px;
         flex-shrink: 0;
       }

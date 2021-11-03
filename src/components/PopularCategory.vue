@@ -1,35 +1,38 @@
 <template>
-  <router-link v-slot="{ href, navigate }" :to="{ name: page, query: { [`filters.${categoryGroup}`]: categoryKey } }" custom>
+  <NuxtLink
+    v-slot="{ href, navigate }"
+    :to="{ path: page, query: { [`filters.${categoryGroup}`]: categoryKey } }"
+    custom
+  >
     <a :href="href" class="category" @click="navigate($event)">
       <BaseImageLazyload class="category-image" :src="imageUrl" />
       <div>
-        <span class="category-name">{{ $t(`recipeCategory.${categoryValue}`) }}</span>
+        <span class="category-name">{{
+          $t(`recipeCategory.${categoryValue}`)
+        }}</span>
       </div>
     </a>
-  </router-link>
+  </NuxtLink>
 </template>
 
 <script>
-import { CATEGORY_IMAGES } from '@/configs/recipeCategories'
-
-import { APP_COOK_IT } from '@/router/names'
+import { CATEGORY_IMAGES } from "@/src/configs/recipeCategories";
 
 export default {
   props: {
     page: String,
     categoryKey: Number,
     categoryValue: String,
-    categoryGroup: String
+    categoryGroup: String,
   },
   setup(props) {
-    const imageUrl = CATEGORY_IMAGES[props.categoryValue]
+    const imageUrl = CATEGORY_IMAGES[props.categoryValue];
 
     return {
-      APP_COOK_IT,
-      imageUrl
-    }
-  }
-}
+      imageUrl,
+    };
+  },
+};
 </script>
 
 <style lang="scss" scoped>

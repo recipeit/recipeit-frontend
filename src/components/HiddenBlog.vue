@@ -1,7 +1,19 @@
 <template>
-  <router-link v-slot="{ href, navigate }" :to="{ name: APP_BLOG, params: { blogId: blog.slug || blog.id, blogName: blog.name } }" custom>
+  <NuxtLink
+    v-slot="{ href, navigate }"
+    :to="{
+      name: APP_BLOG,
+      params: { blogId: blog.slug || blog.id, blogName: blog.name },
+    }"
+    custom
+  >
     <a :href="href" class="hidden-blog" @click="navigate($event)">
-      <BaseImageLazyload :src="avatarUrl" :error-placeholder="avatarErrorUrl" :alt="blog.name" class="hidden-blog__image" />
+      <BaseImageLazyload
+        :src="avatarUrl"
+        :error-placeholder="avatarErrorUrl"
+        :alt="blog.name"
+        class="hidden-blog__image"
+      />
       <div class="hidden-blog__details">
         <div class="hidden-blog__name">{{ blog.name }}</div>
         <div class="hidden-blog__url">{{ blog.url }}</div>
@@ -12,34 +24,36 @@
         </button>
       </div>
     </a>
-  </router-link>
+  </NuxtLink>
 </template>
 
 <script>
-import { computed } from 'vue'
+// import { computed } from "vue";
 
-import avatarErrorUrl from '@/assets/img/blog-avatar.webp'
+import avatarErrorUrl from "@/src/assets/img/blog-avatar.webp";
 
-import { APP_BLOG } from '@/router/names'
+import { APP_BLOG } from "@/src/router/names";
 
 export default {
   props: {
     blog: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
-  emits: ['unhide'],
+  emits: ["unhide"],
   setup(props) {
-    const avatarUrl = computed(() => `/static/blogs/${props.blog.id}/avatar.webp`)
+    const avatarUrl = computed(
+      () => `/static/blogs/${props.blog.id}/avatar.webp`
+    );
 
     return {
       APP_BLOG,
       avatarUrl,
-      avatarErrorUrl
-    }
-  }
-}
+      avatarErrorUrl,
+    };
+  },
+};
 </script>
 
 <style lang="scss" scoped>

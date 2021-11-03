@@ -9,7 +9,13 @@
 
         <div class="card-label">Hasło</div>
         <div class="card-value">●●●●●●●●●●</div>
-        <BaseLink tag="button" class="card-link" color="primary" @click="openChangePasswordModal()">zmień hasło</BaseLink>
+        <BaseLink
+          tag="button"
+          class="card-link"
+          color="primary"
+          @click="openChangePasswordModal()"
+          >zmień hasło</BaseLink
+        >
       </div>
       <div class="avatar">
         <BaseImageLazyload v-if="avatarSrc" :src="avatarSrc" alt="" />
@@ -18,12 +24,23 @@
     </div>
 
     <h3>Preferencje</h3>
-    <BaseLink tag="button" class="card-link" color="primary" @click="openCustomizeCookiesModal()">
+    <BaseLink
+      tag="button"
+      class="card-link"
+      color="primary"
+      @click="openCustomizeCookiesModal()"
+    >
       Zarządzaj ciasteczkami
     </BaseLink>
     <div class="settings-row">
       <div class="settings-row__value settings-row__value--theme">
-        <BaseSelect placeholder="Motyw" :options="THEMES" :value="selectedTheme" :searchable="false" @change="updateTheme($event)">
+        <BaseSelect
+          placeholder="Motyw"
+          :options="THEMES"
+          :value="selectedTheme"
+          :searchable="false"
+          @change="updateTheme($event)"
+        >
           <template #label="{ option }">{{ $t(`themes.${option}`) }}</template>
           <template #option="{ option }">{{ $t(`themes.${option}`) }}</template>
         </BaseSelect>
@@ -32,18 +49,28 @@
 
     <h3>Ukryta zawartość</h3>
     <p>
-      <router-link v-slot="{ href, navigate }" :to="{ name: 'hidden-blogs' }" custom>
-        <BaseLink :href="href" class="card-link" color="primary" @click="navigate($event)">
+      <NuxtLink v-slot="{ href, navigate }" to="/ukryte-blogi" custom>
+        <BaseLink
+          :href="href"
+          class="card-link"
+          color="primary"
+          @click="navigate($event)"
+        >
           Zarządzaj ukrytymi blogami
         </BaseLink>
-      </router-link>
+      </NuxtLink>
     </p>
     <p>
-      <router-link v-slot="{ href, navigate }" :to="{ name: 'hidden-recipes' }" custom>
-        <BaseLink :href="href" class="card-link" color="primary" @click="navigate($event)">
+      <NuxtLink v-slot="{ href, navigate }" to="/ukryte-przepisy" custom>
+        <BaseLink
+          :href="href"
+          class="card-link"
+          color="primary"
+          @click="navigate($event)"
+        >
           Zarządzaj ukrytymi przepisami
         </BaseLink>
-      </router-link>
+      </NuxtLink>
     </p>
 
     <h3>Inne</h3>
@@ -53,28 +80,63 @@
       </BaseLink>
     </p>
     <p>
-      <router-link v-slot="{ href, navigate }" :to="{ name: 'contact', params: { returnUrl: $route.fullPath } }" custom>
-        <BaseLink :href="href" class="card-link" color="primary" @click="navigate($event)">
+      <NuxtLink
+        v-slot="{ href, navigate }"
+        :to="{ path: '/kontakt', params: { returnUrl: $route.fullPath } }"
+        custom
+      >
+        <BaseLink
+          :href="href"
+          class="card-link"
+          color="primary"
+          @click="navigate($event)"
+        >
           Kontakt
         </BaseLink>
-      </router-link>
+      </NuxtLink>
     </p>
     <p>
-      <router-link v-slot="{ href, navigate }" :to="{ name: 'terms', params: { returnUrl: $route.fullPath } }" custom>
-        <BaseLink :href="href" class="card-link" color="primary" @click="navigate($event)">
+      <NuxtLink
+        v-slot="{ href, navigate }"
+        :to="{ path: '/regulamin', params: { returnUrl: $route.fullPath } }"
+        custom
+      >
+        <BaseLink
+          :href="href"
+          class="card-link"
+          color="primary"
+          @click="navigate($event)"
+        >
           Regulamin
         </BaseLink>
-      </router-link>
+      </NuxtLink>
     </p>
     <p>
-      <router-link v-slot="{ href, navigate }" :to="{ name: 'privacy-policy', params: { returnUrl: $route.fullPath } }" custom>
-        <BaseLink :href="href" class="card-link" color="primary" @click="navigate($event)">
+      <NuxtLink
+        v-slot="{ href, navigate }"
+        :to="{
+          path: '/polityka-prywatnosci',
+          params: { returnUrl: $route.fullPath },
+        }"
+        custom
+      >
+        <BaseLink
+          :href="href"
+          class="card-link"
+          color="primary"
+          @click="navigate($event)"
+        >
           Polityka prywatności
         </BaseLink>
-      </router-link>
+      </NuxtLink>
     </p>
     <p>
-      <BaseLink tag="button" class="card-link" color="red" @click="openDeleteAccountModal()">
+      <BaseLink
+        tag="button"
+        class="card-link"
+        color="red"
+        @click="openDeleteAccountModal()"
+      >
         Usuń konto
       </BaseLink>
     </p>
@@ -89,51 +151,55 @@
 </template>
 
 <script>
-import { markRaw, ref } from 'vue'
-import { mapState, useStore } from 'vuex'
-import { useMeta } from 'vue-meta'
+// import { markRaw, ref } from "vue";
+import { mapState, useStore } from "vuex";
+// import { useMeta } from "vue-meta";
 
-import defaultAvatar from '@/assets/img/avatar.svg?inline'
+import defaultAvatar from "@/src/assets/img/avatar.svg?inline";
 
-import { THEMES } from '@/configs/theme'
+import { THEMES } from "@/src/configs/theme";
 
-import { COPYRIGHT_TEXT } from '@/constants'
+import { COPYRIGHT_TEXT } from "@/src/constants";
 
-import { ARTICLES as ARTICLES_PATH } from '@/router/paths'
+import { ARTICLES as ARTICLES_PATH } from "@/src/router/paths";
 
-import Logotype from '@/components/Logotype'
-import PageHeader from '@/components/PageHeader'
+import Logotype from "@/src/components/Logotype";
+import PageHeader from "@/src/components/PageHeader";
 
-import ChangePasswordModal from '@/components/modals/ChangePasswordModal'
-import CustomizeCookiesModal from '@/components/modals/CustomizeCookiesModal'
-import DeleteAccountModal from '@/components/modals/DeleteAccountModal'
-import ForgotPasswordModal from '@/components/modals/ForgotPasswordModal'
+import ChangePasswordModal from "@/src/components/modals/ChangePasswordModal";
+import CustomizeCookiesModal from "@/src/components/modals/CustomizeCookiesModal";
+import DeleteAccountModal from "@/src/components/modals/DeleteAccountModal";
+import ForgotPasswordModal from "@/src/components/modals/ForgotPasswordModal";
 
 export default {
-  name: 'MyAccount',
+  name: "MyAccount",
   components: { PageHeader, Logotype },
+  layout: "app",
   setup() {
     useMeta({
-      title: 'Moje konto'
-    })
+      title: "Moje konto",
+    });
 
-    const store = useStore()
-    const currentTheme = store.state.user.theme
-    const selectedTheme = ref(currentTheme)
+    const store = useStore();
+    const currentTheme = store.state.user.theme;
+    const selectedTheme = ref(currentTheme);
 
     function updateTheme(value) {
       if (value && THEMES.includes(value)) {
-        selectedTheme.value = value
-        store.dispatch('user/setTheme', value)
+        selectedTheme.value = value;
+        store.dispatch("user/setTheme", value);
       }
     }
 
     function unhideRecipe(recipeId) {
-      store.dispatch('user/changeRecipeVisibility', { recipeId, visible: true })
+      store.dispatch("user/changeRecipeVisibility", {
+        recipeId,
+        visible: true,
+      });
     }
 
     function unhideBlog(blogId) {
-      store.dispatch('user/changeBlogVisibility', { blogId, visible: true })
+      store.dispatch("user/changeBlogVisibility", { blogId, visible: true });
     }
 
     return {
@@ -144,58 +210,58 @@ export default {
       unhideBlog,
       THEMES,
       defaultAvatar,
-      ARTICLES_PATH
-    }
+      ARTICLES_PATH,
+    };
   },
   computed: {
     ...mapState({
-      hiddenRecipes: state => state.user.hiddenRecipeIds,
-      hiddenBlogs: state => state.user.hiddenBlogIds,
-      userProfile: state => state.user.userProfile
+      hiddenRecipes: (state) => state.user.hiddenRecipeIds,
+      hiddenBlogs: (state) => state.user.hiddenBlogIds,
+      userProfile: (state) => state.user.userProfile,
     }),
     avatarSrc() {
-      return this.userProfile?.imageUrl
-    }
+      return this.userProfile?.imageUrl;
+    },
   },
   methods: {
     openChangePasswordModal() {
       this.$modal.show(
         markRaw(ChangePasswordModal),
         {
-          email: this.userProfile.email
+          email: this.userProfile.email,
         },
         {
-          close: response => {
+          close: (response) => {
             if (response?.openForgotPasswordModal) {
-              this.openForgotPasswordModal()
+              this.openForgotPasswordModal();
             }
-          }
+          },
         }
-      )
+      );
     },
     openForgotPasswordModal() {
       this.$modal.show(
         markRaw(ForgotPasswordModal),
         {
-          email: this.userProfile.email
+          email: this.userProfile.email,
         },
         {}
-      )
+      );
     },
     openDeleteAccountModal() {
       this.$modal.show(
         markRaw(DeleteAccountModal),
         {
-          email: this.userProfile.email
+          email: this.userProfile.email,
         },
         {}
-      )
+      );
     },
     openCustomizeCookiesModal() {
-      this.$modal.show(markRaw(CustomizeCookiesModal), {}, {})
-    }
-  }
-}
+      this.$modal.show(markRaw(CustomizeCookiesModal), {}, {});
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>

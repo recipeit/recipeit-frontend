@@ -1,8 +1,8 @@
-import { ADDITIONAL_AMOUNT_VALUES } from '@/configs/amount'
+import { ADDITIONAL_AMOUNT_VALUES } from '@/src/configs/amount'
 
-import errorCodes from '@/constants/errorCodes'
-import recipeCategories from '@/constants/recipeCategories'
-import timesOfDay from '@/constants/timesOfDay'
+import errorCodes from '@/src/constants/errorCodes'
+import recipeCategories from '@/src/constants/recipeCategories'
+import timesOfDay from '@/src/constants/timesOfDay'
 
 export default {
   messages: {

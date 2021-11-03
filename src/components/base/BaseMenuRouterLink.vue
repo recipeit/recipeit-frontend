@@ -1,7 +1,7 @@
 <template>
-  <router-link v-slot="{ href, navigate }" :to="to" custom>
+  <NuxtLink v-slot="{ href, navigate }" :to="to" custom>
     <BaseMenuLink :href="href" @click="navigate($event)"><slot /></BaseMenuLink>
-  </router-link>
+  </NuxtLink>
 </template>
 
 <script>
@@ -9,8 +9,8 @@ export default {
   props: {
     to: {
       type: [String, Object],
-      required: true
-    }
-  }
-}
+      required: true,
+    },
+  },
+};
 </script>

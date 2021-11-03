@@ -5,7 +5,10 @@
     </BaseModalHeader>
     <BaseModalBody>
       <div v-if="!success" class="before-send">
-        <p class="message">Jeżeli zapomiałeś swoje aktualne hasło, wyślemy Ci wiadomość e-mail umożliwiającą jego zresetowanie.</p>
+        <p class="message">
+          Jeżeli zapomiałeś swoje aktualne hasło, wyślemy Ci wiadomość e-mail
+          umożliwiającą jego zresetowanie.
+        </p>
         <div v-for="(error, i) in errors" :key="i" class="error">
           {{ error }}
         </div>
@@ -23,8 +26,14 @@
         <BaseButton class="submit-button" stroked @click="$emit('close')">
           Anuluj
         </BaseButton>
-        <BaseButton class="submit-button" raised color="primary" :loading="sending" @click="onConfirmForgotPassword()">
-          {{ 'Wyślij e-mail' }}
+        <BaseButton
+          class="submit-button"
+          raised
+          color="primary"
+          :loading="sending"
+          @click="onConfirmForgotPassword()"
+        >
+          {{ "Wyślij e-mail" }}
         </BaseButton>
       </template>
       <template v-else>
@@ -37,70 +46,70 @@
 </template>
 
 <script>
-import { onBeforeMount, reactive, toRefs } from 'vue'
+// import { onBeforeMount, reactive, toRefs } from "vue";
 
-import identityApi from '@/api/identityApi'
+import identityApi from "@/src/api/identityApi";
 
-import { RECAPTCHA_ACTIONS } from '@/configs/recaptcha'
+import { RECAPTCHA_ACTIONS } from "@/src/configs/recaptcha";
 
-import recaptcha from '@/services/recaptcha'
+import recaptcha from "@/src/services/recaptcha";
 
-import RecaptchaBranding from '@/components/RecaptchaBranding'
+import RecaptchaBranding from "@/src/components/RecaptchaBranding";
 
 export default {
   components: {
-    RecaptchaBranding
+    RecaptchaBranding,
   },
   props: {
     email: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   },
-  emits: ['close'],
+  emits: ["close"],
   setup(props) {
     const data = reactive({
       sending: false,
       success: false,
-      errors: []
-    })
+      errors: [],
+    });
 
     const onConfirmForgotPassword = () => {
-      data.sending = true
+      data.sending = true;
 
       recaptcha
         .execute(RECAPTCHA_ACTIONS.FORGOT_PASSWORD)
-        .then(recaptchaToken => {
+        .then((recaptchaToken) => {
           identityApi
             .requestPasswordReset({ email: props.email, recaptchaToken })
             .then(() => {
-              data.success = true
+              data.success = true;
             })
-            .catch(error => {
-              const errors = error?.response?.data?.errors
+            .catch((error) => {
+              const errors = error?.response?.data?.errors;
               if (errors) {
-                data.errors = errors
+                data.errors = errors;
               }
             })
             .finally(() => {
-              data.sending = false
-            })
+              data.sending = false;
+            });
         })
         .catch(() => {
-          data.sending = false
-        })
-    }
+          data.sending = false;
+        });
+    };
 
     onBeforeMount(async () => {
-      await recaptcha.init()
-    })
+      await recaptcha.init();
+    });
 
     return {
       ...toRefs(data),
-      onConfirmForgotPassword
-    }
-  }
-}
+      onConfirmForgotPassword,
+    };
+  },
+};
 </script>
 
 <style lang="scss" scoped>

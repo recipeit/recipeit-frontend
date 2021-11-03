@@ -1,6 +1,6 @@
-import { GOOGLE_API_URL, GOOGLE_AUTH_INIT_PARAMS, GOOGLE_AUTH_SIGN_IN_PARAMS } from '@/configs/google'
+import { GOOGLE_API_URL, GOOGLE_AUTH_INIT_PARAMS, GOOGLE_AUTH_SIGN_IN_PARAMS } from '@/src/configs/google'
 
-import loadScript from '@/functions/loadScript'
+import loadScript from '@/src/functions/loadScript'
 
 export default {
   async getGoogleApi() {

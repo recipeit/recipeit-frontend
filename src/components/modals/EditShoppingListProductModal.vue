@@ -4,7 +4,12 @@
       <BaseModalTitle>Edytuj produkt</BaseModalTitle>
     </BaseModalHeader>
     <BaseModalBody>
-      <Form :id="formID" :validation-schema="schema" :initial-values="initialValues" @submit="editProduct($event)">
+      <Form
+        :id="formID"
+        :validation-schema="schema"
+        :initial-values="initialValues"
+        @submit="editProduct($event)"
+      >
         <ProductModalForm />
         <!-- <BaseInput class="form-row" label="Dodatkowa nazwa" type="text" v-model="editedProduct.name"/> -->
       </Form>
@@ -13,83 +18,92 @@
       <BaseButton class="submit-button" stroked @click="$emit('close')">
         Anuluj
       </BaseButton>
-      <BaseButton class="submit-button" raised color="primary" type="submit" :form="formID" :loading="sending">
-        {{ 'Edytuj' }}
+      <BaseButton
+        class="submit-button"
+        raised
+        color="primary"
+        type="submit"
+        :form="formID"
+        :loading="sending"
+      >
+        {{ "Edytuj" }}
       </BaseButton>
     </BaseModalFooter>
   </SheetModalContent>
 </template>
 
 <script>
-import { Form } from 'vee-validate'
-import { computed, reactive, ref, toRefs } from 'vue'
-import { useStore } from 'vuex'
-import * as Yup from 'yup'
+import { Form } from "vee-validate";
+// import { computed, reactive, ref, toRefs } from "vue";
+import { useStore } from "vuex";
+import * as Yup from "yup";
 
-import uniqueID from '@/functions/uniqueID'
+import uniqueID from "@/src/functions/uniqueID";
 
-import ProductModalForm from '@/components/ProductModalForm'
+import ProductModalForm from "@/src/components/ProductModalForm";
 
 export default {
   components: { Form, ProductModalForm },
   props: {
     product: {
       type: Object,
-      required: true
+      required: true,
     },
-    expirationDates: [Array, null]
+    expirationDates: [Array, null],
   },
-  emits: ['close'],
+  emits: ["close"],
   setup(props, component) {
-    const store = useStore()
-    const baseProducts = computed(() => store.state.ingredients.baseProducts)
+    const store = useStore();
+    const baseProducts = computed(() => store.state.ingredients.baseProducts);
 
-    const formID = 'form-' + uniqueID().getID()
+    const formID = "form-" + uniqueID().getID();
     const data = reactive({
-      loading: false
-    })
+      loading: false,
+    });
 
     const initialValues = {
-      baseProduct: props.product.baseProductId ? baseProducts.value?.find(p => p.id === props.product.baseProductId) : null,
+      baseProduct: props.product.baseProductId
+        ? baseProducts.value?.find((p) => p.id === props.product.baseProductId)
+        : null,
       amount: props.product.amount,
-      unit: props.product.unit
-    }
+      unit: props.product.unit,
+    };
 
     const schema = Yup.object().shape({
       baseProduct: Yup.object()
-        .required('REQUIRED')
-        .typeError('REQUIRED'),
+        .required("REQUIRED")
+        .typeError("REQUIRED"),
       amount: Yup.number()
-        .typeError('Niepoprawna liczba')
+        .typeError("Niepoprawna liczba")
         .transform((cv, ov) => {
-          return ov === '' ? undefined : cv
+          return ov === "" ? undefined : cv;
         })
-        .positive('Ilość musi być większa od 0')
+        .positive("Ilość musi być większa od 0")
         .nullable(),
-      unit: Yup.string().nullable()
-    })
+      unit: Yup.string().nullable(),
+    });
 
-    const sending = ref(false)
+    const sending = ref(false);
 
     const editProduct = ({ baseProduct, amount, unit }) => {
-      sending.value = true
+      sending.value = true;
 
       const requestData = {
         id: props.product.id,
         baseProductId: baseProduct.id,
         amount: amount || undefined,
-        unit
-      }
+        unit,
+      };
 
       store
-        .dispatch('shoppingList/editProductFromShoppingList', requestData)
+        .dispatch("shoppingList/editProductFromShoppingList", requestData)
         .then(() => {
-          component.emit('close')
+          component.emit("close");
         })
         .finally(() => {
-          sending.value = false
-        })
-    }
+          sending.value = false;
+        });
+    };
 
     return {
       initialValues,
@@ -97,10 +111,10 @@ export default {
       ...toRefs(data),
       editProduct,
       sending,
-      formID
-    }
-  }
-}
+      formID,
+    };
+  },
+};
 </script>
 
 <style lang="scss" scoped>

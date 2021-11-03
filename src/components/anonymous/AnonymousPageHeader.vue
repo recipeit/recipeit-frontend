@@ -1,29 +1,49 @@
 <template>
   <header class="header">
     <div class="header-container">
-      <router-link :to="{ name: LANDING_PAGE }" class="logo-link" title="Recipeit">
+      <NuxtLink to="/" class="logo-link" title="Recipeit">
         <Logotype class="logo" />
         Recipeit
-      </router-link>
+      </NuxtLink>
       <div class="header-buttons">
         <template v-if="userAuthenticatedLazy">
-          <router-link v-slot="{ href, navigate }" :to="{ name: APP_HOME }" custom>
-            <BaseButton class="header-button" tag="a" :href="href" raised color="primary" @click="navigate($event)">
+          <NuxtLink v-slot="{ href, navigate }" to="/start" custom>
+            <BaseButton
+              class="header-button"
+              tag="a"
+              :href="href"
+              raised
+              color="primary"
+              @click="navigate($event)"
+            >
               Wróć do aplikacji
             </BaseButton>
-          </router-link>
+          </NuxtLink>
         </template>
         <template v-else>
-          <router-link v-slot="{ href, navigate }" :to="{ name: AUTH_LOGIN }" custom>
-            <BaseButton class="header-button" tag="a" :href="href" stroked @click="navigate($event)">
+          <NuxtLink v-slot="{ href, navigate }" to="/logowanie" custom>
+            <BaseButton
+              class="header-button"
+              tag="a"
+              :href="href"
+              stroked
+              @click="navigate($event)"
+            >
               Zaloguj się
             </BaseButton>
-          </router-link>
-          <router-link v-slot="{ href, navigate }" :to="{ name: AUTH_REGISTER }" custom>
-            <BaseButton class="header-button" tag="a" :href="href" raised color="primary" @click="navigate($event)">
+          </NuxtLink>
+          <NuxtLink v-slot="{ href, navigate }" to="/rejestracja" custom>
+            <BaseButton
+              class="header-button"
+              tag="a"
+              :href="href"
+              raised
+              color="primary"
+              @click="navigate($event)"
+            >
               Utwórz konto
             </BaseButton>
-          </router-link>
+          </NuxtLink>
         </template>
       </div>
     </div>
@@ -31,28 +51,34 @@
 </template>
 
 <script>
-import { computed } from 'vue'
-import { useStore } from 'vuex'
+// import { useStore } from "vuex";
 
-import { LANDING_PAGE, AUTH_LOGIN, AUTH_REGISTER, APP_HOME } from '@/router/names'
+import {
+  LANDING_PAGE,
+  AUTH_LOGIN,
+  AUTH_REGISTER,
+  APP_HOME,
+} from "@/src/router/names";
 
-import Logotype from '@/components/Logotype'
+import Logotype from "@/src/components/Logotype";
 
 export default {
   components: { Logotype },
   setup() {
-    const store = useStore()
-    const userAuthenticatedLazy = computed(() => store.state.user.userAuthenticatedLazy)
+    // const store = useStore();
+    // const userAuthenticatedLazy = computed(
+    //   () => store.state.user.userAuthenticatedLazy
+    // );
 
     return {
-      userAuthenticatedLazy,
+      userAuthenticatedLazy: false,
       LANDING_PAGE,
       AUTH_REGISTER,
       AUTH_LOGIN,
-      APP_HOME
-    }
-  }
-}
+      APP_HOME,
+    };
+  },
+};
 </script>
 
 <style lang="scss" scoped>

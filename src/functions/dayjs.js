@@ -1,10 +1,10 @@
 import dayjs from 'dayjs'
-import calendar from 'dayjs/plugin/calendar'
-import duration from 'dayjs/plugin/duration'
-import relativeTime from 'dayjs/plugin/relativeTime'
-import isToday from 'dayjs/plugin/isToday'
-import updateLocale from 'dayjs/plugin/updateLocale'
-import 'dayjs/locale/pl'
+import calendar from 'dayjs/plugin/calendar.js'
+import duration from 'dayjs/plugin/duration.js'
+import relativeTime from 'dayjs/plugin/relativeTime.js'
+import isToday from 'dayjs/plugin/isToday.js'
+import updateLocale from 'dayjs/plugin/updateLocale.js'
+import 'dayjs/locale/pl.js'
 
 dayjs.extend(calendar)
 dayjs.extend(duration)

@@ -1,10 +1,10 @@
 import { ref } from 'vue'
 
-import { ERROR_ACTION_TAG_NAME } from '@/configs/error'
+import { ERROR_ACTION_TAG_NAME } from '@/src/configs/error'
 
-import { RecipeList } from '@/constants'
+import { RecipeList } from '@/src/constants'
 
-import { useErrorHandler } from '@/error'
+import { useErrorHandler } from '@/src/error'
 
 export default apiEndpoint => {
   const recipes = ref(new RecipeList())

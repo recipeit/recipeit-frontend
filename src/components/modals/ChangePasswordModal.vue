@@ -4,20 +4,61 @@
       <BaseModalTitle>Zmień hasło</BaseModalTitle>
     </BaseModalHeader>
     <BaseModalBody>
-      <Form :id="formID" :validation-schema="schema" @submit="changePassword($event)">
-        <BaseInput class="form-row" label="E-mail" type="text" :disabled="true" :value="email" />
-        <Field v-slot="{ field, errors }" type="password" name="currentPassword">
-          <BaseInput class="form-row" label="Obecne hasło" type="password" v-bind="field" :errors="errors" />
+      <Form
+        :id="formID"
+        :validation-schema="schema"
+        @submit="changePassword($event)"
+      >
+        <BaseInput
+          class="form-row"
+          label="E-mail"
+          type="text"
+          :disabled="true"
+          :value="email"
+        />
+        <Field
+          v-slot="{ field, errors }"
+          type="password"
+          name="currentPassword"
+        >
+          <BaseInput
+            class="form-row"
+            label="Obecne hasło"
+            type="password"
+            v-bind="field"
+            :errors="errors"
+          />
         </Field>
-        <BaseLink tag="button" class="forgot-password-button" color="primary" @click="forgotPassword()">
+        <BaseLink
+          tag="button"
+          class="forgot-password-button"
+          color="primary"
+          @click="forgotPassword()"
+        >
           nie pamiętasz hasła?
         </BaseLink>
 
         <Field v-slot="{ field, errors }" type="password" name="newPassword">
-          <BaseInput class="form-row" label="Nowe hasło" type="password" v-bind="field" :errors="errors" />
+          <BaseInput
+            class="form-row"
+            label="Nowe hasło"
+            type="password"
+            v-bind="field"
+            :errors="errors"
+          />
         </Field>
-        <Field v-slot="{ field, errors }" type="password" name="newPasswordConfirmation">
-          <BaseInput class="form-row" label="Potwierdź nowe hasło" type="password" v-bind="field" :errors="errors" />
+        <Field
+          v-slot="{ field, errors }"
+          type="password"
+          name="newPasswordConfirmation"
+        >
+          <BaseInput
+            class="form-row"
+            label="Potwierdź nowe hasło"
+            type="password"
+            v-bind="field"
+            :errors="errors"
+          />
         </Field>
       </Form>
       <div v-for="(error, i) in errors" :key="i" class="error">
@@ -30,111 +71,117 @@
       <BaseButton class="submit-button" stroked @click="$emit('close')">
         Anuluj
       </BaseButton>
-      <BaseButton class="submit-button" raised color="primary" :form="formID" :loading="sending">
-        {{ 'Zapisz' }}
+      <BaseButton
+        class="submit-button"
+        raised
+        color="primary"
+        :form="formID"
+        :loading="sending"
+      >
+        {{ "Zapisz" }}
       </BaseButton>
     </BaseModalFooter>
   </SheetModalContent>
 </template>
 
 <script>
-import { Field, Form } from 'vee-validate'
-import { onBeforeMount, reactive, toRefs } from 'vue'
-import * as Yup from 'yup'
+import { Field, Form } from "vee-validate";
+// import { onBeforeMount, reactive, toRefs } from "vue";
+import * as Yup from "yup";
 
-import identityApi from '@/api/identityApi'
+import identityApi from "@/src/api/identityApi";
 
-import { RECAPTCHA_ACTIONS } from '@/configs/recaptcha'
+import { RECAPTCHA_ACTIONS } from "@/src/configs/recaptcha";
 
-import uniqueID from '@/functions/uniqueID'
+import uniqueID from "@/src/functions/uniqueID";
 
-import { useToast } from '@/plugins/toast'
-import { ToastType } from '@/plugins/toast/toastType'
+import { useToast } from "@/src/plugins/toast";
+import { ToastType } from "@/src/plugins/toast/toastType";
 
-import recaptcha from '@/services/recaptcha'
+import recaptcha from "@/src/services/recaptcha";
 
-import RecaptchaBranding from '@/components/RecaptchaBranding'
+import RecaptchaBranding from "@/src/components/RecaptchaBranding";
 
 export default {
   components: {
     RecaptchaBranding,
     Field,
-    Form
+    Form,
   },
   props: {
     email: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   },
-  emits: ['close'],
+  emits: ["close"],
   setup(props, { emit }) {
-    const toast = useToast()
-    const formID = 'form-' + uniqueID().getID()
+    const toast = useToast();
+    const formID = "form-" + uniqueID().getID();
     const data = reactive({
       sending: false,
-      errors: []
-    })
+      errors: [],
+    });
 
     const schema = Yup.object().shape({
-      currentPassword: Yup.string().required('REQUIRED'),
+      currentPassword: Yup.string().required("REQUIRED"),
       newPassword: Yup.string()
-        .min(6, 'REQUIRED_AT_LEAST_6_CHAR')
-        .matches(/^(?=.*[a-z])/, 'REQUIRED_AT_LEAST_ONE_LOWER')
-        .matches(/^(?=.*[A-Z])/, 'REQUIRED_AT_LEAST_ONE_UPPER')
-        .matches(/^(?=.*[0-9])/, 'REQUIRED_AT_LEAST_ONE_DIGIT')
-        .matches(/^(?=.*[!@#$%^&*])/, 'REQUIRED_AT_LEAST_ONE_NON_ALPHANUM')
-        .required('REQUIRED'),
+        .min(6, "REQUIRED_AT_LEAST_6_CHAR")
+        .matches(/^(?=.*[a-z])/, "REQUIRED_AT_LEAST_ONE_LOWER")
+        .matches(/^(?=.*[A-Z])/, "REQUIRED_AT_LEAST_ONE_UPPER")
+        .matches(/^(?=.*[0-9])/, "REQUIRED_AT_LEAST_ONE_DIGIT")
+        .matches(/^(?=.*[!@#$%^&*])/, "REQUIRED_AT_LEAST_ONE_NON_ALPHANUM")
+        .required("REQUIRED"),
       newPasswordConfirmation: Yup.string()
-        .oneOf([Yup.ref('newPassword'), null], 'WRONG_PASSWORD_COMBINATION')
-        .required('REQUIRED')
-    })
+        .oneOf([Yup.ref("newPassword"), null], "WRONG_PASSWORD_COMBINATION")
+        .required("REQUIRED"),
+    });
 
-    const changePassword = values => {
-      data.sending = true
-      data.errors = []
+    const changePassword = (values) => {
+      data.sending = true;
+      data.errors = [];
 
       recaptcha
         .execute(RECAPTCHA_ACTIONS.CHANGE_PASSWORD)
-        .then(recaptchaToken => {
+        .then((recaptchaToken) => {
           identityApi
             .changePassword({ ...values, recaptchaToken })
             .then(() => {
-              emit('close', { success: true })
-              toast.show('Hasło zmienione!', ToastType.SUCCESS)
+              emit("close", { success: true });
+              toast.show("Hasło zmienione!", ToastType.SUCCESS);
             })
-            .catch(error => {
-              const errors = error?.response?.data?.errors
+            .catch((error) => {
+              const errors = error?.response?.data?.errors;
               if (errors) {
-                data.errors = errors
+                data.errors = errors;
               }
             })
             .finally(() => {
-              data.sending = false
-            })
+              data.sending = false;
+            });
         })
         .catch(() => {
-          data.sending = false
-        })
-    }
+          data.sending = false;
+        });
+    };
 
     const forgotPassword = () => {
-      emit('close', { success: false, openForgotPasswordModal: true })
-    }
+      emit("close", { success: false, openForgotPasswordModal: true });
+    };
 
     onBeforeMount(async () => {
-      await recaptcha.init()
-    })
+      await recaptcha.init();
+    });
 
     return {
       ...toRefs(data),
       changePassword,
       forgotPassword,
       formID,
-      schema
-    }
-  }
-}
+      schema,
+    };
+  },
+};
 </script>
 
 <style lang="scss" scoped>

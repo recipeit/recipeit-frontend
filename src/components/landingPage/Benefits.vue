@@ -15,35 +15,36 @@
 </template>
 
 <script>
-import Benefit from '@/components/landingPage/Benefit'
-import Container from '@/components/landingPage/Container'
+import Benefit from "@/src/components/landingPage/Benefit";
+import Container from "@/src/components/landingPage/Container";
 
 export default {
   components: { Benefit, Container },
   setup() {
     const benefits = [
       {
-        icon: 'tableware',
-        title: 'Zainspiruj się',
-        description: 'Z Recipeit poznasz nowe kuchnie i przepisy.'
+        icon: "tableware",
+        title: "Zainspiruj się",
+        description: "Z Recipeit poznasz nowe kuchnie i przepisy.",
       },
       {
-        icon: 'money',
-        title: 'Oszczędź pieniądze',
-        description: 'Recipeit pomoże Ci uniknąć marnowania jedzenia.'
+        icon: "money",
+        title: "Oszczędź pieniądze",
+        description: "Recipeit pomoże Ci uniknąć marnowania jedzenia.",
       },
       {
-        icon: 'clock',
-        title: 'Zaoszczędź swój czas',
-        description: 'Wystarczy kilka chwil, by znaleźć przepis z Twoich składników.'
-      }
-    ]
+        icon: "clock",
+        title: "Zaoszczędź swój czas",
+        description:
+          "Wystarczy kilka chwil, by znaleźć przepis z Twoich składników.",
+      },
+    ];
 
     return {
-      benefits
-    }
-  }
-}
+      benefits,
+    };
+  },
+};
 </script>
 
 <style lang="scss" scoped>

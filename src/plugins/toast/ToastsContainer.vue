@@ -15,38 +15,45 @@
 </template>
 
 <script>
-import uniqueID from '@/functions/uniqueID'
+import uniqueID from "@/src/functions/uniqueID";
 
-import Toast from '@/plugins/toast/Toast'
+import Toast from "@/src/plugins/toast/Toast";
 
 export default {
-  name: 'ToastsContainer',
+  name: "ToastsContainer",
   components: {
-    Toast
+    Toast,
   },
   data() {
     return {
-      toasts: []
-    }
+      toasts: [],
+    };
   },
   created() {
-    this.$toast._setGlobalToastsContainer(this)
+    this.$toast._setGlobalToastsContainer(this);
   },
   methods: {
     appendToast(message, type, seconds) {
-      this.toasts.push({ id: uniqueID().getID(), message, type, seconds })
+      this.toasts.push({ id: uniqueID().getID(), message, type, seconds });
     },
     appendCancellableToast(message, type, seconds, cancelCallback) {
-      this.toasts.push({ id: uniqueID().getID(), message, type, seconds, cancellable: true, onCancel: cancelCallback })
+      this.toasts.push({
+        id: uniqueID().getID(),
+        message,
+        type,
+        seconds,
+        cancellable: true,
+        onCancel: cancelCallback,
+      });
     },
     removeToast(id) {
-      const index = this.toasts.findIndex(v => v.id === id)
+      const index = this.toasts.findIndex((v) => v.id === id);
       if (index !== -1) {
-        this.toasts.splice(index, 1)
+        this.toasts.splice(index, 1);
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>

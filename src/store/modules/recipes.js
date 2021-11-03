@@ -1,10 +1,12 @@
-import recipeApi from '@/api/recipeApi'
-import userApi from '@/api/userApi'
+import recipeApi from '@/src/api/recipeApi'
+import userApi from '@/src/api/userApi'
 
-import { FINISHED_DIRECTIONS_STORAGE_KEY } from '@/configs/storage'
+import { FINISHED_DIRECTIONS_STORAGE_KEY } from '@/src/configs/storage'
 
-import toastPlugin from '@/plugins/toast'
-import { ToastType } from '@/plugins/toast/toastType'
+import toastPlugin from '@/src/plugins/toast'
+import { ToastType } from '@/src/plugins/toast/toastType'
+
+const clientLocalStorage = process.client ? localStorage : null
 
 export const MUTATIONS = {
   SET_FAVOURITE_RECIPES_IDS: 'SET_FAVOURITE_RECIPES_IDS',
@@ -18,10 +20,10 @@ export const MUTATIONS = {
   SET_FINISHED_DIRECTIONS_FOR_RECIPE: 'SET_FINISHED_DIRECTIONS_FOR_RECIPE'
 }
 
-const storageFinishedDirections = localStorage.getItem(FINISHED_DIRECTIONS_STORAGE_KEY)
+const storageFinishedDirections = clientLocalStorage?.getItem(FINISHED_DIRECTIONS_STORAGE_KEY)
 const parsedStorageFinishedDirections = storageFinishedDirections ? JSON.parse(storageFinishedDirections) : {}
 
-export default {
+export default () => ({
   namespaced: true,
   state: {
     detailedRecipes: [],
@@ -149,10 +151,10 @@ export default {
 
     setFinishedDirectionsForRecipe({ commit }, { recipeId, finishedDirections }) {
       commit(MUTATIONS.SET_FINISHED_DIRECTIONS_FOR_RECIPE, { recipeId, finishedDirections })
-      const existedLocalStorageItem = localStorage.getItem(FINISHED_DIRECTIONS_STORAGE_KEY)
+      const existedLocalStorageItem = clientLocalStorage?.getItem(FINISHED_DIRECTIONS_STORAGE_KEY)
       const parsedLocalStorage = existedLocalStorageItem ? JSON.parse(existedLocalStorageItem) : {}
       parsedLocalStorage[recipeId] = finishedDirections?.length > 0 ? finishedDirections : undefined
-      localStorage.setItem(FINISHED_DIRECTIONS_STORAGE_KEY, JSON.stringify(parsedLocalStorage))
+      clientLocalStorage?.setItem(FINISHED_DIRECTIONS_STORAGE_KEY, JSON.stringify(parsedLocalStorage))
     }
   },
   getters: {
@@ -160,4 +162,4 @@ export default {
     getRecipeById: state => id => state.recipes.items?.find(r => r.id === id),
     getFinishedDirectionsForRecipe: state => recipeId => state.recipesFinishedDirections[recipeId]
   }
-}
+})

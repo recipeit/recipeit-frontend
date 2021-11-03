@@ -16,7 +16,7 @@ requireTemplate.keys().forEach(fileName => {
 
   if (!(weight in components)) components[weight] = {}
 
-  components[weight][icon] = requireTemplate(fileName)
+  components[weight][icon] = requireTemplate(fileName).default
 })
 
 export default components

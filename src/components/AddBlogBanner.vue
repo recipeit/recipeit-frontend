@@ -5,47 +5,51 @@
       <code class="banner-item-code">
         {{ code }}
       </code>
-      <button class="banner-item-copy" :class="{ copied }" @click="copyToClipboard()">
-        {{ copied ? 'skopiowano do schowka' : 'kopiuj' }}
+      <button
+        class="banner-item-copy"
+        :class="{ copied }"
+        @click="copyToClipboard()"
+      >
+        {{ copied ? "skopiowano do schowka" : "kopiuj" }}
       </button>
     </div>
   </div>
 </template>
 
 <script>
-import { BASE_URL } from '@/configs/url'
+import { BASE_URL } from "@/src/configs/url";
 
 export default {
   props: {
     url: {
       type: String,
-      required: true
+      required: true,
     },
     width: {
       type: String,
-      required: true
+      required: true,
     },
     height: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
-      copied: false
-    }
+      copied: false,
+    };
   },
   computed: {
     code() {
-      return `<a href="${BASE_URL}"><img src="${BASE_URL}${this.url}" alt="Recipeit"/></a>`
-    }
+      return `<a href="${BASE_URL}"><img src="${BASE_URL}${this.url}" alt="Recipeit"/></a>`;
+    },
   },
   methods: {
     copyToClipboard() {
-      this.copied = this.$clipboard(this.code)
-    }
-  }
-}
+      this.copied = this.$clipboard(this.code);
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>

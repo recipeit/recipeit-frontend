@@ -1,10 +1,22 @@
 <template>
   <div class="social-list">
-    <BaseButton class="social-button" stroked :disabled="anySending ? true : null" :loading="facebookSending" @click="loginFacebook()">
+    <BaseButton
+      class="social-button"
+      stroked
+      :disabled="anySending ? true : null"
+      :loading="facebookSending"
+      @click="loginFacebook()"
+    >
       <div class="social-logo" v-html="FacebookLogo" />
       Kontynuuj z Facebook
     </BaseButton>
-    <BaseButton class="social-button" stroked :disabled="anySending ? true : null" :loading="googleSending" @click="loginGoogle()">
+    <BaseButton
+      class="social-button"
+      stroked
+      :disabled="anySending ? true : null"
+      :loading="googleSending"
+      @click="loginGoogle()"
+    >
       <div class="social-logo" v-html="GoogleLogo" />
       Kontynuuj z Google
     </BaseButton>
@@ -12,35 +24,35 @@
 </template>
 
 <script>
-import FacebookLogo from '@/assets/logos/facebook.svg?inline'
-import GoogleLogo from '@/assets/logos/google.svg?inline'
+import FacebookLogo from "@/src/assets/logos/facebook.svg?inline";
+import GoogleLogo from "@/src/assets/logos/google.svg?inline";
 
-import authSocialMixin from '@/views/auth/mixins/authSocialMixin'
+import authSocialMixin from "@/src/views/auth/mixins/authSocialMixin";
 
 export default {
   mixins: [authSocialMixin],
-  emits: ['lockInputs', 'unlockInputs'],
+  emits: ["lockInputs", "unlockInputs"],
   setup() {
     return {
       FacebookLogo,
-      GoogleLogo
-    }
+      GoogleLogo,
+    };
   },
   computed: {
     anySending() {
-      return this.facebookSending || this.googleSending
-    }
+      return this.facebookSending || this.googleSending;
+    },
   },
   watch: {
     anySending(anySending) {
       if (anySending) {
-        this.$emit('lockInputs')
+        this.$emit("lockInputs");
       } else {
-        this.$emit('unlockInputs')
+        this.$emit("unlockInputs");
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -62,6 +74,7 @@ export default {
 
   ::v-deep(svg) {
     height: 100%;
+    width: auto;
   }
 }
 </style>

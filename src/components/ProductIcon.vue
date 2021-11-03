@@ -1,26 +1,29 @@
 <template>
-  <BaseIcon :class="['product-group-icon', `product-group-icon--${kebabCase(group)}`]" :icon="PRODUCT_GROUP_ICONS[group]" />
+  <BaseIcon
+    :class="['product-group-icon', `product-group-icon--${kebabCase(group)}`]"
+    :icon="PRODUCT_GROUP_ICONS[group]"
+  />
 </template>
 
 <script>
-import kebabCase from 'lodash.kebabcase'
+import kebabCase from "lodash.kebabcase";
 
-import { PRODUCT_GROUP_ICONS } from '@/constants'
+import { PRODUCT_GROUP_ICONS } from "@/src/constants";
 
 export default {
   props: {
     group: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   },
   setup() {
     return {
       PRODUCT_GROUP_ICONS,
-      kebabCase
-    }
-  }
-}
+      kebabCase,
+    };
+  },
+};
 </script>
 
 <style lang="scss" scoped>

@@ -36,87 +36,102 @@
 </template>
 
 <script>
-import { markRaw } from 'vue'
-import { mapState } from 'vuex'
+// import { markRaw } from "vue";
+import { mapState } from "vuex";
 
-import myKitchenApi from '@/api/myKitchenApi'
+import myKitchenApi from "@/src/api/myKitchenApi";
 
-import { ToastType } from '@/plugins/toast/toastType'
+import { ToastType } from "@/src/plugins/toast/toastType";
 
-import Product from '@/components/Product'
-import EditKitchenProductModal from '@/components/modals/EditKitchenProductModal'
+import Product from "@/src/components/Product";
+import EditKitchenProductModal from "@/src/components/modals/EditKitchenProductModal";
 
 export default {
   components: {
-    Product
+    Product,
   },
   props: {
     product: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   data: () => ({
-    addToShoppingListLoading: false
+    addToShoppingListLoading: false,
   }),
   computed: {
     ...mapState({
-      shoppingListProducts: state => state.shoppingList.products
+      shoppingListProducts: (state) => state.shoppingList.products,
     }),
     isInShoppingList() {
-      return !!this.shoppingListProducts?.find(p => p.baseProductId === this.product.baseProductId)
+      return !!this.shoppingListProducts?.find(
+        (p) => p.baseProductId === this.product.baseProductId
+      );
     },
     purchaseButtonTooltip() {
-      return this.isInShoppingList ? 'Posiadasz ten produkt na liście zakupów' : 'Dodaj do listy zakupów'
-    }
+      return this.isInShoppingList
+        ? "Posiadasz ten produkt na liście zakupów"
+        : "Dodaj do listy zakupów";
+    },
   },
   methods: {
     async openEditModal() {
-      let expirationDates
+      let expirationDates;
       try {
-        const { data } = await myKitchenApi.getProductExpirationDates(this.product.id)
+        const { data } = await myKitchenApi.getProductExpirationDates(
+          this.product.id
+        );
         if (data) {
-          expirationDates = data
+          expirationDates = data;
         }
       } catch (e) {
-        this.$toast.show('Wystąpił błąd podczas pobierania danych', ToastType.ERROR)
+        this.$toast.show(
+          "Wystąpił błąd podczas pobierania danych",
+          ToastType.ERROR
+        );
       }
 
       this.$modal.show(
         markRaw(EditKitchenProductModal),
         {
           product: this.product,
-          expirationDates: expirationDates
+          expirationDates: expirationDates,
         },
         {}
-      )
+      );
     },
     deleteProduct() {
-      this.$store.dispatch('myKitchen/deleteProductFromKitchen', this.product.id)
+      this.$store.dispatch(
+        "myKitchen/deleteProductFromKitchen",
+        this.product.id
+      );
     },
     addToShoppingList() {
-      if (this.addToShoppingListLoading) return
+      if (this.addToShoppingListLoading) return;
 
       if (!this.isInShoppingList) {
-        this.addToShoppingListLoading = true
-        const { baseProductId, amount, unit } = this.product
+        this.addToShoppingListLoading = true;
+        const { baseProductId, amount, unit } = this.product;
 
         this.$store
-          .dispatch('shoppingList/addProduct', {
+          .dispatch("shoppingList/addProduct", {
             baseProductId,
             amount,
-            unit
+            unit,
           })
           .catch(() => {
-            this.$toast.show('Nie udało się dodać produktu do listy zakupów', ToastType.ERROR)
+            this.$toast.show(
+              "Nie udało się dodać produktu do listy zakupów",
+              ToastType.ERROR
+            );
           })
           .finally(() => {
-            this.addToShoppingListLoading = false
-          })
+            this.addToShoppingListLoading = false;
+          });
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>

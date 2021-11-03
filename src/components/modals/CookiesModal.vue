@@ -8,21 +8,33 @@
     </BaseModalHeader>
     <BaseModalBody>
       <p class="paragraph">
-        Klikając przycisk "Akceptuję" lub przycisk "X" akceptujesz wszystkie ciasteczka wykorzystywane do celów logowania, przesyłania
-        formularzy, zapamiętywania Twoich preferencji oraz do celów analitycznych.
+        Klikając przycisk "Akceptuję" lub przycisk "X" akceptujesz wszystkie
+        ciasteczka wykorzystywane do celów logowania, przesyłania formularzy,
+        zapamiętywania Twoich preferencji oraz do celów analitycznych.
       </p>
       <p class="paragraph">
         Więcej informacji znajdziesz w naszej
-        <router-link v-slot="{ href, navigate }" :to="{ name: 'privacy-policy' }" custom>
-          <BaseLink :href="href" color="primary" @click="navigate($event)">polityce prywatności</BaseLink>.
-        </router-link>
+        <NuxtLink
+          v-slot="{ href, navigate }"
+          :to="{ name: 'privacy-policy' }"
+          custom
+        >
+          <BaseLink :href="href" color="primary" @click="navigate($event)"
+            >polityce prywatności</BaseLink
+          >.
+        </NuxtLink>
       </p>
     </BaseModalBody>
     <BaseModalFooter>
       <BaseButton class="submit-button" stroked @click="customizeOptions()">
         Opcje
       </BaseButton>
-      <BaseButton class="submit-button" color="primary" raised @click="acceptAll()">
+      <BaseButton
+        class="submit-button"
+        color="primary"
+        raised
+        @click="acceptAll()"
+      >
         Akceptuję
       </BaseButton>
     </BaseModalFooter>
@@ -30,42 +42,42 @@
 </template>
 
 <script>
-import { markRaw } from 'vue'
+// import { markRaw } from "vue";
 
-import { useModal } from '@/plugins/global-sheet-modal'
+import { useModal } from "@/src/plugins/global-sheet-modal";
 
-import GDPRService from '@/services/gdpr'
+import GDPRService from "@/src/services/gdpr";
 
-import CustomizeCookiesModal from '@/components/modals/CustomizeCookiesModal'
+import CustomizeCookiesModal from "@/src/components/modals/CustomizeCookiesModal";
 
 export default {
-  emits: ['close'],
+  emits: ["close"],
   setup(_, { emit }) {
-    const modal = useModal()
+    const modal = useModal();
 
     const acceptAll = () => {
-      GDPRService.acceptAll()
-      emit('close')
-    }
+      GDPRService.acceptAll();
+      emit("close");
+    };
 
     const customizeOptions = () => {
       modal.show(
         markRaw(CustomizeCookiesModal),
         {},
         {
-          close: saved => {
-            if (saved === true) emit('close')
-          }
+          close: (saved) => {
+            if (saved === true) emit("close");
+          },
         }
-      )
-    }
+      );
+    };
 
     return {
       customizeOptions,
-      acceptAll
-    }
-  }
-}
+      acceptAll,
+    };
+  },
+};
 </script>
 
 <style lang="scss" scoped>

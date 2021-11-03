@@ -21,11 +21,11 @@
 </template>
 
 <script>
-import SkeletonBox from '@/components/skeletons/SkeletonBox'
+import SkeletonBox from "@/src/components/skeletons/SkeletonBox";
 
 export default {
-  components: { SkeletonBox }
-}
+  components: { SkeletonBox },
+};
 </script>
 
 <style lang="scss" scoped>

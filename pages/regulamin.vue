@@ -1,37 +1,31 @@
 <template>
-  <AnonymousPage>
-    <div class="privacy-policy" v-html="PRIVACY_POLICY_HTML" />
-  </AnonymousPage>
+  <div class="terms" v-html="TERMS_HTML" />
 </template>
 
 <script>
-import { useMeta } from 'vue-meta'
+// import TERMS_HTML from "raw-loader!@/src/assets/docs/terms/terms_v1.html";
 
-import PRIVACY_POLICY_HTML from 'html-loader!@/assets/docs/privacypolicy/privacypolicy_v1.html'
+import { BASE_URL } from "@/src/configs/url";
 
-import { BASE_URL } from '@/configs/url'
-
-import AnonymousPage from '@/layouts/AnonymousPage'
-
-import { PRIVACY_POLICY } from '@/router/paths'
+import { TERMS } from "@/src/router/paths";
 
 export default {
-  components: { AnonymousPage },
+  layout: "anonymous",
   setup() {
     useMeta({
-      title: 'Polityka Prywatności',
-      link: [{ rel: 'canonical', href: `${BASE_URL}${PRIVACY_POLICY}` }]
-    })
+      title: "Regulamin",
+      link: [{ rel: "canonical", href: `${BASE_URL}${TERMS}` }],
+    });
 
     return {
-      PRIVACY_POLICY_HTML
-    }
-  }
-}
+      TERMS_HTML: "huhuhu",
+    };
+  },
+};
 </script>
 
 <style lang="scss" scoped>
-.privacy-policy {
+.terms {
   font-size: 0.75rem;
   line-height: 1.75;
 
@@ -61,7 +55,7 @@ export default {
   ::v-deep(ol > li::before) {
     position: absolute;
     left: -24px;
-    content: counter(list, decimal) '. ';
+    content: counter(list, decimal) ". ";
     counter-increment: list;
     font-weight: bold;
   }
@@ -72,7 +66,7 @@ export default {
   }
 
   ::v-deep(ul > li) {
-    margin: 0.5rem 0;
+    margin: 0.75rem 0;
   }
 }
 </style>

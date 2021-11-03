@@ -1,6 +1,10 @@
 <template>
   <div class="recipes-list-search">
-    <BaseLink class="recipes-list-search__search-button" color="text-secondary" @click="searchNow()">
+    <BaseLink
+      class="recipes-list-search__search-button"
+      color="text-secondary"
+      @click="searchNow()"
+    >
       <BaseIcon icon="search" weight="semi-bold" />
     </BaseLink>
     <input
@@ -12,7 +16,12 @@
       @keydown.enter.self="searchNow()"
     />
 
-    <BaseLink v-if="searchString" class="recipes-list-search__clear-button" color="text-secondary" @click="onSearchInput(null)">
+    <BaseLink
+      v-if="searchString"
+      class="recipes-list-search__clear-button"
+      color="text-secondary"
+      @click="onSearchInput(null)"
+    >
       <BaseIcon icon="close" weight="semi-bold" />
     </BaseLink>
     <BaseButton
@@ -24,10 +33,17 @@
       :disabled="error"
       @click="openFilterModal()"
     >
-      <BaseIcon class="recipes-list-search__filter-button__icon" icon="filter" weight="semi-bold" />
+      <BaseIcon
+        class="recipes-list-search__filter-button__icon"
+        icon="filter"
+        weight="semi-bold"
+      />
       <span>Filtry</span>
       <!-- <transition name="filters-button-count-fade"> -->
-      <span v-if="filtersCount > 0" class="recipes-list-search__filter-button__count">
+      <span
+        v-if="filtersCount > 0"
+        class="recipes-list-search__filter-button__count"
+      >
         {{ filtersCount }}
       </span>
       <!-- </transition> -->
@@ -36,17 +52,17 @@
 </template>
 
 <script>
-import { markRaw, watch, ref } from 'vue'
+// import { markRaw, watch, ref } from "vue";
 
-import { ToastType } from '@/plugins/toast/toastType'
+import { ToastType } from "@/src/plugins/toast/toastType";
 
-import FilterModal from '@/components/modals/FilterModal'
+import FilterModal from "@/src/components/modals/FilterModal";
 
 export default {
   props: {
     placeholder: {
       type: String,
-      default: 'Szukaj'
+      default: "Szukaj",
     },
     search: String,
     sortings: Array,
@@ -58,40 +74,43 @@ export default {
     fetching: Boolean,
     fetchingPages: Object,
     filtersCount: Number,
-    error: Boolean
+    error: Boolean,
   },
-  emits: ['search'],
+  emits: ["search"],
   setup(props) {
-    const searchString = ref(props.search)
+    const searchString = ref(props.search);
 
     watch(
       () => [props.search, props.fetchingPages],
       () => {
-        if (searchString.value !== props.search && !Object.values(props.fetchingPages).some(v => v)) {
-          searchString.value = props.search
+        if (
+          searchString.value !== props.search &&
+          !Object.values(props.fetchingPages).some((v) => v)
+        ) {
+          searchString.value = props.search;
         }
       }
-    )
+    );
 
     return {
-      searchString
-    }
+      searchString,
+    };
   },
   data: () => ({
-    searchTimeoutCallback: null
+    searchTimeoutCallback: null,
   }),
   methods: {
     anyPageFetching() {
-      return Object.values(this.fetchingPages).some(v => v)
+      return Object.values(this.fetchingPages).some((v) => v);
     },
     openFilterModal() {
       if (this.anyPageFetching()) {
-        return
+        return;
       }
 
       if (!this.filters || !this.sortings) {
-        this.$toast.show('Nie udało się wyświetlić filtrów', ToastType.ERROR)
-        return
+        this.$toast.show("Nie udało się wyświetlić filtrów", ToastType.ERROR);
+        return;
       }
 
       this.$modal.show(
@@ -100,47 +119,60 @@ export default {
           options: this.filters,
           defaultSelected: this.appliedFilters,
           orderOptions: this.sortings,
-          defaultOrderSelected: this.appliedSorting || this.defaultSorting
+          defaultOrderSelected: this.appliedSorting || this.defaultSorting,
         },
         {
-          close: result => {
-            const defaultOrderMethodSelected = !result || !result.orderSelected || result.orderSelected === this.defaultSorting
+          close: (result) => {
+            const defaultOrderMethodSelected =
+              !result ||
+              !result.orderSelected ||
+              result.orderSelected === this.defaultSorting;
             if (result?.selected || result?.orderSelected) {
-              this.$emit('search', {
-                orderMethod: defaultOrderMethodSelected ? null : result.orderSelected,
+              this.$emit("search", {
+                orderMethod: defaultOrderMethodSelected
+                  ? null
+                  : result.orderSelected,
                 filters: result.selected,
-                search: this.searchString
-              })
+                search: this.searchString,
+              });
             }
-          }
+          },
         }
-      )
+      );
     },
     onSearchInput(newValue) {
-      this.searchString = newValue
+      this.searchString = newValue;
       if (this.searchTimeoutCallback) {
-        clearTimeout(this.searchTimeoutCallback)
+        clearTimeout(this.searchTimeoutCallback);
       }
       this.searchTimeoutCallback = setTimeout(() => {
-        this.emitSearch()
-      }, 750)
+        this.emitSearch();
+      }, 750);
     },
     searchNow() {
       if (this.searchTimeoutCallback) {
-        clearTimeout(this.searchTimeoutCallback)
-        this.searchTimeoutCallback = null
+        clearTimeout(this.searchTimeoutCallback);
+        this.searchTimeoutCallback = null;
       }
-      this.emitSearch()
+      this.emitSearch();
     },
     emitSearch() {
-      if ((!this.searchString && !this.search === true) || this.searchString === this.search || this.anyPageFetching()) {
-        return
+      if (
+        (!this.searchString && !this.search === true) ||
+        this.searchString === this.search ||
+        this.anyPageFetching()
+      ) {
+        return;
       }
 
-      this.$emit('search', { orderMethod: this.appliedSorting, filters: this.appliedFilters, search: this.searchString })
-    }
-  }
-}
+      this.$emit("search", {
+        orderMethod: this.appliedSorting,
+        filters: this.appliedFilters,
+        search: this.searchString,
+      });
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>

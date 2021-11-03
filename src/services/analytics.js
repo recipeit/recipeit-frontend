@@ -1,6 +1,6 @@
-import { ANALYTICS_ID, ANALYTICS_URL } from '@/configs/analytics'
+import { ANALYTICS_ID, ANALYTICS_URL } from '@/src/configs/analytics'
 
-import loadScript from '@/functions/loadScript'
+import loadScript from '@/src/functions/loadScript'
 
 export default {
   getDataLayer() {

@@ -1,6 +1,6 @@
-import myKitchenApi from '@/api/myKitchenApi'
+import myKitchenApi from '@/src/api/myKitchenApi'
 
-import eventHub from '@/services/eventHub'
+import eventHub from '@/src/services/eventHub'
 
 export const MUTATIONS = {
   SET_PRODUCTS: 'SET_PRODUCTS',
@@ -10,7 +10,7 @@ export const MUTATIONS = {
   REMOVE_PRODUCT_FROM_KITCHEN: 'REMOVE_PRODUCT_FROM_KITCHEN'
 }
 
-export default {
+export default () => ({
   namespaced: true,
   state: {
     products: null
@@ -115,4 +115,4 @@ export default {
       commit(MUTATIONS.SET_PRODUCTS, null)
     }
   }
-}
+})

@@ -1,6 +1,6 @@
-import { RECAPTCHA_URL, RECAPTCHA_SITEKEY } from '@/configs/recaptcha'
+import { RECAPTCHA_URL, RECAPTCHA_SITEKEY } from '@/src/configs/recaptcha'
 
-import loadScript from '@/functions/loadScript'
+import loadScript from '@/src/functions/loadScript'
 
 export default {
   async getGoogleRecaptcha() {

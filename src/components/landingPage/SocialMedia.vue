@@ -4,37 +4,48 @@
       Bądź na bieżąco
     </h2>
     <div class="social-list">
-      <span class="social-logo" @click="openSocialMediaPage(FACEBOOK_PROFILE_URL)" v-html="FacebookLogo" />
-      <span class="social-logo" @click="openSocialMediaPage(INSTAGRAM_PROFILE_URL)" v-html="InstagramLogo" />
+      <span
+        class="social-logo"
+        @click="openSocialMediaPage(FACEBOOK_PROFILE_URL)"
+        v-html="FacebookLogo"
+      />
+      <span
+        class="social-logo"
+        @click="openSocialMediaPage(INSTAGRAM_PROFILE_URL)"
+        v-html="InstagramLogo"
+      />
     </div>
   </Container>
 </template>
 
 <script>
-import FacebookLogo from '@/assets/logos/facebook.svg?inline'
-import InstagramLogo from '@/assets/logos/instagram.svg?inline'
+import FacebookLogo from "@/src/assets/logos/facebook.svg?inline";
+import InstagramLogo from "@/src/assets/logos/instagram.svg?inline";
 
-import { FACEBOOK_PROFILE_URL, INSTAGRAM_PROFILE_URL } from '@/configs/socialMedia'
+import {
+  FACEBOOK_PROFILE_URL,
+  INSTAGRAM_PROFILE_URL,
+} from "@/src/configs/socialMedia";
 
-import Container from '@/components/landingPage/Container'
+import Container from "@/src/components/landingPage/Container";
 
 export default {
   components: { Container },
 
   setup() {
-    const openSocialMediaPage = url => {
-      window.open(url, '_blank')
-    }
+    const openSocialMediaPage = (url) => {
+      window.open(url, "_blank");
+    };
 
     return {
       FacebookLogo,
       InstagramLogo,
       FACEBOOK_PROFILE_URL,
       INSTAGRAM_PROFILE_URL,
-      openSocialMediaPage
-    }
-  }
-}
+      openSocialMediaPage,
+    };
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -55,7 +66,7 @@ export default {
   }
 
   .social-logo {
-    width: 32px;
+    height: 32px;
     margin: 12px;
     cursor: pointer;
 
@@ -66,6 +77,11 @@ export default {
       &:focus {
         opacity: 0.75;
       }
+    }
+
+    ::v-deep(svg) {
+      height: 100%;
+      width: auto;
     }
   }
 }

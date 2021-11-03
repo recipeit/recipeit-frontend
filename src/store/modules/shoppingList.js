@@ -1,7 +1,7 @@
-import recipeApi from '@/api/recipeApi'
-import shoppingListApi from '@/api/shoppingListApi'
+import recipeApi from '@/src/api/recipeApi'
+import shoppingListApi from '@/src/api/shoppingListApi'
 
-import eventHub from '@/services/eventHub'
+import eventHub from '@/src/services/eventHub'
 
 export const MUTATIONS = {
   SET_PRODUCTS: 'SET_PRODUCTS',
@@ -11,7 +11,7 @@ export const MUTATIONS = {
   REMOVE_PRODUCT_FROM_SHOPPING_LIST: 'REMOVE_PRODUCT_FROM_SHOPPING_LIST'
 }
 
-export default {
+export default () => ({
   namespaced: true,
   state: {
     products: null
@@ -150,4 +150,4 @@ export default {
       commit(MUTATIONS.SET_PRODUCTS, null)
     }
   }
-}
+})

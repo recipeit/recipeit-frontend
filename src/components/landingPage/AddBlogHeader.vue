@@ -4,7 +4,8 @@
       <div class="footer-auth-content">
         <h1 class="footer-auth-header">Dodaj blog</h1>
         <p class="footer-auth-description">
-          Jeżeli tworzysz blog kulinarny, na którym publikujsz swoje przepisy, dodaj go do Recipeit i zdobądź nowych czytelników!
+          Jeżeli tworzysz blog kulinarny, na którym publikujsz swoje przepisy,
+          dodaj go do Recipeit i zdobądź nowych czytelników!
         </p>
       </div>
       <BaseImageLazyload :src="BackgroundUrl" class="footer-auth-background" />
@@ -13,16 +14,16 @@
 </template>
 
 <script>
-import BackgroundUrl from '@/assets/img/add-blog-new.jpg'
+import BackgroundUrl from "@/src/assets/img/add-blog-new.jpg";
 
-import Container from '@/components/landingPage/Container'
+import Container from "@/src/components/landingPage/Container";
 
 export default {
   components: { Container },
   setup: () => ({
-    BackgroundUrl
-  })
-}
+    BackgroundUrl,
+  }),
+};
 </script>
 
 <style lang="scss" scoped>
@@ -74,7 +75,7 @@ $color: #000;
     // opacity: 0.75;
 
     &::after {
-      content: '';
+      content: "";
       position: absolute;
       top: 0;
       left: 0;

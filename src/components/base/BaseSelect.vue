@@ -2,7 +2,10 @@
   <div>
     <div
       ref="select"
-      :class="['base-select', { 'base-select--focus': opened, 'base-select--multiple': multiple }]"
+      :class="[
+        'base-select',
+        { 'base-select--focus': opened, 'base-select--multiple': multiple },
+      ]"
       :tabindex="searchable ? -1 : 0"
       @focus="open()"
       @blur="searchable ? false : hide()"
@@ -11,11 +14,24 @@
       @keydown.self.up.prevent="pointerBackward()"
       @keypress.enter.tab.stop.self="addPointerElement()"
     >
-      <div :class="['base-select__field', { 'base-select__field--selected': value !== null }]">
-        <span :class="['base-select__field__placeholder', { 'base-select__field__placeholder--small': placeholderAsLabel }]">
+      <div
+        :class="[
+          'base-select__field',
+          { 'base-select__field--selected': value !== null },
+        ]"
+      >
+        <span
+          :class="[
+            'base-select__field__placeholder',
+            { 'base-select__field__placeholder--small': placeholderAsLabel },
+          ]"
+        >
           {{ placeholder }}
         </span>
-        <span v-if="showSelectedValue && !multiple" class="base-select__field__value">
+        <span
+          v-if="showSelectedValue && !multiple"
+          class="base-select__field__value"
+        >
           <slot name="label" :option="value">
             {{ label ? value[label] : value }}
           </slot>
@@ -31,9 +47,17 @@
             @click="selectOption(singleValue)"
           >
             {{ label ? singleValue[label] : value }}
-            <BaseIcon class="test-multiselect-pill-close" icon="close" weight="semi-bold" />
+            <BaseIcon
+              class="test-multiselect-pill-close"
+              icon="close"
+              weight="semi-bold"
+            />
           </BaseButton>
-          <span v-if="multiPlaceholder && showSelectedValue" class="multi-placeholder">{{ multiPlaceholder }}</span>
+          <span
+            v-if="multiPlaceholder && showSelectedValue"
+            class="multi-placeholder"
+            >{{ multiPlaceholder }}</span
+          >
         </template>
         <template v-if="searchable">
           <input
@@ -52,43 +76,76 @@
             @keypress.enter.prevent.stop.self="addPointerElement()"
           />
         </template>
-        <BaseIcon class="base-select__field__open-indicator" icon="angle-left" weight="semi-bold" />
+        <BaseIcon
+          class="base-select__field__open-indicator"
+          icon="angle-left"
+          weight="semi-bold"
+        />
       </div>
       <transition name="fade">
         <div
           v-show="opened"
           ref="options"
-          :class="['base-select__options', { 'base-select__options--above': isAbove }]"
+          :class="[
+            'base-select__options',
+            { 'base-select__options--above': isAbove },
+          ]"
           :style="{ maxHeight: optimizedHeight + 'px' }"
           @mousedown.prevent
         >
-          <ul v-if="filteredOptionsLimited && filteredOptionsLimited.length > 0" class="base-select__options__list">
+          <ul
+            v-if="filteredOptionsLimited && filteredOptionsLimited.length > 0"
+            class="base-select__options__list"
+          >
             <li
               v-for="(option, index) in filteredOptionsLimited"
               :key="option"
               :class="{
                 'base-select__options__list__item': true,
-                'base-select__options__list__item--selected': isOptionSelected(option),
-                'base-select__options__list__item--highlight': index === pointer,
-                'base-select__options__list__item--label': option.isLabel
+                'base-select__options__list__item--selected': isOptionSelected(
+                  option
+                ),
+                'base-select__options__list__item--highlight':
+                  index === pointer,
+                'base-select__options__list__item--label': option.isLabel,
               }"
             >
-              <div v-if="option.isLabel" class="base-select__options__list__group-label">
+              <div
+                v-if="option.isLabel"
+                class="base-select__options__list__group-label"
+              >
                 <slot name="groupLabel" :label="option['groupLabel']">
-                  {{ option['groupLabel'] }}
+                  {{ option["groupLabel"] }}
                 </slot>
               </div>
-              <div v-else class="base-select__options__list__option" @mouseenter.self="pointerSet(index)" @click="selectOption(option)">
-                <slot name="option" :option="option" :search="search" :index="index">
+              <div
+                v-else
+                class="base-select__options__list__option"
+                @mouseenter.self="pointerSet(index)"
+                @click="selectOption(option)"
+              >
+                <slot
+                  name="option"
+                  :option="option"
+                  :search="search"
+                  :index="index"
+                >
                   {{ label ? option[label] : option }}
                 </slot>
               </div>
             </li>
             <li
-              v-if="filteredOptions && filteredOptions.length > filteredOptionsLimited.length"
+              v-if="
+                filteredOptions &&
+                  filteredOptions.length > filteredOptionsLimited.length
+              "
               class="base-select__options__list__others-item"
             >
-              i {{ filteredOptions.length - filteredOptionsLimited.length }} innnych opcji
+              i
+              {{
+                filteredOptions.length - filteredOptionsLimited.length
+              }}
+              innnych opcji
             </li>
           </ul>
           <div v-else class="base-select__options__empty">
@@ -100,7 +157,9 @@
     <div v-if="errors && errors.length > 0" class="base-select__errors">
       <slot name="errors">
         <ul :id="erorrsID" class="base-select__errors__list">
-          <li v-for="(error, i) in errors" :key="i">{{ $t(`errorCode.${error}`) }}</li>
+          <li v-for="(error, i) in errors" :key="i">
+            {{ $t(`errorCode.${error}`) }}
+          </li>
         </ul>
       </slot>
     </div>
@@ -108,165 +167,174 @@
 </template>
 
 <script>
-import { nextTick } from 'vue'
+// import { nextTick } from 'vue'
 
-import { setFocus } from '@/directives/autofocus'
+import { setFocus } from "@/src/directives/autofocus";
 
-import uniqueID from '@/functions/uniqueID'
+import uniqueID from "@/src/functions/uniqueID";
 
-const isEmpty = opt => {
-  if (opt === 0) return false
-  if (Array.isArray(opt) && opt.length === 0) return true
-  return !opt
-}
+const isEmpty = (opt) => {
+  if (opt === 0) return false;
+  if (Array.isArray(opt) && opt.length === 0) return true;
+  return !opt;
+};
 
-const normalizePolishString = value =>
+const normalizePolishString = (value) =>
   value
-    .replace(/ą/g, 'a')
-    .replace(/ć/g, 'c')
-    .replace(/ę/g, 'e')
-    .replace(/ł/g, 'l')
-    .replace(/ń/g, 'n')
-    .replace(/ó/g, 'o')
-    .replace(/ś/g, 's')
-    .replace(/ż/g, 'z')
-    .replace(/ź/g, 'z')
+    .replace(/ą/g, "a")
+    .replace(/ć/g, "c")
+    .replace(/ę/g, "e")
+    .replace(/ł/g, "l")
+    .replace(/ń/g, "n")
+    .replace(/ó/g, "o")
+    .replace(/ś/g, "s")
+    .replace(/ż/g, "z")
+    .replace(/ź/g, "z");
 
 const includes = (str, query) => {
-  if (!query) return true
+  if (!query) return true;
 
-  const valueNormalizedString = normalizePolishString(str.toLowerCase())
-  const queryNormalizedString = normalizePolishString(query.trim().toLowerCase())
+  const valueNormalizedString = normalizePolishString(str.toLowerCase());
+  const queryNormalizedString = normalizePolishString(
+    query.trim().toLowerCase()
+  );
 
-  return valueNormalizedString.includes(queryNormalizedString)
-}
+  return valueNormalizedString.includes(queryNormalizedString);
+};
 
 const OPEN_DIRECTIONS = {
-  ABOVE: 'above',
-  BELOW: 'below'
-}
+  ABOVE: "above",
+  BELOW: "below",
+};
 
 export default {
   model: {
-    prop: 'value',
-    event: 'change'
+    prop: "value",
+    event: "change",
   },
   props: {
     errors: Array,
     searchable: {
       type: Boolean,
-      default: true
+      default: true,
     },
     multiple: {
       type: Boolean,
-      default: false
+      default: false,
     },
     limit: {
-      type: Number
+      type: Number,
     },
     value: {
       type: [String, Object],
-      default: null
+      default: null,
     },
     options: {
       type: Array,
-      required: true
+      required: true,
     },
     groupLabel: String,
     groupValues: String,
     trackBy: {
-      type: String
+      type: String,
     },
     searchBy: {
-      type: String
+      type: String,
     },
     label: {
-      type: String
+      type: String,
     },
     placeholder: {
-      type: String
+      type: String,
     },
     multiPlaceholder: {
-      type: String
+      type: String,
     },
     maxHeight: {
       type: Number,
-      default: 210
+      default: 210,
     },
     defaultOpenDirection: {
       type: String,
-      validator: value => Object.values(OPEN_DIRECTIONS).includes(value),
-      default: OPEN_DIRECTIONS.BELOW
+      validator: (value) => Object.values(OPEN_DIRECTIONS).includes(value),
+      default: OPEN_DIRECTIONS.BELOW,
     },
     customLabel: {
       type: Function,
       default(option, label) {
-        if (isEmpty(option)) return ''
-        return label ? option[label] : option
-      }
+        if (isEmpty(option)) return "";
+        return label ? option[label] : option;
+      },
     },
 
     autofocus: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
-  emits: ['change', 'blur', 'focus'],
-  data: component => ({
-    search: '',
+  emits: ["change", "blur", "focus"],
+  data: (component) => ({
+    search: "",
     opened: false,
     preferredOpenDirection: component.defaultOpenDirection,
     optimizedHeight: component.maxHeight,
     pointer: null,
-    id: 'base-select-' + uniqueID().getID()
+    id: "base-select-" + uniqueID().getID(),
   }),
   computed: {
     erorrsID() {
-      return `${this.id}-errors`
+      return `${this.id}-errors`;
     },
     isGrouped() {
-      return this.groupLabel && this.groupValues
+      return this.groupLabel && this.groupValues;
     },
     placeholderAsLabel() {
       if (this.multiple) {
         return this.searchable
           ? this.opened || (this.value !== null && this.value.length > 0)
-          : this.value !== null && this.value.length > 0
+          : this.value !== null && this.value.length > 0;
       }
-      return this.searchable ? this.opened || this.value !== null : this.value !== null
+      return this.searchable
+        ? this.opened || this.value !== null
+        : this.value !== null;
     },
     showSelectedValue() {
       if (this.multiple) {
-        return this.searchable ? !this.opened && this.value !== null && this.value.length > 0 : this.value !== null && this.value.length > 0
+        return this.searchable
+          ? !this.opened && this.value !== null && this.value.length > 0
+          : this.value !== null && this.value.length > 0;
       }
-      return this.searchable ? !this.opened && this.value !== null : this.value !== null
+      return this.searchable
+        ? !this.opened && this.value !== null
+        : this.value !== null;
     },
     filteredOptions() {
-      if (!this.searchable || !this.search) return this.isGrouped ? this.plainOptions(this.options) : this.options
+      if (!this.searchable || !this.search)
+        return this.isGrouped ? this.plainOptions(this.options) : this.options;
       else if (this.isGrouped) {
-        const filteredGroups = this.options.map(group => {
-          const filteredValues = this.filterOptions(group[this.groupValues])
+        const filteredGroups = this.options.map((group) => {
+          const filteredValues = this.filterOptions(group[this.groupValues]);
           return filteredValues.length > 0
             ? {
                 [this.groupLabel]: group[this.groupLabel],
-                [this.groupValues]: filteredValues
+                [this.groupValues]: filteredValues,
               }
-            : []
-        })
-        return this.plainOptions(filteredGroups)
+            : [];
+        });
+        return this.plainOptions(filteredGroups);
       } else {
-        return this.filterOptions(this.options)
+        return this.filterOptions(this.options);
       }
     },
     filteredOptionsLimited() {
       if (this.limit) {
-        let limit = this.limit
+        let limit = this.limit;
         if (this.filteredOptions && this.filteredOptions[limit - 1]?.isLabel) {
-          limit++
+          limit++;
         }
-        return this.filteredOptions?.slice(0, limit)
+        return this.filteredOptions?.slice(0, limit);
       }
-      return this.filteredOptions
+      return this.filteredOptions;
     },
     isAbove() {
       // if (this.openDirection === 'above' || this.openDirection === 'top') {
@@ -277,14 +345,14 @@ export default {
       // ) {
       //   return false
       // } else {
-      return this.preferredOpenDirection === OPEN_DIRECTIONS.ABOVE
+      return this.preferredOpenDirection === OPEN_DIRECTIONS.ABOVE;
       // }
-    }
+    },
   },
   watch: {
     filteredOptionsLimited() {
-      this.pointerAdjust()
-      this.scrollOptionsToTop()
+      this.pointerAdjust();
+      this.scrollOptionsToTop();
     },
     options() {
       // TODO multiple
@@ -296,55 +364,58 @@ export default {
         // }
       } else {
         if (this.value && !this.options.includes(this.value)) {
-          this.selectOption(null)
+          this.selectOption(null);
         }
       }
-    }
+    },
   },
   mounted() {
     if (this.autofocus) {
-      this.setFocus()
+      this.setFocus();
     }
   },
   methods: {
     setFocus() {
-      setFocus(this.$refs.select)
+      setFocus(this.$refs.select);
     },
     isOptionSelected(option) {
-      const { getKeyFromValue, value } = this
-      const optionKey = getKeyFromValue(option)
+      const { getKeyFromValue, value } = this;
+      const optionKey = getKeyFromValue(option);
 
       if (this.multiple) {
-        const index = value?.findIndex(v => getKeyFromValue(v) === optionKey)
-        return index >= 0
+        const index = value?.findIndex((v) => getKeyFromValue(v) === optionKey);
+        return index >= 0;
       } else {
-        return optionKey === getKeyFromValue(value)
+        return optionKey === getKeyFromValue(value);
       }
     },
     getKeyFromValue(value) {
-      const { trackBy } = this
+      const { trackBy } = this;
       if (trackBy) {
-        return value ? value[trackBy] : null
+        return value ? value[trackBy] : null;
       }
-      return value
+      return value;
     },
     async addPointerElement() {
       if (this.filteredOptionsLimited.length > 0) {
-        await this.selectOption(this.filteredOptionsLimited[this.pointer])
+        await this.selectOption(this.filteredOptionsLimited[this.pointer]);
       } else {
-        await this.hide()
+        await this.hide();
       }
     },
     pointerForward() {
-      if (this.pointer !== null && this.pointer < this.filteredOptionsLimited.length - 1) {
-        this.pointer++
+      if (
+        this.pointer !== null &&
+        this.pointer < this.filteredOptionsLimited.length - 1
+      ) {
+        this.pointer++;
       } else {
-        this.pointer = 0
+        this.pointer = 0;
       }
 
       //RISKY TODO
       if (this.filteredOptionsLimited[this.pointer].isLabel) {
-        this.pointer++
+        this.pointer++;
       }
       // /* istanbul ignore else */
       // if (this.pointer < this.filteredOptionsLimited.length - 1) {
@@ -361,17 +432,17 @@ export default {
     },
     pointerBackward() {
       if (this.pointer !== null && this.pointer > 0) {
-        this.pointer--
+        this.pointer--;
       } else {
-        this.pointer = this.filteredOptionsLimited.length - 1
+        this.pointer = this.filteredOptionsLimited.length - 1;
       }
 
       //RISKY TODO
       if (this.filteredOptionsLimited[this.pointer].isLabel) {
-        this.pointer--
+        this.pointer--;
 
         if (this.pointer < 0) {
-          this.pointer = this.filteredOptionsLimited.length - 1
+          this.pointer = this.filteredOptionsLimited.length - 1;
         }
       }
       // if (this.pointer > 0) {
@@ -390,7 +461,7 @@ export default {
       // this.pointerDirty = true
     },
     pointerReset() {
-      this.pointer = null
+      this.pointer = null;
       // /* istanbul ignore else */
       // if (!this.closeOnSelect) return
       // this.pointer = 0
@@ -400,113 +471,130 @@ export default {
       // }
     },
     pointerSet(index) {
-      this.pointer = index
+      this.pointer = index;
     },
     pointerAdjust() {
       if (this.pointer >= this.filteredOptionsLimited.length - 1) {
-        this.pointer = this.filteredOptionsLimited.length ? this.filteredOptionsLimited.length - 1 : 0
+        this.pointer = this.filteredOptionsLimited.length
+          ? this.filteredOptionsLimited.length - 1
+          : 0;
       }
     },
 
     updateSearch(query) {
-      this.search = query
+      this.search = query;
     },
     async open() {
-      if (this.opened) return
+      if (this.opened) return;
 
-      this.opened = true
-      this.adjustPosition()
+      this.opened = true;
+      this.adjustPosition();
 
-      await nextTick()
+      await nextTick();
 
-      this.scrollOptionsToTop()
+      this.scrollOptionsToTop();
       if (this.searchable) {
-        this.$refs.search?.focus()
+        this.$refs.search?.focus();
       } else {
-        this.$refs.select?.focus()
+        this.$refs.select?.focus();
       }
-      this.$emit('focus')
+      this.$emit("focus");
     },
     async hide() {
-      if (!this.opened) return
+      if (!this.opened) return;
 
-      this.opened = false
-      this.pointerReset()
+      this.opened = false;
+      this.pointerReset();
 
       // TODO gdzieś błąd z tym, że po zaznaczeniu wartości, menu się chowa, ale dalej gdzieś zostaje focus
 
-      await nextTick()
+      await nextTick();
       if (this.searchable) {
-        this.$refs.search?.blur()
+        this.$refs.search?.blur();
       } else {
-        this.$refs.select?.blur()
+        this.$refs.select?.blur();
       }
-      this.$emit('blur')
+      this.$emit("blur");
     },
     async selectOption(newValue) {
       if (!this.multiple) {
-        await this.hide()
+        await this.hide();
       }
 
-      const { value, getKeyFromValue } = this
+      const { value, getKeyFromValue } = this;
 
       if (this.multiple) {
-        const newSelectedKey = getKeyFromValue(newValue)
-        const index = value?.findIndex(v => getKeyFromValue(v) === newSelectedKey)
+        const newSelectedKey = getKeyFromValue(newValue);
+        const index = value?.findIndex(
+          (v) => getKeyFromValue(v) === newSelectedKey
+        );
 
         if (index >= 0) {
-          const newList = [...value]
-          newList.splice(index, 1)
-          this.$emit('change', newList)
+          const newList = [...value];
+          newList.splice(index, 1);
+          this.$emit("change", newList);
         } else {
-          this.$emit('change', [...value, newValue])
+          this.$emit("change", [...value, newValue]);
         }
       } else {
-        let selectCurrentSelected = value ? getKeyFromValue(newValue) === getKeyFromValue(value) : null
+        let selectCurrentSelected = value
+          ? getKeyFromValue(newValue) === getKeyFromValue(value)
+          : null;
 
-        this.$emit('change', selectCurrentSelected ? null : newValue)
+        this.$emit("change", selectCurrentSelected ? null : newValue);
       }
 
       if (this.searchable) {
-        this.search = ''
+        this.search = "";
       }
     },
     adjustPosition() {
-      if (typeof window === 'undefined') return
+      if (typeof window === "undefined") return;
 
-      const spaceAbove = this.$el.getBoundingClientRect().top
-      const spaceBelow = window.innerHeight - this.$el.getBoundingClientRect().bottom
-      const hasEnoughSpaceBelow = spaceBelow > this.maxHeight
+      const spaceAbove = this.$el.getBoundingClientRect().top;
+      const spaceBelow =
+        window.innerHeight - this.$el.getBoundingClientRect().bottom;
+      const hasEnoughSpaceBelow = spaceBelow > this.maxHeight;
 
       if (
         hasEnoughSpaceBelow ||
         spaceBelow > spaceAbove ||
         this.openDirection === OPEN_DIRECTIONS.BELOW ||
-        this.openDirection === 'bottom'
+        this.openDirection === "bottom"
       ) {
-        this.preferredOpenDirection = OPEN_DIRECTIONS.BELOW
-        this.optimizedHeight = Math.min(spaceBelow - 40, this.maxHeight)
+        this.preferredOpenDirection = OPEN_DIRECTIONS.BELOW;
+        this.optimizedHeight = Math.min(spaceBelow - 40, this.maxHeight);
       } else {
-        this.preferredOpenDirection = OPEN_DIRECTIONS.ABOVE
-        this.optimizedHeight = Math.min(spaceAbove - 40, this.maxHeight)
+        this.preferredOpenDirection = OPEN_DIRECTIONS.ABOVE;
+        this.optimizedHeight = Math.min(spaceAbove - 40, this.maxHeight);
       }
     },
     plainOptions(options) {
-      return options.flatMap(group =>
-        group[this.groupValues]?.length > 0 ? [{ groupLabel: group[this.groupLabel], isLabel: true }, ...group[this.groupValues]] : []
-      )
+      return options.flatMap((group) =>
+        group[this.groupValues]?.length > 0
+          ? [
+              { groupLabel: group[this.groupLabel], isLabel: true },
+              ...group[this.groupValues],
+            ]
+          : []
+      );
     },
     filterOptions(options) {
-      const { searchBy } = this
-      return options.filter(option => includes(searchBy ? option[searchBy] : this.customLabel(option, this.label), this.search))
+      const { searchBy } = this;
+      return options.filter((option) =>
+        includes(
+          searchBy ? option[searchBy] : this.customLabel(option, this.label),
+          this.search
+        )
+      );
     },
     scrollOptionsToTop() {
       if (this.$refs.options) {
-        this.$refs.options.scrollTop = 0
+        this.$refs.options.scrollTop = 0;
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>

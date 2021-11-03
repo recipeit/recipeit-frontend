@@ -1,6 +1,6 @@
-import { FACEBOOK_SDK_URL, FACEBOOK_INIT_PARAMS, FACEBOOK_LOGIN_PARAMS } from '@/configs/facebook'
+import { FACEBOOK_SDK_URL, FACEBOOK_INIT_PARAMS, FACEBOOK_LOGIN_PARAMS } from '@/src/configs/facebook'
 
-import loadScript from '@/functions/loadScript'
+import loadScript from '@/src/functions/loadScript'
 
 export default {
   async getFB() {

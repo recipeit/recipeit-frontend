@@ -4,65 +4,77 @@
       <BaseModalTitle>Dodaj nowy produkt</BaseModalTitle>
     </BaseModalHeader>
     <BaseModalBody>
-      <Form :id="formID" ref="form" :validation-schema="schema" @submit="addProduct($event)">
+      <Form
+        :id="formID"
+        ref="form"
+        :validation-schema="schema"
+        @submit="addProduct($event)"
+      >
         <ProductModalForm :product-autofocus="true" />
         <!-- <BaseInput class="form-row" label="Dodatkowa nazwa" type="text" v-model="newProduct.name"/> -->
       </Form>
     </BaseModalBody>
     <BaseModalFooter>
-      <BaseButton class="submit-button" raised color="primary" type="submit" :form="formID" :loading="sending">
+      <BaseButton
+        class="submit-button"
+        raised
+        color="primary"
+        type="submit"
+        :form="formID"
+        :loading="sending"
+      >
         <BaseIcon class="submit-button__icon" icon="plus" weight="semi-bold" />
-        {{ $t('shared.addProduct') }}
+        {{ $t("shared.addProduct") }}
       </BaseButton>
     </BaseModalFooter>
   </SheetModalContent>
 </template>
 
 <script>
-import { Form } from 'vee-validate'
-import * as Yup from 'yup'
+import { Form } from "vee-validate";
+import * as Yup from "yup";
 
-import uniqueID from '@/functions/uniqueID'
+import uniqueID from "@/src/functions/uniqueID";
 
-import ProductModalForm from '@/components/ProductModalForm'
+import ProductModalForm from "@/src/components/ProductModalForm";
 
 export default {
   components: { Form, ProductModalForm },
-  emits: ['close'],
+  emits: ["close"],
   data: () => ({
     sending: false,
-    formID: 'form-' + uniqueID().getID(),
+    formID: "form-" + uniqueID().getID(),
     schema: Yup.object().shape({
       baseProduct: Yup.object()
-        .required('REQUIRED')
-        .typeError('REQUIRED'),
+        .required("REQUIRED")
+        .typeError("REQUIRED"),
       amount: Yup.number()
-        .typeError('Niepoprawna liczba')
+        .typeError("Niepoprawna liczba")
         .transform((cv, ov) => {
-          return ov === '' ? undefined : cv
+          return ov === "" ? undefined : cv;
         })
-        .positive('Ilość musi być większa od 0')
+        .positive("Ilość musi być większa od 0")
         .nullable(),
-      unit: Yup.object().nullable()
-    })
+      unit: Yup.object().nullable(),
+    }),
   }),
   beforeCreate() {
-    this.DEFAULT_UNIT = 'piece'
+    this.DEFAULT_UNIT = "piece";
   },
   methods: {
     addProduct({ baseProduct, amount, unit }) {
-      this.sending = true
+      this.sending = true;
 
       const requestData = {
         baseProductId: baseProduct.id,
         amount: amount || undefined,
-        unit
-      }
+        unit,
+      };
 
       this.$store
-        .dispatch('shoppingList/addProduct', requestData)
+        .dispatch("shoppingList/addProduct", requestData)
         .then(() => {
-          this.$emit('close')
+          this.$emit("close");
           // this.$refs.form.setValues({
           //   baseProduct: null,
           //   amount: null,
@@ -70,11 +82,11 @@ export default {
           // })
         })
         .finally(() => {
-          this.sending = false
-        })
-    }
-  }
-}
+          this.sending = false;
+        });
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>

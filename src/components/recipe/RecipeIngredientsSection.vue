@@ -26,7 +26,11 @@
       </template>
     </SectionTitle>
     <div class="recipe__ingredient-groups">
-      <div v-for="(list, groupName) in ingredients" :key="groupName" class="recipe__ingredient-group">
+      <div
+        v-for="(list, groupName) in ingredients"
+        :key="groupName"
+        class="recipe__ingredient-group"
+      >
         <div v-if="groupName" class="recipe-ingredients-group-name">
           <span class="first-lowercase">{{ groupName }}</span>
         </div>
@@ -41,8 +45,16 @@
         </ul>
       </div>
     </div>
-    <div v-if="canAddAnythingToShoppingList" class="all-to-shopping-list-button-container">
-      <BaseLink tag="button" color="primary" class="all-to-shopping-list-button" @click="addMissingIngredientsToShoppingList()">
+    <div
+      v-if="canAddAnythingToShoppingList"
+      class="all-to-shopping-list-button-container"
+    >
+      <BaseLink
+        tag="button"
+        color="primary"
+        class="all-to-shopping-list-button"
+        @click="addMissingIngredientsToShoppingList()"
+      >
         dodaj brakujące składniki do zakupów
       </BaseLink>
     </div>
@@ -50,104 +62,115 @@
 </template>
 
 <script>
-import { computed, ref } from 'vue'
-import { useStore } from 'vuex'
+// import { computed, ref } from "vue";
+import { useStore } from "vuex";
 
-import { INGREDIENT_USER_STATES } from '@/configs/recipeIngredient'
+import { INGREDIENT_USER_STATES } from "@/src/configs/recipeIngredient";
 
-import SectionTitle from '@/components/SectionTitle'
-import RecipeIngredient from '@/components/recipe/RecipeIngredient'
+import SectionTitle from "@/src/components/SectionTitle";
+import RecipeIngredient from "@/src/components/recipe/RecipeIngredient";
 
 export default {
   components: { RecipeIngredient, SectionTitle },
   props: {
     recipeId: {
       type: String,
-      required: true
+      required: true,
     },
     servings: {
       type: Number,
-      default: 1
+      default: 1,
     },
     ingredientGroups: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   setup(props) {
-    const store = useStore()
-    const myKitchenProducts = computed(() => store.state.myKitchen.products || [])
-    const shoppingListProducts = computed(() => store.state.shoppingList.products || [])
+    const store = useStore();
+    const myKitchenProducts = computed(
+      () => store.state.myKitchen.products || []
+    );
+    const shoppingListProducts = computed(
+      () => store.state.shoppingList.products || []
+    );
 
     // SERVINGS
-    const initialServings = props.servings || 1
-    const localServings = ref(initialServings)
+    const initialServings = props.servings || 1;
+    const localServings = ref(initialServings);
     const decreaseServings = () => {
       if (localServings.value > 1) {
-        localServings.value -= 1
+        localServings.value -= 1;
       } else {
-        localServings.value = 1
+        localServings.value = 1;
       }
-    }
+    };
     const increaseServings = () => {
-      localServings.value += 1
-    }
+      localServings.value += 1;
+    };
 
     // INGREDIENTS
-    const allIngredientsAdding = ref(false)
-    const amountFactor = computed(() => localServings.value / initialServings)
+    const allIngredientsAdding = ref(false);
+    const amountFactor = computed(() => localServings.value / initialServings);
 
-    const isInMyKitchen = baseProductIdsArray => {
-      return myKitchenProducts.value.find(p => baseProductIdsArray.includes(p.baseProductId))
-    }
-    const isInShoppingList = baseProductIdsArray => {
-      return shoppingListProducts.value.find(p => baseProductIdsArray.includes(p.baseProductId))
-    }
+    const isInMyKitchen = (baseProductIdsArray) => {
+      return myKitchenProducts.value.find((p) =>
+        baseProductIdsArray.includes(p.baseProductId)
+      );
+    };
+    const isInShoppingList = (baseProductIdsArray) => {
+      return shoppingListProducts.value.find((p) =>
+        baseProductIdsArray.includes(p.baseProductId)
+      );
+    };
 
     const ingredients = computed(() => {
       return Object.fromEntries(
         Object.entries(props.ingredientGroups).map(([key, value]) => [
           key,
-          value.map(ingredient => {
-            const { baseProductIdsArray } = ingredient
-            let state
+          value.map((ingredient) => {
+            const { baseProductIdsArray } = ingredient;
+            let state;
 
             if (!baseProductIdsArray) {
-              state = INGREDIENT_USER_STATES.NONE
+              state = INGREDIENT_USER_STATES.NONE;
             } else if (isInMyKitchen(baseProductIdsArray)) {
-              state = INGREDIENT_USER_STATES.IN_KITCHEN
+              state = INGREDIENT_USER_STATES.IN_KITCHEN;
             } else if (isInShoppingList(baseProductIdsArray)) {
-              state = INGREDIENT_USER_STATES.IN_SHOPPING_LIST
+              state = INGREDIENT_USER_STATES.IN_SHOPPING_LIST;
             } else {
-              state = INGREDIENT_USER_STATES.UNAVAILABLE
+              state = INGREDIENT_USER_STATES.UNAVAILABLE;
             }
 
             return {
               ...ingredient,
-              state
-            }
-          })
+              state,
+            };
+          }),
         ])
-      )
-    })
+      );
+    });
 
     const canAddAnythingToShoppingList = computed(() => {
-      if (!ingredients.value) return false
+      if (!ingredients.value) return false;
 
       return Object.values(ingredients.value)
-        .flatMap(value => value.map(i => i.state))
-        .includes(INGREDIENT_USER_STATES.UNAVAILABLE)
-    })
+        .flatMap((value) => value.map((i) => i.state))
+        .includes(INGREDIENT_USER_STATES.UNAVAILABLE);
+    });
 
     const addMissingIngredientsToShoppingList = async () => {
-      allIngredientsAdding.value = true
+      allIngredientsAdding.value = true;
 
       try {
-        await store.dispatch('shoppingList/addMissingIngredientsToShoppingList', props.recipeId)
+        await store.dispatch(
+          "shoppingList/addMissingIngredientsToShoppingList",
+          props.recipeId
+        );
       } finally {
-        allIngredientsAdding.value = false
+        allIngredientsAdding.value = false;
       }
-    }
+    };
 
     return {
       localServings,
@@ -157,10 +180,10 @@ export default {
       ingredients,
       allIngredientsAdding,
       canAddAnythingToShoppingList,
-      addMissingIngredientsToShoppingList
-    }
-  }
-}
+      addMissingIngredientsToShoppingList,
+    };
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -215,7 +238,7 @@ export default {
 
   &:before,
   &:after {
-    content: '';
+    content: "";
     height: 1px;
     flex: 1;
     background: var(--color-border);

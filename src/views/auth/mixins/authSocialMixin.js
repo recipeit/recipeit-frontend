@@ -1,9 +1,9 @@
-import { ERROR_ACTION_TAG_NAME } from '@/configs/error'
+import { ERROR_ACTION_TAG_NAME } from '@/src/configs/error'
 
-import { ToastType } from '@/plugins/toast/toastType'
+import { ToastType } from '@/src/plugins/toast/toastType'
 
-import FacebookService from '@/services/facebook'
-import GoogleService from '@/services/google'
+import FacebookService from '@/src/services/facebook'
+import GoogleService from '@/src/services/google'
 
 export default {
   data: () => ({

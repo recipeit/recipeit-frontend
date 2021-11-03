@@ -5,14 +5,14 @@
 </template>
 
 <script>
-import BaseLink from '@/components/base/BaseLink'
+import BaseLink from "@/src/components/base/BaseLink";
 
 export default {
   components: { BaseLink },
   props: {
-    color: String
-  }
-}
+    color: String,
+  },
+};
 </script>
 
 <style lang="scss" scoped>

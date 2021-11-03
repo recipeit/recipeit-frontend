@@ -3,7 +3,11 @@
     <SectionTitle icon="star" title="Popularne kategorie" />
     <div class="popular-categories-container">
       <ul v-if="popularCategories" class="popular-categories">
-        <li v-for="category in popularCategories" :key="category.key" class="popular-category-container">
+        <li
+          v-for="category in popularCategories"
+          :key="category.key"
+          class="popular-category-container"
+        >
           <PopularCategory
             :page="page"
             :category-key="category.key"
@@ -17,27 +21,28 @@
 </template>
 
 <script>
-import { onBeforeMount, ref } from 'vue'
+// import { onBeforeMount, ref } from "vue";
 
-import recipeApi from '@/api/recipeApi'
+import recipeApi from "@/src/api/recipeApi";
 
-import { APP_RECIPES } from '@/router/names'
+import { APP_RECIPES } from "@/src/router/paths";
 
-import PopularCategory from '@/components/PopularCategory'
-import SectionTitle from '@/components/SectionTitle'
+import PopularCategory from "@/src/components/PopularCategory";
+import SectionTitle from "@/src/components/SectionTitle";
 
 export default {
+  name: "PopularCategories",
   components: { PopularCategory, SectionTitle },
   setup() {
     // const store = useStore()
-    const popularCategories = ref(null)
+    const popularCategories = ref(null);
 
     onBeforeMount(async () => {
-      const { data } = await recipeApi.getPopularCategories()
-      popularCategories.value = data
-    })
+      const { data } = await recipeApi.getPopularCategories();
+      popularCategories.value = data;
+    });
 
-    const page = APP_RECIPES
+    const page = APP_RECIPES;
 
     // const page = computed(() => {
     //   return store.state.myKitchen.products ? APP_COOK_IT : APP_RECIPES
@@ -45,10 +50,10 @@ export default {
 
     return {
       popularCategories,
-      page
-    }
-  }
-}
+      page,
+    };
+  },
+};
 </script>
 
 <style lang="scss" scoped>

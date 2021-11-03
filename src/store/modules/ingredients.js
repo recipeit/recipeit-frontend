@@ -1,11 +1,11 @@
-import ingredientsApi from '@/api/ingredientsApi'
+import ingredientsApi from '@/src/api/ingredientsApi'
 
 export const MUTATIONS = {
   SET_BASE_INGREDIENTS: 'SET_BASE_INGREDIENTS',
   SET_UNITS: 'SET_UNITS'
 }
 
-export default {
+export default () => ({
   namespaced: true,
   state: {
     baseProducts: null,
@@ -35,4 +35,4 @@ export default {
       commit(MUTATIONS.SET_UNITS, unitGroups)
     }
   }
-}
+})

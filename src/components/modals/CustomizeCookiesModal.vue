@@ -10,19 +10,26 @@
             Wymagane ciasteczka
           </div>
           <div class="description">
-            Te ciasteczka są używane m.in. do logowania, przesyłania formularzy czy zapamiętywania Twoich preferencji.
+            Te ciasteczka są używane m.in. do logowania, przesyłania formularzy
+            czy zapamiętywania Twoich preferencji.
           </div>
         </template>
       </BaseCheckbox>
 
-      <BaseCheckbox v-model="consents" class="checkbox" :value="COOKIES_ANALYTICS_COOKIE_NAME">
+      <BaseCheckbox
+        v-model="consents"
+        class="checkbox"
+        :value="COOKIES_ANALYTICS_COOKIE_NAME"
+      >
         <template #label>
           <div>
             Analityczne ciasteczka
           </div>
           <div class="description">
-            Dzięki tym ciasteczkom możemy badać aktywność naszych użytkowników w serwisie z wykorzystaniem Google Analytics. Pozwala nam to
-            szybciej znajdywać zaistniałe problemy oraz dopasowywać aplikację do użytkownikow.
+            Dzięki tym ciasteczkom możemy badać aktywność naszych użytkowników w
+            serwisie z wykorzystaniem Google Analytics. Pozwala nam to szybciej
+            znajdywać zaistniałe problemy oraz dopasowywać aplikację do
+            użytkownikow.
           </div>
         </template>
       </BaseCheckbox>
@@ -36,31 +43,31 @@
 </template>
 
 <script>
-import { reactive, toRefs } from 'vue'
+// import { reactive, toRefs } from "vue";
 
-import { COOKIES_ANALYTICS_COOKIE_NAME } from '@/configs/cookies'
+import { COOKIES_ANALYTICS_COOKIE_NAME } from "@/src/configs/cookies";
 
-import GDPRService from '@/services/gdpr'
+import GDPRService from "@/src/services/gdpr";
 
 export default {
-  emits: ['close'],
+  emits: ["close"],
   setup(_, { emit }) {
     const data = reactive({
-      consents: GDPRService.getAcceptedCookies()
-    })
+      consents: GDPRService.getAcceptedCookies(),
+    });
 
     const allowSelected = () => {
-      GDPRService.acceptSelected(data.consents || [])
-      emit('close', true)
-    }
+      GDPRService.acceptSelected(data.consents || []);
+      emit("close", true);
+    };
 
     return {
       ...toRefs(data),
       allowSelected,
-      COOKIES_ANALYTICS_COOKIE_NAME
-    }
-  }
-}
+      COOKIES_ANALYTICS_COOKIE_NAME,
+    };
+  },
+};
 </script>
 
 <style lang="scss" scoped>

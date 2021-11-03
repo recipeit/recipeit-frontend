@@ -1,7 +1,12 @@
 <template>
   <header class="page-header">
     <div class="page-header__content">
-      <BaseLink v-if="backButton" class="page-header__back-icon" color="text-primary" @click="$router.go(-1)">
+      <BaseLink
+        v-if="backButton"
+        class="page-header__back-icon"
+        color="text-primary"
+        @click="$router.go(-1)"
+      >
         <BaseIcon icon="arrow-left" weight="semi-bold" />
       </BaseLink>
 
@@ -17,22 +22,22 @@
 </template>
 
 <script>
-import PageHeaderUser from '@/components/PageHeaderUser'
+import PageHeaderUser from "@/src/components/PageHeaderUser";
 
 export default {
   components: { PageHeaderUser },
   props: {
     backButton: {
       type: Boolean,
-      default: false
+      default: false,
     },
     showUser: {
       type: Boolean,
-      default: true
+      default: true,
     },
-    title: String
-  }
-}
+    title: String,
+  },
+};
 </script>
 
 <style lang="scss" scoped>

@@ -1,8 +1,15 @@
 <template>
-  <router-link class="recipe-box" :to="{ name: APP_RECIPE, params: { recipeId: recipeSlug, recipeName } }">
+  <NuxtLink
+    class="recipe-box"
+    :to="{ path: '/przepis', params: { recipeId: recipeSlug, recipeName } }"
+  >
     <div class="recipe-box__image-container">
       <div class="recipe-box__image-container__image">
-        <BaseImageLazyload :src="imageUrl" :alt="recipeName" :error-placeholder="placeholder" />
+        <BaseImageLazyload
+          :src="imageUrl"
+          :alt="recipeName"
+          :error-placeholder="placeholder"
+        />
       </div>
 
       <div v-if="showRecipeProps" class="recipe-box__props2">
@@ -20,81 +27,89 @@
     <div class="recipe-box__name">
       {{ recipeName }}
     </div>
-  </router-link>
+  </NuxtLink>
 </template>
 
 <script>
-import { computed } from 'vue'
-import { mapState, useStore } from 'vuex'
+// import { computed } from "vue";
+import { mapState, useStore } from "vuex";
 
-import placeholderDark from '@/assets/img/placeholders/recipe-box-dark.webp'
-import placeholderLight from '@/assets/img/placeholders/recipe-box.webp'
+import placeholderDark from "@/src/assets/img/placeholders/recipe-box-dark.webp";
+import placeholderLight from "@/src/assets/img/placeholders/recipe-box.webp";
 
-import { THEME_DARK } from '@/configs/theme'
+import { THEME_DARK } from "@/src/configs/theme";
 
-import { APP_RECIPE } from '@/router/names'
+import { APP_RECIPE } from "@/src/router/names";
 
-import FavouriteIcon from '@/components/FavouriteIcon'
+import FavouriteIcon from "@/src/components/FavouriteIcon";
 
 export default {
   components: {
     // Rating,
-    FavouriteIcon
+    FavouriteIcon,
   },
   props: {
     recipeId: {
       type: String,
-      required: true
+      required: true,
     },
     recipeSlug: {
       type: String,
-      required: true
+      required: true,
     },
     recipeName: {
       type: String,
-      required: true
+      required: true,
     },
     recipeRating: {
-      type: Number
+      type: Number,
     },
     showRecipeProps: {
       type: Boolean,
-      default: true
-    }
+      default: true,
+    },
   },
   setup() {
-    const store = useStore()
+    const store = useStore();
 
-    const placeholder = computed(() => (store.state.user.theme === THEME_DARK ? placeholderDark : placeholderLight))
+    const placeholder = computed(() =>
+      store.state.user.theme === THEME_DARK ? placeholderDark : placeholderLight
+    );
 
     return {
       APP_RECIPE,
-      placeholder
-    }
+      placeholder,
+    };
   },
   computed: {
     ...mapState({
-      favouriteRecipesIds: state => state.recipes.favouriteRecipesIds
+      favouriteRecipesIds: (state) => state.recipes.favouriteRecipesIds,
     }),
     isFavourite() {
-      return this.favouriteRecipesIds?.find(id => id === this.recipeId) !== undefined
+      return (
+        this.favouriteRecipesIds?.find((id) => id === this.recipeId) !==
+        undefined
+      );
     },
     imageUrl() {
-      return `/static/recipes/${this.recipeId}/thumb.webp?v=1`
-    }
+      return `/static/recipes/${this.recipeId}/thumb.webp?v=1`;
+    },
   },
   methods: {
     showDetails() {
-      this.$router.push({ name: APP_RECIPE, params: { recipeId: this.recipeId } })
+      this.$router.push({
+        path: "/przepis",
+        params: { recipeId: this.recipeId },
+      });
     },
     addToFavourites() {
-      this.$store.dispatch('recipes/addToFavourites', this.recipeId)
+      this.$store.dispatch("recipes/addToFavourites", this.recipeId);
     },
     deleteFromFavourites() {
-      this.$store.dispatch('recipes/deleteFromFavourites', this.recipeId)
-    }
-  }
-}
+      this.$store.dispatch("recipes/deleteFromFavourites", this.recipeId);
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>

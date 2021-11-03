@@ -1,20 +1,33 @@
 <template>
   <SheetModalContent>
     <BaseModalHeader @close="$emit('close')">
-      <BaseModalTitle><BaseIcon class="header-icon" icon="eye-hidden" weight="semi-bold" />Ukryty blog - co oznacza?</BaseModalTitle>
+      <BaseModalTitle
+        ><BaseIcon
+          class="header-icon"
+          icon="eye-hidden"
+          weight="semi-bold"
+        />Ukryty blog - co oznacza?</BaseModalTitle
+      >
     </BaseModalHeader>
     <BaseModalBody>
       <p class="paragraph">
-        Przepisy z ukrytego blogu nie pojawiają się w bazie przepisów oraz nie są proponowane do wykonania z Twoich produków.
+        Przepisy z ukrytego blogu nie pojawiają się w bazie przepisów oraz nie
+        są proponowane do wykonania z Twoich produków.
       </p>
       <p class="paragraph">
         Ukryć możesz zarówno cały blog, jak i pojedynczy przepis.
       </p>
       <p class="paragraph">
         Listę ukrytych przepisów i blogów znajdziesz w
-        <router-link v-slot="{ href, navigate }" :to="{ name: 'account', params: { closeModalAndGo: true } }" custom>
-          <BaseLink :href="href" color="primary" @click="navigate($event)">swoim koncie</BaseLink>
-        </router-link>
+        <NuxtLink
+          v-slot="{ href, navigate }"
+          :to="{ name: 'account', params: { closeModalAndGo: true } }"
+          custom
+        >
+          <BaseLink :href="href" color="primary" @click="navigate($event)"
+            >swoim koncie</BaseLink
+          >
+        </NuxtLink>
       </p>
     </BaseModalBody>
     <BaseModalFooter>
@@ -27,8 +40,8 @@
 
 <script>
 export default {
-  emits: ['close']
-}
+  emits: ["close"],
+};
 </script>
 
 <style lang="scss" scoped>

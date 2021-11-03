@@ -10,18 +10,18 @@ import 'v-tooltip/dist/v-tooltip.css'
 import autofocus from '@/directives/autofocus'
 import blurOnClick from '@/directives/blurOnClick'
 
-import error from '@/error'
+import error from '@/src/error'
 
-import i18n from '@/i18n'
+import i18n from '@/src/i18n'
 
-import Clipboard from '@/plugins/clipboard'
-import GlobalSheetModal from '@/plugins/global-sheet-modal'
-import Progressbar from '@/plugins/progressbar'
-import Toast from '@/plugins/toast'
+import Clipboard from '@/src/plugins/clipboard'
+import GlobalSheetModal from '@/src/plugins/global-sheet-modal'
+import Progressbar from '@/src/plugins/progressbar'
+import Toast from '@/src/plugins/toast'
 
 import '@/registerServiceWorker'
 
-import router from '@/router'
+import router from '@/src/router'
 
 import store from '@/store'
 

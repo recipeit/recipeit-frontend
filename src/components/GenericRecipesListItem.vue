@@ -1,32 +1,37 @@
 <template>
   <li class="recipes-list-item">
-    <RecipeBox :recipe-id="recipeId" :recipe-slug="recipeSlug" :recipe-name="recipeName" :recipe-rating="recipeRating" />
+    <RecipeBox
+      :recipe-id="recipeId"
+      :recipe-slug="recipeSlug"
+      :recipe-name="recipeName"
+      :recipe-rating="recipeRating"
+    />
   </li>
 </template>
 
 <script>
-import RecipeBox from '@/components/RecipeBox'
+import RecipeBox from "@/src/components/RecipeBox";
 
 export default {
   components: { RecipeBox },
   props: {
     recipeId: {
       type: String,
-      required: true
+      required: true,
     },
     recipeSlug: {
       type: String,
-      required: true
+      required: true,
     },
     recipeName: {
       type: String,
-      required: true
+      required: true,
     },
     recipeRating: {
-      type: Number
-    }
-  }
-}
+      type: Number,
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>

@@ -1,5 +1,5 @@
 //eventHub.js
-import emitter from 'tiny-emitter/instance'
+import emitter from 'tiny-emitter/instance.js'
 
 export default {
   $on: (...args) => emitter.on(...args),

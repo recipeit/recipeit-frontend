@@ -3,16 +3,35 @@
     <Container class="header-container">
       <div class="header">Czy wiesz, że...</div>
       <div class="controls">
-        <BaseLink tag="button" class="control-left" :disabled="scrollLeftButtonDisabled" @click="scrollLeft()">
+        <BaseLink
+          tag="button"
+          class="control-left"
+          :disabled="scrollLeftButtonDisabled"
+          @click="scrollLeft()"
+        >
           <BaseIcon icon="arrow-right" />
         </BaseLink>
-        <BaseLink tag="button" class="control-right" :disabled="scrollRightButtonDisabled" @click="scrollRight()">
+        <BaseLink
+          tag="button"
+          class="control-right"
+          :disabled="scrollRightButtonDisabled"
+          @click="scrollRight()"
+        >
           <BaseIcon icon="arrow-right" />
         </BaseLink>
       </div>
     </Container>
-    <div ref="statisticCards" class="statistics-cards" @scroll="handleControlsDisability()">
-      <StatisticsCard v-for="(statistic, index) in statistics" :key="index" :icon="statistic.icon" :description="statistic.description" />
+    <div
+      ref="statisticCards"
+      class="statistics-cards"
+      @scroll="handleControlsDisability()"
+    >
+      <StatisticsCard
+        v-for="(statistic, index) in statistics"
+        :key="index"
+        :icon="statistic.icon"
+        :description="statistic.description"
+      />
     </div>
     <Container class="statistics-footer-container">
       Źródło: wyniki badań IOŚ-PIB, SGGW w ramach projektu PROM, 2020 r.
@@ -21,92 +40,96 @@
 </template>
 
 <script>
-import debounce from 'lodash.debounce'
-import { onBeforeMount, onBeforeUnmount, onMounted, ref } from 'vue'
+import debounce from "lodash.debounce";
+// import { onBeforeMount, onBeforeUnmount, onMounted, ref } from 'vue'
 
-import Container from '@/components/landingPage/Container'
-import StatisticsCard from '@/components/landingPage/StatisticsCard'
+import Container from "@/src/components/landingPage/Container";
+import StatisticsCard from "@/src/components/landingPage/StatisticsCard";
 
 export default {
   components: { Container, StatisticsCard },
   setup() {
     const statistics = [
       {
-        icon: 'home',
-        description: '<b>60%</b> marnowanej żywności pochodzi z gospodarstw domowych.'
+        icon: "home",
+        description:
+          "<b>60%</b> marnowanej żywności pochodzi z gospodarstw domowych.",
       },
       {
-        icon: 'trash',
-        description: 'W polskich domach, co sekundę do kosza wyrzucanych jest aż <b>92kg</b> jedzenia.'
+        icon: "trash",
+        description:
+          "W polskich domach, co sekundę do kosza wyrzucanych jest aż <b>92kg</b> jedzenia.",
       },
       {
-        icon: 'grains',
-        description: 'Najczęściej wyrzucamy <b>pieczywo</b> (62,9%), <b>owoce</b> (57,4%) i <b>warzywa</b> (56,5%).'
+        icon: "grains",
+        description:
+          "Najczęściej wyrzucamy <b>pieczywo</b> (62,9%), <b>owoce</b> (57,4%) i <b>warzywa</b> (56,5%).",
       },
       {
-        icon: 'clock',
-        description: 'Głównymi powodami wyrzucania żywności to jej <b>zepsucie</b> i <b>przeterminowanie</b>.'
-      }
-    ]
+        icon: "clock",
+        description:
+          "Głównymi powodami wyrzucania żywności to jej <b>zepsucie</b> i <b>przeterminowanie</b>.",
+      },
+    ];
 
-    const statisticCards = ref(null)
+    const statisticCards = ref(null);
 
     const scrollLeft = () => {
-      const { value: el } = statisticCards
+      const { value: el } = statisticCards;
 
-      const scrollByLeft = el.children[0].clientWidth
+      const scrollByLeft = el.children[0].clientWidth;
 
       el.scrollBy({
         left: -scrollByLeft,
-        behavior: 'smooth'
-      })
-    }
+        behavior: "smooth",
+      });
+    };
 
     const scrollRight = () => {
-      const { value: el } = statisticCards
+      const { value: el } = statisticCards;
 
-      const scrollByLeft = el.children[0].clientWidth + 32
+      const scrollByLeft = el.children[0].clientWidth + 32;
 
       el.scrollBy({
         left: scrollByLeft,
-        behavior: 'smooth'
-      })
-    }
+        behavior: "smooth",
+      });
+    };
 
-    const scrollLeftButtonDisabled = ref(true)
-    const scrollRightButtonDisabled = ref(null)
+    const scrollLeftButtonDisabled = ref(true);
+    const scrollRightButtonDisabled = ref(null);
 
     const handleControlsDisability = debounce(() => {
-      const { value: el } = statisticCards
+      const { value: el } = statisticCards;
 
       if (el.scrollLeft === 0 && !scrollLeftButtonDisabled.value) {
-        scrollLeftButtonDisabled.value = true
+        scrollLeftButtonDisabled.value = true;
       } else if (el.scrollLeft !== 0 && scrollLeftButtonDisabled.value) {
-        scrollLeftButtonDisabled.value = null
+        scrollLeftButtonDisabled.value = null;
       }
 
       if (el.scrollLeft === el.scrollWidth - el.offsetWidth) {
         if (!scrollRightButtonDisabled.value) {
-          scrollRightButtonDisabled.value = true
+          scrollRightButtonDisabled.value = true;
         }
       } else {
         if (scrollRightButtonDisabled.value) {
-          scrollRightButtonDisabled.value = null
+          scrollRightButtonDisabled.value = null;
         }
       }
-    }, 200)
+    }, 200);
 
     onBeforeMount(() => {
-      window.addEventListener('resize', handleControlsDisability)
-    })
+      window.addEventListener("resize", handleControlsDisability);
+    });
 
     onMounted(() => {
-      handleControlsDisability()
-    })
+      handleControlsDisability();
+    });
 
     onBeforeUnmount(() => {
-      window.removeEventListener('resize', handleControlsDisability)
-    })
+      window.removeEventListener("resize", handleControlsDisability);
+    });
 
     return {
       statistics,
@@ -115,10 +138,10 @@ export default {
       statisticCards,
       scrollLeftButtonDisabled,
       scrollRightButtonDisabled,
-      handleControlsDisability
-    }
-  }
-}
+      handleControlsDisability,
+    };
+  },
+};
 </script>
 
 <style lang="scss" scoped>

@@ -1,20 +1,33 @@
 <template>
   <div class="layout__page__content recipe-page">
     <div v-if="errors" class="error-page">
-      <img class="error-image" src="@/assets/img/broccoli-sad.svg" alt="" />
+      <img class="error-image" src="@/src/assets/img/broccoli-sad.svg" alt="" />
       <span class="error-text">
         Ojjj... nie znaleźliśmy takiego przepisu
       </span>
-      <router-link v-slot="{ href, navigate }" :to="{ name: APP_HOME }" custom>
-        <BaseButton tag="a" :href="href" class="recipe-button" stroked @click="navigate($event)">
+      <NuxtLink v-slot="{ href, navigate }" :to="{ name: APP_HOME }" custom>
+        <BaseButton
+          tag="a"
+          :href="href"
+          class="recipe-button"
+          stroked
+          @click="navigate($event)"
+        >
           Wróć na stronę główną
         </BaseButton>
-      </router-link>
+      </NuxtLink>
     </div>
-    <div v-else-if="recipe && recipe.details" :class="['recipe', { 'recipe--hidden': isHidden }]">
+    <div
+      v-else-if="recipe && recipe.details"
+      :class="['recipe', { 'recipe--hidden': isHidden }]"
+    >
       <div class="recipe__image-container">
         <div class="recipe__image-container__buttons">
-          <BaseLink class="recipe__image-container__button" tag="button" @click="back()">
+          <BaseLink
+            class="recipe__image-container__button"
+            tag="button"
+            @click="back()"
+          >
             <BaseIcon icon="arrow-right" weight="regular" />
           </BaseLink>
           <BaseMenu>
@@ -25,15 +38,29 @@
             </template>
             <template #dropdown>
               <BaseMenuList>
-                <BaseMenuLink v-if="!isRecipeHidden" @click="changeRecipeVisibility(false)">Ukryj ten przepis</BaseMenuLink>
-                <BaseMenuLink v-else @click="changeRecipeVisibility(true)">Pokazuj ten przepis</BaseMenuLink>
+                <BaseMenuLink
+                  v-if="!isRecipeHidden"
+                  @click="changeRecipeVisibility(false)"
+                  >Ukryj ten przepis</BaseMenuLink
+                >
+                <BaseMenuLink v-else @click="changeRecipeVisibility(true)"
+                  >Pokazuj ten przepis</BaseMenuLink
+                >
 
-                <BaseMenuLink v-if="!isBlogHidden" @click="changeBlogVisibility(false)">Ukryj ten blog</BaseMenuLink>
-                <BaseMenuLink v-else @click="changeBlogVisibility(true)">Pokazuj ten blog</BaseMenuLink>
+                <BaseMenuLink
+                  v-if="!isBlogHidden"
+                  @click="changeBlogVisibility(false)"
+                  >Ukryj ten blog</BaseMenuLink
+                >
+                <BaseMenuLink v-else @click="changeBlogVisibility(true)"
+                  >Pokazuj ten blog</BaseMenuLink
+                >
 
                 <BaseMenuSeparator />
 
-                <BaseMenuLink @click="copyLinkToClipboard()">Skopiuj link do przepisu</BaseMenuLink>
+                <BaseMenuLink @click="copyLinkToClipboard()"
+                  >Skopiuj link do przepisu</BaseMenuLink
+                >
               </BaseMenuList>
             </template>
           </BaseMenu>
@@ -43,41 +70,82 @@
       <div class="recipe__main">
         <div class="recipe__header-pills">
           <div v-if="cookingHours" class="recipe__header-pill">
-            <BaseIcon class="recipe__header-pill__icon" icon="clock" weight="semi-bold" />
+            <BaseIcon
+              class="recipe__header-pill__icon"
+              icon="clock"
+              weight="semi-bold"
+            />
             {{ cookingHours }}
           </div>
           <!-- <div v-if="recipe.details.servings" class="recipe__header-pill">
             <BaseIcon class="recipe__header-pill__icon" icon="user" weight="semi-bold" />
             {{ $tc('shared.servings', recipe.details.servings) }}
           </div> -->
-          <BaseButton class="recipe__header-pill-button" color="primary" raised @click="openPlanRecipeModal()">
-            <BaseIcon class="recipe__header-pill-button__icon" icon="clock" weight="semi-bold" />
+          <BaseButton
+            class="recipe__header-pill-button"
+            color="primary"
+            raised
+            @click="openPlanRecipeModal()"
+          >
+            <BaseIcon
+              class="recipe__header-pill-button__icon"
+              icon="clock"
+              weight="semi-bold"
+            />
             Zaplanuj
           </BaseButton>
         </div>
 
-        <BaseLink v-if="isHidden" tag="button" class="recipe__hidden-bar" color="red" @click="showInvisibleInfoModal()">
-          <BaseIcon class="recipe__hidden-bar__icon" icon="eye-hidden" weight="semi-bold" />
+        <BaseLink
+          v-if="isHidden"
+          tag="button"
+          class="recipe__hidden-bar"
+          color="red"
+          @click="showInvisibleInfoModal()"
+        >
+          <BaseIcon
+            class="recipe__hidden-bar__icon"
+            icon="eye-hidden"
+            weight="semi-bold"
+          />
           Ten przepis jest ukryty
         </BaseLink>
 
         <div class="recipe__header">
           <h1 class="recipe__header__title">{{ recipe.name }}</h1>
           <div class="recipe__header__actions">
-            <FavouriteIcon :is-favourite="isFavourite" @removed="deleteFromFavourites" @added="addToFavourites" />
+            <FavouriteIcon
+              :is-favourite="isFavourite"
+              @removed="deleteFromFavourites"
+              @added="addToFavourites"
+            />
           </div>
         </div>
         <div class="recipe__author">
-          <router-link
+          <NuxtLink
             v-slot="{ href, navigate }"
-            :to="{ name: 'blog', params: { blogId: recipe.author.blog.slug || recipe.author.blog.id, blogName: recipe.author.blog.name } }"
+            :to="{
+              name: 'blog',
+              params: {
+                blogId: recipe.author.blog.slug || recipe.author.blog.id,
+                blogName: recipe.author.blog.name,
+              },
+            }"
             custom
           >
-            <BaseLink :href="href" color="text-secondary" @click="navigate($event)">
-              <span v-if="recipe.author.name" class="recipe__author__name">{{ recipe.author.name }}, </span>
-              <span class="recipe__author__blog-name">{{ recipe.author.blog.name }}</span>
+            <BaseLink
+              :href="href"
+              color="text-secondary"
+              @click="navigate($event)"
+            >
+              <span v-if="recipe.author.name" class="recipe__author__name"
+                >{{ recipe.author.name }},
+              </span>
+              <span class="recipe__author__blog-name">{{
+                recipe.author.blog.name
+              }}</span>
             </BaseLink>
-          </router-link>
+          </NuxtLink>
         </div>
 
         <div class="recipe__tags">
@@ -102,37 +170,73 @@
           :ingredient-groups="recipe.details.ingredientGroups"
         />
 
-        <div v-if="recipe.details.introductionParagraphs" class="recipe-introduction">
-          <p v-for="(paragraph, index) in recipe.details.introductionParagraphs" :key="index" class="recipe-paragraph">
+        <div
+          v-if="recipe.details.introductionParagraphs"
+          class="recipe-introduction"
+        >
+          <p
+            v-for="(paragraph, index) in recipe.details.introductionParagraphs"
+            :key="index"
+            class="recipe-paragraph"
+          >
             {{ paragraph }}
           </p>
         </div>
 
-        <RecipeDirectionsSection :recipe-id="recipe.id" :directions="recipe.details.directionsParagraphs" />
+        <RecipeDirectionsSection
+          :recipe-id="recipe.id"
+          :directions="recipe.details.directionsParagraphs"
+        />
 
         <div v-if="!recipe.details.summaryParagraphs" class="recipe-summary">
-          <p v-for="(paragraph, index) in recipe.details.summaryParagraphs" :key="index" class="recipe-paragraph">
+          <p
+            v-for="(paragraph, index) in recipe.details.summaryParagraphs"
+            :key="index"
+            class="recipe-paragraph"
+          >
             {{ paragraph }}
           </p>
         </div>
 
         <div v-if="recipe.details.footerParagraphs" class="recipe-footer">
-          <p v-for="(paragraph, index) in recipe.details.footerParagraphs" :key="index" class="recipe-paragraph">
+          <p
+            v-for="(paragraph, index) in recipe.details.footerParagraphs"
+            :key="index"
+            class="recipe-paragraph"
+          >
             {{ paragraph }}
           </p>
         </div>
 
         <div class="recipe-bottom-buttons-section">
           <!-- <BaseButton class="update-button" stroked>Zjedzone! Zaaktualizuj kuchnię</BaseButton> -->
-          <BaseButton class="plan-button" raised color="primary" @click="openPlanRecipeModal()">
-            <BaseIcon class="plan-button__icon" icon="clock" /> Zaplanuj na później
+          <BaseButton
+            class="plan-button"
+            raised
+            color="primary"
+            @click="openPlanRecipeModal()"
+          >
+            <BaseIcon class="plan-button__icon" icon="clock" /> Zaplanuj na
+            później
           </BaseButton>
 
-          <BaseButton v-if="recipe.url" target="_blank" :href="recipe.url" tag="a" class="original-link" stroked>
-            <BaseIcon class="plan-button__icon" icon="arrow-right" /> Przejdź do oryginału
+          <BaseButton
+            v-if="recipe.url"
+            target="_blank"
+            :href="recipe.url"
+            tag="a"
+            class="original-link"
+            stroked
+          >
+            <BaseIcon class="plan-button__icon" icon="arrow-right" /> Przejdź do
+            oryginału
           </BaseButton>
 
-          <BaseLink :href="reportLinkHref" color="text-secondary" class="report-link">
+          <BaseLink
+            :href="reportLinkHref"
+            color="text-secondary"
+            class="report-link"
+          >
             zgłoś błąd w przepisie
           </BaseLink>
         </div>
@@ -147,127 +251,131 @@
 </template>
 
 <script>
-import { computed, markRaw, reactive, toRefs } from 'vue'
-import { mapGetters, mapState, useStore } from 'vuex'
-import { useMeta } from 'vue-meta'
+// import { computed, markRaw, reactive, toRefs } from "vue";
+import { mapGetters, mapState, useStore } from "vuex";
+// import { useMeta } from "vue-meta";
 
-import { CONTACT_MAIL_ADDRESS } from '@/configs/emails'
-import { ERROR_ACTION_TAG_NAME } from '@/configs/error'
+import { CONTACT_MAIL_ADDRESS } from "@/src/configs/emails";
+import { ERROR_ACTION_TAG_NAME } from "@/src/configs/error";
 
-import { parseFilters } from '@/constants'
+import { parseFilters } from "@/src/constants";
 
-import dayjs from '@/functions/dayjs'
+import dayjs from "@/src/functions/dayjs";
 
-import { ToastType } from '@/plugins/toast/toastType'
+import { ToastType } from "@/src/plugins/toast/toastType";
 
-import { APP_HOME, APP_RECIPES } from '@/router/names'
+import { APP_HOME, APP_RECIPES } from "@/src/router/names";
 
-import FavouriteIcon from '@/components/FavouriteIcon'
-import Rating from '@/components/Rating'
-import RecipeParallaxGallery from '@/components/RecipeParallaxGallery'
-import InvisibleRecipeInfoModal from '@/components/modals/InvisibleRecipeInfoModal'
-import PlanRecipeModal from '@/components/modals/PlanRecipeModal'
-import RecipeDirectionsSection from '@/components/recipe/RecipeDirectionsSection'
-import RecipeIngredientsSection from '@/components/recipe/RecipeIngredientsSection'
+import FavouriteIcon from "@/src/components/FavouriteIcon";
+import Rating from "@/src/components/Rating";
+import RecipeParallaxGallery from "@/src/components/RecipeParallaxGallery";
+import InvisibleRecipeInfoModal from "@/src/components/modals/InvisibleRecipeInfoModal";
+import PlanRecipeModal from "@/src/components/modals/PlanRecipeModal";
+import RecipeDirectionsSection from "@/src/components/recipe/RecipeDirectionsSection";
+import RecipeIngredientsSection from "@/src/components/recipe/RecipeIngredientsSection";
 
 export default {
-  name: 'Recipe',
+  name: "Recipe",
   components: {
     // SectionTitle,
     FavouriteIcon,
     RecipeParallaxGallery,
     RecipeIngredientsSection,
     RecipeDirectionsSection,
-    Rating
+    Rating,
   },
   props: {
     recipeId: {
       type: String,
-      required: true
+      required: true,
     },
     recipeName: {
-      type: String
-    }
+      type: String,
+    },
   },
   setup(props) {
-    const store = useStore()
+    const store = useStore();
 
     const data = reactive({
       errors: false,
       fetchedData: false,
       recipe: null,
-      finishedDirections: []
-    })
+      finishedDirections: [],
+    });
 
     store
-      .dispatch('recipes/fetchDetailedRecipe', props.recipeId)
-      .then(rd => {
-        data.recipe = rd
-        data.finishedDirections = store.getters['recipes/getFinishedDirectionsForRecipe'](rd.id) || []
+      .dispatch("recipes/fetchDetailedRecipe", props.recipeId)
+      .then((rd) => {
+        data.recipe = rd;
+        data.finishedDirections =
+          store.getters["recipes/getFinishedDirectionsForRecipe"](rd.id) || [];
       })
-      .catch(error => {
-        data.errors = true
+      .catch((error) => {
+        data.errors = true;
         this.$errorHandler.captureError(error, {
-          [ERROR_ACTION_TAG_NAME]: 'recipe.fetchDetailedRecipe'
-        })
-      })
+          [ERROR_ACTION_TAG_NAME]: "recipe.fetchDetailedRecipe",
+        });
+      });
 
     const computedMeta = computed(() => {
-      const title = data.recipe?.name || props.recipeName
-      return title ? { title } : {}
-    })
+      const title = data.recipe?.name || props.recipeName;
+      return title ? { title } : {};
+    });
 
-    useMeta(computedMeta)
+    useMeta(computedMeta);
 
     return {
       ...toRefs(data),
-      APP_HOME
-    }
+      APP_HOME,
+    };
   },
   computed: {
     ...mapGetters({
-      isRecipeHiddenGetter: 'user/isRecipeHidden',
-      isBlogHiddenGetter: 'user/isBlogHidden'
+      isRecipeHiddenGetter: "user/isRecipeHidden",
+      isBlogHiddenGetter: "user/isBlogHidden",
     }),
     ...mapState({
-      favouriteRecipesIds: state => state.recipes.favouriteRecipesIds
+      favouriteRecipesIds: (state) => state.recipes.favouriteRecipesIds,
     }),
 
     isRecipeHidden() {
       if (this.recipe) {
-        return this.isRecipeHiddenGetter(this.recipe.id)
+        return this.isRecipeHiddenGetter(this.recipe.id);
       }
-      return false
+      return false;
     },
     isBlogHidden() {
       if (this.recipe) {
-        return this.isBlogHiddenGetter(this.recipe.author.blogId)
+        return this.isBlogHiddenGetter(this.recipe.author.blogId);
       }
-      return false
+      return false;
     },
     isHidden() {
-      return this.isRecipeHidden || this.isBlogHidden
+      return this.isRecipeHidden || this.isBlogHidden;
     },
     cookingHours() {
       const {
         recipe,
-        recipe: { cookingMinutes }
-      } = this
+        recipe: { cookingMinutes },
+      } = this;
 
       if (recipe && cookingMinutes) {
-        const duration = dayjs.duration(cookingMinutes, 'minutes')
+        const duration = dayjs.duration(cookingMinutes, "minutes");
 
         if (cookingMinutes < 60) {
-          return duration.humanize()
+          return duration.humanize();
         } else if (cookingMinutes === 60) {
-          return '1 godzina'
+          return "1 godzina";
         }
-        return `${duration.format('H:mm')} godz.`
+        return `${duration.format("H:mm")} godz.`;
       }
-      return null
+      return null;
     },
     isFavourite() {
-      return this.favouriteRecipesIds.find(id => id === this.recipe.id) !== undefined
+      return (
+        this.favouriteRecipesIds.find((id) => id === this.recipe.id) !==
+        undefined
+      );
     },
     // allIndexes() {
     //   return this.recipe.details.directionsParagraphs.map((element, index) => index)
@@ -276,82 +384,97 @@ export default {
     //   return _.min(_.difference(this.allIndexes, this.finishedDirections))
     // },
     images() {
-      const { recipe } = this
+      const { recipe } = this;
 
-      if (!recipe) return null
+      if (!recipe) return null;
 
-      const imagesCount = Math.max(recipe.imagesCount, 1)
+      const imagesCount = Math.max(recipe.imagesCount, 1);
 
-      return [...Array(imagesCount).keys()].map(i => ({
-        src: `/static/recipes/${recipe.id}/${i + 1}.webp`
-      }))
+      return [...Array(imagesCount).keys()].map((i) => ({
+        src: `/static/recipes/${recipe.id}/${i + 1}.webp`,
+      }));
     },
     reportLinkHref() {
-      const { recipe } = this
+      const { recipe } = this;
 
       if (!recipe) {
-        return ''
+        return "";
       }
 
-      const subject = `Błąd w przepisie [ID=${recipe.id}]`
+      const subject = `Błąd w przepisie [ID=${recipe.id}]`;
 
-      return `mailto:${CONTACT_MAIL_ADDRESS}?subject=${encodeURIComponent(subject)}`
-    }
+      return `mailto:${CONTACT_MAIL_ADDRESS}?subject=${encodeURIComponent(
+        subject
+      )}`;
+    },
   },
   created() {
-    this.$store.dispatch('myKitchen/fetchProducts').catch(error => {
+    this.$store.dispatch("myKitchen/fetchProducts").catch((error) => {
       this.$errorHandler.captureError(error, {
-        [ERROR_ACTION_TAG_NAME]: 'recipe.fetchKitchenProducts'
-      })
-    })
-    this.$store.dispatch('shoppingList/fetchProducts').catch(error => {
+        [ERROR_ACTION_TAG_NAME]: "recipe.fetchKitchenProducts",
+      });
+    });
+    this.$store.dispatch("shoppingList/fetchProducts").catch((error) => {
       this.$errorHandler.captureError(error, {
-        [ERROR_ACTION_TAG_NAME]: 'recipe.fetchShoppingListProducts'
-      })
-    })
+        [ERROR_ACTION_TAG_NAME]: "recipe.fetchShoppingListProducts",
+      });
+    });
   },
   methods: {
     navigateToRecipesWithCategoryFilter({ key, categoryGroup }) {
-      this.$router.push({ name: APP_RECIPES, query: parseFilters({ [categoryGroup]: [key] }) })
+      this.$router.push({
+        path: "/przepisy",
+        query: parseFilters({ [categoryGroup]: [key] }),
+      });
     },
     back() {
-      this.$router.go(-1)
+      this.$router.go(-1);
     },
     addToFavourites() {
-      this.$store.dispatch('recipes/addToFavourites', this.recipe.id)
+      this.$store.dispatch("recipes/addToFavourites", this.recipe.id);
     },
     deleteFromFavourites() {
-      this.$store.dispatch('recipes/deleteFromFavourites', this.recipe.id)
+      this.$store.dispatch("recipes/deleteFromFavourites", this.recipe.id);
     },
     copyLinkToClipboard() {
-      const url = window.location.origin + this.$route.path
+      const url = window.location.origin + this.$route.path;
 
       if (!url) {
-        this.$toast.show('Nie udało się skopiować do schowka', ToastType.ERROR)
+        this.$toast.show("Nie udało się skopiować do schowka", ToastType.ERROR);
       } else if (this.$clipboard(url)) {
-        this.$toast.show('Skopiowano do schowka', ToastType.SUCCESS)
+        this.$toast.show("Skopiowano do schowka", ToastType.SUCCESS);
       } else {
-        this.$toast.show('Nie udało się skopiować do schowka', ToastType.ERROR)
+        this.$toast.show("Nie udało się skopiować do schowka", ToastType.ERROR);
       }
     },
     openPlanRecipeModal() {
       if (this.recipe) {
-        this.$modal.show(markRaw(PlanRecipeModal), { recipeId: this.recipe.id }, {})
+        this.$modal.show(
+          markRaw(PlanRecipeModal),
+          { recipeId: this.recipe.id },
+          {}
+        );
       }
     },
     changeRecipeVisibility(visible) {
       if (this.recipe) {
-        this.$store.dispatch('user/changeRecipeVisibility', { recipeId: this.recipe.id, visible })
+        this.$store.dispatch("user/changeRecipeVisibility", {
+          recipeId: this.recipe.id,
+          visible,
+        });
       }
     },
     changeBlogVisibility(visible) {
-      this.$store.dispatch('user/changeBlogVisibility', { blogId: this.recipe.author.blog.id, visible })
+      this.$store.dispatch("user/changeBlogVisibility", {
+        blogId: this.recipe.author.blog.id,
+        visible,
+      });
     },
     showInvisibleInfoModal() {
-      this.$modal.show(markRaw(InvisibleRecipeInfoModal), {}, {})
-    }
-  }
-}
+      this.$modal.show(markRaw(InvisibleRecipeInfoModal), {}, {});
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>

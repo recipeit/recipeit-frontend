@@ -5,7 +5,7 @@
       :show-filter-buttons="false"
       :recipes="recipesList.recipes.value"
       :errors="recipesList.recipesErrors.value"
-      :load-handler="pageNumber => recipesList.loadRecipesPage(pageNumber)"
+      :load-handler="(pageNumber) => recipesList.loadRecipesPage(pageNumber)"
       @reload="recipesList.reloadRecipes()"
       @reload-with-query="recipesList.reloadRecipes()"
     />
@@ -13,33 +13,33 @@
 </template>
 
 <script>
-import { useMeta } from 'vue-meta'
+import { useMeta } from "vue-meta";
 
-import userApi from '@/api/userApi'
+import userApi from "@/src/api/userApi";
 
-import recipePagedList from '@/views/app/composable/recipePagedList'
+import recipePagedList from "@/src/views/app/composable/recipePagedList";
 
-import GenericRecipesList from '@/components/GenericRecipesList'
-import PageHeader from '@/components/PageHeader'
+import GenericRecipesList from "@/src/components/GenericRecipesList";
+import PageHeader from "@/src/components/PageHeader";
 
 export default {
-  name: 'AvailableRecipes',
+  name: "AvailableRecipes",
   components: {
     GenericRecipesList,
-    PageHeader
+    PageHeader,
   },
   setup() {
     useMeta({
-      title: 'Ulubione'
-    })
+      title: "Ulubione",
+    });
 
-    const recipesList = recipePagedList(userApi.getFavouriteRecipes)
+    const recipesList = recipePagedList(userApi.getFavouriteRecipes);
 
     return {
-      recipesList
-    }
-  }
-}
+      recipesList,
+    };
+  },
+};
 </script>
 
 <style lang="scss" scoped>

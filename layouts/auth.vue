@@ -2,15 +2,16 @@
   <div class="auth-layout">
     <div class="auth-main">
       <div class="auth-main__logo">
-        <router-link :to="{ name: 'landing-page' }">
+        <NuxtLink to="/">
           <Logotype class="logo" />
-        </router-link>
+        </NuxtLink>
       </div>
-      <router-view v-slot="{ Component }">
+      <slot />
+      <!-- <router-view v-slot="{ Component }">
         <transition name="page-component-fade" mode="out-in">
           <component :is="Component" />
         </transition>
-      </router-view>
+      </router-view> -->
     </div>
     <div class="auth-image">
       <BaseImageLazyload class="auth-image__image" :src="BackgroundUrl" />
@@ -19,16 +20,16 @@
 </template>
 
 <script>
-import BackgroundUrl from '@/assets/img/auth.jpg'
+import BackgroundUrl from "@/src/assets/img/auth.jpg";
 
-import Logotype from '@/components/Logotype'
+import Logotype from "@/src/components/Logotype";
 
 export default {
   components: { Logotype },
   setup: () => ({
-    BackgroundUrl
-  })
-}
+    BackgroundUrl,
+  }),
+};
 </script>
 
 <style lang="scss">

@@ -6,18 +6,18 @@
 </template>
 
 <script>
-import logo from '@/assets/logo.svg?inline'
+import logo from "@/src/assets/logo.svg?inline";
 
-import Spinner from '@/components/Spinner'
+import Spinner from "@/src/components/Spinner";
 
 export default {
   components: {
-    Spinner
+    Spinner,
   },
   data: () => ({
-    logo
-  })
-}
+    logo,
+  }),
+};
 </script>
 
 <style lang="scss" scoped>

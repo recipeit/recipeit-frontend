@@ -15,7 +15,9 @@
         :class="{
           'recipe-directions-list-item': true,
           'recipe-directions-list-item--selected': index === selectedDirection,
-          'recipe-directions-list-item--finished': finishedDirections.includes(index)
+          'recipe-directions-list-item--finished': finishedDirections.includes(
+            index
+          ),
         }"
         :value="index"
       >
@@ -31,61 +33,67 @@
 </template>
 
 <script>
-import _ from 'lodash'
-import { computed, ref, watch } from 'vue'
-import { useStore } from 'vuex'
+import _ from "lodash";
+// import { computed, ref, watch } from "vue";
+import { useStore } from "vuex";
 
-import { useToast } from '@/plugins/toast'
-import { ToastType } from '@/plugins/toast/toastType'
+import { useToast } from "@/src/plugins/toast";
+import { ToastType } from "@/src/plugins/toast/toastType";
 
-import SectionTitle from '@/components/SectionTitle'
+import SectionTitle from "@/src/components/SectionTitle";
 
 export default {
   components: { SectionTitle },
   props: {
     recipeId: {
       type: String,
-      required: true
+      required: true,
     },
     directions: {
       type: Array,
-      required: true
-    }
+      required: true,
+    },
   },
   setup(props) {
-    const store = useStore()
-    const toast = useToast()
+    const store = useStore();
+    const toast = useToast();
 
-    const finishedDirections = ref(store.getters['recipes/getFinishedDirectionsForRecipe'](props.recipeId) || [])
+    const finishedDirections = ref(
+      store.getters["recipes/getFinishedDirectionsForRecipe"](props.recipeId) ||
+        []
+    );
 
     const allIndexes = computed(() => {
-      return props.directions.map((_, index) => index)
-    })
+      return props.directions.map((_, index) => index);
+    });
 
     const selectedDirection = computed(() => {
-      return _.min(_.difference(allIndexes.value, finishedDirections.value))
-    })
+      return _.min(_.difference(allIndexes.value, finishedDirections.value));
+    });
 
     const resetFinishedDirections = () => {
-      finishedDirections.value = []
-    }
+      finishedDirections.value = [];
+    };
 
-    watch(finishedDirections, newValue => {
-      store.dispatch('recipes/setFinishedDirectionsForRecipe', { recipeId: props.recipeId, finishedDirections: newValue })
-      const remaining = _.difference(allIndexes.value, newValue)
+    watch(finishedDirections, (newValue) => {
+      store.dispatch("recipes/setFinishedDirectionsForRecipe", {
+        recipeId: props.recipeId,
+        finishedDirections: newValue,
+      });
+      const remaining = _.difference(allIndexes.value, newValue);
       if (!remaining || remaining.length === 0) {
-        finishedDirections.value = []
-        toast.show('Super! Udało Ci się ukończyć przepis', ToastType.SUCCESS)
+        finishedDirections.value = [];
+        toast.show("Super! Udało Ci się ukończyć przepis", ToastType.SUCCESS);
       }
-    })
+    });
 
     return {
       finishedDirections,
       selectedDirection,
-      resetFinishedDirections
-    }
-  }
-}
+      resetFinishedDirections,
+    };
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -108,7 +116,7 @@ $border-offset: 3px;
   @include transition((color, text-decoration));
 
   &::before {
-    content: '';
+    content: "";
     width: 2px;
     background-color: var(--color-border);
     position: absolute;

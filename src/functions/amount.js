@@ -1,4 +1,4 @@
-import { DOZEN_VALUE, FEW_VALUE } from '@/configs/amount'
+import { DOZEN_VALUE, FEW_VALUE } from '@/src/configs/amount'
 
 const roundedAmount = value => Math.round((value + Number.EPSILON) * 100) / 100
 

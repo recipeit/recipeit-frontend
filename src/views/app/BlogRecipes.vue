@@ -1,21 +1,31 @@
 <template>
   <div class="layout__page__content blog-recipes">
     <div v-if="errors" class="error-page">
-      <img class="error-image" src="@/assets/img/broccoli-sad.svg" alt="" />
+      <img class="error-image" src="@/src/assets/img/broccoli-sad.svg" alt="" />
       <span class="error-text">
         Ojjj... nie znaleźliśmy takiego blogu
       </span>
-      <router-link v-slot="{ href, navigate }" :to="{ name: APP_HOME }" custom>
-        <BaseButton tag="a" :href="href" class="recipe-button" stroked @click="navigate($event)">
+      <NuxtLink v-slot="{ href, navigate }" :to="{ name: APP_HOME }" custom>
+        <BaseButton
+          tag="a"
+          :href="href"
+          class="recipe-button"
+          stroked
+          @click="navigate($event)"
+        >
           Wróć na stronę główną
         </BaseButton>
-      </router-link>
+      </NuxtLink>
     </div>
     <template v-else>
       <div class="header">
         <div class="header-container">
           <div class="header-buttons">
-            <BaseLink class="header-button" tag="button" @click="$router.go(-1)">
+            <BaseLink
+              class="header-button"
+              tag="button"
+              @click="$router.go(-1)"
+            >
               <BaseIcon icon="arrow-right" weight="regular" />
             </BaseLink>
             <BaseMenu>
@@ -26,38 +36,69 @@
               </template>
               <template #dropdown>
                 <BaseMenuList>
-                  <BaseMenuLink v-if="!isHidden" @click="changeBlogVisibility(false)">Ukryj ten blog</BaseMenuLink>
-                  <BaseMenuLink v-else @click="changeBlogVisibility(true)">Pokazuj ten blog</BaseMenuLink>
+                  <BaseMenuLink
+                    v-if="!isHidden"
+                    @click="changeBlogVisibility(false)"
+                    >Ukryj ten blog</BaseMenuLink
+                  >
+                  <BaseMenuLink v-else @click="changeBlogVisibility(true)"
+                    >Pokazuj ten blog</BaseMenuLink
+                  >
 
                   <BaseMenuSeparator />
 
-                  <BaseMenuLink @click="copyLinkToClipboard()">Skopiuj link do blogu</BaseMenuLink>
+                  <BaseMenuLink @click="copyLinkToClipboard()"
+                    >Skopiuj link do blogu</BaseMenuLink
+                  >
                 </BaseMenuList>
               </template>
             </BaseMenu>
           </div>
           <div class="header-avatar-container">
-            <BaseImageLazyload class="header-avatar" :src="avatarUrl" :error-placeholder="avatarErrorUrl" alt="" />
+            <BaseImageLazyload
+              class="header-avatar"
+              :src="avatarUrl"
+              :error-placeholder="avatarErrorUrl"
+              alt=""
+            />
           </div>
         </div>
         <RecipeParallaxImage class="header-background-container">
-          <BaseImageLazyload class="header-background" :src="backgroundUrl" :error-placeholder="backgroundErrorUrl" />
+          <BaseImageLazyload
+            class="header-background"
+            :src="backgroundUrl"
+            :error-placeholder="backgroundErrorUrl"
+          />
         </RecipeParallaxImage>
       </div>
 
-      <BaseLink v-if="isHidden" tag="button" class="hidden-bar" color="red" @click="showInvisibleInfoModal()">
-        <BaseIcon class="hidden-bar-icon" icon="eye-hidden" weight="semi-bold" />
+      <BaseLink
+        v-if="isHidden"
+        tag="button"
+        class="hidden-bar"
+        color="red"
+        @click="showInvisibleInfoModal()"
+      >
+        <BaseIcon
+          class="hidden-bar-icon"
+          icon="eye-hidden"
+          weight="semi-bold"
+        />
         Ten blog jest ukryty
       </BaseLink>
 
-      <BlogDetails v-if="blogDetails" :blog="blogDetails" class="blog-details-row" />
+      <BlogDetails
+        v-if="blogDetails"
+        :blog="blogDetails"
+        class="blog-details-row"
+      />
       <div v-else>...wczytuję</div>
 
       <GenericRecipesList
         :recipes="recipesList.recipes.value"
         :errors="recipesList.recipesErrors.value"
         :show-filter-buttons="false"
-        :load-handler="pageNumber => recipesList.loadRecipesPage(pageNumber)"
+        :load-handler="(pageNumber) => recipesList.loadRecipesPage(pageNumber)"
         @reload="recipesList.reloadRecipes()"
         @reload-with-query="recipesList.reloadRecipes()"
       />
@@ -66,78 +107,80 @@
 </template>
 
 <script>
-import { computed, markRaw, onBeforeMount, ref } from 'vue'
-import { mapGetters } from 'vuex'
-import { useMeta } from 'vue-meta'
+// import { computed, markRaw, onBeforeMount, ref } from "vue";
+import { mapGetters } from "vuex";
+// import { useMeta } from "vue-meta";
 
-import blogApi from '@/api/blogApi'
+import blogApi from "@/src/api/blogApi";
 
-import avatarErrorUrl from '@/assets/img/blog-avatar.webp'
-import backgroundErrorUrl from '@/assets/img/blog-bg.webp'
+import avatarErrorUrl from "@/src/assets/img/blog-avatar.webp";
+import backgroundErrorUrl from "@/src/assets/img/blog-bg.webp";
 
-import { ToastType } from '@/plugins/toast/toastType'
+import { ToastType } from "@/src/plugins/toast/toastType";
 
-import recipePagedList from '@/views/app/composable/recipePagedList'
+import recipePagedList from "@/src/views/app/composable/recipePagedList";
 
-import BlogDetails from '@/components/BlogDetails'
-import GenericRecipesList from '@/components/GenericRecipesList'
-import RecipeParallaxImage from '@/components/RecipeParallaxImage'
-import InvisibleBlogInfoModal from '@/components/modals/InvisibleBlogInfoModal'
+import BlogDetails from "@/src/components/BlogDetails";
+import GenericRecipesList from "@/src/components/GenericRecipesList";
+import RecipeParallaxImage from "@/src/components/RecipeParallaxImage";
+import InvisibleBlogInfoModal from "@/src/components/modals/InvisibleBlogInfoModal";
 
 export default {
-  name: 'Recipes',
+  name: "Recipes",
   components: {
     RecipeParallaxImage,
     GenericRecipesList,
-    BlogDetails
+    BlogDetails,
   },
   props: {
     blogId: {
       type: String,
-      required: true
+      required: true,
     },
     blogName: {
-      type: String
-    }
+      type: String,
+    },
   },
   setup(props) {
-    const blogDetails = ref(null)
-    const errors = ref(false)
-    const recipesList = recipePagedList(queryParams => blogApi.getBlogRecipes(props.blogId, queryParams))
+    const blogDetails = ref(null);
+    const errors = ref(false);
+    const recipesList = recipePagedList((queryParams) =>
+      blogApi.getBlogRecipes(props.blogId, queryParams)
+    );
 
     onBeforeMount(() => {
       blogApi
         .getBlogDetails(props.blogId)
         .then(({ data }) => {
-          blogDetails.value = data
+          blogDetails.value = data;
         })
         .catch(() => {
-          errors.value = true
-        })
-    })
+          errors.value = true;
+        });
+    });
 
     const backgroundUrl = computed(() => {
-      const { id } = blogDetails.value || {}
+      const { id } = blogDetails.value || {};
       if (id) {
-        return `/static/blogs/${id}/background.webp`
+        return `/static/blogs/${id}/background.webp`;
       }
-      return null
-    })
+      return null;
+    });
 
     const avatarUrl = computed(() => {
-      const { id } = blogDetails.value || {}
+      const { id } = blogDetails.value || {};
       if (id) {
-        return `/static/blogs/${id}/avatar.webp`
+        return `/static/blogs/${id}/avatar.webp`;
       }
-      return null
-    })
+      return null;
+    });
 
     const computedMeta = computed(() => {
-      const title = blogDetails.value?.name || props.blogName
-      return title ? { title } : {}
-    })
+      const title = blogDetails.value?.name || props.blogName;
+      return title ? { title } : {};
+    });
 
-    useMeta(computedMeta)
+    useMeta(computedMeta);
 
     return {
       blogDetails,
@@ -146,42 +189,45 @@ export default {
       backgroundUrl,
       avatarErrorUrl,
       backgroundErrorUrl,
-      errors
-    }
+      errors,
+    };
   },
   computed: {
     ...mapGetters({
-      isBlogHiddenGetter: 'user/isBlogHidden'
+      isBlogHiddenGetter: "user/isBlogHidden",
     }),
     isHidden() {
       if (this.blogDetails) {
-        return this.isBlogHiddenGetter(this.blogDetails.id)
+        return this.isBlogHiddenGetter(this.blogDetails.id);
       }
-      return false
-    }
+      return false;
+    },
   },
   methods: {
     changeBlogVisibility(visible) {
       if (this.blogDetails) {
-        this.$store.dispatch('user/changeBlogVisibility', { blogId: this.blogDetails.id, visible })
+        this.$store.dispatch("user/changeBlogVisibility", {
+          blogId: this.blogDetails.id,
+          visible,
+        });
       }
     },
     showInvisibleInfoModal() {
-      this.$modal.show(markRaw(InvisibleBlogInfoModal), {}, {})
+      this.$modal.show(markRaw(InvisibleBlogInfoModal), {}, {});
     },
     copyLinkToClipboard() {
-      const url = window.location.origin + this.$route.path
+      const url = window.location.origin + this.$route.path;
 
       if (!url) {
-        this.$toast.show('Nie udało się skopiować do schowka', ToastType.ERROR)
+        this.$toast.show("Nie udało się skopiować do schowka", ToastType.ERROR);
       } else if (this.$clipboard(url)) {
-        this.$toast.show('Skopiowano do schowka', ToastType.SUCCESS)
+        this.$toast.show("Skopiowano do schowka", ToastType.SUCCESS);
       } else {
-        this.$toast.show('Nie udało się skopiować do schowka', ToastType.ERROR)
+        this.$toast.show("Nie udało się skopiować do schowka", ToastType.ERROR);
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -244,7 +290,7 @@ export default {
   }
 
   &::before {
-    content: '';
+    content: "";
     z-index: 1;
     position: absolute;
     bottom: 0;
