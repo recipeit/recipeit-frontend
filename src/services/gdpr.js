@@ -16,6 +16,7 @@ const detectRobot = userAgent => {
       /APIs-Google/,
       /AdsBot/,
       /Googlebot/, // GOOGLE ROBOTS
+      /Lighthouse/,
       /mediapartners/,
       /Google Favicon/,
       /FeedFetcher/,
