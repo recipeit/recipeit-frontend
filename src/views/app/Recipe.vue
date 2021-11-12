@@ -110,7 +110,7 @@
 
         <RecipeDirectionsSection :recipe-id="recipe.id" :directions="recipe.details.directionsParagraphs" />
 
-        <div v-if="!recipe.details.summaryParagraphs" class="recipe-summary">
+        <div v-if="recipe.details.summaryParagraphs" class="recipe-summary">
           <p v-for="(paragraph, index) in recipe.details.summaryParagraphs" :key="index" class="recipe-paragraph">
             {{ paragraph }}
           </p>
