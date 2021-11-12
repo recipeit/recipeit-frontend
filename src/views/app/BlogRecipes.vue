@@ -2,9 +2,13 @@
   <div class="layout__page__content blog-recipes">
     <div v-if="errors" class="error-page">
       <img class="error-image" src="@/assets/img/broccoli-sad.svg" alt="" />
-      <span class="error-text"> Ojjj... nie znaleźliśmy takiego blogu </span>
+      <span class="error-text">
+        Ojjj... nie znaleźliśmy takiego blogu
+      </span>
       <router-link v-slot="{ href, navigate }" :to="{ name: APP_HOME }" custom>
-        <BaseButton tag="a" :href="href" class="recipe-button" stroked @click="navigate($event)"> Wróć na stronę główną </BaseButton>
+        <BaseButton tag="a" :href="href" class="recipe-button" stroked @click="navigate($event)">
+          Wróć na stronę główną
+        </BaseButton>
       </router-link>
     </div>
     <template v-else>
@@ -53,7 +57,7 @@
         :recipes="recipesList.recipes.value"
         :errors="recipesList.recipesErrors.value"
         :show-filter-buttons="false"
-        :load-handler="(pageNumber) => recipesList.loadRecipesPage(pageNumber)"
+        :load-handler="pageNumber => recipesList.loadRecipesPage(pageNumber)"
         @reload="recipesList.reloadRecipes()"
         @reload-with-query="recipesList.reloadRecipes()"
       />
@@ -85,21 +89,21 @@ export default {
   components: {
     RecipeParallaxImage,
     GenericRecipesList,
-    BlogDetails,
+    BlogDetails
   },
   props: {
     blogId: {
       type: String,
-      required: true,
+      required: true
     },
     blogName: {
-      type: String,
-    },
+      type: String
+    }
   },
   setup(props) {
     const blogDetails = ref(null)
     const errors = ref(false)
-    const recipesList = recipePagedList((queryParams) => blogApi.getBlogRecipes(props.blogId, queryParams))
+    const recipesList = recipePagedList(queryParams => blogApi.getBlogRecipes(props.blogId, queryParams))
 
     onBeforeMount(() => {
       blogApi
@@ -142,19 +146,19 @@ export default {
       backgroundUrl,
       avatarErrorUrl,
       backgroundErrorUrl,
-      errors,
+      errors
     }
   },
   computed: {
     ...mapGetters({
-      isBlogHiddenGetter: 'user/isBlogHidden',
+      isBlogHiddenGetter: 'user/isBlogHidden'
     }),
     isHidden() {
       if (this.blogDetails) {
         return this.isBlogHiddenGetter(this.blogDetails.id)
       }
       return false
-    },
+    }
   },
   methods: {
     changeBlogVisibility(visible) {
@@ -175,8 +179,8 @@ export default {
       } else {
         this.$toast.show('Nie udało się skopiować do schowka', ToastType.ERROR)
       }
-    },
-  },
+    }
+  }
 }
 </script>
 
