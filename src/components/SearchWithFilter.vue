@@ -18,7 +18,6 @@
     <BaseButton
       v-if="showFilterButton"
       class="recipes-list-search__filter-button"
-      size="small"
       :subtle="true"
       :color="filtersCount > 0 ? 'primary' : 'contrast'"
       :disabled="error"

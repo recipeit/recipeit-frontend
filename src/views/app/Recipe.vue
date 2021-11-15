@@ -89,7 +89,7 @@
             :key="category.key"
             subtle
             color="accent"
-            size="small"
+            class="recipe__tags__button"
             @click="navigateToRecipesWithCategoryFilter(category)"
           >
             {{ $t(`recipeCategory.${category.value}`) }}
@@ -591,7 +591,7 @@ export default {
     margin-right: -32px;
     padding: 0 32px;
 
-    button {
+    &__button {
       white-space: nowrap;
       text-transform: uppercase;
       font-size: 0.625rem;
