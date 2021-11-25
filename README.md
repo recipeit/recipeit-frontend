@@ -1,5 +1,16 @@
 # recipeit-frontend
 
+## Required files
+
+Cert files:
+
+- .cert/fullchain.pem
+- .cert/privkey.pem
+
+Sentry:
+
+- .sentryclirc
+
 ## Project setup
 
 ```sh
