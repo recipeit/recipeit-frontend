@@ -20,12 +20,18 @@
           #above-list
         >
           <div class="almost-available-horizontal">
-            <SectionTitle icon="basket" :title="$t('cookIt.buyMissingIngredient')" />
+            <SectionTitle
+              icon="basket"
+              action-text="zobacz"
+              :show-action="almostAvailableRecipesList.recipes.value.pagedItems[1]?.length > 0"
+              :title="$t('cookIt.buyMissingIngredient')"
+              @action-click="showAlmostAvailableRecipes()"
+            />
             <HorizontalRecipesList
               :recipes="almostAvailableRecipesList.recipes.value"
               :errors="almostAvailableRecipesList.recipesErrors.value"
               @reload-with-query="almostAvailableRecipesList.reloadRecipesWithQuery($event)"
-              @showAll="$router.push({ name: 'almost-available', query: $route.query })"
+              @showAll="showAlmostAvailableRecipes()"
             />
           </div>
         </template>
@@ -108,6 +114,7 @@
 import { computed } from 'vue'
 import { useStore } from 'vuex'
 import { useMeta } from 'vue-meta'
+import { useRoute, useRouter } from 'vue-router'
 
 import userApi from '@/api/userApi'
 
@@ -127,6 +134,8 @@ export default {
     })
 
     const store = useStore()
+    const route = useRoute()
+    const router = useRouter()
     const kitchenProductsCount = computed(() => store.state.myKitchen.products?.length || 0)
 
     const recipesList = recipeFilteredPagedList(userApi.getAvailableRecipes)
@@ -142,11 +151,16 @@ export default {
       almostAvailableRecipesList.loadRecipesPage(1, false)
     }
 
+    const showAlmostAvailableRecipes = () => {
+      router.push({ name: 'almost-available', query: route.query })
+    }
+
     return {
       kitchenProductsCount,
       recipesList,
       almostAvailableRecipesList,
-      reloadRecipes
+      reloadRecipes,
+      showAlmostAvailableRecipes
     }
   }
 }
