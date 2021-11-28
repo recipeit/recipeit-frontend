@@ -21,6 +21,7 @@ export default {
   DRINK: 'Drink',
   ALCOHOL: 'Alcohol',
   PASTE: 'Paste',
+  PRESERVES: 'Preserves',
 
   // Occasion
   CHRISTMAS: 'Christmas',
@@ -34,6 +35,7 @@ export default {
   PICNIC: 'Picnic',
 
   // Kitchen
+  CUISINE_ASIAN: 'CuisineAsian',
   CUISINE_AFRICAN: 'CuisineAfrican',
   CUISINE_MIDDLE_EAST: 'CuisineMiddleEast',
   CUISINE_AMERICAN: 'CuisineAmerican',

@@ -94,6 +94,7 @@ export default {
       [recipeCategories.DRINK]: 'Napoje',
       [recipeCategories.ALCOHOL]: 'Alkohole',
       [recipeCategories.PASTE]: 'Do smarowania',
+      [recipeCategories.PRESERVES]: 'Przetwory',
 
       // Occasion
       [recipeCategories.CHRISTMAS]: 'Boże Narodzenie',
@@ -107,6 +108,7 @@ export default {
       [recipeCategories.PICNIC]: 'Piknik',
 
       // Kitchen
+      [recipeCategories.CUISINE_ASIAN]: 'Kuchnia azjatycka',
       [recipeCategories.CUISINE_AFRICAN]: 'Kuchnia afrykańska',
       [recipeCategories.CUISINE_MIDDLE_EAST]: 'Kuchnia Bliskiego Wschodu',
       [recipeCategories.CUISINE_AMERICAN]: 'Kuchnia amerykańska',
