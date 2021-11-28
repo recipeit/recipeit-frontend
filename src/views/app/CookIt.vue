@@ -111,12 +111,14 @@
 </template>
 
 <script>
-import { computed } from 'vue'
+import { computed, onBeforeMount } from 'vue'
 import { useStore } from 'vuex'
 import { useMeta } from 'vue-meta'
 import { useRoute, useRouter } from 'vue-router'
 
 import userApi from '@/api/userApi'
+
+import { queryParamsFromRouteQuery } from '@/constants'
 
 import recipeFilteredPagedList from '@/views/app/composable/recipeFilteredPagedList'
 
@@ -140,7 +142,6 @@ export default {
 
     const recipesList = recipeFilteredPagedList(userApi.getAvailableRecipes)
     const almostAvailableRecipesList = recipeFilteredPagedList(userApi.getAlmostAvailableRecipes)
-    almostAvailableRecipesList.loadRecipesPage(1, false)
 
     const reloadRecipes = ({ orderMethod, filters, search }) => {
       const query = { orderMethod, filters, search }
@@ -154,6 +155,12 @@ export default {
     const showAlmostAvailableRecipes = () => {
       router.push({ name: 'almost-available', query: route.query })
     }
+
+    onBeforeMount(() => {
+      const initialQueryParams = queryParamsFromRouteQuery(route.query)
+      almostAvailableRecipesList.reloadRecipes(initialQueryParams)
+      almostAvailableRecipesList.loadRecipesPage(1, false)
+    })
 
     return {
       kitchenProductsCount,

@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { onBeforeMount, ref } from 'vue'
 import { useMeta } from 'vue-meta'
 import { useRoute } from 'vue-router'
 
@@ -65,11 +65,8 @@ export default {
 
     const fetchAvailableRecipesCount = async ({ orderMethod, filters, search } = {}) => {
       availableRecipesCount.value = null
-
       const queryParams = fetchRecipesQueryParams(orderMethod, filters, search)
-
       const { data } = await userApi.getAvailableRecipesCount(queryParams)
-
       availableRecipesCount.value = data
     }
 
@@ -83,8 +80,11 @@ export default {
       recipesList.reloadRecipesWithQuery(event)
     }
 
-    const initialQueryParams = queryParamsFromRouteQuery(route.query)
-    fetchAvailableRecipesCount(initialQueryParams)
+    onBeforeMount(async () => {
+      const initialQueryParams = queryParamsFromRouteQuery(route.query)
+      const { data } = await userApi.getAvailableRecipesCount(initialQueryParams)
+      availableRecipesCount.value = data
+    })
 
     return {
       recipesList,
