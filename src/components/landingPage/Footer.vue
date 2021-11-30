@@ -22,7 +22,7 @@
       </router-link>
       <router-link v-slot="{ href, navigate }" :to="{ name: ADD_BLOG }" custom>
         <BaseLink :href="href" class="footer-link" color="text-secondary" @click="navigate($event)">
-          Dodaj blog
+          Dodaj przepisy
         </BaseLink>
       </router-link>
       <router-link v-slot="{ href, navigate }" :to="{ name: CONTACT }" custom>

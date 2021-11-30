@@ -113,7 +113,7 @@ module.exports = {
         }
       ],
       description:
-        'Znajdź przepis ze swoich składników! Nie pozwól aby Twoje produkty się przeterminowały. Recipeit pokaże Ci, co możesz przygotować z tego co masz w lodówce i w kuchni.',
+        'Znajdź przepis ze swoich składników spożywczych! Nie pozwól aby Twoje produkty się przeterminowały. Recipeit pokaże Ci, co możesz przygotować z tego co masz w lodówce i w kuchni.',
       screenshots: [
         {
           src: '/pwa/screenshots/recipe.jpg',

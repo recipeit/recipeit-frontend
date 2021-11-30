@@ -31,7 +31,7 @@ export default {
   components: { AnonymousPage, AddBlogHeader, AddBlogBanner },
   setup() {
     useMeta({
-      title: 'Dodaj blog',
+      title: 'Dodaj przepisy',
       link: [{ rel: 'canonical', href: `${BASE_URL}${ADD_BLOG}` }]
     })
 

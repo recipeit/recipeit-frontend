@@ -1,4 +1,4 @@
-<!-- # Dodaj blog
+<!-- # Dodaj przepisy
 
 Jeżeli tworzysz blog kulinarny, na którym publikujsz swoje przepisy, możesz dodać go do Recipeit. Poniżej znajduje się instrukcja, jak to zrobić. -->
 
