@@ -13,7 +13,7 @@
 
 <script>
 import { useRegisterSW } from 'virtual:pwa-register/vue'
-import { ref } from 'vue'
+import { watchEffect } from 'vue'
 
 import MessageContainer from '@/components/MessageContainer.vue'
 import Message from '@/components/Message.vue'
@@ -24,10 +24,11 @@ export default {
   setup() {
     const { needRefresh, updateServiceWorker } = useRegisterSW()
 
-    const userInteracted = ref(false)
+    let userInteracted = false
+    let refreshing = false
 
     const handleInteraction = () => {
-      userInteracted.value = true
+      userInteracted = true
       removeInteractionEvents()
     }
 
@@ -47,7 +48,6 @@ export default {
 
     setInteractionEvents()
 
-    let refreshing = false
     const update = async () => {
       if (refreshing) return
 
@@ -58,6 +58,12 @@ export default {
         refreshing = false
       }
     }
+
+    watchEffect(() => {
+      if (needRefresh && !userInteracted) {
+        update()
+      }
+    })
 
     return { needRefresh, userInteracted, update }
   }
