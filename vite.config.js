@@ -41,7 +41,7 @@ export default ({ mode }) => {
       // mode: 'development',
       base: '/',
       srcDir: 'src',
-      filename: 'sw.js',
+      filename: 'service-worker.js',
       strategies: 'injectManifest',
       injectRegister: 'auto',
       includeAssets: ['favicon.ico', 'robots.txt'],
@@ -145,6 +145,10 @@ export default ({ mode }) => {
           replacement: path.resolve(__dirname, 'src')
         }
       ]
+    },
+
+    build: {
+      sourcemap: true
     }
   })
 
