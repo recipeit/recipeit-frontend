@@ -4,7 +4,7 @@ const components = {}
 
 const icons = import.meta.globEager('./*.svg')
 
-Object.entries(icons).forEach(async ([path, definition]) => {
+Object.entries(icons).forEach(([path, { default: component }]) => {
   const name = path
     .split('/')
     .pop()
@@ -16,8 +16,7 @@ Object.entries(icons).forEach(async ([path, definition]) => {
 
   if (!(weight in components)) components[weight] = {}
 
-  const fetchedIcon = await import(`${definition.default}?raw`)
-  components[weight][icon] = fetchedIcon.default
+  components[weight][icon] = component
 })
 
 export default components

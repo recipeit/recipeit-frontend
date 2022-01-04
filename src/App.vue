@@ -1,6 +1,4 @@
 <template>
-  HAU 2
-  <UpdateMessage />
   <metainfo>
     <template #title="{ content }">{{ content ? `${content} - ${TITLE_SMALL_TEMPLATE}` : TITLE_TEMPLATE }}</template>
   </metainfo>
@@ -12,9 +10,7 @@
   </Modal>
   <global-sheet-modal-container />
   <toasts-container />
-  <!-- <MessageContainer>
-    <UpdateMessage v-if="update.updateExists.value" @update="update.refreshApp()" />
-  </MessageContainer> -->
+  <RefreshPWA />
 </template>
 
 <script>
@@ -22,8 +18,6 @@ import { computed, onBeforeMount, reactive, toRefs, watchEffect } from 'vue'
 import { useStore } from 'vuex'
 import { useMeta } from 'vue-meta'
 import { useRoute, useRouter } from 'vue-router'
-
-// import updateSW from '@/composables/update'
 
 import { EXACT_THEMES, THEME_DARK, THEME_DARK_COLOR, THEME_HTML_ATTRIBUTE, THEME_LIGHT, THEME_LIGHT_COLOR } from '@/configs/theme'
 
@@ -34,8 +28,7 @@ import { APP_HOME, APP_ROUTE_NAMES, AUTH_LOGIN, LOGGED_USER_ALLOWED_ROUTE_NAMES 
 import GDPRService from '@/services/gdpr'
 
 import AppLoading from '@/components/AppLoading.vue'
-// import MessageContainer from '@/components/MessageContainer.vue'
-import UpdateMessage from '@/components/messages/UpdateMessage.vue'
+import RefreshPWA from '@/components/messages/RefreshPWA.vue'
 import CookiesModal from '@/components/modals/CookiesModal.vue'
 
 const TITLE_TEMPLATE = 'Recipeit - Znajdź przepis ze swoich produktów'
@@ -44,8 +37,7 @@ const TITLE_SMALL_TEMPLATE = 'Recipeit'
 export default {
   components: {
     AppLoading,
-    // MessageContainer,
-    UpdateMessage,
+    RefreshPWA,
     CookiesModal,
     Modal
   },
@@ -53,7 +45,6 @@ export default {
     const store = useStore()
     const route = useRoute()
     const router = useRouter()
-    // const update = updateSW()
     const data = reactive({
       showGDPRModal: false,
       fetchedInitialUserProfile: false
@@ -149,7 +140,6 @@ export default {
     return {
       ...toRefs(data),
       allowedGDPRModalRoute,
-      // update,
       TITLE_TEMPLATE,
       TITLE_SMALL_TEMPLATE
     }

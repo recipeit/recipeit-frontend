@@ -1,5 +1,7 @@
 <template>
-  <div class="base-icon-wrapper" v-html="iconObject" />
+  <div v-if="iconObject" class="base-icon">
+    <component :is="iconObject" />
+  </div>
 </template>
 
 <script>
@@ -18,19 +20,14 @@ export default {
   },
   computed: {
     iconObject() {
-      // if (typeof this.icon === 'string') {
-      const set = icons[this.weight]
-      return set ? set[this.icon] : null
-      // } else {
-      //   return this.icon
-      // }
+      return icons[this.weight]?.[this.icon]
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.base-icon-wrapper {
+.base-icon {
   display: inline-flex;
 
   ::v-deep(svg) {

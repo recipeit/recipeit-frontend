@@ -6,6 +6,7 @@ import { execSync } from 'child_process'
 import { buildMarkdowns } from './src/markdowns'
 import { VitePWA } from 'vite-plugin-pwa'
 import viteSentry from 'vite-plugin-sentry'
+import svgLoader from 'vite-svg-loader'
 import path from 'path'
 
 // const baseUrl = 'https://recipeit.pl'
@@ -22,6 +23,7 @@ export default ({ mode }) => {
 
   let plugins = [
     vue(),
+    svgLoader(),
     VitePWA({
       // themeColor: null,
       // msTileColor: '#FFFFFF',
