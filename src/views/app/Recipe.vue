@@ -162,13 +162,13 @@ import { ToastType } from '@/plugins/toast/toastType'
 
 import { APP_HOME, APP_RECIPES } from '@/router/names'
 
-import FavouriteIcon from '@/components/FavouriteIcon'
-import Rating from '@/components/Rating'
-import RecipeParallaxGallery from '@/components/RecipeParallaxGallery'
-import InvisibleRecipeInfoModal from '@/components/modals/InvisibleRecipeInfoModal'
-import PlanRecipeModal from '@/components/modals/PlanRecipeModal'
-import RecipeDirectionsSection from '@/components/recipe/RecipeDirectionsSection'
-import RecipeIngredientsSection from '@/components/recipe/RecipeIngredientsSection'
+import FavouriteIcon from '@/components/FavouriteIcon.vue'
+import Rating from '@/components/Rating.vue'
+import RecipeParallaxGallery from '@/components/RecipeParallaxGallery.vue'
+import InvisibleRecipeInfoModal from '@/components/modals/InvisibleRecipeInfoModal.vue'
+import PlanRecipeModal from '@/components/modals/PlanRecipeModal.vue'
+import RecipeDirectionsSection from '@/components/recipe/RecipeDirectionsSection.vue'
+import RecipeIngredientsSection from '@/components/recipe/RecipeIngredientsSection.vue'
 
 export default {
   name: 'Recipe',

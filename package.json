@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "dev": "vite",
+    "vitebuild": "vite build",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
@@ -28,6 +30,8 @@
     "tiny-emitter": "^2.1.0",
     "v-tooltip": "4.0.0-alpha.1",
     "vee-validate": "^4.5.2",
+    "vite": "^2.7.10",
+    "vite-plugin-sentry": "^1.0.12",
     "vue": "^3.2.19",
     "vue-i18n": "^9.1.7",
     "vue-meta": "3.0.0-alpha.9",
@@ -39,6 +43,7 @@
   "devDependencies": {
     "@sentry/cli": "^1.68.1",
     "@sentry/webpack-plugin": "^1.17.1",
+    "@vitejs/plugin-vue": "^2.0.1",
     "@vue/cli-plugin-babel": "^4.5.13",
     "@vue/cli-plugin-eslint": "^4.5.13",
     "@vue/cli-plugin-pwa": "^4.5.13",
@@ -61,6 +66,7 @@
     "sass": "^1.42.1",
     "sass-loader": "^10.2.0",
     "svg-inline-loader": "^0.8.2",
+    "vite-plugin-pwa": "^0.11.12",
     "vue-cli-plugin-sitemap": "~2.3.0"
   }
 }

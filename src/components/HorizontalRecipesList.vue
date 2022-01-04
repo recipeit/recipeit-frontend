@@ -40,8 +40,8 @@
 <script>
 import { RecipeList } from '@/constants'
 
-import GenericRecipesListItem from '@/components/GenericRecipesListItem'
-import SkeletonRecipeBox from '@/components/skeletons/SkeletonRecipeBox'
+import GenericRecipesListItem from '@/components/GenericRecipesListItem.vue'
+import SkeletonRecipeBox from '@/components/skeletons/SkeletonRecipeBox.vue'
 
 export default {
   components: { GenericRecipesListItem, SkeletonRecipeBox },

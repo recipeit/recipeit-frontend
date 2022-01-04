@@ -39,8 +39,8 @@ import { APP_COOK_IT, APP_HOME, APP_MY_KITCHEN, APP_RECIPES, APP_SHOPPING_LIST }
 
 import eventHub from '@/services/eventHub'
 
-import Logotype from '@/components/Logotype'
-import NavigationBarAnimatedIcon from '@/components/NavigationBarAnimatedIcon'
+import Logotype from '@/components/Logotype.vue'
+import NavigationBarAnimatedIcon from '@/components/NavigationBarAnimatedIcon.vue'
 
 export default {
   components: {

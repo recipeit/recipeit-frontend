@@ -24,8 +24,8 @@
 import debounce from 'lodash.debounce'
 import { onBeforeMount, onBeforeUnmount, onMounted, ref } from 'vue'
 
-import Container from '@/components/landingPage/Container'
-import StatisticsCard from '@/components/landingPage/StatisticsCard'
+import Container from '@/components/landingPage/Container.vue'
+import StatisticsCard from '@/components/landingPage/StatisticsCard.vue'
 
 export default {
   components: { Container, StatisticsCard },

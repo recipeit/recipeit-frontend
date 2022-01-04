@@ -51,9 +51,14 @@
             {{ $t(`productCategory.${products[0]}`) }}
           </div>
         </div>
-        <ul class="product-list">
+        <ul class="product-list" :class="{ 'simple-view': simpleView }">
           <li v-for="product in products[1]" :key="product.id" class="product-list__item">
-            <KitchenProduct :product="product" @add-to-shopping-list="addToShoppingList(product)" />
+            <span v-if="simpleView">
+              <BaseButton subtle color="contrast" size="small" class="simple-product">
+                {{ product.baseProductName }}
+              </BaseButton>
+            </span>
+            <KitchenProduct v-else :product="product" @add-to-shopping-list="addToShoppingList(product)" />
           </li>
         </ul>
       </li>
@@ -84,11 +89,11 @@ import { computed, nextTick, reactive, ref, toRefs } from 'vue'
 import { mapState, useStore } from 'vuex'
 import { useMeta } from 'vue-meta'
 
-import KitchenProduct from '@/components/KitchenProduct'
-import PageHeader from '@/components/PageHeader'
-import ProductIcon from '@/components/ProductIcon'
-// import SearchWithFilter from '@/components/SearchWithFilter'
-// import NewKitchenProductModal from '@/components/modals/NewKitchenProductModal'
+import KitchenProduct from '@/components/KitchenProduct.vue'
+import PageHeader from '@/components/PageHeader.vue'
+import ProductIcon from '@/components/ProductIcon.vue'
+// import SearchWithFilter from '@/components/SearchWithFilter.vue'
+// import NewKitchenProductModal from '@/components/modals/NewKitchenProductModal.vue'
 
 export default {
   name: 'MyKitchen',
@@ -109,7 +114,8 @@ export default {
 
     const data = reactive({
       fetchedData: false,
-      selectFocused: false
+      selectFocused: false,
+      simpleView: true
     })
 
     const baseProductsGrouped = computed(() =>
@@ -309,6 +315,21 @@ export default {
 
   &__item {
     cursor: pointer;
+  }
+
+  &.simple-view {
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 1rem;
+    gap: 0.5rem;
+    border-radius: 2rem;
+    // padding: 0;
+    // background: transparent;
+    // box-shadow: none;
+  }
+
+  .simple-product {
+    padding: 12px 16px;
   }
 }
 

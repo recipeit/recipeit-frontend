@@ -15,7 +15,7 @@
 <script>
 import BackgroundUrl from '@/assets/img/add-blog-new.jpg'
 
-import Container from '@/components/landingPage/Container'
+import Container from '@/components/landingPage/Container.vue'
 
 export default {
   components: { Container },

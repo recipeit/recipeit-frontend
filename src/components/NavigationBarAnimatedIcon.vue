@@ -22,7 +22,6 @@ export default {
 
     const onAnimationEnd = ({ target }) => {
       if (target.classList.contains('add-animation')) {
-        console.log('end')
         show.value = false
       }
     }

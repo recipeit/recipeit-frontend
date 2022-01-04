@@ -1,4 +1,4 @@
-const SentryWebpackPlugin = require('@sentry/webpack-plugin')
+// const SentryWebpackPlugin = require('@sentry/webpack-plugin')
 // const GoogleFontsPlugin = require('@beyonk/google-fonts-webpack-plugin')
 const { execSync } = require('child_process')
 const { buildMarkdowns } = require('./src/markdowns')
@@ -32,22 +32,22 @@ module.exports = {
       }
     }
   },
-  configureWebpack: config => {
-    config.devtool = 'source-map'
+  // configureWebpack: config => {
+  //   config.devtool = 'source-map'
 
-    if (isProduction) {
-      config.plugins.push(
-        new SentryWebpackPlugin({
-          authToken: process.env.SENTRY_AUTH_TOKEN,
-          org: process.env.VUE_APP_SENTRY_ORG,
-          project: process.env.VUE_APP_SENTRY_PROJECT,
-          release: process.env.VUE_APP_VERSION,
-          include: './dist',
-          ignore: ['node_modules', 'vue.config.js']
-        })
-      )
-    }
-  },
+  //   if (isProduction) {
+  //     config.plugins.push(
+  //       new SentryWebpackPlugin({
+  //         authToken: process.env.SENTRY_AUTH_TOKEN,
+  //         org: process.env.VUE_APP_SENTRY_ORG,
+  //         project: process.env.VUE_APP_SENTRY_PROJECT,
+  //         release: process.env.VUE_APP_VERSION,
+  //         include: './dist',
+  //         ignore: ['node_modules', 'vue.config.js']
+  //       })
+  //     )
+  //   }
+  // },
   devServer: {
     host: 'localhost',
     port: 8080,

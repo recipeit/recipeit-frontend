@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import SkeletonBox from '@/components/skeletons/SkeletonBox'
+import SkeletonBox from '@/components/skeletons/SkeletonBox.vue'
 
 export default {
   components: { SkeletonBox }

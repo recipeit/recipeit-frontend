@@ -93,7 +93,7 @@ import { markRaw, ref } from 'vue'
 import { mapState, useStore } from 'vuex'
 import { useMeta } from 'vue-meta'
 
-import defaultAvatar from '@/assets/img/avatar.svg?inline'
+import defaultAvatar from '@/assets/img/avatar.svg?raw'
 
 import { THEMES } from '@/configs/theme'
 
@@ -101,13 +101,13 @@ import { COPYRIGHT_TEXT } from '@/constants'
 
 import { ARTICLES as ARTICLES_PATH } from '@/router/paths'
 
-import Logotype from '@/components/Logotype'
-import PageHeader from '@/components/PageHeader'
+import Logotype from '@/components/Logotype.vue'
+import PageHeader from '@/components/PageHeader.vue'
 
-import ChangePasswordModal from '@/components/modals/ChangePasswordModal'
-import CustomizeCookiesModal from '@/components/modals/CustomizeCookiesModal'
-import DeleteAccountModal from '@/components/modals/DeleteAccountModal'
-import ForgotPasswordModal from '@/components/modals/ForgotPasswordModal'
+import ChangePasswordModal from '@/components/modals/ChangePasswordModal.vue'
+import CustomizeCookiesModal from '@/components/modals/CustomizeCookiesModal.vue'
+import DeleteAccountModal from '@/components/modals/DeleteAccountModal.vue'
+import ForgotPasswordModal from '@/components/modals/ForgotPasswordModal.vue'
 
 export default {
   name: 'MyAccount',

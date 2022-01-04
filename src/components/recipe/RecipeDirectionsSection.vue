@@ -38,7 +38,7 @@ import { useStore } from 'vuex'
 import { useToast } from '@/plugins/toast'
 import { ToastType } from '@/plugins/toast/toastType'
 
-import SectionTitle from '@/components/SectionTitle'
+import SectionTitle from '@/components/SectionTitle.vue'
 
 export default {
   components: { SectionTitle },

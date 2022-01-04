@@ -110,7 +110,7 @@ import _ from 'lodash'
 import { computed, reactive, toRefs } from 'vue'
 import { useStore } from 'vuex'
 
-import ProductIcon from '@/components/ProductIcon'
+import ProductIcon from '@/components/ProductIcon.vue'
 
 const OPTION_KEYS = {
   BASE_PRODUCTS: 'BaseProducts'

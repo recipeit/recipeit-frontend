@@ -25,7 +25,7 @@ import router from '@/router'
 
 import store from '@/store'
 
-import App from '@/App'
+import App from '@/App.vue'
 
 const useSentry = process.env.NODE_ENV === 'production'
 
@@ -39,19 +39,18 @@ if (useSentry) {
 }
 
 const app = createApp(App)
+const components = import.meta.globEager('./components/base/*.vue')
 
-const requireComponent = require.context('./components/base', false, /\w+\.(vue|js)$/)
-requireComponent.keys().forEach(fileName => {
-  const componentConfig = requireComponent(fileName)
-  const componentName = upperFirst(
-    camelCase(
-      fileName
-        .split('/')
-        .pop()
-        .replace(/\.\w+$/, '')
-    )
-  )
-  app.component(componentName, componentConfig.default || componentConfig)
+Object.entries(components).forEach(([path, definition]) => {
+  // Get name of component, based on filename
+  // "./components/Fruits.vue" will become "Fruits"
+  const componentName = path
+    .split('/')
+    .pop()
+    .replace(/\.\w+$/, '')
+
+  // Register component on this Vue instance
+  app.component(componentName, definition.default)
 })
 
 const progressbarOptions = {

@@ -86,11 +86,11 @@ import { computed, markRaw, nextTick, reactive, ref, toRefs } from 'vue'
 import { mapState, useStore } from 'vuex'
 import { useMeta } from 'vue-meta'
 
-import PageHeader from '@/components/PageHeader'
-import ProductIcon from '@/components/ProductIcon'
-import ShoppingListProduct from '@/components/ShoppingListProduct'
-import Dialog from '@/components/modals/Dialog'
-// import NewShoppingListProduct from '@/components/modals/NewShoppingListProduct'
+import PageHeader from '@/components/PageHeader.vue'
+import ProductIcon from '@/components/ProductIcon.vue'
+import ShoppingListProduct from '@/components/ShoppingListProduct.vue'
+import Dialog from '@/components/modals/Dialog.vue'
+// import NewShoppingListProduct from '@/components/modals/NewShoppingListProduct.vue'
 
 import { PRODUCT_GROUP_ICONS } from '@/constants'
 

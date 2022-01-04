@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import Spinner from '@/components/Spinner'
+import Spinner from '@/components/Spinner.vue'
 
 const validTags = ['button', 'a', 'span']
 

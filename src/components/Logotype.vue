@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import Logo from '@/assets/themed-logo.svg?inline'
+import Logo from '@/assets/themed-logo.svg?raw'
 
 export default {
   setup() {

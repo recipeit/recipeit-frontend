@@ -39,8 +39,8 @@ import { fetchRecipesQueryParams, queryParamsFromRouteQuery } from '@/constants'
 
 import recipeFilteredPagedList from '@/views/app/composable/recipeFilteredPagedList'
 
-import GenericRecipesList from '@/components/GenericRecipesList'
-import PageHeader from '@/components/PageHeader'
+import GenericRecipesList from '@/components/GenericRecipesList.vue'
+import PageHeader from '@/components/PageHeader.vue'
 
 export default {
   name: 'Recipes',

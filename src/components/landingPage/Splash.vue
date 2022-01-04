@@ -35,7 +35,7 @@ import BackgroundUrl from '@/assets/img/splash.webp'
 
 import { LANDING_PAGE } from '@/router/names'
 
-import Logotype from '@/components/Logotype'
+import Logotype from '@/components/Logotype.vue'
 
 export default {
   components: {

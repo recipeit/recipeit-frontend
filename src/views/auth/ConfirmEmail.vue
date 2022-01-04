@@ -42,7 +42,7 @@ import { BASE_URL } from '@/configs/url'
 
 import { AUTH_CONFIRM_EMAIL } from '@/router/paths'
 
-import Spinner from '@/components/Spinner'
+import Spinner from '@/components/Spinner.vue'
 
 export default {
   components: { Spinner },

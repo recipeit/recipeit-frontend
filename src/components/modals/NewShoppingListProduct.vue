@@ -24,7 +24,7 @@ import * as Yup from 'yup'
 
 import uniqueID from '@/functions/uniqueID'
 
-import ProductModalForm from '@/components/ProductModalForm'
+import ProductModalForm from '@/components/ProductModalForm.vue'
 
 export default {
   components: { Form, ProductModalForm },

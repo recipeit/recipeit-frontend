@@ -1,4 +1,4 @@
-import ToastsContainer from '@/plugins/toast/ToastsContainer'
+import ToastsContainer from '@/plugins/toast/ToastsContainer.vue'
 
 const Plugin = {
   toast: null,

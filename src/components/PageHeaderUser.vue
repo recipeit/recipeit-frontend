@@ -21,7 +21,7 @@
 import { computed } from 'vue'
 import { useStore } from 'vuex'
 
-import defaultAvatar from '@/assets/img/avatar.svg?inline'
+import defaultAvatar from '@/assets/img/avatar.svg?raw'
 
 import { APP_ACCOUNT } from '@/router/names'
 

@@ -8,8 +8,8 @@
 </template>
 
 <script>
-import AnonymousPageHeader from '@/components/anonymous/AnonymousPageHeader'
-import Footer from '@/components/landingPage/Footer'
+import AnonymousPageHeader from '@/components/anonymous/AnonymousPageHeader.vue'
+import Footer from '@/components/landingPage/Footer.vue'
 
 export default {
   components: { AnonymousPageHeader, Footer }

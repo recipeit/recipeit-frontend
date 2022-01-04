@@ -23,8 +23,8 @@ import recipeApi from '@/api/recipeApi'
 
 import { APP_RECIPES } from '@/router/names'
 
-import PopularCategory from '@/components/PopularCategory'
-import SectionTitle from '@/components/SectionTitle'
+import PopularCategory from '@/components/PopularCategory.vue'
+import SectionTitle from '@/components/SectionTitle.vue'
 
 export default {
   components: { PopularCategory, SectionTitle },

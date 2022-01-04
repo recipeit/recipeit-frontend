@@ -40,7 +40,7 @@ import { COPYRIGHT_TEXT } from '@/constants'
 import { TERMS, PRIVACY_POLICY, ADD_BLOG, CONTACT } from '@/router/names'
 import { ARTICLES as ARTICLES_PATH } from '@/router/paths'
 
-import Logotype from '@/components/Logotype'
+import Logotype from '@/components/Logotype.vue'
 
 export default {
   components: { Logotype },

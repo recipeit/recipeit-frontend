@@ -20,8 +20,8 @@ import { useMeta } from 'vue-meta'
 
 import userApi from '@/api/userApi'
 
-import PageHeader from '@/components/PageHeader'
-import HiddenRecipe from '@/components/HiddenRecipe'
+import PageHeader from '@/components/PageHeader.vue'
+import HiddenRecipe from '@/components/HiddenRecipe.vue'
 
 export default {
   components: {

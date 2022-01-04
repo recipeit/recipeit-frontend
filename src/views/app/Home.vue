@@ -10,10 +10,10 @@
 <script>
 import { onBeforeMount, ref } from 'vue'
 
-import DayPlan from '@/components/DayPlan'
-import LatestFavouritesRecipes from '@/components/LatestFavouritesRecipes'
-import PageHeader from '@/components/PageHeader'
-import PopularCategories from '@/components/PopularCategories'
+import DayPlan from '@/components/DayPlan.vue'
+import LatestFavouritesRecipes from '@/components/LatestFavouritesRecipes.vue'
+import PageHeader from '@/components/PageHeader.vue'
+import PopularCategories from '@/components/PopularCategories.vue'
 
 export default {
   name: 'Home',

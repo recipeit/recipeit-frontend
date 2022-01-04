@@ -19,8 +19,8 @@ import userApi from '@/api/userApi'
 
 import recipePagedList from '@/views/app/composable/recipePagedList'
 
-import GenericRecipesList from '@/components/GenericRecipesList'
-import PageHeader from '@/components/PageHeader'
+import GenericRecipesList from '@/components/GenericRecipesList.vue'
+import PageHeader from '@/components/PageHeader.vue'
 
 export default {
   name: 'AvailableRecipes',

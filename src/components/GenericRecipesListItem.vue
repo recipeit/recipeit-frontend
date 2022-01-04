@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import RecipeBox from '@/components/RecipeBox'
+import RecipeBox from '@/components/RecipeBox.vue'
 
 export default {
   components: { RecipeBox },

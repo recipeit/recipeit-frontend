@@ -12,8 +12,8 @@
 </template>
 
 <script>
-import FacebookLogo from '@/assets/logos/facebook.svg?inline'
-import GoogleLogo from '@/assets/logos/google.svg?inline'
+import FacebookLogo from '@/assets/logos/facebook.svg?raw'
+import GoogleLogo from '@/assets/logos/google.svg?raw'
 
 import authSocialMixin from '@/views/auth/mixins/authSocialMixin'
 

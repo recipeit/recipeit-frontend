@@ -26,7 +26,7 @@
 <script>
 import BackgroundUrl from '@/assets/img/footer-auth.webp'
 
-import Container from '@/components/landingPage/Container'
+import Container from '@/components/landingPage/Container.vue'
 
 export default {
   components: { Container },

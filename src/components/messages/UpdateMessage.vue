@@ -1,20 +1,32 @@
 <template>
-  <Message>
-    <div class="update-message-content">
-      <div class="update-message-text">
-        Dostępna jest aktualizacja aplikacji
+  {{ needRefresh }}
+  <MessageContainer>
+    <Message v-if="needRefresh">
+      <div class="update-message-content">
+        <div class="update-message-text">
+          Dostępna jest aktualizacja aplikacji
+        </div>
+        <BaseButton color="primary" size="small" raised @click="update()">Odśwież</BaseButton>
       </div>
-      <BaseButton color="primary" size="small" raised @click="$emit('update')">Odśwież</BaseButton>
-    </div>
-  </Message>
+    </Message>
+  </MessageContainer>
 </template>
 
 <script>
-import Message from '@/components/Message'
+import { useRegisterSW } from 'virtual:pwa-register/vue'
+import MessageContainer from '@/components/MessageContainer.vue'
+import Message from '@/components/Message.vue'
 
 export default {
-  components: { Message },
-  emits: ['update']
+  components: { MessageContainer, Message },
+
+  setup() {
+    const { needRefresh, updateServiceWorker } = useRegisterSW()
+    const update = async () => {
+      await updateServiceWorker()
+    }
+    return { needRefresh, update, close }
+  }
 }
 </script>
 

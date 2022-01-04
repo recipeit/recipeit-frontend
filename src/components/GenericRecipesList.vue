@@ -81,10 +81,10 @@ import { computed, nextTick, onBeforeMount, onBeforeUnmount, onMounted, ref, wat
 
 import { RecipeList } from '@/constants'
 
-import RecipeBox from '@/components/RecipeBox'
-import SearchWithFilter from '@/components/SearchWithFilter'
-import SkeletonBox from '@/components/skeletons/SkeletonBox'
-import SkeletonRecipeBox from '@/components/skeletons/SkeletonRecipeBox'
+import RecipeBox from '@/components/RecipeBox.vue'
+import SearchWithFilter from '@/components/SearchWithFilter.vue'
+import SkeletonBox from '@/components/skeletons/SkeletonBox.vue'
+import SkeletonRecipeBox from '@/components/skeletons/SkeletonRecipeBox.vue'
 
 const PAGE_SIZE = 12
 

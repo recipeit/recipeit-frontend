@@ -35,7 +35,7 @@ import { markRaw } from 'vue'
 
 import dayjs from '@/functions/dayjs'
 
-import NewExpirationDateModal from '@/components/modals/NewExpirationDateModal'
+import NewExpirationDateModal from '@/components/modals/NewExpirationDateModal.vue'
 
 export default {
   // emits: [update:],

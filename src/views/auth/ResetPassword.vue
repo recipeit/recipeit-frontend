@@ -67,7 +67,7 @@ import { AUTH_RESET_PASSWORD } from '@/router/paths'
 
 import recaptcha from '@/services/recaptcha'
 
-import Spinner from '@/components/Spinner'
+import Spinner from '@/components/Spinner.vue'
 
 export default {
   components: {

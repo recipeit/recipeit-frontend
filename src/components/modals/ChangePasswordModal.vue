@@ -53,7 +53,7 @@ import { ToastType } from '@/plugins/toast/toastType'
 
 import recaptcha from '@/services/recaptcha'
 
-import RecaptchaBranding from '@/components/RecaptchaBranding'
+import RecaptchaBranding from '@/components/RecaptchaBranding.vue'
 
 export default {
   components: {

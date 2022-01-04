@@ -36,7 +36,7 @@ import { useModal } from '@/plugins/global-sheet-modal'
 
 import GDPRService from '@/services/gdpr'
 
-import CustomizeCookiesModal from '@/components/modals/CustomizeCookiesModal'
+import CustomizeCookiesModal from '@/components/modals/CustomizeCookiesModal.vue'
 
 export default {
   emits: ['close'],

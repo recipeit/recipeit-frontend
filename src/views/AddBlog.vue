@@ -16,16 +16,16 @@
 <script>
 import { useMeta } from 'vue-meta'
 
-import ADD_BLOG_HTML from 'html-loader!@/assets/docs/addblog/addblog.html'
+import ADD_BLOG_HTML from '@/assets/docs/addblog/addblog.html?raw'
 
 import { BASE_URL } from '@/configs/url'
 
-import AnonymousPage from '@/layouts/AnonymousPage'
+import AnonymousPage from '@/layouts/AnonymousPage.vue'
 
 import { ADD_BLOG } from '@/router/paths'
 
-import AddBlogBanner from '@/components/AddBlogBanner'
-import AddBlogHeader from '@/components/landingPage/AddBlogHeader'
+import AddBlogBanner from '@/components/AddBlogBanner.vue'
+import AddBlogHeader from '@/components/landingPage/AddBlogHeader.vue'
 
 export default {
   components: { AnonymousPage, AddBlogHeader, AddBlogBanner },

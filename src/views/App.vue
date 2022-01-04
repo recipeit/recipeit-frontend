@@ -14,7 +14,7 @@
 <script>
 import eventHub from '@/services/eventHub'
 
-import NavigationBar from '@/components/NavigationBar'
+import NavigationBar from '@/components/NavigationBar.vue'
 
 export default {
   components: {

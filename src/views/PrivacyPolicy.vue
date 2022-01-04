@@ -7,11 +7,11 @@
 <script>
 import { useMeta } from 'vue-meta'
 
-import PRIVACY_POLICY_HTML from 'html-loader!@/assets/docs/privacypolicy/privacypolicy_v1.html'
+import PRIVACY_POLICY_HTML from '@/assets/docs/privacypolicy/privacypolicy_v1.html?raw'
 
 import { BASE_URL } from '@/configs/url'
 
-import AnonymousPage from '@/layouts/AnonymousPage'
+import AnonymousPage from '@/layouts/AnonymousPage.vue'
 
 import { PRIVACY_POLICY } from '@/router/paths'
 

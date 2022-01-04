@@ -13,7 +13,7 @@ import { useMeta } from 'vue-meta'
 
 import { CONTACT_MAIL_ADDRESS } from '@/configs/emails'
 
-import PageHeader from '@/components/PageHeader'
+import PageHeader from '@/components/PageHeader.vue'
 
 export default {
   name: 'Help',

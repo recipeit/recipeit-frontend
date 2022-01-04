@@ -79,10 +79,10 @@ import { ToastType } from '@/plugins/toast/toastType'
 
 import recipePagedList from '@/views/app/composable/recipePagedList'
 
-import BlogDetails from '@/components/BlogDetails'
-import GenericRecipesList from '@/components/GenericRecipesList'
-import RecipeParallaxImage from '@/components/RecipeParallaxImage'
-import InvisibleBlogInfoModal from '@/components/modals/InvisibleBlogInfoModal'
+import BlogDetails from '@/components/BlogDetails.vue'
+import GenericRecipesList from '@/components/GenericRecipesList.vue'
+import RecipeParallaxImage from '@/components/RecipeParallaxImage.vue'
+import InvisibleBlogInfoModal from '@/components/modals/InvisibleBlogInfoModal.vue'
 
 export default {
   name: 'Recipes',

@@ -68,7 +68,7 @@ import { AUTH_REQUEST_PASSWORD_RESET } from '@/router/paths'
 
 import recaptcha from '@/services/recaptcha'
 
-import RecaptchaBranding from '@/components/RecaptchaBranding'
+import RecaptchaBranding from '@/components/RecaptchaBranding.vue'
 
 export default {
   components: {

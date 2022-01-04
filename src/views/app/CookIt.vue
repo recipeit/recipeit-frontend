@@ -122,10 +122,10 @@ import { queryParamsFromRouteQuery } from '@/constants'
 
 import recipeFilteredPagedList from '@/views/app/composable/recipeFilteredPagedList'
 
-import GenericRecipesList from '@/components/GenericRecipesList'
-import HorizontalRecipesList from '@/components/HorizontalRecipesList'
-import PageHeader from '@/components/PageHeader'
-import SectionTitle from '@/components/SectionTitle'
+import GenericRecipesList from '@/components/GenericRecipesList.vue'
+import HorizontalRecipesList from '@/components/HorizontalRecipesList.vue'
+import PageHeader from '@/components/PageHeader.vue'
+import SectionTitle from '@/components/SectionTitle.vue'
 
 export default {
   name: 'CookIt',

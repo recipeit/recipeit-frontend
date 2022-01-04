@@ -54,7 +54,7 @@ import { Field } from 'vee-validate'
 import { computed } from 'vue'
 import { useStore } from 'vuex'
 
-import ProductIcon from '@/components/ProductIcon'
+import ProductIcon from '@/components/ProductIcon.vue'
 
 export default {
   components: { Field, ProductIcon },

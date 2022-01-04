@@ -27,14 +27,14 @@
 <script>
 import { useMeta } from 'vue-meta'
 
-import FacebookLogo from '@/assets/logos/facebook.svg?inline'
-import InstagramLogo from '@/assets/logos/instagram.svg?inline'
+import FacebookLogo from '@/assets/logos/facebook.svg?raw'
+import InstagramLogo from '@/assets/logos/instagram.svg?raw'
 
 import { CONTACT_MAIL_ADDRESS, CONTACT_HREF } from '@/configs/emails'
 import { FACEBOOK_PROFILE_URL, INSTAGRAM_PROFILE_URL } from '@/configs/socialMedia'
 import { BASE_URL } from '@/configs/url'
 
-import AnonymousPage from '@/layouts/AnonymousPage'
+import AnonymousPage from '@/layouts/AnonymousPage.vue'
 
 import { CONTACT } from '@/router/paths'
 

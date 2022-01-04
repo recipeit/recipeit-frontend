@@ -97,7 +97,7 @@ import { ToastType } from '@/plugins/toast/toastType'
 
 import { APP_RECIPES, APP_RECIPE } from '@/router/names'
 
-import SectionTitle from '@/components/SectionTitle'
+import SectionTitle from '@/components/SectionTitle.vue'
 
 const SlideType = {
   PREVIOUS: 'previous',

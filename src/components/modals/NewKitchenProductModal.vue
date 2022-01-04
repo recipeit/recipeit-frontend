@@ -25,8 +25,8 @@ import * as Yup from 'yup'
 
 import uniqueID from '@/functions/uniqueID'
 
-import ProductModalForm from '@/components/ProductModalForm'
-import ExpirationDatesFormSection from '@/components/modals/ExpirationDatesFormSection'
+import ProductModalForm from '@/components/ProductModalForm.vue'
+import ExpirationDatesFormSection from '@/components/modals/ExpirationDatesFormSection.vue'
 
 export default {
   components: { Form, ProductModalForm, ExpirationDatesFormSection },
