@@ -4,11 +4,11 @@ WORKDIR /app
 RUN apk add git
 COPY package.json yarn.lock ./
 RUN yarn install --frozen-lockfile
-COPY .browserslistrc .env .eslintrc.js .sentryclirc babel.config.js jsconfig.json vue.config.js ./
+COPY .browserslistrc .env .eslintrc.js .sentryclirc babel.config.js jsconfig.json vite.config.js robots.txt index.html favicon.ico ./
 COPY public public
 COPY src src
 COPY .git .git
-RUN yarn build
+RUN yarn vitebuild
 
 # production stage
 FROM nginx:stable-alpine as production-stage
