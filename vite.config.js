@@ -7,7 +7,6 @@ import viteSentry from 'vite-plugin-sentry'
 import svgLoader from 'vite-svg-loader'
 import path from 'path'
 
-// const baseUrl = 'https://recipeit.pl'
 export default ({ mode }) => {
   process.env = { ...process.env, ...loadEnv(mode, process.cwd()) }
 
@@ -35,8 +34,6 @@ export default ({ mode }) => {
       //   maskIcon: 'pwa/icons/safari-pinned-tab.svg',
       //   msTileImage: 'pwa/icons/msapplication-icon-144x144.png'
       // },
-
-      // mode: 'development',
       base: '/',
       srcDir: 'src',
       filename: 'service-worker.js',
@@ -107,8 +104,8 @@ export default ({ mode }) => {
     plugins.push(
       viteSentry({
         authToken: process.env.SENTRY_AUTH_TOKEN,
-        org: process.env.VUE_APP_SENTRY_ORG,
-        project: process.env.VUE_APP_SENTRY_PROJECT,
+        org: process.env.VITE_SENTRY_ORG,
+        project: process.env.VITE_SENTRY_PROJECT,
         release: process.env.VUE_APP_VERSION,
         include: './dist',
         ignore: ['node_modules', 'vue.config.js', 'vite.config.js']
@@ -149,52 +146,4 @@ export default ({ mode }) => {
       sourcemap: true
     }
   })
-
-  // module.exports = {
-  //   pluginOptions: {
-  //     sitemap: {
-  //       defaults: {
-  //         lastmod: new Date().toISOString()
-  //       },
-  //       urls: [`${baseUrl}/`, `${baseUrl}/dodaj-blog`, `${baseUrl}/kontakt`]
-  //     }
-  //   },
-  //   // configureWebpack: config => {
-  //   //   config.devtool = 'source-map'
-
-  //   //   if (isProduction) {
-  //   //     config.plugins.push(
-  //   //       new SentryWebpackPlugin({
-  //   //         authToken: process.env.SENTRY_AUTH_TOKEN,
-  //   //         org: process.env.VUE_APP_SENTRY_ORG,
-  //   //         project: process.env.VUE_APP_SENTRY_PROJECT,
-  //   //         release: process.env.VUE_APP_VERSION,
-  //   //         include: './dist',
-  //   //         ignore: ['node_modules', 'vue.config.js']
-  //   //       })
-  //   //     )
-  //   //   }
-  //   // },
-  //   pages: {
-  //     index: {
-  //       entry: 'src/main.js',
-  //       title: 'Recipeit - Znajdź przepis ze swoich produktów'
-  //     }
-  //   },
-  //   pwa: {
-  //     themeColor: null,
-  //     msTileColor: '#FFFFFF',
-  //     appleMobileWebAppCapable: 'yes',
-  //     appleMobileWebAppStatusBarStyle: 'black',
-  //     iconPaths: {
-  //       favicon48: 'pwa/icons/favicon-48x48.png',
-  //       favicon32: 'pwa/icons/favicon-32x32.png',
-  //       favicon16: 'pwa/icons/favicon-16x16.png',
-  //       appleTouchIcon: 'pwa/icons/apple-touch-icon-152x152.png',
-  //       maskIcon: 'pwa/icons/safari-pinned-tab.svg',
-  //       msTileImage: 'pwa/icons/msapplication-icon-144x144.png'
-  //     }
-  //   },
-  //   transpileDependencies: ['vue-meta']
-  // }
 }

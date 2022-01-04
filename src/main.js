@@ -29,7 +29,7 @@ const useSentry = process.env.NODE_ENV === 'production'
 
 if (useSentry) {
   Sentry.init({
-    dsn: process.env.VUE_APP_SENTRY_DSN,
+    dsn: process.env.VITE_SENTRY_DSN,
     release: process.env.VUE_APP_VERSION,
     integrations: [new Integrations.BrowserTracing()],
     tracesSampleRate: 1.0
