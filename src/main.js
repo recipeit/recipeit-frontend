@@ -19,8 +19,6 @@ import GlobalSheetModal from '@/plugins/global-sheet-modal'
 import Progressbar from '@/plugins/progressbar'
 import Toast from '@/plugins/toast'
 
-import '@/registerServiceWorker'
-
 import router from '@/router'
 
 import store from '@/store'

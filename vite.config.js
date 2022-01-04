@@ -1,5 +1,3 @@
-// const SentryWebpackPlugin = require('@sentry/webpack-plugin')
-// const GoogleFontsPlugin = require('@beyonk/google-fonts-webpack-plugin')
 import { defineConfig, loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { execSync } from 'child_process'
@@ -161,16 +159,6 @@ export default ({ mode }) => {
   //       urls: [`${baseUrl}/`, `${baseUrl}/dodaj-blog`, `${baseUrl}/kontakt`]
   //     }
   //   },
-  //   css: {
-  //     loaderOptions: {
-  //       scss: {
-  //         additionalData: `
-  //           @use 'sass:math';
-  //           @import '@/styles/non-rendered';
-  //         `
-  //       }
-  //     }
-  //   },
   //   // configureWebpack: config => {
   //   //   config.devtool = 'source-map'
 
@@ -187,27 +175,6 @@ export default ({ mode }) => {
   //   //     )
   //   //   }
   //   // },
-  //   devServer: {
-  //     host: 'localhost',
-  //     port: 8080,
-  //     https: true
-  //   },
-  //   chainWebpack: config => {
-  //     const svgRule = config.module.rule('svg')
-  //     svgRule.uses.clear()
-  //     svgRule
-  //       .oneOf('inline')
-  //       .resourceQuery(/^\?inline/)
-  //       .use('svg-inline-loader')
-  //       .loader('svg-inline-loader')
-  //       .options({ functional: true })
-  //       .end()
-  //       .end()
-  //       .oneOf('external')
-  //       .use('file')
-  //       .loader('file-loader')
-  //       .options({ name: 'img/[name].[hash:8].[ext]' })
-  //   },
   //   pages: {
   //     index: {
   //       entry: 'src/main.js',
@@ -215,63 +182,6 @@ export default ({ mode }) => {
   //     }
   //   },
   //   pwa: {
-  //     manifestOptions: {
-  //       name: 'Recipeit',
-  //       short_name: 'Recipeit',
-  //       start_url: 'https://recipeit.pl',
-  //       theme_color: '#FFFFFF',
-  //       display: 'standalone',
-  //       background_color: '#FFFFFF',
-  //       icons: [
-  //         {
-  //           src: '/pwa/icons/favicon-48x48.png',
-  //           type: 'image/png',
-  //           sizes: '48x48'
-  //         },
-  //         {
-  //           src: '/pwa/icons/android-chrome-192x192.png',
-  //           type: 'image/png',
-  //           sizes: '192x192'
-  //         },
-  //         {
-  //           src: '/pwa/icons/android-chrome-512x512.png',
-  //           type: 'image/png',
-  //           sizes: '512x512'
-  //         },
-  //         {
-  //           src: '/pwa/icons/pwa-maskable-192x192.png',
-  //           type: 'image/png',
-  //           sizes: '192x192',
-  //           purpose: 'any maskable'
-  //         },
-  //         {
-  //           src: '/pwa/icons/pwa-maskable-512x512.png',
-  //           type: 'image/png',
-  //           sizes: '512x512',
-  //           purpose: 'any maskable'
-  //         }
-  //       ],
-  //       description:
-  //         'Znajdź przepis ze swoich składników spożywczych! Nie pozwól aby Twoje produkty się przeterminowały. Recipeit pokaże Ci, co możesz przygotować z tego co masz w lodówce i w kuchni.',
-  //       screenshots: [
-  //         {
-  //           src: '/pwa/screenshots/recipe.jpg',
-  //           type: 'image/png',
-  //           sizes: '750x1440'
-  //         },
-  //         {
-  //           src: '/pwa/screenshots/recipes.jpg',
-  //           type: 'image/png',
-  //           sizes: '750x1440'
-  //         },
-  //         {
-  //           src: '/pwa/screenshots/kitchen.jpg',
-  //           type: 'image/png',
-  //           sizes: '750x1440'
-  //         }
-  //       ],
-  //       categories: ['food', 'shopping', 'productivity']
-  //     },
   //     themeColor: null,
   //     msTileColor: '#FFFFFF',
   //     appleMobileWebAppCapable: 'yes',

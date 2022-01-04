@@ -1,5 +1,4 @@
 // const SentryWebpackPlugin = require('@sentry/webpack-plugin')
-// const GoogleFontsPlugin = require('@beyonk/google-fonts-webpack-plugin')
 const { execSync } = require('child_process')
 const { buildMarkdowns } = require('./src/markdowns')
 
