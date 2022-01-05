@@ -108,7 +108,7 @@ export default ({ mode }) => {
         project: process.env.VITE_SENTRY_PROJECT,
         release: process.env.VUE_APP_VERSION,
         include: './dist',
-        ignore: ['node_modules', 'vue.config.js', 'vite.config.js']
+        ignore: ['node_modules', 'vite.config.js']
       })
     )
   }
@@ -143,7 +143,7 @@ export default ({ mode }) => {
     },
 
     build: {
-      sourcemap: true
+      sourcemap: 'hidden'
     }
   })
 }

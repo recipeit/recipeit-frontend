@@ -8,7 +8,7 @@ COPY .browserslistrc .env .eslintrc.js .sentryclirc jsconfig.json vite.config.js
 COPY public public
 COPY src src
 COPY .git .git
-RUN yarn vitebuild
+RUN yarn build
 
 # production stage
 FROM nginx:stable-alpine as production-stage
