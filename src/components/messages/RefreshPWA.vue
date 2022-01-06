@@ -60,7 +60,7 @@ export default {
     }
 
     watchEffect(() => {
-      if (needRefresh && !userInteracted) {
+      if (needRefresh.value && !userInteracted) {
         update()
       }
     })
