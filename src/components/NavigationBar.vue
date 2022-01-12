@@ -83,18 +83,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.logo-link {
-  display: none;
-
-  @media (min-width: 721px) {
-    display: block;
-    width: 128px;
-    padding: 4px 0;
-    margin-bottom: 1rem;
-    color: var(--color-max-contrast);
-  }
-}
-
 .navigation-bar {
   // position: sticky;
   position: fixed;
@@ -110,6 +98,18 @@ export default {
   @supports (backdrop-filter: blur(20px)) {
     background-color: rgba(var(--color-background-rgb), 0.8);
     backdrop-filter: saturate(180%) blur(8px);
+  }
+
+  .logo-link {
+    display: none;
+
+    @media (min-width: 721px) {
+      display: block;
+      width: 128px;
+      padding: 4px 0;
+      margin-bottom: 1rem;
+      color: var(--color-max-contrast);
+    }
   }
 
   &__item {

@@ -1,5 +1,5 @@
 <template>
-  <SheetModalContent>
+  <SheetModalContent class="dialog">
     <BaseModalHeader @close="$emit('close', false)">
       <BaseModalTitle>{{ title }}</BaseModalTitle>
     </BaseModalHeader>
@@ -44,16 +44,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.submit-button {
-  width: 100%;
-
-  &__icon {
-    margin-right: 0.5rem;
-    font-size: 1rem;
+.dialog {
+  .submit-button {
+    width: 100%;
   }
-}
 
-.content {
-  font-size: 0.875rem;
+  .content {
+    font-size: 0.875rem;
+  }
 }
 </style>

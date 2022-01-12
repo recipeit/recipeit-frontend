@@ -1,5 +1,5 @@
 <template>
-  <div class="layout__page__content">
+  <div class="layout__page__content hidden-blogs">
     <PageHeader title="Ukryte blogi" :back-button="true" />
     <div v-if="hiddenBlogs === null">
       ...wczytuje
@@ -53,8 +53,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.blogs-list-item {
-  & + & {
+.hidden-blogs {
+  .blogs-list-item + .blogs-list-item {
     margin-top: 1rem;
   }
 }

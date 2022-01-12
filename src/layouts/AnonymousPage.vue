@@ -23,9 +23,9 @@ export default {
   padding: 2rem;
   padding-top: 0;
   margin: 0 auto;
-}
 
-.footer {
-  margin-top: 48px;
+  .footer {
+    margin-top: 48px;
+  }
 }
 </style>

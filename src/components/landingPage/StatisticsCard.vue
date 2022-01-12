@@ -47,10 +47,8 @@ export default {
       color: var(--color-text-primary);
     }
   }
-}
 
-@media (max-width: 720px) {
-  .statistics-card {
+  @media (max-width: 720px) {
     max-width: 256px;
     padding: 1.5rem;
   }

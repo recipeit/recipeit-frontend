@@ -29,40 +29,38 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.hint {
-  position: absolute;
-  top: 1rem;
-  left: 1rem;
-  right: 1rem;
-  bottom: 0;
-  display: flex;
-  // align-items: center;
-  justify-content: center;
-  text-align: center;
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--color-text-secondary);
-}
-
-.recipe-box-props {
-  display: flex;
-  position: absolute;
-  bottom: 8px;
-  right: 8px;
-  min-height: 2rem;
-
-  .prop-favourite {
-    margin-left: auto;
-    display: flex;
-    align-items: center;
-    padding: 0 8px;
-    border-radius: 50px;
-    background-color: rgba(var(--color-background-rgb), 0.95);
-  }
-}
-
 .skeleton-recipe-box {
-  // max-width: 192px;
+  .hint {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    right: 1rem;
+    bottom: 0;
+    display: flex;
+    // align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+  }
+
+  .recipe-box-props {
+    display: flex;
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    min-height: 2rem;
+
+    .prop-favourite {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      padding: 0 8px;
+      border-radius: 50px;
+      background-color: rgba(var(--color-background-rgb), 0.95);
+    }
+  }
 
   &__image-container {
     width: 100%;

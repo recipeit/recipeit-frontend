@@ -1,5 +1,5 @@
 <template>
-  <SheetModalContent>
+  <SheetModalContent class="invisible-recipe-info-modal">
     <BaseModalHeader @close="$emit('close')">
       <BaseModalTitle><BaseIcon class="header-icon" icon="eye-hidden" weight="semi-bold" />Ukryty przepis - co oznacza?</BaseModalTitle>
     </BaseModalHeader>
@@ -32,22 +32,24 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.submit-button {
-  width: 100%;
-}
+.invisible-recipe-info-modal {
+  .submit-button {
+    width: 100%;
+  }
 
-.header-icon {
-  color: var(--color-text-secondary);
-  vertical-align: text-bottom;
-  margin-right: 1rem;
-  font-size: 1.5rem;
-}
+  .header-icon {
+    color: var(--color-text-secondary);
+    vertical-align: text-bottom;
+    margin-right: 1rem;
+    font-size: 1.5rem;
+  }
 
-.paragraph {
-  font-size: 0.875rem;
-  margin: 0;
+  .paragraph {
+    font-size: 0.875rem;
+    margin: 0;
+  }
 
-  & + & {
+  .paragraph + .paragraph {
     margin-top: 1rem;
   }
 }

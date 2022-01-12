@@ -1,5 +1,5 @@
 <template>
-  <SheetModalContent>
+  <SheetModalContent class="edit-shopping-list-product-modal">
     <BaseModalHeader @close="$emit('close')">
       <BaseModalTitle>Edytuj produkt</BaseModalTitle>
     </BaseModalHeader>
@@ -14,7 +14,7 @@
         Anuluj
       </BaseButton>
       <BaseButton class="submit-button" raised color="primary" type="submit" :form="formID" :loading="sending">
-        {{ 'Edytuj' }}
+        Edytuj
       </BaseButton>
     </BaseModalFooter>
   </SheetModalContent>
@@ -104,12 +104,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.submit-button {
-  width: 100%;
-
-  &__icon {
-    margin-right: 0.5rem;
-    font-size: 1rem;
+.edit-shopping-list-product-modal {
+  .submit-button {
+    width: 100%;
   }
 }
 </style>

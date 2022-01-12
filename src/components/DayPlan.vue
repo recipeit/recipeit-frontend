@@ -224,124 +224,126 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.time-of-day {
-  margin-top: 1rem;
-
-  &__title {
-    font-weight: bold;
-    font-size: 0.75rem;
-    color: var(--color-text-secondary);
-    margin-bottom: 0.5rem;
-    margin-left: 1.5rem;
-  }
-
-  &__recipes {
-    background-color: var(--color-background-flyout);
-    box-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.1);
-    border-radius: 1.5rem;
-    min-height: 3.5rem;
-    padding: 0.5rem 0;
-  }
-
-  &__recipe {
-    display: flex;
-
-    &__link {
-      display: block;
-      padding: math.div(3.5rem - 1rem - 0.75rem, 2) 1.5rem;
-      padding-right: 0;
-      font-size: 0.75rem;
-      font-weight: bold;
-      line-height: 1;
-      flex: 1;
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-    }
-
-    &__remove {
-      padding: 0.75rem;
-      padding-right: 1.5rem;
-      font-size: 1rem;
-      line-height: 1;
-      height: 2.5rem;
-    }
-  }
-}
-
-.day-plan__new-header {
-  .new-header-list {
-    display: flex;
-    overflow: hidden;
-    position: relative;
-    gap: 8px;
-
-    &::after {
-      content: '';
-      position: absolute;
-      right: 0;
-      top: 0;
-      bottom: 0;
-      width: 64px;
-      pointer-events: none;
-      background: linear-gradient(to right, transparent, var(--color-background));
-    }
-
-    .new-header-day {
-      border-radius: 1.25rem;
-      padding: 1rem 0;
-      text-align: center;
-      line-height: 1;
-      width: 50px;
-      flex-shrink: 0;
-      cursor: pointer;
-
-      &--selected {
-        background-color: var(--color-image-background);
-        cursor: initial;
-      }
-
-      &--today {
-        // .new-header-day-monthday {
-        color: var(--color-primary);
-        // }
-      }
-
-      &--before-today {
-        .new-header-day-monthday {
-          color: var(--color-text-secondary);
-        }
-      }
-
-      .new-header-day-weekday {
-        text-transform: uppercase;
-        color: var(--color-text-secondary);
-        font-size: 10px;
-        font-weight: bold;
-        margin-bottom: 0.25rem;
-      }
-
-      .new-header-day-monthday {
-        // color: var(--color-text-primary);
-        font-size: 1.25rem;
-      }
-    }
-  }
-}
-
-.no-plans-message {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  padding: 2rem 0;
-
-  &-button {
+.day-plan {
+  .time-of-day {
     margin-top: 1rem;
 
-    &-icon {
-      margin-right: 0.5rem;
-      font-size: 1rem;
+    &__title {
+      font-weight: bold;
+      font-size: 0.75rem;
+      color: var(--color-text-secondary);
+      margin-bottom: 0.5rem;
+      margin-left: 1.5rem;
+    }
+
+    &__recipes {
+      background-color: var(--color-background-flyout);
+      box-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.1);
+      border-radius: 1.5rem;
+      min-height: 3.5rem;
+      padding: 0.5rem 0;
+    }
+
+    &__recipe {
+      display: flex;
+
+      &__link {
+        display: block;
+        padding: math.div(3.5rem - 1rem - 0.75rem, 2) 1.5rem;
+        padding-right: 0;
+        font-size: 0.75rem;
+        font-weight: bold;
+        line-height: 1;
+        flex: 1;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+
+      &__remove {
+        padding: 0.75rem;
+        padding-right: 1.5rem;
+        font-size: 1rem;
+        line-height: 1;
+        height: 2.5rem;
+      }
+    }
+  }
+
+  .day-plan__new-header {
+    .new-header-list {
+      display: flex;
+      overflow: hidden;
+      position: relative;
+      gap: 8px;
+
+      &::after {
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        width: 64px;
+        pointer-events: none;
+        background: linear-gradient(to right, transparent, var(--color-background));
+      }
+
+      .new-header-day {
+        border-radius: 1.25rem;
+        padding: 1rem 0;
+        text-align: center;
+        line-height: 1;
+        width: 50px;
+        flex-shrink: 0;
+        cursor: pointer;
+
+        &--selected {
+          background-color: var(--color-image-background);
+          cursor: initial;
+        }
+
+        &--today {
+          // .new-header-day-monthday {
+          color: var(--color-primary);
+          // }
+        }
+
+        &--before-today {
+          .new-header-day-monthday {
+            color: var(--color-text-secondary);
+          }
+        }
+
+        .new-header-day-weekday {
+          text-transform: uppercase;
+          color: var(--color-text-secondary);
+          font-size: 10px;
+          font-weight: bold;
+          margin-bottom: 0.25rem;
+        }
+
+        .new-header-day-monthday {
+          // color: var(--color-text-primary);
+          font-size: 1.25rem;
+        }
+      }
+    }
+  }
+
+  .no-plans-message {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 2rem 0;
+
+    &-button {
+      margin-top: 1rem;
+
+      &-icon {
+        margin-right: 0.5rem;
+        font-size: 1rem;
+      }
     }
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  <SheetModalContent>
+  <SheetModalContent class="select-base-product-from-array-modal">
     <BaseModalHeader @close="$emit('close')">
       <BaseModalTitle>Co chcesz kupić?</BaseModalTitle>
     </BaseModalHeader>
@@ -53,13 +53,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.cancel-button {
-  width: 100%;
-}
+.select-base-product-from-array-modal {
+  .cancel-button {
+    width: 100%;
+  }
 
-.product {
-  padding: 4px 0;
-  display: flex;
+  .product {
+    padding: 4px 0;
+    display: flex;
+  }
 
   .product-name {
     margin-right: 0.75rem;
@@ -72,15 +74,15 @@ export default {
     height: 32px;
     min-width: 32px;
     padding: 4px 8px;
+  }
 
-    .product-button-icon {
-      font-size: 24px;
-    }
+  .product-button-icon {
+    font-size: 24px;
+  }
 
-    .product-button-add-icon {
-      margin-left: 2px;
-      font-size: 16px;
-    }
+  .product-button-add-icon {
+    margin-left: 2px;
+    font-size: 16px;
   }
 }
 </style>

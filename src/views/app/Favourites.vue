@@ -41,11 +41,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.recipes-list-title {
-  font-size: 14px;
-  margin-bottom: 16px;
-  font-weight: bold;
-}
-</style>

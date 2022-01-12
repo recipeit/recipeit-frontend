@@ -1,5 +1,5 @@
 <template>
-  <div class="auth-main__content">
+  <div class="auth-main__content confirm-email">
     <h1>Potwierdź adres email</h1>
 
     <div v-if="state === 'LOADING'" class="wait">
@@ -91,24 +91,20 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.wait {
-  display: flex;
-  align-items: center;
+.confirm-email {
+  .wait {
+    display: flex;
+    align-items: center;
+  }
 
   .wait-spinner {
     margin-right: 0.75rem;
     color: var(--color-primary);
   }
-}
-// form {
-// margin-bottom: 16px;
-// }
-// h1 {
-//   margin-bottom: 8px;
-// }
 
-.login-button {
-  margin-top: 1.5rem;
+  .login-button {
+    margin-top: 1.5rem;
+  }
 
   .login-button-icon {
     font-size: 0.875rem;

@@ -1,5 +1,5 @@
 <template>
-  <SheetModalContent>
+  <SheetModalContent class="filter-modal">
     <BaseModalHeader @close="$emit('close')">
       <BaseModalTitle>{{ $t('filterModal.title') }}</BaseModalTitle>
     </BaseModalHeader>
@@ -238,104 +238,106 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.category-group {
-  display: flex;
-  align-items: center;
-}
-
-.category-group-icon {
-  margin-right: 0.5rem;
-  font-size: 1.25rem;
-}
-
-.test-multiselect-pills {
-  margin: -4px;
-}
-
-.test-multiselect-pill {
-  height: 28px;
-  padding: 0 12px;
-  margin: 4px;
-
-  &-close {
-    margin-left: 4px;
-    margin-right: -4px;
-    font-size: 0.875rem;
+.filter-modal {
+  .category-group {
+    display: flex;
+    align-items: center;
   }
-}
 
-.submit-button {
-  width: 100%;
-
-  &__icon {
+  .category-group-icon {
     margin-right: 0.5rem;
-    font-size: 1rem;
+    font-size: 1.25rem;
   }
-}
 
-.filter {
-  &__group {
-    & + & {
-      margin-top: 24px;
+  .test-multiselect-pills {
+    margin: -4px;
+  }
+
+  .test-multiselect-pill {
+    height: 28px;
+    padding: 0 12px;
+    margin: 4px;
+
+    &-close {
+      margin-left: 4px;
+      margin-right: -4px;
+      font-size: 0.875rem;
     }
+  }
 
-    &__title {
-      display: flex;
-      font-size: 12px;
-      position: relative;
-      font-weight: 600;
-      margin-bottom: 12px;
+  .submit-button {
+    width: 100%;
 
-      &--no-margin {
-        margin-bottom: 0;
+    &__icon {
+      margin-right: 0.5rem;
+      font-size: 1rem;
+    }
+  }
+
+  .filter {
+    &__group {
+      &:not(:first-child) {
+        margin-top: 24px;
       }
-    }
 
-    &__name {
-      color: var(--color-text-secondary);
-      // font-weight: bold;
-    }
+      &__title {
+        display: flex;
+        font-size: 12px;
+        position: relative;
+        font-weight: 600;
+        margin-bottom: 12px;
 
-    &__clear {
-      margin-left: auto;
-    }
-
-    &__option {
-      flex-shrink: 0;
-
-      & + & {
-        margin-left: 12px;
-
-        @include cursor-only {
-          margin-left: 0;
+        &--no-margin {
+          margin-bottom: 0;
         }
       }
-    }
 
-    &__options {
-      display: flex;
-      flex-wrap: wrap;
-      // gap: 12px;
-      flex-wrap: nowrap;
-      overflow: auto;
-      margin: 0 -32px;
-
-      &::before,
-      &::after {
-        content: '';
-        width: 32px;
-        flex-shrink: 0;
+      &__name {
+        color: var(--color-text-secondary);
+        // font-weight: bold;
       }
 
-      @include cursor-only {
+      &__clear {
+        margin-left: auto;
+      }
+
+      &__option {
+        flex-shrink: 0;
+
+        &:not(:first-child) {
+          margin-left: 12px;
+
+          @include cursor-only {
+            margin-left: 0;
+          }
+        }
+      }
+
+      &__options {
+        display: flex;
         flex-wrap: wrap;
-        overflow: initial;
-        margin: 0;
-        gap: 12px;
+        // gap: 12px;
+        flex-wrap: nowrap;
+        overflow: auto;
+        margin: 0 -32px;
 
         &::before,
         &::after {
-          content: none;
+          content: '';
+          width: 32px;
+          flex-shrink: 0;
+        }
+
+        @include cursor-only {
+          flex-wrap: wrap;
+          overflow: initial;
+          margin: 0;
+          gap: 12px;
+
+          &::before,
+          &::after {
+            content: none;
+          }
         }
       }
     }

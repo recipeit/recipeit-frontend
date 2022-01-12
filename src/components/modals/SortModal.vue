@@ -1,5 +1,5 @@
 <template>
-  <SheetModalContent>
+  <SheetModalContent class="sort-modal">
     <BaseModalHeader @close="$emit('close')">
       <BaseModalTitle>{{ $t('sortModal.title') }}</BaseModalTitle>
     </BaseModalHeader>
@@ -40,11 +40,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.choice-button {
-  width: 100%;
-  justify-content: flex-start;
+.sort-modal {
+  .choice-button {
+    width: 100%;
+    justify-content: flex-start;
+  }
 
-  & + & {
+  .choice-button + .choice-button {
     margin-top: 16px;
   }
 }

@@ -46,22 +46,22 @@ export default {
 <style lang="scss" scoped>
 .social-list {
   margin-top: 1rem;
-}
 
-.social-button {
-  width: 100%;
+  .social-button {
+    width: 100%;
+  }
 
-  & + & {
+  .social-button + .social-button {
     margin-top: 1rem;
   }
-}
 
-.social-logo {
-  height: 1rem;
-  margin-right: 0.5rem;
+  .social-logo {
+    height: 1rem;
+    margin-right: 0.5rem;
 
-  ::v-deep(svg) {
-    height: 100%;
+    ::v-deep(svg) {
+      height: 100%;
+    }
   }
 }
 </style>

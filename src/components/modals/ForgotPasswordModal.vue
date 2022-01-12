@@ -1,5 +1,5 @@
 <template>
-  <SheetModalContent>
+  <SheetModalContent class="forgot-password-modal">
     <BaseModalHeader @close="$emit('close')">
       <BaseModalTitle>Przypomnienie hasła</BaseModalTitle>
     </BaseModalHeader>
@@ -104,27 +104,24 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.submit-button {
-  width: 100%;
-
-  &__icon {
-    margin-right: 0.5rem;
-    font-size: 1rem;
+.forgot-password-modal {
+  .submit-button {
+    width: 100%;
   }
-}
 
-.forgot-password-button {
-  margin-bottom: 1.5rem;
-  font-size: 0.75rem;
-  font-weight: bold;
-}
+  .forgot-password-button {
+    margin-bottom: 1.5rem;
+    font-size: 0.75rem;
+    font-weight: bold;
+  }
 
-.message {
-  font-size: 0.875rem;
-  margin: 0;
-}
+  .message {
+    font-size: 0.875rem;
+    margin: 0;
+  }
 
-.recaptcha-branding {
-  margin-top: 1rem;
+  .recaptcha-branding {
+    margin-top: 1rem;
+  }
 }
 </style>

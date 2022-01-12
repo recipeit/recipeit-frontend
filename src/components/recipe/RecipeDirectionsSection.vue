@@ -92,78 +92,80 @@ export default {
 // default 0px offset == 5px margin
 $border-offset: 3px;
 
-.recipe-directions-list {
-  label {
-    display: flex;
-    align-items: flex-start;
+.recipe-directions-section {
+  .recipe-directions-list {
+    label {
+      display: flex;
+      align-items: flex-start;
 
-    input {
-      margin-right: 16px;
-    }
-  }
-}
-
-.recipe-directions-list-item {
-  position: relative;
-  @include transition((color, text-decoration));
-
-  &::before {
-    content: '';
-    width: 2px;
-    background-color: var(--color-border);
-    position: absolute;
-    left: 9px;
-    border-radius: 2px;
-    top: 26px + $border-offset;
-    bottom: -16px + $border-offset;
-    @include transition((background-color));
-  }
-
-  &:last-of-type {
-    &::before {
-      content: none;
+      input {
+        margin-right: 16px;
+      }
     }
   }
 
-  &--finished {
-    color: var(--color-text-secondary);
-    text-decoration: line-through;
+  .recipe-directions-list-item {
+    position: relative;
+    @include transition((color, text-decoration));
 
-    &::before {
-      background-color: var(--color-primary);
+    &:not(:first-child) {
+      margin-top: 16px;
     }
-  }
 
-  &:not(&--finished) ~ &--finished {
     &::before {
+      content: '';
+      width: 2px;
       background-color: var(--color-border);
+      position: absolute;
+      left: 9px;
+      border-radius: 2px;
+      top: 26px + $border-offset;
+      bottom: -16px + $border-offset;
+      @include transition((background-color));
+    }
+
+    &:last-of-type {
+      &::before {
+        content: none;
+      }
+    }
+
+    &--finished {
+      color: var(--color-text-secondary);
+      text-decoration: line-through;
+
+      &::before {
+        background-color: var(--color-primary);
+      }
+    }
+
+    &:not(&--finished) ~ &--finished {
+      &::before {
+        background-color: var(--color-border);
+      }
+    }
+
+    &--selected {
+      font-weight: bold;
+    }
+
+    :deep(.checkbox__input) {
+      margin-top: 3px;
+      margin-bottom: 3px;
+      width: 20px;
+      min-width: 20px;
+      height: 20px;
+      border-radius: 20px;
+      margin-right: 12px;
+    }
+
+    :deep(.checkbox__label) {
+      line-height: 26px;
     }
   }
 
-  &--selected {
-    font-weight: bold;
-  }
-
-  & + & {
-    margin-top: 16px;
-  }
-
-  :deep(.checkbox__input) {
-    margin-top: 3px;
-    margin-bottom: 3px;
-    width: 20px;
-    min-width: 20px;
-    height: 20px;
-    border-radius: 20px;
-    margin-right: 12px;
-  }
-
-  :deep(.checkbox__label) {
+  .recipe-single-direction {
     line-height: 26px;
   }
-}
-
-.recipe-single-direction {
-  line-height: 26px;
 }
 </style>

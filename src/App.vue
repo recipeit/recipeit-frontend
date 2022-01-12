@@ -107,18 +107,14 @@ export default {
 
       const stop = watchEffect(async () => {
         if (stopped) {
-          if (typeof stop === 'function') {
-            stop()
-          }
+          stop?.()
           return
         }
 
         const routeName = route.name
 
         if (routeName) {
-          if (typeof stop === 'function') {
-            stop()
-          }
+          stop?.()
           stopped = true
 
           if (userFetchSuccess) {

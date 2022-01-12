@@ -1,5 +1,5 @@
 <template>
-  <div class="auth-main__content">
+  <div class="auth-main__content register">
     <h1>Zarejestruj się</h1>
 
     <p class="subtitle">
@@ -144,15 +144,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-h1 {
-  margin-bottom: 8px;
-}
+.register {
+  h1 {
+    margin-bottom: 8px;
+  }
 
-.subtitle {
-  margin-bottom: 1.5rem;
-}
+  .subtitle {
+    margin-bottom: 1.5rem;
+  }
 
-.recaptcha-branding {
-  margin-top: 0.75rem;
+  .recaptcha-branding {
+    margin-top: 0.75rem;
+  }
 }
 </style>

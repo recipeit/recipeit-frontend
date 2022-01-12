@@ -435,35 +435,35 @@ export default {
     // }
     // }
   }
-}
 
-.empty-list-message {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  text-align: center;
-  flex: 1;
-  line-height: 2.25;
+  .empty-list-message {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    flex: 1;
+    line-height: 2.25;
 
-  .empty-list-message-image {
-    width: 96px;
+    .empty-list-message-image {
+      width: 96px;
+    }
+
+    .empty-list-message-title {
+      margin-bottom: 1rem;
+      font-size: 0.875rem;
+      line-height: 1.5;
+    }
   }
 
-  .empty-list-message-title {
-    margin-bottom: 1rem;
-    font-size: 0.875rem;
-    line-height: 1.5;
-  }
-}
+  .recipes-errors {
+    text-align: center;
+    margin: 48px 0;
 
-.recipes-errors {
-  text-align: center;
-  margin: 48px 0;
-
-  .recipes-errors-message {
-    margin-bottom: 1rem;
-    font-size: 0.875rem;
+    .recipes-errors-message {
+      margin-bottom: 1rem;
+      font-size: 0.875rem;
+    }
   }
 }
 </style>

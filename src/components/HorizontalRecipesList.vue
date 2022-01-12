@@ -83,83 +83,84 @@ export default {
     margin-left: 0;
     margin-right: 0;
   }
-}
 
-.list {
-  display: flex;
-  overflow: auto;
+  .list {
+    display: flex;
+    overflow: auto;
 
-  @include cursor-only {
-    @include scrollbar;
-  }
+    @include cursor-only {
+      @include scrollbar;
+    }
 
-  &::before,
-  &::after {
-    content: '';
-    width: 32px;
-    flex-shrink: 0;
+    &::before,
+    &::after {
+      content: '';
+      width: 32px;
+      flex-shrink: 0;
 
-    @media (min-width: 721px) {
-      content: none;
+      @media (min-width: 721px) {
+        content: none;
+      }
     }
   }
-}
 
-.list-item {
-  width: 150px;
-  max-width: calc((100% - 64px) * 0.4);
-  flex-shrink: 0;
+  .list-item {
+    width: 150px;
+    max-width: calc((100% - 64px) * 0.4);
+    flex-shrink: 0;
+  }
 
-  & + & {
+  .list-item + .list-item {
     margin-left: 16px;
   }
-}
 
-.show-all-item {
-  display: flex;
-  width: 100%;
-  position: relative;
-
-  &-sizer {
-    position: absolute;
-    width: 100%;
-    height: 0;
-    padding-bottom: 100%;
-  }
-
-  &-button {
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    top: 0;
-    left: 0;
+  .show-all-item {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.875rem;
+    width: 100%;
+    position: relative;
 
-    &-icon {
-      width: 2.5rem;
-      height: 2.5rem;
-      margin-bottom: 0.5rem;
-      border-radius: 2.5rem;
-      background-color: var(--color-image-background);
-      font-size: 1.25rem;
-      padding-left: 2px;
+    .show-all-item-sizer {
+      position: absolute;
+      width: 100%;
+      height: 0;
+      padding-bottom: 100%;
+    }
+
+    .show-all-item-button {
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      top: 0;
+      left: 0;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
+      font-size: 0.875rem;
+
+      .show-all-item-button-icon {
+        width: 2.5rem;
+        height: 2.5rem;
+        margin-bottom: 0.5rem;
+        border-radius: 2.5rem;
+        background-color: var(--color-image-background);
+        font-size: 1.25rem;
+        padding-left: 2px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
     }
   }
-}
-.recipes-errors {
-  text-align: center;
-  margin: 24px 0;
 
-  .recipes-errors-message {
-    margin-bottom: 1rem;
-    font-size: 0.875rem;
+  .recipes-errors {
+    text-align: center;
+    margin: 24px 0;
+
+    .recipes-errors-message {
+      margin-bottom: 1rem;
+      font-size: 0.875rem;
+    }
   }
 }
 </style>

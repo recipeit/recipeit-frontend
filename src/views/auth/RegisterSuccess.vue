@@ -1,5 +1,5 @@
 <template>
-  <div class="auth-main__content">
+  <div class="auth-main__content register-success">
     <template v-if="secondEmailSent">
       <h1>Wysłaliśmy wiadomość jeszcze raz</h1>
 
@@ -117,21 +117,23 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-h1 {
-  margin-bottom: 0.875rem;
-  line-height: 1.25;
-}
+.register-success {
+  h1 {
+    margin-bottom: 0.875rem;
+    line-height: 1.25;
+  }
 
-.login-button {
-  margin-top: 1.5rem;
+  .login-button {
+    margin-top: 1.5rem;
+  }
 
   .login-button-icon {
     font-size: 0.875rem;
     margin-right: 0.5rem;
   }
-}
 
-.no-email-section {
-  margin-top: 1.5rem;
+  .no-email-section {
+    margin-top: 1.5rem;
+  }
 }
 </style>
