@@ -4588,10 +4588,10 @@ vee-validate@^4.5.2:
   dependencies:
     "@vue/devtools-api" "^6.0.0-beta.15"
 
-vite-plugin-pwa@^0.11.12:
-  version "0.11.12"
-  resolved "https://registry.yarnpkg.com/vite-plugin-pwa/-/vite-plugin-pwa-0.11.12.tgz#02b4cfccd7ad098cfb291415c62c3b7281b7c538"
-  integrity sha512-XqFmA4y9C4RBb5osSsa26GVwOSwbzf2GNVcT5+06KYYdguqLpuI9FW7iV/akZqg0OUNUpH4tHfme8SnHA4PIXA==
+vite-plugin-pwa@^0.11.13:
+  version "0.11.13"
+  resolved "https://registry.yarnpkg.com/vite-plugin-pwa/-/vite-plugin-pwa-0.11.13.tgz#54ed80580b7d3e61aadcf4325fe9bc6f7ffce5db"
+  integrity sha512-Ssj14m3TRVLfkFEAWSMcFE2d1cSdEZyrVTzfY2lSL+umHYvcIFHVDAY143sygtBCb44OPczsAOmWwBTxwOvh7g==
   dependencies:
     debug "^4.3.3"
     fast-glob "^3.2.7"
@@ -4607,18 +4607,18 @@ vite-plugin-sentry@^1.0.12:
   dependencies:
     "@sentry/cli" "1.71.0"
 
-vite-svg-loader@^3.1.1:
-  version "3.1.1"
-  resolved "https://registry.yarnpkg.com/vite-svg-loader/-/vite-svg-loader-3.1.1.tgz#c87f31ed69aadbdcc4b2c8c4b0de9ed82931dfc0"
-  integrity sha512-riUVb096oYgF+DHHtXPNJIaceFyqGDAjxJE0/aXsz2TW8G/27f4p1e+RZXrltI06Q3GcyB1V4DSoc+Tq6aQSQw==
+vite-svg-loader@^3.1.2:
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/vite-svg-loader/-/vite-svg-loader-3.1.2.tgz#e701d6f5d42969eac2b3c40fea9d4159bfa27be3"
+  integrity sha512-op5ENc3eo1K1YlufQtdyAcxxXtiWJHyimH9y573ZWhj/9cw5x3ZtYhOEQua7MugclTa9mnZTzuir0rfTCkVyiQ==
   dependencies:
     "@vue/compiler-sfc" "^3.2.20"
     svgo "^2.7.0"
 
-vite@^2.7.10:
-  version "2.7.10"
-  resolved "https://registry.yarnpkg.com/vite/-/vite-2.7.10.tgz#d12c4c10e56a0ecf7890cb529c15996c6111218f"
-  integrity sha512-KEY96ntXUid1/xJihJbgmLZx7QSC2D4Tui0FdS0Old5OokYzFclcofhtxtjDdGOk/fFpPbHv9yw88+rB93Tb8w==
+vite@^2.7.12:
+  version "2.7.12"
+  resolved "https://registry.yarnpkg.com/vite/-/vite-2.7.12.tgz#7784ab19e7ff98f6a192d2d7d877480a8c2b7e7d"
+  integrity sha512-KvPYToRQWhRfBeVkyhkZ5hASuHQkqZUUdUcE3xyYtq5oYEPIJ0h9LWiWTO6v990glmSac2cEPeYeXzpX5Z6qKQ==
   dependencies:
     esbuild "^0.13.12"
     postcss "^8.4.5"
