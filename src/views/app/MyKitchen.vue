@@ -90,6 +90,8 @@ import ProductIcon from '@/components/ProductIcon.vue'
 // import SearchWithFilter from '@/components/SearchWithFilter.vue'
 // import NewKitchenProductModal from '@/components/modals/NewKitchenProductModal.vue'
 
+import { PRODUCT_CATEGORY_ORDER } from '@/configs/productCategories'
+
 export default {
   name: 'MyKitchen',
   components: {
@@ -171,10 +173,10 @@ export default {
       if (!filteredProducts) return null
 
       return _(filteredProducts)
-        .sortBy(item => item.baseProductName)
-        .groupBy(item => item.category)
+        .sortBy(({ baseProductName }) => baseProductName)
+        .groupBy(({ category }) => category)
         .toPairs()
-        .sortBy(group => this.$t(`productCategory.${group[0]}`))
+        .sortBy(([group]) => PRODUCT_CATEGORY_ORDER[group])
         .value()
     }
   },

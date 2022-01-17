@@ -92,6 +92,8 @@ import ShoppingListProduct from '@/components/ShoppingListProduct.vue'
 import Dialog from '@/components/modals/Dialog.vue'
 // import NewShoppingListProduct from '@/components/modals/NewShoppingListProduct.vue'
 
+import { PRODUCT_CATEGORY_ORDER } from '@/configs/productCategories'
+
 import { PRODUCT_GROUP_ICONS } from '@/constants'
 
 export default {
@@ -170,10 +172,10 @@ export default {
       if (!filteredProducts) return null
 
       return _(filteredProducts)
-        .sortBy(item => item.baseProductName)
-        .groupBy(item => item.category)
+        .sortBy(({ baseProductName }) => baseProductName)
+        .groupBy(({ category }) => category)
         .toPairs()
-        .sortBy(group => this.$t(`productCategory.${group[0]}`))
+        .sortBy(([group]) => PRODUCT_CATEGORY_ORDER[group])
         .value()
     }
   },
