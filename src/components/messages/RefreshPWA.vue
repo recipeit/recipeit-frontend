@@ -26,20 +26,22 @@ export default {
 
     let userInteracted = false
     let refreshing = false
+    let setInteractionEvents
+    let removeInteractionEvents
 
     const handleInteraction = () => {
       userInteracted = true
-      removeInteractionEvents()
+      removeInteractionEvents?.()
     }
 
-    const setInteractionEvents = () => {
+    setInteractionEvents = () => {
       document.addEventListener('scroll', handleInteraction)
       document.body.addEventListener('keydown', handleInteraction)
       document.body.addEventListener('click', handleInteraction)
       document.body.addEventListener('touchstart', handleInteraction)
     }
 
-    const removeInteractionEvents = () => {
+    removeInteractionEvents = () => {
       document.removeEventListener('scroll', handleInteraction)
       document.body.removeEventListener('keydown', handleInteraction)
       document.body.removeEventListener('click', handleInteraction)
