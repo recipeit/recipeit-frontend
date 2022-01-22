@@ -72,19 +72,21 @@
                 'base-select__options__list__item--highlight': index === pointer,
                 'base-select__options__list__item--label': option.isLabel
               }"
-              @mouseenter.self="!option.isLabel ? pointerSet(index) : null"
-              @click="!option.isLabel ? selectOption(option) : null"
+              v-on="
+                option.isLabel
+                  ? {}
+                  : {
+                      mouseenter: e => e.currentTarget === e.target && pointerSet(index),
+                      click: () => selectOption(option)
+                    }
+              "
             >
-              <!-- <div v-if="option.isLabel" class="base-select__options__list__group-label"> -->
               <slot v-if="option.isLabel" name="groupLabel" :label="option['groupLabel']">
                 {{ option['groupLabel'] }}
               </slot>
-              <!-- </div> -->
-              <!-- <div v-else class="base-select__options__list__option" @mouseenter.self="pointerSet(index)" @click="selectOption(option)"> -->
               <slot v-else name="option" :option="option" :search="search" :index="index">
                 {{ label ? option[label] : option }}
               </slot>
-              <!-- </div> -->
             </li>
             <li
               v-if="filteredOptions && filteredOptions.length > filteredOptionsLimited.length"
