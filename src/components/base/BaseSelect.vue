@@ -108,7 +108,7 @@
 </template>
 
 <script>
-import _ from 'lodash'
+import sortby from 'lodash.sortby'
 import { nextTick } from 'vue'
 
 import { setFocus } from '@/directives/autofocus'
@@ -258,7 +258,7 @@ export default {
 
         if (!this.search) return this.plainOptions(filteredGroups)
 
-        const sortedFilteredGroups = _.sortBy(filteredGroups, group => {
+        const sortedFilteredGroups = sortby(filteredGroups, group => {
           const options = group && !Array.isArray(group) ? group[this.groupValues] : null
           return options?.some(option => {
             const value = this.optionSearchableValue(option)
@@ -520,7 +520,7 @@ export default {
 
       if (!search) return result
 
-      return _.sortBy(result, [
+      return sortby(result, [
         option => (optionSearchableValue(option).includes(search) ? 0 : 1),
         option => optionSearchableValue(option).length,
         option => optionSearchableValue(option)

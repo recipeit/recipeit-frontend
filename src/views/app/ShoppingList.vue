@@ -81,7 +81,8 @@
 </template>
 
 <script>
-import _ from 'lodash'
+import groupby from 'lodash.groupby'
+import sortby from 'lodash.sortby'
 import { computed, markRaw, nextTick, reactive, ref, toRefs } from 'vue'
 import { mapState, useStore } from 'vuex'
 import { useMeta } from 'vue-meta'
@@ -162,12 +163,11 @@ export default {
 
       if (!filteredProducts) return null
 
-      return _(filteredProducts)
-        .sortBy(({ baseProductName }) => baseProductName)
-        .groupBy(({ category }) => category)
-        .toPairs()
-        .sortBy(([group]) => PRODUCT_CATEGORY_ORDER[group])
-        .value()
+      const sorted = sortby(filteredProducts, 'baseProductName')
+      const grouped = groupby(sorted, 'category')
+      const sortedGroups = sortby(Object.entries(grouped), ([group]) => PRODUCT_CATEGORY_ORDER[group])
+
+      return sortedGroups
     }
   },
   beforeMount() {

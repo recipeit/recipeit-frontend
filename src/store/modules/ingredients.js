@@ -1,4 +1,5 @@
-import _ from 'lodash'
+import groupby from 'lodash.groupby'
+import sortby from 'lodash.sortby'
 
 import ingredientsApi from '@/api/ingredientsApi'
 
@@ -40,16 +41,15 @@ export default {
     }
   },
   getters: {
-    groupedBaseProducts: state =>
-      _(state.baseProducts)
-        .sortBy(({ baseProductName }) => baseProductName)
-        .groupBy(({ category }) => category)
-        .toPairs()
-        .sortBy(([group]) => PRODUCT_CATEGORY_ORDER[group])
-        .value()
-        .map(([groupKey, groupValues]) => ({
-          groupKey,
-          groupValues
-        }))
+    groupedBaseProducts(state) {
+      const sorted = sortby(state.baseProducts, 'baseProductName')
+      const grouped = groupby(sorted, 'category')
+      const sortedGroups = sortby(Object.entries(grouped), ([group]) => PRODUCT_CATEGORY_ORDER[group])
+
+      return sortedGroups.map(([groupKey, groupValues]) => ({
+        groupKey,
+        groupValues
+      }))
+    }
   }
 }

@@ -273,7 +273,7 @@ export default {
     //   return this.recipe.details.directionsParagraphs.map((element, index) => index)
     // },
     // selectedDirection() {
-    //   return _.min(_.difference(this.allIndexes, this.finishedDirections))
+    //   return min(difference(this.allIndexes, this.finishedDirections))
     // },
     images() {
       const { recipe } = this

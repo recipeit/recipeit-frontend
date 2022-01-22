@@ -106,7 +106,7 @@
 </template>
 
 <script>
-import _ from 'lodash'
+import sortby from 'lodash.sortby'
 import { computed, reactive, toRefs } from 'vue'
 import { useStore } from 'vuex'
 
@@ -195,7 +195,7 @@ export default {
       const options = props.options[groupKey]?.options
       const defaultSelectedIds = props.defaultSelected[groupKey]
       if (options) {
-        return _.sortBy(options, o => {
+        return sortby(options, o => {
           return !defaultSelectedIds?.includes(o.key)
         })
       }

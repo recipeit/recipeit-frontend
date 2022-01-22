@@ -31,7 +31,8 @@
 </template>
 
 <script>
-import _ from 'lodash'
+import difference from 'lodash.difference'
+import min from 'lodash.min'
 import { computed, ref, watch } from 'vue'
 import { useStore } from 'vuex'
 
@@ -63,7 +64,7 @@ export default {
     })
 
     const selectedDirection = computed(() => {
-      return _.min(_.difference(allIndexes.value, finishedDirections.value))
+      return min(difference(allIndexes.value, finishedDirections.value))
     })
 
     const resetFinishedDirections = () => {
@@ -72,7 +73,7 @@ export default {
 
     watch(finishedDirections, newValue => {
       store.dispatch('recipes/setFinishedDirectionsForRecipe', { recipeId: props.recipeId, finishedDirections: newValue })
-      const remaining = _.difference(allIndexes.value, newValue)
+      const remaining = difference(allIndexes.value, newValue)
       if (!remaining || remaining.length === 0) {
         finishedDirections.value = []
         toast.show('Super! Udało Ci się ukończyć przepis', ToastType.SUCCESS)

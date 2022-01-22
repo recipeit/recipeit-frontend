@@ -1,7 +1,5 @@
 import * as Sentry from '@sentry/browser'
 import { Integrations } from '@sentry/tracing'
-import camelCase from 'lodash.camelcase'
-import upperFirst from 'lodash.upperfirst'
 import { createApp } from 'vue'
 import { createMetaManager, defaultConfig } from 'vue-meta'
 import VTooltip from 'v-tooltip'
