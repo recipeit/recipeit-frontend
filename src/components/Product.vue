@@ -1,15 +1,12 @@
 <template>
   <div class="product">
-    <div class="product__info">
-      <div class="product__name">{{ product.baseProductName }}</div>
-      <div class="product__subname">
-        <span v-if="amount" class="product__amount">{{ amount }}</span>
-        <span v-if="amount && product.unit" class="product__unit">
-          {{ $tc(`unitsShort.${product.unit}`, product.amount) }}
-        </span>
+    <div class="product-info">
+      <div class="product-name">{{ product.baseProductName }}</div>
+      <div v-if="formattedAmount" class="product-amount">
+        {{ formattedAmount }} {{ $tc(`unitsShort.${product.unit || 'piece'}`, product.amount) }}
       </div>
     </div>
-    <div class="product__actions">
+    <div class="product-actions">
       <slot />
     </div>
   </div>
@@ -28,20 +25,15 @@ export default {
     }
   },
   setup(props) {
-    const amount = computed(() => {
+    const formattedAmount = computed(() => {
       const { amount } = props.product
       return amount > 0 ? stringifiedAmount(amount) : null
     })
 
     return {
-      amount
+      formattedAmount
     }
   }
-  // computed: {
-  // name() {
-  // return this.product.name ? this.product.name : this.product.baseProductName
-  // }
-  // }
 }
 </script>
 
@@ -51,35 +43,26 @@ export default {
   line-height: 16px;
   font-weight: 500;
   border-radius: 48px;
-  // border: 1px solid var(--color-border);
-  // background: var(--color-background-flyout);
   display: flex;
-  // max-width: 416px;
   min-height: 56px;
 
-  &__info {
+  .product-info {
     padding: 12px 12px 12px 0;
     display: flex;
     flex-direction: column;
     justify-content: center;
   }
 
-  &__name {
+  .product-name {
     font-weight: bold;
     color: var(--color-text-primary);
   }
 
-  &__amount {
-    // margin-left: 12px;
+  .product-amount {
     color: var(--color-text-secondary);
   }
 
-  &__unit {
-    margin-left: 0.25rem;
-    color: var(--color-text-secondary);
-  }
-
-  &__actions {
+  .product-actions {
     margin-left: auto;
   }
 }

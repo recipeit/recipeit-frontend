@@ -25,7 +25,7 @@
       track-by="id"
       search-by="variants"
       label="name"
-      :options="baseProductsGrouped"
+      :options="groupedBaseProducts"
       :limit="100"
       :searchable="true"
       group-label="groupKey"
@@ -115,16 +115,7 @@ export default {
       simpleView: true
     })
 
-    const baseProductsGrouped = computed(() =>
-      _(store.state.ingredients.baseProducts)
-        .groupBy(item => item.category)
-        .toPairs()
-        .value()
-        .map(pair => ({
-          groupKey: pair[0],
-          groupValues: pair[1]
-        }))
-    )
+    const groupedBaseProducts = computed(() => store.getters['ingredients/groupedBaseProducts'])
 
     const addProductFromSelect = ({ id } = {}) => {
       const requestData = {
@@ -146,7 +137,7 @@ export default {
     return {
       ...toRefs(data),
       addProductSelect,
-      baseProductsGrouped,
+      groupedBaseProducts,
       addProductFromSelect,
       openAddProductSelect
     }

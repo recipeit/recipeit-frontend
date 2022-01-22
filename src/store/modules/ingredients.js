@@ -1,4 +1,8 @@
+import _ from 'lodash'
+
 import ingredientsApi from '@/api/ingredientsApi'
+
+import { PRODUCT_CATEGORY_ORDER } from '@/configs/productCategories'
 
 export const MUTATIONS = {
   SET_BASE_INGREDIENTS: 'SET_BASE_INGREDIENTS',
@@ -34,5 +38,18 @@ export default {
 
       commit(MUTATIONS.SET_UNITS, unitGroups)
     }
+  },
+  getters: {
+    groupedBaseProducts: state =>
+      _(state.baseProducts)
+        .sortBy(({ baseProductName }) => baseProductName)
+        .groupBy(({ category }) => category)
+        .toPairs()
+        .sortBy(([group]) => PRODUCT_CATEGORY_ORDER[group])
+        .value()
+        .map(([groupKey, groupValues]) => ({
+          groupKey,
+          groupValues
+        }))
   }
 }

@@ -108,6 +108,7 @@
 </template>
 
 <script>
+import _ from 'lodash'
 import { nextTick } from 'vue'
 
 import { setFocus } from '@/directives/autofocus'
@@ -242,8 +243,9 @@ export default {
       return this.searchable ? !this.opened && this.value !== null : this.value !== null
     },
     filteredOptions() {
-      if (!this.searchable || !this.search) return this.isGrouped ? this.plainOptions(this.options) : this.options
-      else if (this.isGrouped) {
+      if (!this.searchable || !this.search) {
+        return this.isGrouped ? this.plainOptions(this.options) : this.options
+      } else if (this.isGrouped) {
         const filteredGroups = this.options.map(group => {
           const filteredValues = this.filterOptions(group[this.groupValues])
           return filteredValues.length > 0
@@ -253,7 +255,20 @@ export default {
               }
             : []
         })
-        return this.plainOptions(filteredGroups)
+
+        if (!this.search) return this.plainOptions(filteredGroups)
+
+        const sortedFilteredGroups = _.sortBy(filteredGroups, group => {
+          const options = group && !Array.isArray(group) ? group[this.groupValues] : null
+          return options?.some(option => {
+            const value = this.optionSearchableValue(option)
+            return value.includes(this.search)
+          })
+            ? 0
+            : 1
+        })
+
+        return this.plainOptions(sortedFilteredGroups)
       } else {
         return this.filterOptions(this.options)
       }
@@ -496,9 +511,20 @@ export default {
         group[this.groupValues]?.length > 0 ? [{ groupLabel: group[this.groupLabel], isLabel: true }, ...group[this.groupValues]] : []
       )
     },
+    optionSearchableValue(option) {
+      return this.searchBy ? option[this.searchBy] : this.customLabel(option, this.label)
+    },
     filterOptions(options) {
-      const { searchBy } = this
-      return options.filter(option => includes(searchBy ? option[searchBy] : this.customLabel(option, this.label), this.search))
+      const { search, optionSearchableValue } = this
+      const result = options.filter(option => includes(optionSearchableValue(option), search))
+
+      if (!search) return result
+
+      return _.sortBy(result, [
+        option => (optionSearchableValue(option).includes(search) ? 0 : 1),
+        option => optionSearchableValue(option).length,
+        option => optionSearchableValue(option)
+      ])
     },
     scrollOptionsToTop() {
       if (this.$refs.options) {
