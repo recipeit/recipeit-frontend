@@ -150,6 +150,7 @@ export const PRODUCT_GROUP_ICONS = {
   FoodAdditives: 'soup',
   Nuts: 'nuts',
   DairyAlternatives: 'dairy-alternatives',
+  DairyAndMeatAlternatives: 'dairy-alternatives',
   DessertsAndSnacks: 'dessert',
   Beverages: 'beverages'
 }

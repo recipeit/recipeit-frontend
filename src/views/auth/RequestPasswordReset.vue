@@ -1,5 +1,5 @@
 <template>
-  <div class="auth-main__content">
+  <div class="auth-main__content request-password-reset">
     <h1>Nie pamiętasz hasła?</h1>
 
     <template v-if="state === 'BEFORE' || state === 'SENDING'">
@@ -68,7 +68,7 @@ import { AUTH_REQUEST_PASSWORD_RESET } from '@/router/paths'
 
 import recaptcha from '@/services/recaptcha'
 
-import RecaptchaBranding from '@/components/RecaptchaBranding'
+import RecaptchaBranding from '@/components/RecaptchaBranding.vue'
 
 export default {
   components: {
@@ -137,38 +137,38 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-// form {
-// margin-bottom: 16px;
-// }
-h1 {
-  margin-bottom: 8px;
-}
-.subtitle {
-  color: var(--color-text-secondary);
-  margin-bottom: 1.5rem;
-}
-
-.buttons {
-  display: flex;
-  flex-direction: row-reverse;
-  margin-top: 1.5rem;
-}
-
-.return-button {
-  width: 100%;
-  margin-right: 1rem;
-
-  &-icon {
-    font-size: 0.875rem;
-    margin-right: 0.5rem;
+.request-password-reset {
+  h1 {
+    margin-bottom: 8px;
   }
-}
 
-.return-button-only {
-  margin-right: auto;
-}
+  .subtitle {
+    color: var(--color-text-secondary);
+    margin-bottom: 1.5rem;
+  }
 
-.recaptcha-branding {
-  margin-top: 1rem;
+  .buttons {
+    display: flex;
+    flex-direction: row-reverse;
+    margin-top: 1.5rem;
+  }
+
+  .return-button {
+    width: 100%;
+    margin-right: 1rem;
+
+    &-icon {
+      font-size: 0.875rem;
+      margin-right: 0.5rem;
+    }
+  }
+
+  .return-button-only {
+    margin-right: auto;
+  }
+
+  .recaptcha-branding {
+    margin-top: 1rem;
+  }
 }
 </style>

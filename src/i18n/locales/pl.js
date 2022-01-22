@@ -298,6 +298,7 @@ export default {
       FoodAdditives: 'Dodatki spożywcze',
       Nuts: 'Orzechy',
       DairyAlternatives: 'Zamienniki nabiału',
+      DairyAndMeatAlternatives: 'Wegańskie zamienniki',
       DessertsAndSnacks: 'Desery i przekąski',
       Beverages: 'Napoje'
     }

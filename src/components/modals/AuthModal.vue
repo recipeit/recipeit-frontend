@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import Authorization from '@/components/Authorization'
+import Authorization from '@/components/Authorization.vue'
 
 export default {
   components: { Authorization }

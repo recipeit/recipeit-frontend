@@ -12,8 +12,8 @@
 </template>
 
 <script>
-import FacebookLogo from '@/assets/logos/facebook.svg?inline'
-import GoogleLogo from '@/assets/logos/google.svg?inline'
+import FacebookLogo from '@/assets/logos/facebook.svg?raw'
+import GoogleLogo from '@/assets/logos/google.svg?raw'
 
 import authSocialMixin from '@/views/auth/mixins/authSocialMixin'
 
@@ -46,22 +46,22 @@ export default {
 <style lang="scss" scoped>
 .social-list {
   margin-top: 1rem;
-}
 
-.social-button {
-  width: 100%;
+  .social-button {
+    width: 100%;
+  }
 
-  & + & {
+  .social-button + .social-button {
     margin-top: 1rem;
   }
-}
 
-.social-logo {
-  height: 1rem;
-  margin-right: 0.5rem;
+  .social-logo {
+    height: 1rem;
+    margin-right: 0.5rem;
 
-  ::v-deep(svg) {
-    height: 100%;
+    ::v-deep(svg) {
+      height: 100%;
+    }
   }
 }
 </style>

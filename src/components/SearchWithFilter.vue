@@ -39,7 +39,7 @@ import { markRaw, watch, ref } from 'vue'
 
 import { ToastType } from '@/plugins/toast/toastType'
 
-import FilterModal from '@/components/modals/FilterModal'
+import FilterModal from '@/components/modals/FilterModal.vue'
 
 export default {
   props: {

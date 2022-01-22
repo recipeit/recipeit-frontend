@@ -17,7 +17,7 @@
 <script>
 import uniqueID from '@/functions/uniqueID'
 
-import Toast from '@/plugins/toast/Toast'
+import Toast from '@/plugins/toast/Toast.vue'
 
 export default {
   name: 'ToastsContainer',

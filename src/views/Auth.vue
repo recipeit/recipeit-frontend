@@ -21,7 +21,7 @@
 <script>
 import BackgroundUrl from '@/assets/img/auth.jpg'
 
-import Logotype from '@/components/Logotype'
+import Logotype from '@/components/Logotype.vue'
 
 export default {
   components: { Logotype },

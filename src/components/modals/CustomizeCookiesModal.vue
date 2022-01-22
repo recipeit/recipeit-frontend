@@ -1,5 +1,5 @@
 <template>
-  <SheetModalContent>
+  <SheetModalContent class="customize-cookies-modal">
     <BaseModalHeader @close="$emit('close')">
       <BaseModalTitle>Ustawienia ciasteczek</BaseModalTitle>
     </BaseModalHeader>
@@ -64,29 +64,21 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.submit-button {
-  width: 100%;
-}
-
-// .section-header {
-//   font-size: 0.875rem;
-//   font-weight: bold;
-// }
-
-.checkbox {
-  // margin: 1rem 0 1.5rem 0;
-
-  // &:last-child {
-  //   margin-bottom: 0;
-  // }
-  & + & {
-    margin-top: 1rem;
+.customize-cookies-modal {
+  .submit-button {
+    width: 100%;
   }
 
-  .description {
-    font-size: 0.75rem;
-    margin-top: 0.5rem;
-    color: var(--color-text-secondary);
+  .checkbox {
+    .description {
+      font-size: 0.75rem;
+      margin-top: 0.5rem;
+      color: var(--color-text-secondary);
+    }
+  }
+
+  .checkbox + .checkbox {
+    margin-top: 1rem;
   }
 }
 </style>

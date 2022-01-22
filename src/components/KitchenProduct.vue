@@ -43,8 +43,8 @@ import myKitchenApi from '@/api/myKitchenApi'
 
 import { ToastType } from '@/plugins/toast/toastType'
 
-import Product from '@/components/Product'
-import EditKitchenProductModal from '@/components/modals/EditKitchenProductModal'
+import Product from '@/components/Product.vue'
+import EditKitchenProductModal from '@/components/modals/EditKitchenProductModal.vue'
 
 export default {
   components: {
@@ -124,103 +124,103 @@ export default {
   display: flex;
   height: 100%;
   align-items: center;
-}
 
-// .state {
-//   display: flex;
-//   align-items: center;
-//   min-height: 32px;
-//   height: 32px;
-//   min-width: 32px;
-//   border-radius: 50px;
-//   padding: 4px 8px;
-//   cursor: pointer;
-//   transition: all 0.3s ease;
-//   margin-right: -4px;
-//   justify-content: center;
+  // .state {
+  //   display: flex;
+  //   align-items: center;
+  //   min-height: 32px;
+  //   height: 32px;
+  //   min-width: 32px;
+  //   border-radius: 50px;
+  //   padding: 4px 8px;
+  //   cursor: pointer;
+  //   transition: all 0.3s ease;
+  //   margin-right: -4px;
+  //   justify-content: center;
 
-//   &--available {
-//     padding: 4px;
-//     color: var(--color-button-subtle-primary-color);
+  //   &--available {
+  //     padding: 4px;
+  //     color: var(--color-button-subtle-primary-color);
 
-//     @include cursor-only {
-//       &:hover,
-//       &:focus {
-//         background-color: var(--color-button-subtle-primary-background-hover);
-//       }
-//     }
-//   }
+  //     @include cursor-only {
+  //       &:hover,
+  //       &:focus {
+  //         background-color: var(--color-button-subtle-primary-background-hover);
+  //       }
+  //     }
+  //   }
 
-//   &-icon {
-//     font-size: 24px;
+  //   &-icon {
+  //     font-size: 24px;
 
-//     &--less-space {
-//       margin-left: 2px;
-//     }
+  //     &--less-space {
+  //       margin-left: 2px;
+  //     }
 
-//     &--small {
-//       font-size: 16px;
-//     }
-//   }
-// }
-
-.purchase-button {
-  min-width: 32px;
-  height: 32px;
-  border-radius: 48px;
-  background-color: var(--color-button-subtle-primary-background);
-  color: var(--color-button-subtle-primary-color);
-  display: flex;
-  align-items: center;
-  margin-right: 8px;
-  justify-content: center;
-  font-size: 20px;
-  cursor: pointer;
-
-  padding: 4px 8px;
-  @include transition((all));
-
-  &-icon {
-    font-size: 24px;
-
-    &--less-space {
-      margin-left: 2px;
-    }
-
-    &--small {
-      font-size: 16px;
-    }
-  }
-
-  // &:hover {
-  //   background-color: var(--color-button-subtle-primary-background-hover);
+  //     &--small {
+  //       font-size: 16px;
+  //     }
+  //   }
   // }
 
-  // &:active {
-  //   background-color: var(--color-button-subtle-primary-background-active);
-  // }
-}
+  .purchase-button {
+    min-width: 32px;
+    height: 32px;
+    border-radius: 48px;
+    background-color: var(--color-button-subtle-primary-background);
+    color: var(--color-button-subtle-primary-color);
+    display: flex;
+    align-items: center;
+    margin-right: 8px;
+    justify-content: center;
+    font-size: 20px;
+    cursor: pointer;
 
-.remove-button {
-  width: 32px;
-  height: 32px;
-  border-radius: 48px;
-  margin-right: -5px;
-  background-color: var(--color-button-subtle-danger-background);
-  color: var(--color-button-subtle-danger-color);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
-  cursor: pointer;
-  @include transition((background-color));
+    padding: 4px 8px;
+    @include transition((all));
 
-  &:hover {
-    background-color: var(--color-button-subtle-danger-background-hover);
+    &-icon {
+      font-size: 24px;
+
+      &--less-space {
+        margin-left: 2px;
+      }
+
+      &--small {
+        font-size: 16px;
+      }
+    }
+
+    // &:hover {
+    //   background-color: var(--color-button-subtle-primary-background-hover);
+    // }
+
+    // &:active {
+    //   background-color: var(--color-button-subtle-primary-background-active);
+    // }
   }
 
-  &:active {
-    background-color: var(--color-button-subtle-danger-background-active);
+  .remove-button {
+    width: 32px;
+    height: 32px;
+    border-radius: 48px;
+    margin-right: -5px;
+    background-color: var(--color-button-subtle-danger-background);
+    color: var(--color-button-subtle-danger-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    cursor: pointer;
+    @include transition((background-color));
+
+    &:hover {
+      background-color: var(--color-button-subtle-danger-background-hover);
+    }
+
+    &:active {
+      background-color: var(--color-button-subtle-danger-background-active);
+    }
   }
 }
 </style>

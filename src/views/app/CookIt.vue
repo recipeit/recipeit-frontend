@@ -1,5 +1,5 @@
 <template>
-  <div class="layout__page__content">
+  <div class="layout__page__content cook-it">
     <div class="cook-it-layout">
       <PageHeader :title="$t('cookIt.title')" />
 
@@ -122,10 +122,10 @@ import { queryParamsFromRouteQuery } from '@/constants'
 
 import recipeFilteredPagedList from '@/views/app/composable/recipeFilteredPagedList'
 
-import GenericRecipesList from '@/components/GenericRecipesList'
-import HorizontalRecipesList from '@/components/HorizontalRecipesList'
-import PageHeader from '@/components/PageHeader'
-import SectionTitle from '@/components/SectionTitle'
+import GenericRecipesList from '@/components/GenericRecipesList.vue'
+import HorizontalRecipesList from '@/components/HorizontalRecipesList.vue'
+import PageHeader from '@/components/PageHeader.vue'
+import SectionTitle from '@/components/SectionTitle.vue'
 
 export default {
   name: 'CookIt',
@@ -174,80 +174,80 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.layout__page__content {
+.cook-it {
   display: flex;
   flex: 1;
-}
 
-.cook-it-layout {
-  display: flex;
-  flex: 1;
-  width: 100%;
-  flex-direction: column;
-}
-
-.almost-available-horizontal {
-  margin: 0.5rem 0;
-
-  ::v-deep(.section-title) {
-    margin-top: 0;
+  .cook-it-layout {
+    display: flex;
+    flex: 1;
+    width: 100%;
+    flex-direction: column;
   }
-}
 
-.recipes-count {
-  padding: 1.25rem 1.5rem;
-  border-radius: 1.5rem;
-  color: var(--color-primary);
-  font-weight: 500;
-  font-size: 0.75rem;
-  background-color: var(--color-button-subtle-primary-background);
-  display: flex;
-  align-items: center;
-  width: 100%;
+  .almost-available-horizontal {
+    margin: 0.5rem 0;
 
-  @include transition((background-color, color, opacity, visibility));
-
-  &.hide-text {
-    color: transparent;
-    background-color: var(--color-image-background);
-
-    * {
-      visibility: hidden;
-      opacity: 0;
+    ::v-deep(.section-title) {
+      margin-top: 0;
     }
   }
 
-  &-icon {
-    font-size: 1.5rem;
-    margin-right: 1rem;
-  }
-}
-
-.empty-list-message {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  line-height: 2.25;
-
-  .empty-list-message-image {
-    width: 96px;
-  }
-
-  .empty-list-message-title {
-    margin-bottom: 1rem;
-    font-size: 0.875rem;
-    line-height: 1.5;
-  }
-
-  .empty-list-message-link {
-    font-weight: bold;
-  }
-
-  .empty-list-message-sub {
+  .recipes-count {
+    padding: 1.25rem 1.5rem;
+    border-radius: 1.5rem;
+    color: var(--color-primary);
+    font-weight: 500;
     font-size: 0.75rem;
+    background-color: var(--color-button-subtle-primary-background);
+    display: flex;
+    align-items: center;
+    width: 100%;
+
+    @include transition((background-color, color, opacity, visibility));
+
+    &.hide-text {
+      color: transparent;
+      background-color: var(--color-image-background);
+
+      * {
+        visibility: hidden;
+        opacity: 0;
+      }
+    }
+
+    &-icon {
+      font-size: 1.5rem;
+      margin-right: 1rem;
+    }
+  }
+
+  .empty-list-message {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    line-height: 2.25;
+
+    .empty-list-message-image {
+      width: 96px;
+    }
+
+    .empty-list-message-title {
+      margin-bottom: 1rem;
+      font-size: 0.875rem;
+      line-height: 1.5;
+    }
+
+    .empty-list-message-link {
+      font-weight: bold;
+    }
+
+    .empty-list-message-sub {
+      font-size: 0.75rem;
+    }
   }
 }
 </style>

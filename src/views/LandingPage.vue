@@ -27,14 +27,22 @@ import { useMeta } from 'vue-meta'
 
 import { BASE_URL } from '@/configs/url'
 
-import Benefits from '@/components/landingPage/Benefits'
-import Container from '@/components/landingPage/Container'
-import Footer from '@/components/landingPage/Footer'
-import FooterAuth from '@/components/landingPage/FooterAuth'
-import Section from '@/components/landingPage/Section'
-import SocialMedia from '@/components/landingPage/SocialMedia'
-import Splash from '@/components/landingPage/Splash'
-import Statistics from '@/components/landingPage/Statistics'
+import Benefits from '@/components/landingPage/Benefits.vue'
+import Container from '@/components/landingPage/Container.vue'
+import Footer from '@/components/landingPage/Footer.vue'
+import FooterAuth from '@/components/landingPage/FooterAuth.vue'
+import Section from '@/components/landingPage/Section.vue'
+import SocialMedia from '@/components/landingPage/SocialMedia.vue'
+import Splash from '@/components/landingPage/Splash.vue'
+import Statistics from '@/components/landingPage/Statistics.vue'
+
+import KitchenImage from '@/assets/img/landing-page/kitchen.webp'
+import RecipesImage from '@/assets/img/landing-page/recipes.webp'
+import RecipeImage from '@/assets/img/landing-page/recipe.webp'
+import ShoppingImage from '@/assets/img/landing-page/shopping.webp'
+import FiltersImage from '@/assets/img/landing-page/filters.webp'
+import PlanImage from '@/assets/img/landing-page/plan.webp'
+import FavouritesImage from '@/assets/img/landing-page/favourites.webp'
 
 export default {
   components: { Section, Splash, Footer, Container, Statistics, Benefits, FooterAuth, SocialMedia },
@@ -51,40 +59,40 @@ export default {
         title: 'Dodaj swoje produkty',
         description:
           'Stwórz listę produktów, które masz w swojej kuchni. Możesz ją uzupełnić o szczegóły, takie jak ilość czy data ważności.',
-        image: require('@/assets/img/landing-page/kitchen.webp')
+        image: KitchenImage
       },
       {
         title: 'Sprawdź co możesz z nich przygotować',
         description:
           'Dzięki temu Twoje produkty się nie przeterminują. A jeżeli planuejsz drobne zakupy, Recipeit pokaże przepisy w których brakuje tylko paru składników.',
-        image: require('@/assets/img/landing-page/recipes.webp')
+        image: RecipesImage
       },
       {
         title: 'Przygotuj posiłek',
         description: 'Na specjalnym widoku przepisu sprawdzisz jakich składników potrzebujesz i jak przygotować wybraną potrawę.',
-        image: require('@/assets/img/landing-page/recipe.webp')
+        image: RecipeImage
       },
       {
         title: 'Stwórz listę zakupów',
         description:
           'Dodasz do niej produkty, których brakuje do przygotowania Twojego posiłku. Recipeit automatycznie podzieli je na kategorie, co pomoże skrócić wizytę w sklepie.',
-        image: require('@/assets/img/landing-page/shopping.webp')
+        image: ShoppingImage
       },
       {
         title: 'Filtruj przepisy',
         description: 'Dzięki dedykowanym filtrom znajdziesz przepisy, które będą dokładnie odpowiadać Twoim potrzebom.',
-        image: require('@/assets/img/landing-page/filters.webp')
+        image: FiltersImage
       },
       {
         title: 'Zaplanuj przepis na później',
         description:
           'Stwórz swój plan na najbliższe dni. W ten sposób nie zapomnisz o potrawach, które chcesz przygotować, ani o zakupach, jakie będą potrzebne.',
-        image: require('@/assets/img/landing-page/plan.webp')
+        image: PlanImage
       },
       {
         title: 'Dodawaj do ulubionych',
         description: 'Lista ulubionych pozwoli Ci szybko wrócić do uwielbianych przepisów i przypomni jak je przygotować.',
-        image: require('@/assets/img/landing-page/favourites.webp')
+        image: FavouritesImage
       }
     ]
 

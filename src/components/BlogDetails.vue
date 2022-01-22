@@ -35,28 +35,28 @@ export default {
       object-fit: cover;
     }
   }
-}
 
-.blog-info {
-  // margin-left: 1rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  min-height: 64px;
-  flex: 1;
-}
+  .blog-info {
+    // margin-left: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    min-height: 64px;
+    flex: 1;
+  }
 
-.blog-name {
-  margin: 0;
-  font-size: 1.25rem;
-  line-height: 1.25;
-}
+  .blog-name {
+    margin: 0;
+    font-size: 1.25rem;
+    line-height: 1.25;
+  }
 
-.blog-url {
-  font-size: 0.75rem;
-  font-weight: bold;
-  margin-top: 4px;
+  .blog-url {
+    font-size: 0.75rem;
+    font-weight: bold;
+    margin-top: 4px;
+  }
 }
 </style>

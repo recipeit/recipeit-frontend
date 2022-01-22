@@ -7,11 +7,11 @@
 <script>
 import { useMeta } from 'vue-meta'
 
-import TERMS_HTML from 'html-loader!@/assets/docs/terms/terms_v1.html'
+import TERMS_HTML from '@/assets/docs/terms/terms_v1.html?raw'
 
 import { BASE_URL } from '@/configs/url'
 
-import AnonymousPage from '@/layouts/AnonymousPage'
+import AnonymousPage from '@/layouts/AnonymousPage.vue'
 
 import { TERMS } from '@/router/paths'
 

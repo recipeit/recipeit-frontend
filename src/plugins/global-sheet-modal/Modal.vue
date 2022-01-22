@@ -191,44 +191,44 @@ export default {
     // backdrop-filter: saturate(180%) blur(4px);
     z-index: 1001;
   }
-}
 
-.sheet-modal {
-  display: block;
-  transform: translate3d(0, 0, 0);
-  width: 100%;
-  max-width: 512px;
-  box-sizing: border-box;
-  z-index: 12500;
-  margin-top: auto;
+  .sheet-modal {
+    display: block;
+    transform: translate3d(0, 0, 0);
+    width: 100%;
+    max-width: 512px;
+    box-sizing: border-box;
+    z-index: 12500;
+    margin-top: auto;
 
-  @media (min-width: 721px) {
-    margin-bottom: auto;
+    @media (min-width: 721px) {
+      margin-bottom: auto;
+    }
   }
-}
 
-.slide-enter-active,
-.slide-leave-active {
-  transition: transform 0.3s ease, opacity 0.3s ease;
-}
+  .slide-enter-active,
+  .slide-leave-active {
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
 
-.slide-enter-from,
-.slide-leave-to {
-  transform: translate3d(0, 100%, 0);
+  .slide-enter-from,
+  .slide-leave-to {
+    transform: translate3d(0, 100%, 0);
 
-  @media (min-width: 721px) {
-    transform: scale(0.5);
+    @media (min-width: 721px) {
+      transform: scale(0.5);
+      opacity: 0;
+    }
+  }
+
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: opacity 0.3s ease;
+  }
+
+  .fade-enter-from,
+  .fade-leave-to {
     opacity: 0;
   }
-}
-
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.3s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
 }
 </style>

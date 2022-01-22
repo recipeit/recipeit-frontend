@@ -10,9 +10,7 @@
   </Modal>
   <global-sheet-modal-container />
   <toasts-container />
-  <MessageContainer>
-    <UpdateMessage v-if="update.updateExists.value" @update="update.refreshApp()" />
-  </MessageContainer>
+  <RefreshPWA />
 </template>
 
 <script>
@@ -21,20 +19,17 @@ import { useStore } from 'vuex'
 import { useMeta } from 'vue-meta'
 import { useRoute, useRouter } from 'vue-router'
 
-import updateSW from '@/composables/update'
-
 import { EXACT_THEMES, THEME_DARK, THEME_DARK_COLOR, THEME_HTML_ATTRIBUTE, THEME_LIGHT, THEME_LIGHT_COLOR } from '@/configs/theme'
 
-import Modal from '@/plugins/global-sheet-modal/Modal'
+import Modal from '@/plugins/global-sheet-modal/Modal.vue'
 
 import { APP_HOME, APP_ROUTE_NAMES, AUTH_LOGIN, LOGGED_USER_ALLOWED_ROUTE_NAMES } from '@/router/names'
 
 import GDPRService from '@/services/gdpr'
 
-import AppLoading from '@/components/AppLoading'
-import MessageContainer from '@/components/MessageContainer'
-import UpdateMessage from '@/components/messages/UpdateMessage'
-import CookiesModal from '@/components/modals/CookiesModal'
+import AppLoading from '@/components/AppLoading.vue'
+import RefreshPWA from '@/components/messages/RefreshPWA.vue'
+import CookiesModal from '@/components/modals/CookiesModal.vue'
 
 const TITLE_TEMPLATE = 'Recipeit - Znajdź przepis ze swoich produktów'
 const TITLE_SMALL_TEMPLATE = 'Recipeit'
@@ -42,8 +37,7 @@ const TITLE_SMALL_TEMPLATE = 'Recipeit'
 export default {
   components: {
     AppLoading,
-    MessageContainer,
-    UpdateMessage,
+    RefreshPWA,
     CookiesModal,
     Modal
   },
@@ -51,7 +45,6 @@ export default {
     const store = useStore()
     const route = useRoute()
     const router = useRouter()
-    const update = updateSW()
     const data = reactive({
       showGDPRModal: false,
       fetchedInitialUserProfile: false
@@ -114,18 +107,14 @@ export default {
 
       const stop = watchEffect(async () => {
         if (stopped) {
-          if (typeof stop === 'function') {
-            stop()
-          }
+          stop?.()
           return
         }
 
         const routeName = route.name
 
         if (routeName) {
-          if (typeof stop === 'function') {
-            stop()
-          }
+          stop?.()
           stopped = true
 
           if (userFetchSuccess) {
@@ -147,7 +136,6 @@ export default {
     return {
       ...toRefs(data),
       allowedGDPRModalRoute,
-      update,
       TITLE_TEMPLATE,
       TITLE_SMALL_TEMPLATE
     }

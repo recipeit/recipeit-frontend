@@ -32,9 +32,9 @@ import { APP_FAVOURITES } from '@/router/names'
 
 import recipePagedList from '@/views/app/composable/recipePagedList'
 
-import AddToFavouriteRecipeBox from '@/components/AddToFavouriteRecipeBox'
-import HorizontalRecipesList from '@/components/HorizontalRecipesList'
-import SectionTitle from '@/components/SectionTitle'
+import AddToFavouriteRecipeBox from '@/components/AddToFavouriteRecipeBox.vue'
+import HorizontalRecipesList from '@/components/HorizontalRecipesList.vue'
+import SectionTitle from '@/components/SectionTitle.vue'
 
 export default {
   components: { AddToFavouriteRecipeBox, HorizontalRecipesList, SectionTitle },

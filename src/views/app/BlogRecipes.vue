@@ -79,10 +79,10 @@ import { ToastType } from '@/plugins/toast/toastType'
 
 import recipePagedList from '@/views/app/composable/recipePagedList'
 
-import BlogDetails from '@/components/BlogDetails'
-import GenericRecipesList from '@/components/GenericRecipesList'
-import RecipeParallaxImage from '@/components/RecipeParallaxImage'
-import InvisibleBlogInfoModal from '@/components/modals/InvisibleBlogInfoModal'
+import BlogDetails from '@/components/BlogDetails.vue'
+import GenericRecipesList from '@/components/GenericRecipesList.vue'
+import RecipeParallaxImage from '@/components/RecipeParallaxImage.vue'
+import InvisibleBlogInfoModal from '@/components/modals/InvisibleBlogInfoModal.vue'
 
 export default {
   name: 'Recipes',
@@ -209,155 +209,138 @@ export default {
       margin-top: 16px;
     }
   }
-}
 
-.recipes-page {
-  &__header {
-    margin-bottom: 16px;
-  }
-}
-
-.back-button {
-  font-weight: bold;
-  font-size: 0.75rem;
-  display: flex;
-
-  &-icon {
-    font-size: 1rem;
-    margin-right: 0.5rem;
-  }
-}
-
-.blog-details-row {
-  margin-bottom: 24px;
-}
-
-.header {
-  display: flex;
-  position: relative;
-  margin: -32px -32px 16px -32px;
-
-  @media (min-width: 721px) {
-    margin-top: 0;
-    margin-left: 0;
-    margin-right: 0;
+  .blog-details-row {
+    margin-bottom: 24px;
   }
 
-  &::before {
-    content: '';
-    z-index: 1;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 40px;
-    min-height: 32px;
-    border-radius: 32px 32px 0 0;
-    background-color: var(--color-background);
-
-    @media (min-width: 721px) {
-      content: none;
-    }
-  }
-
-  &-buttons {
-    z-index: 2;
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
+  .header {
     display: flex;
-    justify-content: space-between;
-    padding: 32px;
-  }
-
-  &-button {
     position: relative;
-    font-size: 1.5rem;
-    padding: 0.5rem;
-    // background: rgba(#fff, 0.75);
-    // background-color: rgba(#222, 0.75);
-    background-color: rgba(var(--color-background-rgb), 0.95);
-    color: var(--color-text-primary);
-    // backdrop-filter: blur(8px);
-    border-radius: 50px;
-    line-height: 0;
-    transform: rotate(180deg); // TODO arrow ikonki
-  }
-
-  &-background-container {
-    position: relative;
-    height: 196px;
-    width: 100%;
-    background-color: var(--color-image-background);
+    margin: -32px -32px 16px -32px;
 
     @media (min-width: 721px) {
-      border-radius: 32px;
-      margin-bottom: 40px;
+      margin-top: 0;
+      margin-left: 0;
+      margin-right: 0;
     }
-  }
 
-  &-background {
-    height: 100%;
-    width: 100%;
+    &::before {
+      content: '';
+      z-index: 1;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 40px;
+      min-height: 32px;
+      border-radius: 32px 32px 0 0;
+      background-color: var(--color-background);
 
-    :deep(img) {
+      @media (min-width: 721px) {
+        content: none;
+      }
+    }
+
+    &-buttons {
+      z-index: 2;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: space-between;
+      padding: 32px;
+    }
+
+    &-button {
+      position: relative;
+      font-size: 1.5rem;
+      padding: 0.5rem;
+      // background: rgba(#fff, 0.75);
+      // background-color: rgba(#222, 0.75);
+      background-color: rgba(var(--color-background-rgb), 0.95);
+      color: var(--color-text-primary);
+      // backdrop-filter: blur(8px);
+      border-radius: 50px;
+      line-height: 0;
+      transform: rotate(180deg); // TODO arrow ikonki
+    }
+
+    &-background-container {
+      position: relative;
+      height: 196px;
+      width: 100%;
+      background-color: var(--color-image-background);
+
+      @media (min-width: 721px) {
+        border-radius: 32px;
+        margin-bottom: 40px;
+      }
+    }
+
+    &-background {
       height: 100%;
       width: 100%;
-      object-fit: cover;
+
+      :deep(img) {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+      }
     }
-  }
 
-  &-avatar-container {
-    z-index: 1;
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    border-radius: 80px;
-    overflow: hidden;
-    background-color: var(--color-image-background);
-    height: 80px;
-    width: 80px;
-    border: 4px solid var(--color-background);
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
+    &-avatar-container {
+      z-index: 1;
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 80px;
+      overflow: hidden;
+      background-color: var(--color-image-background);
+      height: 80px;
+      width: 80px;
+      border: 4px solid var(--color-background);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
 
-    .no-avatar-icon {
-      width: 100%;
+      .no-avatar-icon {
+        width: 100%;
+        height: 100%;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.75rem;
+        color: var(--color-text-secondary);
+      }
+    }
+
+    &-avatar {
       height: 100%;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.75rem;
-      color: var(--color-text-secondary);
-    }
-  }
-
-  &-avatar {
-    height: 100%;
-    width: 100%;
-
-    :deep(.image) {
-      height: 100%;
       width: 100%;
-      object-fit: cover;
+
+      :deep(.image) {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+      }
     }
   }
-}
 
-.hidden-bar {
-  font-size: 0.875rem;
-  font-weight: bold;
-  margin-left: auto;
-  margin-right: auto;
-  padding: 0.5rem 0;
-  line-height: 1rem;
-  display: flex;
-  align-items: center;
+  .hidden-bar {
+    font-size: 0.875rem;
+    font-weight: bold;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0.5rem 0;
+    line-height: 1rem;
+    display: flex;
+    align-items: center;
 
-  &-icon {
-    font-size: 1rem;
-    line-height: inherit;
-    margin-right: 0.75rem;
+    &-icon {
+      font-size: 1rem;
+      line-height: inherit;
+      margin-right: 0.75rem;
+    }
   }
 }
 </style>

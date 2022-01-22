@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import BaseLink from '@/components/base/BaseLink'
+import BaseLink from '@/components/base/BaseLink.vue'
 
 export default {
   components: { BaseLink },

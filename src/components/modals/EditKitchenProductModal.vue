@@ -1,5 +1,5 @@
 <template>
-  <SheetModalContent>
+  <SheetModalContent class="edit-kitchen-product-modal">
     <BaseModalHeader @close="$emit('close')">
       <BaseModalTitle>Edytuj produkt</BaseModalTitle>
     </BaseModalHeader>
@@ -15,7 +15,7 @@
         Anuluj
       </BaseButton>
       <BaseButton class="submit-button" raised color="primary" :form="formID" :loading="sending">
-        {{ 'Edytuj' }}
+        Edytuj
       </BaseButton>
     </BaseModalFooter>
   </SheetModalContent>
@@ -29,8 +29,8 @@ import * as Yup from 'yup'
 
 import uniqueID from '@/functions/uniqueID'
 
-import ProductModalForm from '@/components/ProductModalForm'
-import ExpirationDatesFormSection from '@/components/modals/ExpirationDatesFormSection'
+import ProductModalForm from '@/components/ProductModalForm.vue'
+import ExpirationDatesFormSection from '@/components/modals/ExpirationDatesFormSection.vue'
 
 export default {
   components: { Form, ProductModalForm, ExpirationDatesFormSection },
@@ -110,12 +110,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.submit-button {
-  width: 100%;
-
-  &__icon {
-    margin-right: 0.5rem;
-    font-size: 1rem;
+.edit-kitchen-product-modal {
+  .submit-button {
+    width: 100%;
   }
 }
 </style>

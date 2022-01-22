@@ -55,8 +55,8 @@ import { useStore } from 'vuex'
 
 import { INGREDIENT_USER_STATES } from '@/configs/recipeIngredient'
 
-import SectionTitle from '@/components/SectionTitle'
-import RecipeIngredient from '@/components/recipe/RecipeIngredient'
+import SectionTitle from '@/components/SectionTitle.vue'
+import RecipeIngredient from '@/components/recipe/RecipeIngredient.vue'
 
 export default {
   components: { RecipeIngredient, SectionTitle },
@@ -164,72 +164,72 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.servings-count {
-  color: var(--color-primary);
-  min-width: 36px;
-  padding: 0 6px;
-  display: inline-block;
-  text-align: center;
-}
-
-.servings-button {
-  display: inline-flex;
-  width: 32px;
-  padding: 0;
-  height: 32px;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
-  vertical-align: middle;
-  line-height: 1;
-
-  &--left {
-    margin-left: 12px;
-  }
-
-  &--right {
-    margin-right: 12px;
-  }
-}
-
 .recipe-ingredients-section {
   ::v-deep(.section-title) {
     margin: 32px 0 8px 0;
   }
-}
 
-.recipe-ingredients-group-name {
-  margin-top: 0.5rem;
-  display: flex;
-  align-items: center;
-  text-align: center;
-  min-height: 2rem;
-  font-weight: bold;
-  gap: 1rem;
+  .servings-count {
+    color: var(--color-primary);
+    min-width: 36px;
+    padding: 0 6px;
+    display: inline-block;
+    text-align: center;
+  }
 
-  .first-lowercase {
-    &::first-letter {
-      text-transform: lowercase;
+  .servings-button {
+    display: inline-flex;
+    width: 32px;
+    padding: 0;
+    height: 32px;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    vertical-align: middle;
+    line-height: 1;
+
+    &--left {
+      margin-left: 12px;
+    }
+
+    &--right {
+      margin-right: 12px;
     }
   }
 
-  &:before,
-  &:after {
-    content: '';
-    height: 1px;
-    flex: 1;
-    background: var(--color-border);
-    min-width: 1rem;
+  .recipe-ingredients-group-name {
+    margin-top: 0.5rem;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    min-height: 2rem;
+    font-weight: bold;
+    gap: 1rem;
+
+    .first-lowercase {
+      &::first-letter {
+        text-transform: lowercase;
+      }
+    }
+
+    &:before,
+    &:after {
+      content: '';
+      height: 1px;
+      flex: 1;
+      background: var(--color-border);
+      min-width: 1rem;
+    }
   }
-}
 
-.all-to-shopping-list-button-container {
-  margin-top: 16px;
-  text-align: right;
-}
+  .all-to-shopping-list-button-container {
+    margin-top: 16px;
+    text-align: right;
+  }
 
-.all-to-shopping-list-button {
-  font-size: 0.75rem;
-  font-weight: bold;
+  .all-to-shopping-list-button {
+    font-size: 0.75rem;
+    font-weight: bold;
+  }
 }
 </style>

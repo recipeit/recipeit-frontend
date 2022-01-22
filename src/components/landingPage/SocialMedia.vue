@@ -11,12 +11,12 @@
 </template>
 
 <script>
-import FacebookLogo from '@/assets/logos/facebook.svg?inline'
-import InstagramLogo from '@/assets/logos/instagram.svg?inline'
+import FacebookLogo from '@/assets/logos/facebook.svg?raw'
+import InstagramLogo from '@/assets/logos/instagram.svg?raw'
 
 import { FACEBOOK_PROFILE_URL, INSTAGRAM_PROFILE_URL } from '@/configs/socialMedia'
 
-import Container from '@/components/landingPage/Container'
+import Container from '@/components/landingPage/Container.vue'
 
 export default {
   components: { Container },

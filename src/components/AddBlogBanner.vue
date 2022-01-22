@@ -58,49 +58,49 @@ export default {
     align-items: center;
     flex-direction: row;
   }
-}
 
-.banner-item-img {
-  margin-bottom: 8px;
-  flex-shrink: 0;
-  background-color: var(--color-image-background);
-  max-width: 100%;
+  .banner-item-img {
+    margin-bottom: 8px;
+    flex-shrink: 0;
+    background-color: var(--color-image-background);
+    max-width: 100%;
 
-  @media (min-width: 721px) {
-    margin-bottom: 0;
-    margin-right: 24px;
+    @media (min-width: 721px) {
+      margin-bottom: 0;
+      margin-right: 24px;
+    }
+
+    :deep(img) {
+      max-width: 100%;
+    }
   }
 
-  :deep(img) {
+  .banner-item-code-container {
+    padding: 12px 16px;
+    background-color: var(--color-image-background);
+    border-radius: 12px;
     max-width: 100%;
   }
-}
 
-.banner-item-code-container {
-  padding: 12px 16px;
-  background-color: var(--color-image-background);
-  border-radius: 12px;
-  max-width: 100%;
-}
+  .banner-item-code {
+    display: block;
+    overflow-wrap: break-word;
+  }
 
-.banner-item-code {
-  display: block;
-  overflow-wrap: break-word;
-}
+  .banner-item-copy {
+    text-decoration: none;
+    font-weight: 700;
+    color: var(--color-primary);
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: 0.75rem;
+    font-family: inherit;
+    cursor: pointer;
 
-.banner-item-copy {
-  text-decoration: none;
-  font-weight: 700;
-  color: var(--color-primary);
-  background: none;
-  border: none;
-  padding: 0;
-  font-size: 0.75rem;
-  font-family: inherit;
-  cursor: pointer;
-
-  &.copied {
-    color: var(--color-text-primary);
+    &.copied {
+      color: var(--color-text-primary);
+    }
   }
 }
 </style>

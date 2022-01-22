@@ -2,10 +2,10 @@ import kebabCase from 'lodash.kebabcase'
 
 const components = {}
 
-const requireTemplate = require.context('.?inline', false, /\.svg$/)
+const icons = import.meta.globEager('./*.svg')
 
-requireTemplate.keys().forEach(fileName => {
-  const name = fileName
+Object.entries(icons).forEach(([path, { default: component }]) => {
+  const name = path
     .split('/')
     .pop()
     .replace(/\.\w+$/, '')
@@ -16,7 +16,7 @@ requireTemplate.keys().forEach(fileName => {
 
   if (!(weight in components)) components[weight] = {}
 
-  components[weight][icon] = requireTemplate(fileName)
+  components[weight][icon] = component
 })
 
 export default components

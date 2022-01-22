@@ -15,8 +15,8 @@
 </template>
 
 <script>
-import Benefit from '@/components/landingPage/Benefit'
-import Container from '@/components/landingPage/Container'
+import Benefit from '@/components/landingPage/Benefit.vue'
+import Container from '@/components/landingPage/Container.vue'
 
 export default {
   components: { Benefit, Container },

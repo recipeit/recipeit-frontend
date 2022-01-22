@@ -34,7 +34,7 @@ import { THEME_DARK } from '@/configs/theme'
 
 import { APP_RECIPE } from '@/router/names'
 
-import FavouriteIcon from '@/components/FavouriteIcon'
+import FavouriteIcon from '@/components/FavouriteIcon.vue'
 
 export default {
   components: {

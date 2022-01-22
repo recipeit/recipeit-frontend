@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import Modal from '@/plugins/global-sheet-modal/Modal'
+import Modal from '@/plugins/global-sheet-modal/Modal.vue'
 import { nextId } from '@/plugins/global-sheet-modal/utils'
 
 export default {

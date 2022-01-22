@@ -1,18 +1,16 @@
 <template>
-  <div>
+  <div class="popular-categories">
     <SectionTitle icon="star" title="Popularne kategorie" />
-    <div class="popular-categories-container">
-      <ul v-if="popularCategories" class="popular-categories">
-        <li v-for="category in popularCategories" :key="category.key" class="popular-category-container">
-          <PopularCategory
-            :page="page"
-            :category-key="category.key"
-            :category-value="category.value"
-            :category-group="category.categoryGroup"
-          />
-        </li>
-      </ul>
-    </div>
+    <ul v-if="popularCategories" class="popular-categories-list">
+      <li v-for="category in popularCategories" :key="category.key" class="popular-category-container">
+        <PopularCategory
+          :page="page"
+          :category-key="category.key"
+          :category-value="category.value"
+          :category-group="category.categoryGroup"
+        />
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -23,8 +21,8 @@ import recipeApi from '@/api/recipeApi'
 
 import { APP_RECIPES } from '@/router/names'
 
-import PopularCategory from '@/components/PopularCategory'
-import SectionTitle from '@/components/SectionTitle'
+import PopularCategory from '@/components/PopularCategory.vue'
+import SectionTitle from '@/components/SectionTitle.vue'
 
 export default {
   components: { PopularCategory, SectionTitle },
@@ -53,13 +51,15 @@ export default {
 
 <style lang="scss" scoped>
 .popular-categories {
-  display: flex;
-  flex-wrap: wrap;
-  margin: -8px;
-}
+  .popular-categories-list {
+    display: flex;
+    flex-wrap: wrap;
+    margin: -8px;
+  }
 
-.popular-category-container {
-  width: 50%;
-  padding: 8px;
+  .popular-category-container {
+    width: 50%;
+    padding: 8px;
+  }
 }
 </style>

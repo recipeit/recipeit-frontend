@@ -1,5 +1,5 @@
 <template>
-  <div class="layout__page__content">
+  <div class="layout__page__content hidden-blogs">
     <PageHeader title="Ukryte blogi" :back-button="true" />
     <div v-if="hiddenBlogs === null">
       ...wczytuje
@@ -20,8 +20,8 @@ import { useMeta } from 'vue-meta'
 
 import userApi from '@/api/userApi'
 
-import HiddenBlog from '@/components/HiddenBlog'
-import PageHeader from '@/components/PageHeader'
+import HiddenBlog from '@/components/HiddenBlog.vue'
+import PageHeader from '@/components/PageHeader.vue'
 
 export default {
   components: {
@@ -53,8 +53,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.blogs-list-item {
-  & + & {
+.hidden-blogs {
+  .blogs-list-item + .blogs-list-item {
     margin-top: 1rem;
   }
 }

@@ -48,8 +48,8 @@ import { stringifiedAmount } from '@/functions/amount'
 
 import { ToastType } from '@/plugins/toast/toastType'
 
-import Dialog from '@/components/modals/Dialog'
-import SelectBaseProductFromArrayModal from '@/components/modals/SelectBaseProductFromArrayModal'
+import Dialog from '@/components/modals/Dialog.vue'
+import SelectBaseProductFromArrayModal from '@/components/modals/SelectBaseProductFromArrayModal.vue'
 
 export default {
   props: {

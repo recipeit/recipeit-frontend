@@ -1,5 +1,5 @@
 <template>
-  <SheetModalContent>
+  <SheetModalContent class="change-password-modal">
     <BaseModalHeader @close="$emit('close')">
       <BaseModalTitle>Zmień hasło</BaseModalTitle>
     </BaseModalHeader>
@@ -31,7 +31,7 @@
         Anuluj
       </BaseButton>
       <BaseButton class="submit-button" raised color="primary" :form="formID" :loading="sending">
-        {{ 'Zapisz' }}
+        Zapisz
       </BaseButton>
     </BaseModalFooter>
   </SheetModalContent>
@@ -53,7 +53,7 @@ import { ToastType } from '@/plugins/toast/toastType'
 
 import recaptcha from '@/services/recaptcha'
 
-import RecaptchaBranding from '@/components/RecaptchaBranding'
+import RecaptchaBranding from '@/components/RecaptchaBranding.vue'
 
 export default {
   components: {
@@ -138,22 +138,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.submit-button {
-  width: 100%;
-
-  &__icon {
-    margin-right: 0.5rem;
-    font-size: 1rem;
+.change-password-modal {
+  .submit-button {
+    width: 100%;
   }
-}
 
-.forgot-password-button {
-  margin-bottom: 1.5rem;
-  font-size: 0.75rem;
-  font-weight: bold;
-}
+  .forgot-password-button {
+    margin-bottom: 1.5rem;
+    font-size: 0.75rem;
+    font-weight: bold;
+  }
 
-.recaptcha-branding {
-  margin-top: 1rem;
+  .recaptcha-branding {
+    margin-top: 1rem;
+  }
 }
 </style>

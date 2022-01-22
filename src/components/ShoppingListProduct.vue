@@ -1,5 +1,5 @@
 <template>
-  <Product :product="product" @click="openEditModal()">
+  <Product class="shopping-list-product" :product="product" @click="openEditModal()">
     <div class="actions">
       <!-- <div class="actions__remove" @click="deleteProduct">usuń</div>
       <div class="actions__decrement" @click="decreaseAmount">-</div>
@@ -31,8 +31,8 @@
 <script>
 import { markRaw } from 'vue'
 
-import Product from '@/components/Product'
-import EditShoppingListProductModal from '@/components/modals/EditShoppingListProductModal'
+import Product from '@/components/Product.vue'
+import EditShoppingListProductModal from '@/components/modals/EditShoppingListProductModal.vue'
 
 export default {
   components: {
@@ -77,56 +77,58 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.actions {
-  display: flex;
-  height: 100%;
-  align-items: center;
-  // padding-right: 15px;
-}
-
-.purchase-button {
-  width: 32px;
-  height: 32px;
-  border-radius: 48px;
-  background-color: var(--color-button-subtle-primary-background);
-  color: var(--color-button-subtle-primary-color);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
-  margin-right: -5px;
-  cursor: pointer;
-  @include transition((background-color));
-
-  &:hover {
-    background-color: var(--color-button-subtle-primary-background-hover);
+.shopping-list-product {
+  .actions {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    // padding-right: 15px;
   }
 
-  &:active {
-    background-color: var(--color-button-subtle-primary-background-active);
+  .purchase-button {
+    width: 32px;
+    height: 32px;
+    border-radius: 48px;
+    background-color: var(--color-button-subtle-primary-background);
+    color: var(--color-button-subtle-primary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    margin-right: -5px;
+    cursor: pointer;
+    @include transition((background-color));
+
+    &:hover {
+      background-color: var(--color-button-subtle-primary-background-hover);
+    }
+
+    &:active {
+      background-color: var(--color-button-subtle-primary-background-active);
+    }
   }
-}
 
-.remove-button {
-  width: 32px;
-  height: 32px;
-  border-radius: 48px;
-  background-color: var(--color-button-subtle-danger-background);
-  color: var(--color-button-subtle-danger-color);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
-  margin-right: 8px;
-  cursor: pointer;
-  @include transition((background-color));
+  .remove-button {
+    width: 32px;
+    height: 32px;
+    border-radius: 48px;
+    background-color: var(--color-button-subtle-danger-background);
+    color: var(--color-button-subtle-danger-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    margin-right: 8px;
+    cursor: pointer;
+    @include transition((background-color));
 
-  &:hover {
-    background-color: var(--color-button-subtle-danger-background-hover);
-  }
+    &:hover {
+      background-color: var(--color-button-subtle-danger-background-hover);
+    }
 
-  &:active {
-    background-color: var(--color-button-subtle-danger-background-active);
+    &:active {
+      background-color: var(--color-button-subtle-danger-background-active);
+    }
   }
 }
 </style>

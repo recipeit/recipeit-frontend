@@ -1,5 +1,5 @@
 <template>
-  <SheetModalContent>
+  <SheetModalContent class="delete-account-modal">
     <BaseModalHeader @close="$emit('close')">
       <BaseModalTitle class="title">Czy na pewno chcesz usunąć konto?</BaseModalTitle>
     </BaseModalHeader>
@@ -27,7 +27,7 @@
         Nie chcę
       </BaseButton>
       <BaseButton class="submit-button" raised color="danger" :form="formID" :loading="sending">
-        {{ 'Usuń konto' }}
+        Usuń konto
       </BaseButton>
     </BaseModalFooter>
   </SheetModalContent>
@@ -47,7 +47,7 @@ import uniqueID from '@/functions/uniqueID'
 
 import recaptcha from '@/services/recaptcha'
 
-import RecaptchaBranding from '@/components/RecaptchaBranding'
+import RecaptchaBranding from '@/components/RecaptchaBranding.vue'
 
 export default {
   components: { RecaptchaBranding, Field, Form },
@@ -58,7 +58,7 @@ export default {
     }
   },
   emits: ['close'],
-  setup(props, component) {
+  setup(_, component) {
     const store = useStore()
     const formID = 'form-' + uniqueID().getID()
     const data = reactive({
@@ -130,40 +130,37 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.submit-button {
-  width: 100%;
-
-  &__icon {
-    margin-right: 0.5rem;
-    font-size: 1rem;
+.delete-account-modal {
+  .submit-button {
+    width: 100%;
   }
-}
 
-.title {
-  color: var(--color-red);
-}
+  .title {
+    color: var(--color-red);
+  }
 
-.message {
-  margin: 0;
-  font-size: 0.875rem;
+  .message {
+    margin: 0;
+    font-size: 0.875rem;
+  }
 
-  & + & {
+  .message + .message {
     margin-top: 1rem;
   }
-}
 
-.code {
-  font-weight: bold;
-  color: var(--color-red);
-  pointer-events: none;
-  user-select: none;
-}
+  .code {
+    font-weight: bold;
+    color: var(--color-red);
+    pointer-events: none;
+    user-select: none;
+  }
 
-.form {
-  margin-top: 1.5rem;
-}
+  .form {
+    margin-top: 1.5rem;
+  }
 
-.recaptcha-branding {
-  margin-top: 1rem;
+  .recaptcha-branding {
+    margin-top: 1rem;
+  }
 }
 </style>

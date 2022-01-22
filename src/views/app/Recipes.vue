@@ -1,5 +1,5 @@
 <template>
-  <div class="layout__page__content">
+  <div class="layout__page__content recipes">
     <PageHeader :title="$t('recipes.title')" />
 
     <GenericRecipesList
@@ -39,8 +39,8 @@ import { fetchRecipesQueryParams, queryParamsFromRouteQuery } from '@/constants'
 
 import recipeFilteredPagedList from '@/views/app/composable/recipeFilteredPagedList'
 
-import GenericRecipesList from '@/components/GenericRecipesList'
-import PageHeader from '@/components/PageHeader'
+import GenericRecipesList from '@/components/GenericRecipesList.vue'
+import PageHeader from '@/components/PageHeader.vue'
 
 export default {
   name: 'Recipes',
@@ -97,43 +97,43 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.layout__page__content {
+.recipes {
   display: flex;
   flex-direction: column;
-}
 
-.recipes-count {
-  margin-bottom: 1rem;
-  padding: 1.25rem 1.5rem;
-  border-radius: 1.5rem;
-  color: var(--color-primary);
-  font-weight: 500;
-  font-size: 0.75rem;
-  background-color: var(--color-button-subtle-primary-background);
-  display: flex;
-  align-items: center;
-  width: 100%;
+  .recipes-count {
+    margin-bottom: 1rem;
+    padding: 1.25rem 1.5rem;
+    border-radius: 1.5rem;
+    color: var(--color-primary);
+    font-weight: 500;
+    font-size: 0.75rem;
+    background-color: var(--color-button-subtle-primary-background);
+    display: flex;
+    align-items: center;
+    width: 100%;
 
-  @include transition((background-color, color, opacity, visibility));
+    @include transition((background-color, color, opacity, visibility));
 
-  &.hide-text {
-    color: transparent;
-    background-color: var(--color-image-background);
+    &.hide-text {
+      color: transparent;
+      background-color: var(--color-image-background);
 
-    * {
-      visibility: hidden;
-      opacity: 0;
+      * {
+        visibility: hidden;
+        opacity: 0;
+      }
     }
-  }
 
-  &-icon {
-    font-size: 1.5rem;
-    margin-right: 1rem;
-  }
+    &-icon {
+      font-size: 1.5rem;
+      margin-right: 1rem;
+    }
 
-  .cook-it-link {
-    font-weight: 700;
-    text-decoration: underline;
+    .cook-it-link {
+      font-weight: 700;
+      text-decoration: underline;
+    }
   }
 }
 </style>

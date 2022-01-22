@@ -1,5 +1,5 @@
 <template>
-  <div class="auth-main__content">
+  <div class="auth-main__content reset-password">
     <template v-if="state === 'BEFORE'">
       <h1>Zmiana hasła</h1>
 
@@ -67,7 +67,7 @@ import { AUTH_RESET_PASSWORD } from '@/router/paths'
 
 import recaptcha from '@/services/recaptcha'
 
-import Spinner from '@/components/Spinner'
+import Spinner from '@/components/Spinner.vue'
 
 export default {
   components: {
@@ -147,24 +147,24 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.wait {
-  display: flex;
-  align-items: center;
+.reset-password {
+  .wait {
+    display: flex;
+    align-items: center;
+  }
 
   .wait-spinner {
     margin-right: 0.75rem;
     color: var(--color-primary);
   }
-}
-// form {
-// margin-bottom: 16px;
-// }
-h1 {
-  margin-bottom: 1.5rem;
-}
 
-.login-button {
-  margin-top: 1.5rem;
+  h1 {
+    margin-bottom: 1.5rem;
+  }
+
+  .login-button {
+    margin-top: 1.5rem;
+  }
 
   .login-button-icon {
     font-size: 0.875rem;

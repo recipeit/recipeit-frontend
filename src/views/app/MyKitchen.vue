@@ -1,5 +1,5 @@
 <template>
-  <div class="layout__page__content">
+  <div class="layout__page__content my-kitchen">
     <PageHeader :title="$t('myKitchen.title')" />
 
     <!-- <SearchWithFilter class="product-list-filter" placeholder="Szukaj produktu" @search="onSearch($event)" /> -->
@@ -84,11 +84,13 @@ import { computed, nextTick, reactive, ref, toRefs } from 'vue'
 import { mapState, useStore } from 'vuex'
 import { useMeta } from 'vue-meta'
 
-import KitchenProduct from '@/components/KitchenProduct'
-import PageHeader from '@/components/PageHeader'
-import ProductIcon from '@/components/ProductIcon'
-// import SearchWithFilter from '@/components/SearchWithFilter'
-// import NewKitchenProductModal from '@/components/modals/NewKitchenProductModal'
+import KitchenProduct from '@/components/KitchenProduct.vue'
+import PageHeader from '@/components/PageHeader.vue'
+import ProductIcon from '@/components/ProductIcon.vue'
+// import SearchWithFilter from '@/components/SearchWithFilter.vue'
+// import NewKitchenProductModal from '@/components/modals/NewKitchenProductModal.vue'
+
+import { PRODUCT_CATEGORY_ORDER } from '@/configs/productCategories'
 
 export default {
   name: 'MyKitchen',
@@ -109,7 +111,8 @@ export default {
 
     const data = reactive({
       fetchedData: false,
-      selectFocused: false
+      selectFocused: false,
+      simpleView: true
     })
 
     const baseProductsGrouped = computed(() =>
@@ -170,10 +173,10 @@ export default {
       if (!filteredProducts) return null
 
       return _(filteredProducts)
-        .sortBy(item => item.baseProductName)
-        .groupBy(item => item.category)
+        .sortBy(({ baseProductName }) => baseProductName)
+        .groupBy(({ category }) => category)
         .toPairs()
-        .sortBy(group => this.$t(`productCategory.${group[0]}`))
+        .sortBy(([group]) => PRODUCT_CATEGORY_ORDER[group])
         .value()
     }
   },
@@ -210,122 +213,122 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.category-group {
-  display: flex;
-  align-items: center;
-}
-
-.category-group-icon {
-  margin-right: 0.5rem;
-  font-size: 1.25rem;
-}
-
-.layout__page__content {
+.my-kitchen {
   margin-bottom: 88px;
   flex-direction: column;
   display: flex;
   flex: 1;
-}
 
-.empty-message {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  font-size: 0.875rem;
-  color: var(--color-text-secondary);
-
-  .empty-message-title {
-    color: var(--color-text-primary);
-    margin-bottom: 1rem;
-    font-weight: bold;
-    font-size: 1rem;
+  .category-group {
+    display: flex;
+    align-items: center;
   }
-}
 
-.add-product-button-container {
-  position: relative;
-}
+  .category-group-icon {
+    margin-right: 0.5rem;
+    font-size: 1.25rem;
+  }
 
-.add-product-button {
-  color: var(--color-primary);
+  .empty-message {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
 
-  &.space-top {
+    .empty-message-title {
+      color: var(--color-text-primary);
+      margin-bottom: 1rem;
+      font-weight: bold;
+      font-size: 1rem;
+    }
+  }
+
+  .add-product-button-container {
+    position: relative;
+  }
+
+  .add-product-button {
+    color: var(--color-primary);
+
+    &.space-top {
+      margin-top: 1.5rem;
+    }
+
+    &.absolute {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+    }
+  }
+
+  .add-product-select {
+    &.hidden {
+      visibility: hidden;
+      opacity: 0;
+    }
+  }
+
+  .add-product-button,
+  .add-product-select {
+    margin-bottom: 1.5rem;
+  }
+
+  .product-list-group {
+    &__title {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.5rem;
+
+      &__icon {
+        margin-right: 0.5rem;
+        font-size: 1.5rem;
+      }
+
+      &__name {
+        font-size: 0.875rem;
+        font-weight: bold;
+      }
+    }
+  }
+
+  .product-list-group + .product-list-group {
     margin-top: 1.5rem;
   }
 
-  &.absolute {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-  }
-}
-
-.add-product-select {
-  &.hidden {
-    visibility: hidden;
-    opacity: 0;
-  }
-}
-
-.add-product-button,
-.add-product-select {
-  margin-bottom: 1.5rem;
-}
-
-.product-list-group {
-  &__title {
+  .product-list {
     display: flex;
-    align-items: center;
-    margin-bottom: 0.5rem;
+    flex-direction: column;
+    padding: 0;
+    background: var(--color-background-flyout);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border-radius: 1.5rem;
+    padding: 0.5rem 1.5rem;
+
+    &__item {
+      cursor: pointer;
+    }
+  }
+
+  .floating-action-button-container {
+    position: fixed;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+  }
+
+  .floating-action-button {
+    white-space: nowrap;
 
     &__icon {
       margin-right: 0.5rem;
-      font-size: 1.5rem;
+      font-size: 1rem;
     }
-
-    &__name {
-      font-size: 0.875rem;
-      font-weight: bold;
-    }
-  }
-
-  & + & {
-    margin-top: 1.5rem;
-  }
-}
-
-.product-list {
-  display: flex;
-  flex-direction: column;
-  padding: 0;
-  background: var(--color-background-flyout);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  border-radius: 1.5rem;
-  padding: 0.5rem 1.5rem;
-
-  &__item {
-    cursor: pointer;
-  }
-}
-
-.floating-action-button-container {
-  position: fixed;
-  bottom: 100px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 100;
-}
-
-.floating-action-button {
-  white-space: nowrap;
-
-  &__icon {
-    margin-right: 0.5rem;
-    font-size: 1rem;
   }
 }
 </style>

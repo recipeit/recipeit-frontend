@@ -6,9 +6,9 @@
 </template>
 
 <script>
-import logo from '@/assets/logo.svg?inline'
+import logo from '@/assets/logo.svg?raw'
 
-import Spinner from '@/components/Spinner'
+import Spinner from '@/components/Spinner.vue'
 
 export default {
   components: {

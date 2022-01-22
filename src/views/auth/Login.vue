@@ -1,5 +1,5 @@
 <template>
-  <div class="auth-main__content">
+  <div class="auth-main__content login">
     <h1>Zaloguj się</h1>
     <p class="subtitle">
       lub
@@ -72,9 +72,9 @@ import { AUTH_LOGIN } from '@/router/paths'
 
 import recaptcha from '@/services/recaptcha'
 
-import AuthSocialList from '@/views/auth/AuthSocialList'
+import AuthSocialList from '@/views/auth/AuthSocialList.vue'
 
-import RecaptchaBranding from '@/components/RecaptchaBranding'
+import RecaptchaBranding from '@/components/RecaptchaBranding.vue'
 
 export default {
   components: {
@@ -157,21 +157,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-// form {
-// margin-bottom: 16px;
-// }
-h1 {
-  margin-bottom: 8px;
-}
-.subtitle {
-  margin-bottom: 1.5rem;
-}
+.login {
+  h1 {
+    margin-bottom: 8px;
+  }
 
-.recaptcha-branding {
-  margin-top: 1rem;
-}
+  .subtitle {
+    margin-bottom: 1.5rem;
+  }
 
-// p {
-//   margin: 8px 0;
-// }
+  .recaptcha-branding {
+    margin-top: 1rem;
+  }
+}
 </style>

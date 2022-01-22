@@ -1,5 +1,5 @@
 <template>
-  <SheetModalContent>
+  <SheetModalContent class="new-kitchen-product-modal">
     <BaseModalHeader @close="$emit('close')">
       <BaseModalTitle>Dodaj nowy produkt</BaseModalTitle>
     </BaseModalHeader>
@@ -25,8 +25,8 @@ import * as Yup from 'yup'
 
 import uniqueID from '@/functions/uniqueID'
 
-import ProductModalForm from '@/components/ProductModalForm'
-import ExpirationDatesFormSection from '@/components/modals/ExpirationDatesFormSection'
+import ProductModalForm from '@/components/ProductModalForm.vue'
+import ExpirationDatesFormSection from '@/components/modals/ExpirationDatesFormSection.vue'
 
 export default {
   components: { Form, ProductModalForm, ExpirationDatesFormSection },
@@ -90,12 +90,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.submit-button {
-  width: 100%;
+.new-kitchen-product-modal {
+  .submit-button {
+    width: 100%;
 
-  &__icon {
-    margin-right: 0.5rem;
-    font-size: 1rem;
+    &__icon {
+      margin-right: 0.5rem;
+      font-size: 1rem;
+    }
   }
 }
 </style>

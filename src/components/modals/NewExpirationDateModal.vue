@@ -1,5 +1,5 @@
 <template>
-  <SheetModalContent>
+  <SheetModalContent class="new-expiration-date-modal">
     <BaseModalHeader @close="$emit('close')">
       <BaseModalTitle>Nowa data ważności</BaseModalTitle>
     </BaseModalHeader>
@@ -127,23 +127,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.submit-button {
-  width: 100%;
+.new-expiration-date-modal {
+  .submit-button {
+    width: 100%;
+  }
 
-  &__icon {
-    margin-right: 0.5rem;
-    font-size: 1rem;
+  .amount-input {
+    width: 128px;
+    flex: unset;
   }
 }
-
-.amount-input {
-  width: 128px;
-  flex: unset;
-}
-
-// .error {
-//   margin-top: 1rem;
-//   font-size: 0.75rem;
-//   color: var(--color-red);
-// }
 </style>

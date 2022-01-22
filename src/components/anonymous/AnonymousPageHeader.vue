@@ -36,7 +36,7 @@ import { useStore } from 'vuex'
 
 import { LANDING_PAGE, AUTH_LOGIN, AUTH_REGISTER, APP_HOME } from '@/router/names'
 
-import Logotype from '@/components/Logotype'
+import Logotype from '@/components/Logotype.vue'
 
 export default {
   components: { Logotype },

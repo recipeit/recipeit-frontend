@@ -1,5 +1,5 @@
 <template>
-  <div class="layout__page__content">
+  <div class="layout__page__content hidden-recipes">
     <PageHeader title="Ukryte przepisy" :back-button="true" />
     <div v-if="hiddenRecipes === null">
       ...wczytuje
@@ -20,8 +20,8 @@ import { useMeta } from 'vue-meta'
 
 import userApi from '@/api/userApi'
 
-import PageHeader from '@/components/PageHeader'
-import HiddenRecipe from '@/components/HiddenRecipe'
+import PageHeader from '@/components/PageHeader.vue'
+import HiddenRecipe from '@/components/HiddenRecipe.vue'
 
 export default {
   components: {
@@ -53,8 +53,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.recipes-list-item {
-  & + & {
+.hidden-recipes {
+  .recipes-list-item + .recipes-list-item {
     margin-top: 1rem;
   }
 }

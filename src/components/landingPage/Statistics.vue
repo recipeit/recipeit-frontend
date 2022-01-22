@@ -24,8 +24,8 @@
 import debounce from 'lodash.debounce'
 import { onBeforeMount, onBeforeUnmount, onMounted, ref } from 'vue'
 
-import Container from '@/components/landingPage/Container'
-import StatisticsCard from '@/components/landingPage/StatisticsCard'
+import Container from '@/components/landingPage/Container.vue'
+import StatisticsCard from '@/components/landingPage/StatisticsCard.vue'
 
 export default {
   components: { Container, StatisticsCard },
@@ -122,81 +122,83 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.header-container {
-  margin-top: 4rem;
-  padding-top: 0;
-  padding-bottom: 0;
-  display: flex;
-  justify-content: space-between;
-}
-
-.header {
-  font-weight: bold;
-  font-size: 1.25rem;
-  color: var(--color-text-primary);
-}
-
-.controls {
-  display: none;
-
-  @include cursor-only {
+.statistics {
+  .header-container {
+    margin-top: 4rem;
+    padding-top: 0;
+    padding-bottom: 0;
     display: flex;
+    justify-content: space-between;
   }
-}
 
-.control-left {
-  transform: rotate(180deg); // TODO add icon
-}
-
-.control-left,
-.control-right {
-  font-size: 1.5rem;
-  height: 1.5rem;
-  width: 2.5rem;
-  line-height: 1;
-
-  &[disabled] {
-    color: var(--color-text-secondary);
-    pointer-events: none;
-    opacity: 0.5;
+  .header {
+    font-weight: bold;
+    font-size: 1.25rem;
+    color: var(--color-text-primary);
   }
-}
 
-.statistics-footer-container {
-  font-size: 0.75rem;
-  color: var(--color-text-secondary);
-  padding-top: 0;
-  padding-bottom: 0;
-}
+  .controls {
+    display: none;
 
-.statistics-cards {
-  display: flex;
-  gap: 2rem;
-  align-items: flex-start;
-  padding: 1rem 0 2rem 0;
-
-  padding-left: max(var(--half-width) - 480px, 2rem);
-  padding-right: max(var(--half-width) - 480px, 2rem);
-  scroll-behavior: smooth;
-  scroll-snap-type: x mandatory;
-  scroll-padding-left: max(var(--half-width) - 480px, 2rem);
-  overflow-x: scroll;
-  flex-wrap: nowrap;
-
-  @include cursor-only {
-    scrollbar-width: none;
-
-    &::-webkit-scrollbar {
-      display: none;
+    @include cursor-only {
+      display: flex;
     }
   }
 
-  // &::after {
-  //   content: '';
-  //   display: block;
-  //   width: 20px;
-  //   height: 20px;
-  //   min-width: max(var(--half-width) - 480px - 2rem, 0.1px);
-  // }
+  .control-left {
+    transform: rotate(180deg); // TODO add icon
+  }
+
+  .control-left,
+  .control-right {
+    font-size: 1.5rem;
+    height: 1.5rem;
+    width: 2.5rem;
+    line-height: 1;
+
+    &[disabled] {
+      color: var(--color-text-secondary);
+      pointer-events: none;
+      opacity: 0.5;
+    }
+  }
+
+  .statistics-footer-container {
+    font-size: 0.75rem;
+    color: var(--color-text-secondary);
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .statistics-cards {
+    display: flex;
+    gap: 2rem;
+    align-items: flex-start;
+    padding: 1rem 0 2rem 0;
+
+    padding-left: max(var(--half-width) - 480px, 2rem);
+    padding-right: max(var(--half-width) - 480px, 2rem);
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+    scroll-padding-left: max(var(--half-width) - 480px, 2rem);
+    overflow-x: scroll;
+    flex-wrap: nowrap;
+
+    @include cursor-only {
+      scrollbar-width: none;
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
+
+    // &::after {
+    //   content: '';
+    //   display: block;
+    //   width: 20px;
+    //   height: 20px;
+    //   min-width: max(var(--half-width) - 480px - 2rem, 0.1px);
+    // }
+  }
 }
 </style>
