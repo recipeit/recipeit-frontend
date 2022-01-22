@@ -26,7 +26,7 @@
       search-by="variants"
       label="name"
       :options="groupedBaseProducts"
-      :limit="100"
+      :limit="1000"
       :searchable="true"
       group-label="groupKey"
       group-values="groupValues"

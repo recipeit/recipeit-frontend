@@ -72,17 +72,19 @@
                 'base-select__options__list__item--highlight': index === pointer,
                 'base-select__options__list__item--label': option.isLabel
               }"
+              @mouseenter.self="!option.isLabel ? pointerSet(index) : null"
+              @click="!option.isLabel ? selectOption(option) : null"
             >
-              <div v-if="option.isLabel" class="base-select__options__list__group-label">
-                <slot name="groupLabel" :label="option['groupLabel']">
-                  {{ option['groupLabel'] }}
-                </slot>
-              </div>
-              <div v-else class="base-select__options__list__option" @mouseenter.self="pointerSet(index)" @click="selectOption(option)">
-                <slot name="option" :option="option" :search="search" :index="index">
-                  {{ label ? option[label] : option }}
-                </slot>
-              </div>
+              <!-- <div v-if="option.isLabel" class="base-select__options__list__group-label"> -->
+              <slot v-if="option.isLabel" name="groupLabel" :label="option['groupLabel']">
+                {{ option['groupLabel'] }}
+              </slot>
+              <!-- </div> -->
+              <!-- <div v-else class="base-select__options__list__option" @mouseenter.self="pointerSet(index)" @click="selectOption(option)"> -->
+              <slot v-else name="option" :option="option" :search="search" :index="index">
+                {{ label ? option[label] : option }}
+              </slot>
+              <!-- </div> -->
             </li>
             <li
               v-if="filteredOptions && filteredOptions.length > filteredOptionsLimited.length"
@@ -709,13 +711,15 @@ export default {
         color: var(--color-text-secondary);
       }
 
-      &__option {
-        padding: 8px 16px;
-        cursor: pointer;
-      }
+      // &__option {
+      //   padding: 8px 16px;
+      //   cursor: pointer;
+      // }
 
       &__item {
         @include transition((background-color));
+        padding: 8px 16px;
+        cursor: pointer;
 
         &--highlight {
           // color: var(--color-primary);
@@ -737,17 +741,22 @@ export default {
           position: sticky;
           top: 0;
           background-color: var(--color-background-flyout);
+          font-size: 0.75rem;
+          font-weight: bold;
+          color: var(--color-text-secondary);
+          margin-top: 0.25rem;
+          cursor: initial;
         }
       }
 
-      &__group-label {
-        padding: 8px 16px;
-        font-size: 0.75rem;
-        font-weight: bold;
-        color: var(--color-text-secondary);
-        margin-top: 0.25rem;
-        cursor: initial;
-      }
+      // &__group-label {
+      //   padding: 8px 16px;
+      //   font-size: 0.75rem;
+      //   font-weight: bold;
+      //   color: var(--color-text-secondary);
+      //   margin-top: 0.25rem;
+      //   cursor: initial;
+      // }
     }
 
     &:not(&--above) {

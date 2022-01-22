@@ -59,7 +59,7 @@
               :options="groupedBaseProducts"
               :multiple="true"
               :searchable="true"
-              :limit="100"
+              :limit="1000"
               :value="selected[OPTION_KEYS.BASE_PRODUCTS]"
               group-label="groupKey"
               group-values="groupValues"
