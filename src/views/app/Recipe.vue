@@ -269,12 +269,6 @@ export default {
     isFavourite() {
       return this.favouriteRecipesIds.find(id => id === this.recipe.id) !== undefined
     },
-    // allIndexes() {
-    //   return this.recipe.details.directionsParagraphs.map((element, index) => index)
-    // },
-    // selectedDirection() {
-    //   return _.min(_.difference(this.allIndexes, this.finishedDirections))
-    // },
     images() {
       const { recipe } = this
 

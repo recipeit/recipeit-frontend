@@ -1,4 +1,9 @@
+import groupby from 'lodash.groupby'
+import sortby from 'lodash.sortby'
+
 import ingredientsApi from '@/api/ingredientsApi'
+
+import { PRODUCT_CATEGORY_ORDER } from '@/configs/productCategories'
 
 export const MUTATIONS = {
   SET_BASE_INGREDIENTS: 'SET_BASE_INGREDIENTS',
@@ -33,6 +38,18 @@ export default {
       const { data: unitGroups } = await ingredientsApi.getAllUnitKeysGroupedByMeasurement()
 
       commit(MUTATIONS.SET_UNITS, unitGroups)
+    }
+  },
+  getters: {
+    groupedBaseProducts(state) {
+      const sorted = sortby(state.baseProducts, 'baseProductName')
+      const grouped = groupby(sorted, 'category')
+      const sortedGroups = sortby(Object.entries(grouped), ([group]) => PRODUCT_CATEGORY_ORDER[group])
+
+      return sortedGroups.map(([groupKey, groupValues]) => ({
+        groupKey,
+        groupValues
+      }))
     }
   }
 }

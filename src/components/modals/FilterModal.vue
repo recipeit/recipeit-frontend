@@ -56,10 +56,10 @@
               search-by="variants"
               label="name"
               default-open-direction="above"
-              :options="baseProductsGrouped"
+              :options="groupedBaseProducts"
               :multiple="true"
               :searchable="true"
-              :limit="100"
+              :limit="1000"
               :value="selected[OPTION_KEYS.BASE_PRODUCTS]"
               group-label="groupKey"
               group-values="groupValues"
@@ -106,7 +106,7 @@
 </template>
 
 <script>
-import _ from 'lodash'
+import sortby from 'lodash.sortby'
 import { computed, reactive, toRefs } from 'vue'
 import { useStore } from 'vuex'
 
@@ -142,16 +142,7 @@ export default {
   setup(props, { emit }) {
     const store = useStore()
     const baseProducts = computed(() => store.state.ingredients.baseProducts)
-    const baseProductsGrouped = computed(() =>
-      _(baseProducts.value)
-        .groupBy(item => item.category)
-        .toPairs()
-        .value()
-        .map(pair => ({
-          groupKey: pair[0],
-          groupValues: pair[1]
-        }))
-    )
+    const groupedBaseProducts = computed(() => store.getters['ingredients/groupedBaseProducts'])
 
     // eslint-disable-next-line vue/no-setup-props-destructure
     const { [OPTION_KEYS.BASE_PRODUCTS]: defaultSelectedBaseProductIds, ...rest } = props.defaultSelected
@@ -204,7 +195,7 @@ export default {
       const options = props.options[groupKey]?.options
       const defaultSelectedIds = props.defaultSelected[groupKey]
       if (options) {
-        return _.sortBy(options, o => {
+        return sortby(options, o => {
           return !defaultSelectedIds?.includes(o.key)
         })
       }
@@ -222,7 +213,7 @@ export default {
 
     return {
       ...toRefs(data),
-      baseProductsGrouped,
+      groupedBaseProducts,
       submit,
       clearFilterGroup,
       orderSelectedChanged,

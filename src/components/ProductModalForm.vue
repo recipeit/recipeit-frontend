@@ -7,8 +7,8 @@
       track-by="id"
       search-by="variants"
       label="name"
-      :options="baseProductsGrouped"
-      :limit="100"
+      :options="groupedBaseProducts"
+      :limit="1000"
       :searchable="true"
       :errors="errors"
       v-bind="field"
@@ -49,77 +49,39 @@
 </template>
 
 <script>
-import _ from 'lodash'
 import { Field } from 'vee-validate'
 import { computed } from 'vue'
 import { useStore } from 'vuex'
+import { useI18n } from 'vue-i18n'
 
 import ProductIcon from '@/components/ProductIcon.vue'
 
 export default {
   components: { Field, ProductIcon },
   props: {
-    productAutofocus: Boolean
+    productAutofocus: {
+      type: Boolean,
+      default: false
+    }
   },
   emits: ['update:baseProductId', 'update:unit'],
   setup(props) {
+    const { t } = useI18n()
     const store = useStore()
-    // const baseProducts = computed(() => store.state.ingredients.baseProducts)
-    const baseProductsGrouped = computed(() =>
-      _(store.state.ingredients.baseProducts)
-        .groupBy(item => item.category)
-        .toPairs()
-        .value()
-        .map(pair => ({
-          groupKey: pair[0],
-          groupValues: pair[1]
-        }))
-    )
 
+    const groupedBaseProducts = computed(() => store.getters['ingredients/groupedBaseProducts'])
     const units = computed(() => store.state.ingredients.units)
-
-    // const localProduct = reactive({
-    //   selectedBaseProduct: props.baseProductId ? baseProducts.value?.find(p => p.id === props.baseProductId) : null,
-    //   amount: props.amount,
-    //   unit: props.unit
-    // })
-
     const unitLabelAmount = computed(() => parseFloat(props.amount) || 1)
 
-    function unitCustomLabel(value) {
-      return this.$tc(`units.${value}`, unitLabelAmount.value)
+    const unitCustomLabel = value => {
+      return t(`units.${value}`, unitLabelAmount.value)
     }
 
-    // watch(
-    //   () => localProduct.selectedBaseProduct,
-    //   newValue => {
-    //     if (newValue?.id) {
-    //       component.emit('update:baseProductId', newValue.id)
-    //     }
-    //   }
-    // )
-
-    // watch(
-    //   () => localProduct.amount,
-    //   newValue => component.emit('update:amount', newValue)
-    // )
-
-    // watch(
-    //   () => localProduct.unit,
-    //   newValue => component.emit('update:unit', newValue)
-    // )
-
-    // function print(test) {
-    //   console.log(test)
-    // }
-
     return {
-      // localProduct,
       units,
-      baseProductsGrouped,
+      groupedBaseProducts,
       unitLabelAmount,
       unitCustomLabel
-      // print
     }
   }
 }

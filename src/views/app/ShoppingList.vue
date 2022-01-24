@@ -23,8 +23,8 @@
       track-by="id"
       search-by="variants"
       label="name"
-      :options="baseProductsGrouped"
-      :limit="100"
+      :options="groupedBaseProducts"
+      :limit="1000"
       :searchable="true"
       group-label="groupKey"
       group-values="groupValues"
@@ -81,7 +81,8 @@
 </template>
 
 <script>
-import _ from 'lodash'
+import groupby from 'lodash.groupby'
+import sortby from 'lodash.sortby'
 import { computed, markRaw, nextTick, reactive, ref, toRefs } from 'vue'
 import { mapState, useStore } from 'vuex'
 import { useMeta } from 'vue-meta'
@@ -117,16 +118,7 @@ export default {
       selectFocused: false
     })
 
-    const baseProductsGrouped = computed(() =>
-      _(store.state.ingredients.baseProducts)
-        .groupBy(item => item.category)
-        .toPairs()
-        .value()
-        .map(pair => ({
-          groupKey: pair[0],
-          groupValues: pair[1]
-        }))
-    )
+    const groupedBaseProducts = computed(() => store.getters['ingredients/groupedBaseProducts'])
 
     const addProductFromSelect = ({ id } = {}) => {
       const requestData = {
@@ -146,7 +138,7 @@ export default {
     return {
       ...toRefs(data),
       addProductSelect,
-      baseProductsGrouped,
+      groupedBaseProducts,
       addProductFromSelect,
       openAddProductSelect,
       PRODUCT_GROUP_ICONS
@@ -171,12 +163,11 @@ export default {
 
       if (!filteredProducts) return null
 
-      return _(filteredProducts)
-        .sortBy(({ baseProductName }) => baseProductName)
-        .groupBy(({ category }) => category)
-        .toPairs()
-        .sortBy(([group]) => PRODUCT_CATEGORY_ORDER[group])
-        .value()
+      const sorted = sortby(filteredProducts, 'baseProductName')
+      const grouped = groupby(sorted, 'category')
+      const sortedGroups = sortby(Object.entries(grouped), ([group]) => PRODUCT_CATEGORY_ORDER[group])
+
+      return sortedGroups
     }
   },
   beforeMount() {
