@@ -260,14 +260,15 @@ export default {
             : []
         })
 
-        if (!this.search) return this.plainOptions(filteredGroups)
+        if (!this.formattedSearch) return this.plainOptions(filteredGroups)
 
         const sortedFilteredGroups = sortby(filteredGroups, group => {
           const options = group && !Array.isArray(group) ? group[this.groupValues] : null
-          return options?.some(option => {
-            const value = this.optionSearchableValue(option)
-            return value.includes(this.search)
-          })
+          return options?.some(option =>
+            this.optionSearchableValue(option)
+              .toLowerCase()
+              .includes(this.formattedSearch)
+          )
             ? 0
             : 1
         })
@@ -298,6 +299,9 @@ export default {
       // } else {
       return this.preferredOpenDirection === OPEN_DIRECTIONS.ABOVE
       // }
+    },
+    formattedSearch() {
+      return this.search?.toLowerCase() || this.search
     }
   },
   watch: {
@@ -519,13 +523,18 @@ export default {
       return this.searchBy ? option[this.searchBy] : this.customLabel(option, this.label)
     },
     filterOptions(options) {
-      const { search, optionSearchableValue } = this
-      const result = options.filter(option => includes(optionSearchableValue(option), search))
+      const { formattedSearch, optionSearchableValue } = this
+      const result = options.filter(option => includes(optionSearchableValue(option), this.search))
 
-      if (!search) return result
+      if (!formattedSearch) return result
 
       return sortby(result, [
-        option => (optionSearchableValue(option).includes(search) ? 0 : 1),
+        option =>
+          optionSearchableValue(option)
+            .toLowerCase()
+            .includes(formattedSearch)
+            ? 0
+            : 1,
         option => optionSearchableValue(option).length,
         option => optionSearchableValue(option)
       ])
