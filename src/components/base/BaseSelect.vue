@@ -713,11 +713,6 @@ export default {
         color: var(--color-text-secondary);
       }
 
-      // &__option {
-      //   padding: 8px 16px;
-      //   cursor: pointer;
-      // }
-
       &__item {
         @include transition((background-color));
         padding: 8px 16px;
@@ -750,15 +745,6 @@ export default {
           cursor: initial;
         }
       }
-
-      // &__group-label {
-      //   padding: 8px 16px;
-      //   font-size: 0.75rem;
-      //   font-weight: bold;
-      //   color: var(--color-text-secondary);
-      //   margin-top: 0.25rem;
-      //   cursor: initial;
-      // }
     }
 
     &:not(&--above) {
