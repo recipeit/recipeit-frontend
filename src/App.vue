@@ -26,11 +26,11 @@ import { APP_HOME, APP_ROUTE_NAMES, AUTH_LOGIN, LOGGED_USER_ALLOWED_ROUTE_NAMES 
 
 import GDPRService from '@/services/gdpr'
 
+import { useUserStore } from '@/stores/user'
+
 import AppLoading from '@/components/AppLoading.vue'
 import RefreshPWA from '@/components/messages/RefreshPWA.vue'
 import CookiesModal from '@/components/modals/CookiesModal.vue'
-
-import { useUserStore } from '@/stores/user'
 
 const TITLE_TEMPLATE = 'Recipeit - Znajdź przepis ze swoich produktów'
 const TITLE_SMALL_TEMPLATE = 'Recipeit'

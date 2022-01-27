@@ -25,10 +25,10 @@ import * as Yup from 'yup'
 
 import uniqueID from '@/functions/uniqueID'
 
+import { useMyKitchenStore } from '@/stores/myKitchen'
+
 import ProductModalForm from '@/components/ProductModalForm.vue'
 import ExpirationDatesFormSection from '@/components/modals/ExpirationDatesFormSection.vue'
-
-import { useMyKitchenStore } from '@/stores/myKitchen'
 
 export default {
   components: { Form, ProductModalForm, ExpirationDatesFormSection },

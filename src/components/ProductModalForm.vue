@@ -53,9 +53,9 @@ import { Field } from 'vee-validate'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import ProductIcon from '@/components/ProductIcon.vue'
-
 import { useIngredientsStore } from '@/stores/ingredients'
+
+import ProductIcon from '@/components/ProductIcon.vue'
 
 export default {
   components: { Field, ProductIcon },

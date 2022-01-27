@@ -72,11 +72,11 @@ import { AUTH_LOGIN } from '@/router/paths'
 
 import recaptcha from '@/services/recaptcha'
 
+import { useUserStore } from '@/stores/user'
+
 import AuthSocialList from '@/views/auth/AuthSocialList.vue'
 
 import RecaptchaBranding from '@/components/RecaptchaBranding.vue'
-
-import { useUserStore } from '@/stores/user'
 
 export default {
   components: {

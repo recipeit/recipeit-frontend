@@ -62,12 +62,12 @@ import { useMeta } from 'vue-meta'
 
 import userApi from '@/api/userApi'
 
+import { useMyKitchenStore } from '@/stores/myKitchen'
+
 import recipeFilteredPagedList from '@/views/app/composable/recipeFilteredPagedList'
 
 import GenericRecipesList from '@/components/GenericRecipesList.vue'
 import PageHeader from '@/components/PageHeader.vue'
-
-import { useMyKitchenStore } from '@/stores/myKitchen'
 
 export default {
   name: 'AlmostAvailableRecipes',

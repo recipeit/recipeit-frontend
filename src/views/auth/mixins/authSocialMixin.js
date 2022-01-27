@@ -4,6 +4,7 @@ import { ToastType } from '@/plugins/toast/toastType'
 
 import FacebookService from '@/services/facebook'
 import GoogleService from '@/services/google'
+
 import { useUserStore } from '@/stores/user'
 
 export default {

@@ -35,9 +35,9 @@ import { computed } from 'vue'
 
 import { LANDING_PAGE, AUTH_LOGIN, AUTH_REGISTER, APP_HOME } from '@/router/names'
 
-import Logotype from '@/components/Logotype.vue'
-
 import { useUserStore } from '@/stores/user'
+
+import Logotype from '@/components/Logotype.vue'
 
 export default {
   components: { Logotype },

@@ -48,19 +48,16 @@ Object.entries(components).forEach(([path, definition]) => {
   app.component(componentName, definition.default)
 })
 
-const progressbarOptions = {
-  color: 'var(--color-primary)'
-}
-
 app
   .use(VTooltip)
   .use(GlobalSheetModal)
   .use(Clipboard)
-  .use(Progressbar, progressbarOptions)
+  .use(Progressbar, {
+    color: 'var(--color-primary)'
+  })
   .use(Toast)
   .use(error)
   .use(router)
-  // .use(store)
   .use(createPinia())
   .use(i18n)
   .use(

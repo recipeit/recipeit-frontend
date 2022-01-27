@@ -42,11 +42,11 @@ import myKitchenApi from '@/api/myKitchenApi'
 
 import { ToastType } from '@/plugins/toast/toastType'
 
-import Product from '@/components/Product.vue'
-import EditKitchenProductModal from '@/components/modals/EditKitchenProductModal.vue'
-
 import { useMyKitchenStore } from '@/stores/myKitchen'
 import { useShoppingListStore } from '@/stores/shoppingList'
+
+import Product from '@/components/Product.vue'
+import EditKitchenProductModal from '@/components/modals/EditKitchenProductModal.vue'
 
 export default {
   components: {

@@ -31,10 +31,10 @@
 <script>
 import { markRaw } from 'vue'
 
+import { useShoppingListStore } from '@/stores/shoppingList'
+
 import Product from '@/components/Product.vue'
 import EditShoppingListProductModal from '@/components/modals/EditShoppingListProductModal.vue'
-
-import { useShoppingListStore } from '@/stores/shoppingList'
 
 export default {
   components: {

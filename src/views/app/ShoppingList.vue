@@ -86,18 +86,18 @@ import sortby from 'lodash.sortby'
 import { computed, markRaw, nextTick, reactive, ref, toRefs } from 'vue'
 import { useMeta } from 'vue-meta'
 
-import PageHeader from '@/components/PageHeader.vue'
-import ProductIcon from '@/components/ProductIcon.vue'
-import ShoppingListProduct from '@/components/ShoppingListProduct.vue'
-import Dialog from '@/components/modals/Dialog.vue'
-// import NewShoppingListProduct from '@/components/modals/NewShoppingListProduct.vue'
-
 import { PRODUCT_CATEGORY_ORDER } from '@/configs/productCategories'
 
 import { PRODUCT_GROUP_ICONS } from '@/constants'
 
 import { useIngredientsStore } from '@/stores/ingredients'
 import { useShoppingListStore } from '@/stores/shoppingList'
+
+import PageHeader from '@/components/PageHeader.vue'
+import ProductIcon from '@/components/ProductIcon.vue'
+import ShoppingListProduct from '@/components/ShoppingListProduct.vue'
+import Dialog from '@/components/modals/Dialog.vue'
+// import NewShoppingListProduct from '@/components/modals/NewShoppingListProduct.vue'
 
 export default {
   name: 'ShoppingList',

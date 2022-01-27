@@ -46,8 +46,9 @@ import uniqueID from '@/functions/uniqueID'
 
 import recaptcha from '@/services/recaptcha'
 
-import RecaptchaBranding from '@/components/RecaptchaBranding.vue'
 import { useUserStore } from '@/stores/user'
+
+import RecaptchaBranding from '@/components/RecaptchaBranding.vue'
 
 export default {
   components: { RecaptchaBranding, Field, Form },

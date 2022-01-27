@@ -38,9 +38,9 @@ import { computed, ref, watch } from 'vue'
 import { useToast } from '@/plugins/toast'
 import { ToastType } from '@/plugins/toast/toastType'
 
-import SectionTitle from '@/components/SectionTitle.vue'
-
 import { useRecipesStore } from '@/stores/recipes'
+
+import SectionTitle from '@/components/SectionTitle.vue'
 
 export default {
   components: { SectionTitle },

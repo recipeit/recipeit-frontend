@@ -161,6 +161,11 @@ import { ToastType } from '@/plugins/toast/toastType'
 
 import { APP_HOME, APP_RECIPES } from '@/router/names'
 
+import { useMyKitchenStore } from '@/stores/myKitchen'
+import { useRecipesStore } from '@/stores/recipes'
+import { useShoppingListStore } from '@/stores/shoppingList'
+import { useUserStore } from '@/stores/user'
+
 import FavouriteIcon from '@/components/FavouriteIcon.vue'
 import Rating from '@/components/Rating.vue'
 import RecipeParallaxGallery from '@/components/RecipeParallaxGallery.vue'
@@ -168,11 +173,6 @@ import InvisibleRecipeInfoModal from '@/components/modals/InvisibleRecipeInfoMod
 import PlanRecipeModal from '@/components/modals/PlanRecipeModal.vue'
 import RecipeDirectionsSection from '@/components/recipe/RecipeDirectionsSection.vue'
 import RecipeIngredientsSection from '@/components/recipe/RecipeIngredientsSection.vue'
-
-import { useMyKitchenStore } from '@/stores/myKitchen'
-import { useRecipesStore } from '@/stores/recipes'
-import { useShoppingListStore } from '@/stores/shoppingList'
-import { useUserStore } from '@/stores/user'
 
 export default {
   name: 'Recipe',

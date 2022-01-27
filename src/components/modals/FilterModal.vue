@@ -109,9 +109,9 @@
 import sortby from 'lodash.sortby'
 import { computed, reactive, toRefs } from 'vue'
 
-import ProductIcon from '@/components/ProductIcon.vue'
-
 import { useIngredientsStore } from '@/stores/ingredients'
+
+import ProductIcon from '@/components/ProductIcon.vue'
 
 const OPTION_KEYS = {
   BASE_PRODUCTS: 'BaseProducts'

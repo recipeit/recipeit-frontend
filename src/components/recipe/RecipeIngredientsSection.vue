@@ -54,11 +54,11 @@ import { computed, ref } from 'vue'
 
 import { INGREDIENT_USER_STATES } from '@/configs/recipeIngredient'
 
-import SectionTitle from '@/components/SectionTitle.vue'
-import RecipeIngredient from '@/components/recipe/RecipeIngredient.vue'
-
 import { useMyKitchenStore } from '@/stores/myKitchen'
 import { useShoppingListStore } from '@/stores/shoppingList'
+
+import SectionTitle from '@/components/SectionTitle.vue'
+import RecipeIngredient from '@/components/recipe/RecipeIngredient.vue'
 
 export default {
   components: { RecipeIngredient, SectionTitle },

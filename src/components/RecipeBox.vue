@@ -33,9 +33,10 @@ import { THEME_DARK } from '@/configs/theme'
 
 import { APP_RECIPE } from '@/router/names'
 
-import FavouriteIcon from '@/components/FavouriteIcon.vue'
 import { useRecipesStore } from '@/stores/recipes'
 import { useUserStore } from '@/stores/user'
+
+import FavouriteIcon from '@/components/FavouriteIcon.vue'
 
 export default {
   components: {

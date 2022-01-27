@@ -20,10 +20,10 @@ import { useMeta } from 'vue-meta'
 
 import userApi from '@/api/userApi'
 
+import { useUserStore } from '@/stores/user'
+
 import HiddenBlog from '@/components/HiddenBlog.vue'
 import PageHeader from '@/components/PageHeader.vue'
-
-import { useUserStore } from '@/stores/user'
 
 export default {
   components: {

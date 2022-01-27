@@ -100,6 +100,8 @@ import { COPYRIGHT_TEXT } from '@/constants'
 
 import { ARTICLES as ARTICLES_PATH } from '@/router/paths'
 
+import { useUserStore } from '@/stores/user'
+
 import Logotype from '@/components/Logotype.vue'
 import PageHeader from '@/components/PageHeader.vue'
 
@@ -107,8 +109,6 @@ import ChangePasswordModal from '@/components/modals/ChangePasswordModal.vue'
 import CustomizeCookiesModal from '@/components/modals/CustomizeCookiesModal.vue'
 import DeleteAccountModal from '@/components/modals/DeleteAccountModal.vue'
 import ForgotPasswordModal from '@/components/modals/ForgotPasswordModal.vue'
-
-import { useUserStore } from '@/stores/user'
 
 export default {
   name: 'MyAccount',

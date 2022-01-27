@@ -84,18 +84,18 @@ import sortby from 'lodash.sortby'
 import { computed, nextTick, reactive, ref, toRefs } from 'vue'
 import { useMeta } from 'vue-meta'
 
-import KitchenProduct from '@/components/KitchenProduct.vue'
-import PageHeader from '@/components/PageHeader.vue'
-import ProductIcon from '@/components/ProductIcon.vue'
-// import SearchWithFilter from '@/components/SearchWithFilter.vue'
-// import NewKitchenProductModal from '@/components/modals/NewKitchenProductModal.vue'
-
 import { PRODUCT_CATEGORY_ORDER } from '@/configs/productCategories'
 
 import { useIngredientsStore } from '@/stores/ingredients'
 import { useMyKitchenStore } from '@/stores/myKitchen'
 import { useShoppingListStore } from '@/stores/shoppingList'
 import { useUserStore } from '@/stores/user'
+
+import KitchenProduct from '@/components/KitchenProduct.vue'
+import PageHeader from '@/components/PageHeader.vue'
+import ProductIcon from '@/components/ProductIcon.vue'
+// import SearchWithFilter from '@/components/SearchWithFilter.vue'
+// import NewKitchenProductModal from '@/components/modals/NewKitchenProductModal.vue'
 
 export default {
   name: 'MyKitchen',
