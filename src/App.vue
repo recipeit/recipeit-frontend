@@ -94,7 +94,6 @@ export default {
 
     const initRoute = async () => {
       let userFetchSuccess = false
-      console.log('auuu')
 
       try {
         await userStore.fetchUserProfile({ getInitUserData: true })
@@ -104,10 +103,9 @@ export default {
       }
 
       var stopped = false
+      let stop
 
-      const stop = watchEffect(async () => {
-        console.log('stop', stopped)
-
+      stop = watchEffect(async () => {
         if (stopped) {
           stop?.()
           return

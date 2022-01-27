@@ -1,7 +1,7 @@
 <template>
   <AnonymousPageHeader />
   <slot name="header" />
-  <div class="page-container">
+  <div class="page-container" :class="class">
     <slot />
     <Footer class="footer" />
   </div>
@@ -12,7 +12,13 @@ import AnonymousPageHeader from '@/components/anonymous/AnonymousPageHeader.vue'
 import Footer from '@/components/landingPage/Footer.vue'
 
 export default {
-  components: { AnonymousPageHeader, Footer }
+  components: { AnonymousPageHeader, Footer },
+  props: {
+    class: {
+      type: String,
+      default: ''
+    }
+  }
 }
 </script>
 
