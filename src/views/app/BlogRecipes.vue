@@ -67,7 +67,6 @@
 
 <script>
 import { computed, markRaw, onBeforeMount, ref } from 'vue'
-import { mapGetters } from 'vuex'
 import { useMeta } from 'vue-meta'
 
 import blogApi from '@/api/blogApi'
@@ -83,6 +82,8 @@ import BlogDetails from '@/components/BlogDetails.vue'
 import GenericRecipesList from '@/components/GenericRecipesList.vue'
 import RecipeParallaxImage from '@/components/RecipeParallaxImage.vue'
 import InvisibleBlogInfoModal from '@/components/modals/InvisibleBlogInfoModal.vue'
+
+import { useUserStore } from '@/stores/user'
 
 export default {
   name: 'Recipes',
@@ -101,6 +102,7 @@ export default {
     }
   },
   setup(props) {
+    const userStore = useUserStore()
     const blogDetails = ref(null)
     const errors = ref(false)
     const recipesList = recipePagedList(queryParams => blogApi.getBlogRecipes(props.blogId, queryParams))
@@ -137,22 +139,23 @@ export default {
       return title ? { title } : {}
     })
 
+    const isBlogHiddenGetter = computed(() => userStore.isBlogHidden)
+
     useMeta(computedMeta)
 
     return {
+      userStore,
       blogDetails,
       recipesList,
       avatarUrl,
       backgroundUrl,
       avatarErrorUrl,
       backgroundErrorUrl,
-      errors
+      errors,
+      isBlogHiddenGetter
     }
   },
   computed: {
-    ...mapGetters({
-      isBlogHiddenGetter: 'user/isBlogHidden'
-    }),
     isHidden() {
       if (this.blogDetails) {
         return this.isBlogHiddenGetter(this.blogDetails.id)
@@ -163,7 +166,7 @@ export default {
   methods: {
     changeBlogVisibility(visible) {
       if (this.blogDetails) {
-        this.$store.dispatch('user/changeBlogVisibility', { blogId: this.blogDetails.id, visible })
+        this.userStore.changeBlogVisibility({ blogId: this.blogDetails.id, visible })
       }
     },
     showInvisibleInfoModal() {

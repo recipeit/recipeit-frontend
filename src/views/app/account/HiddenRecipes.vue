@@ -23,6 +23,8 @@ import userApi from '@/api/userApi'
 import PageHeader from '@/components/PageHeader.vue'
 import HiddenRecipe from '@/components/HiddenRecipe.vue'
 
+import { useUserStore } from '@/stores/user'
+
 export default {
   components: {
     PageHeader,
@@ -32,6 +34,12 @@ export default {
     useMeta({
       title: 'Ukryte przepisy'
     })
+
+    const userStore = useUserStore()
+
+    return {
+      userStore
+    }
   },
   data: () => ({
     hiddenRecipes: null
@@ -43,7 +51,7 @@ export default {
   },
   methods: {
     unhideRecipe(id) {
-      this.$store.dispatch('user/changeRecipeVisibility', { recipeId: id, visible: true }).then(() => {
+      this.userStore.changeRecipeVisibility({ recipeId: id, visible: true }).then(() => {
         const index = this.hiddenRecipes.findIndex(v => v.id === id)
         this.hiddenRecipes.splice(index, 1)
       })

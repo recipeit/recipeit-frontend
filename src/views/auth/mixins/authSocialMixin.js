@@ -4,8 +4,16 @@ import { ToastType } from '@/plugins/toast/toastType'
 
 import FacebookService from '@/services/facebook'
 import GoogleService from '@/services/google'
+import { useUserStore } from '@/stores/user'
 
 export default {
+  setup() {
+    const userStore = useUserStore()
+
+    return {
+      userStore
+    }
+  },
   data: () => ({
     facebookSending: false,
     googleSending: false
@@ -19,7 +27,7 @@ export default {
       this.facebookSending = true
       try {
         const accessToken = await FacebookService.login()
-        await this.$store.dispatch('user/facebookAuth', { accessToken })
+        await this.userStore.facebookAuth({ accessToken })
       } catch (errors) {
         const toastContent =
           Array.isArray(errors) && errors.includes('EMAIL_NOT_IN_TOKEN')
@@ -38,7 +46,7 @@ export default {
       this.googleSending = true
       try {
         const idToken = await GoogleService.login()
-        await this.$store.dispatch('user/googleAuth', { idToken })
+        await this.userStore.googleAuth({ idToken })
       } catch (error) {
         this.$toast.show('Wystąpił problem podczas próby logowania', ToastType.ERROR)
         this.$errorHandler.captureError(error, {

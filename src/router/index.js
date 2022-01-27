@@ -9,17 +9,17 @@ import * as PATHS from '@/router/paths'
 
 import eventHub from '@/services/eventHub'
 
-import store from '@/store'
-import { USER_AUTH_STATE } from '@/store/modules/user'
+import { USER_AUTH_STATE, useUserStore } from '@/stores/user'
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
 
 const forceIsAuthenticated = async () => {
-  let userAuthState = store.getters['user/currentUserAuthState']
+  const userStore = useUserStore()
+  let userAuthState = userStore.currentUserAuthState
 
   while (userAuthState === USER_AUTH_STATE.USER_APP_INITIAL) {
     await sleep(50)
-    userAuthState = store.getters['user/currentUserAuthState']
+    userAuthState = userStore.currentUserAuthState
   }
 
   if (userAuthState === USER_AUTH_STATE.USER_LOGGED_IN) {
@@ -31,7 +31,7 @@ const forceIsAuthenticated = async () => {
   }
 
   try {
-    await store.dispatch('user/fetchUserProfile')
+    await userStore.fetchUserProfile()
     return true
   } catch {
     return false

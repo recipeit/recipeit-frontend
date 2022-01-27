@@ -26,9 +26,18 @@ import uniqueID from '@/functions/uniqueID'
 
 import ProductModalForm from '@/components/ProductModalForm.vue'
 
+import { useShoppingListStore } from '@/stores/shoppingList'
+
 export default {
   components: { Form, ProductModalForm },
   emits: ['close'],
+  setup() {
+    const shoppingListStore = useShoppingListStore()
+
+    return {
+      shoppingListStore
+    }
+  },
   data: () => ({
     sending: false,
     formID: 'form-' + uniqueID().getID(),
@@ -59,8 +68,8 @@ export default {
         unit
       }
 
-      this.$store
-        .dispatch('shoppingList/addProduct', requestData)
+      this.shoppingListStore
+        .addProduct(requestData)
         .then(() => {
           this.$emit('close')
           // this.$refs.form.setValues({

@@ -23,12 +23,14 @@
 <script>
 import { Form } from 'vee-validate'
 import { computed, reactive, ref, toRefs } from 'vue'
-import { useStore } from 'vuex'
 import * as Yup from 'yup'
 
 import uniqueID from '@/functions/uniqueID'
 
 import ProductModalForm from '@/components/ProductModalForm.vue'
+
+import { useIngredientsStore } from '@/stores/ingredients'
+import { useShoppingListStore } from '@/stores/shoppingList'
 
 export default {
   components: { Form, ProductModalForm },
@@ -41,8 +43,10 @@ export default {
   },
   emits: ['close'],
   setup(props, component) {
-    const store = useStore()
-    const baseProducts = computed(() => store.state.ingredients.baseProducts)
+    const ingredientsStore = useIngredientsStore()
+    const shoppingListStore = useShoppingListStore()
+
+    const baseProducts = computed(() => ingredientsStore.baseProducts)
 
     const formID = 'form-' + uniqueID().getID()
     const data = reactive({
@@ -81,8 +85,8 @@ export default {
         unit
       }
 
-      store
-        .dispatch('shoppingList/editProductFromShoppingList', requestData)
+      shoppingListStore
+        .editProductFromShoppingList(requestData)
         .then(() => {
           component.emit('close')
         })

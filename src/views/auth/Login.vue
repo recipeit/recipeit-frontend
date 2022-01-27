@@ -76,6 +76,8 @@ import AuthSocialList from '@/views/auth/AuthSocialList.vue'
 
 import RecaptchaBranding from '@/components/RecaptchaBranding.vue'
 
+import { useUserStore } from '@/stores/user'
+
 export default {
   components: {
     RecaptchaBranding,
@@ -95,6 +97,8 @@ export default {
       link: [{ rel: 'canonical', href: `${BASE_URL}${AUTH_LOGIN}` }]
     })
 
+    const userStore = useUserStore()
+
     const schema = yup.object({
       email: emailSchema(),
       password: passwordSchema()
@@ -109,7 +113,8 @@ export default {
     return {
       schema,
       initialValues,
-      hasInitialEmail
+      hasInitialEmail,
+      userStore
     }
   },
   data: () => ({
@@ -130,8 +135,8 @@ export default {
       recaptcha
         .execute(RECAPTCHA_ACTIONS.LOGIN)
         .then(recaptchaToken => {
-          this.$store
-            .dispatch('user/login', { ...values, recaptchaToken })
+          this.userStore
+            .login({ ...values, recaptchaToken })
             .catch(errors => {
               this.errorList = errors
               this.$errorHandler.captureError(errors, {

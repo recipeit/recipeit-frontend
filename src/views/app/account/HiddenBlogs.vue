@@ -23,6 +23,8 @@ import userApi from '@/api/userApi'
 import HiddenBlog from '@/components/HiddenBlog.vue'
 import PageHeader from '@/components/PageHeader.vue'
 
+import { useUserStore } from '@/stores/user'
+
 export default {
   components: {
     PageHeader,
@@ -32,6 +34,12 @@ export default {
     useMeta({
       title: 'Ukryte blogi'
     })
+
+    const userStore = useUserStore()
+
+    return {
+      userStore
+    }
   },
   data: () => ({
     hiddenBlogs: null
@@ -43,7 +51,7 @@ export default {
   },
   methods: {
     unhideBlog(id) {
-      this.$store.dispatch('user/changeBlogVisibility', { blogId: id, visible: true }).then(() => {
+      this.userStore.changeBlogVisibility({ blogId: id, visible: true }).then(() => {
         const index = this.hiddenBlogs.findIndex(v => v.id === id)
         this.hiddenBlogs.splice(index, 1)
       })

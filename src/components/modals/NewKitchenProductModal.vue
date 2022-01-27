@@ -28,9 +28,18 @@ import uniqueID from '@/functions/uniqueID'
 import ProductModalForm from '@/components/ProductModalForm.vue'
 import ExpirationDatesFormSection from '@/components/modals/ExpirationDatesFormSection.vue'
 
+import { useMyKitchenStore } from '@/stores/myKitchen'
+
 export default {
   components: { Form, ProductModalForm, ExpirationDatesFormSection },
   emits: ['close'],
+  setup() {
+    const myKitchenStore = useMyKitchenStore()
+
+    return {
+      myKitchenStore
+    }
+  },
   data: component => ({
     sending: false,
     newProduct: component.emptyProduct(),
@@ -76,8 +85,8 @@ export default {
         expirationDates: this.expirationDatesForm
       }
 
-      this.$store
-        .dispatch('myKitchen/addProduct', requestData)
+      this.myKitchenStore
+        .addProduct(requestData)
         .then(() => {
           this.$emit('close')
         })

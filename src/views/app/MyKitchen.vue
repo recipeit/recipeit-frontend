@@ -82,7 +82,6 @@
 import groupby from 'lodash.groupby'
 import sortby from 'lodash.sortby'
 import { computed, nextTick, reactive, ref, toRefs } from 'vue'
-import { mapState, useStore } from 'vuex'
 import { useMeta } from 'vue-meta'
 
 import KitchenProduct from '@/components/KitchenProduct.vue'
@@ -92,6 +91,11 @@ import ProductIcon from '@/components/ProductIcon.vue'
 // import NewKitchenProductModal from '@/components/modals/NewKitchenProductModal.vue'
 
 import { PRODUCT_CATEGORY_ORDER } from '@/configs/productCategories'
+
+import { useIngredientsStore } from '@/stores/ingredients'
+import { useMyKitchenStore } from '@/stores/myKitchen'
+import { useShoppingListStore } from '@/stores/shoppingList'
+import { useUserStore } from '@/stores/user'
 
 export default {
   name: 'MyKitchen',
@@ -106,7 +110,10 @@ export default {
       title: 'Moja kuchnia'
     })
 
-    const store = useStore()
+    const ingredientsStore = useIngredientsStore()
+    const myKitchenStore = useMyKitchenStore()
+    const shoppingListStore = useShoppingListStore()
+    const userStore = useUserStore()
 
     const addProductSelect = ref(null)
 
@@ -116,16 +123,16 @@ export default {
       simpleView: true
     })
 
-    const groupedBaseProducts = computed(() => store.getters['ingredients/groupedBaseProducts'])
+    const groupedBaseProducts = computed(() => ingredientsStore.groupedBaseProducts)
+    const userAuthenticatedLazy = computed(() => userStore.userAuthenticatedLazy)
+    const products = computed(() => myKitchenStore.products)
 
-    const addProductFromSelect = ({ id } = {}) => {
-      const requestData = {
+    const addProductFromSelect = async ({ id } = {}) => {
+      await myKitchenStore.addProduct({
         product: {
           baseProductId: id
         }
-      }
-
-      store.dispatch('myKitchen/addProduct', requestData)
+      })
     }
 
     const openAddProductSelect = async () => {
@@ -136,18 +143,19 @@ export default {
     }
 
     return {
+      ingredientsStore,
+      myKitchenStore,
+      shoppingListStore,
       ...toRefs(data),
       addProductSelect,
       groupedBaseProducts,
       addProductFromSelect,
-      openAddProductSelect
+      openAddProductSelect,
+      userAuthenticatedLazy,
+      products
     }
   },
   computed: {
-    ...mapState({
-      userAuthenticatedLazy: state => state.user.userAuthenticatedLazy,
-      products: state => state.myKitchen.products
-    }),
     isEmpty() {
       return !(this.groupedProducts === null || this.groupedProducts.length > 0)
     },
@@ -186,10 +194,10 @@ export default {
       if (this.fetchedData) return
 
       if (this.userAuthenticatedLazy) {
-        this.$store.dispatch('ingredients/fetchBaseProducts')
-        this.$store.dispatch('ingredients/fetchUnitsGroupedByMeasurement')
-        this.$store.dispatch('myKitchen/fetchProducts')
-        this.$store.dispatch('shoppingList/fetchProducts')
+        this.ingredientsStore.fetchBaseProducts()
+        this.ingredientsStore.fetchUnitsGroupedByMeasurement()
+        this.myKitchenStore.fetchProducts()
+        this.shoppingListStore.fetchProducts()
         this.fetchedData = true
       }
     }

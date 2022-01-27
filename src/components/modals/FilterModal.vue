@@ -108,9 +108,10 @@
 <script>
 import sortby from 'lodash.sortby'
 import { computed, reactive, toRefs } from 'vue'
-import { useStore } from 'vuex'
 
 import ProductIcon from '@/components/ProductIcon.vue'
+
+import { useIngredientsStore } from '@/stores/ingredients'
 
 const OPTION_KEYS = {
   BASE_PRODUCTS: 'BaseProducts'
@@ -140,9 +141,10 @@ export default {
   },
   emits: ['close'],
   setup(props, { emit }) {
-    const store = useStore()
-    const baseProducts = computed(() => store.state.ingredients.baseProducts)
-    const groupedBaseProducts = computed(() => store.getters['ingredients/groupedBaseProducts'])
+    const ingredientsStore = useIngredientsStore()
+
+    const baseProducts = computed(() => ingredientsStore.baseProducts)
+    const groupedBaseProducts = computed(() => ingredientsStore.groupedBaseProducts)
 
     // eslint-disable-next-line vue/no-setup-props-destructure
     const { [OPTION_KEYS.BASE_PRODUCTS]: defaultSelectedBaseProductIds, ...rest } = props.defaultSelected

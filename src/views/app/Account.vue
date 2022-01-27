@@ -89,8 +89,7 @@
 </template>
 
 <script>
-import { markRaw, ref } from 'vue'
-import { mapState, useStore } from 'vuex'
+import { computed, markRaw, ref } from 'vue'
 import { useMeta } from 'vue-meta'
 
 import defaultAvatar from '@/assets/img/avatar.svg?raw'
@@ -109,6 +108,8 @@ import CustomizeCookiesModal from '@/components/modals/CustomizeCookiesModal.vue
 import DeleteAccountModal from '@/components/modals/DeleteAccountModal.vue'
 import ForgotPasswordModal from '@/components/modals/ForgotPasswordModal.vue'
 
+import { useUserStore } from '@/stores/user'
+
 export default {
   name: 'MyAccount',
   components: { PageHeader, Logotype },
@@ -117,24 +118,28 @@ export default {
       title: 'Moje konto'
     })
 
-    const store = useStore()
-    const currentTheme = store.state.user.theme
-    const selectedTheme = ref(currentTheme)
+    const userStore = useUserStore()
+
+    const selectedTheme = ref(userStore.theme)
 
     function updateTheme(value) {
       if (value && THEMES.includes(value)) {
         selectedTheme.value = value
-        store.dispatch('user/setTheme', value)
+        userStore.setTheme(value)
       }
     }
 
     function unhideRecipe(recipeId) {
-      store.dispatch('user/changeRecipeVisibility', { recipeId, visible: true })
+      userStore.changeRecipeVisibility({ recipeId, visible: true })
     }
 
     function unhideBlog(blogId) {
-      store.dispatch('user/changeBlogVisibility', { blogId, visible: true })
+      userStore.changeBlogVisibility({ blogId, visible: true })
     }
+
+    const hiddenRecipes = computed(() => userStore.hiddenRecipeIds)
+    const hiddenBlogs = computed(() => userStore.hiddenBlogIds)
+    const userProfile = computed(() => userStore.userProfile)
 
     return {
       COPYRIGHT_TEXT,
@@ -144,15 +149,13 @@ export default {
       unhideBlog,
       THEMES,
       defaultAvatar,
-      ARTICLES_PATH
+      ARTICLES_PATH,
+      hiddenRecipes,
+      hiddenBlogs,
+      userProfile
     }
   },
   computed: {
-    ...mapState({
-      hiddenRecipes: state => state.user.hiddenRecipeIds,
-      hiddenBlogs: state => state.user.hiddenBlogIds,
-      userProfile: state => state.user.userProfile
-    }),
     avatarSrc() {
       return this.userProfile?.imageUrl
     }

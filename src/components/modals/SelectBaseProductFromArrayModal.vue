@@ -26,7 +26,8 @@
 
 <script>
 import { computed } from 'vue'
-import { useStore } from 'vuex'
+
+import { useIngredientsStore } from '@/stores/ingredients'
 
 export default {
   props: {
@@ -37,11 +38,12 @@ export default {
   },
   emits: ['close'],
   setup(props) {
-    const store = useStore()
+    const ingredientsStore = useIngredientsStore()
+
     const products = computed(() =>
       props.ids.map(id => ({
         id: id,
-        name: store.state.ingredients.baseProducts.find(p => p.id === id)?.name
+        name: ingredientsStore.baseProducts.find(p => p.id === id)?.name
       }))
     )
 

@@ -36,7 +36,6 @@
 <script>
 import { Field, Form } from 'vee-validate'
 import { onBeforeMount, reactive, toRefs } from 'vue'
-import { useStore } from 'vuex'
 import * as Yup from 'yup'
 
 import identityApi from '@/api/identityApi'
@@ -48,6 +47,7 @@ import uniqueID from '@/functions/uniqueID'
 import recaptcha from '@/services/recaptcha'
 
 import RecaptchaBranding from '@/components/RecaptchaBranding.vue'
+import { useUserStore } from '@/stores/user'
 
 export default {
   components: { RecaptchaBranding, Field, Form },
@@ -59,7 +59,8 @@ export default {
   },
   emits: ['close'],
   setup(_, component) {
-    const store = useStore()
+    const userStore = useUserStore()
+
     const formID = 'form-' + uniqueID().getID()
     const data = reactive({
       sending: false,
@@ -95,7 +96,7 @@ export default {
             .deleteAccount({ recaptchaToken })
             .then(() => {
               component.emit('close', { success: true })
-              store.dispatch('user/logout')
+              userStore.logout()
             })
             .catch(error => {
               data.code = generateCode()

@@ -34,6 +34,8 @@ import { markRaw } from 'vue'
 import Product from '@/components/Product.vue'
 import EditShoppingListProductModal from '@/components/modals/EditShoppingListProductModal.vue'
 
+import { useShoppingListStore } from '@/stores/shoppingList'
+
 export default {
   components: {
     Product
@@ -45,9 +47,16 @@ export default {
     }
   },
   emits: ['purchase'],
+  setup() {
+    const shoppingListStore = useShoppingListStore()
+
+    return {
+      shoppingListStore
+    }
+  },
   methods: {
     deleteProduct() {
-      this.$store.dispatch('shoppingList/deleteProductFromShoppingList', this.product.id)
+      this.shoppingListStore.deleteProductFromShoppingList(this.product.id)
     },
     increaseAmount() {
       const amount = Math.round(this.product.amount + 1, 5)
@@ -61,7 +70,7 @@ export default {
     putAmountChange(amount) {
       var product = JSON.parse(JSON.stringify(this.product))
       product.amount = amount
-      this.$store.dispatch('shoppingList/editProductFromShoppingList', product)
+      this.shoppingListStore.editProductFromShoppingList(product)
     },
     async openEditModal() {
       this.$modal.show(

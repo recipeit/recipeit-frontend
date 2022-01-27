@@ -36,8 +36,7 @@
 </template>
 
 <script>
-import { markRaw } from 'vue'
-import { mapState } from 'vuex'
+import { computed, markRaw } from 'vue'
 
 import myKitchenApi from '@/api/myKitchenApi'
 
@@ -45,6 +44,9 @@ import { ToastType } from '@/plugins/toast/toastType'
 
 import Product from '@/components/Product.vue'
 import EditKitchenProductModal from '@/components/modals/EditKitchenProductModal.vue'
+
+import { useMyKitchenStore } from '@/stores/myKitchen'
+import { useShoppingListStore } from '@/stores/shoppingList'
 
 export default {
   components: {
@@ -56,13 +58,22 @@ export default {
       required: true
     }
   },
+  setup() {
+    const myKitchenStore = useMyKitchenStore()
+    const shoppingListStore = useShoppingListStore()
+
+    const shoppingListProducts = computed(() => shoppingListStore.products)
+
+    return {
+      myKitchenStore,
+      shoppingListStore,
+      shoppingListProducts
+    }
+  },
   data: () => ({
     addToShoppingListLoading: false
   }),
   computed: {
-    ...mapState({
-      shoppingListProducts: state => state.shoppingList.products
-    }),
     isInShoppingList() {
       return !!this.shoppingListProducts?.find(p => p.baseProductId === this.product.baseProductId)
     },
@@ -92,7 +103,7 @@ export default {
       )
     },
     deleteProduct() {
-      this.$store.dispatch('myKitchen/deleteProductFromKitchen', this.product.id)
+      this.myKitchenStore.deleteProductFromKitchen(this.product.id)
     },
     addToShoppingList() {
       if (this.addToShoppingListLoading) return
@@ -101,8 +112,8 @@ export default {
         this.addToShoppingListLoading = true
         const { baseProductId, amount, unit } = this.product
 
-        this.$store
-          .dispatch('shoppingList/addProduct', {
+        this.shoppingListStore
+          .addProduct({
             baseProductId,
             amount,
             unit

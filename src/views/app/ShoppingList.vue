@@ -84,7 +84,6 @@
 import groupby from 'lodash.groupby'
 import sortby from 'lodash.sortby'
 import { computed, markRaw, nextTick, reactive, ref, toRefs } from 'vue'
-import { mapState, useStore } from 'vuex'
 import { useMeta } from 'vue-meta'
 
 import PageHeader from '@/components/PageHeader.vue'
@@ -96,6 +95,9 @@ import Dialog from '@/components/modals/Dialog.vue'
 import { PRODUCT_CATEGORY_ORDER } from '@/configs/productCategories'
 
 import { PRODUCT_GROUP_ICONS } from '@/constants'
+
+import { useIngredientsStore } from '@/stores/ingredients'
+import { useShoppingListStore } from '@/stores/shoppingList'
 
 export default {
   name: 'ShoppingList',
@@ -109,7 +111,8 @@ export default {
       title: 'Lista zakupów'
     })
 
-    const store = useStore()
+    const ingredientsStore = useIngredientsStore()
+    const shoppingListStore = useShoppingListStore()
 
     const addProductSelect = ref(null)
 
@@ -118,14 +121,15 @@ export default {
       selectFocused: false
     })
 
-    const groupedBaseProducts = computed(() => store.getters['ingredients/groupedBaseProducts'])
+    const groupedBaseProducts = computed(() => ingredientsStore.groupedBaseProducts)
+    const products = computed(() => shoppingListStore.products)
 
     const addProductFromSelect = ({ id } = {}) => {
       const requestData = {
         baseProductId: id
       }
 
-      store.dispatch('shoppingList/addProduct', requestData)
+      shoppingListStore.addProduct(requestData)
     }
 
     const openAddProductSelect = async () => {
@@ -141,13 +145,13 @@ export default {
       groupedBaseProducts,
       addProductFromSelect,
       openAddProductSelect,
-      PRODUCT_GROUP_ICONS
+      PRODUCT_GROUP_ICONS,
+      ingredientsStore,
+      shoppingListStore,
+      products
     }
   },
   computed: {
-    ...mapState({
-      products: state => state.shoppingList.products
-    }),
     isEmpty() {
       return !(this.groupedProducts === null || this.groupedProducts.length > 0)
     },
@@ -171,16 +175,16 @@ export default {
     }
   },
   beforeMount() {
-    this.$store.dispatch('ingredients/fetchBaseProducts')
-    this.$store.dispatch('ingredients/fetchUnitsGroupedByMeasurement')
-    this.$store.dispatch('shoppingList/fetchProducts')
+    this.ingredientsStore.fetchBaseProducts()
+    this.ingredientsStore.fetchUnitsGroupedByMeasurement()
+    this.shoppingListStore.fetchProducts()
   },
   methods: {
     // newProduct() {
     //   this.$modal.show(markRaw(NewShoppingListProduct), {}, {})
     // },
     purchase(id) {
-      this.$store.dispatch('shoppingList/purchaseProduct', id)
+      this.shoppingListStore.purchaseProduct(id)
     },
     purchaseAll() {
       this.$modal.show(
@@ -195,7 +199,7 @@ export default {
         {
           close: purchase => {
             if (purchase) {
-              this.$store.dispatch('shoppingList/purchaseAllProducts')
+              this.shoppingListStore.purchaseAllProducts()
             }
           }
         }

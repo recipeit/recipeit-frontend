@@ -1,5 +1,6 @@
 import * as Sentry from '@sentry/browser'
 import { Integrations } from '@sentry/tracing'
+import { createPinia } from 'pinia'
 import { createApp } from 'vue'
 import { createMetaManager, defaultConfig } from 'vue-meta'
 import VTooltip from 'v-tooltip'
@@ -19,7 +20,7 @@ import Toast from '@/plugins/toast'
 
 import router from '@/router'
 
-import store from '@/store'
+// import store from '@/store'
 
 import App from '@/App.vue'
 
@@ -61,7 +62,8 @@ app
   .use(Toast)
   .use(error)
   .use(router)
-  .use(store)
+  // .use(store)
+  .use(createPinia())
   .use(i18n)
   .use(
     createMetaManager(false, {

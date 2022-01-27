@@ -51,10 +51,11 @@
 <script>
 import { Field } from 'vee-validate'
 import { computed } from 'vue'
-import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 
 import ProductIcon from '@/components/ProductIcon.vue'
+
+import { useIngredientsStore } from '@/stores/ingredients'
 
 export default {
   components: { Field, ProductIcon },
@@ -67,10 +68,10 @@ export default {
   emits: ['update:baseProductId', 'update:unit'],
   setup(props) {
     const { t } = useI18n()
-    const store = useStore()
+    const ingredientsStore = useIngredientsStore()
 
-    const groupedBaseProducts = computed(() => store.getters['ingredients/groupedBaseProducts'])
-    const units = computed(() => store.state.ingredients.units)
+    const groupedBaseProducts = computed(() => ingredientsStore.groupedBaseProducts)
+    const units = computed(() => ingredientsStore.units)
     const unitLabelAmount = computed(() => parseFloat(props.amount) || 1)
 
     const unitCustomLabel = value => {

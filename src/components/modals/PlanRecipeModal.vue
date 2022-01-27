@@ -45,6 +45,7 @@ import timesOfDayConst from '@/constants/timesOfDay'
 
 import dayjs from '@/functions/dayjs'
 import uniqueID from '@/functions/uniqueID'
+import { useRecipesStore } from '@/stores/recipes'
 
 export default {
   components: {
@@ -59,6 +60,7 @@ export default {
   },
   emits: ['close'],
   setup() {
+    const recipesStore = useRecipesStore()
     const formID = 'form-' + uniqueID().getID()
     const timesOfDay = Object.keys(timesOfDayConst)
 
@@ -87,6 +89,7 @@ export default {
     const sending = ref(false)
 
     return {
+      recipesStore,
       formID,
       days,
       timesOfDay,
@@ -107,8 +110,8 @@ export default {
         timeOfDay: timeOfDay
       }
 
-      this.$store
-        .dispatch('recipes/addRecipeToPlanned', preparedData)
+      this.recipesStore
+        .addRecipeToPlanned(preparedData)
         .then(({ data }) => {
           if (data.success) {
             this.$emit('close')

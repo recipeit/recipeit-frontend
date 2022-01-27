@@ -15,7 +15,6 @@
 
 <script>
 import { computed, onBeforeMount, reactive, toRefs, watchEffect } from 'vue'
-import { useStore } from 'vuex'
 import { useMeta } from 'vue-meta'
 import { useRoute, useRouter } from 'vue-router'
 
@@ -31,6 +30,8 @@ import AppLoading from '@/components/AppLoading.vue'
 import RefreshPWA from '@/components/messages/RefreshPWA.vue'
 import CookiesModal from '@/components/modals/CookiesModal.vue'
 
+import { useUserStore } from '@/stores/user'
+
 const TITLE_TEMPLATE = 'Recipeit - Znajdź przepis ze swoich produktów'
 const TITLE_SMALL_TEMPLATE = 'Recipeit'
 
@@ -42,7 +43,7 @@ export default {
     Modal
   },
   setup() {
-    const store = useStore()
+    const userStore = useUserStore()
     const route = useRoute()
     const router = useRouter()
     const data = reactive({
@@ -50,7 +51,7 @@ export default {
       fetchedInitialUserProfile: false
     })
 
-    store.dispatch('user/initTheme')
+    userStore.initTheme()
 
     const allowedGDPRModalRoute = computed(() => !route.meta?.hideCookiesModal)
 
@@ -63,10 +64,8 @@ export default {
     })
 
     const exactTheme = computed(() => {
-      const { theme } = store.state.user
-
-      if (EXACT_THEMES.includes(theme)) {
-        return theme
+      if (EXACT_THEMES.includes(userStore.theme)) {
+        return userStore.theme
       }
 
       return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? THEME_DARK : THEME_LIGHT
@@ -87,7 +86,7 @@ export default {
     const computedMeta = computed(() => ({
       title: '',
       htmlAttrs: {
-        [THEME_HTML_ATTRIBUTE]: store.state.user.theme
+        [THEME_HTML_ATTRIBUTE]: userStore.theme
       }
     }))
 
@@ -95,9 +94,10 @@ export default {
 
     const initRoute = async () => {
       let userFetchSuccess = false
+      console.log('auuu')
 
       try {
-        await store.dispatch('user/fetchUserProfile', { getInitUserData: true })
+        await userStore.fetchUserProfile({ getInitUserData: true })
         userFetchSuccess = true
       } catch {
         userFetchSuccess = false
@@ -106,6 +106,8 @@ export default {
       var stopped = false
 
       const stop = watchEffect(async () => {
+        console.log('stop', stopped)
+
         if (stopped) {
           stop?.()
           return

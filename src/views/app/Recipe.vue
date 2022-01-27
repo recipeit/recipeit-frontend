@@ -148,7 +148,6 @@
 
 <script>
 import { computed, markRaw, reactive, toRefs } from 'vue'
-import { mapGetters, mapState, useStore } from 'vuex'
 import { useMeta } from 'vue-meta'
 
 import { CONTACT_MAIL_ADDRESS } from '@/configs/emails'
@@ -170,6 +169,11 @@ import PlanRecipeModal from '@/components/modals/PlanRecipeModal.vue'
 import RecipeDirectionsSection from '@/components/recipe/RecipeDirectionsSection.vue'
 import RecipeIngredientsSection from '@/components/recipe/RecipeIngredientsSection.vue'
 
+import { useMyKitchenStore } from '@/stores/myKitchen'
+import { useRecipesStore } from '@/stores/recipes'
+import { useShoppingListStore } from '@/stores/shoppingList'
+import { useUserStore } from '@/stores/user'
+
 export default {
   name: 'Recipe',
   components: {
@@ -190,7 +194,10 @@ export default {
     }
   },
   setup(props) {
-    const store = useStore()
+    const myKitchenStore = useMyKitchenStore()
+    const shoppingListStore = useShoppingListStore()
+    const recipesStore = useRecipesStore()
+    const userStore = useUserStore()
 
     const data = reactive({
       errors: false,
@@ -199,11 +206,11 @@ export default {
       finishedDirections: []
     })
 
-    store
-      .dispatch('recipes/fetchDetailedRecipe', props.recipeId)
+    recipesStore
+      .fetchDetailedRecipe(props.recipeId)
       .then(rd => {
         data.recipe = rd
-        data.finishedDirections = store.getters['recipes/getFinishedDirectionsForRecipe'](rd.id) || []
+        data.finishedDirections = recipesStore.getFinishedDirectionsForRecipe(rd.id) || []
       })
       .catch(error => {
         data.errors = true
@@ -217,22 +224,25 @@ export default {
       return title ? { title } : {}
     })
 
+    const isRecipeHiddenGetter = computed(() => userStore.isRecipeHidden)
+    const isBlogHiddenGetter = computed(() => userStore.isBlogHidden)
+    const favouriteRecipesIds = computed(() => recipesStore.favouriteRecipesIds)
+
     useMeta(computedMeta)
 
     return {
       ...toRefs(data),
-      APP_HOME
+      APP_HOME,
+      myKitchenStore,
+      shoppingListStore,
+      recipesStore,
+      userStore,
+      isRecipeHiddenGetter,
+      isBlogHiddenGetter,
+      favouriteRecipesIds
     }
   },
   computed: {
-    ...mapGetters({
-      isRecipeHiddenGetter: 'user/isRecipeHidden',
-      isBlogHiddenGetter: 'user/isBlogHidden'
-    }),
-    ...mapState({
-      favouriteRecipesIds: state => state.recipes.favouriteRecipesIds
-    }),
-
     isRecipeHidden() {
       if (this.recipe) {
         return this.isRecipeHiddenGetter(this.recipe.id)
@@ -293,12 +303,12 @@ export default {
     }
   },
   created() {
-    this.$store.dispatch('myKitchen/fetchProducts').catch(error => {
+    this.myKitchenStore.fetchProducts().catch(error => {
       this.$errorHandler.captureError(error, {
         [ERROR_ACTION_TAG_NAME]: 'recipe.fetchKitchenProducts'
       })
     })
-    this.$store.dispatch('shoppingList/fetchProducts').catch(error => {
+    this.shoppingListStore.fetchProducts().catch(error => {
       this.$errorHandler.captureError(error, {
         [ERROR_ACTION_TAG_NAME]: 'recipe.fetchShoppingListProducts'
       })
@@ -312,10 +322,10 @@ export default {
       this.$router.go(-1)
     },
     addToFavourites() {
-      this.$store.dispatch('recipes/addToFavourites', this.recipe.id)
+      this.recipesStore.addToFavourites(this.recipe.id)
     },
     deleteFromFavourites() {
-      this.$store.dispatch('recipes/deleteFromFavourites', this.recipe.id)
+      this.recipesStore.deleteFromFavourites(this.recipe.id)
     },
     copyLinkToClipboard() {
       const url = window.location.origin + this.$route.path
@@ -335,11 +345,11 @@ export default {
     },
     changeRecipeVisibility(visible) {
       if (this.recipe) {
-        this.$store.dispatch('user/changeRecipeVisibility', { recipeId: this.recipe.id, visible })
+        this.userStore.changeRecipeVisibility({ recipeId: this.recipe.id, visible })
       }
     },
     changeBlogVisibility(visible) {
-      this.$store.dispatch('user/changeBlogVisibility', { blogId: this.recipe.author.blog.id, visible })
+      this.userStore.changeBlogVisibility({ blogId: this.recipe.author.blog.id, visible })
     },
     showInvisibleInfoModal() {
       this.$modal.show(markRaw(InvisibleRecipeInfoModal), {}, {})

@@ -25,7 +25,6 @@
 
 <script>
 import { computed } from 'vue'
-import { mapState, useStore } from 'vuex'
 
 import placeholderDark from '@/assets/img/placeholders/recipe-box-dark.webp'
 import placeholderLight from '@/assets/img/placeholders/recipe-box.webp'
@@ -35,6 +34,8 @@ import { THEME_DARK } from '@/configs/theme'
 import { APP_RECIPE } from '@/router/names'
 
 import FavouriteIcon from '@/components/FavouriteIcon.vue'
+import { useRecipesStore } from '@/stores/recipes'
+import { useUserStore } from '@/stores/user'
 
 export default {
   components: {
@@ -63,19 +64,20 @@ export default {
     }
   },
   setup() {
-    const store = useStore()
+    const recipesStore = useRecipesStore()
+    const userStore = useUserStore()
 
-    const placeholder = computed(() => (store.state.user.theme === THEME_DARK ? placeholderDark : placeholderLight))
+    const placeholder = computed(() => (userStore.theme === THEME_DARK ? placeholderDark : placeholderLight))
+    const favouriteRecipesIds = computed(() => recipesStore.favouriteRecipesIds)
 
     return {
       APP_RECIPE,
-      placeholder
+      placeholder,
+      recipesStore,
+      favouriteRecipesIds
     }
   },
   computed: {
-    ...mapState({
-      favouriteRecipesIds: state => state.recipes.favouriteRecipesIds
-    }),
     isFavourite() {
       return this.favouriteRecipesIds?.find(id => id === this.recipeId) !== undefined
     },
@@ -88,10 +90,10 @@ export default {
       this.$router.push({ name: APP_RECIPE, params: { recipeId: this.recipeId } })
     },
     addToFavourites() {
-      this.$store.dispatch('recipes/addToFavourites', this.recipeId)
+      this.recipesStore.addToFavourites(this.recipeId)
     },
     deleteFromFavourites() {
-      this.$store.dispatch('recipes/deleteFromFavourites', this.recipeId)
+      this.recipesStore.deleteFromFavourites(this.recipeId)
     }
   }
 }

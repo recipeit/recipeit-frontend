@@ -51,12 +51,14 @@
 
 <script>
 import { computed, ref } from 'vue'
-import { useStore } from 'vuex'
 
 import { INGREDIENT_USER_STATES } from '@/configs/recipeIngredient'
 
 import SectionTitle from '@/components/SectionTitle.vue'
 import RecipeIngredient from '@/components/recipe/RecipeIngredient.vue'
+
+import { useMyKitchenStore } from '@/stores/myKitchen'
+import { useShoppingListStore } from '@/stores/shoppingList'
 
 export default {
   components: { RecipeIngredient, SectionTitle },
@@ -75,9 +77,11 @@ export default {
     }
   },
   setup(props) {
-    const store = useStore()
-    const myKitchenProducts = computed(() => store.state.myKitchen.products || [])
-    const shoppingListProducts = computed(() => store.state.shoppingList.products || [])
+    const myKitchenStore = useMyKitchenStore()
+    const shoppingListStore = useShoppingListStore()
+
+    const myKitchenProducts = computed(() => myKitchenStore.products || [])
+    const shoppingListProducts = computed(() => shoppingListStore.products || [])
 
     // SERVINGS
     const initialServings = props.servings || 1
@@ -143,7 +147,7 @@ export default {
       allIngredientsAdding.value = true
 
       try {
-        await store.dispatch('shoppingList/addMissingIngredientsToShoppingList', props.recipeId)
+        await shoppingListStore.addMissingIngredientsToShoppingList(props.recipeId)
       } finally {
         allIngredientsAdding.value = false
       }

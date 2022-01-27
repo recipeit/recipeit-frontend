@@ -24,13 +24,15 @@
 <script>
 import { Form } from 'vee-validate'
 import { computed, reactive, ref, toRefs } from 'vue'
-import { useStore } from 'vuex'
 import * as Yup from 'yup'
 
 import uniqueID from '@/functions/uniqueID'
 
 import ProductModalForm from '@/components/ProductModalForm.vue'
 import ExpirationDatesFormSection from '@/components/modals/ExpirationDatesFormSection.vue'
+
+import { useIngredientsStore } from '@/stores/ingredients'
+import { useMyKitchenStore } from '@/stores/myKitchen'
 
 export default {
   components: { Form, ProductModalForm, ExpirationDatesFormSection },
@@ -43,8 +45,10 @@ export default {
   },
   emits: ['close'],
   setup(props, component) {
-    const store = useStore()
-    const baseProducts = computed(() => store.state.ingredients.baseProducts)
+    const ingredientsStore = useIngredientsStore()
+    const myKitchenStore = useMyKitchenStore()
+
+    const baseProducts = computed(() => ingredientsStore.baseProducts)
 
     const formID = 'form-' + uniqueID().getID()
     const data = reactive({
@@ -87,8 +91,8 @@ export default {
         expirationDates: data.expirationDatesForm
       }
 
-      store
-        .dispatch('myKitchen/editProductFromKitchen', requestData)
+      myKitchenStore
+        .editProductFromKitchen(requestData)
         .then(() => {
           component.emit('close')
         })

@@ -39,8 +39,7 @@
 </template>
 
 <script>
-import { markRaw } from 'vue'
-import { mapState } from 'vuex'
+import { computed, markRaw } from 'vue'
 
 import { INGREDIENT_USER_STATES } from '@/configs/recipeIngredient'
 
@@ -50,6 +49,8 @@ import { ToastType } from '@/plugins/toast/toastType'
 
 import Dialog from '@/components/modals/Dialog.vue'
 import SelectBaseProductFromArrayModal from '@/components/modals/SelectBaseProductFromArrayModal.vue'
+import { useShoppingListStore } from '@/stores/shoppingList'
+import { useIngredientsStore } from '@/stores/ingredients'
 
 export default {
   props: {
@@ -66,13 +67,21 @@ export default {
       default: false
     }
   },
+  setup() {
+    const ingredientsStore = useIngredientsStore()
+    const shoppingListStore = useShoppingListStore()
+
+    const baseProducts = computed(() => ingredientsStore.baseProducts)
+
+    return {
+      shoppingListStore,
+      baseProducts
+    }
+  },
   data: () => ({
     loading: false
   }),
   computed: {
-    ...mapState({
-      baseProducts: state => state.ingredients.baseProducts || []
-    }),
     name() {
       const { ingredient } = this
       if (ingredient.name) return ingredient.name
@@ -118,7 +127,7 @@ export default {
       this.loading = true
 
       try {
-        await this.$store.dispatch('shoppingList/addProduct', product)
+        await this.shoppingListStore.addProduct(product)
       } catch {
         this.$toast.show('Nie udało się dodać produktu do listy zakupów', ToastType.ERROR)
       } finally {

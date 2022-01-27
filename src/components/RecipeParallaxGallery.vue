@@ -39,12 +39,13 @@
 <script>
 import debounce from 'lodash.debounce'
 import { computed } from 'vue'
-import { useStore } from 'vuex'
 
 import placeholderDark from '@/assets/img/placeholders/recipe-image-dark.webp'
 import placeholderLight from '@/assets/img/placeholders/recipe-image.webp'
 
 import { THEME_DARK } from '@/configs/theme'
+
+import { useUserStore } from '@/stores/user'
 
 export default {
   props: {
@@ -58,9 +59,9 @@ export default {
     }
   },
   data() {
-    const store = useStore()
+    const userStore = useUserStore()
 
-    const placeholder = computed(() => (store.state.user.theme === THEME_DARK ? placeholderDark : placeholderLight))
+    const placeholder = computed(() => (userStore.theme === THEME_DARK ? placeholderDark : placeholderLight))
 
     return {
       currentImageIndex: 0,

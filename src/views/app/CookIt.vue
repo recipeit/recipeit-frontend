@@ -112,7 +112,6 @@
 
 <script>
 import { computed, onBeforeMount } from 'vue'
-import { useStore } from 'vuex'
 import { useMeta } from 'vue-meta'
 import { useRoute, useRouter } from 'vue-router'
 
@@ -126,6 +125,7 @@ import GenericRecipesList from '@/components/GenericRecipesList.vue'
 import HorizontalRecipesList from '@/components/HorizontalRecipesList.vue'
 import PageHeader from '@/components/PageHeader.vue'
 import SectionTitle from '@/components/SectionTitle.vue'
+import { useMyKitchenStore } from '@/stores/myKitchen'
 
 export default {
   name: 'CookIt',
@@ -135,10 +135,10 @@ export default {
       title: 'Ugotuj to!'
     })
 
-    const store = useStore()
+    const myKitchenStore = useMyKitchenStore()
     const route = useRoute()
     const router = useRouter()
-    const kitchenProductsCount = computed(() => store.state.myKitchen.products?.length || 0)
+    const kitchenProductsCount = computed(() => myKitchenStore.products?.length || 0)
 
     const recipesList = recipeFilteredPagedList(userApi.getAvailableRecipes)
     const almostAvailableRecipesList = recipeFilteredPagedList(userApi.getAlmostAvailableRecipes)
