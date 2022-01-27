@@ -5,7 +5,9 @@ import { IDENTITY_URLS } from '@/api/identityApi'
 
 import { API_DEV_BASE_URL_SSL, API_PROD_BASE_URL } from '@/configs/api'
 
-import store from '@/store'
+import { useUserStore } from '@/stores/user'
+
+const userStore = useUserStore()
 
 const apiClient = axios.create({
   baseURL: process.env.NODE_ENV === 'production' ? API_PROD_BASE_URL : API_DEV_BASE_URL_SSL,
@@ -30,8 +32,8 @@ apiClient.interceptors.response.use(
     }
 
     if (error.response?.status === 401) {
-      store
-        .dispatch('user/refreshCookie')
+      userStore
+        .refreshCookie()
         .then(response => {
           if (response?.isFetching !== true) {
             onRefreshed(true)
