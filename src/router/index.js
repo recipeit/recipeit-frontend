@@ -13,9 +13,8 @@ import { USER_AUTH_STATE, useUserStore } from '@/stores/user'
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
 
-const userStore = useUserStore()
-
 const forceIsAuthenticated = async () => {
+  const userStore = useUserStore()
   let userAuthState = userStore.currentUserAuthState
 
   while (userAuthState === USER_AUTH_STATE.USER_APP_INITIAL) {

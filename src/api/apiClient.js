@@ -7,8 +7,6 @@ import { API_DEV_BASE_URL_SSL, API_PROD_BASE_URL } from '@/configs/api'
 
 import { useUserStore } from '@/stores/user'
 
-const userStore = useUserStore()
-
 const apiClient = axios.create({
   baseURL: process.env.NODE_ENV === 'production' ? API_PROD_BASE_URL : API_DEV_BASE_URL_SSL,
   withCredentials: true,
@@ -24,6 +22,7 @@ let subscribers = []
 apiClient.interceptors.response.use(
   response => response,
   error => {
+    const userStore = useUserStore()
     const originalRequest = error.config
 
     // Prevent infinite loops
