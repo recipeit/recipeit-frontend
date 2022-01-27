@@ -68,7 +68,7 @@ export default {
       this.putAmountChange(amount)
     },
     putAmountChange(amount) {
-      var product = JSON.parse(JSON.stringify(this.product))
+      const product = JSON.parse(JSON.stringify(this.product))
       product.amount = amount
       this.shoppingListStore.editProductFromShoppingList(product)
     },

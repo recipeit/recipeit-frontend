@@ -102,7 +102,7 @@ export default {
         userFetchSuccess = false
       }
 
-      var stopped = false
+      let stopped = false
       let stop
 
       stop = watchEffect(async () => {
@@ -140,23 +140,6 @@ export default {
       TITLE_SMALL_TEMPLATE
     }
   }
-  // data: () => ({
-  //   fetchedInitialUserProfile: false
-  // }),
-  // async created() {
-  //   try {
-  //     await this.$store.dispatch('user/fetchUserProfile', { getInitUserData: true })
-  //     if (!LOGGED_USER_ALLOWED_ROUTE_NAMES.includes(routeName)) {
-  //       await this.$router.replace({ name: APP_HOME })
-  //     }
-  //   } catch {
-  //     if (APP_ROUTE_NAMES.includes(routeName)) {
-  //       await this.$router.replace({ name: AUTH_LOGIN })
-  //     }
-  //   } finally {
-  //     this.fetchedInitialUserProfile = true
-  //   }
-  // }
 }
 </script>
 

@@ -8,7 +8,7 @@ const defaultOptions = {
 const Plugin = {
   modal: null,
   install: (app, options = {}) => {
-    var usedOptions = {
+    const usedOptions = {
       ...defaultOptions,
       ...options
     }

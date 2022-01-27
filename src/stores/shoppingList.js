@@ -11,11 +11,11 @@ const addProduct = (store, product) => {
   if (!store.products) {
     store.products = [product]
   } else {
-    var existingIndex = store.products.findIndex(({ id }) => id === product.id)
+    const existingProduct = store.products.find(({ id }) => id === product.id)
 
-    if (existingIndex >= 0) {
+    if (existingProduct) {
       Object.entries(product).forEach(([key, value]) => {
-        store.products[existingIndex][key] = value
+        existingProduct[key] = value
       })
     } else {
       store.products.push(product)
