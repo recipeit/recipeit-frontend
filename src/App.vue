@@ -104,8 +104,9 @@ export default {
       }
 
       var stopped = false
+      let stop
 
-      const stop = watchEffect(async () => {
+      stop = watchEffect(async () => {
         if (stopped) {
           stop?.()
           return
