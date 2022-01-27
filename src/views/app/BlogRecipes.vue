@@ -86,7 +86,7 @@ import RecipeParallaxImage from '@/components/RecipeParallaxImage.vue'
 import InvisibleBlogInfoModal from '@/components/modals/InvisibleBlogInfoModal.vue'
 
 export default {
-  name: 'Recipes',
+  name: 'BlogRecipes',
   components: {
     RecipeParallaxImage,
     GenericRecipesList,
