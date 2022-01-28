@@ -25,6 +25,7 @@
 
 <script>
 import { computed } from 'vue'
+import { useRouter } from 'vue-router'
 
 import placeholderDark from '@/assets/img/placeholders/recipe-box-dark.webp'
 import placeholderLight from '@/assets/img/placeholders/recipe-box.webp'
@@ -64,37 +65,39 @@ export default {
       default: true
     }
   },
-  setup() {
+  setup(props) {
+    const router = useRouter()
     const recipesStore = useRecipesStore()
     const userStore = useUserStore()
 
     const placeholder = computed(() => (userStore.theme === THEME_DARK ? placeholderDark : placeholderLight))
     const favouriteRecipesIds = computed(() => recipesStore.favouriteRecipesIds)
+    const isFavourite = computed(() => {
+      return favouriteRecipesIds.value?.find(id => id === props.recipeId) !== undefined
+    })
+    const imageUrl = computed(() => {
+      return `/static/recipes/${props.recipeId}/thumb.webp?v=1`
+    })
+
+    const showDetails = () => {
+      router.push({ name: APP_RECIPE, params: { recipeId: props.recipeId } })
+    }
+    const addToFavourites = () => {
+      recipesStore.addToFavourites(props.recipeId)
+    }
+    const deleteFromFavourites = () => {
+      recipesStore.deleteFromFavourites(props.recipeId)
+    }
 
     return {
       APP_RECIPE,
       placeholder,
-      recipesStore,
-      favouriteRecipesIds
-    }
-  },
-  computed: {
-    isFavourite() {
-      return this.favouriteRecipesIds?.find(id => id === this.recipeId) !== undefined
-    },
-    imageUrl() {
-      return `/static/recipes/${this.recipeId}/thumb.webp?v=1`
-    }
-  },
-  methods: {
-    showDetails() {
-      this.$router.push({ name: APP_RECIPE, params: { recipeId: this.recipeId } })
-    },
-    addToFavourites() {
-      this.recipesStore.addToFavourites(this.recipeId)
-    },
-    deleteFromFavourites() {
-      this.recipesStore.deleteFromFavourites(this.recipeId)
+      favouriteRecipesIds,
+      isFavourite,
+      imageUrl,
+      showDetails,
+      addToFavourites,
+      deleteFromFavourites
     }
   }
 }

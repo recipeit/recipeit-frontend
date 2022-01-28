@@ -20,6 +20,7 @@
 
 <script>
 import { Form } from 'vee-validate'
+import { reactive, toRefs } from 'vue'
 import * as Yup from 'yup'
 
 import uniqueID from '@/functions/uniqueID'
@@ -31,17 +32,11 @@ import ProductModalForm from '@/components/ProductModalForm.vue'
 export default {
   components: { Form, ProductModalForm },
   emits: ['close'],
-  setup() {
+  setup(_, { emit }) {
     const shoppingListStore = useShoppingListStore()
 
-    return {
-      shoppingListStore
-    }
-  },
-  data: () => ({
-    sending: false,
-    formID: 'form-' + uniqueID().getID(),
-    schema: Yup.object().shape({
+    const formID = 'form-' + uniqueID().getID()
+    const schema = Yup.object().shape({
       baseProduct: Yup.object()
         .required('REQUIRED')
         .typeError('REQUIRED'),
@@ -54,13 +49,13 @@ export default {
         .nullable(),
       unit: Yup.object().nullable()
     })
-  }),
-  beforeCreate() {
-    this.DEFAULT_UNIT = 'piece'
-  },
-  methods: {
-    addProduct({ baseProduct, amount, unit }) {
-      this.sending = true
+
+    const data = reactive({
+      sending: false
+    })
+
+    const addProduct = ({ baseProduct, amount, unit }) => {
+      data.sending = true
 
       const requestData = {
         baseProductId: baseProduct.id,
@@ -68,19 +63,21 @@ export default {
         unit
       }
 
-      this.shoppingListStore
+      shoppingListStore
         .addProduct(requestData)
         .then(() => {
-          this.$emit('close')
-          // this.$refs.form.setValues({
-          //   baseProduct: null,
-          //   amount: null,
-          //   unit: null
-          // })
+          emit('close')
         })
         .finally(() => {
-          this.sending = false
+          data.sending = false
         })
+    }
+
+    return {
+      formID,
+      schema,
+      ...toRefs(data),
+      addProduct
     }
   }
 }

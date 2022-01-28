@@ -53,7 +53,9 @@
 
 <script>
 import { Field, Form } from 'vee-validate'
+import { onBeforeMount, reactive, toRefs } from 'vue'
 import { useMeta } from 'vue-meta'
+import { useRoute } from 'vue-router'
 import * as Yup from 'yup'
 
 import identityApi from '@/api/identityApi'
@@ -62,6 +64,8 @@ import { ERROR_ACTION_TAG_NAME } from '@/configs/error'
 import { RECAPTCHA_ACTIONS } from '@/configs/recaptcha'
 import { confirmNewPasswordSchema, newPasswordSchema } from '@/configs/schemas'
 import { BASE_URL } from '@/configs/url'
+
+import { useErrorHandler } from '@/error'
 
 import { AUTH_RESET_PASSWORD } from '@/router/paths'
 
@@ -81,66 +85,73 @@ export default {
       link: [{ rel: 'canonical', href: `${BASE_URL}${AUTH_RESET_PASSWORD}` }]
     })
 
+    const data = reactive({
+      state: 'BEFORE',
+      email: null,
+      token: null
+    })
+
     const schema = Yup.object({
       password: newPasswordSchema(),
       confirmPassword: confirmNewPasswordSchema()
     })
 
-    return {
-      schema
-    }
-  },
-  data: () => ({
-    state: 'BEFORE',
-    email: null,
-    token: null
-  }),
-  beforeMount() {
-    this.state = 'BEFORE'
+    const resetPassword = ({ password, confirmPassword }) => {
+      const errorHandler = useErrorHandler()
 
-    const { email, token } = this.$route.query
-    this.email = email
-    this.token = token
-
-    if (!email || !token) {
-      this.state = 'ERROR'
-    }
-  },
-  methods: {
-    resetPassword({ password, confirmPassword }) {
-      this.state = 'SENDING'
+      data.state = 'SENDING'
 
       recaptcha
         .execute(RECAPTCHA_ACTIONS.RESET_PASSWORD)
         .then(recaptchaToken => {
           identityApi
             .resetPassword({
-              email: this.email,
-              token: this.token,
+              email: data.email,
+              token: data.token,
               password: password,
               confirmPassword: confirmPassword,
               recaptchaToken: recaptchaToken
             })
             .then(resp => {
               if (resp.data.success) {
-                this.state = 'SUCCESS'
+                data.state = 'SUCCESS'
               } else {
-                this.state = 'ERROR'
+                data.state = 'ERROR'
               }
             })
             .catch(error => {
-              this.state = 'ERROR'
-              this.$errorHandler.captureError(error, {
+              data.state = 'ERROR'
+              errorHandler.captureError(error, {
                 [ERROR_ACTION_TAG_NAME]: 'auth.resetPassword'
               })
             })
         })
         .catch(error => {
-          this.state = 'ERROR'
-          this.$errorHandler.captureError(error, {
+          data.state = 'ERROR'
+          errorHandler.captureError(error, {
             [ERROR_ACTION_TAG_NAME]: 'auth.resetPassword.recaptcha'
           })
         })
+    }
+
+    onBeforeMount(() => {
+      const route = useRoute()
+
+      data.state = 'BEFORE'
+
+      const { email, token } = route.query
+      data.email = email
+      data.token = token
+
+      if (!email || !token) {
+        data.state = 'ERROR'
+      }
+    })
+
+    return {
+      ...toRefs(data),
+      schema,
+      resetPassword
     }
   }
 }

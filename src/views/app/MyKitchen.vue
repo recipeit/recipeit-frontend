@@ -201,12 +201,6 @@ export default {
         this.fetchedData = true
       }
     }
-    // newProduct() {
-    //   this.$modal.show(markRaw(NewKitchenProductModal), {}, {})
-    // }
-    // onSearch({ search }) {
-    //   this.searchString = search
-    // }
   }
 }
 </script>

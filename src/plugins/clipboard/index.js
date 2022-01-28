@@ -124,3 +124,7 @@ const Plugin = {
 }
 
 export default Plugin
+
+export function useClipboard() {
+  return $clipboard
+}

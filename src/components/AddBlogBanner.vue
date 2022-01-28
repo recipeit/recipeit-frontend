@@ -13,7 +13,11 @@
 </template>
 
 <script>
+import { computed, ref } from 'vue'
+
 import { BASE_URL } from '@/configs/url'
+
+import { useClipboard } from '@/plugins/clipboard'
 
 export default {
   props: {
@@ -30,19 +34,22 @@ export default {
       required: true
     }
   },
-  data() {
+  setup(props) {
+    const copied = ref(false)
+
+    const code = computed(() => {
+      return `<a href="${BASE_URL}"><img src="${BASE_URL}${props.url}" alt="Recipeit"/></a>`
+    })
+
+    const copyToClipboard = () => {
+      const clipboard = useClipboard()
+      copied.value = clipboard(code.value)
+    }
+
     return {
-      copied: false
-    }
-  },
-  computed: {
-    code() {
-      return `<a href="${BASE_URL}"><img src="${BASE_URL}${this.url}" alt="Recipeit"/></a>`
-    }
-  },
-  methods: {
-    copyToClipboard() {
-      this.copied = this.$clipboard(this.code)
+      copied,
+      code,
+      copyToClipboard
     }
   }
 }

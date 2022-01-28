@@ -98,6 +98,8 @@ import { THEMES } from '@/configs/theme'
 
 import { COPYRIGHT_TEXT } from '@/constants'
 
+import { useModal } from '@/plugins/global-sheet-modal'
+
 import { ARTICLES as ARTICLES_PATH } from '@/router/paths'
 
 import { useUserStore } from '@/stores/user'
@@ -118,84 +120,90 @@ export default {
       title: 'Moje konto'
     })
 
+    const modal = useModal()
     const userStore = useUserStore()
 
     const selectedTheme = ref(userStore.theme)
 
-    function updateTheme(value) {
+    const hiddenRecipes = computed(() => userStore.hiddenRecipeIds)
+    const hiddenBlogs = computed(() => userStore.hiddenBlogIds)
+    const userProfile = computed(() => userStore.userProfile)
+    const avatarSrc = computed(() => {
+      return userProfile.value?.imageUrl
+    })
+
+    const updateTheme = value => {
       if (value && THEMES.includes(value)) {
         selectedTheme.value = value
         userStore.setTheme(value)
       }
     }
 
-    function unhideRecipe(recipeId) {
+    const unhideRecipe = recipeId => {
       userStore.changeRecipeVisibility({ recipeId, visible: true })
     }
 
-    function unhideBlog(blogId) {
+    const unhideBlog = blogId => {
       userStore.changeBlogVisibility({ blogId, visible: true })
     }
 
-    const hiddenRecipes = computed(() => userStore.hiddenRecipeIds)
-    const hiddenBlogs = computed(() => userStore.hiddenBlogIds)
-    const userProfile = computed(() => userStore.userProfile)
+    const openForgotPasswordModal = () => {
+      modal.show(
+        markRaw(ForgotPasswordModal),
+        {
+          email: userProfile.value.email
+        },
+        {}
+      )
+    }
+
+    const openChangePasswordModal = () => {
+      modal.show(
+        markRaw(ChangePasswordModal),
+        {
+          email: userProfile.value.email
+        },
+        {
+          close: response => {
+            if (response?.openForgotPasswordModal) {
+              openForgotPasswordModal()
+            }
+          }
+        }
+      )
+    }
+
+    const openDeleteAccountModal = () => {
+      modal.show(
+        markRaw(DeleteAccountModal),
+        {
+          email: userProfile.value.email
+        },
+        {}
+      )
+    }
+
+    const openCustomizeCookiesModal = () => {
+      modal.show(markRaw(CustomizeCookiesModal), {}, {})
+    }
 
     return {
       COPYRIGHT_TEXT,
       selectedTheme,
-      updateTheme,
-      unhideRecipe,
-      unhideBlog,
       THEMES,
       defaultAvatar,
       ARTICLES_PATH,
       hiddenRecipes,
       hiddenBlogs,
-      userProfile
-    }
-  },
-  computed: {
-    avatarSrc() {
-      return this.userProfile?.imageUrl
-    }
-  },
-  methods: {
-    openChangePasswordModal() {
-      this.$modal.show(
-        markRaw(ChangePasswordModal),
-        {
-          email: this.userProfile.email
-        },
-        {
-          close: response => {
-            if (response?.openForgotPasswordModal) {
-              this.openForgotPasswordModal()
-            }
-          }
-        }
-      )
-    },
-    openForgotPasswordModal() {
-      this.$modal.show(
-        markRaw(ForgotPasswordModal),
-        {
-          email: this.userProfile.email
-        },
-        {}
-      )
-    },
-    openDeleteAccountModal() {
-      this.$modal.show(
-        markRaw(DeleteAccountModal),
-        {
-          email: this.userProfile.email
-        },
-        {}
-      )
-    },
-    openCustomizeCookiesModal() {
-      this.$modal.show(markRaw(CustomizeCookiesModal), {}, {})
+      userProfile,
+      avatarSrc,
+      updateTheme,
+      unhideRecipe,
+      unhideBlog,
+      openChangePasswordModal,
+      openForgotPasswordModal,
+      openDeleteAccountModal,
+      openCustomizeCookiesModal
     }
   }
 }

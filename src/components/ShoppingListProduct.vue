@@ -31,6 +31,8 @@
 <script>
 import { markRaw } from 'vue'
 
+import { useModal } from '@/plugins/global-sheet-modal'
+
 import { useShoppingListStore } from '@/stores/shoppingList'
 
 import Product from '@/components/Product.vue'
@@ -47,41 +49,43 @@ export default {
     }
   },
   emits: ['purchase'],
-  setup() {
+  setup(props) {
+    const modal = useModal()
     const shoppingListStore = useShoppingListStore()
 
-    return {
-      shoppingListStore
+    // const putAmountChange = amount => {
+    //   const product = JSON.parse(JSON.stringify(props.product))
+    //   product.amount = amount
+    //   shoppingListStore.editProductFromShoppingList(product)
+    // }
+    // const increaseAmount = () => {
+    //   const amount = Math.round(props.product.amount + 1, 5)
+    //   putAmountChange(amount)
+    // }
+    // const decreaseAmount = () => {
+    //   if (props.product.amount <= 1.0) return
+    //   const amount = Math.round(props.product.amount - 1, 5)
+    //   putAmountChange(amount)
+    // }
+    const deleteProduct = () => {
+      shoppingListStore.deleteProductFromShoppingList(props.product.id)
     }
-  },
-  methods: {
-    deleteProduct() {
-      this.shoppingListStore.deleteProductFromShoppingList(this.product.id)
-    },
-    increaseAmount() {
-      const amount = Math.round(this.product.amount + 1, 5)
-      this.putAmountChange(amount)
-    },
-    decreaseAmount() {
-      if (this.product.amount <= 1.0) return
-      const amount = Math.round(this.product.amount - 1, 5)
-      this.putAmountChange(amount)
-    },
-    putAmountChange(amount) {
-      const product = JSON.parse(JSON.stringify(this.product))
-      product.amount = amount
-      this.shoppingListStore.editProductFromShoppingList(product)
-    },
-    async openEditModal() {
-      this.$modal.show(
+    const openEditModal = async () => {
+      modal.show(
         markRaw(EditShoppingListProductModal),
         {
-          product: this.product
+          product: props.product
         },
         {}
       )
     }
-  }
+
+    return {
+      deleteProduct,
+      openEditModal
+    }
+  },
+  methods: {}
 }
 </script>
 

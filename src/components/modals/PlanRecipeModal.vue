@@ -38,7 +38,7 @@
 
 <script>
 import { Field, Form } from 'vee-validate'
-import { reactive, ref } from 'vue'
+import { reactive, toRefs } from 'vue'
 import * as Yup from 'yup'
 
 import timesOfDayConst from '@/constants/timesOfDay'
@@ -60,8 +60,9 @@ export default {
     }
   },
   emits: ['close'],
-  setup() {
+  setup(props, { emit }) {
     const recipesStore = useRecipesStore()
+
     const formID = 'form-' + uniqueID().getID()
     const timesOfDay = Object.keys(timesOfDayConst)
 
@@ -77,7 +78,6 @@ export default {
       day: days[0],
       timeOfDay: timesOfDay[0]
     }
-    const errorList = reactive(null)
     const schema = Yup.object({
       day: Yup.object()
         .required('REQUIRED')
@@ -87,7 +87,38 @@ export default {
         .typeError('REQUIRED')
     })
 
-    const sending = ref(false)
+    const data = reactive({
+      errorList: null,
+      sending: false
+    })
+
+    const planRecipe = ({ day, timeOfDay }) => {
+      data.sending = true
+      data.errorList = null
+
+      const preparedData = {
+        recipeId: props.recipeId,
+        day: day.value,
+        timeOfDay: timeOfDay
+      }
+
+      recipesStore
+        .addRecipeToPlanned(preparedData)
+        .then(({ data: { success, errors } }) => {
+          if (success) {
+            emit('close')
+          } else {
+            data.errorList = errors || ['coś poszło nie tak']
+          }
+        })
+        .catch(error => {
+          const responseErrors = error.response?.data?.errors
+          data.errorList = responseErrors || ['coś poszło nie tak']
+        })
+        .finally(() => {
+          data.sending = false
+        })
+    }
 
     return {
       recipesStore,
@@ -95,38 +126,9 @@ export default {
       days,
       timesOfDay,
       initialValues,
-      errorList,
-      sending,
-      schema
-    }
-  },
-  methods: {
-    planRecipe({ day, timeOfDay }) {
-      this.sending = true
-      this.errorList = null
-
-      const preparedData = {
-        recipeId: this.recipeId,
-        day: day.value,
-        timeOfDay: timeOfDay
-      }
-
-      this.recipesStore
-        .addRecipeToPlanned(preparedData)
-        .then(({ data }) => {
-          if (data.success) {
-            this.$emit('close')
-          } else {
-            this.errorList = data.errors || ['coś poszło nie tak']
-          }
-        })
-        .catch(error => {
-          const responseErrors = error.response?.data?.errors
-          this.errorList = responseErrors || ['coś poszło nie tak']
-        })
-        .finally(() => {
-          this.sending = false
-        })
+      schema,
+      ...toRefs(data),
+      planRecipe
     }
   }
 }
