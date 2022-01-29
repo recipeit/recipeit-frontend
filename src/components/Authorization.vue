@@ -10,24 +10,27 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from 'vue'
+
 export const AuthorizationPageType = {
   LOGIN: 'LOGIN',
   REGISTER: 'REGISTER'
 }
 
-export default {
+export default defineComponent({
   props: {
     page: {
       type: String,
       default: AuthorizationPageType.REGISTER,
-      validator: value => AuthorizationPageType[value] !== undefined
+      validator: (value: string) => AuthorizationPageType[value] !== undefined
     }
   },
+
   setup() {
     return {
       AuthorizationPageType
     }
   }
-}
+})
 </script>

@@ -4,11 +4,14 @@
   </li>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from 'vue'
+
 import RecipeBox from '@/components/RecipeBox.vue'
 
-export default {
+export default defineComponent({
   components: { RecipeBox },
+
   props: {
     recipeId: {
       type: String,
@@ -26,7 +29,7 @@ export default {
       type: Number
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

@@ -30,10 +30,10 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import difference from 'lodash.difference'
 import min from 'lodash.min'
-import { computed, ref, watch } from 'vue'
+import { computed, defineComponent, ref, watch } from 'vue'
 
 import { useToast } from '@/plugins/toast'
 import { ToastType } from '@/plugins/toast/toastType'
@@ -42,7 +42,7 @@ import { useRecipesStore } from '@/stores/recipes'
 
 import SectionTitle from '@/components/SectionTitle.vue'
 
-export default {
+export default defineComponent({
   components: { SectionTitle },
   props: {
     recipeId: {
@@ -95,7 +95,7 @@ export default {
       resetFinishedDirections
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

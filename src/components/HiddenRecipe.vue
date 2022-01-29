@@ -18,19 +18,21 @@
   </router-link>
 </template>
 
-<script>
-import { computed } from 'vue'
+<script lang="ts">
+import { computed, defineComponent } from 'vue'
 
 import { APP_RECIPE } from '@/router/names'
 
-export default {
+export default defineComponent({
   props: {
     recipe: {
       type: Object,
       required: true
     }
   },
+
   emits: ['unhide'],
+
   setup(props) {
     const miniatureUrl = computed(() => `/static/recipes/${props.recipe.id}/thumb.webp?v=1`)
 
@@ -39,7 +41,7 @@ export default {
       miniatureUrl
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

@@ -12,14 +12,14 @@
   </div>
 </template>
 
-<script>
-import { computed, ref } from 'vue'
+<script lang="ts">
+import { computed, defineComponent, ref } from 'vue'
 
 import { BASE_URL } from '@/configs/url'
 
 import { useClipboard } from '@/plugins/clipboard'
 
-export default {
+export default defineComponent({
   props: {
     url: {
       type: String,
@@ -34,6 +34,7 @@ export default {
       required: true
     }
   },
+
   setup(props) {
     // data
     const copied = ref(false)
@@ -58,7 +59,7 @@ export default {
       copyToClipboard
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

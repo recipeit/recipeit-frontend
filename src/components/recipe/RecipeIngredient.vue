@@ -38,8 +38,8 @@
   </li>
 </template>
 
-<script>
-import { computed, markRaw, reactive, toRefs } from 'vue'
+<script lang="ts">
+import { computed, defineComponent, markRaw, reactive, toRefs } from 'vue'
 
 import { INGREDIENT_USER_STATES } from '@/configs/recipeIngredient'
 
@@ -55,7 +55,7 @@ import { useIngredientsStore } from '@/stores/ingredients'
 import Dialog from '@/components/modals/Dialog.vue'
 import SelectBaseProductFromArrayModal from '@/components/modals/SelectBaseProductFromArrayModal.vue'
 
-export default {
+export default defineComponent({
   props: {
     ingredient: {
       type: Object,
@@ -70,6 +70,7 @@ export default {
       default: false
     }
   },
+
   setup(props) {
     // usings
     const modal = useModal()
@@ -214,7 +215,7 @@ export default {
       stateClickHandler
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

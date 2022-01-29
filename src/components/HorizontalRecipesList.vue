@@ -37,14 +37,17 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from 'vue'
+
 import { RecipeList } from '@/constants'
 
 import GenericRecipesListItem from '@/components/GenericRecipesListItem.vue'
 import SkeletonRecipeBox from '@/components/skeletons/SkeletonRecipeBox.vue'
 
-export default {
+export default defineComponent({
   components: { GenericRecipesListItem, SkeletonRecipeBox },
+
   props: {
     recipes: {
       type: RecipeList
@@ -54,12 +57,15 @@ export default {
       default: null
     }
   },
+
   emits: ['showAll', 'reload-with-query'],
+
   computed: {
     items() {
       return this.recipes?.pagedItems[1] || []
     }
   },
+
   methods: {
     tryFetchOnError() {
       if (this.errors === null) return
@@ -70,7 +76,7 @@ export default {
       }
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

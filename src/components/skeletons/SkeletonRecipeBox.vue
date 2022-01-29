@@ -10,11 +10,14 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from 'vue'
+
 import SkeletonBox from '@/components/skeletons/SkeletonBox.vue'
 
-export default {
+export default defineComponent({
   components: { SkeletonBox },
+
   props: {
     animate: {
       type: Boolean,
@@ -24,7 +27,7 @@ export default {
       type: Number
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

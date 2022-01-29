@@ -35,8 +35,8 @@
   </Product>
 </template>
 
-<script>
-import { computed, markRaw, ref } from 'vue'
+<script lang="ts">
+import { computed, defineComponent, markRaw, ref } from 'vue'
 
 import myKitchenApi from '@/api/myKitchenApi'
 
@@ -50,16 +50,18 @@ import { useShoppingListStore } from '@/stores/shoppingList'
 import Product from '@/components/Product.vue'
 import EditKitchenProductModal from '@/components/modals/EditKitchenProductModal.vue'
 
-export default {
+export default defineComponent({
   components: {
     Product
   },
+
   props: {
     product: {
       type: Object,
       required: true
     }
   },
+
   setup(props) {
     // usings
     const modal = useModal()
@@ -139,7 +141,7 @@ export default {
       addToShoppingList
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

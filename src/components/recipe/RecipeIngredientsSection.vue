@@ -49,8 +49,8 @@
   </div>
 </template>
 
-<script>
-import { computed, ref } from 'vue'
+<script lang="ts">
+import { computed, defineComponent, ref } from 'vue'
 
 import { INGREDIENT_USER_STATES } from '@/configs/recipeIngredient'
 
@@ -60,8 +60,9 @@ import { useShoppingListStore } from '@/stores/shoppingList'
 import SectionTitle from '@/components/SectionTitle.vue'
 import RecipeIngredient from '@/components/recipe/RecipeIngredient.vue'
 
-export default {
+export default defineComponent({
   components: { RecipeIngredient, SectionTitle },
+
   props: {
     recipeId: {
       type: String,
@@ -76,6 +77,7 @@ export default {
       required: true
     }
   },
+
   setup(props) {
     const myKitchenStore = useMyKitchenStore()
     const shoppingListStore = useShoppingListStore()
@@ -164,7 +166,7 @@ export default {
       addMissingIngredientsToShoppingList
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

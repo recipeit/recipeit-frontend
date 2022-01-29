@@ -5,19 +5,24 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from 'vue'
+
 import logo from '@/assets/logo.svg?raw'
 
 import Spinner from '@/components/Spinner.vue'
 
-export default {
+export default defineComponent({
   components: {
     Spinner
   },
-  data: () => ({
-    logo
-  })
-}
+
+  setup() {
+    return {
+      logo
+    }
+  }
+})
 </script>
 
 <style lang="scss" scoped>
