@@ -31,7 +31,7 @@
               :recipes="almostAvailableRecipesList.recipes.value"
               :errors="almostAvailableRecipesList.recipesErrors.value"
               @reload-with-query="almostAvailableRecipesList.reloadRecipesWithQuery($event)"
-              @showAll="showAlmostAvailableRecipes()"
+              @show-all="showAlmostAvailableRecipes()"
             />
           </div>
         </template>
