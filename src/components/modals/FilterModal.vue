@@ -141,14 +141,13 @@ export default {
   },
   emits: ['close'],
   setup(props, { emit }) {
+    // usings
     const ingredientsStore = useIngredientsStore()
-
-    const baseProducts = computed(() => ingredientsStore.baseProducts)
-    const groupedBaseProducts = computed(() => ingredientsStore.groupedBaseProducts)
 
     // eslint-disable-next-line vue/no-setup-props-destructure
     const { [OPTION_KEYS.BASE_PRODUCTS]: defaultSelectedBaseProductIds, ...rest } = props.defaultSelected
 
+    // data
     const data = reactive({
       selectedTheme: [],
       selected: {
@@ -159,6 +158,11 @@ export default {
       orderSelected: props.defaultOrderSelected
     })
 
+    // computed
+    const baseProducts = computed(() => ingredientsStore.baseProducts)
+    const groupedBaseProducts = computed(() => ingredientsStore.groupedBaseProducts)
+
+    // methods
     const submit = () => {
       const { [OPTION_KEYS.BASE_PRODUCTS]: selectedBaseProducts, ...restSelected } = data.selected
 
@@ -214,17 +218,21 @@ export default {
     }
 
     return {
+      // consts
+      OPTION_KEYS,
+      CATEGORY_GROUPS,
+      // data
       ...toRefs(data),
+      // computed
       groupedBaseProducts,
+      // methods
       submit,
       clearFilterGroup,
       orderSelectedChanged,
       addSelectedBaseProduct,
       removeSelectedBaseProduct,
       orderedGroupOptions,
-      pillCheckboxClickHandler,
-      OPTION_KEYS,
-      CATEGORY_GROUPS
+      pillCheckboxClickHandler
     }
   }
 }

@@ -28,22 +28,28 @@ import { useUserStore } from '@/stores/user'
 
 export default {
   setup() {
+    // usings
     const userStore = useUserStore()
 
+    // computed
     const userProfile = computed(() => userStore.userProfile)
     const avatarSrc = computed(() => {
       return userProfile.value?.imageUrl
     })
 
+    // methods
     const logout = () => {
       userStore.logout(true)
     }
 
     return {
+      // consts
       APP_ACCOUNT,
+      defaultAvatar,
+      // computed
       userProfile,
       avatarSrc,
-      defaultAvatar,
+      // methods
       logout
     }
   }

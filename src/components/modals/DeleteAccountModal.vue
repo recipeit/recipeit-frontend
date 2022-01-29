@@ -60,9 +60,13 @@ export default {
   },
   emits: ['close'],
   setup(_, component) {
+    // usings
     const userStore = useUserStore()
 
+    // consts
     const formID = 'form-' + uniqueID().getID()
+
+    // data
     const data = reactive({
       sending: false,
       errors: [],
@@ -79,6 +83,7 @@ export default {
         .required('REQUIRED')
     })
 
+    // methods
     const generateCode = () => {
       return Math.random()
         .toString(36)
@@ -115,17 +120,21 @@ export default {
         })
     }
 
+    // lifecycle hooks
     onBeforeMount(async () => {
       data.code = generateCode()
       await recaptcha.init()
     })
 
     return {
+      // consts
+      formID,
+      // data
       ...toRefs(data),
-      generateCode,
-      deleteAccount,
       schema,
-      formID
+      // methods
+      generateCode,
+      deleteAccount
     }
   }
 }

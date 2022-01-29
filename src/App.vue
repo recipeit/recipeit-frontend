@@ -43,25 +43,22 @@ export default {
     Modal
   },
   setup() {
+    // usings
     const userStore = useUserStore()
     const route = useRoute()
     const router = useRouter()
+
+    // others
+    userStore.initTheme()
+
+    // data
     const data = reactive({
       showGDPRModal: false,
       fetchedInitialUserProfile: false
     })
 
-    userStore.initTheme()
-
+    // computed
     const allowedGDPRModalRoute = computed(() => !route.meta?.hideCookiesModal)
-
-    GDPRService.init()
-
-    onBeforeMount(() => {
-      if (GDPRService.showGDPRModal()) {
-        data.showGDPRModal = true
-      }
-    })
 
     const exactTheme = computed(() => {
       if (EXACT_THEMES.includes(userStore.theme)) {
@@ -75,6 +72,14 @@ export default {
       return exactTheme.value === THEME_LIGHT ? THEME_LIGHT_COLOR : THEME_DARK_COLOR
     })
 
+    // lifecycle hooks
+    onBeforeMount(() => {
+      if (GDPRService.showGDPRModal()) {
+        data.showGDPRModal = true
+      }
+    })
+
+    // watch
     watchEffect(() => {
       const themeMeta = document.querySelector('meta[name=theme-color]')
 
@@ -83,14 +88,17 @@ export default {
       }
     })
 
-    const computedMeta = computed(() => ({
-      title: '',
-      htmlAttrs: {
-        [THEME_HTML_ATTRIBUTE]: userStore.theme
-      }
-    }))
+    // others
+    GDPRService.init()
 
-    useMeta(computedMeta)
+    useMeta(
+      computed(() => ({
+        title: '',
+        htmlAttrs: {
+          [THEME_HTML_ATTRIBUTE]: userStore.theme
+        }
+      }))
+    )
 
     const initRoute = async () => {
       let userFetchSuccess = false
@@ -134,10 +142,13 @@ export default {
     initRoute()
 
     return {
-      ...toRefs(data),
-      allowedGDPRModalRoute,
+      // consts
       TITLE_TEMPLATE,
-      TITLE_SMALL_TEMPLATE
+      TITLE_SMALL_TEMPLATE,
+      // data
+      ...toRefs(data),
+      // computed
+      allowedGDPRModalRoute
     }
   }
 }

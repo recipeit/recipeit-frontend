@@ -50,7 +50,6 @@ export default {
   },
   emits: ['purchase'],
   setup(props) {
-    // usings
     const modal = useModal()
     const shoppingListStore = useShoppingListStore()
 

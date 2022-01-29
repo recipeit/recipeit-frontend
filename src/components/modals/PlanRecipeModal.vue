@@ -61,6 +61,9 @@ export default {
   },
   emits: ['close'],
   setup(props, { emit }) {
+    // usings
+    const recipesStore = useRecipesStore()
+
     // consts
     const formID = 'form-' + uniqueID().getID()
     const timesOfDay = Object.keys(timesOfDayConst)
@@ -76,9 +79,6 @@ export default {
       day: days[0],
       timeOfDay: timesOfDay[0]
     }
-
-    // usings
-    const recipesStore = useRecipesStore()
 
     // data
     const data = reactive({
