@@ -1,4 +1,5 @@
 import apiClient from '@/api/apiClient'
+import { AxiosResponse } from 'axios'
 
 const route = 'identity'
 
@@ -19,12 +20,24 @@ export const IDENTITY_URLS = {
   DELETE_ACCOUNT: `/${route}/delete-account`
 }
 
+interface UserProfile {
+  email: string
+  username: string
+  imageUrl: string
+}
+
+interface UserProfileResponse {
+  errors?: Array<string>
+  emailUnconfirmed: boolean
+  userProfile: UserProfile
+}
+
 export default {
   register(userData) {
     return apiClient.post(IDENTITY_URLS.REGISTER, userData)
   },
-  login(userData) {
-    return apiClient.post(IDENTITY_URLS.LOGIN, userData)
+  login(userData): Promise<AxiosResponse<UserProfileResponse>> {
+    return apiClient.post<UserProfileResponse>(IDENTITY_URLS.LOGIN, userData)
   },
   logout() {
     return apiClient.post(IDENTITY_URLS.LOGOUT)
@@ -41,8 +54,8 @@ export default {
   refreshCookie() {
     return apiClient.post(IDENTITY_URLS.REFRESH_COOKIE)
   },
-  profile() {
-    return apiClient.get(IDENTITY_URLS.PROFILE)
+  profile(): Promise<AxiosResponse<UserProfileResponse>> {
+    return apiClient.get<UserProfileResponse>(IDENTITY_URLS.PROFILE)
   },
   confirmEmail(data) {
     return apiClient.post(IDENTITY_URLS.CONFIRM_EMAIL, data)

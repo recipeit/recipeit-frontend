@@ -12,7 +12,7 @@ const pluralizationRules = {
   pl: pl.pluralizationRules
 }
 
-export default new createI18n({
+export default createI18n({
   locale: 'pl',
   messages,
   pluralizationRules

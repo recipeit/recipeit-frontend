@@ -18,7 +18,7 @@ export const newPasswordSchema = () =>
     .matches(/^(?=.*[!@#$%^&*])/, 'REQUIRED_AT_LEAST_ONE_NON_ALPHANUM')
     .required('REQUIRED')
 
-export const confirmNewPasswordSchema = passwordFieldName =>
+export const confirmNewPasswordSchema = (passwordFieldName: string) =>
   yup
     .string()
     .oneOf([yup.ref(passwordFieldName), null], 'WRONG_PASSWORD_COMBINATION')

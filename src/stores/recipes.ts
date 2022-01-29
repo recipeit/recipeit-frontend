@@ -90,7 +90,6 @@ export const useRecipesStore = defineStore('recipes', {
 
   getters: {
     getDetailedRecipeById: state => id => state.detailedRecipes.find(r => r.id === id),
-    getRecipeById: state => id => state.recipes.items?.find(r => r.id === id),
     getFinishedDirectionsForRecipe: state => recipeId => state.recipesFinishedDirections[recipeId]
   }
 })

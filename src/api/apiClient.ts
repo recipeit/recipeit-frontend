@@ -7,6 +7,10 @@ import { API_DEV_BASE_URL_SSL, API_PROD_BASE_URL } from '@/configs/api'
 
 import { useUserStore } from '@/stores/user'
 
+interface Subscriber {
+  (success: boolean): void
+}
+
 const apiClient = axios.create({
   baseURL: process.env.NODE_ENV === 'production' ? API_PROD_BASE_URL : API_DEV_BASE_URL_SSL,
   withCredentials: true,
@@ -17,7 +21,7 @@ const apiClient = axios.create({
   }
 })
 
-let subscribers = []
+let subscribers: Array<Subscriber> = []
 
 apiClient.interceptors.response.use(
   response => response,
@@ -33,8 +37,8 @@ apiClient.interceptors.response.use(
     if (error.response?.status === 401) {
       userStore
         .refreshCookie()
-        .then(response => {
-          if (response?.isFetching !== true) {
+        .then(({ isFetching }) => {
+          if (isFetching !== true) {
             onRefreshed(true)
             // subscribers = []
           }
@@ -64,11 +68,11 @@ apiClient.interceptors.response.use(
   }
 )
 
-function subscribeTokenRefresh(cb) {
+function subscribeTokenRefresh(cb: Subscriber) {
   subscribers.push(cb)
 }
 
-function onRefreshed(success) {
+function onRefreshed(success: boolean) {
   subscribers.map(cb => cb(success))
   subscribers = []
 }

@@ -1,3 +1,7 @@
+interface RecipePageFilters {
+  [key: string]: Array<number>
+}
+
 export const recipesSortingMethods = [
   'Newest',
   'NameAscending',
@@ -10,6 +14,21 @@ export const recipesSortingMethods = [
 export const defaultRecipesSortingMethod = recipesSortingMethods[0]
 
 export class RecipeList {
+  fetching: boolean
+  fetchingPages: object
+  pagesTo: number | null
+  items: Array<object>
+  pagedItems: object
+  totalPages: number | null
+  totalCount: number | null
+  hasNext: boolean | null
+  search: string
+  filters: object
+  orderMethod: string
+  filterOptions: object
+  orderMethodOptions: object
+  defaultOrderMethod: string
+
   constructor(orderMethod, filters, search) {
     this.fetching = false
     this.fetchingPages = {}
@@ -92,11 +111,11 @@ export class RecipeList {
   }
 }
 
-export const parseFilters = filters => {
-  let renamedFilters = {}
+export const parseFilters = (filters: RecipePageFilters) => {
+  const renamedFilters = {}
   if (typeof filters === 'object' && filters !== null) {
     Object.entries(filters).forEach(([group, value]) => {
-      if (value && value.length > 0) {
+      if (value?.length > 0) {
         renamedFilters[`filters.${group.toLowerCase()}`] = value.join(',')
       }
     })
@@ -104,7 +123,7 @@ export const parseFilters = filters => {
   return renamedFilters
 }
 
-export const fetchRecipesQueryParams = (orderMethod, filters, search) => {
+export const fetchRecipesQueryParams = (orderMethod: string | null, filters: RecipePageFilters, search: string | null) => {
   const paramsWithNullItems = {
     // pageNumber: null,
     search: search,
@@ -119,7 +138,7 @@ export const fetchRecipesQueryParams = (orderMethod, filters, search) => {
   )
 }
 
-export const queryParamsFromRouteQuery = routeQuery => {
+export const queryParamsFromRouteQuery = (routeQuery: { [key: string]: Array<string | number> }) => {
   if (routeQuery) {
     return Object.fromEntries(
       Object.entries(routeQuery).filter(([key]) => key === 'search' || key === 'orderMethod' || key.startsWith('filters.'))

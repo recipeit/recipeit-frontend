@@ -1,6 +1,31 @@
 import apiClient from '@/api/apiClient'
+import { AxiosResponse } from 'axios'
 
 const route = 'user'
+
+interface Recipe {
+  slug: string
+  name: string
+}
+
+interface RecipesFilteredPage {
+  items: Array<Recipe>
+}
+
+interface RecipesPage {
+  items: Array<Recipe>
+}
+
+interface RecipesPageQueryParams {
+  pageNumber?: number
+  search: string
+  // RecipesOrderMethod? OrderMethod { get; set; }
+  // Dictionary<RecipeFilter, string> Filters { get; set; }
+}
+
+interface PagedListRequestQuery {
+  pageNumber?: number
+}
 
 export default {
   getAvailableRecipesCount(queryParams) {
@@ -13,12 +38,12 @@ export default {
       params: queryParams
     })
   },
-  getAlmostAvailableRecipes(queryParams) {
+  getAlmostAvailableRecipes(queryParams?: RecipesPageQueryParams): Promise<AxiosResponse<RecipesFilteredPage>> {
     return apiClient.get(`/${route}/almost-available-recipes`, {
       params: queryParams
     })
   },
-  getFavouriteRecipes(queryParams) {
+  getFavouriteRecipes(queryParams?: PagedListRequestQuery): Promise<AxiosResponse<RecipesPage>> {
     return apiClient.get(`/${route}/favourite-recipes`, {
       params: queryParams
     })

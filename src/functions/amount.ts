@@ -1,12 +1,8 @@
 import { DOZEN_VALUE, FEW_VALUE } from '@/configs/amount'
 
-const roundedAmount = value => Math.round((value + Number.EPSILON) * 100) / 100
+const roundedAmount = (value: number) => Math.round((value + Number.EPSILON) * 100) / 100
 
-/**
- * @type {string | number}
- * @param {number} [value]
- * */
-export const stringifiedDecimal = value => {
+export const stringifiedDecimal = (value: number): string | null => {
   switch (roundedAmount(value)) {
     case roundedAmount(1 / 4):
       return '1/4'
@@ -55,7 +51,7 @@ export const stringifiedDecimal = value => {
   }
 }
 
-export const stringifiedAmount = value => {
+export const stringifiedAmount = (value: number): string | number | null => {
   if (value === DOZEN_VALUE) {
     return 'kilkanaście'
   } else if (value === FEW_VALUE) {

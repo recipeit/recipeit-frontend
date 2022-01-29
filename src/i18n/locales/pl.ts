@@ -303,7 +303,7 @@ export default {
       Beverages: 'Napoje'
     }
   },
-  pluralizationRules(choice, choicesLength) {
+  pluralizationRules(choice: number, choicesLength: number) {
     const absChoice = Math.abs(choice) // Change to positive
     const decimal = absChoice - Math.floor(absChoice)
 

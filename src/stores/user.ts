@@ -60,7 +60,7 @@ export const useUserStore = defineStore('user', {
       }
     },
 
-    async fetchUserProfile({ getInitUserData } = {}) {
+    async fetchUserProfile({ getInitUserData }: { getInitUserData?: boolean } = {}) {
       try {
         const {
           data: { userProfile }
@@ -78,7 +78,7 @@ export const useUserStore = defineStore('user', {
       }
     },
 
-    register({ email, password, confirmPassword, recaptchaToken }) {
+    register({ email, password, confirmPassword, recaptchaToken }): Promise<void> {
       return new Promise((resolve, reject) => {
         identityApi
           .register({ email, password, confirmPassword, recaptchaToken })
@@ -110,7 +110,7 @@ export const useUserStore = defineStore('user', {
       })
     },
 
-    login({ email, password, recaptchaToken }) {
+    login({ email, password, recaptchaToken }): Promise<void> {
       const recipesStore = useRecipesStore()
       recipesStore.resetUserData() //TODO why only recipes
 
@@ -146,7 +146,7 @@ export const useUserStore = defineStore('user', {
       })
     },
 
-    facebookAuth({ accessToken }) {
+    facebookAuth({ accessToken }): Promise<void> {
       const recipesStore = useRecipesStore()
       recipesStore.resetUserData() //TODO why only recipes
 
@@ -172,7 +172,7 @@ export const useUserStore = defineStore('user', {
       })
     },
 
-    googleAuth({ idToken }) {
+    googleAuth({ idToken }): Promise<void> {
       const recipesStore = useRecipesStore()
       recipesStore.resetUserData() //TODO why only recipes
 
@@ -198,7 +198,7 @@ export const useUserStore = defineStore('user', {
       })
     },
 
-    refreshCookie() {
+    refreshCookie(): Promise<{ isFetching?: boolean }> {
       return new Promise((resolve, reject) => {
         if (this.userAuthState === USER_AUTH_STATE.USER_FETCHING) {
           resolve({ isFetching: true })
@@ -223,7 +223,7 @@ export const useUserStore = defineStore('user', {
             this.userProfile = userProfile
           }
           setUserAuthState(this, USER_AUTH_STATE.USER_LOGGED_IN)
-          resolve()
+          resolve({})
         }
 
         identityApi
@@ -241,7 +241,7 @@ export const useUserStore = defineStore('user', {
       })
     },
 
-    async logout(withoutRedirect) {
+    async logout(withoutRedirect = false) {
       await identityApi.logout()
 
       this.userProfile = null
@@ -288,7 +288,7 @@ export const useUserStore = defineStore('user', {
       })
     },
 
-    changeRecipeVisibility({ recipeId, visible }) {
+    changeRecipeVisibility({ recipeId, visible }): Promise<void> {
       return new Promise((resolve, reject) => {
         userApi
           .changeRecipeVisibility(recipeId, visible)
@@ -317,7 +317,7 @@ export const useUserStore = defineStore('user', {
       })
     },
 
-    changeBlogVisibility({ blogId, visible }) {
+    changeBlogVisibility({ blogId, visible }): Promise<void> {
       return new Promise((resolve, reject) => {
         userApi
           .changeBlogVisibility(blogId, visible)
