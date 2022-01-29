@@ -4,16 +4,17 @@
   </div>
 </template>
 
-<script>
-import { computed } from 'vue'
+<script lang="ts">
+import { computed, defineComponent } from 'vue'
 
-export default {
+export default defineComponent({
   props: {
     sticky: {
       type: Boolean,
       default: false
     }
   },
+
   setup(props) {
     const classes = computed(() => ({
       'modal-footer': true,
@@ -24,5 +25,5 @@ export default {
       classes
     }
   }
-}
+})
 </script>

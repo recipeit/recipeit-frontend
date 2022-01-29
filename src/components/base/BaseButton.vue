@@ -5,13 +5,16 @@
   </component>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from 'vue'
+
 import Spinner from '@/components/Spinner.vue'
 
 const validTags = ['button', 'a', 'span']
 
-export default {
+export default defineComponent({
   components: { Spinner },
+
   props: {
     color: {
       type: String,
@@ -43,6 +46,7 @@ export default {
       default: false
     }
   },
+
   computed: {
     classList() {
       return [
@@ -55,7 +59,7 @@ export default {
       ]
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

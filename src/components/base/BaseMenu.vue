@@ -26,8 +26,10 @@
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from 'vue'
+
+export default defineComponent({
   props: {
     toggleTabindex: {
       type: Number,
@@ -38,10 +40,12 @@ export default {
       default: true
     }
   },
+
   data: () => ({
     opened: false,
     toggleFocused: false
   }),
+
   methods: {
     toggle(event) {
       if (this.opened) {
@@ -74,7 +78,7 @@ export default {
       }
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

@@ -4,29 +4,32 @@
   </component>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from 'vue'
+
 const tagOptions = ['a', 'button', 'span']
 const colorOptions = [null, 'primary', 'accent', 'text-primary', 'text-secondary', 'red']
 
-export default {
+export default defineComponent({
   props: {
     tag: {
       type: String,
-      validator: prop => tagOptions.includes(prop),
+      validator: (prop: string) => tagOptions.includes(prop),
       default: 'a'
     },
     color: {
       type: String,
-      validator: prop => colorOptions.includes(prop),
+      validator: (prop: string) => colorOptions.includes(prop),
       default: null
     }
   },
+
   computed: {
     classList() {
       return ['link', this.color ? `link--color-${this.color}` : null]
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

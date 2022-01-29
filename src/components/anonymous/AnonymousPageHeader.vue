@@ -30,8 +30,8 @@
   </header>
 </template>
 
-<script>
-import { computed } from 'vue'
+<script lang="ts">
+import { computed, defineComponent } from 'vue'
 
 import { LANDING_PAGE, AUTH_LOGIN, AUTH_REGISTER, APP_HOME } from '@/router/names'
 
@@ -39,8 +39,9 @@ import { useUserStore } from '@/stores/user'
 
 import Logotype from '@/components/Logotype.vue'
 
-export default {
+export default defineComponent({
   components: { Logotype },
+
   setup() {
     const userStore = useUserStore()
 
@@ -56,7 +57,7 @@ export default {
       userAuthenticatedLazy
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

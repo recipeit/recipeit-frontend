@@ -19,8 +19,10 @@
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from 'vue'
+
+export default defineComponent({
   props: {
     value: [String, Number],
     modelValue: { default: '' },
@@ -36,10 +38,13 @@ export default {
       default: false
     }
   },
+
   emits: ['update:modelValue'],
+
   data: () => ({
     focused: false
   }),
+
   computed: {
     checked() {
       if (this.modelValue instanceof Array) {
@@ -48,6 +53,7 @@ export default {
       return this.modelValue === this.trueValue
     }
   },
+
   methods: {
     setFocus() {
       if (this.focused) return
@@ -74,7 +80,7 @@ export default {
       }
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

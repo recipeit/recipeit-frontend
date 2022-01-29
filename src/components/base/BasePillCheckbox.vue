@@ -6,8 +6,10 @@
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from 'vue'
+
+export default defineComponent({
   props: {
     excluding: { type: Boolean },
     value: { type: [String, Number] },
@@ -16,7 +18,9 @@ export default {
     trueValue: { default: true },
     falseValue: { default: false }
   },
+
   emits: ['update:modelValue'],
+
   computed: {
     isChecked() {
       if (this.modelValue instanceof Array) {
@@ -26,6 +30,7 @@ export default {
       return this.modelValue === this.trueValue
     }
   },
+
   methods: {
     updateInput() {
       let isChecked = !this.isChecked
@@ -42,7 +47,7 @@ export default {
       }
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

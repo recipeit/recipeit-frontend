@@ -28,14 +28,17 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from 'vue'
+
 import uniqueID from '@/functions/uniqueID'
 
-export default {
+export default defineComponent({
   model: {
     prop: 'value',
     event: 'input'
   },
+
   props: {
     value: {
       type: [String, Number],
@@ -47,7 +50,7 @@ export default {
     type: {
       type: String,
       default: 'text',
-      validator: prop => ['text', 'password'].includes(prop)
+      validator: (prop: string) => ['text', 'password'].includes(prop)
     },
     tabindex: {
       type: Number,
@@ -62,11 +65,14 @@ export default {
       default: false
     }
   },
+
   emits: ['focus', 'blur'],
+
   data: () => ({
     focused: false,
     id: 'base-input-' + uniqueID().getID()
   }),
+
   computed: {
     baseInputClasses() {
       return {
@@ -87,6 +93,7 @@ export default {
       return true
     }
   },
+
   methods: {
     setFocus() {
       this.focused = true
@@ -97,7 +104,7 @@ export default {
       this.$emit('blur')
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>
