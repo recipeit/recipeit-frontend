@@ -34,7 +34,9 @@
   </footer>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from 'vue'
+
 import { COPYRIGHT_TEXT } from '@/constants'
 
 import { TERMS, PRIVACY_POLICY, ADD_BLOG, CONTACT } from '@/router/names'
@@ -42,14 +44,16 @@ import { ARTICLES as ARTICLES_PATH } from '@/router/paths'
 
 import Logotype from '@/components/Logotype.vue'
 
-export default {
+export default defineComponent({
   components: { Logotype },
+
   props: {
     border: {
       type: Boolean,
       default: true
     }
   },
+
   setup() {
     return {
       TERMS,
@@ -60,7 +64,7 @@ export default {
       ARTICLES_PATH
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

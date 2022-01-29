@@ -21,9 +21,9 @@
   </SheetModalContent>
 </template>
 
-<script>
+<script lang="ts">
 import { Form } from 'vee-validate'
-import { computed, reactive, ref, toRefs } from 'vue'
+import { computed, defineComponent, reactive, ref, toRefs } from 'vue'
 import * as Yup from 'yup'
 
 import uniqueID from '@/functions/uniqueID'
@@ -34,8 +34,9 @@ import { useMyKitchenStore } from '@/stores/myKitchen'
 import ProductModalForm from '@/components/ProductModalForm.vue'
 import ExpirationDatesFormSection from '@/components/modals/ExpirationDatesFormSection.vue'
 
-export default {
+export default defineComponent({
   components: { Form, ProductModalForm, ExpirationDatesFormSection },
+
   props: {
     product: {
       type: Object,
@@ -43,8 +44,10 @@ export default {
     },
     expirationDates: [Array, null]
   },
+
   emits: ['close'],
-  setup(props, component) {
+
+  setup(props, { emit }) {
     // usings
     const ingredientsStore = useIngredientsStore()
     const myKitchenStore = useMyKitchenStore()
@@ -100,7 +103,7 @@ export default {
       myKitchenStore
         .editProductFromKitchen(requestData)
         .then(() => {
-          component.emit('close')
+          emit('close')
         })
         .finally(() => {
           sending.value = false
@@ -119,7 +122,7 @@ export default {
       editProduct
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

@@ -37,9 +37,9 @@
   </SheetModalContent>
 </template>
 
-<script>
+<script lang="ts">
 import { Field, Form } from 'vee-validate'
-import { onBeforeMount, reactive, toRefs } from 'vue'
+import { defineComponent, onBeforeMount, reactive, toRefs } from 'vue'
 import * as Yup from 'yup'
 
 import identityApi from '@/api/identityApi'
@@ -55,20 +55,23 @@ import recaptcha from '@/services/recaptcha'
 
 import RecaptchaBranding from '@/components/RecaptchaBranding.vue'
 
-export default {
+export default defineComponent({
   components: {
     RecaptchaBranding,
     Field,
     Form
   },
+
   props: {
     email: {
       type: String,
       required: true
     }
   },
+
   emits: ['close'],
-  setup(props, { emit }) {
+
+  setup(_, { emit }) {
     const toast = useToast()
     const formID = 'form-' + uniqueID().getID()
     const data = reactive({
@@ -134,7 +137,7 @@ export default {
       schema
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

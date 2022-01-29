@@ -6,10 +6,12 @@
   </SheetModalContent>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from 'vue'
+
 import Authorization from '@/components/Authorization.vue'
 
-export default {
+export default defineComponent({
   components: { Authorization }
-}
+})
 </script>

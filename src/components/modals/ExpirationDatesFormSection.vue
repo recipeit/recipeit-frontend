@@ -30,14 +30,14 @@
   </div>
 </template>
 
-<script>
-import { markRaw } from 'vue'
+<script lang="ts">
+import { defineComponent, markRaw } from 'vue'
 
 import dayjs from '@/functions/dayjs'
 
 import NewExpirationDateModal from '@/components/modals/NewExpirationDateModal.vue'
 
-export default {
+export default defineComponent({
   // emits: [update:],
   props: {
     productId: String,
@@ -69,8 +69,6 @@ export default {
       this.$emit('update:modelValue', newDates)
     },
     openNewExpirationDateModal() {
-      const self = this
-
       this.$modal.show(
         markRaw(NewExpirationDateModal),
         {},
@@ -78,15 +76,15 @@ export default {
           close: date => {
             if (!date) return
             const { year, month, day } = date
-            const newDates = [...self.modelValue]
+            const newDates = [...this.modelValue]
             newDates.push(`${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`)
-            self.$emit('update:modelValue', newDates)
+            this.$emit('update:modelValue', newDates)
           }
         }
       )
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

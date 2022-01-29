@@ -10,7 +10,9 @@
   </Container>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from 'vue'
+
 import FacebookLogo from '@/assets/logos/facebook.svg?raw'
 import InstagramLogo from '@/assets/logos/instagram.svg?raw'
 
@@ -18,23 +20,18 @@ import { FACEBOOK_PROFILE_URL, INSTAGRAM_PROFILE_URL } from '@/configs/socialMed
 
 import Container from '@/components/landingPage/Container.vue'
 
-export default {
+export default defineComponent({
   components: { Container },
 
   setup() {
-    const openSocialMediaPage = url => {
-      window.open(url, '_blank')
-    }
-
     return {
       FacebookLogo,
       InstagramLogo,
       FACEBOOK_PROFILE_URL,
-      INSTAGRAM_PROFILE_URL,
-      openSocialMediaPage
+      INSTAGRAM_PROFILE_URL
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

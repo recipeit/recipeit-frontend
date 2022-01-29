@@ -36,8 +36,8 @@
   </SheetModalContent>
 </template>
 
-<script>
-import { onBeforeMount, reactive, toRefs } from 'vue'
+<script lang="ts">
+import { defineComponent, onBeforeMount, reactive, toRefs } from 'vue'
 
 import identityApi from '@/api/identityApi'
 
@@ -47,17 +47,20 @@ import recaptcha from '@/services/recaptcha'
 
 import RecaptchaBranding from '@/components/RecaptchaBranding.vue'
 
-export default {
+export default defineComponent({
   components: {
     RecaptchaBranding
   },
+
   props: {
     email: {
       type: String,
       required: true
     }
   },
+
   emits: ['close'],
+
   setup(props) {
     const data = reactive({
       sending: false,
@@ -100,7 +103,7 @@ export default {
       onConfirmForgotPassword
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

@@ -29,8 +29,8 @@
   </SheetModalContent>
 </template>
 
-<script>
-import { markRaw } from 'vue'
+<script lang="ts">
+import { defineComponent, markRaw } from 'vue'
 
 import { useModal } from '@/plugins/global-sheet-modal'
 
@@ -38,8 +38,9 @@ import GDPRService from '@/services/gdpr'
 
 import CustomizeCookiesModal from '@/components/modals/CustomizeCookiesModal.vue'
 
-export default {
+export default defineComponent({
   emits: ['close'],
+
   setup(_, { emit }) {
     const modal = useModal()
 
@@ -65,7 +66,7 @@ export default {
       acceptAll
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

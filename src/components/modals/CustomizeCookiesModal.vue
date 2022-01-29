@@ -35,14 +35,14 @@
   </SheetModalContent>
 </template>
 
-<script>
-import { reactive, toRefs } from 'vue'
+<script lang="ts">
+import { defineComponent, reactive, toRefs } from 'vue'
 
 import { COOKIES_ANALYTICS_COOKIE_NAME } from '@/configs/cookies'
 
 import GDPRService from '@/services/gdpr'
 
-export default {
+export default defineComponent({
   emits: ['close'],
   setup(_, { emit }) {
     const data = reactive({
@@ -60,7 +60,7 @@ export default {
       COOKIES_ANALYTICS_COOKIE_NAME
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

@@ -24,8 +24,10 @@
   </SheetModalContent>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from 'vue'
+
+export default defineComponent({
   props: {
     options: {
       type: Array,
@@ -35,8 +37,9 @@ export default {
       type: String
     }
   },
+
   emits: ['close']
-}
+})
 </script>
 
 <style lang="scss" scoped>

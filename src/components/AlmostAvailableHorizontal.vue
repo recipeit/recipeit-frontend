@@ -5,8 +5,8 @@
   </div>
 </template>
 
-<script>
-import { onBeforeMount, ref } from 'vue'
+<script lang="ts">
+import { defineComponent, onBeforeMount, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 import userApi from '@/api/userApi'
@@ -18,8 +18,9 @@ import { APP_FAVOURITES } from '@/router/names'
 import HorizontalRecipesList from '@/components/HorizontalRecipesList.vue'
 import SectionTitle from '@/components/SectionTitle.vue'
 
-export default {
+export default defineComponent({
   components: { HorizontalRecipesList, SectionTitle },
+
   setup() {
     const favouriteRecipes = ref(new RecipeList())
     const router = useRouter()
@@ -39,7 +40,7 @@ export default {
       showAllFavourites
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

@@ -36,9 +36,9 @@
   </SheetModalContent>
 </template>
 
-<script>
+<script lang="ts">
 import { Field, Form } from 'vee-validate'
-import { reactive, toRefs } from 'vue'
+import { defineComponent, reactive, toRefs } from 'vue'
 import * as Yup from 'yup'
 
 import timesOfDayConst from '@/constants/timesOfDay'
@@ -48,18 +48,21 @@ import uniqueID from '@/functions/uniqueID'
 
 import { useRecipesStore } from '@/stores/recipes'
 
-export default {
+export default defineComponent({
   components: {
     Field,
     Form
   },
+
   props: {
     recipeId: {
       type: String,
       required: true
     }
   },
+
   emits: ['close'],
+
   setup(props, { emit }) {
     // usings
     const recipesStore = useRecipesStore()
@@ -136,7 +139,7 @@ export default {
       planRecipe
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

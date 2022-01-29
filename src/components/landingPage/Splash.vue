@@ -30,22 +30,27 @@
   </section>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from 'vue'
+
 import BackgroundUrl from '@/assets/img/splash.webp'
 
 import { LANDING_PAGE } from '@/router/names'
 
 import Logotype from '@/components/Logotype.vue'
 
-export default {
+export default defineComponent({
   components: {
     Logotype
   },
-  setup: () => ({
-    BackgroundUrl,
-    LANDING_PAGE
-  })
-}
+
+  setup() {
+    return {
+      BackgroundUrl,
+      LANDING_PAGE
+    }
+  }
+})
 </script>
 
 <style lang="scss" scoped>

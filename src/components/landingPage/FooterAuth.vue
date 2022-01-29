@@ -23,17 +23,22 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from 'vue'
+
 import BackgroundUrl from '@/assets/img/footer-auth.webp'
 
 import Container from '@/components/landingPage/Container.vue'
 
-export default {
+export default defineComponent({
   components: { Container },
-  setup: () => ({
-    BackgroundUrl
-  })
-}
+
+  setup() {
+    return {
+      BackgroundUrl
+    }
+  }
+})
 </script>
 
 <style lang="scss" scoped>
