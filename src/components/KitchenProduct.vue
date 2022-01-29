@@ -40,6 +40,8 @@ import { computed, markRaw, ref } from 'vue'
 
 import myKitchenApi from '@/api/myKitchenApi'
 
+import { useModal } from '@/plugins/global-sheet-modal'
+import { useToast } from '@/plugins/toast'
 import { ToastType } from '@/plugins/toast/toastType'
 
 import { useMyKitchenStore } from '@/stores/myKitchen'
@@ -47,8 +49,6 @@ import { useShoppingListStore } from '@/stores/shoppingList'
 
 import Product from '@/components/Product.vue'
 import EditKitchenProductModal from '@/components/modals/EditKitchenProductModal.vue'
-import { useModal } from '@/plugins/global-sheet-modal'
-import { useToast } from '@/plugins/toast'
 
 export default {
   components: {
@@ -61,13 +61,16 @@ export default {
     }
   },
   setup(props) {
+    // usings
     const modal = useModal()
     const toast = useToast()
     const myKitchenStore = useMyKitchenStore()
     const shoppingListStore = useShoppingListStore()
 
+    // data
     const addToShoppingListLoading = ref(false)
 
+    // computed
     const shoppingListProducts = computed(() => shoppingListStore.products)
 
     const isInShoppingList = computed(() => {
@@ -78,6 +81,7 @@ export default {
       return isInShoppingList.value ? 'Posiadasz ten produkt na liście zakupów' : 'Dodaj do listy zakupów'
     })
 
+    // methods
     const openEditModal = async () => {
       let expirationDates
       try {

@@ -85,6 +85,10 @@ export default {
       link: [{ rel: 'canonical', href: `${BASE_URL}${AUTH_RESET_PASSWORD}` }]
     })
 
+    // usings
+    const errorHandler = useErrorHandler()
+
+    // data
     const data = reactive({
       state: 'BEFORE',
       email: null,
@@ -96,9 +100,8 @@ export default {
       confirmPassword: confirmNewPasswordSchema()
     })
 
+    // methods
     const resetPassword = ({ password, confirmPassword }) => {
-      const errorHandler = useErrorHandler()
-
       data.state = 'SENDING'
 
       recaptcha
@@ -134,6 +137,7 @@ export default {
         })
     }
 
+    // lifecycle hooks
     onBeforeMount(() => {
       const route = useRoute()
 
@@ -149,8 +153,10 @@ export default {
     })
 
     return {
+      // data
       ...toRefs(data),
       schema,
+      // methodss
       resetPassword
     }
   }

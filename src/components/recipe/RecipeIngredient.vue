@@ -71,15 +71,18 @@ export default {
     }
   },
   setup(props) {
+    // usings
     const modal = useModal()
     const toast = useToast()
     const ingredientsStore = useIngredientsStore()
     const shoppingListStore = useShoppingListStore()
 
+    // data
     const data = reactive({
       loading: false
     })
 
+    // computed
     const baseProducts = computed(() => ingredientsStore.baseProducts)
 
     const name = computed(() => {
@@ -125,6 +128,7 @@ export default {
       return null
     })
 
+    // methods
     const addSingleProductToShoppingList = async product => {
       data.loading = true
 
@@ -200,13 +204,16 @@ export default {
     }
 
     return {
+      // data
       ...toRefs(data),
+      // computed
       baseProducts,
       name,
       computedAmount,
       unitTranslationAmount,
       showLoadingState,
       actionPopperContent,
+      // methods
       addSingleProductToShoppingList,
       addProductToShoppingList,
       stateClickHandler

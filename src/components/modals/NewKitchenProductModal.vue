@@ -35,9 +35,28 @@ export default {
   components: { Form, ProductModalForm, ExpirationDatesFormSection },
   emits: ['close'],
   setup(_, { emit }) {
+    // usings
     const myKitchenStore = useMyKitchenStore()
 
+    // consts
     const formID = 'form-' + uniqueID().getID()
+
+    const initialValues = {
+      unit: 'piece'
+    }
+
+    // data
+    const data = reactive({
+      sending: false,
+      newProduct: {
+        name: '',
+        amount: null,
+        baseProductId: null,
+        unit: null
+      },
+      expirationDatesForm: []
+    })
+
     const schema = Yup.object().shape({
       baseProduct: Yup.object()
         .required('REQUIRED')
@@ -52,21 +71,7 @@ export default {
       unit: Yup.object().nullable()
     })
 
-    const data = reactive({
-      sending: false,
-      newProduct: {
-        name: '',
-        amount: null,
-        baseProductId: null,
-        unit: null
-      },
-      expirationDatesForm: []
-    })
-
-    const initialValues = {
-      unit: 'piece'
-    }
-
+    // methods
     const addProduct = ({ baseProduct, amount, unit }) => {
       data.sending = true
 
@@ -90,10 +95,13 @@ export default {
     }
 
     return {
+      // consts
       formID,
-      schema,
-      ...toRefs(data),
       initialValues,
+      // data
+      ...toRefs(data),
+      schema,
+      // methods
       addProduct
     }
   }

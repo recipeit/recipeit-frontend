@@ -120,11 +120,14 @@ export default {
       title: 'Moje konto'
     })
 
+    // usings
     const modal = useModal()
     const userStore = useUserStore()
 
+    // data
     const selectedTheme = ref(userStore.theme)
 
+    // computed
     const hiddenRecipes = computed(() => userStore.hiddenRecipeIds)
     const hiddenBlogs = computed(() => userStore.hiddenBlogIds)
     const userProfile = computed(() => userStore.userProfile)
@@ -132,6 +135,7 @@ export default {
       return userProfile.value?.imageUrl
     })
 
+    // methods
     const updateTheme = value => {
       if (value && THEMES.includes(value)) {
         selectedTheme.value = value
@@ -188,15 +192,19 @@ export default {
     }
 
     return {
-      COPYRIGHT_TEXT,
-      selectedTheme,
-      THEMES,
+      // consts
       defaultAvatar,
       ARTICLES_PATH,
+      COPYRIGHT_TEXT,
+      THEMES,
+      // data
+      selectedTheme,
+      // computed
       hiddenRecipes,
       hiddenBlogs,
       userProfile,
       avatarSrc,
+      // methods
       updateTheme,
       unhideRecipe,
       unhideBlog,

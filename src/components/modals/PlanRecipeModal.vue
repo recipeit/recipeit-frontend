@@ -61,11 +61,9 @@ export default {
   },
   emits: ['close'],
   setup(props, { emit }) {
-    const recipesStore = useRecipesStore()
-
+    // consts
     const formID = 'form-' + uniqueID().getID()
     const timesOfDay = Object.keys(timesOfDayConst)
-
     const today = dayjs()
     const days = Array.from({ length: 7 }, (_, i) => {
       const day = today.add(i, 'days')
@@ -78,6 +76,16 @@ export default {
       day: days[0],
       timeOfDay: timesOfDay[0]
     }
+
+    // usings
+    const recipesStore = useRecipesStore()
+
+    // data
+    const data = reactive({
+      errorList: null,
+      sending: false
+    })
+
     const schema = Yup.object({
       day: Yup.object()
         .required('REQUIRED')
@@ -87,11 +95,7 @@ export default {
         .typeError('REQUIRED')
     })
 
-    const data = reactive({
-      errorList: null,
-      sending: false
-    })
-
+    // methods
     const planRecipe = ({ day, timeOfDay }) => {
       data.sending = true
       data.errorList = null

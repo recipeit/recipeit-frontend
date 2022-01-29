@@ -33,9 +33,17 @@ export default {
   components: { Form, ProductModalForm },
   emits: ['close'],
   setup(_, { emit }) {
+    // usings
     const shoppingListStore = useShoppingListStore()
 
+    // consts
     const formID = 'form-' + uniqueID().getID()
+
+    // data
+    const data = reactive({
+      sending: false
+    })
+
     const schema = Yup.object().shape({
       baseProduct: Yup.object()
         .required('REQUIRED')
@@ -50,10 +58,7 @@ export default {
       unit: Yup.object().nullable()
     })
 
-    const data = reactive({
-      sending: false
-    })
-
+    // methods
     const addProduct = ({ baseProduct, amount, unit }) => {
       data.sending = true
 
@@ -74,9 +79,12 @@ export default {
     }
 
     return {
+      // consts
       formID,
-      schema,
+      // data
       ...toRefs(data),
+      schema,
+      // methods
       addProduct
     }
   }

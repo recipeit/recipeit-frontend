@@ -35,20 +35,26 @@ export default {
     }
   },
   setup(props) {
+    // data
     const copied = ref(false)
 
+    // computed
     const code = computed(() => {
       return `<a href="${BASE_URL}"><img src="${BASE_URL}${props.url}" alt="Recipeit"/></a>`
     })
 
+    // methods
     const copyToClipboard = () => {
       const clipboard = useClipboard()
       copied.value = clipboard(code.value)
     }
 
     return {
+      // data
       copied,
+      // computed
       code,
+      // methods
       copyToClipboard
     }
   }

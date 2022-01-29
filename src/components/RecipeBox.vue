@@ -66,12 +66,18 @@ export default {
     }
   },
   setup(props) {
+    // usings
     const router = useRouter()
     const recipesStore = useRecipesStore()
     const userStore = useUserStore()
 
-    const placeholder = computed(() => (userStore.theme === THEME_DARK ? placeholderDark : placeholderLight))
-    const favouriteRecipesIds = computed(() => recipesStore.favouriteRecipesIds)
+    // computed
+    const placeholder = computed(() => {
+      return userStore.theme === THEME_DARK ? placeholderDark : placeholderLight
+    })
+    const favouriteRecipesIds = computed(() => {
+      return recipesStore.favouriteRecipesIds
+    })
     const isFavourite = computed(() => {
       return favouriteRecipesIds.value?.find(id => id === props.recipeId) !== undefined
     })
@@ -79,6 +85,7 @@ export default {
       return `/static/recipes/${props.recipeId}/thumb.webp?v=1`
     })
 
+    // methods
     const showDetails = () => {
       router.push({ name: APP_RECIPE, params: { recipeId: props.recipeId } })
     }
@@ -90,11 +97,14 @@ export default {
     }
 
     return {
+      // consts
       APP_RECIPE,
+      // computed
       placeholder,
       favouriteRecipesIds,
       isFavourite,
       imageUrl,
+      // methods
       showDetails,
       addToFavourites,
       deleteFromFavourites
