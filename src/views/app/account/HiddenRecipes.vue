@@ -46,7 +46,9 @@ export default {
     const unhideRecipe = id => {
       userStore.changeRecipeVisibility({ recipeId: id, visible: true }).then(() => {
         const index = hiddenRecipes.value.findIndex(v => v.id === id)
-        hiddenRecipes.value.splice(index, 1)
+        if (index >= 0) {
+          hiddenRecipes.value.splice(index, 1)
+        }
       })
     }
 

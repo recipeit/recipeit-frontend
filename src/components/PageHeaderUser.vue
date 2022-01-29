@@ -32,9 +32,8 @@ export default {
     const userStore = useUserStore()
 
     // computed
-    const userProfile = computed(() => userStore.userProfile)
     const avatarSrc = computed(() => {
-      return userProfile.value?.imageUrl
+      return userStore.userProfile?.imageUrl
     })
 
     // methods
@@ -47,7 +46,6 @@ export default {
       APP_ACCOUNT,
       defaultAvatar,
       // computed
-      userProfile,
       avatarSrc,
       // methods
       logout

@@ -131,7 +131,7 @@ export default {
     const calculateCurrentIndex = () => {
       if (!imagesElement.value) return 0
       const { scrollLeft, scrollWidth } = imagesElement.value
-      return Math.round((scrollLeft / scrollWidth) * data.images.length)
+      return Math.round((scrollLeft / scrollWidth) * props.images.length)
     }
 
     const imagesScrollHandlerDebounced = () => {
@@ -187,11 +187,7 @@ export default {
       scrollTo,
       showNext,
       setImageRef,
-      showPrev,
-      windowScrollHandler,
-      calculateCurrentIndex,
-      imagesScrollHandlerDebounced,
-      checkGalleryStoppedInMiddle
+      showPrev
     }
   },
   methods: {}

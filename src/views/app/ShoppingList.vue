@@ -42,15 +42,15 @@
 
     <div v-if="groupedProducts === null">...wczytuję</div>
     <ul v-else-if="groupedProducts.length > 0" class="product-list-groups">
-      <li v-for="products in groupedProducts" :key="products[0]" class="product-list-group">
+      <li v-for="productsGroup in groupedProducts" :key="productsGroup[0]" class="product-list-group">
         <div class="product-list-group__title">
-          <ProductIcon class="product-list-group__title__icon" :group="products[0]" />
+          <ProductIcon class="product-list-group__title__icon" :group="productsGroup[0]" />
           <div class="product-list-group__title__name">
-            {{ $t(`productCategory.${products[0]}`) }}
+            {{ $t(`productCategory.${productsGroup[0]}`) }}
           </div>
         </div>
         <ul class="product-list">
-          <li v-for="product in products[1]" :key="product.id" class="product-list__item">
+          <li v-for="product in productsGroup[1]" :key="product.id" class="product-list__item">
             <ShoppingListProduct :product="product" @purchase="purchase(product.id)" />
           </li>
         </ul>
@@ -200,7 +200,7 @@ export default {
     return {
       // consts
       PRODUCT_GROUP_ICONS,
-      //refs
+      // refs
       addProductSelect,
       // data
       ...toRefs(data),
@@ -209,7 +209,7 @@ export default {
       products,
       groupedProducts,
       isEmpty,
-      //methods
+      // methods
       addProductFromSelect,
       openAddProductSelect,
       purchase,

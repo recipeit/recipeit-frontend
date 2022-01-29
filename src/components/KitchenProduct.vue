@@ -71,10 +71,8 @@ export default {
     const addToShoppingListLoading = ref(false)
 
     // computed
-    const shoppingListProducts = computed(() => shoppingListStore.products)
-
     const isInShoppingList = computed(() => {
-      return !!shoppingListProducts.value?.find(p => p.baseProductId === props.product.baseProductId)
+      return !!shoppingListStore.products?.find(p => p.baseProductId === props.product.baseProductId)
     })
 
     const purchaseButtonTooltip = computed(() => {
@@ -133,7 +131,6 @@ export default {
       // data
       addToShoppingListLoading,
       // computed
-      shoppingListProducts,
       isInShoppingList,
       purchaseButtonTooltip,
       //methods

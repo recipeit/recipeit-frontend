@@ -44,15 +44,15 @@
 
     <div v-if="groupedProducts === null">...wczytuję</div>
     <ul v-else-if="groupedProducts.length > 0" class="product-list-groups">
-      <li v-for="products in groupedProducts" :key="products[0]" class="product-list-group">
+      <li v-for="productsGroup in groupedProducts" :key="productsGroup[0]" class="product-list-group">
         <div class="product-list-group__title">
-          <ProductIcon class="product-list-group__title__icon" :group="products[0]" />
+          <ProductIcon class="product-list-group__title__icon" :group="productsGroup[0]" />
           <div class="product-list-group__title__name">
-            {{ $t(`productCategory.${products[0]}`) }}
+            {{ $t(`productCategory.${productsGroup[0]}`) }}
           </div>
         </div>
         <ul class="product-list">
-          <li v-for="product in products[1]" :key="product.id" class="product-list__item">
+          <li v-for="product in productsGroup[1]" :key="product.id" class="product-list__item">
             <KitchenProduct :product="product" @add-to-shopping-list="addToShoppingList(product)" />
           </li>
         </ul>
@@ -126,9 +126,12 @@ export default {
       simpleView: true
     })
 
+    // setup computed
+    const userAuthenticatedLazy = computed(() => userStore.userAuthenticatedLazy)
+
     // computed
     const groupedBaseProducts = computed(() => ingredientsStore.groupedBaseProducts)
-    const userAuthenticatedLazy = computed(() => userStore.userAuthenticatedLazy)
+
     const products = computed(() => myKitchenStore.products)
 
     const groupedProducts = computed(() => {
@@ -145,6 +148,19 @@ export default {
       return !(groupedProducts.value === null || groupedProducts.value.length > 0)
     })
 
+    // setup methods
+    const tryFetchInitialData = () => {
+      if (data.fetchedData) return
+
+      if (userAuthenticatedLazy.value) {
+        ingredientsStore.fetchBaseProducts()
+        ingredientsStore.fetchUnitsGroupedByMeasurement()
+        myKitchenStore.fetchProducts()
+        shoppingListStore.fetchProducts()
+        data.fetchedData = true
+      }
+    }
+
     // methods
     const addProductFromSelect = async ({ id } = {}) => {
       await myKitchenStore.addProduct({
@@ -158,18 +174,6 @@ export default {
       data.selectFocused = true
       await nextTick()
       addProductSelect.value?.setFocus()
-    }
-
-    const tryFetchInitialData = () => {
-      if (data.fetchedData) return
-
-      if (userAuthenticatedLazy.value) {
-        ingredientsStore.fetchBaseProducts()
-        ingredientsStore.fetchUnitsGroupedByMeasurement()
-        myKitchenStore.fetchProducts()
-        shoppingListStore.fetchProducts()
-        data.fetchedData = true
-      }
     }
 
     // watch
@@ -191,14 +195,12 @@ export default {
       ...toRefs(data),
       // computed
       groupedBaseProducts,
-      userAuthenticatedLazy,
       products,
       groupedProducts,
       isEmpty,
       // methods
       addProductFromSelect,
-      openAddProductSelect,
-      tryFetchInitialData
+      openAddProductSelect
     }
   }
 }

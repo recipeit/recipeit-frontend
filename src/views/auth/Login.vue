@@ -107,11 +107,11 @@ export default {
     const errorHandler = useErrorHandler()
 
     // consts
+    const hasInitialEmail = !!props.email
+
     const initialValues = {
       email: props.email
     }
-
-    const hasInitialEmail = !!props.email
 
     // data
     const data = reactive({
@@ -164,8 +164,8 @@ export default {
 
     return {
       // consts
-      initialValues,
       hasInitialEmail,
+      initialValues,
       //data
       ...toRefs(data),
       schema,

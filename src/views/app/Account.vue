@@ -128,29 +128,12 @@ export default {
     const selectedTheme = ref(userStore.theme)
 
     // computed
-    const hiddenRecipes = computed(() => userStore.hiddenRecipeIds)
-    const hiddenBlogs = computed(() => userStore.hiddenBlogIds)
     const userProfile = computed(() => userStore.userProfile)
     const avatarSrc = computed(() => {
       return userProfile.value?.imageUrl
     })
 
-    // methods
-    const updateTheme = value => {
-      if (value && THEMES.includes(value)) {
-        selectedTheme.value = value
-        userStore.setTheme(value)
-      }
-    }
-
-    const unhideRecipe = recipeId => {
-      userStore.changeRecipeVisibility({ recipeId, visible: true })
-    }
-
-    const unhideBlog = blogId => {
-      userStore.changeBlogVisibility({ blogId, visible: true })
-    }
-
+    // setup methods
     const openForgotPasswordModal = () => {
       modal.show(
         markRaw(ForgotPasswordModal),
@@ -159,6 +142,14 @@ export default {
         },
         {}
       )
+    }
+
+    // methods
+    const updateTheme = value => {
+      if (value && THEMES.includes(value)) {
+        selectedTheme.value = value
+        userStore.setTheme(value)
+      }
     }
 
     const openChangePasswordModal = () => {
@@ -200,16 +191,11 @@ export default {
       // data
       selectedTheme,
       // computed
-      hiddenRecipes,
-      hiddenBlogs,
       userProfile,
       avatarSrc,
       // methods
       updateTheme,
-      unhideRecipe,
-      unhideBlog,
       openChangePasswordModal,
-      openForgotPasswordModal,
       openDeleteAccountModal,
       openCustomizeCookiesModal
     }

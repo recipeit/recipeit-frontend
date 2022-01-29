@@ -34,20 +34,6 @@
             </transition>
           </div>
           <div v-if="groupValue === OPTION_KEYS.BASE_PRODUCTS">
-            <!-- <div class="test-multiselect-pills">
-              <BaseButton
-                subtle
-                class="test-multiselect-pill"
-                color="primary"
-                size="small"
-                v-for="baseProduct in selected[groupValue]"
-                :key="baseProduct.id"
-                @click.stop="removeSelectedBaseProduct(baseProduct.id)"
-              >
-                {{ baseProduct.name }}
-                <BaseIcon class="test-multiselect-pill-close" icon="close" weight="semi-bold" />
-              </BaseButton>
-            </div> -->
             <BaseSelect
               placeholder="Dodaj składnik"
               multi-placeholder="dodaj kolejny składnik"
@@ -153,13 +139,12 @@ export default {
       selected: {
         ...Object.fromEntries(Object.keys(props.options).map(o => [o, []])),
         ...rest,
-        [OPTION_KEYS.BASE_PRODUCTS]: defaultSelectedBaseProductIds?.map(id => baseProducts.value?.find(p => p.id === id)) || []
+        [OPTION_KEYS.BASE_PRODUCTS]: defaultSelectedBaseProductIds?.map(id => ingredientsStore.baseProducts?.find(p => p.id === id)) || []
       },
       orderSelected: props.defaultOrderSelected
     })
 
     // computed
-    const baseProducts = computed(() => ingredientsStore.baseProducts)
     const groupedBaseProducts = computed(() => ingredientsStore.groupedBaseProducts)
 
     // methods
@@ -181,20 +166,6 @@ export default {
 
     const orderSelectedChanged = newValue => {
       data.orderSelected = newValue || props.defaultOrderSelected
-    }
-
-    const addSelectedBaseProduct = product => {
-      const productIndex = data.selected[OPTION_KEYS.BASE_PRODUCTS].findIndex(p => p.id === product.id)
-      if (productIndex < 0) {
-        data.selected[OPTION_KEYS.BASE_PRODUCTS].push(product)
-      }
-    }
-
-    const removeSelectedBaseProduct = id => {
-      const productIndex = data.selected[OPTION_KEYS.BASE_PRODUCTS].findIndex(p => p.id === id)
-      if (productIndex >= 0) {
-        data.selected[OPTION_KEYS.BASE_PRODUCTS].splice(productIndex, 1)
-      }
     }
 
     const orderedGroupOptions = groupKey => {
@@ -229,8 +200,6 @@ export default {
       submit,
       clearFilterGroup,
       orderSelectedChanged,
-      addSelectedBaseProduct,
-      removeSelectedBaseProduct,
       orderedGroupOptions,
       pillCheckboxClickHandler
     }

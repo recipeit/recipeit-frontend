@@ -83,11 +83,9 @@ export default {
     })
 
     // computed
-    const baseProducts = computed(() => ingredientsStore.baseProducts)
-
     const name = computed(() => {
       if (props.ingredient.name) return props.ingredient.name
-      return baseProducts.value.find(p => p.id === props.ingredient.mainBaseProductId)?.name
+      return ingredientsStore.baseProducts.find(p => p.id === props.ingredient.mainBaseProductId)?.name
     })
 
     const computedAmount = computed(() => {
@@ -207,15 +205,12 @@ export default {
       // data
       ...toRefs(data),
       // computed
-      baseProducts,
       name,
       computedAmount,
       unitTranslationAmount,
       showLoadingState,
       actionPopperContent,
       // methods
-      addSingleProductToShoppingList,
-      addProductToShoppingList,
       stateClickHandler
     }
   }

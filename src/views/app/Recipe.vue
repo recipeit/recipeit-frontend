@@ -220,8 +220,6 @@ export default {
     })
 
     // computed
-    const favouriteRecipesIds = computed(() => recipesStore.favouriteRecipesIds)
-
     const isRecipeHidden = computed(() => {
       if (data.recipe) {
         return userStore.isRecipeHidden(data.recipe.id)
@@ -258,7 +256,7 @@ export default {
     })
 
     const isFavourite = computed(() => {
-      return favouriteRecipesIds.value.find(id => id === data.recipe.id) !== undefined
+      return recipesStore.favouriteRecipesIds.find(id => id === data.recipe.id) !== undefined
     })
 
     const images = computed(() => {
@@ -373,7 +371,6 @@ export default {
       // data
       ...toRefs(data),
       // computed
-      favouriteRecipesIds,
       isRecipeHidden,
       isBlogHidden,
       isHidden,

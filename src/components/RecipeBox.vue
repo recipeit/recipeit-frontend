@@ -11,8 +11,8 @@
           class="prop-favourite"
           :is-favourite="isFavourite"
           color="text-primary"
-          @removed="deleteFromFavourites"
-          @added="addToFavourites"
+          @removed="deleteFromFavourites()"
+          @added="addToFavourites()"
           @click.prevent
         />
       </div>
@@ -25,7 +25,6 @@
 
 <script>
 import { computed } from 'vue'
-import { useRouter } from 'vue-router'
 
 import placeholderDark from '@/assets/img/placeholders/recipe-box-dark.webp'
 import placeholderLight from '@/assets/img/placeholders/recipe-box.webp'
@@ -67,7 +66,6 @@ export default {
   },
   setup(props) {
     // usings
-    const router = useRouter()
     const recipesStore = useRecipesStore()
     const userStore = useUserStore()
 
@@ -75,20 +73,14 @@ export default {
     const placeholder = computed(() => {
       return userStore.theme === THEME_DARK ? placeholderDark : placeholderLight
     })
-    const favouriteRecipesIds = computed(() => {
-      return recipesStore.favouriteRecipesIds
-    })
     const isFavourite = computed(() => {
-      return favouriteRecipesIds.value?.find(id => id === props.recipeId) !== undefined
+      return recipesStore.favouriteRecipesIds?.find(id => id === props.recipeId) !== undefined
     })
     const imageUrl = computed(() => {
       return `/static/recipes/${props.recipeId}/thumb.webp?v=1`
     })
 
     // methods
-    const showDetails = () => {
-      router.push({ name: APP_RECIPE, params: { recipeId: props.recipeId } })
-    }
     const addToFavourites = () => {
       recipesStore.addToFavourites(props.recipeId)
     }
@@ -101,11 +93,9 @@ export default {
       APP_RECIPE,
       // computed
       placeholder,
-      favouriteRecipesIds,
       isFavourite,
       imageUrl,
       // methods
-      showDetails,
       addToFavourites,
       deleteFromFavourites
     }

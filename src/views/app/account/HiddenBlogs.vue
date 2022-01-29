@@ -46,7 +46,9 @@ export default {
     const unhideBlog = id => {
       userStore.changeBlogVisibility({ blogId: id, visible: true }).then(() => {
         const index = hiddenBlogs.value.findIndex(v => v.id === id)
-        hiddenBlogs.value.splice(index, 1)
+        if (index >= 0) {
+          hiddenBlogs.value.splice(index, 1)
+        }
       })
     }
 

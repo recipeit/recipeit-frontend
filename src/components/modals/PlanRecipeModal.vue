@@ -67,9 +67,8 @@ export default {
     // consts
     const formID = 'form-' + uniqueID().getID()
     const timesOfDay = Object.keys(timesOfDayConst)
-    const today = dayjs()
     const days = Array.from({ length: 7 }, (_, i) => {
-      const day = today.add(i, 'days')
+      const day = dayjs().add(i, 'days')
       return {
         value: day.format('YYYY-MM-DD'),
         label: day.calendar()
@@ -125,13 +124,15 @@ export default {
     }
 
     return {
-      recipesStore,
+      // consts
       formID,
-      days,
       timesOfDay,
+      days,
       initialValues,
-      schema,
+      // data
       ...toRefs(data),
+      schema,
+      // methods
       planRecipe
     }
   }

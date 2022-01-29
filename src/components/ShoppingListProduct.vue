@@ -1,10 +1,6 @@
 <template>
   <Product class="shopping-list-product" :product="product" @click="openEditModal()">
     <div class="actions">
-      <!-- <div class="actions__remove" @click="deleteProduct">usuń</div>
-      <div class="actions__decrement" @click="decreaseAmount">-</div>
-      <div class="actions__increment" @click="increaseAmount">+</div> -->
-
       <VTooltip>
         <a class="remove-button" @click.prevent.stop="deleteProduct()">
           <BaseIcon icon="trash" weight="semi-bold" />
@@ -52,23 +48,6 @@ export default {
   setup(props) {
     const modal = useModal()
     const shoppingListStore = useShoppingListStore()
-
-    // const putAmountChange = amount => {
-    //   const product = JSON.parse(JSON.stringify(props.product))
-    //   product.amount = amount
-    //   shoppingListStore.editProductFromShoppingList(product)
-    // }
-
-    // const increaseAmount = () => {
-    //   const amount = Math.round(props.product.amount + 1, 5)
-    //   putAmountChange(amount)
-    // }
-
-    // const decreaseAmount = () => {
-    //   if (props.product.amount <= 1.0) return
-    //   const amount = Math.round(props.product.amount - 1, 5)
-    //   putAmountChange(amount)
-    // }
 
     const deleteProduct = () => {
       shoppingListStore.deleteProductFromShoppingList(props.product.id)
