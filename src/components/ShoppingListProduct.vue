@@ -1,10 +1,6 @@
 <template>
   <Product class="shopping-list-product" :product="product" @click="openEditModal()">
     <div class="actions">
-      <!-- <div class="actions__remove" @click="deleteProduct">usuń</div>
-      <div class="actions__decrement" @click="decreaseAmount">-</div>
-      <div class="actions__increment" @click="increaseAmount">+</div> -->
-
       <VTooltip>
         <a class="remove-button" @click.prevent.stop="deleteProduct()">
           <BaseIcon icon="trash" weight="semi-bold" />
@@ -31,6 +27,10 @@
 <script>
 import { markRaw } from 'vue'
 
+import { useModal } from '@/plugins/global-sheet-modal'
+
+import { useShoppingListStore } from '@/stores/shoppingList'
+
 import Product from '@/components/Product.vue'
 import EditShoppingListProductModal from '@/components/modals/EditShoppingListProductModal.vue'
 
@@ -45,32 +45,27 @@ export default {
     }
   },
   emits: ['purchase'],
-  methods: {
-    deleteProduct() {
-      this.$store.dispatch('shoppingList/deleteProductFromShoppingList', this.product.id)
-    },
-    increaseAmount() {
-      const amount = Math.round(this.product.amount + 1, 5)
-      this.putAmountChange(amount)
-    },
-    decreaseAmount() {
-      if (this.product.amount <= 1.0) return
-      const amount = Math.round(this.product.amount - 1, 5)
-      this.putAmountChange(amount)
-    },
-    putAmountChange(amount) {
-      var product = JSON.parse(JSON.stringify(this.product))
-      product.amount = amount
-      this.$store.dispatch('shoppingList/editProductFromShoppingList', product)
-    },
-    async openEditModal() {
-      this.$modal.show(
+  setup(props) {
+    const modal = useModal()
+    const shoppingListStore = useShoppingListStore()
+
+    const deleteProduct = () => {
+      shoppingListStore.deleteProductFromShoppingList(props.product.id)
+    }
+
+    const openEditModal = async () => {
+      modal.show(
         markRaw(EditShoppingListProductModal),
         {
-          product: this.product
+          product: props.product
         },
         {}
       )
+    }
+
+    return {
+      deleteProduct,
+      openEditModal
     }
   }
 }

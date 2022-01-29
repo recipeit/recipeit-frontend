@@ -16,9 +16,12 @@
 </template>
 
 <script>
+import { onBeforeMount, ref } from 'vue'
 import { useMeta } from 'vue-meta'
 
 import userApi from '@/api/userApi'
+
+import { useUserStore } from '@/stores/user'
 
 import HiddenBlog from '@/components/HiddenBlog.vue'
 import PageHeader from '@/components/PageHeader.vue'
@@ -32,21 +35,35 @@ export default {
     useMeta({
       title: 'Ukryte blogi'
     })
-  },
-  data: () => ({
-    hiddenBlogs: null
-  }),
-  beforeMount() {
-    userApi.getHiddenBlogs().then(({ data }) => {
-      this.hiddenBlogs = data.blogs || []
-    })
-  },
-  methods: {
-    unhideBlog(id) {
-      this.$store.dispatch('user/changeBlogVisibility', { blogId: id, visible: true }).then(() => {
-        const index = this.hiddenBlogs.findIndex(v => v.id === id)
-        this.hiddenBlogs.splice(index, 1)
+
+    // usings
+    const userStore = useUserStore()
+
+    // data
+    const hiddenBlogs = ref(null)
+
+    // methods
+    const unhideBlog = id => {
+      userStore.changeBlogVisibility({ blogId: id, visible: true }).then(() => {
+        const index = hiddenBlogs.value.findIndex(v => v.id === id)
+        if (index >= 0) {
+          hiddenBlogs.value.splice(index, 1)
+        }
       })
+    }
+
+    // lifecycle hooks
+    onBeforeMount(() => {
+      userApi.getHiddenBlogs().then(({ data }) => {
+        hiddenBlogs.value = data.blogs || []
+      })
+    })
+
+    return {
+      // data
+      hiddenBlogs,
+      // methods
+      unhideBlog
     }
   }
 }

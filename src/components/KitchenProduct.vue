@@ -36,12 +36,16 @@
 </template>
 
 <script>
-import { markRaw } from 'vue'
-import { mapState } from 'vuex'
+import { computed, markRaw, ref } from 'vue'
 
 import myKitchenApi from '@/api/myKitchenApi'
 
+import { useModal } from '@/plugins/global-sheet-modal'
+import { useToast } from '@/plugins/toast'
 import { ToastType } from '@/plugins/toast/toastType'
+
+import { useMyKitchenStore } from '@/stores/myKitchen'
+import { useShoppingListStore } from '@/stores/shoppingList'
 
 import Product from '@/components/Product.vue'
 import EditKitchenProductModal from '@/components/modals/EditKitchenProductModal.vue'
@@ -56,64 +60,83 @@ export default {
       required: true
     }
   },
-  data: () => ({
-    addToShoppingListLoading: false
-  }),
-  computed: {
-    ...mapState({
-      shoppingListProducts: state => state.shoppingList.products
-    }),
-    isInShoppingList() {
-      return !!this.shoppingListProducts?.find(p => p.baseProductId === this.product.baseProductId)
-    },
-    purchaseButtonTooltip() {
-      return this.isInShoppingList ? 'Posiadasz ten produkt na liście zakupów' : 'Dodaj do listy zakupów'
-    }
-  },
-  methods: {
-    async openEditModal() {
+  setup(props) {
+    // usings
+    const modal = useModal()
+    const toast = useToast()
+    const myKitchenStore = useMyKitchenStore()
+    const shoppingListStore = useShoppingListStore()
+
+    // data
+    const addToShoppingListLoading = ref(false)
+
+    // computed
+    const isInShoppingList = computed(() => {
+      return !!shoppingListStore.products?.find(p => p.baseProductId === props.product.baseProductId)
+    })
+
+    const purchaseButtonTooltip = computed(() => {
+      return isInShoppingList.value ? 'Posiadasz ten produkt na liście zakupów' : 'Dodaj do listy zakupów'
+    })
+
+    // methods
+    const openEditModal = async () => {
       let expirationDates
       try {
-        const { data } = await myKitchenApi.getProductExpirationDates(this.product.id)
+        const { data } = await myKitchenApi.getProductExpirationDates(props.product.id)
         if (data) {
           expirationDates = data
         }
       } catch (e) {
-        this.$toast.show('Wystąpił błąd podczas pobierania danych', ToastType.ERROR)
+        toast.show('Wystąpił błąd podczas pobierania danych', ToastType.ERROR)
       }
 
-      this.$modal.show(
+      modal.show(
         markRaw(EditKitchenProductModal),
         {
-          product: this.product,
+          product: props.product,
           expirationDates: expirationDates
         },
         {}
       )
-    },
-    deleteProduct() {
-      this.$store.dispatch('myKitchen/deleteProductFromKitchen', this.product.id)
-    },
-    addToShoppingList() {
-      if (this.addToShoppingListLoading) return
+    }
 
-      if (!this.isInShoppingList) {
-        this.addToShoppingListLoading = true
-        const { baseProductId, amount, unit } = this.product
+    const deleteProduct = () => {
+      myKitchenStore.deleteProductFromKitchen(props.product.id)
+    }
 
-        this.$store
-          .dispatch('shoppingList/addProduct', {
+    const addToShoppingList = () => {
+      if (addToShoppingListLoading.value) return
+
+      if (!isInShoppingList.value) {
+        addToShoppingListLoading.value = true
+        const { baseProductId, amount, unit } = props.product
+
+        shoppingListStore
+          .addProduct({
             baseProductId,
             amount,
             unit
           })
           .catch(() => {
-            this.$toast.show('Nie udało się dodać produktu do listy zakupów', ToastType.ERROR)
+            toast.show('Nie udało się dodać produktu do listy zakupów', ToastType.ERROR)
           })
           .finally(() => {
-            this.addToShoppingListLoading = false
+            addToShoppingListLoading.value = false
           })
       }
+    }
+
+    return {
+      // data
+      addToShoppingListLoading,
+      // computed
+      isInShoppingList,
+      purchaseButtonTooltip,
+      //methods
+      openEditModal,
+      deleteProduct,
+      addToShoppingList
     }
   }
 }

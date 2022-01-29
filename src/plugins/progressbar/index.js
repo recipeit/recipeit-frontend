@@ -4,7 +4,7 @@ import View from '@/plugins/progressbar/vue3-progressbar.vue'
 
 // eslint-disable-next-line no-unused-vars
 function assign(target, source) {
-  for (var index = 1, key, src; index < arguments.length; ++index) {
+  for (let index = 1, key, src; index < arguments.length; ++index) {
     src = arguments[index]
 
     for (key in src) {
@@ -171,7 +171,7 @@ const Plugin = {
         }
       },
       parseMeta(meta) {
-        for (var x in meta.func) {
+        for (let x in meta.func) {
           let func = meta.func[x]
           switch (func.call) {
             case 'color':

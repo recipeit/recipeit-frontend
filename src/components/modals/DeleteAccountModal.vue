@@ -36,7 +36,6 @@
 <script>
 import { Field, Form } from 'vee-validate'
 import { onBeforeMount, reactive, toRefs } from 'vue'
-import { useStore } from 'vuex'
 import * as Yup from 'yup'
 
 import identityApi from '@/api/identityApi'
@@ -47,7 +46,16 @@ import uniqueID from '@/functions/uniqueID'
 
 import recaptcha from '@/services/recaptcha'
 
+import { useUserStore } from '@/stores/user'
+
 import RecaptchaBranding from '@/components/RecaptchaBranding.vue'
+
+const generateCode = () => {
+  return Math.random()
+    .toString(36)
+    .substring(7)
+    .toUpperCase()
+}
 
 export default {
   components: { RecaptchaBranding, Field, Form },
@@ -59,8 +67,13 @@ export default {
   },
   emits: ['close'],
   setup(_, component) {
-    const store = useStore()
+    // usings
+    const userStore = useUserStore()
+
+    // consts
     const formID = 'form-' + uniqueID().getID()
+
+    // data
     const data = reactive({
       sending: false,
       errors: [],
@@ -77,13 +90,7 @@ export default {
         .required('REQUIRED')
     })
 
-    const generateCode = () => {
-      return Math.random()
-        .toString(36)
-        .substring(7)
-        .toUpperCase()
-    }
-
+    // methods
     const deleteAccount = () => {
       data.sending = true
       data.errors = []
@@ -95,7 +102,7 @@ export default {
             .deleteAccount({ recaptchaToken })
             .then(() => {
               component.emit('close', { success: true })
-              store.dispatch('user/logout')
+              userStore.logout()
             })
             .catch(error => {
               data.code = generateCode()
@@ -113,17 +120,20 @@ export default {
         })
     }
 
+    // lifecycle hooks
     onBeforeMount(async () => {
       data.code = generateCode()
       await recaptcha.init()
     })
 
     return {
+      // consts
+      formID,
+      // data
       ...toRefs(data),
-      generateCode,
-      deleteAccount,
       schema,
-      formID
+      // methods
+      deleteAccount
     }
   }
 }

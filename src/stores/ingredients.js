@@ -1,45 +1,37 @@
 import groupby from 'lodash.groupby'
 import sortby from 'lodash.sortby'
+import { defineStore } from 'pinia'
 
 import ingredientsApi from '@/api/ingredientsApi'
 
 import { PRODUCT_CATEGORY_ORDER } from '@/configs/productCategories'
 
-export const MUTATIONS = {
-  SET_BASE_INGREDIENTS: 'SET_BASE_INGREDIENTS',
-  SET_UNITS: 'SET_UNITS'
-}
-
-export default {
-  namespaced: true,
-  state: {
-    baseProducts: null,
-    units: null
-  },
-  mutations: {
-    [MUTATIONS.SET_BASE_INGREDIENTS](state, baseProducts) {
-      state.baseProducts = baseProducts
-    },
-    [MUTATIONS.SET_UNITS](state, units) {
-      state.units = units
+export const useIngredientsStore = defineStore('ingredients', {
+  state: () => {
+    return {
+      baseProducts: null,
+      units: null
     }
   },
+
   actions: {
-    async fetchBaseProducts({ commit, state }) {
-      if (state.baseProducts) return
+    async fetchBaseProducts() {
+      if (this.baseProducts) return
 
       const { data: baseIngredients } = await ingredientsApi.getAllBaseProducts()
 
-      commit(MUTATIONS.SET_BASE_INGREDIENTS, baseIngredients)
+      this.baseProducts = baseIngredients
     },
-    async fetchUnitsGroupedByMeasurement({ commit, state }) {
-      if (state.units) return
+
+    async fetchUnitsGroupedByMeasurement() {
+      if (this.units) return
 
       const { data: unitGroups } = await ingredientsApi.getAllUnitKeysGroupedByMeasurement()
 
-      commit(MUTATIONS.SET_UNITS, unitGroups)
+      this.units = unitGroups
     }
   },
+
   getters: {
     groupedBaseProducts(state) {
       const sorted = sortby(state.baseProducts, 'baseProductName')
@@ -52,4 +44,4 @@ export default {
       }))
     }
   }
-}
+})

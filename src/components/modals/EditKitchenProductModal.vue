@@ -24,10 +24,12 @@
 <script>
 import { Form } from 'vee-validate'
 import { computed, reactive, ref, toRefs } from 'vue'
-import { useStore } from 'vuex'
 import * as Yup from 'yup'
 
 import uniqueID from '@/functions/uniqueID'
+
+import { useIngredientsStore } from '@/stores/ingredients'
+import { useMyKitchenStore } from '@/stores/myKitchen'
 
 import ProductModalForm from '@/components/ProductModalForm.vue'
 import ExpirationDatesFormSection from '@/components/modals/ExpirationDatesFormSection.vue'
@@ -43,20 +45,29 @@ export default {
   },
   emits: ['close'],
   setup(props, component) {
-    const store = useStore()
-    const baseProducts = computed(() => store.state.ingredients.baseProducts)
+    // usings
+    const ingredientsStore = useIngredientsStore()
+    const myKitchenStore = useMyKitchenStore()
 
+    // computed
+    const baseProducts = computed(() => ingredientsStore.baseProducts)
+
+    // consts
     const formID = 'form-' + uniqueID().getID()
-    const data = reactive({
-      loading: false,
-      expirationDatesForm: props.expirationDates
-    })
 
     const initialValues = {
       baseProduct: props.product.baseProductId ? baseProducts.value?.find(p => p.id === props.product.baseProductId) : null,
       amount: props.product.amount,
       unit: props.product.unit
     }
+
+    // data
+    const data = reactive({
+      loading: false,
+      expirationDatesForm: props.expirationDates
+    })
+
+    const sending = ref(false)
 
     const schema = Yup.object().shape({
       baseProduct: Yup.object()
@@ -72,8 +83,7 @@ export default {
       unit: Yup.string().nullable()
     })
 
-    const sending = ref(false)
-
+    // methods
     const editProduct = ({ baseProduct, amount, unit }) => {
       sending.value = true
 
@@ -87,8 +97,8 @@ export default {
         expirationDates: data.expirationDatesForm
       }
 
-      store
-        .dispatch('myKitchen/editProductFromKitchen', requestData)
+      myKitchenStore
+        .editProductFromKitchen(requestData)
         .then(() => {
           component.emit('close')
         })
@@ -98,12 +108,15 @@ export default {
     }
 
     return {
-      ...toRefs(data),
+      // consts
+      formID,
       initialValues,
-      schema,
-      editProduct,
+      // data
+      ...toRefs(data),
       sending,
-      formID
+      schema,
+      // methods
+      editProduct
     }
   }
 }

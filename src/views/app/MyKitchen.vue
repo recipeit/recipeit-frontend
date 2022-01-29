@@ -44,15 +44,15 @@
 
     <div v-if="groupedProducts === null">...wczytuję</div>
     <ul v-else-if="groupedProducts.length > 0" class="product-list-groups">
-      <li v-for="products in groupedProducts" :key="products[0]" class="product-list-group">
+      <li v-for="productsGroup in groupedProducts" :key="productsGroup[0]" class="product-list-group">
         <div class="product-list-group__title">
-          <ProductIcon class="product-list-group__title__icon" :group="products[0]" />
+          <ProductIcon class="product-list-group__title__icon" :group="productsGroup[0]" />
           <div class="product-list-group__title__name">
-            {{ $t(`productCategory.${products[0]}`) }}
+            {{ $t(`productCategory.${productsGroup[0]}`) }}
           </div>
         </div>
         <ul class="product-list">
-          <li v-for="product in products[1]" :key="product.id" class="product-list__item">
+          <li v-for="product in productsGroup[1]" :key="product.id" class="product-list__item">
             <KitchenProduct :product="product" @add-to-shopping-list="addToShoppingList(product)" />
           </li>
         </ul>
@@ -81,17 +81,21 @@
 <script>
 import groupby from 'lodash.groupby'
 import sortby from 'lodash.sortby'
-import { computed, nextTick, reactive, ref, toRefs } from 'vue'
-import { mapState, useStore } from 'vuex'
+import { computed, nextTick, onBeforeMount, reactive, ref, toRefs, watch } from 'vue'
 import { useMeta } from 'vue-meta'
+
+import { PRODUCT_CATEGORY_ORDER } from '@/configs/productCategories'
+
+import { useIngredientsStore } from '@/stores/ingredients'
+import { useMyKitchenStore } from '@/stores/myKitchen'
+import { useShoppingListStore } from '@/stores/shoppingList'
+import { useUserStore } from '@/stores/user'
 
 import KitchenProduct from '@/components/KitchenProduct.vue'
 import PageHeader from '@/components/PageHeader.vue'
 import ProductIcon from '@/components/ProductIcon.vue'
 // import SearchWithFilter from '@/components/SearchWithFilter.vue'
 // import NewKitchenProductModal from '@/components/modals/NewKitchenProductModal.vue'
-
-import { PRODUCT_CATEGORY_ORDER } from '@/configs/productCategories'
 
 export default {
   name: 'MyKitchen',
@@ -106,99 +110,98 @@ export default {
       title: 'Moja kuchnia'
     })
 
-    const store = useStore()
+    // usings
+    const ingredientsStore = useIngredientsStore()
+    const myKitchenStore = useMyKitchenStore()
+    const shoppingListStore = useShoppingListStore()
+    const userStore = useUserStore()
 
+    // refs
     const addProductSelect = ref(null)
 
+    // data
     const data = reactive({
       fetchedData: false,
       selectFocused: false,
       simpleView: true
     })
 
-    const groupedBaseProducts = computed(() => store.getters['ingredients/groupedBaseProducts'])
+    // setup computed
+    const userAuthenticatedLazy = computed(() => userStore.userAuthenticatedLazy)
 
-    const addProductFromSelect = ({ id } = {}) => {
-      const requestData = {
+    // computed
+    const groupedBaseProducts = computed(() => ingredientsStore.groupedBaseProducts)
+
+    const products = computed(() => myKitchenStore.products)
+
+    const groupedProducts = computed(() => {
+      if (!products.value) return null
+
+      const sorted = sortby(products.value, 'baseProductName')
+      const grouped = groupby(sorted, 'category')
+      const sortedGroups = sortby(Object.entries(grouped), ([group]) => PRODUCT_CATEGORY_ORDER[group])
+
+      return sortedGroups
+    })
+
+    const isEmpty = computed(() => {
+      return !(groupedProducts.value === null || groupedProducts.value.length > 0)
+    })
+
+    // setup methods
+    const tryFetchInitialData = () => {
+      if (data.fetchedData) return
+
+      if (userAuthenticatedLazy.value) {
+        ingredientsStore.fetchBaseProducts()
+        ingredientsStore.fetchUnitsGroupedByMeasurement()
+        myKitchenStore.fetchProducts()
+        shoppingListStore.fetchProducts()
+        data.fetchedData = true
+      }
+    }
+
+    // methods
+    const addProductFromSelect = async ({ id } = {}) => {
+      await myKitchenStore.addProduct({
         product: {
           baseProductId: id
         }
-      }
-
-      store.dispatch('myKitchen/addProduct', requestData)
+      })
     }
 
     const openAddProductSelect = async () => {
       data.selectFocused = true
       await nextTick()
-      // console.log(addProductSelect)
       addProductSelect.value?.setFocus()
     }
 
+    // watch
+    watch(userAuthenticatedLazy, newValue => {
+      if (newValue && !data.fetchedData) {
+        tryFetchInitialData()
+      }
+    })
+
+    // lifecycle hooks
+    onBeforeMount(() => {
+      tryFetchInitialData()
+    })
+
     return {
-      ...toRefs(data),
+      // refs
       addProductSelect,
+      // data
+      ...toRefs(data),
+      // computed
       groupedBaseProducts,
+      products,
+      groupedProducts,
+      isEmpty,
+      // methods
       addProductFromSelect,
       openAddProductSelect
     }
-  },
-  computed: {
-    ...mapState({
-      userAuthenticatedLazy: state => state.user.userAuthenticatedLazy,
-      products: state => state.myKitchen.products
-    }),
-    isEmpty() {
-      return !(this.groupedProducts === null || this.groupedProducts.length > 0)
-    },
-    filteredProducts() {
-      // if (!this.products) return null
-      return this.products
-
-      // if (!this.searchString) return this.products
-
-      // return this.products.filter(p => p.baseProductName.toLowerCase().includes(this.searchString.toLowerCase()))
-    },
-    groupedProducts() {
-      const { filteredProducts } = this
-
-      if (!filteredProducts) return null
-
-      const sorted = sortby(filteredProducts, 'baseProductName')
-      const grouped = groupby(sorted, 'category')
-      const sortedGroups = sortby(Object.entries(grouped), ([group]) => PRODUCT_CATEGORY_ORDER[group])
-
-      return sortedGroups
-    }
-  },
-  watch: {
-    userAuthenticatedLazy(newValue) {
-      if (newValue && !this.fetchedData) {
-        this.tryFetchInitialData()
-      }
-    }
-  },
-  beforeMount() {
-    this.tryFetchInitialData()
-  },
-  methods: {
-    tryFetchInitialData() {
-      if (this.fetchedData) return
-
-      if (this.userAuthenticatedLazy) {
-        this.$store.dispatch('ingredients/fetchBaseProducts')
-        this.$store.dispatch('ingredients/fetchUnitsGroupedByMeasurement')
-        this.$store.dispatch('myKitchen/fetchProducts')
-        this.$store.dispatch('shoppingList/fetchProducts')
-        this.fetchedData = true
-      }
-    }
-    // newProduct() {
-    //   this.$modal.show(markRaw(NewKitchenProductModal), {}, {})
-    // }
-    // onSearch({ search }) {
-    //   this.searchString = search
-    // }
   }
 }
 </script>

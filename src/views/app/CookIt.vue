@@ -31,7 +31,7 @@
               :recipes="almostAvailableRecipesList.recipes.value"
               :errors="almostAvailableRecipesList.recipesErrors.value"
               @reload-with-query="almostAvailableRecipesList.reloadRecipesWithQuery($event)"
-              @showAll="showAlmostAvailableRecipes()"
+              @show-all="showAlmostAvailableRecipes()"
             />
           </div>
         </template>
@@ -112,13 +112,14 @@
 
 <script>
 import { computed, onBeforeMount } from 'vue'
-import { useStore } from 'vuex'
 import { useMeta } from 'vue-meta'
 import { useRoute, useRouter } from 'vue-router'
 
 import userApi from '@/api/userApi'
 
 import { queryParamsFromRouteQuery } from '@/constants'
+
+import { useMyKitchenStore } from '@/stores/myKitchen'
 
 import recipeFilteredPagedList from '@/views/app/composable/recipeFilteredPagedList'
 
@@ -135,14 +136,19 @@ export default {
       title: 'Ugotuj to!'
     })
 
-    const store = useStore()
+    // usings
+    const myKitchenStore = useMyKitchenStore()
     const route = useRoute()
     const router = useRouter()
-    const kitchenProductsCount = computed(() => store.state.myKitchen.products?.length || 0)
 
+    // composables
     const recipesList = recipeFilteredPagedList(userApi.getAvailableRecipes)
     const almostAvailableRecipesList = recipeFilteredPagedList(userApi.getAlmostAvailableRecipes)
 
+    // computed
+    const kitchenProductsCount = computed(() => myKitchenStore.products?.length || 0)
+
+    // methods
     const reloadRecipes = ({ orderMethod, filters, search }) => {
       const query = { orderMethod, filters, search }
 
@@ -156,6 +162,7 @@ export default {
       router.push({ name: 'almost-available', query: route.query })
     }
 
+    // lifecycle hooks
     onBeforeMount(() => {
       const initialQueryParams = queryParamsFromRouteQuery(route.query)
       almostAvailableRecipesList.reloadRecipes(initialQueryParams)
@@ -163,9 +170,12 @@ export default {
     })
 
     return {
-      kitchenProductsCount,
+      // composables
       recipesList,
       almostAvailableRecipesList,
+      // computed
+      kitchenProductsCount,
+      // methods
       reloadRecipes,
       showAlmostAvailableRecipes
     }

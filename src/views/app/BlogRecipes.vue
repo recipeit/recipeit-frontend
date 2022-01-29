@@ -67,15 +67,20 @@
 
 <script>
 import { computed, markRaw, onBeforeMount, ref } from 'vue'
-import { mapGetters } from 'vuex'
 import { useMeta } from 'vue-meta'
+import { useRoute } from 'vue-router'
 
 import blogApi from '@/api/blogApi'
 
 import avatarErrorUrl from '@/assets/img/blog-avatar.webp'
 import backgroundErrorUrl from '@/assets/img/blog-bg.webp'
 
+import { useClipboard } from '@/plugins/clipboard'
+import { useModal } from '@/plugins/global-sheet-modal'
+import { useToast } from '@/plugins/toast'
 import { ToastType } from '@/plugins/toast/toastType'
+
+import { useUserStore } from '@/stores/user'
 
 import recipePagedList from '@/views/app/composable/recipePagedList'
 
@@ -85,7 +90,7 @@ import RecipeParallaxImage from '@/components/RecipeParallaxImage.vue'
 import InvisibleBlogInfoModal from '@/components/modals/InvisibleBlogInfoModal.vue'
 
 export default {
-  name: 'Recipes',
+  name: 'BlogRecipes',
   components: {
     RecipeParallaxImage,
     GenericRecipesList,
@@ -101,21 +106,21 @@ export default {
     }
   },
   setup(props) {
-    const blogDetails = ref(null)
-    const errors = ref(false)
+    // usings
+    const userStore = useUserStore()
+    const modal = useModal()
+    const toast = useToast()
+    const clipboard = useClipboard()
+    const route = useRoute()
+
+    // composables
     const recipesList = recipePagedList(queryParams => blogApi.getBlogRecipes(props.blogId, queryParams))
 
-    onBeforeMount(() => {
-      blogApi
-        .getBlogDetails(props.blogId)
-        .then(({ data }) => {
-          blogDetails.value = data
-        })
-        .catch(() => {
-          errors.value = true
-        })
-    })
+    // data
+    const blogDetails = ref(null)
+    const errors = ref(false)
 
+    // computed
     const backgroundUrl = computed(() => {
       const { id } = blogDetails.value || {}
       if (id) {
@@ -132,55 +137,76 @@ export default {
       return null
     })
 
-    const computedMeta = computed(() => {
-      const title = blogDetails.value?.name || props.blogName
-      return title ? { title } : {}
-    })
-
-    useMeta(computedMeta)
-
-    return {
-      blogDetails,
-      recipesList,
-      avatarUrl,
-      backgroundUrl,
-      avatarErrorUrl,
-      backgroundErrorUrl,
-      errors
-    }
-  },
-  computed: {
-    ...mapGetters({
-      isBlogHiddenGetter: 'user/isBlogHidden'
-    }),
-    isHidden() {
-      if (this.blogDetails) {
-        return this.isBlogHiddenGetter(this.blogDetails.id)
+    const isHidden = computed(() => {
+      if (blogDetails.value) {
+        return userStore.isBlogHidden(blogDetails.value.id)
       }
       return false
-    }
-  },
-  methods: {
-    changeBlogVisibility(visible) {
-      if (this.blogDetails) {
-        this.$store.dispatch('user/changeBlogVisibility', { blogId: this.blogDetails.id, visible })
+    })
+
+    // methods
+    const changeBlogVisibility = visible => {
+      if (blogDetails.value) {
+        userStore.changeBlogVisibility({ blogId: blogDetails.value.id, visible })
       }
-    },
-    showInvisibleInfoModal() {
-      this.$modal.show(markRaw(InvisibleBlogInfoModal), {}, {})
-    },
-    copyLinkToClipboard() {
-      const url = window.location.origin + this.$route.path
+    }
+
+    const showInvisibleInfoModal = () => {
+      modal.show(markRaw(InvisibleBlogInfoModal), {}, {})
+    }
+
+    const copyLinkToClipboard = () => {
+      const url = window.location.origin + route.path
 
       if (!url) {
-        this.$toast.show('Nie udało się skopiować do schowka', ToastType.ERROR)
-      } else if (this.$clipboard(url)) {
-        this.$toast.show('Skopiowano do schowka', ToastType.SUCCESS)
+        toast.show('Nie udało się skopiować do schowka', ToastType.ERROR)
+      } else if (clipboard(url)) {
+        toast.show('Skopiowano do schowka', ToastType.SUCCESS)
       } else {
-        this.$toast.show('Nie udało się skopiować do schowka', ToastType.ERROR)
+        toast.show('Nie udało się skopiować do schowka', ToastType.ERROR)
       }
     }
-  }
+
+    // lifecycle hooks
+    onBeforeMount(() => {
+      blogApi
+        .getBlogDetails(props.blogId)
+        .then(({ data }) => {
+          blogDetails.value = data
+        })
+        .catch(() => {
+          errors.value = true
+        })
+    })
+
+    // others
+    useMeta(
+      computed(() => {
+        const title = blogDetails.value?.name || props.blogName
+        return title ? { title } : {}
+      })
+    )
+
+    return {
+      // consts
+      avatarErrorUrl,
+      backgroundErrorUrl,
+      // composables
+      recipesList,
+      // data
+      blogDetails,
+      errors,
+      // computed
+      backgroundUrl,
+      avatarUrl,
+      isHidden,
+      // methods
+      changeBlogVisibility,
+      showInvisibleInfoModal,
+      copyLinkToClipboard
+    }
+  },
+  methods: {}
 }
 </script>
 

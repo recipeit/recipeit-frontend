@@ -21,9 +21,12 @@
 
 <script>
 import { Form } from 'vee-validate'
+import { reactive, toRefs } from 'vue'
 import * as Yup from 'yup'
 
 import uniqueID from '@/functions/uniqueID'
+
+import { useMyKitchenStore } from '@/stores/myKitchen'
 
 import ProductModalForm from '@/components/ProductModalForm.vue'
 import ExpirationDatesFormSection from '@/components/modals/ExpirationDatesFormSection.vue'
@@ -31,12 +34,30 @@ import ExpirationDatesFormSection from '@/components/modals/ExpirationDatesFormS
 export default {
   components: { Form, ProductModalForm, ExpirationDatesFormSection },
   emits: ['close'],
-  data: component => ({
-    sending: false,
-    newProduct: component.emptyProduct(),
-    formID: 'form-' + uniqueID().getID(),
-    expirationDatesForm: [],
-    schema: Yup.object().shape({
+  setup(_, { emit }) {
+    // usings
+    const myKitchenStore = useMyKitchenStore()
+
+    // consts
+    const formID = 'form-' + uniqueID().getID()
+
+    const initialValues = {
+      unit: 'piece'
+    }
+
+    // data
+    const data = reactive({
+      sending: false,
+      newProduct: {
+        name: '',
+        amount: null,
+        baseProductId: null,
+        unit: null
+      },
+      expirationDatesForm: []
+    })
+
+    const schema = Yup.object().shape({
       baseProduct: Yup.object()
         .required('REQUIRED')
         .typeError('REQUIRED'),
@@ -49,23 +70,10 @@ export default {
         .nullable(),
       unit: Yup.object().nullable()
     })
-  }),
-  beforeCreate() {
-    this.initialValues = {
-      unit: 'piece'
-    }
-  },
-  methods: {
-    emptyProduct() {
-      return {
-        name: '',
-        amount: null,
-        baseProductId: null,
-        unit: null
-      }
-    },
-    addProduct({ baseProduct, amount, unit }) {
-      this.sending = true
+
+    // methods
+    const addProduct = ({ baseProduct, amount, unit }) => {
+      data.sending = true
 
       const requestData = {
         product: {
@@ -73,17 +81,28 @@ export default {
           amount: amount || undefined,
           unit
         },
-        expirationDates: this.expirationDatesForm
+        expirationDates: data.expirationDatesForm
       }
 
-      this.$store
-        .dispatch('myKitchen/addProduct', requestData)
+      myKitchenStore
+        .addProduct(requestData)
         .then(() => {
-          this.$emit('close')
+          emit('close')
         })
         .finally(() => {
-          this.sending = false
+          data.sending = false
         })
+    }
+
+    return {
+      // consts
+      formID,
+      initialValues,
+      // data
+      ...toRefs(data),
+      schema,
+      // methods
+      addProduct
     }
   }
 }

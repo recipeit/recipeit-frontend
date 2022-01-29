@@ -19,30 +19,35 @@
 
 <script>
 import { computed } from 'vue'
-import { useStore } from 'vuex'
 
 import defaultAvatar from '@/assets/img/avatar.svg?raw'
 
 import { APP_ACCOUNT } from '@/router/names'
 
+import { useUserStore } from '@/stores/user'
+
 export default {
   setup() {
-    const store = useStore()
+    // usings
+    const userStore = useUserStore()
 
-    const userProfile = computed(() => store.state.user.userProfile)
+    // computed
     const avatarSrc = computed(() => {
-      return userProfile.value?.imageUrl
+      return userStore.userProfile?.imageUrl
     })
 
+    // methods
     const logout = () => {
-      store.dispatch('user/logout', true)
+      userStore.logout(true)
     }
 
     return {
+      // consts
       APP_ACCOUNT,
-      userProfile,
-      avatarSrc,
       defaultAvatar,
+      // computed
+      avatarSrc,
+      // methods
       logout
     }
   }

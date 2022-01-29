@@ -1,5 +1,5 @@
 <template>
-  <div ref="block" class="recipe-parallax-gallery">
+  <div ref="blockElement" class="recipe-parallax-gallery">
     <div class="gallery-controls">
       <button class="gallery-control-left" :disabled="isCurrentImageFirst ? true : null" @click.prevent="showPrev()">
         <BaseIcon icon="angle-left" />
@@ -17,7 +17,7 @@
       />
     </div>
     <div
-      ref="images"
+      ref="imagesElement"
       class="gallery-images"
       @touchstart="isTouching = true"
       @touchend="isTouching = false"
@@ -38,13 +38,14 @@
 
 <script>
 import debounce from 'lodash.debounce'
-import { computed } from 'vue'
-import { useStore } from 'vuex'
+import { computed, onBeforeUnmount, onBeforeUpdate, onMounted, reactive, ref, toRefs } from 'vue'
 
 import placeholderDark from '@/assets/img/placeholders/recipe-image-dark.webp'
 import placeholderLight from '@/assets/img/placeholders/recipe-image.webp'
 
 import { THEME_DARK } from '@/configs/theme'
+
+import { useUserStore } from '@/stores/user'
 
 export default {
   props: {
@@ -57,106 +58,139 @@ export default {
       default: 'center'
     }
   },
-  data() {
-    const store = useStore()
+  setup(props) {
+    // usings
+    const userStore = useUserStore()
 
-    const placeholder = computed(() => (store.state.user.theme === THEME_DARK ? placeholderDark : placeholderLight))
+    // refs
+    const blockElement = ref(null)
+    const imagesElement = ref(null)
 
-    return {
+    // data
+    const data = reactive({
       currentImageIndex: 0,
       isTouching: false,
       onScrollTimeout: null,
-      imageRefs: [],
-      placeholder
-    }
-  },
-  computed: {
-    isCurrentImageLast() {
-      return this.currentImageIndex + 1 === this.images.length
-    },
-    isCurrentImageFirst() {
-      return this.currentImageIndex === 0
-    }
-  },
-  beforeUpdate() {
-    this.imageRefs = []
-  },
-  mounted() {
-    this.imagesScrollHandler = debounce(this.imagesScrollHandlerDebounced, 200)
-    this.checkGalleryStoppedInMiddleHandler = debounce(this.checkGalleryStoppedInMiddle, 500)
-    this.windowScrollHandler()
+      imageRefs: []
+    })
 
-    window.addEventListener('scroll', this.windowScrollHandler, false)
-    window.addEventListener('resize', this.checkGalleryStoppedInMiddleHandler, false)
-    this.$refs.images.addEventListener('scroll', this.imagesScrollHandler, false)
-    this.$refs.images.addEventListener('scroll', this.checkGalleryStoppedInMiddleHandler, false)
-  },
-  beforeUnmount() {
-    window.removeEventListener('scroll', this.windowScrollHandler, false)
-    window.removeEventListener('resize', this.checkGalleryStoppedInMiddleHandler, false)
-    this.$refs.images.removeEventListener('scroll', this.imagesScrollHandler, false)
-    this.$refs.images.removeEventListener('scroll', this.checkGalleryStoppedInMiddleHandler, false)
-  },
-  methods: {
-    setImageRef(el) {
-      const $el = el?.$el
-      if ($el) {
-        this.imageRefs.push($el)
-      }
-    },
-    showPrev() {
-      if (this.currentImageIndex > 0) {
-        this.scrollTo(this.currentImageIndex - 1)
-      }
-    },
-    showNext() {
-      if (this.currentImageIndex < this.images.length) {
-        this.scrollTo(this.currentImageIndex + 1)
-      }
-    },
-    scrollTo(index) {
-      if (!this.imageRefs) return
-      const imageEl = this.imageRefs[index]
+    // computed
+    const placeholder = computed(() => (userStore.theme === THEME_DARK ? placeholderDark : placeholderLight))
+
+    const isCurrentImageLast = computed(() => {
+      return data.currentImageIndex + 1 === props.images.length
+    })
+
+    const isCurrentImageFirst = computed(() => {
+      return data.currentImageIndex === 0
+    })
+
+    // methods
+    const scrollTo = index => {
+      if (!data.imageRefs) return
+      const imageEl = data.imageRefs[index]
       if (imageEl) {
-        if (this.$refs.images && this.$refs.images.scrollLeft !== imageEl.offsetLeft) {
-          this.$refs.images?.scrollTo({
+        if (imagesElement.value && imagesElement.value.scrollLeft !== imageEl.offsetLeft) {
+          imagesElement.value?.scrollTo({
             left: imageEl.offsetLeft,
             behavior: 'smooth'
           })
         }
-        if (this.currentImageIndex !== index) {
-          this.currentImageIndex = index
+        if (data.currentImageIndex !== index) {
+          data.currentImageIndex = index
         }
       }
-    },
-    windowScrollHandler() {
-      const parentHeight = this.$refs.block.offsetHeight
-      const scrollFactor = Math.max(0, Math.min(window.pageYOffset / parentHeight, 1))
-      const transformValue = (scrollFactor * parentHeight) / 2
-      this.$refs.images.style.transform = `translate3d(0, ${transformValue}px ,0)`
-    },
-    calculateCurrentIndex() {
-      if (!this.$refs.images) return 0
-      const { scrollLeft, scrollWidth } = this.$refs.images
-      return Math.round((scrollLeft / scrollWidth) * this.images.length)
-    },
-    imagesScrollHandlerDebounced() {
-      const index = this.calculateCurrentIndex()
-      if (this.currentImageIndex !== index) {
-        this.currentImageIndex = index
-      }
-    },
-    // resizeHandlerDebounced() {
-    //   if (!this.isTouching) {
-    //     this.scrollTo(this.calculateCurrentIndex())
-    //   }
-    // },
-    checkGalleryStoppedInMiddle() {
-      if (!this.isTouching) {
-        this.scrollTo(this.calculateCurrentIndex())
+    }
+
+    const showNext = () => {
+      if (data.currentImageIndex < props.images.length) {
+        scrollTo(data.currentImageIndex + 1)
       }
     }
-  }
+
+    const setImageRef = el => {
+      const $el = el?.$el
+      if ($el) {
+        data.imageRefs.push($el)
+      }
+    }
+
+    const showPrev = () => {
+      if (data.currentImageIndex > 0) {
+        scrollTo(data.currentImageIndex - 1)
+      }
+    }
+
+    const windowScrollHandler = () => {
+      const parentHeight = blockElement.value.offsetHeight
+      const scrollFactor = Math.max(0, Math.min(window.pageYOffset / parentHeight, 1))
+      const transformValue = (scrollFactor * parentHeight) / 2
+      imagesElement.value.style.transform = `translate3d(0, ${transformValue}px ,0)`
+    }
+
+    const calculateCurrentIndex = () => {
+      if (!imagesElement.value) return 0
+      const { scrollLeft, scrollWidth } = imagesElement.value
+      return Math.round((scrollLeft / scrollWidth) * props.images.length)
+    }
+
+    const imagesScrollHandlerDebounced = () => {
+      const index = calculateCurrentIndex()
+      if (data.currentImageIndex !== index) {
+        data.currentImageIndex = index
+      }
+    }
+
+    const checkGalleryStoppedInMiddle = () => {
+      if (!data.isTouching) {
+        scrollTo(calculateCurrentIndex())
+      }
+    }
+
+    // lifecycle hooks
+    let imagesScrollHandler
+    let checkGalleryStoppedInMiddleHandler
+
+    onMounted(() => {
+      imagesScrollHandler = debounce(imagesScrollHandlerDebounced, 200)
+      checkGalleryStoppedInMiddleHandler = debounce(checkGalleryStoppedInMiddle, 500)
+      windowScrollHandler()
+
+      window.addEventListener('scroll', windowScrollHandler, false)
+      window.addEventListener('resize', checkGalleryStoppedInMiddleHandler, false)
+      imagesElement.value.addEventListener('scroll', imagesScrollHandler, false)
+      imagesElement.value.addEventListener('scroll', checkGalleryStoppedInMiddleHandler, false)
+    })
+
+    onBeforeUnmount(() => {
+      window.removeEventListener('scroll', windowScrollHandler, false)
+      window.removeEventListener('resize', checkGalleryStoppedInMiddleHandler, false)
+      imagesElement.value.removeEventListener('scroll', imagesScrollHandler, false)
+      imagesElement.value.removeEventListener('scroll', checkGalleryStoppedInMiddleHandler, false)
+    })
+
+    onBeforeUpdate(() => {
+      data.imageRefs = []
+    })
+
+    return {
+      // refs
+      blockElement,
+      imagesElement,
+      // data
+      ...toRefs(data),
+      // computed
+      placeholder,
+      isCurrentImageLast,
+      isCurrentImageFirst,
+      // methods
+      scrollTo,
+      showNext,
+      setImageRef,
+      showPrev
+    }
+  },
+  methods: {}
 }
 </script>
 

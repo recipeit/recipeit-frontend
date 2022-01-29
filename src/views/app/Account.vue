@@ -89,8 +89,7 @@
 </template>
 
 <script>
-import { markRaw, ref } from 'vue'
-import { mapState, useStore } from 'vuex'
+import { computed, markRaw, ref } from 'vue'
 import { useMeta } from 'vue-meta'
 
 import defaultAvatar from '@/assets/img/avatar.svg?raw'
@@ -99,7 +98,11 @@ import { THEMES } from '@/configs/theme'
 
 import { COPYRIGHT_TEXT } from '@/constants'
 
+import { useModal } from '@/plugins/global-sheet-modal'
+
 import { ARTICLES as ARTICLES_PATH } from '@/router/paths'
+
+import { useUserStore } from '@/stores/user'
 
 import Logotype from '@/components/Logotype.vue'
 import PageHeader from '@/components/PageHeader.vue'
@@ -117,82 +120,84 @@ export default {
       title: 'Moje konto'
     })
 
-    const store = useStore()
-    const currentTheme = store.state.user.theme
-    const selectedTheme = ref(currentTheme)
+    // usings
+    const modal = useModal()
+    const userStore = useUserStore()
 
-    function updateTheme(value) {
+    // data
+    const selectedTheme = ref(userStore.theme)
+
+    // computed
+    const userProfile = computed(() => userStore.userProfile)
+    const avatarSrc = computed(() => {
+      return userProfile.value?.imageUrl
+    })
+
+    // setup methods
+    const openForgotPasswordModal = () => {
+      modal.show(
+        markRaw(ForgotPasswordModal),
+        {
+          email: userProfile.value.email
+        },
+        {}
+      )
+    }
+
+    // methods
+    const updateTheme = value => {
       if (value && THEMES.includes(value)) {
         selectedTheme.value = value
-        store.dispatch('user/setTheme', value)
+        userStore.setTheme(value)
       }
     }
 
-    function unhideRecipe(recipeId) {
-      store.dispatch('user/changeRecipeVisibility', { recipeId, visible: true })
-    }
-
-    function unhideBlog(blogId) {
-      store.dispatch('user/changeBlogVisibility', { blogId, visible: true })
-    }
-
-    return {
-      COPYRIGHT_TEXT,
-      selectedTheme,
-      updateTheme,
-      unhideRecipe,
-      unhideBlog,
-      THEMES,
-      defaultAvatar,
-      ARTICLES_PATH
-    }
-  },
-  computed: {
-    ...mapState({
-      hiddenRecipes: state => state.user.hiddenRecipeIds,
-      hiddenBlogs: state => state.user.hiddenBlogIds,
-      userProfile: state => state.user.userProfile
-    }),
-    avatarSrc() {
-      return this.userProfile?.imageUrl
-    }
-  },
-  methods: {
-    openChangePasswordModal() {
-      this.$modal.show(
+    const openChangePasswordModal = () => {
+      modal.show(
         markRaw(ChangePasswordModal),
         {
-          email: this.userProfile.email
+          email: userProfile.value.email
         },
         {
           close: response => {
             if (response?.openForgotPasswordModal) {
-              this.openForgotPasswordModal()
+              openForgotPasswordModal()
             }
           }
         }
       )
-    },
-    openForgotPasswordModal() {
-      this.$modal.show(
-        markRaw(ForgotPasswordModal),
-        {
-          email: this.userProfile.email
-        },
-        {}
-      )
-    },
-    openDeleteAccountModal() {
-      this.$modal.show(
+    }
+
+    const openDeleteAccountModal = () => {
+      modal.show(
         markRaw(DeleteAccountModal),
         {
-          email: this.userProfile.email
+          email: userProfile.value.email
         },
         {}
       )
-    },
-    openCustomizeCookiesModal() {
-      this.$modal.show(markRaw(CustomizeCookiesModal), {}, {})
+    }
+
+    const openCustomizeCookiesModal = () => {
+      modal.show(markRaw(CustomizeCookiesModal), {}, {})
+    }
+
+    return {
+      // consts
+      defaultAvatar,
+      ARTICLES_PATH,
+      COPYRIGHT_TEXT,
+      THEMES,
+      // data
+      selectedTheme,
+      // computed
+      userProfile,
+      avatarSrc,
+      // methods
+      updateTheme,
+      openChangePasswordModal,
+      openDeleteAccountModal,
+      openCustomizeCookiesModal
     }
   }
 }

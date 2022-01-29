@@ -1,3 +1,5 @@
+import { defineStore } from 'pinia'
+
 import identityApi from '@/api/identityApi'
 import userApi from '@/api/userApi'
 
@@ -9,6 +11,11 @@ import { ToastType } from '@/plugins/toast/toastType'
 import router from '@/router'
 import { APP_PATHS } from '@/router/paths'
 
+import { useIngredientsStore } from '@/stores/ingredients'
+import { useMyKitchenStore } from '@/stores/myKitchen'
+import { useRecipesStore } from '@/stores/recipes'
+import { useShoppingListStore } from '@/stores/shoppingList'
+
 export const USER_AUTH_STATE = {
   USER_APP_INITIAL: 'USER_APP_INITIAL',
   USER_LOGGED_IN: 'USER_LOGGED_IN',
@@ -16,113 +23,66 @@ export const USER_AUTH_STATE = {
   USER_LOGGED_OUT: 'USER_LOGGED_OUT'
 }
 
-export const MUTATIONS = {
-  SET_THEME: 'SET_THEME',
-
-  SET_USER_PROFILE: 'SET_USER_PROFILE',
-  SET_USER_AUTH_STATE: 'SET_USER_AUTH_STATE',
-
-  SET_HIDDEN_RECIPE_IDS: 'SET_HIDDEN_RECIPE_IDS',
-  ADD_TO_HIDDEN_RECIPE_IDS: 'ADD_TO_HIDDEN_RECIPE_IDS',
-  REMOVE_FROM_HIDDEN_RECIPE_IDS: 'REMOVE_FROM_HIDDEN_RECIPE_IDS',
-
-  SET_HIDDEN_BLOG_IDS: 'SET_HIDDEN_BLOG_IDS',
-  ADD_TO_HIDDEN_BLOG_IDS: 'ADD_TO_HIDDEN_BLOG_IDS',
-  REMOVE_FROM_HIDDEN_BLOG_IDS: 'REMOVE_FROM_HIDDEN_BLOG_IDS'
+const setUserAuthState = (store, userAuthState) => {
+  store.userAuthState = userAuthState
+  if (userAuthState === USER_AUTH_STATE.USER_LOGGED_IN) {
+    store.userAuthenticatedLazy = true
+  } else if (userAuthState === USER_AUTH_STATE.USER_LOGGED_OUT) {
+    store.userAuthenticatedLazy = false
+  }
 }
 
-export default {
-  namespaced: true,
-  state: {
-    theme: null,
-    userProfile: undefined,
-    userAuthState: USER_AUTH_STATE.USER_APP_INITIAL,
-    userAuthenticatedLazy: false,
-    hiddenRecipeIds: null,
-    hiddenBlogIds: null
-    // userTokenRefreshing: false
-  },
-  mutations: {
-    [MUTATIONS.SET_THEME](state, theme) {
-      state.theme = theme
-    },
-
-    [MUTATIONS.SET_USER_PROFILE](state, profile) {
-      state.userProfile = profile
-    },
-    [MUTATIONS.SET_USER_AUTH_STATE](state, userAuthState) {
-      state.userAuthState = userAuthState
-      if (userAuthState === USER_AUTH_STATE.USER_LOGGED_IN) {
-        state.userAuthenticatedLazy = true
-      } else if (userAuthState === USER_AUTH_STATE.USER_LOGGED_OUT) {
-        state.userAuthenticatedLazy = false
-      }
-    },
-
-    [MUTATIONS.SET_HIDDEN_RECIPE_IDS](state, hiddenRecipeIds) {
-      state.hiddenRecipeIds = hiddenRecipeIds
-    },
-    [MUTATIONS.ADD_TO_HIDDEN_RECIPE_IDS](state, newHiddenRecipeId) {
-      state.hiddenRecipeIds.push(newHiddenRecipeId)
-    },
-    [MUTATIONS.REMOVE_FROM_HIDDEN_RECIPE_IDS](state, removedHiddenRecipeId) {
-      var recipeIndex = state.hiddenRecipeIds.indexOf(removedHiddenRecipeId)
-      if (recipeIndex >= 0) {
-        state.hiddenRecipeIds.splice(recipeIndex, 1)
-      }
-    },
-
-    [MUTATIONS.SET_HIDDEN_BLOG_IDS](state, hiddenBlogIds) {
-      state.hiddenBlogIds = hiddenBlogIds
-    },
-    [MUTATIONS.ADD_TO_HIDDEN_BLOG_IDS](state, newHiddenBlogId) {
-      state.hiddenBlogIds.push(newHiddenBlogId)
-    },
-    [MUTATIONS.REMOVE_FROM_HIDDEN_BLOG_IDS](state, removedHiddenBlogId) {
-      var blogIndex = state.hiddenBlogIds.indexOf(removedHiddenBlogId)
-      if (blogIndex >= 0) {
-        state.hiddenBlogIds.splice(blogIndex, 1)
-      }
+export const useUserStore = defineStore('user', {
+  state: () => {
+    return {
+      theme: null,
+      userProfile: undefined,
+      userAuthState: USER_AUTH_STATE.USER_APP_INITIAL,
+      userAuthenticatedLazy: false,
+      hiddenRecipeIds: null,
+      hiddenBlogIds: null
     }
   },
+
   actions: {
-    initTheme({ commit }) {
+    initTheme() {
       let currentTheme = localStorage.getItem(THEME_STORAGE_KEY)
       if (!currentTheme || !THEMES.includes(currentTheme)) {
         currentTheme = THEME_DEFAULT
       }
-      commit(MUTATIONS.SET_THEME, currentTheme)
+      this.theme = currentTheme
     },
-    setTheme({ commit }, theme) {
+
+    setTheme(theme) {
       if (THEMES.includes(theme)) {
-        commit(MUTATIONS.SET_THEME, theme)
+        this.theme = theme
         localStorage.setItem(THEME_STORAGE_KEY, theme)
       }
     },
-    async fetchUserProfile({ commit, dispatch }, { getInitUserData } = {}) {
+
+    async fetchUserProfile({ getInitUserData } = {}) {
       try {
         const {
           data: { userProfile }
         } = await identityApi.profile()
 
-        commit(MUTATIONS.SET_USER_PROFILE, userProfile)
-        commit(MUTATIONS.SET_USER_AUTH_STATE, USER_AUTH_STATE.USER_LOGGED_IN)
+        this.userProfile = userProfile
+        setUserAuthState(this, USER_AUTH_STATE.USER_LOGGED_IN)
 
         if (getInitUserData) {
-          dispatch('getInitUserData')
+          this.getInitUserData()
         }
       } catch (e) {
-        commit(MUTATIONS.SET_USER_AUTH_STATE, USER_AUTH_STATE.USER_LOGGED_OUT)
+        setUserAuthState(this, USER_AUTH_STATE.USER_LOGGED_OUT)
         throw new Error(e)
       }
     },
-    register({ commit, dispatch }, { email, password, confirmPassword, recaptchaToken }) {
+
+    register({ email, password, confirmPassword, recaptchaToken }) {
       return new Promise((resolve, reject) => {
         identityApi
           .register({ email, password, confirmPassword, recaptchaToken })
-          .then(response => {
-            const { userProfile, emailUnconfirmed } = response.data
-
+          .then(({ data: { userProfile, emailUnconfirmed } }) => {
             if (emailUnconfirmed) {
               router.push({
                 name: 'register-success',
@@ -131,9 +91,9 @@ export default {
                 }
               })
             } else {
-              commit(MUTATIONS.SET_USER_PROFILE, userProfile)
-              commit(MUTATIONS.SET_USER_AUTH_STATE, USER_AUTH_STATE.USER_LOGGED_IN)
-              dispatch('getInitUserData')
+              this.userProfile = userProfile
+              setUserAuthState(this, USER_AUTH_STATE.USER_LOGGED_IN)
+              this.getInitUserData()
               const redirectUrl = sessionStorage.getItem('LOGIN_REDIRECT')
               if (redirectUrl) {
                 router.push(redirectUrl)
@@ -149,14 +109,16 @@ export default {
           })
       })
     },
-    login({ commit, dispatch }, { email, password, recaptchaToken }) {
-      dispatch('recipes/resetUserData', {}, { root: true })
+
+    login({ email, password, recaptchaToken }) {
+      const recipesStore = useRecipesStore()
+      recipesStore.resetUserData() //TODO why only recipes
 
       return new Promise((resolve, reject) => {
         identityApi
           .login({ email, password, recaptchaToken })
-          .then(response => {
-            if (response.data.emailUnconfirmed) {
+          .then(({ data }) => {
+            if (data.emailUnconfirmed) {
               router.push({
                 name: 'register-success',
                 params: {
@@ -164,10 +126,10 @@ export default {
                 }
               })
             } else {
-              const { userProfile } = response.data
-              commit(MUTATIONS.SET_USER_PROFILE, userProfile)
-              commit(MUTATIONS.SET_USER_AUTH_STATE, USER_AUTH_STATE.USER_LOGGED_IN)
-              dispatch('getInitUserData')
+              const { userProfile } = data
+              this.userProfile = userProfile
+              setUserAuthState(this, USER_AUTH_STATE.USER_LOGGED_IN)
+              this.getInitUserData()
               const redirectUrl = sessionStorage.getItem('LOGIN_REDIRECT')
               if (redirectUrl) {
                 router.push(redirectUrl)
@@ -183,17 +145,18 @@ export default {
           })
       })
     },
-    facebookAuth({ commit, dispatch }, { accessToken }) {
-      dispatch('recipes/resetUserData', {}, { root: true })
+
+    facebookAuth({ accessToken }) {
+      const recipesStore = useRecipesStore()
+      recipesStore.resetUserData() //TODO why only recipes
 
       return new Promise((resolve, reject) => {
         identityApi
           .facebookAuth({ accessToken })
-          .then(response => {
-            const { userProfile } = response.data
-            commit(MUTATIONS.SET_USER_PROFILE, userProfile)
-            commit(MUTATIONS.SET_USER_AUTH_STATE, USER_AUTH_STATE.USER_LOGGED_IN)
-            dispatch('getInitUserData')
+          .then(({ data: { userProfile } }) => {
+            this.userProfile = userProfile
+            setUserAuthState(this, USER_AUTH_STATE.USER_LOGGED_IN)
+            this.getInitUserData()
             const redirectUrl = sessionStorage.getItem('LOGIN_REDIRECT')
             if (redirectUrl) {
               router.push(redirectUrl)
@@ -208,17 +171,18 @@ export default {
           })
       })
     },
-    googleAuth({ commit, dispatch }, { idToken }) {
-      dispatch('recipes/resetUserData', {}, { root: true })
+
+    googleAuth({ idToken }) {
+      const recipesStore = useRecipesStore()
+      recipesStore.resetUserData() //TODO why only recipes
 
       return new Promise((resolve, reject) => {
         identityApi
           .googleAuth({ idToken })
-          .then(response => {
-            const { userProfile } = response.data
-            commit(MUTATIONS.SET_USER_PROFILE, userProfile)
-            commit(MUTATIONS.SET_USER_AUTH_STATE, USER_AUTH_STATE.USER_LOGGED_IN)
-            dispatch('getInitUserData')
+          .then(({ data: { userProfile } }) => {
+            this.userProfile = userProfile
+            setUserAuthState(this, USER_AUTH_STATE.USER_LOGGED_IN)
+            this.getInitUserData()
             const redirectUrl = sessionStorage.getItem('LOGIN_REDIRECT')
             if (redirectUrl) {
               router.push(redirectUrl)
@@ -233,31 +197,32 @@ export default {
           })
       })
     },
-    refreshCookie({ commit, dispatch, state }) {
+
+    refreshCookie() {
       return new Promise((resolve, reject) => {
-        if (state.userAuthState === USER_AUTH_STATE.USER_FETCHING) {
+        if (this.userAuthState === USER_AUTH_STATE.USER_FETCHING) {
           resolve({ isFetching: true })
           return
         }
 
-        commit(MUTATIONS.SET_USER_AUTH_STATE, USER_AUTH_STATE.USER_FETCHING)
+        setUserAuthState(this, USER_AUTH_STATE.USER_FETCHING)
 
         const onRefreshCookieError = () => {
-          commit(MUTATIONS.SET_USER_AUTH_STATE, USER_AUTH_STATE.USER_LOGGED_OUT)
+          setUserAuthState(this, USER_AUTH_STATE.USER_LOGGED_OUT)
 
           if (APP_PATHS.some(path => location.pathname.startsWith(path))) {
             sessionStorage.setItem('LOGIN_REDIRECT', location.pathname)
           }
 
-          dispatch('logout')
+          this.logout()
           reject()
         }
 
         const onRefreshCookieSuccess = ({ userProfile }) => {
           if (userProfile) {
-            commit(MUTATIONS.SET_USER_PROFILE, userProfile)
+            this.userProfile = userProfile
           }
-          commit(MUTATIONS.SET_USER_AUTH_STATE, USER_AUTH_STATE.USER_LOGGED_IN)
+          setUserAuthState(this, USER_AUTH_STATE.USER_LOGGED_IN)
           resolve()
         }
 
@@ -275,11 +240,12 @@ export default {
           })
       })
     },
-    async logout({ commit, dispatch }, withoutRedirect) {
+
+    async logout(withoutRedirect) {
       await identityApi.logout()
 
-      commit(MUTATIONS.SET_USER_PROFILE, null)
-      commit(MUTATIONS.SET_USER_AUTH_STATE, USER_AUTH_STATE.USER_LOGGED_OUT)
+      this.userProfile = null
+      setUserAuthState(this, USER_AUTH_STATE.USER_LOGGED_OUT)
 
       if (APP_PATHS.some(path => location.pathname.startsWith(path))) {
         if (!withoutRedirect) {
@@ -288,36 +254,54 @@ export default {
         await router.push({ name: 'login' })
       }
 
-      dispatch('shoppingList/resetUserData', {}, { root: true })
-      dispatch('myKitchen/resetUserData', {}, { root: true })
-      dispatch('recipes/resetUserData', {}, { root: true })
-      dispatch('user/resetUserData', {}, { root: true })
+      useShoppingListStore().resetUserData()
+      useMyKitchenStore().resetUserData()
+      useRecipesStore().resetUserData()
+      this.resetUserData()
     },
-    getInitUserData({ dispatch }) {
-      dispatch('recipes/fetchFavouriteRecipesIds', {}, { root: true })
-      dispatch('user/fetchHiddenRecipeIds', {}, { root: true })
-      dispatch('user/fetchHiddenBlogIds', {}, { root: true })
-      dispatch('ingredients/fetchBaseProducts', {}, { root: true }) // TODO once
-      dispatch('ingredients/fetchUnitsGroupedByMeasurement', {}, { root: true }) // TODO once
-      dispatch('myKitchen/fetchProducts', {}, { root: true }) // TODO only base ids
+
+    getInitUserData() {
+      const recipesStore = useRecipesStore()
+      const ingredientsStore = useIngredientsStore()
+      const myKitchenStore = useMyKitchenStore()
+
+      recipesStore.fetchFavouriteRecipesIds()
+
+      this.fetchHiddenRecipeIds()
+      this.fetchHiddenBlogIds()
+
+      ingredientsStore.fetchBaseProducts()
+      ingredientsStore.fetchUnitsGroupedByMeasurement()
+
+      myKitchenStore.fetchProducts()
     },
-    fetchHiddenRecipeIds({ commit }) {
+
+    fetchHiddenRecipeIds() {
       userApi.getHiddenRecipeIds().then(({ data }) => {
-        commit(MUTATIONS.SET_HIDDEN_RECIPE_IDS, data.recipeIds)
+        this.hiddenRecipeIds = data.recipeIds
       })
     },
-    fetchHiddenBlogIds({ commit }) {
+
+    fetchHiddenBlogIds() {
       userApi.getHiddenBlogIds().then(({ data }) => {
-        commit(MUTATIONS.SET_HIDDEN_BLOG_IDS, data.blogIds)
+        this.hiddenBlogIds = data.blogIds
       })
     },
-    changeRecipeVisibility({ commit }, { recipeId, visible }) {
+
+    changeRecipeVisibility({ recipeId, visible }) {
       return new Promise((resolve, reject) => {
         userApi
           .changeRecipeVisibility(recipeId, visible)
           .then(({ data }) => {
             if (data.success) {
-              commit(visible ? MUTATIONS.REMOVE_FROM_HIDDEN_RECIPE_IDS : MUTATIONS.ADD_TO_HIDDEN_RECIPE_IDS, recipeId)
+              if (visible) {
+                const recipeIndex = this.hiddenRecipeIds.indexOf(recipeId)
+                if (recipeIndex >= 0) {
+                  this.hiddenRecipeIds.splice(recipeIndex, 1)
+                }
+              } else {
+                this.hiddenRecipeIds.push(recipeId)
+              }
               resolve()
               toastPlugin.toast.show(visible ? 'Przepis został odkryty' : 'Przepis nie będzie już widoczny', ToastType.SUCCESS)
             } else {
@@ -332,13 +316,21 @@ export default {
           })
       })
     },
-    changeBlogVisibility({ commit }, { blogId, visible }) {
+
+    changeBlogVisibility({ blogId, visible }) {
       return new Promise((resolve, reject) => {
         userApi
           .changeBlogVisibility(blogId, visible)
           .then(({ data }) => {
             if (data.success) {
-              commit(visible ? MUTATIONS.REMOVE_FROM_HIDDEN_BLOG_IDS : MUTATIONS.ADD_TO_HIDDEN_BLOG_IDS, blogId)
+              if (visible) {
+                const blogIndex = this.hiddenBlogIds.indexOf(blogId)
+                if (blogIndex >= 0) {
+                  this.hiddenBlogIds.splice(blogIndex, 1)
+                }
+              } else {
+                this.hiddenBlogIds.push(blogId)
+              }
               resolve()
               toastPlugin.toast.show(
                 visible ? 'Przepisy z tego blogu zostały odkryte' : 'Przepisy z tego blogu nie będą już widoczne',
@@ -356,15 +348,17 @@ export default {
           })
       })
     },
-    resetUserData({ commit }) {
-      commit(MUTATIONS.SET_HIDDEN_BLOG_IDS, null)
-      commit(MUTATIONS.SET_HIDDEN_RECIPE_IDS, null)
+
+    resetUserData() {
+      this.hiddenBlogIds = null
+      this.hiddenRecipeIds = null
     }
   },
+
   getters: {
     isAuthenticated: state => state.userProfile !== null && state.userAuthState === USER_AUTH_STATE.USER_LOGGED_IN,
     currentUserAuthState: state => state.userAuthState,
     isRecipeHidden: state => id => state.hiddenRecipeIds?.includes(id),
     isBlogHidden: state => id => state.hiddenBlogIds?.includes(id)
   }
-}
+})

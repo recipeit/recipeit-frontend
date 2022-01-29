@@ -34,10 +34,11 @@
 import difference from 'lodash.difference'
 import min from 'lodash.min'
 import { computed, ref, watch } from 'vue'
-import { useStore } from 'vuex'
 
 import { useToast } from '@/plugins/toast'
 import { ToastType } from '@/plugins/toast/toastType'
+
+import { useRecipesStore } from '@/stores/recipes'
 
 import SectionTitle from '@/components/SectionTitle.vue'
 
@@ -54,11 +55,14 @@ export default {
     }
   },
   setup(props) {
-    const store = useStore()
+    // usings
+    const recipesStore = useRecipesStore()
     const toast = useToast()
 
-    const finishedDirections = ref(store.getters['recipes/getFinishedDirectionsForRecipe'](props.recipeId) || [])
+    // data
+    const finishedDirections = ref(recipesStore.getFinishedDirectionsForRecipe(props.recipeId) || [])
 
+    // computed
     const allIndexes = computed(() => {
       return props.directions.map((_, index) => index)
     })
@@ -67,12 +71,14 @@ export default {
       return min(difference(allIndexes.value, finishedDirections.value))
     })
 
+    // methods
     const resetFinishedDirections = () => {
       finishedDirections.value = []
     }
 
+    // watch
     watch(finishedDirections, newValue => {
-      store.dispatch('recipes/setFinishedDirectionsForRecipe', { recipeId: props.recipeId, finishedDirections: newValue })
+      recipesStore.setFinishedDirectionsForRecipe({ recipeId: props.recipeId, finishedDirections: newValue })
       const remaining = difference(allIndexes.value, newValue)
       if (!remaining || remaining.length === 0) {
         finishedDirections.value = []
@@ -81,8 +87,11 @@ export default {
     })
 
     return {
+      // data
       finishedDirections,
+      // computed
       selectedDirection,
+      // methods
       resetFinishedDirections
     }
   }

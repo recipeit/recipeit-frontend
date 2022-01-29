@@ -15,7 +15,6 @@
 
 <script>
 import { computed, onBeforeMount, reactive, toRefs, watchEffect } from 'vue'
-import { useStore } from 'vuex'
 import { useMeta } from 'vue-meta'
 import { useRoute, useRouter } from 'vue-router'
 
@@ -26,6 +25,8 @@ import Modal from '@/plugins/global-sheet-modal/Modal.vue'
 import { APP_HOME, APP_ROUTE_NAMES, AUTH_LOGIN, LOGGED_USER_ALLOWED_ROUTE_NAMES } from '@/router/names'
 
 import GDPRService from '@/services/gdpr'
+
+import { useUserStore } from '@/stores/user'
 
 import AppLoading from '@/components/AppLoading.vue'
 import RefreshPWA from '@/components/messages/RefreshPWA.vue'
@@ -42,31 +43,27 @@ export default {
     Modal
   },
   setup() {
-    const store = useStore()
+    // usings
+    const userStore = useUserStore()
     const route = useRoute()
     const router = useRouter()
+
+    // others
+    userStore.initTheme()
+    GDPRService.init()
+
+    // data
     const data = reactive({
       showGDPRModal: false,
       fetchedInitialUserProfile: false
     })
 
-    store.dispatch('user/initTheme')
-
+    // computed
     const allowedGDPRModalRoute = computed(() => !route.meta?.hideCookiesModal)
 
-    GDPRService.init()
-
-    onBeforeMount(() => {
-      if (GDPRService.showGDPRModal()) {
-        data.showGDPRModal = true
-      }
-    })
-
     const exactTheme = computed(() => {
-      const { theme } = store.state.user
-
-      if (EXACT_THEMES.includes(theme)) {
-        return theme
+      if (EXACT_THEMES.includes(userStore.theme)) {
+        return userStore.theme
       }
 
       return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? THEME_DARK : THEME_LIGHT
@@ -76,6 +73,14 @@ export default {
       return exactTheme.value === THEME_LIGHT ? THEME_LIGHT_COLOR : THEME_DARK_COLOR
     })
 
+    // lifecycle hooks
+    onBeforeMount(() => {
+      if (GDPRService.showGDPRModal()) {
+        data.showGDPRModal = true
+      }
+    })
+
+    // watch
     watchEffect(() => {
       const themeMeta = document.querySelector('meta[name=theme-color]')
 
@@ -84,26 +89,27 @@ export default {
       }
     })
 
-    const computedMeta = computed(() => ({
-      title: '',
-      htmlAttrs: {
-        [THEME_HTML_ATTRIBUTE]: store.state.user.theme
-      }
-    }))
-
-    useMeta(computedMeta)
+    // others
+    useMeta(
+      computed(() => ({
+        title: '',
+        htmlAttrs: {
+          [THEME_HTML_ATTRIBUTE]: userStore.theme
+        }
+      }))
+    )
 
     const initRoute = async () => {
       let userFetchSuccess = false
 
       try {
-        await store.dispatch('user/fetchUserProfile', { getInitUserData: true })
+        await userStore.fetchUserProfile({ getInitUserData: true })
         userFetchSuccess = true
       } catch {
         userFetchSuccess = false
       }
 
-      var stopped = false
+      let stopped = false
       let stop
 
       stop = watchEffect(async () => {
@@ -135,29 +141,15 @@ export default {
     initRoute()
 
     return {
-      ...toRefs(data),
-      allowedGDPRModalRoute,
+      // consts
       TITLE_TEMPLATE,
-      TITLE_SMALL_TEMPLATE
+      TITLE_SMALL_TEMPLATE,
+      // data
+      ...toRefs(data),
+      // computed
+      allowedGDPRModalRoute
     }
   }
-  // data: () => ({
-  //   fetchedInitialUserProfile: false
-  // }),
-  // async created() {
-  //   try {
-  //     await this.$store.dispatch('user/fetchUserProfile', { getInitUserData: true })
-  //     if (!LOGGED_USER_ALLOWED_ROUTE_NAMES.includes(routeName)) {
-  //       await this.$router.replace({ name: APP_HOME })
-  //     }
-  //   } catch {
-  //     if (APP_ROUTE_NAMES.includes(routeName)) {
-  //       await this.$router.replace({ name: AUTH_LOGIN })
-  //     }
-  //   } finally {
-  //     this.fetchedInitialUserProfile = true
-  //   }
-  // }
 }
 </script>
 

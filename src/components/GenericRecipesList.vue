@@ -192,7 +192,7 @@ export default {
       const lastLoadedPage = loadedPageNumbers?.length > 0 ? Math.max(...loadedPageNumbers) : 0
 
       let result = []
-      for (var i = 1; i <= lastLoadedPage + 1; i++) {
+      for (let i = 1; i <= lastLoadedPage + 1; i++) {
         const loadedPage = props.recipes.pagedItems[i]
         if (loadedPage?.length > 0) {
           result.push(...loadedPage.map(item => ({ page: i, item })))
@@ -224,7 +224,7 @@ export default {
 
       const additionalPages = Math.ceil(additionalItems / PAGE_SIZE)
 
-      for (var j = 1; j <= additionalPages; j++) {
+      for (let j = 1; j <= additionalPages; j++) {
         const itemsCountToAdd = j === additionalPages ? additionalItems % PAGE_SIZE || PAGE_SIZE : PAGE_SIZE
         result.push(...Array(itemsCountToAdd).fill({ page: lastLoadedPage + j, item: null }))
       }
@@ -250,7 +250,7 @@ export default {
       }
 
       const { page: pageNumber, $el } = el
-      var observer = intersectionObservers[pageNumber]
+      let observer = intersectionObservers[pageNumber]
 
       const isIntersectingHandler = () => {
         // console.log('sproboje ładować')

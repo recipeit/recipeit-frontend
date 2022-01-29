@@ -16,12 +16,15 @@
 </template>
 
 <script>
+import { onBeforeMount, ref } from 'vue'
 import { useMeta } from 'vue-meta'
 
 import userApi from '@/api/userApi'
 
-import PageHeader from '@/components/PageHeader.vue'
+import { useUserStore } from '@/stores/user'
+
 import HiddenRecipe from '@/components/HiddenRecipe.vue'
+import PageHeader from '@/components/PageHeader.vue'
 
 export default {
   components: {
@@ -32,21 +35,35 @@ export default {
     useMeta({
       title: 'Ukryte przepisy'
     })
-  },
-  data: () => ({
-    hiddenRecipes: null
-  }),
-  beforeMount() {
-    userApi.getHiddenRecipes().then(({ data }) => {
-      this.hiddenRecipes = data.recipes || []
-    })
-  },
-  methods: {
-    unhideRecipe(id) {
-      this.$store.dispatch('user/changeRecipeVisibility', { recipeId: id, visible: true }).then(() => {
-        const index = this.hiddenRecipes.findIndex(v => v.id === id)
-        this.hiddenRecipes.splice(index, 1)
+
+    // usings
+    const userStore = useUserStore()
+
+    // data
+    const hiddenRecipes = ref(null)
+
+    // methods
+    const unhideRecipe = id => {
+      userStore.changeRecipeVisibility({ recipeId: id, visible: true }).then(() => {
+        const index = hiddenRecipes.value.findIndex(v => v.id === id)
+        if (index >= 0) {
+          hiddenRecipes.value.splice(index, 1)
+        }
       })
+    }
+
+    // lifecycle hooks
+    onBeforeMount(() => {
+      userApi.getHiddenRecipes().then(({ data }) => {
+        hiddenRecipes.value = data.recipes || []
+      })
+    })
+
+    return {
+      // data
+      hiddenRecipes,
+      // methods
+      unhideRecipe
     }
   }
 }

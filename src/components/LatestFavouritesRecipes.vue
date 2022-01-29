@@ -11,7 +11,7 @@
       :recipes="favouriteRecipesList.recipes.value"
       :errors="favouriteRecipesList.recipesErrors.value"
       @reload-with-query="loadFavouriteRecipes()"
-      @showAll="showAllFavourites()"
+      @show-all="showAllFavourites()"
     >
       <template #empty-list>
         <li v-for="i in 3" :key="i" class="empty-list-item">

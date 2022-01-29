@@ -42,15 +42,15 @@
 
     <div v-if="groupedProducts === null">...wczytuję</div>
     <ul v-else-if="groupedProducts.length > 0" class="product-list-groups">
-      <li v-for="products in groupedProducts" :key="products[0]" class="product-list-group">
+      <li v-for="productsGroup in groupedProducts" :key="productsGroup[0]" class="product-list-group">
         <div class="product-list-group__title">
-          <ProductIcon class="product-list-group__title__icon" :group="products[0]" />
+          <ProductIcon class="product-list-group__title__icon" :group="productsGroup[0]" />
           <div class="product-list-group__title__name">
-            {{ $t(`productCategory.${products[0]}`) }}
+            {{ $t(`productCategory.${productsGroup[0]}`) }}
           </div>
         </div>
         <ul class="product-list">
-          <li v-for="product in products[1]" :key="product.id" class="product-list__item">
+          <li v-for="product in productsGroup[1]" :key="product.id" class="product-list__item">
             <ShoppingListProduct :product="product" @purchase="purchase(product.id)" />
           </li>
         </ul>
@@ -83,19 +83,23 @@
 <script>
 import groupby from 'lodash.groupby'
 import sortby from 'lodash.sortby'
-import { computed, markRaw, nextTick, reactive, ref, toRefs } from 'vue'
-import { mapState, useStore } from 'vuex'
+import { computed, markRaw, nextTick, onBeforeMount, reactive, ref, toRefs } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useMeta } from 'vue-meta'
+
+import { PRODUCT_CATEGORY_ORDER } from '@/configs/productCategories'
+
+import { PRODUCT_GROUP_ICONS } from '@/constants'
+
+import { useModal } from '@/plugins/global-sheet-modal'
+
+import { useIngredientsStore } from '@/stores/ingredients'
+import { useShoppingListStore } from '@/stores/shoppingList'
 
 import PageHeader from '@/components/PageHeader.vue'
 import ProductIcon from '@/components/ProductIcon.vue'
 import ShoppingListProduct from '@/components/ShoppingListProduct.vue'
 import Dialog from '@/components/modals/Dialog.vue'
-// import NewShoppingListProduct from '@/components/modals/NewShoppingListProduct.vue'
-
-import { PRODUCT_CATEGORY_ORDER } from '@/configs/productCategories'
-
-import { PRODUCT_GROUP_ICONS } from '@/constants'
 
 export default {
   name: 'ShoppingList',
@@ -109,101 +113,108 @@ export default {
       title: 'Lista zakupów'
     })
 
-    const store = useStore()
+    // usings
+    const ingredientsStore = useIngredientsStore()
+    const shoppingListStore = useShoppingListStore()
+    const modal = useModal()
+    const i18n = useI18n()
 
+    // refs
     const addProductSelect = ref(null)
 
+    // data
     const data = reactive({
       fetchedData: false,
       selectFocused: false
     })
 
-    const groupedBaseProducts = computed(() => store.getters['ingredients/groupedBaseProducts'])
+    // computed
+    const groupedBaseProducts = computed(() => {
+      return ingredientsStore.groupedBaseProducts
+    })
 
+    const products = computed(() => {
+      return shoppingListStore.products
+    })
+
+    const groupedProducts = computed(() => {
+      if (!products.value) return null
+
+      const sorted = sortby(products.value, 'baseProductName')
+      const grouped = groupby(sorted, 'category')
+      const sortedGroups = sortby(Object.entries(grouped), ([group]) => PRODUCT_CATEGORY_ORDER[group])
+
+      return sortedGroups
+    })
+
+    const isEmpty = computed(() => {
+      return !(groupedProducts.value === null || groupedProducts.value.length > 0)
+    })
+
+    // methods
     const addProductFromSelect = ({ id } = {}) => {
       const requestData = {
         baseProductId: id
       }
 
-      store.dispatch('shoppingList/addProduct', requestData)
+      shoppingListStore.addProduct(requestData)
     }
 
     const openAddProductSelect = async () => {
       data.selectFocused = true
       await nextTick()
-      // console.log(addProductSelect)
       addProductSelect.value?.setFocus()
     }
 
-    return {
-      ...toRefs(data),
-      addProductSelect,
-      groupedBaseProducts,
-      addProductFromSelect,
-      openAddProductSelect,
-      PRODUCT_GROUP_ICONS
+    const purchase = id => {
+      shoppingListStore.purchaseProduct(id)
     }
-  },
-  computed: {
-    ...mapState({
-      products: state => state.shoppingList.products
-    }),
-    isEmpty() {
-      return !(this.groupedProducts === null || this.groupedProducts.length > 0)
-    },
-    filteredProducts() {
-      return this.products
-      // if (!this.products) return null
-      // if (!this.searchString) return this.products
 
-      // return this.products.filter(p => p.baseProductName.toLowerCase().includes(this.searchString.toLowerCase()))
-    },
-    groupedProducts() {
-      const { filteredProducts } = this
-
-      if (!filteredProducts) return null
-
-      const sorted = sortby(filteredProducts, 'baseProductName')
-      const grouped = groupby(sorted, 'category')
-      const sortedGroups = sortby(Object.entries(grouped), ([group]) => PRODUCT_CATEGORY_ORDER[group])
-
-      return sortedGroups
-    }
-  },
-  beforeMount() {
-    this.$store.dispatch('ingredients/fetchBaseProducts')
-    this.$store.dispatch('ingredients/fetchUnitsGroupedByMeasurement')
-    this.$store.dispatch('shoppingList/fetchProducts')
-  },
-  methods: {
-    // newProduct() {
-    //   this.$modal.show(markRaw(NewShoppingListProduct), {}, {})
-    // },
-    purchase(id) {
-      this.$store.dispatch('shoppingList/purchaseProduct', id)
-    },
-    purchaseAll() {
-      this.$modal.show(
+    const purchaseAll = () => {
+      modal.show(
         markRaw(Dialog),
         {
-          title: this.$t('shoppingList.purchaseAllDialogTitle', {
-            products: this.$tc('shared.products', this.products.length)
+          title: i18n.t('shoppingList.purchaseAllDialogTitle', {
+            products: i18n.t('shared.products', products.value.length)
           }),
-          secondaryText: this.$t('shared.no'),
-          primaryText: this.$t('shared.yes')
+          secondaryText: i18n.t('shared.no'),
+          primaryText: i18n.t('shared.yes')
         },
         {
-          close: purchase => {
-            if (purchase) {
-              this.$store.dispatch('shoppingList/purchaseAllProducts')
+          close: makePurchase => {
+            if (makePurchase) {
+              shoppingListStore.purchaseAllProducts()
             }
           }
         }
       )
     }
-    // onSearch({ search }) {
-    //   this.searchString = search
-    // }
+
+    // lifecycle hooks
+    onBeforeMount(() => {
+      ingredientsStore.fetchBaseProducts()
+      ingredientsStore.fetchUnitsGroupedByMeasurement()
+      shoppingListStore.fetchProducts()
+    })
+
+    return {
+      // consts
+      PRODUCT_GROUP_ICONS,
+      // refs
+      addProductSelect,
+      // data
+      ...toRefs(data),
+      // computed
+      groupedBaseProducts,
+      products,
+      groupedProducts,
+      isEmpty,
+      // methods
+      addProductFromSelect,
+      openAddProductSelect,
+      purchase,
+      purchaseAll
+    }
   }
 }
 </script>

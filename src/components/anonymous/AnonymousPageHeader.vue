@@ -32,24 +32,28 @@
 
 <script>
 import { computed } from 'vue'
-import { useStore } from 'vuex'
 
 import { LANDING_PAGE, AUTH_LOGIN, AUTH_REGISTER, APP_HOME } from '@/router/names'
+
+import { useUserStore } from '@/stores/user'
 
 import Logotype from '@/components/Logotype.vue'
 
 export default {
   components: { Logotype },
   setup() {
-    const store = useStore()
-    const userAuthenticatedLazy = computed(() => store.state.user.userAuthenticatedLazy)
+    const userStore = useUserStore()
+
+    const userAuthenticatedLazy = computed(() => userStore.userAuthenticatedLazy)
 
     return {
-      userAuthenticatedLazy,
+      // consts
       LANDING_PAGE,
       AUTH_REGISTER,
       AUTH_LOGIN,
-      APP_HOME
+      APP_HOME,
+      // computed
+      userAuthenticatedLazy
     }
   }
 }

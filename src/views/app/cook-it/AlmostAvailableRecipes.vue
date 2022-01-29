@@ -58,10 +58,11 @@
 
 <script>
 import { computed } from 'vue'
-import { useStore } from 'vuex'
 import { useMeta } from 'vue-meta'
 
 import userApi from '@/api/userApi'
+
+import { useMyKitchenStore } from '@/stores/myKitchen'
 
 import recipeFilteredPagedList from '@/views/app/composable/recipeFilteredPagedList'
 
@@ -79,13 +80,20 @@ export default {
       title: 'Zrób drobne zakupy'
     })
 
-    const store = useStore()
-    const kitchenProductsCount = computed(() => store.state.myKitchen.products?.length || 0)
+    // usings
+    const myKitchenStore = useMyKitchenStore()
+
+    // composables
     const recipesList = recipeFilteredPagedList(userApi.getAlmostAvailableRecipes)
 
+    // computed
+    const kitchenProductsCount = computed(() => myKitchenStore.products?.length || 0)
+
     return {
-      kitchenProductsCount,
-      recipesList
+      // composables
+      recipesList,
+      // computed
+      kitchenProductsCount
     }
   }
 }

@@ -25,9 +25,11 @@ import Logotype from '@/components/Logotype.vue'
 
 export default {
   components: { Logotype },
-  setup: () => ({
-    BackgroundUrl
-  })
+  setup() {
+    return {
+      BackgroundUrl
+    }
+  }
 }
 </script>
 
