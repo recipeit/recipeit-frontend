@@ -49,6 +49,9 @@ export default {
     const ingredientsStore = useIngredientsStore()
     const myKitchenStore = useMyKitchenStore()
 
+    // computed
+    const baseProducts = computed(() => ingredientsStore.baseProducts)
+
     // consts
     const formID = 'form-' + uniqueID().getID()
 
@@ -79,9 +82,6 @@ export default {
         .nullable(),
       unit: Yup.string().nullable()
     })
-
-    // computed
-    const baseProducts = computed(() => ingredientsStore.baseProducts)
 
     // methods
     const editProduct = ({ baseProduct, amount, unit }) => {

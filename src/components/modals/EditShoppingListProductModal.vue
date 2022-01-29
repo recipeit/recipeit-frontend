@@ -47,6 +47,9 @@ export default {
     const ingredientsStore = useIngredientsStore()
     const shoppingListStore = useShoppingListStore()
 
+    // computed
+    const baseProducts = computed(() => ingredientsStore.baseProducts)
+
     // consts
     const formID = 'form-' + uniqueID().getID()
 
@@ -55,9 +58,6 @@ export default {
       amount: props.product.amount,
       unit: props.product.unit
     }
-
-    // computed
-    const baseProducts = computed(() => ingredientsStore.baseProducts)
 
     // data
     const data = reactive({
