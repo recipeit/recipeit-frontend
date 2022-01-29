@@ -130,10 +130,13 @@ export default {
     }
 
     return {
+      // data
       addToShoppingListLoading,
+      // computed
       shoppingListProducts,
       isInShoppingList,
       purchaseButtonTooltip,
+      //methods
       openEditModal,
       deleteProduct,
       addToShoppingList
