@@ -72,7 +72,7 @@ export const useShoppingListStore = defineStore('shoppingList', {
     async editProductFromShoppingList(product) {
       const { data: updatedProduct } = await shoppingListApi.updateProductFromShoppingList(product)
 
-      const existingProduct = this.products.findIndex(({ id }) => id === updatedProduct.id)
+      const existingProduct = this.products.find(({ id }) => id === updatedProduct.id)
 
       if (existingProduct) {
         Object.entries(updatedProduct).forEach(([key, value]) => {
