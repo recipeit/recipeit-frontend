@@ -52,7 +52,7 @@
       </BaseLink>
     </Form>
 
-    <AuthSocialList @lockInputs="socialSending = true" @unlockInputs="socialSending = false" />
+    <AuthSocialList @lock-inputs="socialSending = true" @unlock-inputs="socialSending = false" />
 
     <RecaptchaBranding class="recaptcha-branding" />
   </div>
@@ -60,13 +60,17 @@
 
 <script>
 import { Field, Form } from 'vee-validate'
+import { computed, reactive, toRefs } from 'vue'
 import { useMeta } from 'vue-meta'
+import { useRouter } from 'vue-router'
 import * as yup from 'yup'
 
 import { ERROR_ACTION_TAG_NAME } from '@/configs/error'
 import { RECAPTCHA_ACTIONS } from '@/configs/recaptcha'
 import { emailSchema, passwordSchema } from '@/configs/schemas'
 import { BASE_URL } from '@/configs/url'
+
+import { useErrorHandler } from '@/error'
 
 import { AUTH_LOGIN } from '@/router/paths'
 
@@ -97,65 +101,79 @@ export default {
       link: [{ rel: 'canonical', href: `${BASE_URL}${AUTH_LOGIN}` }]
     })
 
+    // usings
     const userStore = useUserStore()
+    const router = useRouter()
+    const errorHandler = useErrorHandler()
+
+    // consts
+    const hasInitialEmail = !!props.email
+
+    const initialValues = {
+      email: props.email
+    }
+
+    // data
+    const data = reactive({
+      errorList: null,
+      sending: false,
+      socialSending: false
+    })
 
     const schema = yup.object({
       email: emailSchema(),
       password: passwordSchema()
     })
 
-    const initialValues = {
-      email: props.email
-    }
+    // computed
+    const anySending = computed(() => {
+      return data.sending || data.socialSending
+    })
 
-    const hasInitialEmail = !!props.email
-
-    return {
-      schema,
-      initialValues,
-      hasInitialEmail,
-      userStore
-    }
-  },
-  data: () => ({
-    errorList: null,
-    sending: false,
-    socialSending: false
-  }),
-  computed: {
-    anySending() {
-      return this.sending || this.socialSending
-    }
-  },
-  methods: {
-    login(values) {
-      this.errorList = null
-      this.sending = true
+    // methods
+    const login = values => {
+      data.errorList = null
+      data.sending = true
 
       recaptcha
         .execute(RECAPTCHA_ACTIONS.LOGIN)
         .then(recaptchaToken => {
-          this.userStore
+          userStore
             .login({ ...values, recaptchaToken })
             .catch(errors => {
-              this.errorList = errors
-              this.$errorHandler.captureError(errors, {
+              data.errorList = errors
+              errorHandler.captureError(errors, {
                 [ERROR_ACTION_TAG_NAME]: 'auth.login'
               })
             })
             .finally(() => {
-              this.sending = false
+              data.sending = false
             })
         })
         .catch(error => {
-          this.sending = false
-          this.$errorHandler.captureError(error, {
+          data.sending = false
+          errorHandler.captureError(error, {
             [ERROR_ACTION_TAG_NAME]: 'auth.login.recaptcha'
           })
         })
-    },
-    goToRequestPasswordReset(email) {
-      this.$router.push({ name: 'request-password-reset', params: { initialEmail: email || '' } })
+    }
+
+    const goToRequestPasswordReset = email => {
+      router.push({ name: 'request-password-reset', params: { initialEmail: email || '' } })
+    }
+
+    return {
+      // consts
+      hasInitialEmail,
+      initialValues,
+      //data
+      ...toRefs(data),
+      schema,
+      // computed
+      anySending,
+      // methods
+      login,
+      goToRequestPasswordReset
     }
   }
 }

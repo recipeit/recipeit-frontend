@@ -45,22 +45,29 @@ export default {
   },
   emits: ['close'],
   setup(props, component) {
+    // usings
     const ingredientsStore = useIngredientsStore()
     const myKitchenStore = useMyKitchenStore()
 
+    // computed
     const baseProducts = computed(() => ingredientsStore.baseProducts)
 
+    // consts
     const formID = 'form-' + uniqueID().getID()
-    const data = reactive({
-      loading: false,
-      expirationDatesForm: props.expirationDates
-    })
 
     const initialValues = {
       baseProduct: props.product.baseProductId ? baseProducts.value?.find(p => p.id === props.product.baseProductId) : null,
       amount: props.product.amount,
       unit: props.product.unit
     }
+
+    // data
+    const data = reactive({
+      loading: false,
+      expirationDatesForm: props.expirationDates
+    })
+
+    const sending = ref(false)
 
     const schema = Yup.object().shape({
       baseProduct: Yup.object()
@@ -76,8 +83,7 @@ export default {
       unit: Yup.string().nullable()
     })
 
-    const sending = ref(false)
-
+    // methods
     const editProduct = ({ baseProduct, amount, unit }) => {
       sending.value = true
 
@@ -102,12 +108,15 @@ export default {
     }
 
     return {
-      ...toRefs(data),
+      // consts
+      formID,
       initialValues,
-      schema,
-      editProduct,
+      // data
+      ...toRefs(data),
       sending,
-      formID
+      schema,
+      // methods
+      editProduct
     }
   }
 }

@@ -80,14 +80,20 @@ export default {
       title: 'Zrób drobne zakupy'
     })
 
+    // usings
     const myKitchenStore = useMyKitchenStore()
 
-    const kitchenProductsCount = computed(() => myKitchenStore.products?.length || 0)
+    // composables
     const recipesList = recipeFilteredPagedList(userApi.getAlmostAvailableRecipes)
 
+    // computed
+    const kitchenProductsCount = computed(() => myKitchenStore.products?.length || 0)
+
     return {
-      kitchenProductsCount,
-      recipesList
+      // composables
+      recipesList,
+      // computed
+      kitchenProductsCount
     }
   }
 }

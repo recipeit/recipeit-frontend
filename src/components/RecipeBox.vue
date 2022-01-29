@@ -11,8 +11,8 @@
           class="prop-favourite"
           :is-favourite="isFavourite"
           color="text-primary"
-          @removed="deleteFromFavourites"
-          @added="addToFavourites"
+          @removed="deleteFromFavourites()"
+          @added="addToFavourites()"
           @click.prevent
         />
       </div>
@@ -64,37 +64,40 @@ export default {
       default: true
     }
   },
-  setup() {
+  setup(props) {
+    // usings
     const recipesStore = useRecipesStore()
     const userStore = useUserStore()
 
-    const placeholder = computed(() => (userStore.theme === THEME_DARK ? placeholderDark : placeholderLight))
-    const favouriteRecipesIds = computed(() => recipesStore.favouriteRecipesIds)
+    // computed
+    const placeholder = computed(() => {
+      return userStore.theme === THEME_DARK ? placeholderDark : placeholderLight
+    })
+    const isFavourite = computed(() => {
+      return recipesStore.favouriteRecipesIds?.find(id => id === props.recipeId) !== undefined
+    })
+    const imageUrl = computed(() => {
+      return `/static/recipes/${props.recipeId}/thumb.webp?v=1`
+    })
+
+    // methods
+    const addToFavourites = () => {
+      recipesStore.addToFavourites(props.recipeId)
+    }
+    const deleteFromFavourites = () => {
+      recipesStore.deleteFromFavourites(props.recipeId)
+    }
 
     return {
+      // consts
       APP_RECIPE,
+      // computed
       placeholder,
-      recipesStore,
-      favouriteRecipesIds
-    }
-  },
-  computed: {
-    isFavourite() {
-      return this.favouriteRecipesIds?.find(id => id === this.recipeId) !== undefined
-    },
-    imageUrl() {
-      return `/static/recipes/${this.recipeId}/thumb.webp?v=1`
-    }
-  },
-  methods: {
-    showDetails() {
-      this.$router.push({ name: APP_RECIPE, params: { recipeId: this.recipeId } })
-    },
-    addToFavourites() {
-      this.recipesStore.addToFavourites(this.recipeId)
-    },
-    deleteFromFavourites() {
-      this.recipesStore.deleteFromFavourites(this.recipeId)
+      isFavourite,
+      imageUrl,
+      // methods
+      addToFavourites,
+      deleteFromFavourites
     }
   }
 }
