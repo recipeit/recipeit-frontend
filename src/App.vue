@@ -50,6 +50,7 @@ export default {
 
     // others
     userStore.initTheme()
+    GDPRService.init()
 
     // data
     const data = reactive({
@@ -89,8 +90,6 @@ export default {
     })
 
     // others
-    GDPRService.init()
-
     useMeta(
       computed(() => ({
         title: '',
