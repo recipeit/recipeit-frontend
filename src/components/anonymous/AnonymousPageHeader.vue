@@ -47,11 +47,13 @@ export default {
     const userAuthenticatedLazy = computed(() => userStore.userAuthenticatedLazy)
 
     return {
-      userAuthenticatedLazy,
+      // consts
       LANDING_PAGE,
       AUTH_REGISTER,
       AUTH_LOGIN,
-      APP_HOME
+      APP_HOME,
+      // computed
+      userAuthenticatedLazy
     }
   }
 }

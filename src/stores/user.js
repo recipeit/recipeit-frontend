@@ -111,7 +111,6 @@ export const useUserStore = defineStore('user', {
     },
 
     login({ email, password, recaptchaToken }) {
-      console.log('guwno')
       const recipesStore = useRecipesStore()
       recipesStore.resetUserData() //TODO why only recipes
 

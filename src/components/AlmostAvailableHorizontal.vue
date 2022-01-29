@@ -1,7 +1,7 @@
 <template>
   <div class="almost-available-horizontal">
     <SectionTitle icon="basket" :title="$t('cookIt.buyMissingIngredient')" />
-    <HorizontalRecipesList :recipes="favouriteRecipes" @showAll="showAllFavourites()" />
+    <HorizontalRecipesList :recipes="favouriteRecipes" @show-all="showAllFavourites()" />
   </div>
 </template>
 

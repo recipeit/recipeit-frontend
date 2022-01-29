@@ -98,6 +98,8 @@ import { THEMES } from '@/configs/theme'
 
 import { COPYRIGHT_TEXT } from '@/constants'
 
+import { useModal } from '@/plugins/global-sheet-modal'
+
 import { ARTICLES as ARTICLES_PATH } from '@/router/paths'
 
 import { useUserStore } from '@/stores/user'
@@ -118,84 +120,84 @@ export default {
       title: 'Moje konto'
     })
 
+    // usings
+    const modal = useModal()
     const userStore = useUserStore()
 
+    // data
     const selectedTheme = ref(userStore.theme)
 
-    function updateTheme(value) {
+    // computed
+    const userProfile = computed(() => userStore.userProfile)
+    const avatarSrc = computed(() => {
+      return userProfile.value?.imageUrl
+    })
+
+    // setup methods
+    const openForgotPasswordModal = () => {
+      modal.show(
+        markRaw(ForgotPasswordModal),
+        {
+          email: userProfile.value.email
+        },
+        {}
+      )
+    }
+
+    // methods
+    const updateTheme = value => {
       if (value && THEMES.includes(value)) {
         selectedTheme.value = value
         userStore.setTheme(value)
       }
     }
 
-    function unhideRecipe(recipeId) {
-      userStore.changeRecipeVisibility({ recipeId, visible: true })
-    }
-
-    function unhideBlog(blogId) {
-      userStore.changeBlogVisibility({ blogId, visible: true })
-    }
-
-    const hiddenRecipes = computed(() => userStore.hiddenRecipeIds)
-    const hiddenBlogs = computed(() => userStore.hiddenBlogIds)
-    const userProfile = computed(() => userStore.userProfile)
-
-    return {
-      COPYRIGHT_TEXT,
-      selectedTheme,
-      updateTheme,
-      unhideRecipe,
-      unhideBlog,
-      THEMES,
-      defaultAvatar,
-      ARTICLES_PATH,
-      hiddenRecipes,
-      hiddenBlogs,
-      userProfile
-    }
-  },
-  computed: {
-    avatarSrc() {
-      return this.userProfile?.imageUrl
-    }
-  },
-  methods: {
-    openChangePasswordModal() {
-      this.$modal.show(
+    const openChangePasswordModal = () => {
+      modal.show(
         markRaw(ChangePasswordModal),
         {
-          email: this.userProfile.email
+          email: userProfile.value.email
         },
         {
           close: response => {
             if (response?.openForgotPasswordModal) {
-              this.openForgotPasswordModal()
+              openForgotPasswordModal()
             }
           }
         }
       )
-    },
-    openForgotPasswordModal() {
-      this.$modal.show(
-        markRaw(ForgotPasswordModal),
-        {
-          email: this.userProfile.email
-        },
-        {}
-      )
-    },
-    openDeleteAccountModal() {
-      this.$modal.show(
+    }
+
+    const openDeleteAccountModal = () => {
+      modal.show(
         markRaw(DeleteAccountModal),
         {
-          email: this.userProfile.email
+          email: userProfile.value.email
         },
         {}
       )
-    },
-    openCustomizeCookiesModal() {
-      this.$modal.show(markRaw(CustomizeCookiesModal), {}, {})
+    }
+
+    const openCustomizeCookiesModal = () => {
+      modal.show(markRaw(CustomizeCookiesModal), {}, {})
+    }
+
+    return {
+      // consts
+      defaultAvatar,
+      ARTICLES_PATH,
+      COPYRIGHT_TEXT,
+      THEMES,
+      // data
+      selectedTheme,
+      // computed
+      userProfile,
+      avatarSrc,
+      // methods
+      updateTheme,
+      openChangePasswordModal,
+      openDeleteAccountModal,
+      openCustomizeCookiesModal
     }
   }
 }

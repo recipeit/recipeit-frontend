@@ -31,7 +31,7 @@
               :recipes="almostAvailableRecipesList.recipes.value"
               :errors="almostAvailableRecipesList.recipesErrors.value"
               @reload-with-query="almostAvailableRecipesList.reloadRecipesWithQuery($event)"
-              @showAll="showAlmostAvailableRecipes()"
+              @show-all="showAlmostAvailableRecipes()"
             />
           </div>
         </template>
@@ -136,14 +136,19 @@ export default {
       title: 'Ugotuj to!'
     })
 
+    // usings
     const myKitchenStore = useMyKitchenStore()
     const route = useRoute()
     const router = useRouter()
-    const kitchenProductsCount = computed(() => myKitchenStore.products?.length || 0)
 
+    // composables
     const recipesList = recipeFilteredPagedList(userApi.getAvailableRecipes)
     const almostAvailableRecipesList = recipeFilteredPagedList(userApi.getAlmostAvailableRecipes)
 
+    // computed
+    const kitchenProductsCount = computed(() => myKitchenStore.products?.length || 0)
+
+    // methods
     const reloadRecipes = ({ orderMethod, filters, search }) => {
       const query = { orderMethod, filters, search }
 
@@ -157,6 +162,7 @@ export default {
       router.push({ name: 'almost-available', query: route.query })
     }
 
+    // lifecycle hooks
     onBeforeMount(() => {
       const initialQueryParams = queryParamsFromRouteQuery(route.query)
       almostAvailableRecipesList.reloadRecipes(initialQueryParams)
@@ -164,9 +170,12 @@ export default {
     })
 
     return {
-      kitchenProductsCount,
+      // composables
       recipesList,
       almostAvailableRecipesList,
+      // computed
+      kitchenProductsCount,
+      // methods
       reloadRecipes,
       showAlmostAvailableRecipes
     }

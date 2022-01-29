@@ -32,7 +32,7 @@ import { useIngredientsStore } from '@/stores/ingredients'
 export default {
   props: {
     ids: {
-      type: String,
+      type: Array,
       required: true
     }
   },

@@ -67,21 +67,26 @@ export default {
   },
   emits: ['update:baseProductId', 'update:unit'],
   setup(props) {
+    // usings
     const { t } = useI18n()
     const ingredientsStore = useIngredientsStore()
 
+    // computed
     const groupedBaseProducts = computed(() => ingredientsStore.groupedBaseProducts)
     const units = computed(() => ingredientsStore.units)
     const unitLabelAmount = computed(() => parseFloat(props.amount) || 1)
 
+    // methods
     const unitCustomLabel = value => {
       return t(`units.${value}`, unitLabelAmount.value)
     }
 
     return {
-      units,
+      // computed
       groupedBaseProducts,
+      units,
       unitLabelAmount,
+      // methods
       unitCustomLabel
     }
   }

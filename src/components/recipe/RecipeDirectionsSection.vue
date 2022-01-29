@@ -55,12 +55,14 @@ export default {
     }
   },
   setup(props) {
+    // usings
     const recipesStore = useRecipesStore()
-
     const toast = useToast()
 
+    // data
     const finishedDirections = ref(recipesStore.getFinishedDirectionsForRecipe(props.recipeId) || [])
 
+    // computed
     const allIndexes = computed(() => {
       return props.directions.map((_, index) => index)
     })
@@ -69,10 +71,12 @@ export default {
       return min(difference(allIndexes.value, finishedDirections.value))
     })
 
+    // methods
     const resetFinishedDirections = () => {
       finishedDirections.value = []
     }
 
+    // watch
     watch(finishedDirections, newValue => {
       recipesStore.setFinishedDirectionsForRecipe({ recipeId: props.recipeId, finishedDirections: newValue })
       const remaining = difference(allIndexes.value, newValue)
@@ -83,8 +87,11 @@ export default {
     })
 
     return {
+      // data
       finishedDirections,
+      // computed
       selectedDirection,
+      // methods
       resetFinishedDirections
     }
   }

@@ -38,7 +38,7 @@
 
 <script>
 import { Field, Form } from 'vee-validate'
-import { reactive, ref } from 'vue'
+import { reactive, toRefs } from 'vue'
 import * as Yup from 'yup'
 
 import timesOfDayConst from '@/constants/timesOfDay'
@@ -60,14 +60,15 @@ export default {
     }
   },
   emits: ['close'],
-  setup() {
+  setup(props, { emit }) {
+    // usings
     const recipesStore = useRecipesStore()
+
+    // consts
     const formID = 'form-' + uniqueID().getID()
     const timesOfDay = Object.keys(timesOfDayConst)
-
-    const today = dayjs()
     const days = Array.from({ length: 7 }, (_, i) => {
-      const day = today.add(i, 'days')
+      const day = dayjs().add(i, 'days')
       return {
         value: day.format('YYYY-MM-DD'),
         label: day.calendar()
@@ -77,7 +78,13 @@ export default {
       day: days[0],
       timeOfDay: timesOfDay[0]
     }
-    const errorList = reactive(null)
+
+    // data
+    const data = reactive({
+      errorList: null,
+      sending: false
+    })
+
     const schema = Yup.object({
       day: Yup.object()
         .required('REQUIRED')
@@ -87,46 +94,46 @@ export default {
         .typeError('REQUIRED')
     })
 
-    const sending = ref(false)
-
-    return {
-      recipesStore,
-      formID,
-      days,
-      timesOfDay,
-      initialValues,
-      errorList,
-      sending,
-      schema
-    }
-  },
-  methods: {
-    planRecipe({ day, timeOfDay }) {
-      this.sending = true
-      this.errorList = null
+    // methods
+    const planRecipe = ({ day, timeOfDay }) => {
+      data.sending = true
+      data.errorList = null
 
       const preparedData = {
-        recipeId: this.recipeId,
+        recipeId: props.recipeId,
         day: day.value,
         timeOfDay: timeOfDay
       }
 
-      this.recipesStore
+      recipesStore
         .addRecipeToPlanned(preparedData)
-        .then(({ data }) => {
-          if (data.success) {
-            this.$emit('close')
+        .then(({ data: { success, errors } }) => {
+          if (success) {
+            emit('close')
           } else {
-            this.errorList = data.errors || ['coś poszło nie tak']
+            data.errorList = errors || ['coś poszło nie tak']
           }
         })
         .catch(error => {
           const responseErrors = error.response?.data?.errors
-          this.errorList = responseErrors || ['coś poszło nie tak']
+          data.errorList = responseErrors || ['coś poszło nie tak']
         })
         .finally(() => {
-          this.sending = false
+          data.sending = false
         })
+    }
+
+    return {
+      // consts
+      formID,
+      timesOfDay,
+      days,
+      initialValues,
+      // data
+      ...toRefs(data),
+      schema,
+      // methods
+      planRecipe
     }
   }
 }

@@ -48,6 +48,9 @@ const detectRobot = userAgent => {
   return robots.test(userAgent)
 }
 
+const acceptedCookies = ref(null) // but no computed so simple variable will do probably
+let initialized = false
+
 const setGDPRCookie = (cookieName, value) => {
   if (value === true) {
     if (!GDPR_OPTIONS.includes(cookieName)) return
@@ -72,9 +75,6 @@ const setGDPRCookie = (cookieName, value) => {
 const isCookieAllowed = cookieName => {
   return acceptedCookies.value.includes(cookieName)
 }
-
-let initialized = false
-let acceptedCookies = ref(null)
 
 export default {
   init() {

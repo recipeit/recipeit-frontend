@@ -16,6 +16,7 @@
 </template>
 
 <script>
+import { onBeforeMount, ref } from 'vue'
 import { useMeta } from 'vue-meta'
 
 import userApi from '@/api/userApi'
@@ -35,26 +36,34 @@ export default {
       title: 'Ukryte przepisy'
     })
 
+    // usings
     const userStore = useUserStore()
 
-    return {
-      userStore
-    }
-  },
-  data: () => ({
-    hiddenRecipes: null
-  }),
-  beforeMount() {
-    userApi.getHiddenRecipes().then(({ data }) => {
-      this.hiddenRecipes = data.recipes || []
-    })
-  },
-  methods: {
-    unhideRecipe(id) {
-      this.userStore.changeRecipeVisibility({ recipeId: id, visible: true }).then(() => {
-        const index = this.hiddenRecipes.findIndex(v => v.id === id)
-        this.hiddenRecipes.splice(index, 1)
+    // data
+    const hiddenRecipes = ref(null)
+
+    // methods
+    const unhideRecipe = id => {
+      userStore.changeRecipeVisibility({ recipeId: id, visible: true }).then(() => {
+        const index = hiddenRecipes.value.findIndex(v => v.id === id)
+        if (index >= 0) {
+          hiddenRecipes.value.splice(index, 1)
+        }
       })
+    }
+
+    // lifecycle hooks
+    onBeforeMount(() => {
+      userApi.getHiddenRecipes().then(({ data }) => {
+        hiddenRecipes.value = data.recipes || []
+      })
+    })
+
+    return {
+      // data
+      hiddenRecipes,
+      // methods
+      unhideRecipe
     }
   }
 }
