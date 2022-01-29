@@ -37,7 +37,7 @@
       <li v-for="(error, index) in errorList" :key="index">{{ $t(`errorCode.${error}`) }}</li>
     </ul>
 
-    <AuthSocialList @lockInputs="socialSending = true" @unlockInputs="socialSending = false" />
+    <AuthSocialList @lock-inputs="socialSending = true" @unlock-inputs="socialSending = false" />
 
     <div class="auth-main__content__terms">
       Rejestrując się akceptujesz
@@ -60,6 +60,7 @@
 
 <script>
 import { Field, Form } from 'vee-validate'
+import { computed, reactive, toRefs } from 'vue'
 import { useMeta } from 'vue-meta'
 import * as yup from 'yup'
 
@@ -67,6 +68,8 @@ import { ERROR_ACTION_TAG_NAME } from '@/configs/error'
 import { RECAPTCHA_ACTIONS } from '@/configs/recaptcha'
 import { emailSchema, newPasswordSchema, confirmNewPasswordSchema } from '@/configs/schemas'
 import { BASE_URL } from '@/configs/url'
+
+import { useErrorHandler } from '@/error'
 
 import { AUTH_REGISTER } from '@/router/paths'
 
@@ -91,7 +94,16 @@ export default {
       link: [{ rel: 'canonical', href: `${BASE_URL}${AUTH_REGISTER}` }]
     })
 
+    // usings
     const userStore = useUserStore()
+    const errorHandler = useErrorHandler()
+
+    // data
+    const data = reactive({
+      errorList: null,
+      sending: false,
+      socialSending: false
+    })
 
     const schema = yup.object({
       email: emailSchema(),
@@ -99,50 +111,50 @@ export default {
       confirmPassword: confirmNewPasswordSchema('password')
     })
 
-    return {
-      schema,
-      userStore
-    }
-  },
-  data: () => ({
-    errorList: null,
-    sending: false,
-    socialSending: false
-  }),
-  computed: {
-    anySending() {
-      return this.sending || this.socialSending
-    }
-  },
-  methods: {
-    register(valus) {
-      this.sending = true
-      this.errorList = null
+    // computed
+    const anySending = computed(() => {
+      return data.sending || data.socialSending
+    })
+
+    // methods
+    const register = valus => {
+      data.sending = true
+      data.errorList = null
 
       recaptcha
         .execute(RECAPTCHA_ACTIONS.REGISTER)
         .then(recaptchaToken => {
-          this.userStore
+          userStore
             .register({
               ...valus,
               recaptchaToken
             })
             .catch(errors => {
-              this.errorList = errors
-              this.$errorHandler.captureError(errors, {
+              data.errorList = errors
+              errorHandler.captureError(errors, {
                 [ERROR_ACTION_TAG_NAME]: 'auth.register'
               })
             })
             .finally(() => {
-              this.sending = false
+              data.sending = false
             })
         })
         .catch(error => {
-          this.sending = false
-          this.$errorHandler.captureError(error, {
+          data.sending = false
+          errorHandler.captureError(error, {
             [ERROR_ACTION_TAG_NAME]: 'auth.register.recaptcha'
           })
         })
+    }
+
+    return {
+      // data
+      ...toRefs(data),
+      schema,
+      // computed
+      anySending,
+      // methods
+      register
     }
   }
 }

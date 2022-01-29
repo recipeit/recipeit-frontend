@@ -149,14 +149,20 @@
 <script>
 import { computed, markRaw, reactive, toRefs } from 'vue'
 import { useMeta } from 'vue-meta'
+import { useRoute, useRouter } from 'vue-router'
 
 import { CONTACT_MAIL_ADDRESS } from '@/configs/emails'
 import { ERROR_ACTION_TAG_NAME } from '@/configs/error'
 
 import { parseFilters } from '@/constants'
 
+import { useErrorHandler } from '@/error'
+
 import dayjs from '@/functions/dayjs'
 
+import { useClipboard } from '@/plugins/clipboard'
+import { useModal } from '@/plugins/global-sheet-modal'
+import { useToast } from '@/plugins/toast'
 import { ToastType } from '@/plugins/toast/toastType'
 
 import { APP_HOME, APP_RECIPES } from '@/router/names'
@@ -177,7 +183,6 @@ import RecipeIngredientsSection from '@/components/recipe/RecipeIngredientsSecti
 export default {
   name: 'Recipe',
   components: {
-    // SectionTitle,
     FavouriteIcon,
     RecipeParallaxGallery,
     RecipeIngredientsSection,
@@ -194,11 +199,19 @@ export default {
     }
   },
   setup(props) {
+    // usings
     const myKitchenStore = useMyKitchenStore()
     const shoppingListStore = useShoppingListStore()
     const recipesStore = useRecipesStore()
     const userStore = useUserStore()
+    const errorHandler = useErrorHandler()
+    const toast = useToast()
+    const modal = useModal()
+    const clipboard = useClipboard()
+    const router = useRouter()
+    const route = useRoute()
 
+    // data
     const data = reactive({
       errors: false,
       fetchedData: false,
@@ -206,63 +219,30 @@ export default {
       finishedDirections: []
     })
 
-    recipesStore
-      .fetchDetailedRecipe(props.recipeId)
-      .then(rd => {
-        data.recipe = rd
-        data.finishedDirections = recipesStore.getFinishedDirectionsForRecipe(rd.id) || []
-      })
-      .catch(error => {
-        data.errors = true
-        this.$errorHandler.captureError(error, {
-          [ERROR_ACTION_TAG_NAME]: 'recipe.fetchDetailedRecipe'
-        })
-      })
-
-    const computedMeta = computed(() => {
-      const title = data.recipe?.name || props.recipeName
-      return title ? { title } : {}
-    })
-
-    const isRecipeHiddenGetter = computed(() => userStore.isRecipeHidden)
-    const isBlogHiddenGetter = computed(() => userStore.isBlogHidden)
+    // computed
     const favouriteRecipesIds = computed(() => recipesStore.favouriteRecipesIds)
 
-    useMeta(computedMeta)
+    const isRecipeHidden = computed(() => {
+      if (data.recipe) {
+        return userStore.isRecipeHidden(data.recipe.id)
+      }
+      return false
+    })
 
-    return {
-      ...toRefs(data),
-      APP_HOME,
-      myKitchenStore,
-      shoppingListStore,
-      recipesStore,
-      userStore,
-      isRecipeHiddenGetter,
-      isBlogHiddenGetter,
-      favouriteRecipesIds
-    }
-  },
-  computed: {
-    isRecipeHidden() {
-      if (this.recipe) {
-        return this.isRecipeHiddenGetter(this.recipe.id)
+    const isBlogHidden = computed(() => {
+      if (data.recipe) {
+        return userStore.isBlogHidden(data.recipe.author.blogId)
       }
       return false
-    },
-    isBlogHidden() {
-      if (this.recipe) {
-        return this.isBlogHiddenGetter(this.recipe.author.blogId)
-      }
-      return false
-    },
-    isHidden() {
-      return this.isRecipeHidden || this.isBlogHidden
-    },
-    cookingHours() {
-      const {
-        recipe,
-        recipe: { cookingMinutes }
-      } = this
+    })
+
+    const isHidden = computed(() => {
+      return isRecipeHidden.value || isBlogHidden.value
+    })
+
+    const cookingHours = computed(() => {
+      const recipe = data.recipe
+      const cookingMinutes = data.recipe.cookingMinutes
 
       if (recipe && cookingMinutes) {
         const duration = dayjs.duration(cookingMinutes, 'minutes')
@@ -275,12 +255,14 @@ export default {
         return `${duration.format('H:mm')} godz.`
       }
       return null
-    },
-    isFavourite() {
-      return this.favouriteRecipesIds.find(id => id === this.recipe.id) !== undefined
-    },
-    images() {
-      const { recipe } = this
+    })
+
+    const isFavourite = computed(() => {
+      return favouriteRecipesIds.value.find(id => id === data.recipe.id) !== undefined
+    })
+
+    const images = computed(() => {
+      const recipe = data.recipe
 
       if (!recipe) return null
 
@@ -289,9 +271,10 @@ export default {
       return [...Array(imagesCount).keys()].map(i => ({
         src: `/static/recipes/${recipe.id}/${i + 1}.webp`
       }))
-    },
-    reportLinkHref() {
-      const { recipe } = this
+    })
+
+    const reportLinkHref = computed(() => {
+      const recipe = data.recipe
 
       if (!recipe) {
         return ''
@@ -300,61 +283,117 @@ export default {
       const subject = `Błąd w przepisie [ID=${recipe.id}]`
 
       return `mailto:${CONTACT_MAIL_ADDRESS}?subject=${encodeURIComponent(subject)}`
+    })
+
+    // methods
+    const navigateToRecipesWithCategoryFilter = ({ key, categoryGroup }) => {
+      router.push({ name: APP_RECIPES, query: parseFilters({ [categoryGroup]: [key] }) })
     }
-  },
-  created() {
-    this.myKitchenStore.fetchProducts().catch(error => {
-      this.$errorHandler.captureError(error, {
+
+    const back = () => {
+      router.go(-1)
+    }
+
+    const addToFavourites = () => {
+      recipesStore.addToFavourites(data.recipe.id)
+    }
+
+    const deleteFromFavourites = () => {
+      recipesStore.deleteFromFavourites(data.recipe.id)
+    }
+
+    const copyLinkToClipboard = () => {
+      const url = window.location.origin + route.path
+
+      if (!url) {
+        toast.show('Nie udało się skopiować do schowka', ToastType.ERROR)
+      } else if (clipboard(url)) {
+        toast.show('Skopiowano do schowka', ToastType.SUCCESS)
+      } else {
+        toast.show('Nie udało się skopiować do schowka', ToastType.ERROR)
+      }
+    }
+
+    const openPlanRecipeModal = () => {
+      if (data.recipe) {
+        modal.show(markRaw(PlanRecipeModal), { recipeId: data.recipe.id }, {})
+      }
+    }
+
+    const changeRecipeVisibility = visible => {
+      if (data.recipe) {
+        userStore.changeRecipeVisibility({ recipeId: data.recipe.id, visible })
+      }
+    }
+
+    const changeBlogVisibility = visible => {
+      userStore.changeBlogVisibility({ blogId: data.recipe.author.blog.id, visible })
+    }
+
+    const showInvisibleInfoModal = () => {
+      modal.show(markRaw(InvisibleRecipeInfoModal), {}, {})
+    }
+
+    // others
+    useMeta(
+      computed(() => {
+        const title = data.recipe?.name || props.recipeName
+        return title ? { title } : {}
+      })
+    )
+
+    recipesStore
+      .fetchDetailedRecipe(props.recipeId)
+      .then(rd => {
+        data.recipe = rd
+        data.finishedDirections = recipesStore.getFinishedDirectionsForRecipe(rd.id) || []
+      })
+      .catch(error => {
+        data.errors = true
+        errorHandler.captureError(error, {
+          [ERROR_ACTION_TAG_NAME]: 'recipe.fetchDetailedRecipe'
+        })
+      })
+
+    myKitchenStore.fetchProducts().catch(error => {
+      errorHandler.captureError(error, {
         [ERROR_ACTION_TAG_NAME]: 'recipe.fetchKitchenProducts'
       })
     })
-    this.shoppingListStore.fetchProducts().catch(error => {
-      this.$errorHandler.captureError(error, {
+
+    shoppingListStore.fetchProducts().catch(error => {
+      errorHandler.captureError(error, {
         [ERROR_ACTION_TAG_NAME]: 'recipe.fetchShoppingListProducts'
       })
     })
-  },
-  methods: {
-    navigateToRecipesWithCategoryFilter({ key, categoryGroup }) {
-      this.$router.push({ name: APP_RECIPES, query: parseFilters({ [categoryGroup]: [key] }) })
-    },
-    back() {
-      this.$router.go(-1)
-    },
-    addToFavourites() {
-      this.recipesStore.addToFavourites(this.recipe.id)
-    },
-    deleteFromFavourites() {
-      this.recipesStore.deleteFromFavourites(this.recipe.id)
-    },
-    copyLinkToClipboard() {
-      const url = window.location.origin + this.$route.path
 
-      if (!url) {
-        this.$toast.show('Nie udało się skopiować do schowka', ToastType.ERROR)
-      } else if (this.$clipboard(url)) {
-        this.$toast.show('Skopiowano do schowka', ToastType.SUCCESS)
-      } else {
-        this.$toast.show('Nie udało się skopiować do schowka', ToastType.ERROR)
-      }
-    },
-    openPlanRecipeModal() {
-      if (this.recipe) {
-        this.$modal.show(markRaw(PlanRecipeModal), { recipeId: this.recipe.id }, {})
-      }
-    },
-    changeRecipeVisibility(visible) {
-      if (this.recipe) {
-        this.userStore.changeRecipeVisibility({ recipeId: this.recipe.id, visible })
-      }
-    },
-    changeBlogVisibility(visible) {
-      this.userStore.changeBlogVisibility({ blogId: this.recipe.author.blog.id, visible })
-    },
-    showInvisibleInfoModal() {
-      this.$modal.show(markRaw(InvisibleRecipeInfoModal), {}, {})
+    return {
+      // consts
+      APP_HOME,
+      // data
+      ...toRefs(data),
+      // computed
+      favouriteRecipesIds,
+      isRecipeHidden,
+      isBlogHidden,
+      isHidden,
+      cookingHours,
+      isFavourite,
+      images,
+      reportLinkHref,
+      //methods
+      navigateToRecipesWithCategoryFilter,
+      back,
+      addToFavourites,
+      deleteFromFavourites,
+      copyLinkToClipboard,
+      openPlanRecipeModal,
+      changeRecipeVisibility,
+      changeBlogVisibility,
+      showInvisibleInfoModal
     }
-  }
+  },
+  methods: {}
 }
 </script>
 

@@ -50,6 +50,7 @@ export default {
   },
   emits: ['purchase'],
   setup(props) {
+    // usings
     const modal = useModal()
     const shoppingListStore = useShoppingListStore()
 
@@ -58,18 +59,22 @@ export default {
     //   product.amount = amount
     //   shoppingListStore.editProductFromShoppingList(product)
     // }
+
     // const increaseAmount = () => {
     //   const amount = Math.round(props.product.amount + 1, 5)
     //   putAmountChange(amount)
     // }
+
     // const decreaseAmount = () => {
     //   if (props.product.amount <= 1.0) return
     //   const amount = Math.round(props.product.amount - 1, 5)
     //   putAmountChange(amount)
     // }
+
     const deleteProduct = () => {
       shoppingListStore.deleteProductFromShoppingList(props.product.id)
     }
+
     const openEditModal = async () => {
       modal.show(
         markRaw(EditShoppingListProductModal),
@@ -84,8 +89,7 @@ export default {
       deleteProduct,
       openEditModal
     }
-  },
-  methods: {}
+  }
 }
 </script>
 
