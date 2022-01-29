@@ -12,32 +12,101 @@
 </template>
 
 <script>
+import { computed, reactive, toRefs, watch } from 'vue'
+
 import FacebookLogo from '@/assets/logos/facebook.svg?raw'
 import GoogleLogo from '@/assets/logos/google.svg?raw'
 
-import authSocialMixin from '@/views/auth/mixins/authSocialMixin'
+import { ERROR_ACTION_TAG_NAME } from '@/configs/error'
+
+import { useErrorHandler } from '@/error'
+
+import { useToast } from '@/plugins/toast'
+import { ToastType } from '@/plugins/toast/toastType'
+
+import FacebookService from '@/services/facebook'
+import GoogleService from '@/services/google'
+
+import { useUserStore } from '@/stores/user'
 
 export default {
-  mixins: [authSocialMixin],
   emits: ['lockInputs', 'unlockInputs'],
-  setup() {
-    return {
-      FacebookLogo,
-      GoogleLogo
-    }
-  },
-  computed: {
-    anySending() {
-      return this.facebookSending || this.googleSending
-    }
-  },
-  watch: {
-    anySending(anySending) {
-      if (anySending) {
-        this.$emit('lockInputs')
-      } else {
-        this.$emit('unlockInputs')
+
+  setup(_, { emit }) {
+    // usings
+    const userStore = useUserStore()
+    const errorHandler = useErrorHandler()
+    const toast = useToast()
+
+    // data
+    const data = reactive({
+      facebookSending: false,
+      googleSending: false
+    })
+
+    // computed
+    const anySending = computed(() => {
+      return data.facebookSending || data.googleSending
+    })
+
+    // methods
+    const loginFacebook = async () => {
+      data.facebookSending = true
+      try {
+        const accessToken = await FacebookService.login()
+        await userStore.facebookAuth({ accessToken })
+      } catch (errors) {
+        const toastContent =
+          Array.isArray(errors) && errors.includes('EMAIL_NOT_IN_TOKEN')
+            ? 'Nie udało nam się uzyskać Twojego adresu email'
+            : 'Wystąpił problem podczas próby logowania'
+
+        toast.show(toastContent, ToastType.ERROR)
+        errorHandler.captureError(errors, {
+          [ERROR_ACTION_TAG_NAME]: 'authSocialMixin.loginFacebook'
+        })
+      } finally {
+        data.facebookSending = false
       }
+    }
+
+    const loginGoogle = async () => {
+      data.googleSending = true
+      try {
+        const idToken = await GoogleService.login()
+        await userStore.googleAuth({ idToken })
+      } catch (error) {
+        toast.show('Wystąpił problem podczas próby logowania', ToastType.ERROR)
+        errorHandler.captureError(error, {
+          [ERROR_ACTION_TAG_NAME]: 'authSocialMixin.loginGoogle'
+        })
+      } finally {
+        data.googleSending = false
+      }
+    }
+
+    watch(anySending, newValue => {
+      if (newValue) {
+        emit('lockInputs')
+      } else {
+        emit('unlockInputs')
+      }
+    })
+
+    FacebookService.init()
+    // GoogleService.init() // because of cookies
+
+    return {
+      // consts
+      FacebookLogo,
+      GoogleLogo,
+      // data
+      ...toRefs(data),
+      // computed
+      anySending,
+      // methods
+      loginFacebook,
+      loginGoogle
     }
   }
 }
