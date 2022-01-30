@@ -60,7 +60,7 @@ export default defineComponent({
   },
 
   methods: {
-    add(component, props = {}, events = {}, { blockCloseOnBackdrop } = {}) {
+    add(component, props = {}, events = {}, { blockCloseOnBackdrop = false } = {}) {
       const id = nextId()
       this.modals.push({
         id: id,

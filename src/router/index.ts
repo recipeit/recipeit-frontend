@@ -11,7 +11,7 @@ import eventHub from '@/services/eventHub'
 
 import { USER_AUTH_STATE, useUserStore } from '@/stores/user'
 
-const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
+const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 
 const forceIsAuthenticated = async () => {
   const userStore = useUserStore()

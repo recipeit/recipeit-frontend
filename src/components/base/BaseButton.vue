@@ -39,7 +39,7 @@ export default defineComponent({
     tag: {
       type: String,
       default: 'button',
-      validator: value => validTags.includes(value)
+      validator: (value: string) => validTags.includes(value)
     },
     loading: {
       type: Boolean,

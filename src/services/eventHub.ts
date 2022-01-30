@@ -1,4 +1,3 @@
-//eventHub.js
 import emitter from 'tiny-emitter/instance'
 
 export default {

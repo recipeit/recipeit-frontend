@@ -1,8 +1,9 @@
-const md = require('markdown-it')
-const { promises: fs } = require('fs')
-const fsExtra = require('fs-extra')
-const path = require('path')
-const colors = require('colors/safe')
+import md from 'markdown-it'
+import { promises as fs } from 'fs'
+import fsExtra from 'fs-extra'
+import path from 'path'
+import colors from 'colors/safe'
+import chokidar from 'chokidar'
 
 const markdown = md({
   html: true
@@ -14,7 +15,7 @@ const markdownSets = [
   { src: 'src/markdowns/addblog', out: 'src/assets/docs/addblog' }
 ]
 
-async function renderFile(src, out, filename) {
+async function renderFile(src: string, out: string, filename: string) {
   const terms = await fs.readFile(path.join(src, filename), 'utf8')
   const result = markdown.render(terms)
   const htmlFilename = path.basename(filename, 'md') + 'html'
@@ -23,7 +24,7 @@ async function renderFile(src, out, filename) {
   console.log(`${colors.green('parse completed')} ${filename}`)
 }
 
-async function renderDir(src, out) {
+async function renderDir(src: string, out: string) {
   const files = await fs.readdir(src)
 
   files.forEach(async filename => {
@@ -31,20 +32,16 @@ async function renderDir(src, out) {
   })
 }
 
-module.exports = {
-  buildMarkdowns(watch) {
-    markdownSets.forEach(async ({ src, out }) => {
-      await renderDir(src, out)
-    })
+export const buildMarkdowns = (watch: boolean) => {
+  markdownSets.forEach(async ({ src, out }) => {
+    await renderDir(src, out)
+  })
 
-    if (watch) {
-      const chokidar = require('chokidar')
-
-      markdownSets.forEach(({ src, out }) => {
-        chokidar.watch(src).on('change', filePath => {
-          renderDir(src, out, path.basename(filePath))
-        })
+  if (watch) {
+    markdownSets.forEach(({ src, out }) => {
+      chokidar.watch(src).on('change', filePath => {
+        renderFile(src, out, path.basename(filePath))
       })
-    }
+    })
   }
 }

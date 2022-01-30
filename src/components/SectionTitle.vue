@@ -26,7 +26,7 @@ export default defineComponent({
     actionText: String,
     size: {
       type: String,
-      validator: value => !value || sizes.includes(value)
+      validator: (value: string) => !value || sizes.includes(value)
     }
   },
 

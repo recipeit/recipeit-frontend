@@ -9,4 +9,4 @@ export const RECAPTCHA_ACTIONS = {
   FORGOT_PASSWORD: 'forgotPassword',
   CHANGE_PASSWORD: 'changePassword',
   DELETE_ACCOUNT: 'deleteAccount'
-}
+} as const

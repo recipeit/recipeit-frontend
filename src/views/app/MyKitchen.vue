@@ -53,7 +53,7 @@
         </div>
         <ul class="product-list">
           <li v-for="product in productsGroup[1]" :key="product.id" class="product-list__item">
-            <KitchenProduct :product="product" @add-to-shopping-list="addToShoppingList(product)" />
+            <KitchenProduct :product="product" />
           </li>
         </ul>
       </li>

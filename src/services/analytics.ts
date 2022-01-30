@@ -2,14 +2,22 @@ import { ANALYTICS_ID, ANALYTICS_URL } from '@/configs/analytics'
 
 import loadScript from '@/functions/loadScript'
 
+declare global {
+  interface Window {
+    dataLayer?: object[]
+  }
+}
+
 export default {
   getDataLayer() {
     return (window.dataLayer = window.dataLayer || [])
   },
-  gtag() {
+
+  gtag(...params) {
     const dataLayer = this.getDataLayer()
-    dataLayer.push(arguments)
+    dataLayer.push(params)
   },
+
   async init() {
     await loadScript(ANALYTICS_URL)
     window.dataLayer = window.dataLayer || []

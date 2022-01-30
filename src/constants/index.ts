@@ -29,7 +29,7 @@ export class RecipeList {
   orderMethodOptions: object
   defaultOrderMethod: string
 
-  constructor(orderMethod, filters, search) {
+  constructor(orderMethod?: string, filters?: object, search?: string) {
     this.fetching = false
     this.fetchingPages = {}
     this.pagesTo = null

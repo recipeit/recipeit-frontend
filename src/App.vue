@@ -119,7 +119,7 @@ export default defineComponent({
           return
         }
 
-        const routeName: string = route.name
+        const routeName = route.name.toString()
 
         if (routeName) {
           stop?.()

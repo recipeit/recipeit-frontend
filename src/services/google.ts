@@ -3,7 +3,7 @@ import { GOOGLE_API_URL, GOOGLE_AUTH_INIT_PARAMS, GOOGLE_AUTH_SIGN_IN_PARAMS } f
 import loadScript from '@/functions/loadScript'
 
 export default {
-  async getGoogleApi() {
+  async getGoogleApi(): Promise<typeof gapi> {
     if (!window.gapi) {
       await loadScript(GOOGLE_API_URL)
     }
@@ -11,7 +11,7 @@ export default {
     return window.gapi
   },
 
-  async getAuth() {
+  async getAuth(): Promise<gapi.auth2.GoogleAuth> {
     const googleApi = await this.getGoogleApi()
 
     return new Promise(resolve => {
@@ -27,12 +27,12 @@ export default {
     })
   },
 
-  async init() {
+  async init(): Promise<void> {
     await this.getGoogleApi()
   },
 
-  async login() {
-    const googleAuth = await this.getAuth()
+  async login(): Promise<string> {
+    const googleAuth: gapi.auth2.GoogleAuth = await this.getAuth()
 
     return new Promise((resolve, reject) => {
       googleAuth

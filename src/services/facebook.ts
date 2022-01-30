@@ -2,6 +2,13 @@ import { FACEBOOK_SDK_URL, FACEBOOK_INIT_PARAMS, FACEBOOK_LOGIN_PARAMS } from '@
 
 import loadScript from '@/functions/loadScript'
 
+declare global {
+  interface Window {
+    FB?: any
+    fbAsyncInit?: () => void
+  }
+}
+
 export default {
   async getFB() {
     if (!window.FB) {
