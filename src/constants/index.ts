@@ -38,7 +38,7 @@ export class RecipeList {
   filters: RecipePageFilters
   orderMethod: string
   filterOptions: object
-  orderMethodOptions: object
+  orderMethodOptions: Array<string>
   defaultOrderMethod: string
 
   constructor(orderMethod?: string, filters?: RecipePageFilters, search?: string) {

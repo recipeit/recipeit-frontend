@@ -1,13 +1,5 @@
 <template>
-  <!-- @focus="open()" -->
-  <!-- @blur="searchable ? false : hide()" -->
-  <div
-    class="menu"
-    @keyup.esc.stop="hide()"
-    @keydown.self.down.prevent="pointerForward()"
-    @keydown.self.up.prevent="pointerBackward()"
-    @keypress.enter.tab.stop.self="addPointerElement()"
-  >
+  <div class="menu" @keyup.esc.stop="hide()">
     <div
       class="menu__toggle-container"
       :tabindex="toggleTabindex"

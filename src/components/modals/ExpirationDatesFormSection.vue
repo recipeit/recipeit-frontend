@@ -31,9 +31,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, markRaw } from 'vue'
+import { defineComponent, markRaw, PropType } from 'vue'
 
 import dayjs from '@/functions/dayjs'
+
+import { ExpirationDateForm } from '@/typings/expirationDate'
 
 import NewExpirationDateModal from '@/components/modals/NewExpirationDateModal.vue'
 
@@ -41,7 +43,9 @@ export default defineComponent({
   // emits: [update:],
   props: {
     productId: String,
-    modelValue: [Array, null]
+    modelValue: {
+      type: Array as PropType<Array<string>>
+    }
   },
   emits: ['update:modelValue'],
   // beforeMount() {
@@ -53,7 +57,7 @@ export default defineComponent({
   // },
   computed: {
     expirationDateObjects() {
-      return this.modelValue?.map(date => dayjs(date)).sort((a, b) => (a.isAfter(b) ? 1 : -1))
+      return this.modelValue?.map((date: string) => dayjs(date)).sort((a, b) => (a.isAfter(b) ? 1 : -1))
     }
   },
   methods: {
@@ -73,11 +77,12 @@ export default defineComponent({
         markRaw(NewExpirationDateModal),
         {},
         {
-          close: date => {
+          close: (date: ExpirationDateForm) => {
             if (!date) return
-            const { year, month, day } = date
-            const newDates = [...this.modelValue]
-            newDates.push(`${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`)
+            const newDates: Array<string> = [
+              ...this.modelValue,
+              `${date.year}-${date.month.toString().padStart(2, '0')}-${date.day.toString().padStart(2, '0')}`
+            ]
             this.$emit('update:modelValue', newDates)
           }
         }

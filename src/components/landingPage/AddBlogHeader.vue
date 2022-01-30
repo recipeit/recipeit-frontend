@@ -21,6 +21,7 @@ import Container from '@/components/landingPage/Container.vue'
 
 export default defineComponent({
   components: { Container },
+
   setup() {
     return {
       BackgroundUrl

@@ -237,7 +237,7 @@ const router = createRouter({
   routes,
   scrollBehavior: (to, from, savedPosition) =>
     new Promise(resolve => {
-      const fromAppToApp = [to.name.toString(), from.name.toString()].every(name => NAMES.APP_ROUTE_NAMES.includes(name))
+      const fromAppToApp = [to.name?.toString(), from.name?.toString()].every(name => NAMES.APP_ROUTE_NAMES.includes(name))
       const position = to.matched.some(m => m.meta.preventScroll) ? savedPosition : { top: 0 }
 
       if (fromAppToApp) {

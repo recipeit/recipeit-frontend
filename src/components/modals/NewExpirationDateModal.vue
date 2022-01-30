@@ -51,11 +51,7 @@ import * as Yup from 'yup'
 import dayjs from '@/functions/dayjs'
 import uniqueID from '@/functions/uniqueID'
 
-type ExpirationDateForm = {
-  year: number
-  month: number
-  day?: number
-}
+import { ExpirationDateForm } from '@/typings/expirationDate'
 
 export default defineComponent({
   emits: ['close'],
@@ -98,7 +94,7 @@ export default defineComponent({
     })
 
     const addExpirationDate = myForm.handleSubmit(values => {
-      let date = { ...values }
+      const date: ExpirationDateForm = { ...values }
 
       if (!date.day) date.day = 1
 

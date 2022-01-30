@@ -16,16 +16,18 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue'
+import { computed, defineComponent, PropType } from 'vue'
 
 import avatarErrorUrl from '@/assets/img/blog-avatar.webp'
 
 import { APP_BLOG } from '@/router/names'
 
+import { BlogEntity } from '@/typings/entities'
+
 export default defineComponent({
   props: {
     blog: {
-      type: Object,
+      type: Object as PropType<BlogEntity>,
       required: true
     }
   },

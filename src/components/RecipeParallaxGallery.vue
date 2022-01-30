@@ -38,7 +38,7 @@
 
 <script lang="ts">
 import debounce from 'lodash.debounce'
-import { computed, defineComponent, onBeforeUnmount, onBeforeUpdate, onMounted, reactive, ref, toRefs } from 'vue'
+import { computed, defineComponent, onBeforeUnmount, onBeforeUpdate, onMounted, PropType, reactive, ref, toRefs } from 'vue'
 
 import placeholderDark from '@/assets/img/placeholders/recipe-image-dark.webp'
 import placeholderLight from '@/assets/img/placeholders/recipe-image.webp'
@@ -50,7 +50,7 @@ import { useUserStore } from '@/stores/user'
 export default defineComponent({
   props: {
     images: {
-      type: Array as () => Array<{ src: string }>,
+      type: Array as PropType<Array<{ src: string }>>,
       required: true
     },
     firstImagePosition: {

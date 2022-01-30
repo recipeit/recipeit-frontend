@@ -6,8 +6,16 @@ import ingredientsApi from '@/api/ingredientsApi'
 
 import { PRODUCT_CATEGORY_ORDER } from '@/configs/productCategories'
 
+import { BaseProductEntity } from '@/typings/entities'
+import { UnitGroup } from '@/typings/unit'
+
+type IngredientsStoreState = {
+  baseProducts: Array<BaseProductEntity>
+  units: Array<UnitGroup>
+}
+
 export const useIngredientsStore = defineStore('ingredients', {
-  state: () => {
+  state: (): IngredientsStoreState => {
     return {
       baseProducts: null,
       units: null

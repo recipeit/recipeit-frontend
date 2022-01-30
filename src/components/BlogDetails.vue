@@ -8,12 +8,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, PropType } from 'vue'
+
+import { BlogEntity } from '@/typings/entities'
 
 export default defineComponent({
   props: {
     blog: {
-      type: Object,
+      type: Object as PropType<BlogEntity>,
       required: true
     }
   }

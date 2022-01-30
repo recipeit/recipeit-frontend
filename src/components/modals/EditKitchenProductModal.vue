@@ -23,7 +23,7 @@
 
 <script lang="ts">
 import { Form } from 'vee-validate'
-import { computed, defineComponent, reactive, ref, toRefs } from 'vue'
+import { computed, defineComponent, PropType, reactive, ref, toRefs } from 'vue'
 import * as Yup from 'yup'
 
 import uniqueID from '@/functions/uniqueID'
@@ -42,7 +42,10 @@ export default defineComponent({
       type: Object,
       required: true
     },
-    expirationDates: [Array, null]
+    expirationDates: {
+      type: Array as PropType<Array<string>>,
+      default: null
+    }
   },
 
   emits: ['close'],

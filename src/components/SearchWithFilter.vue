@@ -35,7 +35,7 @@
 </template>
 
 <script lang="ts">
-import { markRaw, watch, ref, defineComponent } from 'vue'
+import { markRaw, watch, ref, defineComponent, PropType } from 'vue'
 
 import { ToastType } from '@/plugins/toast/toastType'
 
@@ -48,7 +48,9 @@ export default defineComponent({
       default: 'Szukaj'
     },
     search: String,
-    sortings: Array,
+    sortings: {
+      type: Array as PropType<Array<string>>
+    },
     filters: Object,
     appliedSorting: String,
     appliedFilters: Object,

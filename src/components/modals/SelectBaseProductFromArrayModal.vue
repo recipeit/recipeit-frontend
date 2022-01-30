@@ -25,14 +25,14 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue'
+import { computed, defineComponent, PropType } from 'vue'
 
 import { useIngredientsStore } from '@/stores/ingredients'
 
 export default defineComponent({
   props: {
     ids: {
-      type: Array,
+      type: Array as PropType<Array<number>>,
       required: true
     }
   },
@@ -43,7 +43,7 @@ export default defineComponent({
     const ingredientsStore = useIngredientsStore()
 
     const products = computed(() =>
-      props.ids.map((id: number): { id: number; name: string } => ({
+      props.ids.map((id): { id: number; name: string } => ({
         id: id,
         name: ingredientsStore.baseProducts.find(p => p.id === id)?.name
       }))
