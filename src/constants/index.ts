@@ -1,16 +1,16 @@
 // TODO są to paramy w sumie bez strony więc ni wiem
 
-export interface RecipePageFilters {
+export type RecipePageFilters = {
   [key: string]: Array<string | number>
 }
 
-export interface RecipePageParams {
+export type RecipePageParams = {
   orderMethod?: string
   filters?: RecipePageFilters
   search?: string
 }
 
-export interface RecipePageQueryParams {
+export type RecipePageQueryParams = {
   [k: string]: string | Array<string>
 }
 

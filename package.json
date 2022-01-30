@@ -37,6 +37,7 @@
   },
   "devDependencies": {
     "@sentry/cli": "^1.72.1",
+    "@types/facebook-js-sdk": "^3.3.5",
     "@types/fs-extra": "^9.0.13",
     "@types/gapi.auth2": "^0.0.56",
     "@types/grecaptcha": "^3.0.3",

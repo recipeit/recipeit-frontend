@@ -3,27 +3,27 @@ import { AxiosResponse } from 'axios'
 
 const route = 'user'
 
-interface Recipe {
+type Recipe = {
   slug: string
   name: string
 }
 
-interface RecipesFilteredPage {
+type RecipesFilteredPage = {
   items: Array<Recipe>
 }
 
-interface RecipesPage {
+type RecipesPage = {
   items: Array<Recipe>
 }
 
-interface RecipesPageQueryParams {
+type RecipesPageQueryParams = {
   pageNumber?: number
   search: string
   // RecipesOrderMethod? OrderMethod { get; set; }
   // Dictionary<RecipeFilter, string> Filters { get; set; }
 }
 
-interface PagedListRequestQuery {
+type PagedListRequestQuery = {
   pageNumber?: number
 }
 

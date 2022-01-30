@@ -14,7 +14,7 @@
     "paths": {
       "@/*": ["./src/*"],
     },
-    "types": ["vite/client", "node", "gapi", "gapi.auth2", "grecaptcha"],
+    "types": ["vite/client", "node", "facebook-js-sdk", "gapi", "gapi.auth2", "grecaptcha"],
     "allowJs": true
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"]

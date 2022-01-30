@@ -1,5 +1,6 @@
-import apiClient from '@/api/apiClient'
 import { AxiosResponse } from 'axios'
+
+import apiClient from '@/api/apiClient'
 
 const route = 'identity'
 
@@ -20,13 +21,13 @@ export const IDENTITY_URLS = {
   DELETE_ACCOUNT: `/${route}/delete-account`
 }
 
-interface UserProfile {
+type UserProfile = {
   email: string
   username: string
   imageUrl: string
 }
 
-interface UserProfileResponse {
+type UserProfileResponse = {
   errors?: Array<string>
   emailUnconfirmed: boolean
   userProfile: UserProfile

@@ -4,7 +4,7 @@ import loadScript from '@/functions/loadScript'
 
 declare global {
   interface Window {
-    dataLayer?: object[]
+    dataLayer?: Array<object>
   }
 }
 

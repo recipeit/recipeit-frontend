@@ -51,7 +51,7 @@ import * as Yup from 'yup'
 import dayjs from '@/functions/dayjs'
 import uniqueID from '@/functions/uniqueID'
 
-interface ExpirationDateForm {
+type ExpirationDateForm = {
   year: number
   month: number
   day?: number
