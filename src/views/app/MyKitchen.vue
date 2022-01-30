@@ -78,10 +78,10 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import groupby from 'lodash.groupby'
 import sortby from 'lodash.sortby'
-import { computed, nextTick, onBeforeMount, reactive, ref, toRefs, watch } from 'vue'
+import { computed, defineComponent, nextTick, onBeforeMount, reactive, ref, toRefs, watch } from 'vue'
 import { useMeta } from 'vue-meta'
 
 import { PRODUCT_CATEGORY_ORDER } from '@/configs/productCategories'
@@ -97,14 +97,16 @@ import ProductIcon from '@/components/ProductIcon.vue'
 // import SearchWithFilter from '@/components/SearchWithFilter.vue'
 // import NewKitchenProductModal from '@/components/modals/NewKitchenProductModal.vue'
 
-export default {
+export default defineComponent({
   name: 'MyKitchen',
+
   components: {
     KitchenProduct,
     PageHeader,
     ProductIcon
     // SearchWithFilter
   },
+
   setup() {
     useMeta({
       title: 'Moja kuchnia'
@@ -162,7 +164,9 @@ export default {
     }
 
     // methods
-    const addProductFromSelect = async ({ id } = {}) => {
+    const addProductFromSelect = async ({ id }: { id?: number } = {}) => {
+      if (id === undefined) return
+
       await myKitchenStore.addProduct({
         product: {
           baseProductId: id
@@ -203,7 +207,7 @@ export default {
       openAddProductSelect
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

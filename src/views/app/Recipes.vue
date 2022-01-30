@@ -27,8 +27,8 @@
   </div>
 </template>
 
-<script>
-import { onBeforeMount, ref } from 'vue'
+<script lang="ts">
+import { defineComponent, onBeforeMount, ref } from 'vue'
 import { useMeta } from 'vue-meta'
 import { useRoute } from 'vue-router'
 
@@ -42,17 +42,20 @@ import recipeFilteredPagedList from '@/views/app/composable/recipeFilteredPagedL
 import GenericRecipesList from '@/components/GenericRecipesList.vue'
 import PageHeader from '@/components/PageHeader.vue'
 
-export default {
+export default defineComponent({
   name: 'Recipes',
+
   components: {
     GenericRecipesList,
     PageHeader
   },
+
   props: {
     savedPosition: {
       type: String
     }
   },
+
   setup() {
     useMeta({
       title: 'Baza przepisów'
@@ -93,7 +96,7 @@ export default {
       availableRecipesCount
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

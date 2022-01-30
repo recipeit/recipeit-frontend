@@ -17,8 +17,8 @@
   </div>
 </template>
 
-<script>
-import { computed } from 'vue'
+<script lang="ts">
+import { computed, defineComponent } from 'vue'
 
 import defaultAvatar from '@/assets/img/avatar.svg?raw'
 
@@ -26,7 +26,7 @@ import { APP_ACCOUNT } from '@/router/names'
 
 import { useUserStore } from '@/stores/user'
 
-export default {
+export default defineComponent({
   setup() {
     // usings
     const userStore = useUserStore()
@@ -51,7 +51,7 @@ export default {
       logout
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

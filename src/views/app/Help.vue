@@ -8,16 +8,19 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from 'vue'
 import { useMeta } from 'vue-meta'
 
 import { CONTACT_MAIL_ADDRESS } from '@/configs/emails'
 
 import PageHeader from '@/components/PageHeader.vue'
 
-export default {
+export default defineComponent({
   name: 'Help',
+
   components: { PageHeader },
+
   setup() {
     useMeta({
       title: 'Pomoc'
@@ -29,5 +32,5 @@ export default {
       contactUsHref
     }
   }
-}
+})
 </script>

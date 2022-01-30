@@ -34,14 +34,14 @@
   </div>
 </template>
 
-<script>
-import { markRaw, watch, ref } from 'vue'
+<script lang="ts">
+import { markRaw, watch, ref, defineComponent } from 'vue'
 
 import { ToastType } from '@/plugins/toast/toastType'
 
 import FilterModal from '@/components/modals/FilterModal.vue'
 
-export default {
+export default defineComponent({
   props: {
     placeholder: {
       type: String,
@@ -59,7 +59,9 @@ export default {
     filtersCount: Number,
     error: Boolean
   },
+
   emits: ['search'],
+
   setup(props) {
     const searchString = ref(props.search)
 
@@ -76,9 +78,11 @@ export default {
       searchString
     }
   },
+
   data: () => ({
     searchTimeoutCallback: null
   }),
+
   methods: {
     anyPageFetching() {
       return Object.values(this.fetchingPages).some(v => v)
@@ -139,7 +143,7 @@ export default {
       this.$emit('search', { orderMethod: this.appliedSorting, filters: this.appliedFilters, search: this.searchString })
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

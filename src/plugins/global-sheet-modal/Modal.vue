@@ -31,8 +31,10 @@
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from 'vue'
+
+export default defineComponent({
   props: {
     opened: {
       type: Boolean,
@@ -43,7 +45,9 @@ export default {
       default: false
     }
   },
+
   emits: ['close', 'closed'],
+
   data: () => ({
     modalClosing: false,
     modalOpening: false,
@@ -52,6 +56,7 @@ export default {
     offset: null,
     transformTop: null
   }),
+
   computed: {
     scrollerStyle() {
       if (this.isDown && this.transformTop && this.transformTop >= 0 && this.$refs.scroller.scrollTop === 0) {
@@ -63,6 +68,7 @@ export default {
       return null
     }
   },
+
   methods: {
     maybeClose(e) {
       if (!this.blockCloseOnBackdrop && this.$refs.modal && !this.$refs.modal.contains(e.target)) {
@@ -145,7 +151,7 @@ export default {
       return false
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

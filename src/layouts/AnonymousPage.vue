@@ -1,25 +1,28 @@
 <template>
   <AnonymousPageHeader />
   <slot name="header" />
-  <div class="page-container" :class="class">
+  <div class="page-container" :class="classes">
     <slot />
     <Footer class="footer" />
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from 'vue'
+
 import AnonymousPageHeader from '@/components/anonymous/AnonymousPageHeader.vue'
 import Footer from '@/components/landingPage/Footer.vue'
 
-export default {
+export default defineComponent({
   components: { AnonymousPageHeader, Footer },
+
   props: {
-    class: {
+    classes: {
       type: String,
       default: ''
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

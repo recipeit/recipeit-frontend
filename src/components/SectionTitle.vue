@@ -10,10 +10,12 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from 'vue'
+
 const sizes = ['regular', 'large']
 
-export default {
+export default defineComponent({
   props: {
     icon: String,
     title: String,
@@ -27,8 +29,9 @@ export default {
       validator: value => !value || sizes.includes(value)
     }
   },
+
   emits: ['action-click']
-}
+})
 </script>
 
 <style lang="scss" scoped>

@@ -48,24 +48,27 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { Field } from 'vee-validate'
-import { computed } from 'vue'
+import { computed, defineComponent } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { useIngredientsStore } from '@/stores/ingredients'
 
 import ProductIcon from '@/components/ProductIcon.vue'
 
-export default {
+export default defineComponent({
   components: { Field, ProductIcon },
+
   props: {
     productAutofocus: {
       type: Boolean,
       default: false
     }
   },
+
   emits: ['update:baseProductId', 'update:unit'],
+
   setup(props) {
     // usings
     const { t } = useI18n()
@@ -74,7 +77,7 @@ export default {
     // computed
     const groupedBaseProducts = computed(() => ingredientsStore.groupedBaseProducts)
     const units = computed(() => ingredientsStore.units)
-    const unitLabelAmount = computed(() => parseFloat(props.amount) || 1)
+    const unitLabelAmount = computed(() => parseFloat(props.amount) || 1) // TODO fix amount translation
 
     // methods
     const unitCustomLabel = value => {
@@ -90,7 +93,7 @@ export default {
       unitCustomLabel
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

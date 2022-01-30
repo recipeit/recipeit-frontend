@@ -65,8 +65,8 @@
   </div>
 </template>
 
-<script>
-import { computed, markRaw, onBeforeMount, ref } from 'vue'
+<script lang="ts">
+import { computed, defineComponent, markRaw, onBeforeMount, ref } from 'vue'
 import { useMeta } from 'vue-meta'
 import { useRoute } from 'vue-router'
 
@@ -80,6 +80,8 @@ import { useModal } from '@/plugins/global-sheet-modal'
 import { useToast } from '@/plugins/toast'
 import { ToastType } from '@/plugins/toast/toastType'
 
+import { APP_HOME } from '@/router/names'
+
 import { useUserStore } from '@/stores/user'
 
 import recipePagedList from '@/views/app/composable/recipePagedList'
@@ -89,13 +91,15 @@ import GenericRecipesList from '@/components/GenericRecipesList.vue'
 import RecipeParallaxImage from '@/components/RecipeParallaxImage.vue'
 import InvisibleBlogInfoModal from '@/components/modals/InvisibleBlogInfoModal.vue'
 
-export default {
+export default defineComponent({
   name: 'BlogRecipes',
+
   components: {
     RecipeParallaxImage,
     GenericRecipesList,
     BlogDetails
   },
+
   props: {
     blogId: {
       type: String,
@@ -105,6 +109,7 @@ export default {
       type: String
     }
   },
+
   setup(props) {
     // usings
     const userStore = useUserStore()
@@ -189,6 +194,7 @@ export default {
 
     return {
       // consts
+      APP_HOME,
       avatarErrorUrl,
       backgroundErrorUrl,
       // composables
@@ -207,7 +213,7 @@ export default {
     }
   },
   methods: {}
-}
+})
 </script>
 
 <style lang="scss" scoped>

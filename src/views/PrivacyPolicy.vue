@@ -4,7 +4,8 @@
   </AnonymousPage>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from 'vue'
 import { useMeta } from 'vue-meta'
 
 import PRIVACY_POLICY_HTML from '@/assets/docs/privacypolicy/privacypolicy_v1.html?raw'
@@ -15,8 +16,9 @@ import AnonymousPage from '@/layouts/AnonymousPage.vue'
 
 import { PRIVACY_POLICY } from '@/router/paths'
 
-export default {
+export default defineComponent({
   components: { AnonymousPage },
+
   setup() {
     useMeta({
       title: 'Polityka Prywatności',
@@ -27,7 +29,7 @@ export default {
       PRIVACY_POLICY_HTML
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

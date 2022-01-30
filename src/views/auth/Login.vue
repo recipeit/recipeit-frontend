@@ -58,9 +58,9 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { Field, Form } from 'vee-validate'
-import { computed, reactive, toRefs } from 'vue'
+import { computed, defineComponent, reactive, toRefs } from 'vue'
 import { useMeta } from 'vue-meta'
 import { useRouter } from 'vue-router'
 import * as yup from 'yup'
@@ -82,19 +82,21 @@ import AuthSocialList from '@/views/auth/AuthSocialList.vue'
 
 import RecaptchaBranding from '@/components/RecaptchaBranding.vue'
 
-export default {
+export default defineComponent({
   components: {
     RecaptchaBranding,
     AuthSocialList,
     Field,
     Form
   },
+
   props: {
     email: {
       type: String,
       default: ''
     }
   },
+
   setup(props) {
     useMeta({
       title: 'Zaloguj się',
@@ -176,7 +178,7 @@ export default {
       goToRequestPasswordReset
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

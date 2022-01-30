@@ -56,8 +56,8 @@
   </div>
 </template>
 
-<script>
-import { computed } from 'vue'
+<script lang="ts">
+import { computed, defineComponent } from 'vue'
 import { useMeta } from 'vue-meta'
 
 import userApi from '@/api/userApi'
@@ -69,12 +69,14 @@ import recipeFilteredPagedList from '@/views/app/composable/recipeFilteredPagedL
 import GenericRecipesList from '@/components/GenericRecipesList.vue'
 import PageHeader from '@/components/PageHeader.vue'
 
-export default {
+export default defineComponent({
   name: 'AlmostAvailableRecipes',
+
   components: {
     GenericRecipesList,
     PageHeader
   },
+
   setup() {
     useMeta({
       title: 'Zrób drobne zakupy'
@@ -96,7 +98,7 @@ export default {
       kitchenProductsCount
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

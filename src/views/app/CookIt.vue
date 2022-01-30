@@ -110,8 +110,8 @@
   </div>
 </template>
 
-<script>
-import { computed, onBeforeMount } from 'vue'
+<script lang="ts">
+import { computed, defineComponent, onBeforeMount } from 'vue'
 import { useMeta } from 'vue-meta'
 import { useRoute, useRouter } from 'vue-router'
 
@@ -128,9 +128,11 @@ import HorizontalRecipesList from '@/components/HorizontalRecipesList.vue'
 import PageHeader from '@/components/PageHeader.vue'
 import SectionTitle from '@/components/SectionTitle.vue'
 
-export default {
+export default defineComponent({
   name: 'CookIt',
+
   components: { GenericRecipesList, PageHeader, HorizontalRecipesList, SectionTitle },
+
   setup() {
     useMeta({
       title: 'Ugotuj to!'
@@ -180,7 +182,7 @@ export default {
       showAlmostAvailableRecipes
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

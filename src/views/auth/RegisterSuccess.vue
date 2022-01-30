@@ -42,8 +42,8 @@
   </div>
 </template>
 
-<script>
-import { reactive, toRefs } from 'vue'
+<script lang="ts">
+import { defineComponent, reactive, toRefs } from 'vue'
 import { useMeta } from 'vue-meta'
 import { useRouter } from 'vue-router'
 
@@ -57,24 +57,23 @@ import { AUTH_LOGIN } from '@/router/names'
 import { AUTH_REGISTER_SUCCESS } from '@/router/paths'
 
 import recaptcha from '@/services/recaptcha'
+import { useErrorHandler } from '@/error'
 
-export default {
+export default defineComponent({
   props: {
     email: {
       type: String,
       required: true
     }
   },
+
   setup(props) {
     useMeta({
       title: 'Udana rejestracja',
       link: [{ rel: 'canonical', href: `${BASE_URL}${AUTH_REGISTER_SUCCESS}` }]
     })
 
-    if (!props.email) {
-      const router = useRouter()
-      router.push({ name: AUTH_LOGIN })
-    }
+    const errorHandler = useErrorHandler()
 
     const data = reactive({
       sendingSecondEmail: false,
@@ -94,13 +93,13 @@ export default {
           data.secondEmailSent = true
         } catch (error) {
           data.errors = error?.response?.data?.errors
-          this.$errorHandler.captureError(error, {
+          errorHandler.captureError(error, {
             [ERROR_ACTION_TAG_NAME]: 'auth.registerSuccess.sendingSecondConfirmationEmail'
           })
         }
       } catch (error) {
         data.errors = ['ERROR']
-        this.$errorHandler.captureError(error, {
+        errorHandler.captureError(error, {
           [ERROR_ACTION_TAG_NAME]: 'auth.registerSuccess.sendingSecondConfirmationEmail.recaptcha'
         })
       } finally {
@@ -108,12 +107,17 @@ export default {
       }
     }
 
+    if (!props.email) {
+      const router = useRouter()
+      router.push({ name: AUTH_LOGIN })
+    }
+
     return {
       ...toRefs(data),
       sendConfirmationEmail
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

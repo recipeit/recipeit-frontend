@@ -12,14 +12,15 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from 'vue'
 import { useMeta } from 'vue-meta'
 
 import { BASE_URL } from '@/configs/url'
 
 import { LANDING_PAGE } from '@/router/names'
 
-export default {
+export default defineComponent({
   setup() {
     useMeta({
       title: 'Nie znaleziono strony',
@@ -30,7 +31,7 @@ export default {
       LANDING_PAGE
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

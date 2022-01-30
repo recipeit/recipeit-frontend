@@ -11,8 +11,8 @@
   </div>
 </template>
 
-<script>
-import { computed, reactive, toRefs, watch } from 'vue'
+<script lang="ts">
+import { computed, defineComponent, reactive, toRefs, watch } from 'vue'
 
 import FacebookLogo from '@/assets/logos/facebook.svg?raw'
 import GoogleLogo from '@/assets/logos/google.svg?raw'
@@ -29,7 +29,7 @@ import GoogleService from '@/services/google'
 
 import { useUserStore } from '@/stores/user'
 
-export default {
+export default defineComponent({
   emits: ['lockInputs', 'unlockInputs'],
 
   setup(_, { emit }) {
@@ -109,7 +109,7 @@ export default {
       loginGoogle
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

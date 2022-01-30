@@ -15,8 +15,8 @@
   </div>
 </template>
 
-<script>
-import { onBeforeMount, ref } from 'vue'
+<script lang="ts">
+import { defineComponent, onBeforeMount, ref } from 'vue'
 import { useMeta } from 'vue-meta'
 
 import userApi from '@/api/userApi'
@@ -26,11 +26,12 @@ import { useUserStore } from '@/stores/user'
 import HiddenRecipe from '@/components/HiddenRecipe.vue'
 import PageHeader from '@/components/PageHeader.vue'
 
-export default {
+export default defineComponent({
   components: {
     PageHeader,
     HiddenRecipe
   },
+
   setup() {
     useMeta({
       title: 'Ukryte przepisy'
@@ -66,7 +67,7 @@ export default {
       unhideRecipe
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

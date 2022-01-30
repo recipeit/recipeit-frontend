@@ -23,8 +23,8 @@
   </router-link>
 </template>
 
-<script>
-import { computed } from 'vue'
+<script lang="ts">
+import { computed, defineComponent } from 'vue'
 
 import placeholderDark from '@/assets/img/placeholders/recipe-box-dark.webp'
 import placeholderLight from '@/assets/img/placeholders/recipe-box.webp'
@@ -38,11 +38,11 @@ import { useUserStore } from '@/stores/user'
 
 import FavouriteIcon from '@/components/FavouriteIcon.vue'
 
-export default {
+export default defineComponent({
   components: {
-    // Rating,
     FavouriteIcon
   },
+
   props: {
     recipeId: {
       type: String,
@@ -64,6 +64,7 @@ export default {
       default: true
     }
   },
+
   setup(props) {
     // usings
     const recipesStore = useRecipesStore()
@@ -100,7 +101,7 @@ export default {
       deleteFromFavourites
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

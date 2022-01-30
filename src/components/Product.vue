@@ -12,18 +12,19 @@
   </div>
 </template>
 
-<script>
-import { computed } from 'vue'
+<script lang="ts">
+import { computed, defineComponent } from 'vue'
 
 import { stringifiedAmount } from '@/functions/amount'
 
-export default {
+export default defineComponent({
   props: {
     product: {
       type: Object,
       required: true
     }
   },
+
   setup(props) {
     const formattedAmount = computed(() => {
       const { amount } = props.product
@@ -34,7 +35,7 @@ export default {
       formattedAmount
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

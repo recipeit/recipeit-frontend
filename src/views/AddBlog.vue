@@ -1,5 +1,5 @@
 <template>
-  <AnonymousPage class="add-blog">
+  <AnonymousPage classes="add-blog">
     <template #header>
       <AddBlogHeader />
     </template>
@@ -13,7 +13,8 @@
   </AnonymousPage>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from 'vue'
 import { useMeta } from 'vue-meta'
 
 import ADD_BLOG_HTML from '@/assets/docs/addblog/addblog.html?raw'
@@ -27,8 +28,9 @@ import { ADD_BLOG } from '@/router/paths'
 import AddBlogBanner from '@/components/AddBlogBanner.vue'
 import AddBlogHeader from '@/components/landingPage/AddBlogHeader.vue'
 
-export default {
+export default defineComponent({
   components: { AnonymousPage, AddBlogHeader, AddBlogBanner },
+
   setup() {
     useMeta({
       title: 'Dodaj przepisy',
@@ -55,7 +57,7 @@ export default {
       bannerList
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

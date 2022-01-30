@@ -32,7 +32,8 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from 'vue'
 import { useMeta } from 'vue-meta'
 
 import identityApi from '@/api/identityApi'
@@ -44,18 +45,21 @@ import { AUTH_CONFIRM_EMAIL } from '@/router/paths'
 
 import Spinner from '@/components/Spinner.vue'
 
-export default {
+export default defineComponent({
   components: { Spinner },
+
   setup() {
     useMeta({
       title: 'Potwierdź adres email',
       link: [{ rel: 'canonical', href: `${BASE_URL}${AUTH_CONFIRM_EMAIL}` }]
     })
   },
+
   data: () => ({
     state: 'LOADING',
     email: null
   }),
+
   mounted() {
     this.state = 'LOADING'
     const { email, token } = this.$route.query
@@ -87,7 +91,7 @@ export default {
       })
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

@@ -24,7 +24,8 @@
   </AnonymousPage>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from 'vue'
 import { useMeta } from 'vue-meta'
 
 import FacebookLogo from '@/assets/logos/facebook.svg?raw'
@@ -38,8 +39,9 @@ import AnonymousPage from '@/layouts/AnonymousPage.vue'
 
 import { CONTACT } from '@/router/paths'
 
-export default {
+export default defineComponent({
   components: { AnonymousPage },
+
   setup() {
     useMeta({
       title: 'Kontakt',
@@ -55,7 +57,7 @@ export default {
       INSTAGRAM_PROFILE_URL
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

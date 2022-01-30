@@ -146,8 +146,8 @@
   </div>
 </template>
 
-<script>
-import { computed, markRaw, reactive, toRefs } from 'vue'
+<script lang="ts">
+import { computed, defineComponent, markRaw, reactive, toRefs } from 'vue'
 import { useMeta } from 'vue-meta'
 import { useRoute, useRouter } from 'vue-router'
 
@@ -180,8 +180,9 @@ import PlanRecipeModal from '@/components/modals/PlanRecipeModal.vue'
 import RecipeDirectionsSection from '@/components/recipe/RecipeDirectionsSection.vue'
 import RecipeIngredientsSection from '@/components/recipe/RecipeIngredientsSection.vue'
 
-export default {
+export default defineComponent({
   name: 'Recipe',
+
   components: {
     FavouriteIcon,
     RecipeParallaxGallery,
@@ -189,6 +190,7 @@ export default {
     RecipeDirectionsSection,
     Rating
   },
+
   props: {
     recipeId: {
       type: String,
@@ -198,6 +200,7 @@ export default {
       type: String
     }
   },
+
   setup(props) {
     // usings
     const myKitchenStore = useMyKitchenStore()
@@ -389,9 +392,8 @@ export default {
       changeBlogVisibility,
       showInvisibleInfoModal
     }
-  },
-  methods: {}
-}
+  }
+})
 </script>
 
 <style lang="scss" scoped>

@@ -13,10 +13,12 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from 'vue'
+
 import { ToastType } from '@/plugins/toast/toastType'
 
-export default {
+export default defineComponent({
   props: {
     id: {
       type: [String, Number],
@@ -37,12 +39,15 @@ export default {
     cancellable: Boolean,
     cancelCallback: Function
   },
+
   emits: ['hide'],
+
   data() {
     return {
       timer: null
     }
   },
+
   computed: {
     icon() {
       const { type } = this
@@ -52,9 +57,11 @@ export default {
       return 'info'
     }
   },
+
   mounted() {
     this.setTimer()
   },
+
   methods: {
     hide() {
       this.$emit('hide')
@@ -79,7 +86,7 @@ export default {
       this.hide()
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

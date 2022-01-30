@@ -52,8 +52,9 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { Field, Form } from 'vee-validate'
+import { defineComponent } from 'vue'
 import { useMeta } from 'vue-meta'
 import * as yup from 'yup'
 
@@ -70,18 +71,20 @@ import recaptcha from '@/services/recaptcha'
 
 import RecaptchaBranding from '@/components/RecaptchaBranding.vue'
 
-export default {
+export default defineComponent({
   components: {
     RecaptchaBranding,
     Field,
     Form
   },
+
   props: {
     initialEmail: {
       type: String,
       default: ''
     }
   },
+
   setup(props) {
     useMeta({
       title: 'Zapomniałem hasła',
@@ -97,12 +100,15 @@ export default {
 
     return { schema, initialValues }
   },
+
   data: () => ({
     state: 'BEFORE'
   }),
+
   beforeMount() {
     this.state = 'BEFORE'
   },
+
   methods: {
     async requestPasswordReset({ email }) {
       this.state = 'SENDING'
@@ -133,7 +139,7 @@ export default {
         })
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

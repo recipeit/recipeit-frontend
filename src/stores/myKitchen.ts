@@ -36,7 +36,7 @@ export const useMyKitchenStore = defineStore('myKitchen', {
       this.products = data
     },
 
-    async addProduct({ product, expirationDates }) {
+    async addProduct({ product, expirationDates }: { product: any; expirationDates?: Array<string> | null }) {
       const { data } = await myKitchenApi.addProductToMyKitchen(product, expirationDates)
       addProduct(this, data)
       eventHub.$emit('add-to-kitchen')
