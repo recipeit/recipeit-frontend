@@ -1,3 +1,5 @@
+import { App } from 'vue'
+
 import GlobalModalContainer from '@/plugins/global-sheet-modal/GlobalModalContainer.vue'
 import ModalContent from '@/plugins/global-sheet-modal/ModalContent.vue'
 
@@ -7,7 +9,7 @@ const defaultOptions = {
 
 const Plugin = {
   modal: null,
-  install: (app, options = {}) => {
+  install: (app: App, options = {}) => {
     const usedOptions = {
       ...defaultOptions,
       ...options

@@ -11,15 +11,15 @@ export default apiEndpoint => {
   const recipesErrors = ref(null)
   const errorHandler = useErrorHandler()
 
-  const loadRecipesPage = async page => {
-    return await fetchRecipesPage(page)
+  const loadRecipesPage = async (pageNumber: number) => {
+    return await fetchRecipesPage(pageNumber)
   }
 
   const reloadRecipes = () => {
     recipes.value = new RecipeList()
   }
 
-  const fetchRecipesPage = async pageNumber => {
+  const fetchRecipesPage = async (pageNumber: number) => {
     recipes.value.fetchingPages[pageNumber] = true
     recipesErrors.value = null
 

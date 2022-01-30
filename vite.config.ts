@@ -18,7 +18,7 @@ export default ({ mode }) => {
     .toString()
     .trim()
 
-  let plugins = [
+  const plugins = [
     vue(),
     svgLoader(),
     VitePWA({
@@ -109,6 +109,9 @@ export default ({ mode }) => {
         release: process.env.VUE_APP_VERSION,
         sourceMaps: {
           include: ['./dist']
+        },
+        deploy: {
+          env: 'production'
         },
         setCommits: {}
       })

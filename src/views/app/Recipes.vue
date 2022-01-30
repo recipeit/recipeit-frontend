@@ -35,7 +35,7 @@ import { useRoute } from 'vue-router'
 import recipeApi from '@/api/recipeApi'
 import userApi from '@/api/userApi'
 
-import { fetchRecipesQueryParams, queryParamsFromRouteQuery } from '@/constants'
+import { fetchRecipesQueryParams, queryParamsFromRouteQuery, RecipePageParams } from '@/constants'
 
 import recipeFilteredPagedList from '@/views/app/composable/recipeFilteredPagedList'
 
@@ -66,7 +66,7 @@ export default defineComponent({
 
     const recipesList = recipeFilteredPagedList(recipeApi.getRecipes)
 
-    const fetchAvailableRecipesCount = async ({ orderMethod, filters, search } = {}) => {
+    const fetchAvailableRecipesCount = async ({ orderMethod, filters, search }: RecipePageParams = {}) => {
       availableRecipesCount.value = null
       const queryParams = fetchRecipesQueryParams(orderMethod, filters, search)
       const { data } = await userApi.getAvailableRecipesCount(queryParams)

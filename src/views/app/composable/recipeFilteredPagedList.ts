@@ -1,21 +1,28 @@
-import { onBeforeMount, ref } from 'vue'
+import { onBeforeMount, Ref, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 import { ERROR_ACTION_TAG_NAME } from '@/configs/error'
 
-import { fetchRecipesQueryParams, queryParamsFromRouteQuery, RecipeList } from '@/constants'
+import {
+  fetchRecipesQueryParams,
+  queryParamsFromRouteQuery,
+  RecipeList,
+  RecipePageFilters,
+  RecipePageParams,
+  RecipePageQueryParams
+} from '@/constants'
 
 import { useErrorHandler } from '@/error'
 
 export default apiEndpoint => {
   const recipes = ref(new RecipeList())
-  const initialQueryParams = ref(null)
+  const initialQueryParams: Ref<RecipePageQueryParams> = ref(null)
   const recipesErrors = ref(null)
   const router = useRouter()
   const route = useRoute()
   const errorHandler = useErrorHandler()
 
-  const loadRecipesPage = async (page, updateRoute = true) => {
+  const loadRecipesPage = async (page: number, updateRoute = true) => {
     const { orderMethod, filters, search, pagedItems } = recipes.value
     if (Object.keys(pagedItems)?.length > 0) {
       return await fetchRecipesPage(orderMethod, filters, search, page)
@@ -26,21 +33,27 @@ export default apiEndpoint => {
     }
   }
 
-  const reloadRecipes = ({ orderMethod, filters, search } = {}) => {
+  const reloadRecipes = ({ orderMethod, filters, search }: RecipePageParams = {}) => {
     recipes.value = new RecipeList(orderMethod, filters, search)
   }
 
-  const reloadRecipesWithQuery = query => {
+  const reloadRecipesWithQuery = (query: RecipePageQueryParams) => {
     initialQueryParams.value = query
     reloadRecipes()
   }
 
-  const fetchRecipesPage = async (orderMethod, filters, search, pageNumber, updateRoute) => {
+  const fetchRecipesPage = async (
+    orderMethod?: string,
+    filters?: RecipePageFilters,
+    search?: string,
+    pageNumber?: number,
+    updateRoute?: boolean
+  ) => {
     const queryParams = fetchRecipesQueryParams(orderMethod, filters, search)
     return await fetchRecipesPageWithQuery(queryParams, pageNumber, updateRoute)
   }
 
-  const fetchRecipesPageWithQuery = async (queryParams, pageNumber, updateRoute) => {
+  const fetchRecipesPageWithQuery = async (queryParams?: RecipePageQueryParams, pageNumber?: number, updateRoute?: boolean) => {
     recipes.value.fetchingPages[pageNumber] = true
     recipesErrors.value = null
 

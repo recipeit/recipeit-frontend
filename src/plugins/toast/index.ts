@@ -1,9 +1,11 @@
+import { App } from 'vue'
+
 import ToastsContainer from '@/plugins/toast/ToastsContainer.vue'
 
 const Plugin = {
   toast: null,
-  install: app => {
-    let globalToastsContainer
+  install: (app: App) => {
+    let globalToastsContainer: typeof ToastsContainer
 
     const $toast = {
       _setGlobalToastsContainer(container) {

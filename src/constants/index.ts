@@ -1,5 +1,17 @@
-interface RecipePageFilters {
-  [key: string]: Array<number>
+// TODO są to paramy w sumie bez strony więc ni wiem
+
+export interface RecipePageFilters {
+  [key: string]: Array<string | number>
+}
+
+export interface RecipePageParams {
+  orderMethod?: string
+  filters?: RecipePageFilters
+  search?: string
+}
+
+export interface RecipePageQueryParams {
+  [k: string]: string | Array<string>
 }
 
 export const recipesSortingMethods = [
@@ -23,13 +35,13 @@ export class RecipeList {
   totalCount: number | null
   hasNext: boolean | null
   search: string
-  filters: object
+  filters: RecipePageFilters
   orderMethod: string
   filterOptions: object
   orderMethodOptions: object
   defaultOrderMethod: string
 
-  constructor(orderMethod?: string, filters?: object, search?: string) {
+  constructor(orderMethod?: string, filters?: RecipePageFilters, search?: string) {
     this.fetching = false
     this.fetchingPages = {}
     this.pagesTo = null
@@ -123,7 +135,11 @@ export const parseFilters = (filters: RecipePageFilters) => {
   return renamedFilters
 }
 
-export const fetchRecipesQueryParams = (orderMethod: string | null, filters: RecipePageFilters, search: string | null) => {
+export const fetchRecipesQueryParams = (
+  orderMethod: string | null,
+  filters: RecipePageFilters,
+  search: string | null
+): RecipePageQueryParams => {
   const paramsWithNullItems = {
     // pageNumber: null,
     search: search,
@@ -138,7 +154,7 @@ export const fetchRecipesQueryParams = (orderMethod: string | null, filters: Rec
   )
 }
 
-export const queryParamsFromRouteQuery = (routeQuery: { [key: string]: Array<string | number> }) => {
+export const queryParamsFromRouteQuery = (routeQuery: { [key: string]: string | Array<string> }): RecipePageQueryParams => {
   if (routeQuery) {
     return Object.fromEntries(
       Object.entries(routeQuery).filter(([key]) => key === 'search' || key === 'orderMethod' || key.startsWith('filters.'))

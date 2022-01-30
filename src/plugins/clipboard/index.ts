@@ -1,8 +1,10 @@
+import { App } from 'vue'
+
 const cssText = 'position:fixed;pointer-events:none;z-index:-9999;opacity:0;'
 const copyErrorMessage = 'Failed to copy value to clipboard. Unknown type.'
 
 const $clipboard = input => {
-  let value
+  let value: string
 
   if (typeof input !== 'string') {
     try {
@@ -23,7 +25,7 @@ const $clipboard = input => {
   document.body.appendChild(textarea)
 
   if (navigator.userAgent.match(/ipad|ipod|iphone/i)) {
-    textarea.contentEditable = true
+    textarea.contentEditable = 'true'
     textarea.readOnly = true
 
     const range = document.createRange()
@@ -53,13 +55,13 @@ const $clipboard = input => {
 }
 
 const Plugin = {
-  install: app => {
+  install: (app: App) => {
     app.config.globalProperties.$clipboard = $clipboard
 
     const generateId = (id => () => '$' + id++)(1)
     const handlers = {}
 
-    const removeHandler = id => {
+    const removeHandler = (id: string) => {
       if (id) {
         handlers[id] = null
         delete handlers[id]

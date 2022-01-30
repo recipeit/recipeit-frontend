@@ -4,7 +4,7 @@ const Plugin = {
   errorHandler: null,
   install: app => {
     const $errorHandler = {
-      captureError(error, tags = {}) {
+      captureError(error: Error | string | object, tags = {}) {
         Sentry.withScope(scope => {
           if (Object.keys(tags)) {
             scope.setTags(tags)
