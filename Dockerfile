@@ -4,7 +4,7 @@ WORKDIR /app
 RUN apk add git
 COPY package.json yarn.lock ./
 RUN yarn install --frozen-lockfile
-COPY .browserslistrc .env .eslintrc.js .sentryclirc jsconfig.json vite.config.js index.html ./
+COPY .browserslistrc .env .eslintrc.js .sentryclirc index.html jsconfig.json tsconfig.json vite.config.ts ./
 COPY public public
 COPY src src
 COPY .git .git
