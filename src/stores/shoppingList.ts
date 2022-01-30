@@ -6,6 +6,7 @@ import shoppingListApi from '@/api/shoppingListApi'
 import eventHub from '@/services/eventHub'
 
 import { useMyKitchenStore } from '@/stores/myKitchen'
+import { UserShoppingListProductEntity } from '@/typings/entities'
 
 const addProduct = (store, product) => {
   if (!store.products) {
@@ -34,7 +35,7 @@ const removeProduct = (store, id) => {
 export const useShoppingListStore = defineStore('shoppingList', {
   state: () => {
     return {
-      products: null
+      products: null as Array<UserShoppingListProductEntity>
     }
   },
 

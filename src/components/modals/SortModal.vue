@@ -25,12 +25,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, PropType } from 'vue'
 
 export default defineComponent({
   props: {
     options: {
-      type: Array,
+      type: Array as PropType<Array<string>>,
       required: true
     },
     defaultSelected: {

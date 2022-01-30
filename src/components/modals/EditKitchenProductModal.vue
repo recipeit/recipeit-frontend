@@ -31,6 +31,8 @@ import uniqueID from '@/functions/uniqueID'
 import { useIngredientsStore } from '@/stores/ingredients'
 import { useMyKitchenStore } from '@/stores/myKitchen'
 
+import { UserKitchenProductEntity } from '@/typings/entities'
+
 import ProductModalForm from '@/components/ProductModalForm.vue'
 import ExpirationDatesFormSection from '@/components/modals/ExpirationDatesFormSection.vue'
 
@@ -39,7 +41,7 @@ export default defineComponent({
 
   props: {
     product: {
-      type: Object,
+      type: Object as PropType<UserKitchenProductEntity>,
       required: true
     },
     expirationDates: {

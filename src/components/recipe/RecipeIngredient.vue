@@ -39,7 +39,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, markRaw, reactive, toRefs } from 'vue'
+import { computed, defineComponent, markRaw, PropType, reactive, toRefs } from 'vue'
 
 import { INGREDIENT_USER_STATES } from '@/configs/recipeIngredient'
 
@@ -54,11 +54,12 @@ import { useIngredientsStore } from '@/stores/ingredients'
 
 import Dialog from '@/components/modals/Dialog.vue'
 import SelectBaseProductFromArrayModal from '@/components/modals/SelectBaseProductFromArrayModal.vue'
+import { RecipeIngredientWithUserState } from '@/typings/recipe'
 
 export default defineComponent({
   props: {
     ingredient: {
-      type: Object,
+      type: Object as PropType<RecipeIngredientWithUserState>,
       required: true
     },
     amountFactor: {
@@ -172,7 +173,7 @@ export default defineComponent({
     const stateClickHandler = () => {
       const ingredient = props.ingredient
 
-      if ([INGREDIENT_USER_STATES.IN_KITCHEN, INGREDIENT_USER_STATES.IN_SHOPPING_LIST].includes(ingredient.state)) {
+      if (ingredient.state === INGREDIENT_USER_STATES.IN_KITCHEN || ingredient.state === INGREDIENT_USER_STATES.IN_SHOPPING_LIST) {
         const title =
           ingredient.state === INGREDIENT_USER_STATES.IN_KITCHEN
             ? 'Posiadasz już ten produkt'

@@ -8,4 +8,4 @@ export const INGREDIENT_USER_STATES = {
   IN_KITCHEN,
   IN_SHOPPING_LIST,
   UNAVAILABLE
-}
+} as const

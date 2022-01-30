@@ -22,6 +22,7 @@ import Container from '@/components/landingPage/Container.vue'
 
 export default defineComponent({
   components: { Benefit, Container },
+
   setup() {
     const benefits = [
       {

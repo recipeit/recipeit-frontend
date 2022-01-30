@@ -8,11 +8,20 @@ import { FINISHED_DIRECTIONS_STORAGE_KEY } from '@/configs/storage'
 import toastPlugin from '@/plugins/toast'
 import { ToastType } from '@/plugins/toast/toastType'
 
+import { RecipeEntity } from '@/typings/entities'
+import { DetailedRecipe } from '@/typings/recipe'
+
+type RecipesStoreState = {
+  detailedRecipes: Array<DetailedRecipe>
+  favouriteRecipesIds: Array<RecipeEntity['id']>
+  recipesFinishedDirections: { [key: RecipeEntity['id']]: Array<number> }
+}
+
 const storageFinishedDirections = localStorage.getItem(FINISHED_DIRECTIONS_STORAGE_KEY)
 const parsedStorageFinishedDirections = storageFinishedDirections ? JSON.parse(storageFinishedDirections) : {}
 
 export const useRecipesStore = defineStore('recipes', {
-  state: () => {
+  state: (): RecipesStoreState => {
     return {
       detailedRecipes: [],
       favouriteRecipesIds: [],
@@ -26,7 +35,7 @@ export const useRecipesStore = defineStore('recipes', {
       this.favouriteRecipesIds = data
     },
 
-    async fetchDetailedRecipe(id) {
+    async fetchDetailedRecipe(id: RecipeEntity['id']): Promise<DetailedRecipe> {
       const recipeDetails = this.getDetailedRecipeById(id)
 
       if (recipeDetails) {
@@ -47,7 +56,7 @@ export const useRecipesStore = defineStore('recipes', {
       }
     },
 
-    async addToFavourites(id) {
+    async addToFavourites(id: RecipeEntity['id']) {
       await userApi.addRecipeToFavourites(id)
 
       if (this.favouriteRecipesIds.find(recipeId => recipeId === id)) {
@@ -57,7 +66,7 @@ export const useRecipesStore = defineStore('recipes', {
       this.favouriteRecipesIds.push(id)
     },
 
-    async deleteFromFavourites(id) {
+    async deleteFromFavourites(id: RecipeEntity['id']) {
       await userApi.removeRecipeFromFavourites(id)
 
       const recipeIdIndex = this.favouriteRecipesIds.indexOf(id)
@@ -89,7 +98,7 @@ export const useRecipesStore = defineStore('recipes', {
   },
 
   getters: {
-    getDetailedRecipeById: state => id => state.detailedRecipes.find(r => r.id === id),
-    getFinishedDirectionsForRecipe: state => recipeId => state.recipesFinishedDirections[recipeId]
+    getDetailedRecipeById: state => (id: RecipeEntity['id']) => state.detailedRecipes.find(r => r.id === id),
+    getFinishedDirectionsForRecipe: state => (recipeId: RecipeEntity['id']) => state.recipesFinishedDirections[recipeId]
   }
 })

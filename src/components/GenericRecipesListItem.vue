@@ -5,7 +5,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, PropType } from 'vue'
+
+import { RecipeEntity } from '@/typings/entities'
 
 import RecipeBox from '@/components/RecipeBox.vue'
 
@@ -14,19 +16,19 @@ export default defineComponent({
 
   props: {
     recipeId: {
-      type: String,
+      type: String as PropType<RecipeEntity['id']>,
       required: true
     },
     recipeSlug: {
-      type: String,
+      type: String as PropType<RecipeEntity['slug']>,
       required: true
     },
     recipeName: {
-      type: String,
+      type: String as PropType<RecipeEntity['name']>,
       required: true
     },
     recipeRating: {
-      type: Number
+      type: Number as PropType<RecipeEntity['rating']>
     }
   }
 })

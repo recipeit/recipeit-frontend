@@ -33,34 +33,38 @@
 <script lang="ts">
 import difference from 'lodash.difference'
 import min from 'lodash.min'
-import { computed, defineComponent, Ref, ref, watch } from 'vue'
+import { computed, defineComponent, PropType, ref, watch } from 'vue'
 
 import { useToast } from '@/plugins/toast'
 import { ToastType } from '@/plugins/toast/toastType'
 
 import { useRecipesStore } from '@/stores/recipes'
 
+import { RecipeEntity } from '@/typings/entities'
+
 import SectionTitle from '@/components/SectionTitle.vue'
 
 export default defineComponent({
   components: { SectionTitle },
+
   props: {
     recipeId: {
-      type: String,
+      type: String as PropType<RecipeEntity['id']>,
       required: true
     },
     directions: {
-      type: Array,
+      type: Array as PropType<Array<string>>,
       required: true
     }
   },
+
   setup(props) {
     // usings
     const recipesStore = useRecipesStore()
     const toast = useToast()
 
     // data
-    const finishedDirections: Ref<Array<number>> = ref(recipesStore.getFinishedDirectionsForRecipe(props.recipeId) || [])
+    const finishedDirections = ref<Array<number>>(recipesStore.getFinishedDirectionsForRecipe(props.recipeId) || [])
 
     // computed
     const allIndexes = computed(() => {

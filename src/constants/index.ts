@@ -1,5 +1,7 @@
 // TODO są to paramy w sumie bez strony więc ni wiem
 
+import { RecipeEntity } from '@/typings/entities'
+
 export type RecipePageFilters = {
   [key: string]: Array<string | number>
 }
@@ -27,10 +29,10 @@ export const defaultRecipesSortingMethod = recipesSortingMethods[0]
 
 export class RecipeList {
   fetching: boolean
-  fetchingPages: object
+  fetchingPages: { [key: number]: boolean }
   pagesTo: number | null
-  items: Array<object>
-  pagedItems: object
+  items: Array<RecipeEntity>
+  pagedItems: { [key: number]: Array<RecipeEntity> }
   totalPages: number | null
   totalCount: number | null
   hasNext: boolean | null

@@ -25,11 +25,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, markRaw } from 'vue'
+import { defineComponent, markRaw, PropType } from 'vue'
 
 import { useModal } from '@/plugins/global-sheet-modal'
 
 import { useShoppingListStore } from '@/stores/shoppingList'
+
+import { UserShoppingListProductEntity } from '@/typings/entities'
 
 import Product from '@/components/Product.vue'
 import EditShoppingListProductModal from '@/components/modals/EditShoppingListProductModal.vue'
@@ -41,7 +43,7 @@ export default defineComponent({
 
   props: {
     product: {
-      type: Object,
+      type: Object as PropType<UserShoppingListProductEntity>,
       required: true
     }
   },

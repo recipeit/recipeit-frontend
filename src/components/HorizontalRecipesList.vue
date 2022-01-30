@@ -38,7 +38,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { computed, defineComponent, PropType } from 'vue'
 
 import { RecipeList } from '@/constants'
 
@@ -50,7 +50,7 @@ export default defineComponent({
 
   props: {
     recipes: {
-      type: RecipeList
+      type: Object as PropType<RecipeList>
     },
     errors: {
       type: Object,
@@ -60,20 +60,28 @@ export default defineComponent({
 
   emits: ['show-all', 'reload-with-query'],
 
-  computed: {
-    items() {
-      return this.recipes?.pagedItems[1] || []
-    }
-  },
+  setup(props, { emit }) {
+    // computed
+    const items = computed(() => {
+      return props.recipes?.pagedItems[1] || []
+    })
 
-  methods: {
-    tryFetchOnError() {
-      if (this.errors === null) return
-      const { from, query } = this.errors
+    // methods
+
+    const tryFetchOnError = () => {
+      if (props.errors === null) return
+      const { from, query } = props.errors
 
       if (from === 'RELOAD') {
-        this.$emit('reload-with-query', query)
+        emit('reload-with-query', query)
       }
+    }
+
+    return {
+      // computed
+      items,
+      // methods
+      tryFetchOnError
     }
   }
 })

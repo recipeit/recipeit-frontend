@@ -6,8 +6,8 @@ export default {
   getProductsFromMyKitchen() {
     return apiClient.get(`/${route}/products`)
   },
-  getProductExpirationDates(id) {
-    return apiClient.get(`/${route}/products/${id}/expiration-dates`)
+  getProductExpirationDates(id: string) {
+    return apiClient.get<Array<string>>(`/${route}/products/${id}/expiration-dates`)
   },
   addProductToMyKitchen(product, expirationDates) {
     return apiClient.post(`/${route}/products`, { product, expirationDates })

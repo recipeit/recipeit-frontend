@@ -19,14 +19,16 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue'
+import { computed, defineComponent, PropType } from 'vue'
 
 import { APP_RECIPE } from '@/router/names'
+
+import { RecipeEntity } from '@/typings/entities'
 
 export default defineComponent({
   props: {
     recipe: {
-      type: Object,
+      type: Object as PropType<RecipeEntity>,
       required: true
     }
   },

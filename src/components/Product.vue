@@ -13,14 +13,16 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue'
+import { computed, defineComponent, PropType } from 'vue'
 
 import { stringifiedAmount } from '@/functions/amount'
+
+import { UserProductEntity } from '@/typings/entities'
 
 export default defineComponent({
   props: {
     product: {
-      type: Object,
+      type: Object as PropType<UserProductEntity>,
       required: true
     }
   },

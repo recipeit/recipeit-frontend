@@ -147,7 +147,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, markRaw, reactive, toRefs } from 'vue'
+import { computed, defineComponent, markRaw, PropType, reactive, toRefs } from 'vue'
 import { useMeta } from 'vue-meta'
 import { useRoute, useRouter } from 'vue-router'
 
@@ -172,6 +172,9 @@ import { useRecipesStore } from '@/stores/recipes'
 import { useShoppingListStore } from '@/stores/shoppingList'
 import { useUserStore } from '@/stores/user'
 
+import { RecipeEntity } from '@/typings/entities'
+import { DetailedRecipe } from '@/typings/recipe'
+
 import FavouriteIcon from '@/components/FavouriteIcon.vue'
 import Rating from '@/components/Rating.vue'
 import RecipeParallaxGallery from '@/components/RecipeParallaxGallery.vue'
@@ -193,11 +196,11 @@ export default defineComponent({
 
   props: {
     recipeId: {
-      type: String,
+      type: String as PropType<RecipeEntity['id']>,
       required: true
     },
     recipeName: {
-      type: String
+      type: String as PropType<RecipeEntity['name']>
     }
   },
 
@@ -218,8 +221,8 @@ export default defineComponent({
     const data = reactive({
       errors: false,
       fetchedData: false,
-      recipe: null,
-      finishedDirections: []
+      recipe: null as DetailedRecipe,
+      finishedDirections: [] as Array<number>
     })
 
     // computed

@@ -50,12 +50,15 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from 'vue'
+import { computed, defineComponent, PropType, ref } from 'vue'
 
 import { INGREDIENT_USER_STATES } from '@/configs/recipeIngredient'
 
 import { useMyKitchenStore } from '@/stores/myKitchen'
 import { useShoppingListStore } from '@/stores/shoppingList'
+
+import { RecipeEntity } from '@/typings/entities'
+import { DetailedRecipe, RecipeIngredientGroups, RecipeIngredientUserState, RecipeIngredientWithUserState } from '@/typings/recipe'
 
 import SectionTitle from '@/components/SectionTitle.vue'
 import RecipeIngredient from '@/components/recipe/RecipeIngredient.vue'
@@ -65,15 +68,15 @@ export default defineComponent({
 
   props: {
     recipeId: {
-      type: String,
+      type: String as PropType<RecipeEntity['id']>,
       required: true
     },
     servings: {
-      type: Number,
+      type: Number as PropType<DetailedRecipe['details']['servings']>,
       default: 1
     },
     ingredientGroups: {
-      type: Object,
+      type: Object as PropType<RecipeIngredientGroups>,
       required: true
     }
   },
@@ -110,13 +113,13 @@ export default defineComponent({
       return shoppingListProducts.value.find(p => baseProductIdsArray.includes(p.baseProductId))
     }
 
-    const ingredients = computed(() => {
+    const ingredients = computed<{ [key: string]: Array<RecipeIngredientWithUserState> }>(() => {
       return Object.fromEntries(
         Object.entries(props.ingredientGroups).map(([key, value]) => [
           key,
           value.map(ingredient => {
             const { baseProductIdsArray } = ingredient
-            let state
+            let state: RecipeIngredientUserState
 
             if (!baseProductIdsArray) {
               state = INGREDIENT_USER_STATES.NONE

@@ -36,7 +36,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, markRaw, ref } from 'vue'
+import { computed, defineComponent, markRaw, PropType, ref } from 'vue'
 
 import myKitchenApi from '@/api/myKitchenApi'
 
@@ -46,6 +46,8 @@ import { ToastType } from '@/plugins/toast/toastType'
 
 import { useMyKitchenStore } from '@/stores/myKitchen'
 import { useShoppingListStore } from '@/stores/shoppingList'
+
+import { UserKitchenProductEntity } from '@/typings/entities'
 
 import Product from '@/components/Product.vue'
 import EditKitchenProductModal from '@/components/modals/EditKitchenProductModal.vue'
@@ -57,7 +59,7 @@ export default defineComponent({
 
   props: {
     product: {
-      type: Object,
+      type: Object as PropType<UserKitchenProductEntity>,
       required: true
     }
   },
@@ -74,7 +76,7 @@ export default defineComponent({
 
     // computed
     const isInShoppingList = computed(() => {
-      return !!shoppingListStore.products?.find(p => p.baseProductId === props.product.baseProductId)
+      return !!shoppingListStore.products?.find(({ baseProductId }) => baseProductId === props.product.baseProductId)
     })
 
     const purchaseButtonTooltip = computed(() => {
@@ -83,7 +85,7 @@ export default defineComponent({
 
     // methods
     const openEditModal = async () => {
-      let expirationDates
+      let expirationDates: Array<string>
       try {
         const { data } = await myKitchenApi.getProductExpirationDates(props.product.id)
         if (data) {

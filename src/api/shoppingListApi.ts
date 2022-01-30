@@ -1,16 +1,18 @@
 import apiClient from '@/api/apiClient'
 
+import { UserShoppingListProductEntity } from '@/typings/entities'
+
 const route = 'shopping-list'
 
 export default {
   getProductsFromShoppingList() {
-    return apiClient.get(`/${route}/products`)
+    return apiClient.get<Array<UserShoppingListProductEntity>>(`/${route}/products`)
   },
   addProductsToShoppingList(products) {
-    return apiClient.post(`/${route}/products`, products)
+    return apiClient.post<Array<UserShoppingListProductEntity>>(`/${route}/products`, products)
   },
   addProductToShoppingList(product) {
-    return apiClient.post(`/${route}/product`, product)
+    return apiClient.post<UserShoppingListProductEntity>(`/${route}/product`, product)
   },
   purchaseProduct(productId) {
     return apiClient.post(`/${route}/purchase/${productId}`, null)
@@ -22,9 +24,9 @@ export default {
     return apiClient.get(`/${route}/products/${id}`)
   },
   updateProductFromShoppingList(product) {
-    return apiClient.put(`/${route}/product/${product.id}`, product)
+    return apiClient.put<UserShoppingListProductEntity>(`/${route}/product/${product.id}`, product)
   },
   removeProductFromShoppingListById(id) {
-    return apiClient.delete(`/${route}/product/${id}`)
+    return apiClient.delete<boolean>(`/${route}/product/${id}`)
   }
 }
