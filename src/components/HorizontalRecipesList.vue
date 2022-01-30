@@ -10,7 +10,7 @@
         :recipe-name="name"
         :recipe-rating="rating"
       />
-      <li v-if="items && recipes.totalCount > items.length" class="list-item" @click="$emit('showAll')">
+      <li v-if="items && recipes.totalCount > items.length" class="list-item" @click="$emit('show-all')">
         <div class="show-all-item">
           <div class="show-all-item-sizer">
             <BaseLink tag="button" class="show-all-item-button">
@@ -58,7 +58,7 @@ export default defineComponent({
     }
   },
 
-  emits: ['showAll', 'reload-with-query'],
+  emits: ['show-all', 'reload-with-query'],
 
   computed: {
     items() {

@@ -30,7 +30,7 @@ import GoogleService from '@/services/google'
 import { useUserStore } from '@/stores/user'
 
 export default defineComponent({
-  emits: ['lockInputs', 'unlockInputs'],
+  emits: ['lock-inputs', 'unlock-inputs'],
 
   setup(_, { emit }) {
     // usings
@@ -87,9 +87,9 @@ export default defineComponent({
 
     watch(anySending, newValue => {
       if (newValue) {
-        emit('lockInputs')
+        emit('lock-inputs')
       } else {
-        emit('unlockInputs')
+        emit('unlock-inputs')
       }
     })
 

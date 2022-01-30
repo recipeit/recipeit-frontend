@@ -67,8 +67,6 @@ export default defineComponent({
     }
   },
 
-  emits: ['update:baseProductId', 'update:unit'],
-
   setup(props) {
     // usings
     const { t } = useI18n()
