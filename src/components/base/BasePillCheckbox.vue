@@ -1,5 +1,5 @@
 <template>
-  <div v-blur-on-click :class="['pill', { 'pill--checked': isChecked }, { 'pill--red': excluding }]" @click="updateInput">
+  <div v-blur-on-click :class="['pill', { 'pill--checked': isChecked }, { 'pill--red': excluding }]" @click="updateInput()">
     <BaseIcon v-if="excluding" class="pill__checked-icon" icon="close" weight="semi-bold" />
     <BaseIcon v-else class="pill__checked-icon" icon="check" weight="semi-bold" />
     <slot />
@@ -7,44 +7,62 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { computed, defineComponent, PropType } from 'vue'
+
+import { CheckboxValue } from '@/typings/checkbox'
 
 export default defineComponent({
   props: {
-    excluding: { type: Boolean },
-    value: { type: [String, Number] },
-    modelValue: { default: '' },
+    excluding: {
+      type: Boolean
+    },
+    value: {
+      type: [Boolean, String, Number] as PropType<CheckboxValue>
+    },
+    modelValue: {
+      type: [Array, Boolean, String, Number] as PropType<Array<CheckboxValue> | CheckboxValue>,
+      default: ''
+    },
     label: { type: String },
-    trueValue: { default: true },
-    falseValue: { default: false }
+    trueValue: {
+      type: [Boolean, String, Number] as PropType<CheckboxValue>,
+      default: true
+    },
+    falseValue: {
+      type: [Boolean, String, Number] as PropType<CheckboxValue>,
+      default: false
+    }
   },
 
   emits: ['update:modelValue'],
 
-  computed: {
-    isChecked() {
-      if (this.modelValue instanceof Array) {
-        return this.modelValue.includes(this.value)
+  setup(props, { emit }) {
+    const isChecked = computed(() => {
+      if (props.modelValue instanceof Array) {
+        return props.modelValue.includes(props.value)
       }
       // Note that `true-value` and `false-value` are camelCase in the JS
-      return this.modelValue === this.trueValue
-    }
-  },
+      return props.modelValue === props.trueValue
+    })
 
-  methods: {
-    updateInput() {
-      let isChecked = !this.isChecked
-      if (this.modelValue instanceof Array) {
-        let newValue = [...this.modelValue]
-        if (isChecked) {
-          newValue.push(this.value)
+    const updateInput = () => {
+      const newIsChecked = !isChecked.value
+      if (props.modelValue instanceof Array) {
+        let newValue = [...props.modelValue]
+        if (newIsChecked) {
+          newValue.push(props.value)
         } else {
-          newValue.splice(newValue.indexOf(this.value), 1)
+          newValue.splice(newValue.indexOf(props.value), 1)
         }
-        this.$emit('update:modelValue', newValue)
+        emit('update:modelValue', newValue)
       } else {
-        this.$emit('update:modelValue', isChecked ? this.trueValue : this.falseValue)
+        emit('update:modelValue', newIsChecked ? props.trueValue : props.falseValue)
       }
+    }
+
+    return {
+      isChecked,
+      updateInput
     }
   }
 })
