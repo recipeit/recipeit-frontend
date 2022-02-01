@@ -1,6 +1,6 @@
-import { AxiosResponse } from 'axios'
-
 import apiClient from '@/api/apiClient'
+
+import { UserProfile } from '@/typings/userProfile'
 
 const route = 'identity'
 
@@ -21,59 +21,54 @@ export const IDENTITY_URLS = {
   DELETE_ACCOUNT: `/${route}/delete-account`
 }
 
-type UserProfile = {
-  email: string
-  username: string
-  imageUrl: string
-}
-
 type UserProfileResponse = {
   errors?: Array<string>
-  emailUnconfirmed: boolean
-  userProfile: UserProfile
+  userProfile?: UserProfile
+}
+
+type BaseIdentityResponse = {
+  success: boolean
+  errors?: Array<string>
 }
 
 export default {
-  register(userData) {
-    return apiClient.post(IDENTITY_URLS.REGISTER, userData)
+  register(userData: { email: string; password: string; recaptchaToken: string }) {
+    return apiClient.post<UserProfileResponse>(IDENTITY_URLS.REGISTER, userData)
   },
-  login(userData): Promise<AxiosResponse<UserProfileResponse>> {
-    return apiClient.post<UserProfileResponse>(IDENTITY_URLS.LOGIN, userData)
+  login(userData: { email: string; password: string; recaptchaToken: string }) {
+    return apiClient.post<UserProfileResponse & { emailUnconfirmed?: boolean }>(IDENTITY_URLS.LOGIN, userData)
   },
   logout() {
     return apiClient.post(IDENTITY_URLS.LOGOUT)
   },
-  facebookAuth(userData) {
-    return apiClient.post(IDENTITY_URLS.FACEBOOK_AUTH, userData)
+  facebookAuth(userData: { accessToken: string }) {
+    return apiClient.post<UserProfileResponse>(IDENTITY_URLS.FACEBOOK_AUTH, userData)
   },
-  googleAuth(userData) {
-    return apiClient.post(IDENTITY_URLS.GOOGLE_AUTH, userData)
-  },
-  refresh(tokenData) {
-    return apiClient.post(IDENTITY_URLS.REFRESH, tokenData)
+  googleAuth(userData: { idToken: string }) {
+    return apiClient.post<UserProfileResponse>(IDENTITY_URLS.GOOGLE_AUTH, userData)
   },
   refreshCookie() {
-    return apiClient.post(IDENTITY_URLS.REFRESH_COOKIE)
+    return apiClient.post<UserProfileResponse>(IDENTITY_URLS.REFRESH_COOKIE)
   },
-  profile(): Promise<AxiosResponse<UserProfileResponse>> {
+  profile() {
     return apiClient.get<UserProfileResponse>(IDENTITY_URLS.PROFILE)
   },
-  confirmEmail(data) {
-    return apiClient.post(IDENTITY_URLS.CONFIRM_EMAIL, data)
+  confirmEmail(data: { email: string; token: string }) {
+    return apiClient.post<BaseIdentityResponse>(IDENTITY_URLS.CONFIRM_EMAIL, data)
   },
-  requestPasswordReset(data) {
-    return apiClient.post(IDENTITY_URLS.REQUEST_PASSWORD_RESET, data)
+  requestPasswordReset(data: { email: string; recaptchaToken: string }) {
+    return apiClient.post<BaseIdentityResponse>(IDENTITY_URLS.REQUEST_PASSWORD_RESET, data)
   },
-  resetPassword(data) {
-    return apiClient.post(IDENTITY_URLS.RESET_PASSWORD, data)
+  resetPassword(data: { email: string; token: string; password: string; confirmPassword: string; recaptchaToken: string }) {
+    return apiClient.post<BaseIdentityResponse>(IDENTITY_URLS.RESET_PASSWORD, data)
   },
-  changePassword(data) {
-    return apiClient.post(IDENTITY_URLS.CHANGE_PASSWORD, data)
+  changePassword(data: { currentPassword: string; newPassword: string; newPasswordConfirmation: string; recaptchaToken: string }) {
+    return apiClient.post<BaseIdentityResponse>(IDENTITY_URLS.CHANGE_PASSWORD, data)
   },
-  sendConfirmationEmail(data) {
-    return apiClient.post(IDENTITY_URLS.SEND_CONFIRMATION_EMAIL, data)
+  sendConfirmationEmail(data: { email: string; recaptchaToken: string }) {
+    return apiClient.post<BaseIdentityResponse>(IDENTITY_URLS.SEND_CONFIRMATION_EMAIL, data)
   },
-  deleteAccount(data) {
-    return apiClient.delete(IDENTITY_URLS.DELETE_ACCOUNT, data)
+  deleteAccount(data: { recaptchaToken: string }) {
+    return apiClient.delete<BaseIdentityResponse>(IDENTITY_URLS.DELETE_ACCOUNT, data)
   }
 }

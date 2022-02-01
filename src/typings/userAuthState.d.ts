@@ -1,0 +1,1 @@
+export type UserAuthState = 'USER_APP_INITIAL' | 'USER_LOGGED_IN' | 'USER_FETCHING' | 'USER_LOGGED_OUT'

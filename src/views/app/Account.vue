@@ -18,12 +18,10 @@
     </div>
 
     <h3>Preferencje</h3>
-    <BaseLink tag="button" class="card-link" color="primary" @click="openCustomizeCookiesModal()">
-      Zarządzaj ciasteczkami
-    </BaseLink>
+    <BaseLink tag="button" class="card-link" color="primary" @click="openCustomizeCookiesModal()"> Zarządzaj ciasteczkami </BaseLink>
     <div class="settings-row">
       <div class="settings-row__value settings-row__value--theme">
-        <BaseSelect placeholder="Motyw" :options="THEMES" :value="selectedTheme" :searchable="false" @change="updateTheme($event)">
+        <BaseSelect placeholder="Motyw" :options="Themes" :value="selectedTheme" :searchable="false" @change="updateTheme($event)">
           <template #label="{ option }">{{ $t(`themes.${option}`) }}</template>
           <template #option="{ option }">{{ $t(`themes.${option}`) }}</template>
         </BaseSelect>
@@ -33,50 +31,36 @@
     <h3>Ukryta zawartość</h3>
     <p>
       <router-link v-slot="{ href, navigate }" :to="{ name: 'hidden-blogs' }" custom>
-        <BaseLink :href="href" class="card-link" color="primary" @click="navigate($event)">
-          Zarządzaj ukrytymi blogami
-        </BaseLink>
+        <BaseLink :href="href" class="card-link" color="primary" @click="navigate($event)"> Zarządzaj ukrytymi blogami </BaseLink>
       </router-link>
     </p>
     <p>
       <router-link v-slot="{ href, navigate }" :to="{ name: 'hidden-recipes' }" custom>
-        <BaseLink :href="href" class="card-link" color="primary" @click="navigate($event)">
-          Zarządzaj ukrytymi przepisami
-        </BaseLink>
+        <BaseLink :href="href" class="card-link" color="primary" @click="navigate($event)"> Zarządzaj ukrytymi przepisami </BaseLink>
       </router-link>
     </p>
 
     <h3>Inne</h3>
     <p>
-      <BaseLink :href="ARTICLES_PATH" class="card-link" color="primary">
-        Artykuły
-      </BaseLink>
+      <BaseLink :href="ARTICLES_PATH" class="card-link" color="primary"> Artykuły </BaseLink>
     </p>
     <p>
       <router-link v-slot="{ href, navigate }" :to="{ name: 'contact', params: { returnUrl: $route.fullPath } }" custom>
-        <BaseLink :href="href" class="card-link" color="primary" @click="navigate($event)">
-          Kontakt
-        </BaseLink>
+        <BaseLink :href="href" class="card-link" color="primary" @click="navigate($event)"> Kontakt </BaseLink>
       </router-link>
     </p>
     <p>
       <router-link v-slot="{ href, navigate }" :to="{ name: 'terms', params: { returnUrl: $route.fullPath } }" custom>
-        <BaseLink :href="href" class="card-link" color="primary" @click="navigate($event)">
-          Regulamin
-        </BaseLink>
+        <BaseLink :href="href" class="card-link" color="primary" @click="navigate($event)"> Regulamin </BaseLink>
       </router-link>
     </p>
     <p>
       <router-link v-slot="{ href, navigate }" :to="{ name: 'privacy-policy', params: { returnUrl: $route.fullPath } }" custom>
-        <BaseLink :href="href" class="card-link" color="primary" @click="navigate($event)">
-          Polityka prywatności
-        </BaseLink>
+        <BaseLink :href="href" class="card-link" color="primary" @click="navigate($event)"> Polityka prywatności </BaseLink>
       </router-link>
     </p>
     <p>
-      <BaseLink tag="button" class="card-link" color="red" @click="openDeleteAccountModal()">
-        Usuń konto
-      </BaseLink>
+      <BaseLink tag="button" class="card-link" color="red" @click="openDeleteAccountModal()"> Usuń konto </BaseLink>
     </p>
 
     <div class="footer-logo">
@@ -94,7 +78,7 @@ import { useMeta } from 'vue-meta'
 
 import defaultAvatar from '@/assets/img/avatar.svg?raw'
 
-import { THEMES } from '@/configs/theme'
+import { Themes } from '@/constants/themes'
 
 import { COPYRIGHT_TEXT } from '@/constants'
 
@@ -111,6 +95,7 @@ import ChangePasswordModal from '@/components/modals/ChangePasswordModal.vue'
 import CustomizeCookiesModal from '@/components/modals/CustomizeCookiesModal.vue'
 import DeleteAccountModal from '@/components/modals/DeleteAccountModal.vue'
 import ForgotPasswordModal from '@/components/modals/ForgotPasswordModal.vue'
+import { Theme } from '@/typings/theme'
 
 export default defineComponent({
   name: 'Account',
@@ -147,8 +132,8 @@ export default defineComponent({
     }
 
     // methods
-    const updateTheme = value => {
-      if (value && THEMES.includes(value)) {
+    const updateTheme = (value: Theme) => {
+      if (Themes.includes(value)) {
         selectedTheme.value = value
         userStore.setTheme(value)
       }
@@ -189,7 +174,7 @@ export default defineComponent({
       defaultAvatar,
       ARTICLES_PATH,
       COPYRIGHT_TEXT,
-      THEMES,
+      Themes,
       // data
       selectedTheme,
       // computed

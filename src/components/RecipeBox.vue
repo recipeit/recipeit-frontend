@@ -29,8 +29,6 @@ import { computed, defineComponent, PropType } from 'vue'
 import placeholderDark from '@/assets/img/placeholders/recipe-box-dark.webp'
 import placeholderLight from '@/assets/img/placeholders/recipe-box.webp'
 
-import { THEME_DARK } from '@/configs/theme'
-
 import { APP_RECIPE } from '@/router/names'
 
 import { useRecipesStore } from '@/stores/recipes'
@@ -74,7 +72,7 @@ export default defineComponent({
 
     // computed
     const placeholder = computed(() => {
-      return userStore.theme === THEME_DARK ? placeholderDark : placeholderLight
+      return userStore.theme === 'dark' ? placeholderDark : placeholderLight
     })
     const isFavourite = computed(() => {
       return recipesStore.favouriteRecipesIds?.find(id => id === props.recipeId) !== undefined
