@@ -1,6 +1,6 @@
 // TODO są to paramy w sumie bez strony więc ni wiem
 
-import { RecipeSortingMethod } from '@/constants/filters'
+import { RecipeSortingMethod } from '@/enums/filters'
 
 import { RecipeEntity } from '@/typings/entities'
 import { RecipesPageFilters, RecipesPageQueryParams } from '@/typings/recipesPage'

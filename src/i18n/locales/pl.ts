@@ -1,9 +1,10 @@
 import { ADDITIONAL_AMOUNT_VALUES } from '@/configs/amount'
 
 import errorCodes from '@/constants/errorCodes'
-import { RecipeFilterGroup, RecipeSortingMethod } from '@/constants/filters'
 import recipeCategories from '@/constants/recipeCategories'
-import { TimeOfDay } from '@/constants/timesOfDay'
+
+import { RecipeFilterGroup, RecipeSortingMethod } from '@/enums/filters'
+import { TimeOfDay } from '@/enums/timesOfDay'
 
 export default {
   messages: {

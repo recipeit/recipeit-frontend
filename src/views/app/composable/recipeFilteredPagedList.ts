@@ -4,7 +4,8 @@ import { useRoute, useRouter } from 'vue-router'
 import { ERROR_ACTION_TAG_NAME } from '@/configs/error'
 
 import { fetchRecipesQueryParams, queryParamsFromRouteQuery, RecipeList } from '@/constants'
-import { RecipeSortingMethod } from '@/constants/filters'
+
+import { RecipeSortingMethod } from '@/enums/filters'
 
 import { useErrorHandler } from '@/error'
 

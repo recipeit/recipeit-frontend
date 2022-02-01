@@ -41,7 +41,7 @@ import { Field, Form } from 'vee-validate'
 import { defineComponent, reactive, toRefs } from 'vue'
 import * as Yup from 'yup'
 
-import { TimeOfDay } from '@/constants/timesOfDay'
+import { TimeOfDay } from '@/enums/timesOfDay'
 
 import dayjs from '@/functions/dayjs'
 import uniqueID from '@/functions/uniqueID'

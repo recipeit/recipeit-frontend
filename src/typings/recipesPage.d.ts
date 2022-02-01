@@ -1,4 +1,4 @@
-import { RecipeFilterGroup, RecipeSortingMethod } from '@/constants/filters'
+import { RecipeFilterGroup, RecipeSortingMethod } from '@/enums/filters'
 
 type RecipeFilterKeyAsQueryParam = `filters.${Lowercase<RecipeFilterGroup>}`
 
