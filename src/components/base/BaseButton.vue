@@ -6,11 +6,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, PropType } from 'vue'
 
 import Spinner from '@/components/Spinner.vue'
 
-const validTags = ['button', 'a', 'span']
+type BaseButtonTag = 'button' | 'a' | 'span'
 
 export default defineComponent({
   components: { Spinner },
@@ -37,9 +37,8 @@ export default defineComponent({
       default: false
     },
     tag: {
-      type: String,
-      default: 'button',
-      validator: (value: string) => validTags.includes(value)
+      type: String as PropType<BaseButtonTag>,
+      default: 'button'
     },
     loading: {
       type: Boolean,

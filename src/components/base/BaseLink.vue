@@ -5,21 +5,19 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, PropType } from 'vue'
 
-const tagOptions = ['a', 'button', 'span']
-const colorOptions = [null, 'primary', 'accent', 'text-primary', 'text-secondary', 'red']
+type BaseLinkTag = 'a' | 'button' | 'span'
+type BaseLinkColor = null | 'primary' | 'accent' | 'text-primary' | 'text-secondary' | 'red'
 
 export default defineComponent({
   props: {
     tag: {
-      type: String,
-      validator: (prop: string) => tagOptions.includes(prop),
+      type: String as PropType<BaseLinkTag>,
       default: 'a'
     },
     color: {
-      type: String,
-      validator: (prop: string) => colorOptions.includes(prop),
+      type: String as PropType<BaseLinkColor>,
       default: null
     }
   },
