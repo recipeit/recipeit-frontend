@@ -1,31 +1,7 @@
 // TODO są to paramy w sumie bez strony więc ni wiem
 
 import { RecipeEntity } from '@/typings/entities'
-
-export type RecipePageFilters = {
-  [key: string]: Array<string | number>
-}
-
-export type RecipePageParams = {
-  orderMethod?: string
-  filters?: RecipePageFilters
-  search?: string
-}
-
-export type RecipePageQueryParams = {
-  [k: string]: string | Array<string>
-}
-
-export const recipesSortingMethods = [
-  'Newest',
-  'NameAscending',
-  'NameDescending',
-  'TimeAscending',
-  'TimeDescending',
-  'IngredientsCountAscending',
-  'IngredientsCountDescending'
-]
-export const defaultRecipesSortingMethod = recipesSortingMethods[0]
+import { RecipeSortingMethod, RecipesPageFilters, RecipesPageQueryParams } from '@/typings/recipesPage'
 
 export class RecipeList {
   fetching: boolean
@@ -37,13 +13,13 @@ export class RecipeList {
   totalCount: number | null
   hasNext: boolean | null
   search: string
-  filters: RecipePageFilters
-  orderMethod: string
+  filters: RecipesPageFilters
+  orderMethod: RecipeSortingMethod
   filterOptions: object
   orderMethodOptions: Array<string>
   defaultOrderMethod: string
 
-  constructor(orderMethod?: string, filters?: RecipePageFilters, search?: string) {
+  constructor(orderMethod?: RecipeSortingMethod, filters?: RecipesPageFilters, search?: string) {
     this.fetching = false
     this.fetchingPages = {}
     this.pagesTo = null
@@ -125,7 +101,7 @@ export class RecipeList {
   }
 }
 
-export const parseFilters = (filters: RecipePageFilters) => {
+export const parseFilters = (filters: RecipesPageFilters) => {
   const renamedFilters = {}
   if (typeof filters === 'object' && filters !== null) {
     Object.entries(filters).forEach(([group, value]) => {
@@ -139,9 +115,9 @@ export const parseFilters = (filters: RecipePageFilters) => {
 
 export const fetchRecipesQueryParams = (
   orderMethod: string | null,
-  filters: RecipePageFilters,
+  filters: RecipesPageFilters,
   search: string | null
-): RecipePageQueryParams => {
+): RecipesPageQueryParams => {
   const paramsWithNullItems = {
     // pageNumber: null,
     search: search,
@@ -156,11 +132,13 @@ export const fetchRecipesQueryParams = (
   )
 }
 
-export const queryParamsFromRouteQuery = (routeQuery: { [key: string]: string | Array<string> }): RecipePageQueryParams => {
+export const queryParamsFromRouteQuery = (routeQuery: { [key: string]: string | Array<string> }): RecipesPageQueryParams => {
   if (routeQuery) {
-    return Object.fromEntries(
+    const result = Object.fromEntries(
       Object.entries(routeQuery).filter(([key]) => key === 'search' || key === 'orderMethod' || key.startsWith('filters.'))
     )
+
+    return result
   }
 
   return null

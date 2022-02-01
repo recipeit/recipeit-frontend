@@ -5,7 +5,7 @@
   "scripts": {
     "serve": "vite",
     "build": "vite build",
-    "lint": "eslint --ext .js,.ts,.vue --ignore-path .gitignore --fix src",
+    "lint": "eslint --ext .js,.ts,.vue --ignore-path .gitignore src",
     "type-check": "vue-tsc --noEmit"
   },
   "dependencies": {
@@ -62,7 +62,7 @@
     "eslint-plugin-vue": "^8.4.0",
     "fs-extra": "^10.0.0",
     "markdown-it": "^12.3.2",
-    "prettier": "^1.19.1",
+    "prettier": "^2.5.1",
     "sass": "^1.49.0",
     "typescript": "^4.5.5",
     "vite-plugin-pwa": "^0.11.13",

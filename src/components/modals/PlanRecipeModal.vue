@@ -48,6 +48,8 @@ import uniqueID from '@/functions/uniqueID'
 
 import { useRecipesStore } from '@/stores/recipes'
 
+import { DateYMString } from '@/typings/date'
+
 export default defineComponent({
   components: {
     Field,
@@ -73,7 +75,7 @@ export default defineComponent({
     const days = Array.from({ length: 7 }, (_, i) => {
       const day = dayjs().add(i, 'days')
       return {
-        value: day.format('YYYY-MM-DD'),
+        value: day.format('YYYY-MM-DD') as DateYMString,
         label: day.calendar()
       }
     })
@@ -89,41 +91,35 @@ export default defineComponent({
     })
 
     const schema = Yup.object({
-      day: Yup.object()
-        .required('REQUIRED')
-        .typeError('REQUIRED'),
-      timeOfDay: Yup.string()
-        .required('REQUIRED')
-        .typeError('REQUIRED')
+      day: Yup.object().required('REQUIRED').typeError('REQUIRED'),
+      timeOfDay: Yup.string().required('REQUIRED').typeError('REQUIRED')
     })
 
     // methods
-    const planRecipe = ({ day, timeOfDay }) => {
+    const planRecipe = async ({ day, timeOfDay }) => {
       data.sending = true
       data.errorList = null
 
-      const preparedData = {
-        recipeId: props.recipeId,
-        day: day.value,
-        timeOfDay: timeOfDay
-      }
+      try {
+        const {
+          data: { success, errors }
+        } = await recipesStore.addRecipeToPlanned({
+          recipeId: props.recipeId,
+          day: day.value,
+          timeOfDay: timeOfDay
+        })
 
-      recipesStore
-        .addRecipeToPlanned(preparedData)
-        .then(({ data: { success, errors } }) => {
-          if (success) {
-            emit('close')
-          } else {
-            data.errorList = errors || ['coś poszło nie tak']
-          }
-        })
-        .catch(error => {
-          const responseErrors = error.response?.data?.errors
-          data.errorList = responseErrors || ['coś poszło nie tak']
-        })
-        .finally(() => {
-          data.sending = false
-        })
+        if (success) {
+          emit('close')
+        } else {
+          data.errorList = errors || ['coś poszło nie tak']
+        }
+      } catch (error) {
+        const responseErrors = error.response?.data?.errors
+        data.errorList = responseErrors || ['coś poszło nie tak']
+      } finally {
+        data.sending = false
+      }
     }
 
     return {

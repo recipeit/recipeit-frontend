@@ -1,3 +1,5 @@
+const prettierConfig = require('./.prettierrc.js')
+
 module.exports = {
   root: true,
   env: {
@@ -27,13 +29,6 @@ module.exports = {
     //     allowSeparatedGroups: true
     //   }
     // ],
-    'prettier/prettier': [
-      'error',
-      {
-        singleQuote: true,
-        semi: false,
-        printWidth: 140
-      }
-    ]
+    'prettier/prettier': ['error', prettierConfig]
   }
 }

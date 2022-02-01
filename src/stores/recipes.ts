@@ -8,6 +8,7 @@ import { FINISHED_DIRECTIONS_STORAGE_KEY } from '@/configs/storage'
 import toastPlugin from '@/plugins/toast'
 import { ToastType } from '@/plugins/toast/toastType'
 
+import { DateYMDString } from '@/typings/date'
 import { RecipeEntity } from '@/typings/entities'
 import { DetailedRecipe } from '@/typings/recipe'
 
@@ -76,7 +77,7 @@ export const useRecipesStore = defineStore('recipes', {
       }
     },
 
-    async addRecipeToPlanned({ recipeId, day, timeOfDay }) {
+    async addRecipeToPlanned({ recipeId, day, timeOfDay }: { recipeId: RecipeEntity['id']; day: DateYMDString; timeOfDay: string }) {
       const response = await userApi.addRecipeToPlanned(recipeId, { day, timeOfDay })
 
       toastPlugin.toast.show('Przepis zaplanowany!', ToastType.SUCCESS)

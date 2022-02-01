@@ -1,6 +1,7 @@
 import { ADDITIONAL_AMOUNT_VALUES } from '@/configs/amount'
 
 import errorCodes from '@/constants/errorCodes'
+import { RECIPE_FILTER_GROUPS, RECIPE_SORTING_METHODS } from '@/constants/filters'
 import recipeCategories from '@/constants/recipeCategories'
 import timesOfDay from '@/constants/timesOfDay'
 
@@ -51,25 +52,25 @@ export default {
       purchaseAllDialogTitle: 'Czy na pewno chcesz przenieść {products} do swojej kuchni?'
     },
     recipesSortingMethods: {
-      Newest: 'najnowszych',
-      NameAscending: 'nazwy: od A do Z',
-      NameDescending: 'nazwy: od Z do A',
-      TimePreparingAscending: 'czasu przygotowania: rosnąco',
-      TimePreparingDescending: 'czasu przygotowania: malejąco',
-      IngredientsCountAscending: 'liczby składników: rosnąco',
-      IngredientsCountDescending: 'liczby składników: malejąco',
-      MissingIngredientsAscending: 'liczby brakujących składników: rosnąco',
-      MissingIngredientsDescending: 'liczby brakujących składników: malejąco'
+      [RECIPE_SORTING_METHODS.NEWEST]: 'najnowszych',
+      [RECIPE_SORTING_METHODS.NAME_ASCENDING]: 'nazwy: od A do Z',
+      [RECIPE_SORTING_METHODS.NAME_DESCENDING]: 'nazwy: od Z do A',
+      [RECIPE_SORTING_METHODS.TIME_PREPARING_ASCENDING]: 'czasu przygotowania: rosnąco',
+      [RECIPE_SORTING_METHODS.TIME_PREPARING_DESCENDING]: 'czasu przygotowania: malejąco',
+      [RECIPE_SORTING_METHODS.INGREDIENT_COUNT_ASCENDING]: 'liczby składników: rosnąco',
+      [RECIPE_SORTING_METHODS.INGREDIENT_COUNT_DESCENDING]: 'liczby składników: malejąco',
+      [RECIPE_SORTING_METHODS.MISSING_INGREDIENT_ASCENDING]: 'liczby brakujących składników: rosnąco',
+      [RECIPE_SORTING_METHODS.MISSING_INGREDIENT_DESCENDING]: 'liczby brakujących składników: malejąco'
     },
     recipeFilterGroups: {
-      Other: 'Twoje',
-      Daytime: 'Pora dnia',
-      Type: 'Typ',
-      Occasion: 'Okazja',
-      Cuisine: 'Kuchnie świata',
-      Diet: 'Dieta',
-      Allergens: 'Wyklucz alergeny',
-      BaseProducts: 'Wymagane składniki'
+      [RECIPE_FILTER_GROUPS.OTHER]: 'Twoje',
+      [RECIPE_FILTER_GROUPS.DAYTIME]: 'Pora dnia',
+      [RECIPE_FILTER_GROUPS.TYPE]: 'Typ',
+      [RECIPE_FILTER_GROUPS.OCCASION]: 'Okazja',
+      [RECIPE_FILTER_GROUPS.CUISINE]: 'Kuchnie świata',
+      [RECIPE_FILTER_GROUPS.DIET]: 'Dieta',
+      [RECIPE_FILTER_GROUPS.ALLERGENS]: 'Wyklucz alergeny',
+      [RECIPE_FILTER_GROUPS.BASE_PRODUCTS]: 'Wymagane składniki'
     },
     recipeCategory: {
       // DayTime

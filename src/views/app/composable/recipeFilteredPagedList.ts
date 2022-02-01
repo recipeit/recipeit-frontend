@@ -1,22 +1,17 @@
-import { onBeforeMount, Ref, ref } from 'vue'
+import { onBeforeMount, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 import { ERROR_ACTION_TAG_NAME } from '@/configs/error'
 
-import {
-  fetchRecipesQueryParams,
-  queryParamsFromRouteQuery,
-  RecipeList,
-  RecipePageFilters,
-  RecipePageParams,
-  RecipePageQueryParams
-} from '@/constants'
+import { fetchRecipesQueryParams, queryParamsFromRouteQuery, RecipeList } from '@/constants'
 
 import { useErrorHandler } from '@/error'
 
+import { RecipeSortingMethod, RecipesPageFilters, RecipesPageParams, RecipesPageQueryParams } from '@/typings/recipesPage'
+
 export default apiEndpoint => {
   const recipes = ref(new RecipeList())
-  const initialQueryParams: Ref<RecipePageQueryParams> = ref(null)
+  const initialQueryParams = ref<RecipesPageQueryParams>(null)
   const recipesErrors = ref(null)
   const router = useRouter()
   const route = useRoute()
@@ -33,18 +28,18 @@ export default apiEndpoint => {
     }
   }
 
-  const reloadRecipes = ({ orderMethod, filters, search }: RecipePageParams = {}) => {
+  const reloadRecipes = ({ orderMethod, filters, search }: RecipesPageParams = {}) => {
     recipes.value = new RecipeList(orderMethod, filters, search)
   }
 
-  const reloadRecipesWithQuery = (query: RecipePageQueryParams) => {
+  const reloadRecipesWithQuery = (query: RecipesPageQueryParams) => {
     initialQueryParams.value = query
     reloadRecipes()
   }
 
   const fetchRecipesPage = async (
-    orderMethod?: string,
-    filters?: RecipePageFilters,
+    orderMethod?: RecipeSortingMethod,
+    filters?: RecipesPageFilters,
     search?: string,
     pageNumber?: number,
     updateRoute?: boolean
@@ -53,7 +48,7 @@ export default apiEndpoint => {
     return await fetchRecipesPageWithQuery(queryParams, pageNumber, updateRoute)
   }
 
-  const fetchRecipesPageWithQuery = async (queryParams?: RecipePageQueryParams, pageNumber?: number, updateRoute?: boolean) => {
+  const fetchRecipesPageWithQuery = async (queryParams?: RecipesPageQueryParams, pageNumber?: number, updateRoute?: boolean) => {
     recipes.value.fetchingPages[pageNumber] = true
     recipesErrors.value = null
 
