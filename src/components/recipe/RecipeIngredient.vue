@@ -41,8 +41,6 @@
 <script lang="ts">
 import { computed, defineComponent, markRaw, PropType, reactive, toRefs } from 'vue'
 
-import { IngredientUserState } from '@/enums/recipeIngredient'
-
 import { stringifiedAmount } from '@/functions/amount'
 
 import { useModal } from '@/plugins/global-sheet-modal'
@@ -52,7 +50,7 @@ import { ToastType } from '@/plugins/toast/toastType'
 import { useShoppingListStore } from '@/stores/shoppingList'
 import { useIngredientsStore } from '@/stores/ingredients'
 
-import { RecipeIngredientWithUserState } from '@/typings/recipe'
+import { RecipeIngredientWithUserState } from '@/typings/recipes'
 
 import Dialog from '@/components/modals/Dialog.vue'
 import SelectBaseProductFromArrayModal from '@/components/modals/SelectBaseProductFromArrayModal.vue'
@@ -111,19 +109,19 @@ export default defineComponent({
     })
 
     const showLoadingState = computed(() => {
-      return data.loading || (props.allAdding && props.ingredient.state === IngredientUserState.Unavailable)
+      return data.loading || (props.allAdding && props.ingredient.state === 'UNAVAILABLE')
     })
 
     const actionPopperContent = computed(() => {
       const { state } = props.ingredient
 
-      if (state === IngredientUserState.InKitchen) {
+      if (state === 'IN_KITCHEN') {
         return 'Posiadasz ten produkt w swojej kuchni'
       }
-      if (state === IngredientUserState.InShoppingList) {
+      if (state === 'IN_SHOPPING_LIST') {
         return 'Posiadasz ten produkt na liście zakupów'
       }
-      if (state === IngredientUserState.Unavailable) {
+      if (state === 'UNAVAILABLE') {
         return 'Dodaj do listy zakupów'
       }
       return null
@@ -174,11 +172,10 @@ export default defineComponent({
     const stateClickHandler = () => {
       const ingredient = props.ingredient
 
-      if (ingredient.state === IngredientUserState.InKitchen || ingredient.state === IngredientUserState.InShoppingList) {
-        const title =
-          ingredient.state === IngredientUserState.InKitchen ? 'Posiadasz już ten produkt' : 'Posiadasz już ten produkt na liście zakupów'
+      if (ingredient.state === 'IN_KITCHEN' || ingredient.state === 'IN_SHOPPING_LIST') {
+        const title = ingredient.state === 'IN_KITCHEN' ? 'Posiadasz już ten produkt' : 'Posiadasz już ten produkt na liście zakupów'
         const content =
-          ingredient.state === IngredientUserState.InKitchen
+          ingredient.state === 'IN_KITCHEN'
             ? 'Czy mimo to, chcesz dodać do listy zakupów?'
             : 'Czy mimo to, chcesz dodać go jeszcze raz do listy zakupów?'
         modal.show(
@@ -197,7 +194,7 @@ export default defineComponent({
             }
           }
         )
-      } else if (ingredient.state === IngredientUserState.Unavailable) {
+      } else if (ingredient.state === 'UNAVAILABLE') {
         addProductToShoppingList()
       }
     }

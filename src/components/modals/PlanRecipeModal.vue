@@ -17,7 +17,7 @@
           />
         </Field>
         <Field v-slot="{ field, errors }" name="timeOfDay">
-          <BaseSelect :searchable="false" placeholder="Pora dnia" v-bind="field" :errors="errors" :options="timesOfDay">
+          <BaseSelect :searchable="false" placeholder="Pora dnia" v-bind="field" :errors="errors" :options="TimesOfDay">
             <template #label="{ option }">{{ $t(`timeOfDay.${option}`) }}</template>
             <template #option="{ option }">{{ $t(`timeOfDay.${option}`) }}</template>
           </BaseSelect>
@@ -41,14 +41,14 @@ import { Field, Form } from 'vee-validate'
 import { defineComponent, reactive, toRefs } from 'vue'
 import * as Yup from 'yup'
 
-import { TimeOfDay } from '@/enums/timesOfDay'
+import { TimesOfDay } from '@/constants/timesOfDay'
 
 import dayjs from '@/functions/dayjs'
 import uniqueID from '@/functions/uniqueID'
 
 import { useRecipesStore } from '@/stores/recipes'
 
-import { DateYMString } from '@/typings/date'
+import { DateYMString } from '@/typings/dates'
 
 export default defineComponent({
   components: {
@@ -71,7 +71,6 @@ export default defineComponent({
 
     // consts
     const formID = 'form-' + uniqueID().getID()
-    const timesOfDay = Object.values(TimeOfDay)
     const days = Array.from({ length: 7 }, (_, i) => {
       const day = dayjs().add(i, 'days')
       return {
@@ -81,7 +80,7 @@ export default defineComponent({
     })
     const initialValues = {
       day: days[0],
-      timeOfDay: timesOfDay[0]
+      timeOfDay: TimesOfDay[0]
     }
 
     // data
@@ -125,7 +124,7 @@ export default defineComponent({
     return {
       // consts
       formID,
-      timesOfDay,
+      TimesOfDay,
       days,
       initialValues,
       // data

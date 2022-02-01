@@ -7,7 +7,7 @@ import ingredientsApi from '@/api/ingredientsApi'
 import { PRODUCT_CATEGORY_ORDER } from '@/configs/productCategories'
 
 import { BaseProductEntity } from '@/typings/entities'
-import { UnitGroup } from '@/typings/unit'
+import { UnitGroup } from '@/typings/units'
 
 type IngredientsStoreState = {
   baseProducts: Array<BaseProductEntity>

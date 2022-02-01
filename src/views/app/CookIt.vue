@@ -113,7 +113,7 @@ import userApi from '@/api/userApi'
 
 import { useMyKitchenStore } from '@/stores/myKitchen'
 
-import { RecipesPageParams } from '@/typings/recipesPage'
+import { RecipesFilteredPageParams } from '@/typings/recipesPage'
 
 import recipeFilteredPagedList from '@/views/app/composable/recipeFilteredPagedList'
 
@@ -145,8 +145,8 @@ export default defineComponent({
     const kitchenProductsCount = computed(() => myKitchenStore.products?.length || 0)
 
     // methods
-    const reloadRecipes = (query: RecipesPageParams = {}) => {
-      const newQuery: RecipesPageParams = { ...query }
+    const reloadRecipes = (query: RecipesFilteredPageParams = {}) => {
+      const newQuery: RecipesFilteredPageParams = { ...query }
 
       recipesList.reloadRecipes(newQuery)
 

@@ -37,7 +37,7 @@ import userApi from '@/api/userApi'
 
 import { fetchRecipesQueryParams, queryParamsFromRouteQuery } from '@/constants'
 
-import { RecipesPageParams } from '@/typings/recipesPage'
+import { RecipesFilteredPageParams } from '@/typings/recipesPage'
 
 import recipeFilteredPagedList from '@/views/app/composable/recipeFilteredPagedList'
 
@@ -68,7 +68,7 @@ export default defineComponent({
 
     const recipesList = recipeFilteredPagedList(recipeApi.getRecipes)
 
-    const fetchAvailableRecipesCount = async ({ orderMethod, filters, search }: RecipesPageParams = {}) => {
+    const fetchAvailableRecipesCount = async ({ orderMethod, filters, search }: RecipesFilteredPageParams = {}) => {
       console.log({ orderMethod, filters, search })
       availableRecipesCount.value = null
       const queryParams = fetchRecipesQueryParams(orderMethod, filters, search)

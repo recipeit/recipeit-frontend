@@ -1,5 +1,3 @@
-import recipeCategories from '@/constants/recipeCategories'
-
 import breakfastImage from '@/assets/img/categories/breakfast.webp'
 import dinnerImage from '@/assets/img/categories/dinner.webp'
 import supperImage from '@/assets/img/categories/supper.webp'
@@ -14,18 +12,20 @@ import casseroleImage from '@/assets/img/categories/casserole.webp'
 import cuisineItalianImage from '@/assets/img/categories/cuisine-italian.webp'
 import cuisineThaiImage from '@/assets/img/categories/cuisine-thai.webp'
 
-export const CATEGORY_IMAGES = {
-  [recipeCategories.BREAKFAST]: breakfastImage,
-  [recipeCategories.DINNER]: dinnerImage,
-  [recipeCategories.SUPPER]: supperImage,
+import { RecipeCategory } from '@/typings/recipeCategories'
 
-  [recipeCategories.CAKE]: cakeImage,
-  [recipeCategories.DESSERT]: dessertImage,
-  [recipeCategories.SNACK]: snackImage,
-  [recipeCategories.PASTA]: pastaImage,
-  [recipeCategories.SALAD]: saladImage,
-  [recipeCategories.CASSEROLE]: casseroleImage,
+export const CATEGORY_IMAGES: { [key in RecipeCategory]?: string } = {
+  Breakfast: breakfastImage,
+  Dinner: dinnerImage,
+  Supper: supperImage,
 
-  [recipeCategories.CUISINE_ITALIAN]: cuisineItalianImage,
-  [recipeCategories.CUISINE_THAI]: cuisineThaiImage
+  Cake: cakeImage,
+  Dessert: dessertImage,
+  Snack: snackImage,
+  Pasta: pastaImage,
+  Salad: saladImage,
+  Casserole: casseroleImage,
+
+  CuisineItalian: cuisineItalianImage,
+  CuisineThai: cuisineThaiImage
 }

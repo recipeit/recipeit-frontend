@@ -66,7 +66,7 @@
               :key="option.value"
               v-model="selected[groupValue]"
               :value="option.key"
-              :excluding="group.type === 'None'"
+              :excluding="group.type === 'NONE'"
               class="filter__group__option"
               @click="pillCheckboxClickHandler($event)"
             >

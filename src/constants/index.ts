@@ -1,109 +1,7 @@
-// TODO są to paramy w sumie bez strony więc ni wiem
+import { ProductCategory } from '@/typings/productCategories'
+import { RecipeFilterKeyAsQueryParam, RecipeFilters, RecipesFilteredPageQueryParams } from '@/typings/recipesPage'
 
-import { RecipeSortingMethod } from '@/enums/filters'
-
-import { RecipeEntity } from '@/typings/entities'
-import { RecipesPageFilters, RecipesPageQueryParams } from '@/typings/recipesPage'
-
-export class RecipeList {
-  fetching: boolean
-  fetchingPages: { [key: number]: boolean }
-  pagesTo: number | null
-  items: Array<RecipeEntity>
-  pagedItems: { [key: number]: Array<RecipeEntity> }
-  totalPages: number | null
-  totalCount: number | null
-  hasNext: boolean | null
-  search: string
-  filters: RecipesPageFilters
-  orderMethod: RecipeSortingMethod
-  filterOptions: object
-  orderMethodOptions: Array<string>
-  defaultOrderMethod: string
-
-  constructor(orderMethod?: RecipeSortingMethod, filters?: RecipesPageFilters, search?: string) {
-    this.fetching = false
-    this.fetchingPages = {}
-    this.pagesTo = null
-    this.items = null
-    this.pagedItems = {}
-    this.totalPages = null
-    this.totalCount = null
-    this.hasNext = null
-    this.search = search || null
-    this.filters = filters || {}
-    this.orderMethod = orderMethod || null
-    this.filterOptions = null
-    this.orderMethodOptions = null
-    this.defaultOrderMethod = null
-  }
-
-  setFromApi({
-    fetching,
-    items,
-    currentPage,
-    totalPages,
-    totalCount,
-    hasNext,
-    search,
-    orderMethod,
-    filters,
-    orderMethodOptions,
-    filterOptions,
-    defaultOrderMethod
-  }) {
-    this.fetching = fetching
-    this.items = [...items]
-    this.pagedItems = {
-      [currentPage]: items
-    }
-    this.pagesTo = currentPage
-    this.totalPages = totalPages
-    this.totalCount = totalCount
-    this.hasNext = hasNext
-    this.search = search
-    this.orderMethod = orderMethod
-    this.filters = filters
-    this.orderMethodOptions = orderMethodOptions
-    this.filterOptions = filterOptions
-    this.defaultOrderMethod = defaultOrderMethod
-  }
-
-  addFromApi({
-    fetching,
-    items,
-    currentPage,
-    totalPages,
-    totalCount,
-    hasNext,
-    search,
-    orderMethod,
-    filters,
-    orderMethodOptions,
-    filterOptions,
-    defaultOrderMethod
-  }) {
-    if (this.items !== null) {
-      this.items.push(...items)
-    } else {
-      this.items = [...items]
-    }
-    this.pagedItems[currentPage] = items
-    this.fetching = fetching
-    this.pagesTo = currentPage
-    this.totalPages = totalPages
-    this.totalCount = totalCount
-    this.hasNext = hasNext
-    this.search = search
-    this.orderMethod = orderMethod
-    this.filters = filters
-    this.orderMethodOptions = orderMethodOptions
-    this.filterOptions = filterOptions
-    this.defaultOrderMethod = defaultOrderMethod
-  }
-}
-
-export const parseFilters = (filters: RecipesPageFilters) => {
+export const parseFilters = (filters: RecipeFilters): { [key in RecipeFilterKeyAsQueryParam]?: string } => {
   const renamedFilters = {}
   if (typeof filters === 'object' && filters !== null) {
     Object.entries(filters).forEach(([group, value]) => {
@@ -117,9 +15,9 @@ export const parseFilters = (filters: RecipesPageFilters) => {
 
 export const fetchRecipesQueryParams = (
   orderMethod: string | null,
-  filters: RecipesPageFilters,
+  filters: RecipeFilters,
   search: string | null
-): RecipesPageQueryParams => {
+): RecipesFilteredPageQueryParams => {
   const paramsWithNullItems = {
     // pageNumber: null,
     search: search,
@@ -134,7 +32,7 @@ export const fetchRecipesQueryParams = (
   )
 }
 
-export const queryParamsFromRouteQuery = (routeQuery: { [key: string]: string | Array<string> }): RecipesPageQueryParams => {
+export const queryParamsFromRouteQuery = (routeQuery: { [key: string]: string | Array<string> }): RecipesFilteredPageQueryParams => {
   if (routeQuery) {
     const result = Object.fromEntries(
       Object.entries(routeQuery).filter(([key]) => key === 'search' || key === 'orderMethod' || key.startsWith('filters.'))
@@ -149,7 +47,7 @@ export const queryParamsFromRouteQuery = (routeQuery: { [key: string]: string | 
 export const STORAGE_TOKEN = 'token'
 export const STORAGE_REFRESH_TOKEN = 'refreshToken'
 
-export const PRODUCT_GROUP_ICONS = {
+export const PRODUCT_GROUP_ICONS: { [key in ProductCategory]: string } = {
   Others: 'food',
   Dairy: 'dairy-2',
   Vegetables: 'vegetables',

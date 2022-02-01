@@ -4,14 +4,16 @@
 
 <script lang="ts">
 import kebabCase from 'lodash.kebabcase'
-import { defineComponent } from 'vue'
+import { defineComponent, PropType } from 'vue'
 
 import { PRODUCT_GROUP_ICONS } from '@/constants'
+
+import { ProductCategory } from '@/typings/productCategories'
 
 export default defineComponent({
   props: {
     group: {
-      type: String,
+      type: String as PropType<ProductCategory>,
       required: true
     }
   },

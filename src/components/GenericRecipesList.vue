@@ -67,9 +67,7 @@
       </div>
 
       <div v-if="errors" class="recipes-errors">
-        <div class="recipes-errors-message">
-          Wystąpił błąd podczas wczytywania
-        </div>
+        <div class="recipes-errors-message">Wystąpił błąd podczas wczytywania</div>
         <BaseButton stroked @click="tryFetchOnError()">Spróbuj ponownie</BaseButton>
       </div>
     </template>
@@ -79,7 +77,8 @@
 <script lang="ts">
 import { computed, defineComponent, nextTick, onBeforeMount, onBeforeUnmount, onMounted, PropType, ref, watch } from 'vue'
 
-import { RecipeList } from '@/constants'
+import { RecipesFilteredPageState } from '@/models/RecipesFilteredPageState'
+import { RecipesPageState } from '@/models/RecipesPageState'
 
 import RecipeBox from '@/components/RecipeBox.vue'
 import SearchWithFilter from '@/components/SearchWithFilter.vue'
@@ -100,7 +99,7 @@ export default defineComponent({
 
   props: {
     recipes: {
-      type: Object as PropType<RecipeList>
+      type: Object as PropType<RecipesPageState & RecipesFilteredPageState> // TODO trzeba rozdzielić że albo to albo tamto
     },
     errors: {
       type: Object,

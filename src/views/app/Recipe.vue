@@ -2,13 +2,9 @@
   <div class="layout__page__content recipe-page">
     <div v-if="errors" class="error-page">
       <img class="error-image" src="@/assets/img/broccoli-sad.svg" alt="" />
-      <span class="error-text">
-        Ojjj... nie znaleźliśmy takiego przepisu
-      </span>
+      <span class="error-text"> Ojjj... nie znaleźliśmy takiego przepisu </span>
       <router-link v-slot="{ href, navigate }" :to="{ name: APP_HOME }" custom>
-        <BaseButton tag="a" :href="href" class="recipe-button" stroked @click="navigate($event)">
-          Wróć na stronę główną
-        </BaseButton>
+        <BaseButton tag="a" :href="href" class="recipe-button" stroked @click="navigate($event)"> Wróć na stronę główną </BaseButton>
       </router-link>
     </div>
     <div v-else-if="recipe && recipe.details" :class="['recipe', { 'recipe--hidden': isHidden }]">
@@ -132,17 +128,13 @@
             <BaseIcon class="plan-button__icon" icon="arrow-right" /> Przejdź do oryginału
           </BaseButton>
 
-          <BaseLink :href="reportLinkHref" color="text-secondary" class="report-link">
-            zgłoś błąd w przepisie
-          </BaseLink>
+          <BaseLink :href="reportLinkHref" color="text-secondary" class="report-link">zgłoś błąd w przepisie</BaseLink>
         </div>
 
         <BaseAdSenseAd />
       </div>
     </div>
-    <div v-else>
-      Wczytuję...
-    </div>
+    <div v-else>Wczytuję...</div>
   </div>
 </template>
 
@@ -173,7 +165,7 @@ import { useShoppingListStore } from '@/stores/shoppingList'
 import { useUserStore } from '@/stores/user'
 
 import { RecipeEntity } from '@/typings/entities'
-import { DetailedRecipe } from '@/typings/recipe'
+import { DetailedRecipe } from '@/typings/recipes'
 
 import FavouriteIcon from '@/components/FavouriteIcon.vue'
 import Rating from '@/components/Rating.vue'

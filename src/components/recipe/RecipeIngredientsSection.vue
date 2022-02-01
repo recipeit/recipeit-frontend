@@ -52,13 +52,12 @@
 <script lang="ts">
 import { computed, defineComponent, PropType, ref } from 'vue'
 
-import { IngredientUserState } from '@/enums/recipeIngredient'
-
 import { useMyKitchenStore } from '@/stores/myKitchen'
 import { useShoppingListStore } from '@/stores/shoppingList'
 
 import { RecipeEntity } from '@/typings/entities'
-import { DetailedRecipe, RecipeIngredientGroups, RecipeIngredientWithUserState } from '@/typings/recipe'
+import { DetailedRecipe, RecipeIngredientGroups, RecipeIngredientWithUserState } from '@/typings/recipes'
+import { IngredientUserState } from '@/typings/recipeIngredients'
 
 import SectionTitle from '@/components/SectionTitle.vue'
 import RecipeIngredient from '@/components/recipe/RecipeIngredient.vue'
@@ -122,13 +121,13 @@ export default defineComponent({
             let state: IngredientUserState
 
             if (!baseProductIdsArray) {
-              state = IngredientUserState.None
+              state = 'NONE'
             } else if (isInMyKitchen(baseProductIdsArray)) {
-              state = IngredientUserState.InKitchen
+              state = 'IN_KITCHEN'
             } else if (isInShoppingList(baseProductIdsArray)) {
-              state = IngredientUserState.InShoppingList
+              state = 'IN_SHOPPING_LIST'
             } else {
-              state = IngredientUserState.Unavailable
+              state = 'UNAVAILABLE'
             }
 
             return {
@@ -145,7 +144,7 @@ export default defineComponent({
 
       return Object.values(ingredients.value)
         .flatMap(value => value.map(i => i.state))
-        .includes(IngredientUserState.Unavailable)
+        .includes('UNAVAILABLE')
     })
 
     const addMissingIngredientsToShoppingList = async () => {

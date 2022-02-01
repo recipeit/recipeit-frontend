@@ -2,28 +2,11 @@ import { AxiosResponse } from 'axios'
 
 import apiClient from '@/api/apiClient'
 
-import { DateYMDString } from '@/typings/date'
+import { DateYMDString } from '@/typings/dates'
 import { BlogEntity, RecipeEntity } from '@/typings/entities'
-import { RecipesPageQueryParams } from '@/typings/recipesPage'
+import { RecipesPageQueryParams, RecipesFilteredPage, RecipesPage, RecipesFilteredPageQueryParams } from '@/typings/recipesPage'
 
 const route = 'user'
-
-type Recipe = {
-  slug: string
-  name: string
-}
-
-type RecipesFilteredPage = {
-  items: Array<Recipe>
-}
-
-type RecipesPage = {
-  items: Array<Recipe>
-}
-
-type PagedListRequestQuery = {
-  pageNumber?: number
-}
 
 export type AddRecipeToPlannedRequestBody = {
   day: DateYMDString
@@ -31,22 +14,22 @@ export type AddRecipeToPlannedRequestBody = {
 }
 
 export default {
-  getAvailableRecipesCount(queryParams?: RecipesPageQueryParams) {
-    return apiClient.get(`/${route}/available-recipes/count`, {
+  getAvailableRecipesCount(queryParams?: RecipesFilteredPageQueryParams) {
+    return apiClient.get<number>(`/${route}/available-recipes/count`, {
       params: queryParams
     })
   },
-  getAvailableRecipes(queryParams?: RecipesPageQueryParams) {
-    return apiClient.get(`/${route}/available-recipes`, {
+  getAvailableRecipes(queryParams?: RecipesFilteredPageQueryParams) {
+    return apiClient.get<RecipesFilteredPage>(`/${route}/available-recipes`, {
       params: queryParams
     })
   },
-  getAlmostAvailableRecipes(queryParams?: RecipesPageQueryParams): Promise<AxiosResponse<RecipesFilteredPage>> {
-    return apiClient.get(`/${route}/almost-available-recipes`, {
+  getAlmostAvailableRecipes(queryParams?: RecipesFilteredPageQueryParams) {
+    return apiClient.get<RecipesFilteredPage>(`/${route}/almost-available-recipes`, {
       params: queryParams
     })
   },
-  getFavouriteRecipes(queryParams?: PagedListRequestQuery): Promise<AxiosResponse<RecipesPage>> {
+  getFavouriteRecipes(queryParams?: RecipesPageQueryParams): Promise<AxiosResponse<RecipesPage>> {
     return apiClient.get(`/${route}/favourite-recipes`, {
       params: queryParams
     })
@@ -79,15 +62,15 @@ export default {
     return apiClient.post(`/${route}/blog-visibility/${id}`, { visible })
   },
   getHiddenRecipes() {
-    return apiClient.get(`/${route}/hidden-recipes`)
+    return apiClient.get<{ recipes: Array<RecipeEntity> }>(`/${route}/hidden-recipes`)
   },
   getHiddenBlogs() {
-    return apiClient.get(`/${route}/hidden-blogs`)
+    return apiClient.get<{ blogs: Array<BlogEntity> }>(`/${route}/hidden-blogs`)
   },
   getHiddenRecipeIds() {
-    return apiClient.get(`/${route}/hidden-recipes/ids`)
+    return apiClient.get<{ recipeIds: Array<string> }>(`/${route}/hidden-recipes/ids`)
   },
   getHiddenBlogIds() {
-    return apiClient.get(`/${route}/hidden-blogs/ids`)
+    return apiClient.get<{ blogIds: Array<string> }>(`/${route}/hidden-blogs/ids`)
   }
 }

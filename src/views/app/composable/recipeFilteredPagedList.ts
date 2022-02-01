@@ -1,19 +1,22 @@
+import { AxiosResponse } from 'axios'
 import { onBeforeMount, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 import { ERROR_ACTION_TAG_NAME } from '@/configs/error'
 
-import { fetchRecipesQueryParams, queryParamsFromRouteQuery, RecipeList } from '@/constants'
+import { fetchRecipesQueryParams, queryParamsFromRouteQuery } from '@/constants'
 
-import { RecipeSortingMethod } from '@/enums/filters'
+import { RecipeSortingMethod } from '@/typings/recipeFilters'
 
 import { useErrorHandler } from '@/error'
 
-import { RecipesPageFilters, RecipesPageParams, RecipesPageQueryParams } from '@/typings/recipesPage'
+import { RecipesFilteredPageState } from '@/models/RecipesFilteredPageState'
 
-export default apiEndpoint => {
-  const recipes = ref(new RecipeList())
-  const initialQueryParams = ref<RecipesPageQueryParams>(null)
+import { RecipeFilters, RecipesFilteredPage, RecipesFilteredPageParams, RecipesFilteredPageQueryParams } from '@/typings/recipesPage'
+
+export default (apiEndpoint: (query?: unknown) => Promise<AxiosResponse<RecipesFilteredPage>>) => {
+  const recipes = ref(new RecipesFilteredPageState())
+  const initialQueryParams = ref<RecipesFilteredPageQueryParams>(null)
   const recipesErrors = ref(null)
   const router = useRouter()
   const route = useRoute()
@@ -30,18 +33,18 @@ export default apiEndpoint => {
     }
   }
 
-  const reloadRecipes = ({ orderMethod, filters, search }: RecipesPageParams = {}) => {
-    recipes.value = new RecipeList(orderMethod, filters, search)
+  const reloadRecipes = ({ orderMethod, filters, search }: RecipesFilteredPageParams = {}) => {
+    recipes.value = new RecipesFilteredPageState(orderMethod, filters, search)
   }
 
-  const reloadRecipesWithQuery = (query: RecipesPageQueryParams) => {
+  const reloadRecipesWithQuery = (query: RecipesFilteredPageQueryParams) => {
     initialQueryParams.value = query
     reloadRecipes()
   }
 
   const fetchRecipesPage = async (
     orderMethod?: RecipeSortingMethod,
-    filters?: RecipesPageFilters,
+    filters?: RecipeFilters,
     search?: string,
     pageNumber?: number,
     updateRoute?: boolean
@@ -50,7 +53,7 @@ export default apiEndpoint => {
     return await fetchRecipesPageWithQuery(queryParams, pageNumber, updateRoute)
   }
 
-  const fetchRecipesPageWithQuery = async (queryParams?: RecipesPageQueryParams, pageNumber?: number, updateRoute?: boolean) => {
+  const fetchRecipesPageWithQuery = async (queryParams?: RecipesFilteredPageQueryParams, pageNumber?: number, updateRoute?: boolean) => {
     recipes.value.fetchingPages[pageNumber] = true
     recipesErrors.value = null
 

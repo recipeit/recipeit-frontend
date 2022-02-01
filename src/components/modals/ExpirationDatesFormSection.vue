@@ -36,8 +36,8 @@ import { computed, defineComponent, markRaw, PropType } from 'vue'
 
 import dayjs from '@/functions/dayjs'
 
-import { ExpirationDateForm } from '@/typings/expirationDate'
-import { DateYMDString } from '@/typings/date'
+import { ExpirationDateForm } from '@/typings/expirationDates'
+import { DateYMDString } from '@/typings/dates'
 
 import NewExpirationDateModal from '@/components/modals/NewExpirationDateModal.vue'
 import { useModal } from '@/plugins/global-sheet-modal'

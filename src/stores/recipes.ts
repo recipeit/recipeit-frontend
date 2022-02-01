@@ -8,9 +8,9 @@ import { FINISHED_DIRECTIONS_STORAGE_KEY } from '@/configs/storage'
 import toastPlugin from '@/plugins/toast'
 import { ToastType } from '@/plugins/toast/toastType'
 
-import { DateYMDString } from '@/typings/date'
+import { DateYMDString } from '@/typings/dates'
 import { RecipeEntity } from '@/typings/entities'
-import { DetailedRecipe } from '@/typings/recipe'
+import { DetailedRecipe } from '@/typings/recipes'
 
 type RecipesStoreState = {
   detailedRecipes: Array<DetailedRecipe>

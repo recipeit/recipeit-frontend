@@ -1,11 +1,12 @@
-import { defineConfig, loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { execSync } from 'child_process'
-import { buildMarkdowns } from './src/markdowns'
+import path from 'path'
+import { defineConfig, loadEnv } from 'vite'
 import { VitePWA } from 'vite-plugin-pwa'
 import viteSentry from 'vite-plugin-sentry'
 import svgLoader from 'vite-svg-loader'
-import path from 'path'
+
+import { buildMarkdowns } from './src/markdowns'
 
 export default ({ mode }) => {
   process.env = { ...process.env, ...loadEnv(mode, process.cwd()) }
@@ -14,9 +15,7 @@ export default ({ mode }) => {
 
   buildMarkdowns(!isProduction)
 
-  process.env.VUE_APP_VERSION = execSync('git rev-parse HEAD')
-    .toString()
-    .trim()
+  process.env.VUE_APP_VERSION = execSync('git rev-parse HEAD').toString().trim()
 
   const plugins = [
     vue(),

@@ -1,13 +1,16 @@
+import { AxiosResponse } from 'axios'
 import { ref } from 'vue'
 
 import { ERROR_ACTION_TAG_NAME } from '@/configs/error'
 
-import { RecipeList } from '@/constants'
-
 import { useErrorHandler } from '@/error'
 
-export default apiEndpoint => {
-  const recipes = ref(new RecipeList())
+import { RecipesPageState } from '@/models/RecipesPageState'
+
+import { RecipesPage } from '@/typings/recipesPage'
+
+export default (apiEndpoint: (query?: unknown) => Promise<AxiosResponse<RecipesPage>>) => {
+  const recipes = ref(new RecipesPageState())
   const recipesErrors = ref(null)
   const errorHandler = useErrorHandler()
 
@@ -16,7 +19,7 @@ export default apiEndpoint => {
   }
 
   const reloadRecipes = () => {
-    recipes.value = new RecipeList()
+    recipes.value = new RecipesPageState()
   }
 
   const fetchRecipesPage = async (pageNumber: number) => {
