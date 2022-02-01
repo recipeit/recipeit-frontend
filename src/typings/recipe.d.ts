@@ -1,4 +1,4 @@
-import { INGREDIENT_USER_STATES } from '@/configs/recipeIngredient'
+import { IngredientUserState } from '@/configs/recipeIngredient'
 
 import { RecipeEntity, RecipeIngredientEntity } from './entities'
 
@@ -23,10 +23,8 @@ export type DetailedRecipe = RecipeEntity & {
   details: RecipeDetailsViewModel
 }
 
-export type RecipeIngredientUserState = typeof INGREDIENT_USER_STATES[keyof typeof INGREDIENT_USER_STATES]
-
 export type RecipeIngredientWithUserState = RecipeIngredientEntity & {
-  state: RecipeIngredientUserState
+  state: IngredientUserState
 }
 
 export type RecipeIngredientGroups = {

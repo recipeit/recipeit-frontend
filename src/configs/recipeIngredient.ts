@@ -1,11 +1,6 @@
-const NONE = 'NONE'
-const IN_KITCHEN = 'IN_KITCHEN'
-const IN_SHOPPING_LIST = 'IN_SHOPPING_LIST'
-const UNAVAILABLE = 'UNAVAILABLE'
-
-export const INGREDIENT_USER_STATES = {
-  NONE,
-  IN_KITCHEN,
-  IN_SHOPPING_LIST,
-  UNAVAILABLE
-} as const
+export enum IngredientUserState {
+  None = 'NONE',
+  InKitchen = 'IN_KITCHEN',
+  InShoppingList = 'IN_SHOPPING_LIST',
+  Unavailable = 'UNAVAILABLE'
+}

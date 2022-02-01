@@ -41,7 +41,7 @@
 <script lang="ts">
 import { computed, defineComponent, markRaw, PropType, reactive, toRefs } from 'vue'
 
-import { INGREDIENT_USER_STATES } from '@/configs/recipeIngredient'
+import { IngredientUserState } from '@/configs/recipeIngredient'
 
 import { stringifiedAmount } from '@/functions/amount'
 
@@ -110,19 +110,19 @@ export default defineComponent({
     })
 
     const showLoadingState = computed(() => {
-      return data.loading || (props.allAdding && props.ingredient.state === INGREDIENT_USER_STATES.UNAVAILABLE)
+      return data.loading || (props.allAdding && props.ingredient.state === IngredientUserState.Unavailable)
     })
 
     const actionPopperContent = computed(() => {
       const { state } = props.ingredient
 
-      if (state === INGREDIENT_USER_STATES.IN_KITCHEN) {
+      if (state === IngredientUserState.InKitchen) {
         return 'Posiadasz ten produkt w swojej kuchni'
       }
-      if (state === INGREDIENT_USER_STATES.IN_SHOPPING_LIST) {
+      if (state === IngredientUserState.InShoppingList) {
         return 'Posiadasz ten produkt na liście zakupów'
       }
-      if (state === INGREDIENT_USER_STATES.UNAVAILABLE) {
+      if (state === IngredientUserState.Unavailable) {
         return 'Dodaj do listy zakupów'
       }
       return null
@@ -173,13 +173,11 @@ export default defineComponent({
     const stateClickHandler = () => {
       const ingredient = props.ingredient
 
-      if (ingredient.state === INGREDIENT_USER_STATES.IN_KITCHEN || ingredient.state === INGREDIENT_USER_STATES.IN_SHOPPING_LIST) {
+      if (ingredient.state === IngredientUserState.InKitchen || ingredient.state === IngredientUserState.InShoppingList) {
         const title =
-          ingredient.state === INGREDIENT_USER_STATES.IN_KITCHEN
-            ? 'Posiadasz już ten produkt'
-            : 'Posiadasz już ten produkt na liście zakupów'
+          ingredient.state === IngredientUserState.InKitchen ? 'Posiadasz już ten produkt' : 'Posiadasz już ten produkt na liście zakupów'
         const content =
-          ingredient.state === INGREDIENT_USER_STATES.IN_KITCHEN
+          ingredient.state === IngredientUserState.InKitchen
             ? 'Czy mimo to, chcesz dodać do listy zakupów?'
             : 'Czy mimo to, chcesz dodać go jeszcze raz do listy zakupów?'
         modal.show(
@@ -198,7 +196,7 @@ export default defineComponent({
             }
           }
         )
-      } else if (ingredient.state === INGREDIENT_USER_STATES.UNAVAILABLE) {
+      } else if (ingredient.state === IngredientUserState.Unavailable) {
         addProductToShoppingList()
       }
     }

@@ -52,13 +52,13 @@
 <script lang="ts">
 import { computed, defineComponent, PropType, ref } from 'vue'
 
-import { INGREDIENT_USER_STATES } from '@/configs/recipeIngredient'
+import { IngredientUserState } from '@/configs/recipeIngredient'
 
 import { useMyKitchenStore } from '@/stores/myKitchen'
 import { useShoppingListStore } from '@/stores/shoppingList'
 
 import { RecipeEntity } from '@/typings/entities'
-import { DetailedRecipe, RecipeIngredientGroups, RecipeIngredientUserState, RecipeIngredientWithUserState } from '@/typings/recipe'
+import { DetailedRecipe, RecipeIngredientGroups, RecipeIngredientWithUserState } from '@/typings/recipe'
 
 import SectionTitle from '@/components/SectionTitle.vue'
 import RecipeIngredient from '@/components/recipe/RecipeIngredient.vue'
@@ -119,16 +119,16 @@ export default defineComponent({
           key,
           value.map(ingredient => {
             const { baseProductIdsArray } = ingredient
-            let state: RecipeIngredientUserState
+            let state: IngredientUserState
 
             if (!baseProductIdsArray) {
-              state = INGREDIENT_USER_STATES.NONE
+              state = IngredientUserState.None
             } else if (isInMyKitchen(baseProductIdsArray)) {
-              state = INGREDIENT_USER_STATES.IN_KITCHEN
+              state = IngredientUserState.InKitchen
             } else if (isInShoppingList(baseProductIdsArray)) {
-              state = INGREDIENT_USER_STATES.IN_SHOPPING_LIST
+              state = IngredientUserState.InShoppingList
             } else {
-              state = INGREDIENT_USER_STATES.UNAVAILABLE
+              state = IngredientUserState.Unavailable
             }
 
             return {
@@ -145,7 +145,7 @@ export default defineComponent({
 
       return Object.values(ingredients.value)
         .flatMap(value => value.map(i => i.state))
-        .includes(INGREDIENT_USER_STATES.UNAVAILABLE)
+        .includes(IngredientUserState.Unavailable)
     })
 
     const addMissingIngredientsToShoppingList = async () => {
