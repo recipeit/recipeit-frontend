@@ -41,7 +41,7 @@
 <script lang="ts">
 import { computed, defineComponent, markRaw, PropType, reactive, toRefs } from 'vue'
 
-import { IngredientUserState } from '@/configs/recipeIngredient'
+import { IngredientUserState } from '@/enums/recipeIngredient'
 
 import { stringifiedAmount } from '@/functions/amount'
 
@@ -52,9 +52,10 @@ import { ToastType } from '@/plugins/toast/toastType'
 import { useShoppingListStore } from '@/stores/shoppingList'
 import { useIngredientsStore } from '@/stores/ingredients'
 
+import { RecipeIngredientWithUserState } from '@/typings/recipe'
+
 import Dialog from '@/components/modals/Dialog.vue'
 import SelectBaseProductFromArrayModal from '@/components/modals/SelectBaseProductFromArrayModal.vue'
-import { RecipeIngredientWithUserState } from '@/typings/recipe'
 
 export default defineComponent({
   props: {

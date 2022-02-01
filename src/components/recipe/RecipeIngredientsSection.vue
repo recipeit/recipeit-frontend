@@ -52,7 +52,7 @@
 <script lang="ts">
 import { computed, defineComponent, PropType, ref } from 'vue'
 
-import { IngredientUserState } from '@/configs/recipeIngredient'
+import { IngredientUserState } from '@/enums/recipeIngredient'
 
 import { useMyKitchenStore } from '@/stores/myKitchen'
 import { useShoppingListStore } from '@/stores/shoppingList'
