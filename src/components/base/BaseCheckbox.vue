@@ -30,7 +30,7 @@ export default defineComponent({
       type: [Boolean, String, Number] as PropType<CheckboxValue>
     },
     modelValue: {
-      type: [Boolean, String, Number] as PropType<Array<CheckboxValue> | CheckboxValue>,
+      type: [Array, Boolean, String, Number] as PropType<Array<CheckboxValue> | CheckboxValue>,
       default: ''
     },
     label: { type: String },
