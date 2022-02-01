@@ -30,63 +30,81 @@
   </div>
 </template>
 
-<script>
-import { markRaw } from 'vue'
+<script lang="ts">
+import { Dayjs } from 'dayjs'
+import { computed, defineComponent, markRaw, PropType } from 'vue'
 
 import dayjs from '@/functions/dayjs'
 
-import NewExpirationDateModal from '@/components/modals/NewExpirationDateModal.vue'
+import { ExpirationDateForm } from '@/typings/expirationDate'
+import { DateYMDString } from '@/typings/date'
 
-export default {
-  // emits: [update:],
+import NewExpirationDateModal from '@/components/modals/NewExpirationDateModal.vue'
+import { useModal } from '@/plugins/global-sheet-modal'
+
+export default defineComponent({
   props: {
     productId: String,
-    modelValue: [Array, null]
-  },
-  emits: ['update:modelValue'],
-  // beforeMount() {
-  //   if (this.productId) {
-  //     myKitchenApi.getProductExpirationDates(this.productId).then(response => {
-  //       this.$emit('update:modelValue', response.data)
-  //     })
-  //   }
-  // },
-  computed: {
-    expirationDateObjects() {
-      return this.modelValue?.map(date => dayjs(date)).sort((a, b) => (a.isAfter(b) ? 1 : -1))
+    modelValue: {
+      type: Array as PropType<Array<DateYMDString>>
     }
   },
-  methods: {
-    isExpiredDate(date) {
-      return date.isBefore(dayjs(), 'day')
-    },
-    formattedExpirationDate(date) {
-      return date.format('D MMMM YYYY')
-    },
-    deleteExpirationDateAt(index) {
-      const newDates = [...this.modelValue]
-      newDates.splice(index, 1)
-      this.$emit('update:modelValue', newDates)
-    },
-    openNewExpirationDateModal() {
-      const self = this
 
-      this.$modal.show(
+  emits: ['update:modelValue'],
+
+  setup(props, { emit }) {
+    // usings
+    const modal = useModal()
+
+    // computed
+    const expirationDateObjects = computed(() => {
+      return props.modelValue?.map(date => dayjs(date)).sort((a, b) => (a.isAfter(b) ? 1 : -1))
+    })
+
+    // methods
+
+    const isExpiredDate = (date: Dayjs) => {
+      return date.isBefore(dayjs(), 'day')
+    }
+
+    const formattedExpirationDate = (date: Dayjs) => {
+      return date.format('D MMMM YYYY')
+    }
+
+    const deleteExpirationDateAt = (index: number) => {
+      const newDates = [...props.modelValue]
+      newDates.splice(index, 1)
+      emit('update:modelValue', newDates)
+    }
+
+    const openNewExpirationDateModal = () => {
+      modal.show(
         markRaw(NewExpirationDateModal),
         {},
         {
-          close: date => {
+          close: (date: ExpirationDateForm) => {
             if (!date) return
-            const { year, month, day } = date
-            const newDates = [...self.modelValue]
-            newDates.push(`${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`)
-            self.$emit('update:modelValue', newDates)
+            const newDates: Array<DateYMDString> = [
+              ...props.modelValue,
+              `${date.year}-${date.month.toString().padStart(2, '0')}-${date.day.toString().padStart(2, '0')}` as DateYMDString // TODO maybe better solution
+            ]
+            emit('update:modelValue', newDates)
           }
         }
       )
     }
+
+    return {
+      // computed
+      expirationDateObjects,
+      // methods
+      isExpiredDate,
+      formattedExpirationDate,
+      deleteExpirationDateAt,
+      openNewExpirationDateModal
+    }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

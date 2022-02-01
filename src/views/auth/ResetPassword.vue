@@ -51,9 +51,9 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { Field, Form } from 'vee-validate'
-import { onBeforeMount, reactive, toRefs } from 'vue'
+import { defineComponent, onBeforeMount, reactive, toRefs } from 'vue'
 import { useMeta } from 'vue-meta'
 import { useRoute } from 'vue-router'
 import * as Yup from 'yup'
@@ -73,12 +73,13 @@ import recaptcha from '@/services/recaptcha'
 
 import Spinner from '@/components/Spinner.vue'
 
-export default {
+export default defineComponent({
   components: {
     Field,
     Form,
     Spinner
   },
+
   setup() {
     useMeta({
       title: 'Resetowanie hasła',
@@ -97,7 +98,7 @@ export default {
 
     const schema = Yup.object({
       password: newPasswordSchema(),
-      confirmPassword: confirmNewPasswordSchema()
+      confirmPassword: confirmNewPasswordSchema('confirmPassword')
     })
 
     // methods
@@ -160,7 +161,7 @@ export default {
       resetPassword
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

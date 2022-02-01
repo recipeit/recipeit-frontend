@@ -4,7 +4,8 @@
   </AnonymousPage>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from 'vue'
 import { useMeta } from 'vue-meta'
 
 import TERMS_HTML from '@/assets/docs/terms/terms_v1.html?raw'
@@ -15,8 +16,9 @@ import AnonymousPage from '@/layouts/AnonymousPage.vue'
 
 import { TERMS } from '@/router/paths'
 
-export default {
+export default defineComponent({
   components: { AnonymousPage },
+
   setup() {
     useMeta({
       title: 'Regulamin',
@@ -27,7 +29,7 @@ export default {
       TERMS_HTML
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

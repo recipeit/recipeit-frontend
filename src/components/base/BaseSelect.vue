@@ -20,7 +20,7 @@
             {{ label ? value[label] : value }}
           </slot>
         </span>
-        <template v-else-if="multiple" class="test-multiselect-pills">
+        <template v-else-if="multiple">
           <BaseButton
             v-for="singleValue in value"
             :key="trackBy ? singleValue[trackBy] : singleValue"
@@ -560,11 +560,11 @@ export default {
   line-height: 14px;
 }
 
-.test-multiselect-pills {
-  margin: -2px;
-  padding: 12px 0 6px 0;
-  padding-right: 1.5rem;
-}
+// .test-multiselect-pills {
+//   margin: -2px;
+//   padding: 12px 0 6px 0;
+//   padding-right: 1.5rem;
+// }
 
 .test-multiselect-pill {
   height: 24px;

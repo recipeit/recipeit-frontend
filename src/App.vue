@@ -13,8 +13,8 @@
   <RefreshPWA />
 </template>
 
-<script>
-import { computed, onBeforeMount, reactive, toRefs, watchEffect } from 'vue'
+<script lang="ts">
+import { computed, defineComponent, onBeforeMount, reactive, toRefs, watchEffect } from 'vue'
 import { useMeta } from 'vue-meta'
 import { useRoute, useRouter } from 'vue-router'
 
@@ -35,13 +35,14 @@ import CookiesModal from '@/components/modals/CookiesModal.vue'
 const TITLE_TEMPLATE = 'Recipeit - Znajdź przepis ze swoich produktów'
 const TITLE_SMALL_TEMPLATE = 'Recipeit'
 
-export default {
+export default defineComponent({
   components: {
     AppLoading,
     RefreshPWA,
     CookiesModal,
     Modal
   },
+
   setup() {
     // usings
     const userStore = useUserStore()
@@ -82,7 +83,7 @@ export default {
 
     // watch
     watchEffect(() => {
-      const themeMeta = document.querySelector('meta[name=theme-color]')
+      const themeMeta: HTMLMetaElement = document.querySelector('meta[name=theme-color]')
 
       if (themeMeta) {
         themeMeta.content = themeColor.value
@@ -118,7 +119,7 @@ export default {
           return
         }
 
-        const routeName = route.name
+        const routeName = route.name?.toString()
 
         if (routeName) {
           stop?.()
@@ -150,7 +151,7 @@ export default {
       allowedGDPRModalRoute
     }
   }
-}
+})
 </script>
 
 <style lang="scss">

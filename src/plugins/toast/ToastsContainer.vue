@@ -14,24 +14,30 @@
   </transition-group>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from 'vue'
+
 import uniqueID from '@/functions/uniqueID'
 
 import Toast from '@/plugins/toast/Toast.vue'
 
-export default {
+export default defineComponent({
   name: 'ToastsContainer',
+
   components: {
     Toast
   },
+
   data() {
     return {
       toasts: []
     }
   },
+
   created() {
     this.$toast._setGlobalToastsContainer(this)
   },
+
   methods: {
     appendToast(message, type, seconds) {
       this.toasts.push({ id: uniqueID().getID(), message, type, seconds })
@@ -46,7 +52,7 @@ export default {
       }
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

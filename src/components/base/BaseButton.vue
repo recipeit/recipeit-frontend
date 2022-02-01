@@ -5,13 +5,16 @@
   </component>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent, PropType } from 'vue'
+
 import Spinner from '@/components/Spinner.vue'
 
-const validTags = ['button', 'a', 'span']
+type BaseButtonTag = 'button' | 'a' | 'span'
 
-export default {
+export default defineComponent({
   components: { Spinner },
+
   props: {
     color: {
       type: String,
@@ -34,15 +37,15 @@ export default {
       default: false
     },
     tag: {
-      type: String,
-      default: 'button',
-      validator: value => validTags.includes(value)
+      type: String as PropType<BaseButtonTag>,
+      default: 'button'
     },
     loading: {
       type: Boolean,
       default: false
     }
   },
+
   computed: {
     classList() {
       return [
@@ -55,7 +58,7 @@ export default {
       ]
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

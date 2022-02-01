@@ -22,8 +22,8 @@
   </div>
 </template>
 
-<script>
-import { onBeforeMount } from 'vue'
+<script lang="ts">
+import { defineComponent, onBeforeMount } from 'vue'
 import { useRouter } from 'vue-router'
 
 import userApi from '@/api/userApi'
@@ -36,14 +36,15 @@ import AddToFavouriteRecipeBox from '@/components/AddToFavouriteRecipeBox.vue'
 import HorizontalRecipesList from '@/components/HorizontalRecipesList.vue'
 import SectionTitle from '@/components/SectionTitle.vue'
 
-export default {
+export default defineComponent({
   components: { AddToFavouriteRecipeBox, HorizontalRecipesList, SectionTitle },
+
   setup() {
     const router = useRouter()
     const favouriteRecipesList = recipePagedList(userApi.getFavouriteRecipes)
 
     const loadFavouriteRecipes = () => {
-      favouriteRecipesList.loadRecipesPage(1, false)
+      favouriteRecipesList.loadRecipesPage(1)
     }
 
     const showAllFavourites = () => {
@@ -60,7 +61,7 @@ export default {
       showAllFavourites
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

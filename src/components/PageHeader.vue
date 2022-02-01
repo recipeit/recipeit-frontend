@@ -16,11 +16,14 @@
   </header>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from 'vue'
+
 import PageHeaderUser from '@/components/PageHeaderUser.vue'
 
-export default {
+export default defineComponent({
   components: { PageHeaderUser },
+
   props: {
     backButton: {
       type: Boolean,
@@ -32,7 +35,7 @@ export default {
     },
     title: String
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

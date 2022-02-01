@@ -146,8 +146,8 @@
   </div>
 </template>
 
-<script>
-import { computed, markRaw, reactive, toRefs } from 'vue'
+<script lang="ts">
+import { computed, defineComponent, markRaw, PropType, reactive, toRefs } from 'vue'
 import { useMeta } from 'vue-meta'
 import { useRoute, useRouter } from 'vue-router'
 
@@ -172,6 +172,9 @@ import { useRecipesStore } from '@/stores/recipes'
 import { useShoppingListStore } from '@/stores/shoppingList'
 import { useUserStore } from '@/stores/user'
 
+import { RecipeEntity } from '@/typings/entities'
+import { DetailedRecipe } from '@/typings/recipe'
+
 import FavouriteIcon from '@/components/FavouriteIcon.vue'
 import Rating from '@/components/Rating.vue'
 import RecipeParallaxGallery from '@/components/RecipeParallaxGallery.vue'
@@ -180,8 +183,9 @@ import PlanRecipeModal from '@/components/modals/PlanRecipeModal.vue'
 import RecipeDirectionsSection from '@/components/recipe/RecipeDirectionsSection.vue'
 import RecipeIngredientsSection from '@/components/recipe/RecipeIngredientsSection.vue'
 
-export default {
+export default defineComponent({
   name: 'Recipe',
+
   components: {
     FavouriteIcon,
     RecipeParallaxGallery,
@@ -189,15 +193,17 @@ export default {
     RecipeDirectionsSection,
     Rating
   },
+
   props: {
     recipeId: {
-      type: String,
+      type: String as PropType<RecipeEntity['id']>,
       required: true
     },
     recipeName: {
-      type: String
+      type: String as PropType<RecipeEntity['name']>
     }
   },
+
   setup(props) {
     // usings
     const myKitchenStore = useMyKitchenStore()
@@ -215,8 +221,8 @@ export default {
     const data = reactive({
       errors: false,
       fetchedData: false,
-      recipe: null,
-      finishedDirections: []
+      recipe: null as DetailedRecipe,
+      finishedDirections: [] as Array<number>
     })
 
     // computed
@@ -389,9 +395,8 @@ export default {
       changeBlogVisibility,
       showInvisibleInfoModal
     }
-  },
-  methods: {}
-}
+  }
+})
 </script>
 
 <style lang="scss" scoped>

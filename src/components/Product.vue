@@ -12,18 +12,21 @@
   </div>
 </template>
 
-<script>
-import { computed } from 'vue'
+<script lang="ts">
+import { computed, defineComponent, PropType } from 'vue'
 
 import { stringifiedAmount } from '@/functions/amount'
 
-export default {
+import { UserProductEntity } from '@/typings/entities'
+
+export default defineComponent({
   props: {
     product: {
-      type: Object,
+      type: Object as PropType<UserProductEntity>,
       required: true
     }
   },
+
   setup(props) {
     const formattedAmount = computed(() => {
       const { amount } = props.product
@@ -34,7 +37,7 @@ export default {
       formattedAmount
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

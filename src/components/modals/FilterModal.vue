@@ -91,9 +91,9 @@
   </SheetModalContent>
 </template>
 
-<script>
+<script lang="ts">
 import sortby from 'lodash.sortby'
-import { computed, reactive, toRefs } from 'vue'
+import { computed, defineComponent, reactive, toRefs } from 'vue'
 
 import { useIngredientsStore } from '@/stores/ingredients'
 
@@ -105,10 +105,11 @@ const OPTION_KEYS = {
 
 const CATEGORY_GROUPS = ['Daytime', 'Type', 'Occasion', 'Cuisine']
 
-export default {
+export default defineComponent({
   components: {
     ProductIcon
   },
+
   props: {
     options: {
       type: Object,
@@ -125,7 +126,9 @@ export default {
       type: String
     }
   },
+
   emits: ['close'],
+
   setup(props, { emit }) {
     // usings
     const ingredientsStore = useIngredientsStore()
@@ -204,7 +207,7 @@ export default {
       pillCheckboxClickHandler
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

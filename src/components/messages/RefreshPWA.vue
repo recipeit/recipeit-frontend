@@ -11,14 +11,14 @@
   </MessageContainer>
 </template>
 
-<script>
+<script lang="ts">
 import { useRegisterSW } from 'virtual:pwa-register/vue'
-import { watchEffect } from 'vue'
+import { defineComponent, watchEffect } from 'vue'
 
 import MessageContainer from '@/components/MessageContainer.vue'
 import Message from '@/components/Message.vue'
 
-export default {
+export default defineComponent({
   components: { MessageContainer, Message },
 
   setup() {
@@ -26,8 +26,8 @@ export default {
 
     let userInteracted = false
     let refreshing = false
-    let setInteractionEvents
-    let removeInteractionEvents
+    let setInteractionEvents: () => void
+    let removeInteractionEvents: () => void
 
     const handleInteraction = () => {
       userInteracted = true
@@ -67,9 +67,12 @@ export default {
       }
     })
 
-    return { needRefresh, userInteracted, update }
+    return {
+      needRefresh,
+      update
+    }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

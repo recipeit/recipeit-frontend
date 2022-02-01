@@ -7,15 +7,19 @@
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent, PropType } from 'vue'
+
+import { BlogEntity } from '@/typings/entities'
+
+export default defineComponent({
   props: {
     blog: {
-      type: Object,
+      type: Object as PropType<BlogEntity>,
       required: true
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

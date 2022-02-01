@@ -7,17 +7,19 @@
   </div>
 </template>
 
-<script>
-import { onBeforeMount, ref } from 'vue'
+<script lang="ts">
+import { defineComponent, onBeforeMount, ref } from 'vue'
 
 import DayPlan from '@/components/DayPlan.vue'
 import LatestFavouritesRecipes from '@/components/LatestFavouritesRecipes.vue'
 import PageHeader from '@/components/PageHeader.vue'
 import PopularCategories from '@/components/PopularCategories.vue'
 
-export default {
+export default defineComponent({
   name: 'Home',
+
   components: { PageHeader, DayPlan, LatestFavouritesRecipes, PopularCategories },
+
   setup() {
     const welcomeType = ref('')
 
@@ -30,7 +32,7 @@ export default {
       welcomeType
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

@@ -4,15 +4,18 @@
   </BaseLink>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from 'vue'
+
 import BaseLink from '@/components/base/BaseLink.vue'
 
-export default {
+export default defineComponent({
   components: { BaseLink },
+
   props: {
     color: String
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

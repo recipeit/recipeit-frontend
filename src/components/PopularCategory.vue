@@ -9,18 +9,21 @@
   </router-link>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from 'vue'
+
 import { CATEGORY_IMAGES } from '@/configs/recipeCategories'
 
 import { APP_COOK_IT } from '@/router/names'
 
-export default {
+export default defineComponent({
   props: {
     page: String,
     categoryKey: Number,
     categoryValue: String,
     categoryGroup: String
   },
+
   setup(props) {
     const imageUrl = CATEGORY_IMAGES[props.categoryValue]
 
@@ -29,7 +32,7 @@ export default {
       imageUrl
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

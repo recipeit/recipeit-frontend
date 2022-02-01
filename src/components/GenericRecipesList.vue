@@ -76,8 +76,8 @@
   </div>
 </template>
 
-<script>
-import { computed, nextTick, onBeforeMount, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+<script lang="ts">
+import { computed, defineComponent, nextTick, onBeforeMount, onBeforeUnmount, onMounted, PropType, ref, watch } from 'vue'
 
 import { RecipeList } from '@/constants'
 
@@ -88,7 +88,7 @@ import SkeletonRecipeBox from '@/components/skeletons/SkeletonRecipeBox.vue'
 
 const PAGE_SIZE = 12
 
-export default {
+export default defineComponent({
   components: {
     SearchWithFilter,
     SkeletonRecipeBox,
@@ -97,10 +97,10 @@ export default {
 
     SkeletonBox
   },
+
   props: {
     recipes: {
-      type: Object,
-      validator: value => value instanceof RecipeList
+      type: Object as PropType<RecipeList>
     },
     errors: {
       type: Object,
@@ -125,7 +125,9 @@ export default {
       required: true
     }
   },
+
   emits: ['reload', 'load', 'reload-with-query', 'load-next'],
+
   setup(props, { emit }) {
     const searchString = ref(props.recipes.search)
     const searchTimeoutCallback = ref(null)
@@ -232,7 +234,7 @@ export default {
       return result
     })
 
-    const isInViewport = element => {
+    const isInViewport = (element: Element) => {
       const rect = element.getBoundingClientRect()
       return (
         rect.top >= 0 &&
@@ -242,7 +244,7 @@ export default {
       )
     }
 
-    let intersectionObservers = {}
+    let intersectionObservers: { [k: number]: IntersectionObserver } = {}
     let fetchingPages = {}
     const skeletonBoxMountedHandler = el => {
       if (!el) {
@@ -361,7 +363,7 @@ export default {
       showFetchingInfo
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

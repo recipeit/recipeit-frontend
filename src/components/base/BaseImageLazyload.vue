@@ -5,8 +5,10 @@
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from 'vue'
+
+export default defineComponent({
   props: {
     src: {
       type: String,
@@ -26,13 +28,16 @@ export default {
       default: false
     }
   },
+
   emits: ['load', 'error'],
+
   data: () => ({
     observer: null,
     loaded: false,
     error: false,
     visible: false
   }),
+
   computed: {
     renderSrc() {
       return this.visible ? (this.error ? this.errorPlaceholder : this.src) : null
@@ -46,6 +51,7 @@ export default {
       }
     }
   },
+
   watch: {
     src(newValue, oldValue) {
       if (newValue !== oldValue) {
@@ -54,14 +60,17 @@ export default {
       }
     }
   },
+
   mounted() {
     if (this.src) {
       this.init()
     }
   },
+
   beforeUnmount() {
     this.reset()
   },
+
   methods: {
     onLoadHandler(event) {
       this.loaded = true
@@ -109,7 +118,7 @@ export default {
       }
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

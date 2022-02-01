@@ -11,18 +11,23 @@
   </Modal>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from 'vue'
+
 import Modal from '@/plugins/global-sheet-modal/Modal.vue'
 import { nextId } from '@/plugins/global-sheet-modal/utils'
 
-export default {
+export default defineComponent({
   name: 'GlobalSheetModalContainer',
+
   components: {
     Modal
   },
+
   data: () => ({
     modals: []
   }),
+
   computed: {
     anyModalOpened() {
       return this.modals.filter(m => m.opened).length > 0
@@ -31,6 +36,7 @@ export default {
       return this.modals.length > 0
     }
   },
+
   watch: {
     anyModalOpenedOrClosing(value) {
       const scrollWidth = window.innerWidth - document.body.offsetWidth
@@ -39,6 +45,7 @@ export default {
       document.body.style.paddingRight = value && bodyRequireScroll ? `${scrollWidth}px` : null
     }
   },
+
   created() {
     this.$modal._setGlobalModalContainer(this)
     document.addEventListener('keyup', e => {
@@ -51,8 +58,9 @@ export default {
       }
     })
   },
+
   methods: {
-    add(component, props = {}, events = {}, { blockCloseOnBackdrop } = {}) {
+    add(component, props = {}, events = {}, { blockCloseOnBackdrop = false } = {}) {
       const id = nextId()
       this.modals.push({
         id: id,
@@ -88,7 +96,7 @@ export default {
       }
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

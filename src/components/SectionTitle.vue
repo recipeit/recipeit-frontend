@@ -1,5 +1,5 @@
 <template>
-  <div :class="{ 'section-title': true, 'section-title--large': size === 'large' }">
+  <div :class="{ 'section-title': true, 'section-title--large': size === SIZES.LARGE }">
     <BaseIcon v-if="!!icon" class="section-title-icon" :icon="icon" />
     <slot name="title">
       {{ title }}
@@ -10,10 +10,15 @@
   </div>
 </template>
 
-<script>
-const sizes = ['regular', 'large']
+<script lang="ts">
+import { defineComponent, PropType } from 'vue'
 
-export default {
+const SIZES = {
+  REGULAR: 'regular',
+  LARGE: 'large'
+} as const
+
+export default defineComponent({
   props: {
     icon: String,
     title: String,
@@ -23,12 +28,19 @@ export default {
     },
     actionText: String,
     size: {
-      type: String,
-      validator: value => !value || sizes.includes(value)
+      type: String as PropType<typeof SIZES[keyof typeof SIZES]>,
+      default: SIZES.REGULAR
     }
   },
-  emits: ['action-click']
-}
+
+  emits: ['action-click'],
+
+  setup() {
+    return {
+      SIZES
+    }
+  }
+})
 </script>
 
 <style lang="scss" scoped>

@@ -35,8 +35,8 @@
   </Product>
 </template>
 
-<script>
-import { computed, markRaw, ref } from 'vue'
+<script lang="ts">
+import { computed, defineComponent, markRaw, PropType, ref } from 'vue'
 
 import myKitchenApi from '@/api/myKitchenApi'
 
@@ -47,19 +47,23 @@ import { ToastType } from '@/plugins/toast/toastType'
 import { useMyKitchenStore } from '@/stores/myKitchen'
 import { useShoppingListStore } from '@/stores/shoppingList'
 
+import { UserKitchenProductEntity } from '@/typings/entities'
+
 import Product from '@/components/Product.vue'
 import EditKitchenProductModal from '@/components/modals/EditKitchenProductModal.vue'
 
-export default {
+export default defineComponent({
   components: {
     Product
   },
+
   props: {
     product: {
-      type: Object,
+      type: Object as PropType<UserKitchenProductEntity>,
       required: true
     }
   },
+
   setup(props) {
     // usings
     const modal = useModal()
@@ -72,7 +76,7 @@ export default {
 
     // computed
     const isInShoppingList = computed(() => {
-      return !!shoppingListStore.products?.find(p => p.baseProductId === props.product.baseProductId)
+      return !!shoppingListStore.products?.find(({ baseProductId }) => baseProductId === props.product.baseProductId)
     })
 
     const purchaseButtonTooltip = computed(() => {
@@ -81,7 +85,7 @@ export default {
 
     // methods
     const openEditModal = async () => {
-      let expirationDates
+      let expirationDates: Array<string>
       try {
         const { data } = await myKitchenApi.getProductExpirationDates(props.product.id)
         if (data) {
@@ -139,7 +143,7 @@ export default {
       addToShoppingList
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

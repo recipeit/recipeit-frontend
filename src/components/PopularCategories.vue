@@ -4,7 +4,7 @@
     <ul v-if="popularCategories" class="popular-categories-list">
       <li v-for="category in popularCategories" :key="category.key" class="popular-category-container">
         <PopularCategory
-          :page="page"
+          :page="APP_RECIPES"
           :category-key="category.key"
           :category-value="category.value"
           :category-group="category.categoryGroup"
@@ -14,8 +14,8 @@
   </div>
 </template>
 
-<script>
-import { onBeforeMount, ref } from 'vue'
+<script lang="ts">
+import { defineComponent, onBeforeMount, ref } from 'vue'
 
 import recipeApi from '@/api/recipeApi'
 
@@ -24,8 +24,9 @@ import { APP_RECIPES } from '@/router/names'
 import PopularCategory from '@/components/PopularCategory.vue'
 import SectionTitle from '@/components/SectionTitle.vue'
 
-export default {
+export default defineComponent({
   components: { PopularCategory, SectionTitle },
+
   setup() {
     // const store = useStore()
     const popularCategories = ref(null)
@@ -35,18 +36,12 @@ export default {
       popularCategories.value = data
     })
 
-    const page = APP_RECIPES
-
-    // const page = computed(() => {
-    //   return store.state.myKitchen.products ? APP_COOK_IT : APP_RECIPES
-    // })
-
     return {
-      popularCategories,
-      page
+      APP_RECIPES,
+      popularCategories
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

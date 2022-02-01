@@ -14,12 +14,15 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from 'vue'
+
 import Benefit from '@/components/landingPage/Benefit.vue'
 import Container from '@/components/landingPage/Container.vue'
 
-export default {
+export default defineComponent({
   components: { Benefit, Container },
+
   setup() {
     const benefits = [
       {
@@ -43,7 +46,7 @@ export default {
       benefits
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

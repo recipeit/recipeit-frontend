@@ -20,12 +20,14 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from 'vue'
+
 import SkeletonBox from '@/components/skeletons/SkeletonBox.vue'
 
-export default {
+export default defineComponent({
   components: { SkeletonBox }
-}
+})
 </script>
 
 <style lang="scss" scoped>

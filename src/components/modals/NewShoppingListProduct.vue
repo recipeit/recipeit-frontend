@@ -18,9 +18,9 @@
   </SheetModalContent>
 </template>
 
-<script>
+<script lang="ts">
 import { Form } from 'vee-validate'
-import { reactive, toRefs } from 'vue'
+import { defineComponent, reactive, toRefs } from 'vue'
 import * as Yup from 'yup'
 
 import uniqueID from '@/functions/uniqueID'
@@ -29,9 +29,11 @@ import { useShoppingListStore } from '@/stores/shoppingList'
 
 import ProductModalForm from '@/components/ProductModalForm.vue'
 
-export default {
+export default defineComponent({
   components: { Form, ProductModalForm },
+
   emits: ['close'],
+
   setup(_, { emit }) {
     // usings
     const shoppingListStore = useShoppingListStore()
@@ -88,7 +90,7 @@ export default {
       addProduct
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

@@ -15,7 +15,7 @@
         <template
           v-if="
             Object.values(almostAvailableRecipesList.recipes.value.fetchingPages).some(v => v) ||
-              almostAvailableRecipesList.recipes.value.pagedItems['1']?.length > 0
+            almostAvailableRecipesList.recipes.value.pagedItems['1']?.length > 0
           "
           #above-list
         >
@@ -52,9 +52,7 @@
             <p class="empty-list-message-title">Nie znaleźliśmy przepisów dla użytych filtrów</p>
             <p v-if="almostAvailableRecipesList.recipes.value.totalCount" class="empty-list-message-sub">
               Możesz
-              <BaseLink tag="button" class="empty-list-message-link" color="primary" @click="reloadRecipes({})">
-                wyczyścić filtry
-              </BaseLink>
+              <BaseLink tag="button" class="empty-list-message-link" color="primary" @click="reloadRecipes()">wyczyścić filtry</BaseLink>
               , przeszukać całą
               <router-link v-slot="{ href, navigate }" :to="{ name: 'recipes', query: $route.query }" custom>
                 <BaseLink :href="href" class="empty-list-message-link" color="primary" @click="navigate($event)">bazę przepisów</BaseLink>
@@ -69,9 +67,7 @@
             </p>
             <p v-else class="empty-list-message-sub">
               Możesz
-              <BaseLink tag="button" class="empty-list-message-link" color="primary" @click="reloadRecipes({})">
-                wyczyścić filtry
-              </BaseLink>
+              <BaseLink tag="button" class="empty-list-message-link" color="primary" @click="reloadRecipes()">wyczyścić filtry</BaseLink>
               lub sprawdzić całą
               <router-link v-slot="{ href, navigate }" :to="{ name: 'recipes', query: $route.query }" custom>
                 <BaseLink :href="href" class="empty-list-message-link" color="primary" @click="navigate($event)">bazę przepisów</BaseLink>
@@ -87,9 +83,7 @@
             <img class="empty-list-message-image" src="@/assets/img/broccoli-happy.svg" alt="" />
             <p class="empty-list-message-title">Najpierw dodaj coś do swojej kuchni</p>
             <router-link v-slot="{ href, navigate }" :to="{ name: 'my-kitchen' }" custom>
-              <BaseButton tag="a" :href="href" stroked @click="navigate($event)">
-                Przejdź do kuchni
-              </BaseButton>
+              <BaseButton tag="a" :href="href" stroked @click="navigate($event)"> Przejdź do kuchni </BaseButton>
             </router-link>
           </div>
 
@@ -110,16 +104,16 @@
   </div>
 </template>
 
-<script>
-import { computed, onBeforeMount } from 'vue'
+<script lang="ts">
+import { computed, defineComponent, onBeforeMount } from 'vue'
 import { useMeta } from 'vue-meta'
 import { useRoute, useRouter } from 'vue-router'
 
 import userApi from '@/api/userApi'
 
-import { queryParamsFromRouteQuery } from '@/constants'
-
 import { useMyKitchenStore } from '@/stores/myKitchen'
+
+import { RecipesPageParams } from '@/typings/recipesPage'
 
 import recipeFilteredPagedList from '@/views/app/composable/recipeFilteredPagedList'
 
@@ -128,9 +122,11 @@ import HorizontalRecipesList from '@/components/HorizontalRecipesList.vue'
 import PageHeader from '@/components/PageHeader.vue'
 import SectionTitle from '@/components/SectionTitle.vue'
 
-export default {
+export default defineComponent({
   name: 'CookIt',
+
   components: { GenericRecipesList, PageHeader, HorizontalRecipesList, SectionTitle },
+
   setup() {
     useMeta({
       title: 'Ugotuj to!'
@@ -149,12 +145,12 @@ export default {
     const kitchenProductsCount = computed(() => myKitchenStore.products?.length || 0)
 
     // methods
-    const reloadRecipes = ({ orderMethod, filters, search }) => {
-      const query = { orderMethod, filters, search }
+    const reloadRecipes = (query: RecipesPageParams = {}) => {
+      const newQuery: RecipesPageParams = { ...query }
 
-      recipesList.reloadRecipes(query)
+      recipesList.reloadRecipes(newQuery)
 
-      almostAvailableRecipesList.reloadRecipes(query)
+      almostAvailableRecipesList.reloadRecipes(newQuery)
       almostAvailableRecipesList.loadRecipesPage(1, false)
     }
 
@@ -164,8 +160,6 @@ export default {
 
     // lifecycle hooks
     onBeforeMount(() => {
-      const initialQueryParams = queryParamsFromRouteQuery(route.query)
-      almostAvailableRecipesList.reloadRecipes(initialQueryParams)
       almostAvailableRecipesList.loadRecipesPage(1, false)
     })
 
@@ -180,7 +174,7 @@ export default {
       showAlmostAvailableRecipes
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

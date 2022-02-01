@@ -13,10 +13,10 @@
   </div>
 </template>
 
-<script>
-import { ref } from 'vue'
+<script lang="ts">
+import { defineComponent, ref } from 'vue'
 
-export default {
+export default defineComponent({
   setup() {
     const show = ref(false)
 
@@ -38,7 +38,7 @@ export default {
       startAnimation
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

@@ -10,8 +10,10 @@
   </BaseLink>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from 'vue'
+
+export default defineComponent({
   props: {
     isFavourite: {
       type: Boolean,
@@ -22,7 +24,9 @@ export default {
       default: 'text-secondary'
     }
   },
+
   emits: ['added', 'removed'],
+
   methods: {
     onClick() {
       if (this.isFavourite) {
@@ -32,7 +36,7 @@ export default {
       }
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

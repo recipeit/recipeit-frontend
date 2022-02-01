@@ -49,33 +49,38 @@
   </div>
 </template>
 
-<script>
-import { computed, ref } from 'vue'
+<script lang="ts">
+import { computed, defineComponent, PropType, ref } from 'vue'
 
-import { INGREDIENT_USER_STATES } from '@/configs/recipeIngredient'
+import { IngredientUserState } from '@/enums/recipeIngredient'
 
 import { useMyKitchenStore } from '@/stores/myKitchen'
 import { useShoppingListStore } from '@/stores/shoppingList'
 
+import { RecipeEntity } from '@/typings/entities'
+import { DetailedRecipe, RecipeIngredientGroups, RecipeIngredientWithUserState } from '@/typings/recipe'
+
 import SectionTitle from '@/components/SectionTitle.vue'
 import RecipeIngredient from '@/components/recipe/RecipeIngredient.vue'
 
-export default {
+export default defineComponent({
   components: { RecipeIngredient, SectionTitle },
+
   props: {
     recipeId: {
-      type: String,
+      type: String as PropType<RecipeEntity['id']>,
       required: true
     },
     servings: {
-      type: Number,
+      type: Number as PropType<DetailedRecipe['details']['servings']>,
       default: 1
     },
     ingredientGroups: {
-      type: Object,
+      type: Object as PropType<RecipeIngredientGroups>,
       required: true
     }
   },
+
   setup(props) {
     const myKitchenStore = useMyKitchenStore()
     const shoppingListStore = useShoppingListStore()
@@ -108,22 +113,22 @@ export default {
       return shoppingListProducts.value.find(p => baseProductIdsArray.includes(p.baseProductId))
     }
 
-    const ingredients = computed(() => {
+    const ingredients = computed<{ [key: string]: Array<RecipeIngredientWithUserState> }>(() => {
       return Object.fromEntries(
         Object.entries(props.ingredientGroups).map(([key, value]) => [
           key,
           value.map(ingredient => {
             const { baseProductIdsArray } = ingredient
-            let state
+            let state: IngredientUserState
 
             if (!baseProductIdsArray) {
-              state = INGREDIENT_USER_STATES.NONE
+              state = IngredientUserState.None
             } else if (isInMyKitchen(baseProductIdsArray)) {
-              state = INGREDIENT_USER_STATES.IN_KITCHEN
+              state = IngredientUserState.InKitchen
             } else if (isInShoppingList(baseProductIdsArray)) {
-              state = INGREDIENT_USER_STATES.IN_SHOPPING_LIST
+              state = IngredientUserState.InShoppingList
             } else {
-              state = INGREDIENT_USER_STATES.UNAVAILABLE
+              state = IngredientUserState.Unavailable
             }
 
             return {
@@ -140,7 +145,7 @@ export default {
 
       return Object.values(ingredients.value)
         .flatMap(value => value.map(i => i.state))
-        .includes(INGREDIENT_USER_STATES.UNAVAILABLE)
+        .includes(IngredientUserState.Unavailable)
     })
 
     const addMissingIngredientsToShoppingList = async () => {
@@ -164,7 +169,7 @@ export default {
       addMissingIngredientsToShoppingList
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

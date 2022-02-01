@@ -31,8 +31,8 @@
   </div>
 </template>
 
-<script>
-import { ref } from 'vue'
+<script lang="ts">
+import { defineComponent, ref } from 'vue'
 import { useRoute } from 'vue-router'
 
 import { APP_COOK_IT, APP_HOME, APP_MY_KITCHEN, APP_RECIPES, APP_SHOPPING_LIST } from '@/router/names'
@@ -42,44 +42,43 @@ import eventHub from '@/services/eventHub'
 import Logotype from '@/components/Logotype.vue'
 import NavigationBarAnimatedIcon from '@/components/NavigationBarAnimatedIcon.vue'
 
-export default {
+export default defineComponent({
   components: {
     Logotype,
     NavigationBarAnimatedIcon
   },
+
   setup() {
     const route = useRoute()
 
     const myKitchenIcon = ref(null)
     const shoppingListIcon = ref(null)
 
-    const runAddToKitchenAnimation = () => {
+    eventHub.$on('add-to-kitchen', () => {
       if (route.name !== APP_MY_KITCHEN) {
         myKitchenIcon.value?.startAnimation()
       }
-    }
-    const runAddToShoppingListAnimation = () => {
+    })
+
+    eventHub.$on('add-to-shopping-list', () => {
       if (route.name !== APP_SHOPPING_LIST) {
         shoppingListIcon.value?.startAnimation()
       }
-    }
-
-    eventHub.$on('add-to-kitchen', runAddToKitchenAnimation)
-    eventHub.$on('add-to-shopping-list', runAddToShoppingListAnimation)
+    })
 
     return {
+      // consts
       APP_HOME,
       APP_RECIPES,
       APP_COOK_IT,
       APP_MY_KITCHEN,
       APP_SHOPPING_LIST,
-      runAddToKitchenAnimation,
-      runAddToShoppingListAnimation,
+      // refs
       myKitchenIcon,
       shoppingListIcon
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

@@ -18,19 +18,22 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from 'vue'
+
 import BackgroundUrl from '@/assets/img/auth.jpg'
 
 import Logotype from '@/components/Logotype.vue'
 
-export default {
+export default defineComponent({
   components: { Logotype },
+
   setup() {
     return {
       BackgroundUrl
     }
   }
-}
+})
 </script>
 
 <style lang="scss">

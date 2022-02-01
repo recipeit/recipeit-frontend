@@ -20,15 +20,16 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import debounce from 'lodash.debounce'
-import { onBeforeMount, onBeforeUnmount, onMounted, ref } from 'vue'
+import { defineComponent, onBeforeMount, onBeforeUnmount, onMounted, ref } from 'vue'
 
 import Container from '@/components/landingPage/Container.vue'
 import StatisticsCard from '@/components/landingPage/StatisticsCard.vue'
 
-export default {
+export default defineComponent({
   components: { Container, StatisticsCard },
+
   setup() {
     const statistics = [
       {
@@ -118,7 +119,7 @@ export default {
       handleControlsDisability
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

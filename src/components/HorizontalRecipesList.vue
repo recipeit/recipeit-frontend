@@ -10,7 +10,7 @@
         :recipe-name="name"
         :recipe-rating="rating"
       />
-      <li v-if="items && recipes.totalCount > items.length" class="list-item" @click="$emit('showAll')">
+      <li v-if="items && recipes.totalCount > items.length" class="list-item" @click="$emit('show-all')">
         <div class="show-all-item">
           <div class="show-all-item-sizer">
             <BaseLink tag="button" class="show-all-item-button">
@@ -37,40 +37,54 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { computed, defineComponent, PropType } from 'vue'
+
 import { RecipeList } from '@/constants'
 
 import GenericRecipesListItem from '@/components/GenericRecipesListItem.vue'
 import SkeletonRecipeBox from '@/components/skeletons/SkeletonRecipeBox.vue'
 
-export default {
+export default defineComponent({
   components: { GenericRecipesListItem, SkeletonRecipeBox },
+
   props: {
     recipes: {
-      type: RecipeList
+      type: Object as PropType<RecipeList>
     },
     errors: {
       type: Object,
       default: null
     }
   },
-  emits: ['showAll', 'reload-with-query'],
-  computed: {
-    items() {
-      return this.recipes?.pagedItems[1] || []
-    }
-  },
-  methods: {
-    tryFetchOnError() {
-      if (this.errors === null) return
-      const { from, query } = this.errors
+
+  emits: ['show-all', 'reload-with-query'],
+
+  setup(props, { emit }) {
+    // computed
+    const items = computed(() => {
+      return props.recipes?.pagedItems[1] || []
+    })
+
+    // methods
+
+    const tryFetchOnError = () => {
+      if (props.errors === null) return
+      const { from, query } = props.errors
 
       if (from === 'RELOAD') {
-        this.$emit('reload-with-query', query)
+        emit('reload-with-query', query)
       }
     }
+
+    return {
+      // computed
+      items,
+      // methods
+      tryFetchOnError
+    }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

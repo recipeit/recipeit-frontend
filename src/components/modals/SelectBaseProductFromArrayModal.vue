@@ -24,24 +24,26 @@
   </SheetModalContent>
 </template>
 
-<script>
-import { computed } from 'vue'
+<script lang="ts">
+import { computed, defineComponent, PropType } from 'vue'
 
 import { useIngredientsStore } from '@/stores/ingredients'
 
-export default {
+export default defineComponent({
   props: {
     ids: {
-      type: Array,
+      type: Array as PropType<Array<number>>,
       required: true
     }
   },
+
   emits: ['close'],
+
   setup(props) {
     const ingredientsStore = useIngredientsStore()
 
     const products = computed(() =>
-      props.ids.map(id => ({
+      props.ids.map((id): { id: number; name: string } => ({
         id: id,
         name: ingredientsStore.baseProducts.find(p => p.id === id)?.name
       }))
@@ -51,7 +53,7 @@ export default {
       products
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

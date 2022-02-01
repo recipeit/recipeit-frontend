@@ -1,0 +1,24 @@
+import apiClient from '@/api/apiClient'
+
+const route = 'my-kitchen'
+
+export default {
+  getProductsFromMyKitchen() {
+    return apiClient.get(`/${route}/products`)
+  },
+  getProductExpirationDates(id: string) {
+    return apiClient.get<Array<string>>(`/${route}/products/${id}/expiration-dates`)
+  },
+  addProductToMyKitchen(product, expirationDates) {
+    return apiClient.post(`/${route}/products`, { product, expirationDates })
+  },
+  getProductFromMyKitchenById(id) {
+    return apiClient.get(`/${route}/products/${id}`)
+  },
+  updateProductFromMyKitchen(productId, product, expirationDates) {
+    return apiClient.put(`/${route}/products/${productId}`, { product, expirationDates })
+  },
+  removeProductFromMyKitchenById(id) {
+    return apiClient.delete(`/${route}/products/${id}`)
+  }
+}

@@ -11,21 +11,24 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from 'vue'
+
 import eventHub from '@/services/eventHub'
 
 import NavigationBar from '@/components/NavigationBar.vue'
 
-export default {
+export default defineComponent({
   components: {
     NavigationBar
   },
+
   setup() {
     return {
       eventHub
     }
   }
-}
+})
 </script>
 
 <style lang="scss">

@@ -1,13 +1,5 @@
 <template>
-  <!-- @focus="open()" -->
-  <!-- @blur="searchable ? false : hide()" -->
-  <div
-    class="menu"
-    @keyup.esc.stop="hide()"
-    @keydown.self.down.prevent="pointerForward()"
-    @keydown.self.up.prevent="pointerBackward()"
-    @keypress.enter.tab.stop.self="addPointerElement()"
-  >
+  <div class="menu" @keyup.esc.stop="hide()">
     <div
       class="menu__toggle-container"
       :tabindex="toggleTabindex"
@@ -26,8 +18,10 @@
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from 'vue'
+
+export default defineComponent({
   props: {
     toggleTabindex: {
       type: Number,
@@ -38,10 +32,12 @@ export default {
       default: true
     }
   },
+
   data: () => ({
     opened: false,
     toggleFocused: false
   }),
+
   methods: {
     toggle(event) {
       if (this.opened) {
@@ -74,7 +70,7 @@ export default {
       }
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

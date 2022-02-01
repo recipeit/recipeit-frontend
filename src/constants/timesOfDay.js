@@ -1,8 +1,0 @@
-export default {
-  BREAKFAST: 'BREAKFAST',
-  // ELEVENSES: 'ELEVENSES',
-  LUNCH: 'LUNCH',
-  DINNER: 'DINNER',
-  SUPPER: 'SUPPER',
-  SNACK: 'SNACK'
-}

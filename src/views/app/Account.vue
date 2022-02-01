@@ -88,8 +88,8 @@
   </div>
 </template>
 
-<script>
-import { computed, markRaw, ref } from 'vue'
+<script lang="ts">
+import { computed, defineComponent, markRaw, ref } from 'vue'
 import { useMeta } from 'vue-meta'
 
 import defaultAvatar from '@/assets/img/avatar.svg?raw'
@@ -112,9 +112,11 @@ import CustomizeCookiesModal from '@/components/modals/CustomizeCookiesModal.vue
 import DeleteAccountModal from '@/components/modals/DeleteAccountModal.vue'
 import ForgotPasswordModal from '@/components/modals/ForgotPasswordModal.vue'
 
-export default {
-  name: 'MyAccount',
+export default defineComponent({
+  name: 'Account',
+
   components: { PageHeader, Logotype },
+
   setup() {
     useMeta({
       title: 'Moje konto'
@@ -200,7 +202,7 @@ export default {
       openCustomizeCookiesModal
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

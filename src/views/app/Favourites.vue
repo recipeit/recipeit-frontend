@@ -12,7 +12,8 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from 'vue'
 import { useMeta } from 'vue-meta'
 
 import userApi from '@/api/userApi'
@@ -22,12 +23,14 @@ import recipePagedList from '@/views/app/composable/recipePagedList'
 import GenericRecipesList from '@/components/GenericRecipesList.vue'
 import PageHeader from '@/components/PageHeader.vue'
 
-export default {
+export default defineComponent({
   name: 'AvailableRecipes',
+
   components: {
     GenericRecipesList,
     PageHeader
   },
+
   setup() {
     useMeta({
       title: 'Ulubione'
@@ -39,5 +42,5 @@ export default {
       recipesList
     }
   }
-}
+})
 </script>

@@ -4,10 +4,12 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from 'vue'
+
 import icons from '@/components/base/icons'
 
-export default {
+export default defineComponent({
   props: {
     icon: {
       type: String,
@@ -18,12 +20,13 @@ export default {
       default: 'regular'
     }
   },
+
   computed: {
     iconObject() {
       return icons[this.weight]?.[this.icon]
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

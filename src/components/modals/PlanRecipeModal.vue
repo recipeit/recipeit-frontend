@@ -36,41 +36,46 @@
   </SheetModalContent>
 </template>
 
-<script>
+<script lang="ts">
 import { Field, Form } from 'vee-validate'
-import { reactive, toRefs } from 'vue'
+import { defineComponent, reactive, toRefs } from 'vue'
 import * as Yup from 'yup'
 
-import timesOfDayConst from '@/constants/timesOfDay'
+import { TimeOfDay } from '@/enums/timesOfDay'
 
 import dayjs from '@/functions/dayjs'
 import uniqueID from '@/functions/uniqueID'
 
 import { useRecipesStore } from '@/stores/recipes'
 
-export default {
+import { DateYMString } from '@/typings/date'
+
+export default defineComponent({
   components: {
     Field,
     Form
   },
+
   props: {
     recipeId: {
       type: String,
       required: true
     }
   },
+
   emits: ['close'],
+
   setup(props, { emit }) {
     // usings
     const recipesStore = useRecipesStore()
 
     // consts
     const formID = 'form-' + uniqueID().getID()
-    const timesOfDay = Object.keys(timesOfDayConst)
+    const timesOfDay = Object.values(TimeOfDay)
     const days = Array.from({ length: 7 }, (_, i) => {
       const day = dayjs().add(i, 'days')
       return {
-        value: day.format('YYYY-MM-DD'),
+        value: day.format('YYYY-MM-DD') as DateYMString,
         label: day.calendar()
       }
     })
@@ -86,41 +91,35 @@ export default {
     })
 
     const schema = Yup.object({
-      day: Yup.object()
-        .required('REQUIRED')
-        .typeError('REQUIRED'),
-      timeOfDay: Yup.string()
-        .required('REQUIRED')
-        .typeError('REQUIRED')
+      day: Yup.object().required('REQUIRED').typeError('REQUIRED'),
+      timeOfDay: Yup.string().required('REQUIRED').typeError('REQUIRED')
     })
 
     // methods
-    const planRecipe = ({ day, timeOfDay }) => {
+    const planRecipe = async ({ day, timeOfDay }) => {
       data.sending = true
       data.errorList = null
 
-      const preparedData = {
-        recipeId: props.recipeId,
-        day: day.value,
-        timeOfDay: timeOfDay
-      }
+      try {
+        const {
+          data: { success, errors }
+        } = await recipesStore.addRecipeToPlanned({
+          recipeId: props.recipeId,
+          day: day.value,
+          timeOfDay: timeOfDay
+        })
 
-      recipesStore
-        .addRecipeToPlanned(preparedData)
-        .then(({ data: { success, errors } }) => {
-          if (success) {
-            emit('close')
-          } else {
-            data.errorList = errors || ['coś poszło nie tak']
-          }
-        })
-        .catch(error => {
-          const responseErrors = error.response?.data?.errors
-          data.errorList = responseErrors || ['coś poszło nie tak']
-        })
-        .finally(() => {
-          data.sending = false
-        })
+        if (success) {
+          emit('close')
+        } else {
+          data.errorList = errors || ['coś poszło nie tak']
+        }
+      } catch (error) {
+        const responseErrors = error.response?.data?.errors
+        data.errorList = responseErrors || ['coś poszło nie tak']
+      } finally {
+        data.sending = false
+      }
     }
 
     return {
@@ -136,7 +135,7 @@ export default {
       planRecipe
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

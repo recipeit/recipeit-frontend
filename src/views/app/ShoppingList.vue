@@ -80,10 +80,10 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import groupby from 'lodash.groupby'
 import sortby from 'lodash.sortby'
-import { computed, markRaw, nextTick, onBeforeMount, reactive, ref, toRefs } from 'vue'
+import { computed, defineComponent, markRaw, nextTick, onBeforeMount, reactive, ref, toRefs } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useMeta } from 'vue-meta'
 
@@ -101,13 +101,15 @@ import ProductIcon from '@/components/ProductIcon.vue'
 import ShoppingListProduct from '@/components/ShoppingListProduct.vue'
 import Dialog from '@/components/modals/Dialog.vue'
 
-export default {
+export default defineComponent({
   name: 'ShoppingList',
+
   components: {
     ShoppingListProduct,
     PageHeader,
     ProductIcon
   },
+
   setup() {
     useMeta({
       title: 'Lista zakupów'
@@ -152,7 +154,9 @@ export default {
     })
 
     // methods
-    const addProductFromSelect = ({ id } = {}) => {
+    const addProductFromSelect = ({ id }: { id?: number } = {}) => {
+      if (id === undefined) return
+
       const requestData = {
         baseProductId: id
       }
@@ -216,7 +220,7 @@ export default {
       purchaseAll
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

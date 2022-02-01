@@ -21,8 +21,8 @@
   </div>
 </template>
 
-<script>
-import { onBeforeMount, onBeforeUnmount, onMounted, ref } from 'vue'
+<script lang="ts">
+import { defineComponent, onBeforeMount, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useMeta } from 'vue-meta'
 
 import { BASE_URL } from '@/configs/url'
@@ -44,8 +44,9 @@ import FiltersImage from '@/assets/img/landing-page/filters.webp'
 import PlanImage from '@/assets/img/landing-page/plan.webp'
 import FavouritesImage from '@/assets/img/landing-page/favourites.webp'
 
-export default {
+export default defineComponent({
   components: { Section, Splash, Footer, Container, Statistics, Benefits, FooterAuth, SocialMedia },
+
   setup() {
     useMeta({
       link: [{ rel: 'canonical', href: `${BASE_URL}` }],
@@ -121,7 +122,7 @@ export default {
       elementStyle
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

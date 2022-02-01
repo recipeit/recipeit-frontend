@@ -15,21 +15,25 @@
   </router-link>
 </template>
 
-<script>
-import { computed } from 'vue'
+<script lang="ts">
+import { computed, defineComponent, PropType } from 'vue'
 
 import avatarErrorUrl from '@/assets/img/blog-avatar.webp'
 
 import { APP_BLOG } from '@/router/names'
 
-export default {
+import { BlogEntity } from '@/typings/entities'
+
+export default defineComponent({
   props: {
     blog: {
-      type: Object,
+      type: Object as PropType<BlogEntity>,
       required: true
     }
   },
+
   emits: ['unhide'],
+
   setup(props) {
     const avatarUrl = computed(() => `/static/blogs/${props.blog.id}/avatar.webp`)
 
@@ -39,7 +43,7 @@ export default {
       avatarErrorUrl
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

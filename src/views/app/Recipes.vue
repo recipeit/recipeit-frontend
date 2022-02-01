@@ -27,8 +27,8 @@
   </div>
 </template>
 
-<script>
-import { onBeforeMount, ref } from 'vue'
+<script lang="ts">
+import { defineComponent, onBeforeMount, ref } from 'vue'
 import { useMeta } from 'vue-meta'
 import { useRoute } from 'vue-router'
 
@@ -37,22 +37,27 @@ import userApi from '@/api/userApi'
 
 import { fetchRecipesQueryParams, queryParamsFromRouteQuery } from '@/constants'
 
+import { RecipesPageParams } from '@/typings/recipesPage'
+
 import recipeFilteredPagedList from '@/views/app/composable/recipeFilteredPagedList'
 
 import GenericRecipesList from '@/components/GenericRecipesList.vue'
 import PageHeader from '@/components/PageHeader.vue'
 
-export default {
+export default defineComponent({
   name: 'Recipes',
+
   components: {
     GenericRecipesList,
     PageHeader
   },
+
   props: {
     savedPosition: {
       type: String
     }
   },
+
   setup() {
     useMeta({
       title: 'Baza przepisów'
@@ -63,7 +68,8 @@ export default {
 
     const recipesList = recipeFilteredPagedList(recipeApi.getRecipes)
 
-    const fetchAvailableRecipesCount = async ({ orderMethod, filters, search } = {}) => {
+    const fetchAvailableRecipesCount = async ({ orderMethod, filters, search }: RecipesPageParams = {}) => {
+      console.log({ orderMethod, filters, search })
       availableRecipesCount.value = null
       const queryParams = fetchRecipesQueryParams(orderMethod, filters, search)
       const { data } = await userApi.getAvailableRecipesCount(queryParams)
@@ -93,7 +99,7 @@ export default {
       availableRecipesCount
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

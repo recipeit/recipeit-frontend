@@ -88,7 +88,9 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from 'vue'
+
 import userApi from '@/api/userApi'
 
 import dayjs from '@/functions/dayjs'
@@ -112,8 +114,9 @@ const DayType = {
   FAR_FUTURE: 'FAR_FUTURE'
 }
 
-export default {
+export default defineComponent({
   components: { SectionTitle },
+
   setup() {
     return {
       APP_RECIPES,
@@ -121,6 +124,7 @@ export default {
       DayType
     }
   },
+
   data() {
     return {
       daysList: [],
@@ -129,6 +133,7 @@ export default {
       currendDaySlideType: null
     }
   },
+
   computed: {
     anyPlannedRecipesInDay() {
       const { currentDayPlan } = this
@@ -145,9 +150,11 @@ export default {
       return this.currentDay && this.currentDay.type !== DayType.TODAY
     }
   },
+
   beforeMount() {
     this.backToToday()
   },
+
   methods: {
     dayType(day, today) {
       if (day.isToday()) return 'TODAY'
@@ -220,7 +227,7 @@ export default {
       })
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

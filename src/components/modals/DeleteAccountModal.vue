@@ -10,7 +10,7 @@
       <p class="message">
         Jeżeli dalej chcesz usunąć swoje konto, wprowadź kod <b class="code">{{ code }}</b> w poniższe pole.
       </p>
-      <Form :id="formID" class="form" :validation-schema="schema" @submit="deleteAccount($event)">
+      <Form :id="formID" class="form" :validation-schema="schema" @submit="deleteAccount()">
         <BaseInput class="form-row" label="E-mail" type="text" :disabled="true" :value="email" />
         <Field v-slot="{ field, errors }" name="code">
           <BaseInput class="form-row" label="Kod" type="text" v-bind="field" :errors="errors" />
@@ -33,9 +33,9 @@
   </SheetModalContent>
 </template>
 
-<script>
+<script lang="ts">
 import { Field, Form } from 'vee-validate'
-import { onBeforeMount, reactive, toRefs } from 'vue'
+import { defineComponent, onBeforeMount, reactive, toRefs } from 'vue'
 import * as Yup from 'yup'
 
 import identityApi from '@/api/identityApi'
@@ -57,15 +57,18 @@ const generateCode = () => {
     .toUpperCase()
 }
 
-export default {
+export default defineComponent({
   components: { RecaptchaBranding, Field, Form },
+
   props: {
     email: {
       type: String,
       required: true
     }
   },
+
   emits: ['close'],
+
   setup(_, component) {
     // usings
     const userStore = useUserStore()
@@ -102,7 +105,7 @@ export default {
             .deleteAccount({ recaptchaToken })
             .then(() => {
               component.emit('close', { success: true })
-              userStore.logout()
+              userStore.logout(true)
             })
             .catch(error => {
               data.code = generateCode()
@@ -136,7 +139,7 @@ export default {
       deleteAccount
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>
