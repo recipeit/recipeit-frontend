@@ -1,4 +1,4 @@
-import { ProductCategory } from '@/configs/productCategories'
+import { ProductCategory } from '@/enums/productCategories'
 
 export type BlogEntity = {
   id: string

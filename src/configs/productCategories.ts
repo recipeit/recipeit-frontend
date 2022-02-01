@@ -1,27 +1,6 @@
-export enum ProductCategory {
-  Vegetables = 'Vegetables',
-  Fruits = 'Fruits',
-  Dairy = 'Dairy',
-  Meats = 'Meats',
-  Fishes = 'Fishes',
-  Seafoods = 'Seafoods',
-  DairyAlternatives = 'DairyAlternatives',
-  DairyAndMeatAlternatives = 'DairyAndMeatAlternatives',
-  BakingAndGrains = 'BakingAndGrains',
-  Legumes = 'Legumes',
-  Nuts = 'Nuts',
-  Spices = 'Spices',
-  Oils = 'Oils',
-  Sauces = 'Sauces',
-  Beverages = 'Beverages',
-  Alcohol = 'Alcohol',
-  DessertsAndSnacks = 'DessertsAndSnacks',
-  FoodAdditives = 'FoodAdditives',
-  Sweeteners = 'Sweeteners',
-  Others = 'Others'
-}
+import { ProductCategory } from '@/enums/productCategories'
 
-export const PRODUCT_CATEGORY_ORDER = {
+export const PRODUCT_CATEGORY_ORDER: { [key in ProductCategory]: number } = {
   [ProductCategory.Vegetables]: 1,
   [ProductCategory.Fruits]: 2,
   [ProductCategory.Dairy]: 3,

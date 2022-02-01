@@ -1,10 +1,4 @@
-export enum UnitGroupName {
-  Popular = 'popular',
-  Weight = 'weight',
-  Volume = 'volume',
-  Length = 'length',
-  Unset = 'unset'
-}
+import { UnitGroupName } from '@/enums/unit'
 
 export type UnitGroup = {
   groupKey: UnitGroupName
