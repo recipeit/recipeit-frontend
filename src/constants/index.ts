@@ -1,7 +1,9 @@
 // TODO są to paramy w sumie bez strony więc ni wiem
 
+import { RecipeSortingMethod } from '@/constants/filters'
+
 import { RecipeEntity } from '@/typings/entities'
-import { RecipeSortingMethod, RecipesPageFilters, RecipesPageQueryParams } from '@/typings/recipesPage'
+import { RecipesPageFilters, RecipesPageQueryParams } from '@/typings/recipesPage'
 
 export class RecipeList {
   fetching: boolean

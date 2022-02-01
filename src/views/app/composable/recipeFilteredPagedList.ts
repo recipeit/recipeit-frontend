@@ -4,10 +4,11 @@ import { useRoute, useRouter } from 'vue-router'
 import { ERROR_ACTION_TAG_NAME } from '@/configs/error'
 
 import { fetchRecipesQueryParams, queryParamsFromRouteQuery, RecipeList } from '@/constants'
+import { RecipeSortingMethod } from '@/constants/filters'
 
 import { useErrorHandler } from '@/error'
 
-import { RecipeSortingMethod, RecipesPageFilters, RecipesPageParams, RecipesPageQueryParams } from '@/typings/recipesPage'
+import { RecipesPageFilters, RecipesPageParams, RecipesPageQueryParams } from '@/typings/recipesPage'
 
 export default apiEndpoint => {
   const recipes = ref(new RecipeList())

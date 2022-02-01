@@ -1,7 +1,7 @@
 import { ADDITIONAL_AMOUNT_VALUES } from '@/configs/amount'
 
 import errorCodes from '@/constants/errorCodes'
-import { RECIPE_FILTER_GROUPS, RECIPE_SORTING_METHODS } from '@/constants/filters'
+import { RecipeFilterGroup, RecipeSortingMethod } from '@/constants/filters'
 import recipeCategories from '@/constants/recipeCategories'
 import timesOfDay from '@/constants/timesOfDay'
 
@@ -52,25 +52,25 @@ export default {
       purchaseAllDialogTitle: 'Czy na pewno chcesz przenieść {products} do swojej kuchni?'
     },
     recipesSortingMethods: {
-      [RECIPE_SORTING_METHODS.NEWEST]: 'najnowszych',
-      [RECIPE_SORTING_METHODS.NAME_ASCENDING]: 'nazwy: od A do Z',
-      [RECIPE_SORTING_METHODS.NAME_DESCENDING]: 'nazwy: od Z do A',
-      [RECIPE_SORTING_METHODS.TIME_PREPARING_ASCENDING]: 'czasu przygotowania: rosnąco',
-      [RECIPE_SORTING_METHODS.TIME_PREPARING_DESCENDING]: 'czasu przygotowania: malejąco',
-      [RECIPE_SORTING_METHODS.INGREDIENT_COUNT_ASCENDING]: 'liczby składników: rosnąco',
-      [RECIPE_SORTING_METHODS.INGREDIENT_COUNT_DESCENDING]: 'liczby składników: malejąco',
-      [RECIPE_SORTING_METHODS.MISSING_INGREDIENT_ASCENDING]: 'liczby brakujących składników: rosnąco',
-      [RECIPE_SORTING_METHODS.MISSING_INGREDIENT_DESCENDING]: 'liczby brakujących składników: malejąco'
+      [RecipeSortingMethod.Newest]: 'najnowszych',
+      [RecipeSortingMethod.NameAscending]: 'nazwy: od A do Z',
+      [RecipeSortingMethod.NameDescending]: 'nazwy: od Z do A',
+      [RecipeSortingMethod.TimePreparingAscending]: 'czasu przygotowania: rosnąco',
+      [RecipeSortingMethod.TimePreparingDescending]: 'czasu przygotowania: malejąco',
+      [RecipeSortingMethod.IngredientsCountAscending]: 'liczby składników: rosnąco',
+      [RecipeSortingMethod.IngredientsCountDescending]: 'liczby składników: malejąco',
+      [RecipeSortingMethod.MissingIngredientsAscending]: 'liczby brakujących składników: rosnąco',
+      [RecipeSortingMethod.MissingIngredientsDescending]: 'liczby brakujących składników: malejąco'
     },
     recipeFilterGroups: {
-      [RECIPE_FILTER_GROUPS.OTHER]: 'Twoje',
-      [RECIPE_FILTER_GROUPS.DAYTIME]: 'Pora dnia',
-      [RECIPE_FILTER_GROUPS.TYPE]: 'Typ',
-      [RECIPE_FILTER_GROUPS.OCCASION]: 'Okazja',
-      [RECIPE_FILTER_GROUPS.CUISINE]: 'Kuchnie świata',
-      [RECIPE_FILTER_GROUPS.DIET]: 'Dieta',
-      [RECIPE_FILTER_GROUPS.ALLERGENS]: 'Wyklucz alergeny',
-      [RECIPE_FILTER_GROUPS.BASE_PRODUCTS]: 'Wymagane składniki'
+      [RecipeFilterGroup.Other]: 'Twoje',
+      [RecipeFilterGroup.Daytime]: 'Pora dnia',
+      [RecipeFilterGroup.Type]: 'Typ',
+      [RecipeFilterGroup.Occasion]: 'Okazja',
+      [RecipeFilterGroup.Cuisine]: 'Kuchnie świata',
+      [RecipeFilterGroup.Diet]: 'Dieta',
+      [RecipeFilterGroup.Allergens]: 'Wyklucz alergeny',
+      [RecipeFilterGroup.BaseProducts]: 'Wymagane składniki'
     },
     recipeCategory: {
       // DayTime

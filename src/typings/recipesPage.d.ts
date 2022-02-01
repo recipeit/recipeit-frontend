@@ -1,12 +1,9 @@
-import { RECIPE_FILTER_GROUPS, RECIPE_SORTING_METHODS } from '@/constants/filters'
+import { RecipeFilterGroup, RecipeSortingMethod } from '@/constants/filters'
 
-type RecipeFilterKey = typeof RECIPE_FILTER_GROUPS[keyof typeof RECIPE_FILTER_GROUPS]
-type RecipeFilterKeyAsQueryParam = `filters.${Lowercase<RecipeFilterKey>}`
-
-export type RecipeSortingMethod = typeof RECIPE_SORTING_METHODS[keyof typeof RECIPE_SORTING_METHODS]
+type RecipeFilterKeyAsQueryParam = `filters.${Lowercase<RecipeFilterGroup>}`
 
 export type RecipesPageFilters = {
-  [key in RecipeFilterKey]?: Array<string | number>
+  [key in RecipeFilterGroup]?: Array<string | number>
 }
 
 export type RecipesPageParams = {
@@ -20,5 +17,5 @@ export type RecipesPageQueryParams = {
 } & {
   pageNumber?: number
   search?: string
-  orderMethod?: string
+  orderMethod?: RecipeSortingMethod
 }
