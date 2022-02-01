@@ -99,7 +99,8 @@ export default defineComponent({
 
   props: {
     recipes: {
-      type: Object as PropType<RecipesPageState & RecipesFilteredPageState> // TODO trzeba rozdzielić że albo to albo tamto
+      // TODO trzeba rozdzielić że albo to albo tamto
+      type: Object as PropType<RecipesPageState & RecipesFilteredPageState>
     },
     errors: {
       type: Object,

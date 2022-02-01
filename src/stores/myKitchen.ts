@@ -3,6 +3,7 @@ import { defineStore } from 'pinia'
 import myKitchenApi from '@/api/myKitchenApi'
 
 import eventHub from '@/services/eventHub'
+import { UserKitchenProductEntity } from '@/typings/entities'
 
 const addProducts = (store, products) => {
   const newProductsIds = products.map(({ id }) => id)
@@ -22,8 +23,12 @@ const addProduct = (store, product) => {
   }
 }
 
+type MyKitchenStoreState = {
+  products: Array<UserKitchenProductEntity>
+}
+
 export const useMyKitchenStore = defineStore('myKitchen', {
-  state: () => {
+  state: (): MyKitchenStoreState => {
     return {
       products: null
     }

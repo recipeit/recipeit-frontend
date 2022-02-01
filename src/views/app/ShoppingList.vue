@@ -42,24 +42,22 @@
 
     <div v-if="groupedProducts === null">...wczytuję</div>
     <ul v-else-if="groupedProducts.length > 0" class="product-list-groups">
-      <li v-for="productsGroup in groupedProducts" :key="productsGroup[0]" class="product-list-group">
+      <li v-for="[category, groupProducts] in groupedProducts" :key="category" class="product-list-group">
         <div class="product-list-group__title">
-          <ProductIcon class="product-list-group__title__icon" :group="productsGroup[0]" />
+          <ProductIcon class="product-list-group__title__icon" :group="category" />
           <div class="product-list-group__title__name">
-            {{ $t(`productCategory.${productsGroup[0]}`) }}
+            {{ $t(`productCategory.${category}`) }}
           </div>
         </div>
         <ul class="product-list">
-          <li v-for="product in productsGroup[1]" :key="product.id" class="product-list__item">
+          <li v-for="product in groupProducts" :key="product.id" class="product-list__item">
             <ShoppingListProduct :product="product" @purchase="purchase(product.id)" />
           </li>
         </ul>
       </li>
     </ul>
     <div v-else class="empty-message">
-      <div class="empty-message-title">
-        Trochę tu pusto
-      </div>
+      <div class="empty-message-title">Trochę tu pusto</div>
       Dodaj coś do listy zakupów
       <BaseButton class="add-product-button space-top" raised color="primary" @click="openAddProductSelect()">
         <BaseIcon class="floating-action-button__icon" icon="plus" weight="semi-bold" />
@@ -95,6 +93,9 @@ import { useModal } from '@/plugins/global-sheet-modal'
 
 import { useIngredientsStore } from '@/stores/ingredients'
 import { useShoppingListStore } from '@/stores/shoppingList'
+
+import { UserShoppingListProductEntity } from '@/typings/entities'
+import { ProductCategory } from '@/typings/productCategories'
 
 import PageHeader from '@/components/PageHeader.vue'
 import ProductIcon from '@/components/ProductIcon.vue'
@@ -144,9 +145,9 @@ export default defineComponent({
 
       const sorted = sortby(products.value, 'baseProductName')
       const grouped = groupby(sorted, 'category')
-      const sortedGroups = sortby(Object.entries(grouped), ([group]) => PRODUCT_CATEGORY_ORDER[group])
+      const entries = Object.entries(grouped) as Array<[ProductCategory, Array<UserShoppingListProductEntity>]>
 
-      return sortedGroups
+      return sortby(entries, ([group]) => PRODUCT_CATEGORY_ORDER[group])
     })
 
     const isEmpty = computed(() => {

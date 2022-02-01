@@ -11,12 +11,8 @@
       </Form>
     </BaseModalBody>
     <BaseModalFooter>
-      <BaseButton class="submit-button" stroked @click="$emit('close')">
-        Anuluj
-      </BaseButton>
-      <BaseButton class="submit-button" raised color="primary" :form="formID" :loading="sending">
-        Edytuj
-      </BaseButton>
+      <BaseButton class="submit-button" stroked @click="$emit('close')"> Anuluj </BaseButton>
+      <BaseButton class="submit-button" raised color="primary" :form="formID" :loading="sending"> Edytuj </BaseButton>
     </BaseModalFooter>
   </SheetModalContent>
 </template>
@@ -32,6 +28,7 @@ import { useIngredientsStore } from '@/stores/ingredients'
 import { useMyKitchenStore } from '@/stores/myKitchen'
 
 import { UserKitchenProductEntity } from '@/typings/entities'
+import { DateYMDString } from '@/typings/dates'
 
 import ProductModalForm from '@/components/ProductModalForm.vue'
 import ExpirationDatesFormSection from '@/components/modals/ExpirationDatesFormSection.vue'
@@ -45,7 +42,7 @@ export default defineComponent({
       required: true
     },
     expirationDates: {
-      type: Array as PropType<Array<string>>,
+      type: Array as PropType<Array<DateYMDString>>,
       default: null
     }
   },
@@ -78,9 +75,7 @@ export default defineComponent({
     const sending = ref(false)
 
     const schema = Yup.object().shape({
-      baseProduct: Yup.object()
-        .required('REQUIRED')
-        .typeError('REQUIRED'),
+      baseProduct: Yup.object().required('REQUIRED').typeError('REQUIRED'),
       amount: Yup.number()
         .typeError('Niepoprawna liczba')
         .transform((cv, ov) => {

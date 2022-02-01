@@ -48,7 +48,7 @@ import uniqueID from '@/functions/uniqueID'
 
 import { useRecipesStore } from '@/stores/recipes'
 
-import { DateYMString } from '@/typings/dates'
+import { DateYMDString } from '@/typings/dates'
 
 export default defineComponent({
   components: {
@@ -74,7 +74,7 @@ export default defineComponent({
     const days = Array.from({ length: 7 }, (_, i) => {
       const day = dayjs().add(i, 'days')
       return {
-        value: day.format('YYYY-MM-DD') as DateYMString,
+        value: day.format('YYYY-MM-DD') as DateYMDString,
         label: day.calendar()
       }
     })

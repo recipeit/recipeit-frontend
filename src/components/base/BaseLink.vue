@@ -7,8 +7,7 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
 
-type BaseLinkTag = 'a' | 'button' | 'span'
-type BaseLinkColor = null | 'primary' | 'accent' | 'text-primary' | 'text-secondary' | 'red'
+import { BaseLinkColor, BaseLinkTag } from '@/typings/link'
 
 export default defineComponent({
   props: {
