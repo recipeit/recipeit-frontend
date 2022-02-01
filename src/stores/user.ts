@@ -205,8 +205,6 @@ export const useUserStore = defineStore('user', {
           return
         }
 
-        setUserAuthState(this, 'USER_FETCHING')
-
         const onRefreshCookieError = () => {
           setUserAuthState(this, 'USER_LOGGED_OUT')
 
@@ -225,6 +223,8 @@ export const useUserStore = defineStore('user', {
           setUserAuthState(this, 'USER_LOGGED_IN')
           resolve({})
         }
+
+        setUserAuthState(this, 'USER_FETCHING')
 
         identityApi
           .refreshCookie()

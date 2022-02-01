@@ -1,7 +1,7 @@
 import * as Sentry from '@sentry/browser'
 import axios from 'axios'
 
-import { IDENTITY_URLS } from '@/api/identityApi'
+import { REFRESH_COOKIE_URL } from '@/api/identityApi'
 
 import { API_DEV_BASE_URL_SSL, API_PROD_BASE_URL } from '@/configs/api'
 
@@ -28,7 +28,7 @@ apiClient.interceptors.response.use(
     const originalRequest = error.config
 
     // Prevent infinite loops
-    if (error.response?.status === 401 && originalRequest.url.includes(IDENTITY_URLS.REFRESH_COOKIE)) {
+    if (error.response?.status === 401 && originalRequest.url.includes(REFRESH_COOKIE_URL)) {
       return Promise.reject(error)
     }
 
@@ -38,13 +38,10 @@ apiClient.interceptors.response.use(
         .then(({ isFetching }) => {
           if (isFetching !== true) {
             onRefreshed(true)
-            // subscribers = []
           }
         })
         .catch(() => {
           onRefreshed(false)
-          // subscribers = []
-          // Sentry.captureException(error)
         })
 
       return new Promise((resolve, reject) => {
@@ -53,7 +50,6 @@ apiClient.interceptors.response.use(
             resolve(apiClient(originalRequest))
           } else {
             reject()
-            // Sentry.captureException(error)
           }
         })
       })
