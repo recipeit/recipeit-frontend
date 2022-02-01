@@ -91,8 +91,8 @@ export default defineComponent({
       sending.value = true
 
       const requestData = {
-        id: props.product.id,
         product: {
+          id: props.product.id,
           baseProductId: baseProduct.id,
           amount: amount || undefined,
           unit

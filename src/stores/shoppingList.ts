@@ -6,9 +6,15 @@ import shoppingListApi from '@/api/shoppingListApi'
 import eventHub from '@/services/eventHub'
 
 import { useMyKitchenStore } from '@/stores/myKitchen'
-import { UserShoppingListProductEntity } from '@/typings/entities'
 
-const addProduct = (store, product) => {
+import { RecipeEntity, UserShoppingListProductEntity } from '@/typings/entities'
+import { EditedUserShoppingListProduct, NewUserShoppingListProduct } from '@/typings/shoppingList'
+
+type ShoppingListStoreState = {
+  products: Array<UserShoppingListProductEntity>
+}
+
+const addProduct = (store, product: UserShoppingListProductEntity) => {
   if (!store.products) {
     store.products = [product]
   } else {
@@ -24,7 +30,7 @@ const addProduct = (store, product) => {
   }
 }
 
-const removeProduct = (store, id) => {
+const removeProduct = (store, id: UserShoppingListProductEntity['id']) => {
   const productIndex = store.products.findIndex(p => p.id === id)
 
   if (productIndex >= 0) {
@@ -33,9 +39,9 @@ const removeProduct = (store, id) => {
 }
 
 export const useShoppingListStore = defineStore('shoppingList', {
-  state: () => {
+  state: (): ShoppingListStoreState => {
     return {
-      products: null as Array<UserShoppingListProductEntity>
+      products: null
     }
   },
 
@@ -46,13 +52,13 @@ export const useShoppingListStore = defineStore('shoppingList', {
       this.products = data
     },
 
-    async addProduct(product) {
+    async addProduct(product: NewUserShoppingListProduct) {
       const { data } = await shoppingListApi.addProductToShoppingList(product)
       addProduct(this, data)
       eventHub.$emit('add-to-shopping-list')
     },
 
-    async addMissingIngredientsToShoppingList(recipeId) {
+    async addMissingIngredientsToShoppingList(recipeId: RecipeEntity['id']) {
       const { data: products } = await recipeApi.addMissingIngredientsToShoppingList(recipeId)
 
       if (!products) {
@@ -70,7 +76,7 @@ export const useShoppingListStore = defineStore('shoppingList', {
       eventHub.$emit('add-to-shopping-list')
     },
 
-    async editProductFromShoppingList(product) {
+    async editProductFromShoppingList(product: EditedUserShoppingListProduct) {
       const { data: updatedProduct } = await shoppingListApi.updateProductFromShoppingList(product)
 
       const existingProduct = this.products.find(({ id }) => id === updatedProduct.id)
@@ -82,12 +88,12 @@ export const useShoppingListStore = defineStore('shoppingList', {
       }
     },
 
-    async deleteProductFromShoppingList(id) {
+    async deleteProductFromShoppingList(id: UserShoppingListProductEntity['id']) {
       await shoppingListApi.removeProductFromShoppingListById(id)
       removeProduct(this, id)
     },
 
-    async purchaseProduct(productId) {
+    async purchaseProduct(productId: UserShoppingListProductEntity['id']) {
       const myKitchenStore = useMyKitchenStore()
       const { data } = await shoppingListApi.purchaseProduct(productId)
       removeProduct(this, productId)
