@@ -41,7 +41,7 @@ import { Field, Form } from 'vee-validate'
 import { defineComponent, reactive, toRefs } from 'vue'
 import * as Yup from 'yup'
 
-import timesOfDayConst from '@/constants/timesOfDay'
+import { TimeOfDay } from '@/constants/timesOfDay'
 
 import dayjs from '@/functions/dayjs'
 import uniqueID from '@/functions/uniqueID'
@@ -71,7 +71,7 @@ export default defineComponent({
 
     // consts
     const formID = 'form-' + uniqueID().getID()
-    const timesOfDay = Object.keys(timesOfDayConst)
+    const timesOfDay = Object.values(TimeOfDay)
     const days = Array.from({ length: 7 }, (_, i) => {
       const day = dayjs().add(i, 'days')
       return {

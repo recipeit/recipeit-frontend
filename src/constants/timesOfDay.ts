@@ -1,8 +1,8 @@
-export default {
-  BREAKFAST: 'BREAKFAST',
-  // ELEVENSES: 'ELEVENSES',
-  LUNCH: 'LUNCH',
-  DINNER: 'DINNER',
-  SUPPER: 'SUPPER',
-  SNACK: 'SNACK'
+export enum TimeOfDay {
+  Breakfast = 'BREAKFAST',
+  // Elevenses = 'ELEVENSES',
+  Lunch = 'LUNCH',
+  Dinner = 'DINNER',
+  Supper = 'SUPPER',
+  Snack = 'SNACK'
 }

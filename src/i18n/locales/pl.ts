@@ -3,7 +3,7 @@ import { ADDITIONAL_AMOUNT_VALUES } from '@/configs/amount'
 import errorCodes from '@/constants/errorCodes'
 import { RecipeFilterGroup, RecipeSortingMethod } from '@/constants/filters'
 import recipeCategories from '@/constants/recipeCategories'
-import timesOfDay from '@/constants/timesOfDay'
+import { TimeOfDay } from '@/constants/timesOfDay'
 
 export default {
   messages: {
@@ -274,12 +274,12 @@ export default {
       [errorCodes.WRONG_PASSWORD_COMBINATION]: 'wprowadzone hasła nie są takie same'
     },
     timeOfDay: {
-      [timesOfDay.BREAKFAST]: 'śniadanie',
-      // [timesOfDay.ELEVENSES]: 'drugie śniadanie',
-      [timesOfDay.LUNCH]: 'lunch',
-      [timesOfDay.DINNER]: 'obiad',
-      [timesOfDay.SUPPER]: 'kolacja',
-      [timesOfDay.SNACK]: 'przekąska'
+      [TimeOfDay.Breakfast]: 'śniadanie',
+      // [TimeOfDay.ELEVENSES]: 'drugie śniadanie',
+      [TimeOfDay.Lunch]: 'lunch',
+      [TimeOfDay.Dinner]: 'obiad',
+      [TimeOfDay.Supper]: 'kolacja',
+      [TimeOfDay.Snack]: 'przekąska'
     },
     productCategory: {
       Others: 'Inne',
