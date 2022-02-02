@@ -1,10 +1,9 @@
-import { AxiosResponse } from 'axios'
-
 import apiClient from '@/api/apiClient'
 
 import { DateYMDString } from '@/typings/dates'
 import { BlogEntity, RecipeEntity } from '@/typings/entities'
 import { RecipesPageQueryParams, RecipesFilteredPage, RecipesPage, RecipesFilteredPageQueryParams } from '@/typings/recipesPage'
+import { PlannedRecipesResponse } from '@/typings/plannedRecipes'
 
 const route = 'user'
 
@@ -29,37 +28,34 @@ export default {
       params: queryParams
     })
   },
-  getFavouriteRecipes(queryParams?: RecipesPageQueryParams): Promise<AxiosResponse<RecipesPage>> {
-    return apiClient.get(`/${route}/favourite-recipes`, {
+  getFavouriteRecipes(queryParams?: RecipesPageQueryParams) {
+    return apiClient.get<RecipesPage>(`/${route}/favourite-recipes`, {
       params: queryParams
     })
   },
   getFavouriteRecipesIds() {
-    return apiClient.get(`/${route}/favourite-recipes/ids`)
+    return apiClient.get<Array<RecipeEntity['id']>>(`/${route}/favourite-recipes/ids`)
   },
   addRecipeToFavourites(id: RecipeEntity['id']) {
-    return apiClient.post(`/${route}/favourite-recipes/${id}`, null)
+    return apiClient.post<boolean>(`/${route}/favourite-recipes/${id}`, null)
   },
   removeRecipeFromFavourites(id: RecipeEntity['id']) {
-    return apiClient.delete(`/${route}/favourite-recipes/${id}`)
+    return apiClient.delete<boolean>(`/${route}/favourite-recipes/${id}`)
   },
   getPlannedRecipes(date: DateYMDString) {
-    return apiClient.get(`/${route}/planned-recipes/${date}`)
+    return apiClient.get<PlannedRecipesResponse>(`/${route}/planned-recipes/${date}`)
   },
   addRecipeToPlanned(id: RecipeEntity['id'], data: AddRecipeToPlannedRequestBody) {
-    return apiClient.post(`/${route}/planned-recipes/${id}`, data)
+    return apiClient.post<{ success: boolean; errors?: Array<string> }>(`/${route}/planned-recipes/${id}`, data)
   },
   removeRecipeFromPlanned(id: RecipeEntity['id']) {
-    return apiClient.delete(`/${route}/planned-recipes/${id}`)
-  },
-  getSuggestedRecipes() {
-    return apiClient.get(`/${route}/suggested-recipes`)
+    return apiClient.delete<boolean>(`/${route}/planned-recipes/${id}`)
   },
   changeRecipeVisibility(id: RecipeEntity['id'], visible: boolean) {
-    return apiClient.post(`/${route}/recipe-visibility/${id}`, { visible })
+    return apiClient.post<{ success: boolean; errors?: Array<string> }>(`/${route}/recipe-visibility/${id}`, { visible })
   },
   changeBlogVisibility(id: BlogEntity['id'], visible: boolean) {
-    return apiClient.post(`/${route}/blog-visibility/${id}`, { visible })
+    return apiClient.post<{ success: boolean; errors?: Array<string> }>(`/${route}/blog-visibility/${id}`, { visible })
   },
   getHiddenRecipes() {
     return apiClient.get<{ recipes: Array<RecipeEntity> }>(`/${route}/hidden-recipes`)

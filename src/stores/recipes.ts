@@ -44,8 +44,7 @@ export const useRecipesStore = defineStore('recipes', {
       } else {
         const { data } = await recipeApi.getDetailedRecipe(id)
 
-        const recipe = { ...data.recipe }
-        recipe.details = data.details
+        const recipe: DetailedRecipe = { ...data.recipe, details: data.details }
 
         this.detailedRecipes.push(recipe)
 

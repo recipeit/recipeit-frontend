@@ -63,3 +63,9 @@ export type RecipeCategoryCuisine =
   | 'CuisineArabian'
 
 export type RecipeCategory = RecipeCategoryDayTime | RecipeCategoryType | RecipeCategoryOccasion | RecipeCategoryCuisine
+
+export type RecipeCategoryWithGroup = {
+  key: number
+  value: RecipeCategory
+  categoryGroup: RecipeCategoryGroup
+}
