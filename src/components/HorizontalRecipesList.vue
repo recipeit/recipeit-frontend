@@ -40,7 +40,8 @@
 <script lang="ts">
 import { computed, defineComponent, PropType } from 'vue'
 
-import { RecipeList } from '@/constants'
+import { RecipesFilteredPageState } from '@/models/RecipesFilteredPageState'
+import { RecipesPageState } from '@/models/RecipesPageState'
 
 import GenericRecipesListItem from '@/components/GenericRecipesListItem.vue'
 import SkeletonRecipeBox from '@/components/skeletons/SkeletonRecipeBox.vue'
@@ -50,7 +51,7 @@ export default defineComponent({
 
   props: {
     recipes: {
-      type: Object as PropType<RecipeList>
+      type: Object as PropType<RecipesPageState | RecipesFilteredPageState>
     },
     errors: {
       type: Object,

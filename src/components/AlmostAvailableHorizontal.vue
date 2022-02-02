@@ -11,7 +11,7 @@ import { useRouter } from 'vue-router'
 
 import userApi from '@/api/userApi'
 
-import { RecipeList } from '@/constants'
+import { RecipesPageState } from '@/models/RecipesPageState'
 
 import { APP_FAVOURITES } from '@/router/names'
 
@@ -22,7 +22,7 @@ export default defineComponent({
   components: { HorizontalRecipesList, SectionTitle },
 
   setup() {
-    const favouriteRecipes = ref(new RecipeList())
+    const favouriteRecipes = ref(new RecipesPageState())
     const router = useRouter()
 
     onBeforeMount(async () => {

@@ -14,11 +14,13 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onBeforeMount, reactive, toRefs, watchEffect } from 'vue'
+import { computed, defineComponent, onBeforeMount, reactive, toRefs, watchEffect, WatchStopHandle } from 'vue'
 import { useMeta } from 'vue-meta'
 import { useRoute, useRouter } from 'vue-router'
 
-import { EXACT_THEMES, THEME_DARK, THEME_DARK_COLOR, THEME_HTML_ATTRIBUTE, THEME_LIGHT, THEME_LIGHT_COLOR } from '@/configs/theme'
+import { THEME_DARK_COLOR, THEME_HTML_ATTRIBUTE, THEME_LIGHT_COLOR } from '@/configs/theme'
+
+import { ExactThemes } from '@/constants/themes'
 
 import Modal from '@/plugins/global-sheet-modal/Modal.vue'
 
@@ -27,6 +29,8 @@ import { APP_HOME, APP_ROUTE_NAMES, AUTH_LOGIN, LOGGED_USER_ALLOWED_ROUTE_NAMES 
 import GDPRService from '@/services/gdpr'
 
 import { useUserStore } from '@/stores/user'
+
+import { ExactTheme } from '@/typings/theme'
 
 import AppLoading from '@/components/AppLoading.vue'
 import RefreshPWA from '@/components/messages/RefreshPWA.vue'
@@ -62,16 +66,16 @@ export default defineComponent({
     // computed
     const allowedGDPRModalRoute = computed(() => !route.meta?.hideCookiesModal)
 
-    const exactTheme = computed(() => {
-      if (EXACT_THEMES.includes(userStore.theme)) {
-        return userStore.theme
+    const exactTheme = computed<ExactTheme>(() => {
+      if (ExactThemes.find(validTheme => validTheme === userStore.theme)) {
+        return userStore.theme as ExactTheme
       }
 
-      return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? THEME_DARK : THEME_LIGHT
+      return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
     })
 
     const themeColor = computed(() => {
-      return exactTheme.value === THEME_LIGHT ? THEME_LIGHT_COLOR : THEME_DARK_COLOR
+      return exactTheme.value === 'light' ? THEME_LIGHT_COLOR : THEME_DARK_COLOR
     })
 
     // lifecycle hooks
@@ -104,14 +108,14 @@ export default defineComponent({
       let userFetchSuccess = false
 
       try {
-        await userStore.fetchUserProfile({ getInitUserData: true })
+        await userStore.fetchUserProfile({ fetchInitUserData: true })
         userFetchSuccess = true
       } catch {
         userFetchSuccess = false
       }
 
       let stopped = false
-      let stop
+      let stop: WatchStopHandle
 
       stop = watchEffect(async () => {
         if (stopped) {

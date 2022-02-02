@@ -5,7 +5,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, PropType } from 'vue'
+
+import { BaseLinkColor } from '@/typings/link'
 
 import BaseLink from '@/components/base/BaseLink.vue'
 
@@ -13,7 +15,9 @@ export default defineComponent({
   components: { BaseLink },
 
   props: {
-    color: String
+    color: {
+      type: String as PropType<BaseLinkColor>
+    }
   }
 })
 </script>

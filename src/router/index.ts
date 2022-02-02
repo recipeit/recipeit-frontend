@@ -9,24 +9,24 @@ import * as PATHS from '@/router/paths'
 
 import eventHub from '@/services/eventHub'
 
-import { USER_AUTH_STATE, useUserStore } from '@/stores/user'
+import { useUserStore } from '@/stores/user'
 
 const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 
 const forceIsAuthenticated = async () => {
   const userStore = useUserStore()
-  let userAuthState = userStore.currentUserAuthState
+  let userAuthState = userStore.userAuthState
 
-  while (userAuthState === USER_AUTH_STATE.USER_APP_INITIAL) {
+  while (userAuthState === 'USER_APP_INITIAL') {
     await sleep(50)
-    userAuthState = userStore.currentUserAuthState
+    userAuthState = userStore.userAuthState
   }
 
-  if (userAuthState === USER_AUTH_STATE.USER_LOGGED_IN) {
+  if (userAuthState === 'USER_LOGGED_IN') {
     return true
   }
 
-  if (userAuthState === USER_AUTH_STATE.USER_LOGGED_OUT) {
+  if (userAuthState === 'USER_LOGGED_OUT') {
     return false
   }
 

@@ -99,6 +99,8 @@ export default defineComponent({
         return
       }
 
+      console.log({ filters: this.filters })
+
       this.$modal.show(
         markRaw(FilterModal),
         {

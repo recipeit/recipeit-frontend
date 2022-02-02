@@ -1,6 +1,5 @@
-import { IngredientUserState } from '@/enums/recipeIngredient'
-
 import { RecipeEntity, RecipeIngredientEntity } from '@/typings/entities'
+import { IngredientUserState } from '@/typings/recipeIngredient'
 
 export type RecipeCategoryWithGroup = {
   key: number

@@ -51,7 +51,7 @@ import * as Yup from 'yup'
 import dayjs from '@/functions/dayjs'
 import uniqueID from '@/functions/uniqueID'
 
-import { ExpirationDateForm } from '@/typings/expirationDate'
+import { ExpirationDateForm } from '@/typings/expirationDates'
 
 export default defineComponent({
   emits: ['close'],

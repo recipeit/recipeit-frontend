@@ -1,12 +1,8 @@
 import { ADDITIONAL_AMOUNT_VALUES } from '@/configs/amount'
 
-import errorCodes from '@/constants/errorCodes'
-import recipeCategories from '@/constants/recipeCategories'
+import { i18nLang } from '@/typings/translations'
 
-import { RecipeFilterGroup, RecipeSortingMethod } from '@/enums/filters'
-import { TimeOfDay } from '@/enums/timesOfDay'
-
-export default {
+const definition: i18nLang = {
   messages: {
     welcome: {
       morning: 'Miłego poranka',
@@ -53,91 +49,91 @@ export default {
       purchaseAllDialogTitle: 'Czy na pewno chcesz przenieść {products} do swojej kuchni?'
     },
     recipesSortingMethods: {
-      [RecipeSortingMethod.Newest]: 'najnowszych',
-      [RecipeSortingMethod.NameAscending]: 'nazwy: od A do Z',
-      [RecipeSortingMethod.NameDescending]: 'nazwy: od Z do A',
-      [RecipeSortingMethod.TimePreparingAscending]: 'czasu przygotowania: rosnąco',
-      [RecipeSortingMethod.TimePreparingDescending]: 'czasu przygotowania: malejąco',
-      [RecipeSortingMethod.IngredientsCountAscending]: 'liczby składników: rosnąco',
-      [RecipeSortingMethod.IngredientsCountDescending]: 'liczby składników: malejąco',
-      [RecipeSortingMethod.MissingIngredientsAscending]: 'liczby brakujących składników: rosnąco',
-      [RecipeSortingMethod.MissingIngredientsDescending]: 'liczby brakujących składników: malejąco'
+      Newest: 'najnowszych',
+      NameAscending: 'nazwy: od A do Z',
+      NameDescending: 'nazwy: od Z do A',
+      TimePreparingAscending: 'czasu przygotowania: rosnąco',
+      TimePreparingDescending: 'czasu przygotowania: malejąco',
+      IngredientsCountAscending: 'liczby składników: rosnąco',
+      IngredientsCountDescending: 'liczby składników: malejąco',
+      MissingIngredientsAscending: 'liczby brakujących składników: rosnąco',
+      MissingIngredientsDescending: 'liczby brakujących składników: malejąco'
     },
     recipeFilterGroups: {
-      [RecipeFilterGroup.Other]: 'Twoje',
-      [RecipeFilterGroup.Daytime]: 'Pora dnia',
-      [RecipeFilterGroup.Type]: 'Typ',
-      [RecipeFilterGroup.Occasion]: 'Okazja',
-      [RecipeFilterGroup.Cuisine]: 'Kuchnie świata',
-      [RecipeFilterGroup.Diet]: 'Dieta',
-      [RecipeFilterGroup.Allergens]: 'Wyklucz alergeny',
-      [RecipeFilterGroup.BaseProducts]: 'Wymagane składniki'
+      Other: 'Twoje',
+      Daytime: 'Pora dnia',
+      Type: 'Typ',
+      Occasion: 'Okazja',
+      Cuisine: 'Kuchnie świata',
+      Diet: 'Dieta',
+      Allergens: 'Wyklucz alergeny',
+      BaseProducts: 'Wymagane składniki'
     },
     recipeCategory: {
       // DayTime
-      [recipeCategories.BREAKFAST]: 'Śniadania',
-      [recipeCategories.DINNER]: 'Obiady',
-      [recipeCategories.SUPPER]: 'Kolacje',
+      Breakfast: 'Śniadania',
+      Dinner: 'Obiady',
+      Supper: 'Kolacje',
 
       // Type
-      [recipeCategories.SNACK]: 'Przekąski',
-      [recipeCategories.DESSERT]: 'Desery',
-      [recipeCategories.CAKE]: 'Ciasta',
-      [recipeCategories.COOKIES]: 'Ciasteczka',
-      [recipeCategories.SAUCE]: 'Sosy',
-      [recipeCategories.PIZZA]: 'Pizze',
-      [recipeCategories.PASTA]: 'Makarony',
-      [recipeCategories.FAST_FOOD]: 'Fast food',
-      [recipeCategories.APPETIZER]: 'Przystawki',
-      [recipeCategories.BAKING]: 'Pieczywo',
-      [recipeCategories.CASSEROLE]: 'Zapiekanki',
-      [recipeCategories.SOUP]: 'Zupy',
-      [recipeCategories.SALAD]: 'Sałatki',
-      [recipeCategories.DRINK]: 'Napoje',
-      [recipeCategories.ALCOHOL]: 'Alkohole',
-      [recipeCategories.PASTE]: 'Do smarowania',
-      [recipeCategories.PRESERVES]: 'Przetwory',
+      Snack: 'Przekąski',
+      Dessert: 'Desery',
+      Cake: 'Ciasta',
+      Cookies: 'Ciasteczka',
+      Sauce: 'Sosy',
+      Pizza: 'Pizze',
+      Pasta: 'Makarony',
+      FastFood: 'Fast food',
+      Appetizer: 'Przystawki',
+      Baking: 'Pieczywo',
+      Casserole: 'Zapiekanki',
+      Soup: 'Zupy',
+      Salad: 'Sałatki',
+      Drink: 'Napoje',
+      Alcohol: 'Alkohole',
+      Paste: 'Do smarowania',
+      Preserves: 'Przetwory',
 
       // Occasion
-      [recipeCategories.CHRISTMAS]: 'Boże Narodzenie',
-      [recipeCategories.EASTER]: 'Wielkanoc',
-      [recipeCategories.HALLOWEEN]: 'Halloween',
-      [recipeCategories.GRILL]: 'Grill',
-      [recipeCategories.PARTY]: 'Impreza',
-      [recipeCategories.NEW_YEARS_EVE]: 'Sylwester',
-      [recipeCategories.FAT_THURSDAY]: 'Tłusty Czwartek',
-      [recipeCategories.VALENTINES_DAY]: 'Walentynki',
-      [recipeCategories.PICNIC]: 'Piknik',
+      Christmas: 'Boże Narodzenie',
+      Easter: 'Wielkanoc',
+      Halloween: 'Halloween',
+      Grill: 'Grill',
+      Party: 'Impreza',
+      NewYearsEve: 'Sylwester',
+      FatThursday: 'Tłusty Czwartek',
+      ValentinesDay: 'Walentynki',
+      Picnic: 'Piknik',
 
       // Kitchen
-      [recipeCategories.CUISINE_ASIAN]: 'Kuchnia azjatycka',
-      [recipeCategories.CUISINE_AFRICAN]: 'Kuchnia afrykańska',
-      [recipeCategories.CUISINE_MIDDLE_EAST]: 'Kuchnia Bliskiego Wschodu',
-      [recipeCategories.CUISINE_AMERICAN]: 'Kuchnia amerykańska',
-      [recipeCategories.CUISINE_BALKAN]: 'Kuchnia bałkańska',
-      [recipeCategories.CUISINE_CHINESE]: 'Kuchnia chińska',
-      [recipeCategories.CUISINE_FRENCH]: 'Kuchnia francuska',
-      [recipeCategories.CUISINE_GREEK]: 'Kuchnia grecka',
-      [recipeCategories.CUISINE_GEORGIAN]: 'Kuchnia gruzińska',
-      [recipeCategories.CUISINE_SPANISH]: 'Kuchnia hiszpańska',
-      [recipeCategories.CUISINE_INDIAN]: 'Kuchnia indyjska',
-      [recipeCategories.CUISINE_POLISH]: 'Kuchnia polska',
-      [recipeCategories.CUISINE_THAI]: 'Kuchnia tajska',
-      [recipeCategories.CUISINE_MEXICAN]: 'Kuchnia meksykańska',
-      [recipeCategories.CUISINE_ITALIAN]: 'Kuchnia włoska',
-      [recipeCategories.CUISINE_KOREAN]: 'Kuchnia koreańska',
-      [recipeCategories.CUISINE_GERMAN]: 'Kuchnia niemiecka',
-      [recipeCategories.CUISINE_ORIENTAL]: 'Kuchnia orientalna',
-      [recipeCategories.CUISINE_TURKISH]: 'Kuchnia turecka',
-      [recipeCategories.CUISINE_MEDITERRANEAN]: 'Kuchnia śródziemnomorska',
-      [recipeCategories.CUISINE_RUSSIAN]: 'Kuchnia rosyjska',
-      [recipeCategories.CUISINE_HUNGARIAN]: 'Kuchnia węgierska',
-      [recipeCategories.CUISINE_FUSHION]: 'Kuchnia fushion',
-      [recipeCategories.CUISINE_UKRAINIAN]: 'Kuchnia ukraińska',
-      [recipeCategories.CUISINE_CZECH]: 'Kuchnia czeska',
-      [recipeCategories.CUISINE_JAPANESE]: 'Kuchnia japońska',
-      [recipeCategories.CUISINE_IRANIAN]: 'Kuchnia irańska',
-      [recipeCategories.CUISINE_ARABIAN]: 'Kuchnia arabska'
+      CuisineAsian: 'Kuchnia azjatycka',
+      CuisineAfrican: 'Kuchnia afrykańska',
+      CuisineMiddleEast: 'Kuchnia Bliskiego Wschodu',
+      CuisineAmerican: 'Kuchnia amerykańska',
+      CuisineBalkan: 'Kuchnia bałkańska',
+      CuisineChinese: 'Kuchnia chińska',
+      CuisineFrench: 'Kuchnia francuska',
+      CuisineGreek: 'Kuchnia grecka',
+      CuisineGeorgian: 'Kuchnia gruzińska',
+      CuisineSpanish: 'Kuchnia hiszpańska',
+      CuisineIndian: 'Kuchnia indyjska',
+      CuisinePolish: 'Kuchnia polska',
+      CuisineThai: 'Kuchnia tajska',
+      CuisineMexican: 'Kuchnia meksykańska',
+      CuisineItalian: 'Kuchnia włoska',
+      CuisineKorean: 'Kuchnia koreańska',
+      CuisineGerman: 'Kuchnia niemiecka',
+      CuisineOriental: 'Kuchnia orientalna',
+      CuisineTurkish: 'Kuchnia turecka',
+      CuisineMediterranean: 'Kuchnia śródziemnomorska',
+      CuisineRussian: 'Kuchnia rosyjska',
+      CuisineHungarian: 'Kuchnia węgierska',
+      CuisineFusion: 'Kuchnia fushion',
+      CuisineUkrainian: 'Kuchnia ukraińska',
+      CuisineCzech: 'Kuchnia czeska',
+      CuisineJapanese: 'Kuchnia japońska',
+      CuisineIranian: 'Kuchnia irańska',
+      CuisineArabian: 'Kuchnia arabska'
     },
     recipeFilterOptions: {
       Other: {
@@ -259,28 +255,28 @@ export default {
       system: 'systemowy'
     },
     errorCode: {
-      [errorCodes.ERROR]: 'coś poszło nie tak',
-      [errorCodes.TOO_FREQUENT]: 'poczekaj kilka minut aby wysłać wiadomość jeszcze raz',
-      [errorCodes.WRONG_PASSWORD]: 'nieprawidłowe hasło',
-      [errorCodes.WEAK_PASSWORD]: 'użyj silniejszego hasła',
-      [errorCodes.WRONG_USER_PASSWORD_COMBINATION]: 'nieprawidłowy adres e-mail lub hasło',
-      [errorCodes.EMAIL_ALREADY_USED]: 'ten e-mail jest już w użyciu',
-      [errorCodes.REQUIRED]: 'to pole jest wymagane',
-      [errorCodes.INVALID_EMAIL]: 'niepoprawny adres e-mail',
-      [errorCodes.REQUIRED_AT_LEAST_6_CHAR]: 'wymagane co najmniej 6 znaków',
-      [errorCodes.REQUIRED_AT_LEAST_ONE_LOWER]: 'wymagana co najmniej jedna mała litera',
-      [errorCodes.REQUIRED_AT_LEAST_ONE_UPPER]: 'wymagana co najmniej jedna duża litera',
-      [errorCodes.REQUIRED_AT_LEAST_ONE_DIGIT]: 'wymagana co najmniej jedna cyfra',
-      [errorCodes.REQUIRED_AT_LEAST_ONE_NON_ALPHANUM]: 'wymagany co najmniej jeden znak specjalny',
-      [errorCodes.WRONG_PASSWORD_COMBINATION]: 'wprowadzone hasła nie są takie same'
+      ERROR: 'coś poszło nie tak',
+      TOO_FREQUENT: 'poczekaj kilka minut aby wysłać wiadomość jeszcze raz',
+      WRONG_PASSWORD: 'nieprawidłowe hasło',
+      WEAK_PASSWORD: 'użyj silniejszego hasła',
+      WRONG_PASSWORD_COMBINATION: 'wprowadzone hasła nie są takie same',
+      WRONG_USER_PASSWORD_COMBINATION: 'nieprawidłowy adres e-mail lub hasło',
+      EMAIL_ALREADY_USED: 'ten e-mail jest już w użyciu',
+      REQUIRED: 'to pole jest wymagane',
+      INVALID_EMAIL: 'niepoprawny adres e-mail',
+      REQUIRED_AT_LEAST_6_CHAR: 'wymagane co najmniej 6 znaków',
+      REQUIRED_AT_LEAST_ONE_LOWER: 'wymagana co najmniej jedna mała litera',
+      REQUIRED_AT_LEAST_ONE_UPPER: 'wymagana co najmniej jedna duża litera',
+      REQUIRED_AT_LEAST_ONE_DIGIT: 'wymagana co najmniej jedna cyfra',
+      REQUIRED_AT_LEAST_ONE_NON_ALPHANUM: 'wymagany co najmniej jeden znak specjalny'
     },
     timeOfDay: {
-      [TimeOfDay.Breakfast]: 'śniadanie',
-      // [TimeOfDay.ELEVENSES]: 'drugie śniadanie',
-      [TimeOfDay.Lunch]: 'lunch',
-      [TimeOfDay.Dinner]: 'obiad',
-      [TimeOfDay.Supper]: 'kolacja',
-      [TimeOfDay.Snack]: 'przekąska'
+      BREAKFAST: 'śniadanie',
+      // Elevenses: 'drugie śniadanie',
+      LUNCH: 'lunch',
+      DINNER: 'obiad',
+      SUPPER: 'kolacja',
+      SNACK: 'przekąska'
     },
     productCategory: {
       Others: 'Inne',
@@ -334,3 +330,5 @@ export default {
     return 3
   }
 }
+
+export default definition

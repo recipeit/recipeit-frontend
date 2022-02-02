@@ -43,8 +43,6 @@ import { computed, defineComponent, onBeforeUnmount, onBeforeUpdate, onMounted, 
 import placeholderDark from '@/assets/img/placeholders/recipe-image-dark.webp'
 import placeholderLight from '@/assets/img/placeholders/recipe-image.webp'
 
-import { THEME_DARK } from '@/configs/theme'
-
 import { useUserStore } from '@/stores/user'
 
 export default defineComponent({
@@ -75,7 +73,7 @@ export default defineComponent({
     })
 
     // computed
-    const placeholder = computed(() => (userStore.theme === THEME_DARK ? placeholderDark : placeholderLight))
+    const placeholder = computed(() => (userStore.theme === 'dark' ? placeholderDark : placeholderLight))
 
     const isCurrentImageLast = computed(() => {
       return data.currentImageIndex + 1 === props.images.length

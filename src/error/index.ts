@@ -1,10 +1,23 @@
 import * as Sentry from '@sentry/browser'
+import { Primitive } from '@sentry/types'
+import { App } from 'vue'
 
-const Plugin = {
+type CapturedError = Error | string | object
+
+type ErrorHandler = {
+  captureError: (error: CapturedError, tags: { [key: string]: Primitive }) => void
+}
+
+type ErrorHandlerPlugin = {
+  errorHandler: ErrorHandler
+  install: (app: App) => void
+}
+
+const Plugin: ErrorHandlerPlugin = {
   errorHandler: null,
   install: app => {
-    const $errorHandler = {
-      captureError(error: Error | string | object, tags = {}) {
+    const $errorHandler: ErrorHandler = {
+      captureError(error: CapturedError, tags = {}) {
         Sentry.withScope(scope => {
           if (Object.keys(tags)) {
             scope.setTags(tags)

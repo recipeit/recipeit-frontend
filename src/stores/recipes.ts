@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import { reactive, toRefs } from 'vue'
 
 import recipeApi from '@/api/recipeApi'
 import userApi from '@/api/userApi'
@@ -8,9 +9,9 @@ import { FINISHED_DIRECTIONS_STORAGE_KEY } from '@/configs/storage'
 import toastPlugin from '@/plugins/toast'
 import { ToastType } from '@/plugins/toast/toastType'
 
-import { DateYMDString } from '@/typings/date'
+import { DateYMDString } from '@/typings/dates'
 import { RecipeEntity } from '@/typings/entities'
-import { DetailedRecipe } from '@/typings/recipe'
+import { DetailedRecipe } from '@/typings/recipes'
 
 type RecipesStoreState = {
   detailedRecipes: Array<DetailedRecipe>
@@ -18,88 +19,113 @@ type RecipesStoreState = {
   recipesFinishedDirections: { [key: RecipeEntity['id']]: Array<number> }
 }
 
-const storageFinishedDirections = localStorage.getItem(FINISHED_DIRECTIONS_STORAGE_KEY)
-const parsedStorageFinishedDirections = storageFinishedDirections ? JSON.parse(storageFinishedDirections) : {}
+export const useRecipesStore = defineStore('recipes', () => {
+  const storageFinishedDirections = localStorage.getItem(FINISHED_DIRECTIONS_STORAGE_KEY)
+  const parsedStorageFinishedDirections = storageFinishedDirections ? JSON.parse(storageFinishedDirections) : {}
 
-export const useRecipesStore = defineStore('recipes', {
-  state: (): RecipesStoreState => {
-    return {
-      detailedRecipes: [],
-      favouriteRecipesIds: [],
-      recipesFinishedDirections: parsedStorageFinishedDirections
+  // state
+  const state = reactive<RecipesStoreState>({
+    detailedRecipes: [],
+    favouriteRecipesIds: [],
+    recipesFinishedDirections: parsedStorageFinishedDirections
+  })
+
+  // internal methods
+  const getDetailedRecipeById = (id: RecipeEntity['id']) => {
+    return state.detailedRecipes.find(r => r.id === id)
+  }
+
+  // actions
+  const fetchFavouriteRecipesIds = async () => {
+    const { data } = await userApi.getFavouriteRecipesIds()
+    state.favouriteRecipesIds = data
+  }
+
+  const fetchDetailedRecipe = async (id: RecipeEntity['id']) => {
+    const recipeDetails = getDetailedRecipeById(id)
+
+    if (recipeDetails) {
+      return recipeDetails
+    } else {
+      const { data } = await recipeApi.getDetailedRecipe(id)
+
+      const recipe: DetailedRecipe = { ...data.recipe, details: data.details }
+
+      state.detailedRecipes.push(recipe)
+
+      if (state.detailedRecipes.length > 10) {
+        state.detailedRecipes.shift()
+      }
+
+      return recipe
     }
-  },
+  }
 
-  actions: {
-    async fetchFavouriteRecipesIds() {
-      const { data } = await userApi.getFavouriteRecipesIds()
-      this.favouriteRecipesIds = data
-    },
+  const addToFavourites = async (id: RecipeEntity['id']) => {
+    await userApi.addRecipeToFavourites(id)
 
-    async fetchDetailedRecipe(id: RecipeEntity['id']): Promise<DetailedRecipe> {
-      const recipeDetails = this.getDetailedRecipeById(id)
-
-      if (recipeDetails) {
-        return recipeDetails
-      } else {
-        const { data } = await recipeApi.getDetailedRecipe(id)
-
-        const recipe = { ...data.recipe }
-        recipe.details = data.details
-
-        this.detailedRecipes.push(recipe)
-
-        if (this.detailedRecipes.length > 10) {
-          this.detailedRecipes.shift()
-        }
-
-        return recipe
-      }
-    },
-
-    async addToFavourites(id: RecipeEntity['id']) {
-      await userApi.addRecipeToFavourites(id)
-
-      if (this.favouriteRecipesIds.find(recipeId => recipeId === id)) {
-        return
-      }
-
-      this.favouriteRecipesIds.push(id)
-    },
-
-    async deleteFromFavourites(id: RecipeEntity['id']) {
-      await userApi.removeRecipeFromFavourites(id)
-
-      const recipeIdIndex = this.favouriteRecipesIds.indexOf(id)
-
-      if (recipeIdIndex >= 0) {
-        this.favouriteRecipesIds.splice(recipeIdIndex, 1)
-      }
-    },
-
-    async addRecipeToPlanned({ recipeId, day, timeOfDay }: { recipeId: RecipeEntity['id']; day: DateYMDString; timeOfDay: string }) {
-      const response = await userApi.addRecipeToPlanned(recipeId, { day, timeOfDay })
-
-      toastPlugin.toast.show('Przepis zaplanowany!', ToastType.SUCCESS)
-
-      return response
-    },
-
-    resetUserData() {
-      this.favouriteRecipesIds = []
-    },
-
-    setFinishedDirectionsForRecipe({ recipeId, finishedDirections }) {
-      this.recipesFinishedDirections[recipeId] = finishedDirections
-      const existedLocalStorageItem = localStorage.getItem(FINISHED_DIRECTIONS_STORAGE_KEY)
-      const parsedLocalStorage = existedLocalStorageItem ? JSON.parse(existedLocalStorageItem) : {}
-      parsedLocalStorage[recipeId] = finishedDirections?.length > 0 ? finishedDirections : undefined
-      localStorage.setItem(FINISHED_DIRECTIONS_STORAGE_KEY, JSON.stringify(parsedLocalStorage))
+    if (state.favouriteRecipesIds.find(recipeId => recipeId === id)) {
+      return
     }
-  },
 
-  getters: {
-    getDetailedRecipeById: state => (id: RecipeEntity['id']) => state.detailedRecipes.find(r => r.id === id),
-    getFinishedDirectionsForRecipe: state => (recipeId: RecipeEntity['id']) => state.recipesFinishedDirections[recipeId]
+    state.favouriteRecipesIds.push(id)
+  }
+
+  const deleteFromFavourites = async (id: RecipeEntity['id']) => {
+    await userApi.removeRecipeFromFavourites(id)
+
+    const recipeIdIndex = state.favouriteRecipesIds.indexOf(id)
+
+    if (recipeIdIndex >= 0) {
+      state.favouriteRecipesIds.splice(recipeIdIndex, 1)
+    }
+  }
+
+  const addRecipeToPlanned = async ({
+    recipeId,
+    day,
+    timeOfDay
+  }: {
+    recipeId: RecipeEntity['id']
+    day: DateYMDString
+    timeOfDay: string
+  }) => {
+    const response = await userApi.addRecipeToPlanned(recipeId, { day, timeOfDay })
+
+    toastPlugin.toast.show('Przepis zaplanowany!', ToastType.SUCCESS)
+
+    return response
+  }
+
+  const resetUserData = () => {
+    state.favouriteRecipesIds = []
+  }
+
+  const setFinishedDirectionsForRecipe = ({ recipeId, finishedDirections }) => {
+    state.recipesFinishedDirections[recipeId] = finishedDirections
+    const existedLocalStorageItem = localStorage.getItem(FINISHED_DIRECTIONS_STORAGE_KEY)
+    const parsedLocalStorage = existedLocalStorageItem ? JSON.parse(existedLocalStorageItem) : {}
+    parsedLocalStorage[recipeId] = finishedDirections?.length > 0 ? finishedDirections : undefined
+    localStorage.setItem(FINISHED_DIRECTIONS_STORAGE_KEY, JSON.stringify(parsedLocalStorage))
+  }
+
+  // getter methods
+  const getFinishedDirectionsForRecipe = (recipeId: RecipeEntity['id']) => {
+    return state.recipesFinishedDirections[recipeId]
+  }
+
+  return {
+    // state
+    ...toRefs(state),
+    // actions
+    fetchFavouriteRecipesIds,
+    fetchDetailedRecipe,
+    addToFavourites,
+    deleteFromFavourites,
+    addRecipeToPlanned,
+    resetUserData,
+    setFinishedDirectionsForRecipe,
+    // getter methods
+    getFinishedDirectionsForRecipe
   }
 })

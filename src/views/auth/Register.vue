@@ -5,9 +5,7 @@
     <p class="subtitle">
       lub
       <router-link v-slot="{ href, navigate }" :to="{ name: 'login' }" custom>
-        <BaseLink :href="href" color="primary" @click="navigate($event)">
-          zaloguj na swoje konto
-        </BaseLink>
+        <BaseLink :href="href" color="primary" @click="navigate($event)"> zaloguj na swoje konto </BaseLink>
       </router-link>
     </p>
 
@@ -118,7 +116,7 @@ export default defineComponent({
     })
 
     // methods
-    const register = valus => {
+    const register = value => {
       data.sending = true
       data.errorList = null
 
@@ -127,7 +125,7 @@ export default defineComponent({
         .then(recaptchaToken => {
           userStore
             .register({
-              ...valus,
+              ...value,
               recaptchaToken
             })
             .catch(errors => {

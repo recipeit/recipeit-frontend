@@ -1,9 +1,12 @@
 import { defineStore } from 'pinia'
+import { computed, reactive, toRefs } from 'vue'
 
 import identityApi from '@/api/identityApi'
 import userApi from '@/api/userApi'
 
-import { THEMES, THEME_DEFAULT, THEME_STORAGE_KEY } from '@/configs/theme'
+import { THEME_DEFAULT, THEME_STORAGE_KEY } from '@/configs/theme'
+
+import { Themes } from '@/constants/themes'
 
 import toastPlugin from '@/plugins/toast'
 import { ToastType } from '@/plugins/toast/toastType'
@@ -16,147 +19,147 @@ import { useMyKitchenStore } from '@/stores/myKitchen'
 import { useRecipesStore } from '@/stores/recipes'
 import { useShoppingListStore } from '@/stores/shoppingList'
 
-export const USER_AUTH_STATE = {
-  USER_APP_INITIAL: 'USER_APP_INITIAL',
-  USER_LOGGED_IN: 'USER_LOGGED_IN',
-  USER_FETCHING: 'USER_FETCHING',
-  USER_LOGGED_OUT: 'USER_LOGGED_OUT'
+import { UserProfile } from '@/typings/userProfile'
+import { BlogEntity, RecipeEntity } from '@/typings/entities'
+import { Theme } from '@/typings/theme'
+import { UserAuthState } from '@/typings/userAuthState'
+
+type UserStoreState = {
+  theme: Theme
+  userProfile: UserProfile
+  userAuthState: UserAuthState
+  userAuthenticatedLazy: boolean
+  hiddenRecipeIds: Array<RecipeEntity['id']>
+  hiddenBlogIds: Array<BlogEntity['id']>
 }
 
-const setUserAuthState = (store, userAuthState) => {
-  store.userAuthState = userAuthState
-  if (userAuthState === USER_AUTH_STATE.USER_LOGGED_IN) {
-    store.userAuthenticatedLazy = true
-  } else if (userAuthState === USER_AUTH_STATE.USER_LOGGED_OUT) {
-    store.userAuthenticatedLazy = false
-  }
-}
+export const useUserStore = defineStore('user', () => {
+  // state
+  const state = reactive<UserStoreState>({
+    theme: null,
+    userProfile: null,
+    userAuthState: 'USER_APP_INITIAL',
+    userAuthenticatedLazy: false,
+    hiddenRecipeIds: null,
+    hiddenBlogIds: null
+  })
 
-export const useUserStore = defineStore('user', {
-  state: () => {
-    return {
-      theme: null,
-      userProfile: undefined,
-      userAuthState: USER_AUTH_STATE.USER_APP_INITIAL,
-      userAuthenticatedLazy: false,
-      hiddenRecipeIds: null,
-      hiddenBlogIds: null
+  // internal methods
+  const setUserAuthState = (userAuthState: UserAuthState) => {
+    state.userAuthState = userAuthState
+    if (userAuthState === 'USER_LOGGED_IN') {
+      state.userAuthenticatedLazy = true
+    } else if (userAuthState === 'USER_LOGGED_OUT') {
+      state.userAuthenticatedLazy = false
     }
-  },
+  }
 
-  actions: {
-    initTheme() {
-      let currentTheme = localStorage.getItem(THEME_STORAGE_KEY)
-      if (!currentTheme || !THEMES.includes(currentTheme)) {
-        currentTheme = THEME_DEFAULT
+  const getInitUserData = () => {
+    const recipesStore = useRecipesStore()
+    const ingredientsStore = useIngredientsStore()
+    const myKitchenStore = useMyKitchenStore()
+
+    recipesStore.fetchFavouriteRecipesIds()
+
+    fetchHiddenRecipeIds()
+    fetchHiddenBlogIds()
+
+    ingredientsStore.fetchBaseProducts()
+    ingredientsStore.fetchUnitsGroupedByMeasurement()
+
+    myKitchenStore.fetchProducts()
+  }
+
+  const fetchHiddenRecipeIds = () => {
+    userApi.getHiddenRecipeIds().then(({ data }) => {
+      state.hiddenRecipeIds = data.recipeIds
+    })
+  }
+
+  const fetchHiddenBlogIds = () => {
+    userApi.getHiddenBlogIds().then(({ data }) => {
+      state.hiddenBlogIds = data.blogIds
+    })
+  }
+
+  // actions
+
+  const initTheme = () => {
+    let currentTheme = localStorage.getItem(THEME_STORAGE_KEY)
+
+    if (!currentTheme || !Themes.find(validTheme => validTheme === currentTheme)) {
+      currentTheme = THEME_DEFAULT
+    }
+
+    state.theme = currentTheme as Theme
+  }
+
+  const setTheme = (theme: Theme) => {
+    state.theme = theme
+    localStorage.setItem(THEME_STORAGE_KEY, theme)
+  }
+
+  const fetchUserProfile = async ({ fetchInitUserData }: { fetchInitUserData?: boolean } = {}) => {
+    try {
+      const {
+        data: { userProfile }
+      } = await identityApi.profile()
+
+      state.userProfile = userProfile
+      setUserAuthState('USER_LOGGED_IN')
+
+      if (fetchInitUserData) {
+        getInitUserData()
       }
-      this.theme = currentTheme
-    },
+    } catch (e) {
+      setUserAuthState('USER_LOGGED_OUT')
+      throw new Error(e)
+    }
+  }
 
-    setTheme(theme) {
-      if (THEMES.includes(theme)) {
-        this.theme = theme
-        localStorage.setItem(THEME_STORAGE_KEY, theme)
-      }
-    },
+  const register = ({ email, password, recaptchaToken }): Promise<void> => {
+    return new Promise((resolve, reject) => {
+      identityApi
+        .register({ email, password, recaptchaToken })
+        .then(({ data: { userProfile } }) => {
+          state.userProfile = userProfile
+          setUserAuthState('USER_LOGGED_IN')
+          getInitUserData()
+          const redirectUrl = sessionStorage.getItem('LOGIN_REDIRECT')
+          if (redirectUrl) {
+            router.push(redirectUrl)
+            sessionStorage.removeItem('LOGIN_REDIRECT')
+          } else {
+            router.push({ name: 'home' })
+          }
+          resolve()
+        })
+        .catch(error => {
+          reject(error.response?.data?.errors)
+        })
+    })
+  }
 
-    async fetchUserProfile({ getInitUserData }: { getInitUserData?: boolean } = {}) {
-      try {
-        const {
-          data: { userProfile }
-        } = await identityApi.profile()
+  const login = ({ email, password, recaptchaToken }): Promise<void> => {
+    const recipesStore = useRecipesStore()
+    recipesStore.resetUserData() //TODO why only recipes
 
-        this.userProfile = userProfile
-        setUserAuthState(this, USER_AUTH_STATE.USER_LOGGED_IN)
-
-        if (getInitUserData) {
-          this.getInitUserData()
-        }
-      } catch (e) {
-        setUserAuthState(this, USER_AUTH_STATE.USER_LOGGED_OUT)
-        throw new Error(e)
-      }
-    },
-
-    register({ email, password, confirmPassword, recaptchaToken }): Promise<void> {
-      return new Promise((resolve, reject) => {
-        identityApi
-          .register({ email, password, confirmPassword, recaptchaToken })
-          .then(({ data: { userProfile, emailUnconfirmed } }) => {
-            if (emailUnconfirmed) {
-              router.push({
-                name: 'register-success',
-                params: {
-                  email
-                }
-              })
-            } else {
-              this.userProfile = userProfile
-              setUserAuthState(this, USER_AUTH_STATE.USER_LOGGED_IN)
-              this.getInitUserData()
-              const redirectUrl = sessionStorage.getItem('LOGIN_REDIRECT')
-              if (redirectUrl) {
-                router.push(redirectUrl)
-                sessionStorage.removeItem('LOGIN_REDIRECT')
-              } else {
-                router.push({ name: 'home' })
+    return new Promise((resolve, reject) => {
+      identityApi
+        .login({ email, password, recaptchaToken })
+        .then(({ data }) => {
+          if (data.emailUnconfirmed) {
+            router.push({
+              name: 'register-success',
+              params: {
+                email
               }
-            }
-            resolve()
-          })
-          .catch(error => {
-            reject(error.response?.data?.errors)
-          })
-      })
-    },
-
-    login({ email, password, recaptchaToken }): Promise<void> {
-      const recipesStore = useRecipesStore()
-      recipesStore.resetUserData() //TODO why only recipes
-
-      return new Promise((resolve, reject) => {
-        identityApi
-          .login({ email, password, recaptchaToken })
-          .then(({ data }) => {
-            if (data.emailUnconfirmed) {
-              router.push({
-                name: 'register-success',
-                params: {
-                  email
-                }
-              })
-            } else {
-              const { userProfile } = data
-              this.userProfile = userProfile
-              setUserAuthState(this, USER_AUTH_STATE.USER_LOGGED_IN)
-              this.getInitUserData()
-              const redirectUrl = sessionStorage.getItem('LOGIN_REDIRECT')
-              if (redirectUrl) {
-                router.push(redirectUrl)
-                sessionStorage.removeItem('LOGIN_REDIRECT')
-              } else {
-                router.push({ name: 'home' })
-              }
-            }
-            resolve()
-          })
-          .catch(error => {
-            reject(error.response?.data?.errors)
-          })
-      })
-    },
-
-    facebookAuth({ accessToken }): Promise<void> {
-      const recipesStore = useRecipesStore()
-      recipesStore.resetUserData() //TODO why only recipes
-
-      return new Promise((resolve, reject) => {
-        identityApi
-          .facebookAuth({ accessToken })
-          .then(({ data: { userProfile } }) => {
-            this.userProfile = userProfile
-            setUserAuthState(this, USER_AUTH_STATE.USER_LOGGED_IN)
-            this.getInitUserData()
+            })
+          } else {
+            const { userProfile } = data
+            state.userProfile = userProfile
+            setUserAuthState('USER_LOGGED_IN')
+            getInitUserData()
             const redirectUrl = sessionStorage.getItem('LOGIN_REDIRECT')
             if (redirectUrl) {
               router.push(redirectUrl)
@@ -164,201 +167,229 @@ export const useUserStore = defineStore('user', {
             } else {
               router.push({ name: 'home' })
             }
-            resolve()
-          })
-          .catch(error => {
-            reject(error.response?.data?.errors)
-          })
-      })
-    },
-
-    googleAuth({ idToken }): Promise<void> {
-      const recipesStore = useRecipesStore()
-      recipesStore.resetUserData() //TODO why only recipes
-
-      return new Promise((resolve, reject) => {
-        identityApi
-          .googleAuth({ idToken })
-          .then(({ data: { userProfile } }) => {
-            this.userProfile = userProfile
-            setUserAuthState(this, USER_AUTH_STATE.USER_LOGGED_IN)
-            this.getInitUserData()
-            const redirectUrl = sessionStorage.getItem('LOGIN_REDIRECT')
-            if (redirectUrl) {
-              router.push(redirectUrl)
-              sessionStorage.removeItem('LOGIN_REDIRECT')
-            } else {
-              router.push({ name: 'home' })
-            }
-            resolve()
-          })
-          .catch(error => {
-            reject(error.response?.data?.errors)
-          })
-      })
-    },
-
-    refreshCookie(): Promise<{ isFetching?: boolean }> {
-      return new Promise((resolve, reject) => {
-        if (this.userAuthState === USER_AUTH_STATE.USER_FETCHING) {
-          resolve({ isFetching: true })
-          return
-        }
-
-        setUserAuthState(this, USER_AUTH_STATE.USER_FETCHING)
-
-        const onRefreshCookieError = () => {
-          setUserAuthState(this, USER_AUTH_STATE.USER_LOGGED_OUT)
-
-          if (APP_PATHS.some(path => location.pathname.startsWith(path))) {
-            sessionStorage.setItem('LOGIN_REDIRECT', location.pathname)
           }
+          resolve()
+        })
+        .catch(error => {
+          reject(error.response?.data?.errors)
+        })
+    })
+  }
 
-          this.logout()
-          reject()
-        }
+  const facebookAuth = ({ accessToken }): Promise<void> => {
+    const recipesStore = useRecipesStore()
+    recipesStore.resetUserData() //TODO why only recipes
 
-        const onRefreshCookieSuccess = ({ userProfile }) => {
-          if (userProfile) {
-            this.userProfile = userProfile
+    return new Promise((resolve, reject) => {
+      identityApi
+        .facebookAuth({ accessToken })
+        .then(({ data: { userProfile } }) => {
+          state.userProfile = userProfile
+          setUserAuthState('USER_LOGGED_IN')
+          getInitUserData()
+          const redirectUrl = sessionStorage.getItem('LOGIN_REDIRECT')
+          if (redirectUrl) {
+            router.push(redirectUrl)
+            sessionStorage.removeItem('LOGIN_REDIRECT')
+          } else {
+            router.push({ name: 'home' })
           }
-          setUserAuthState(this, USER_AUTH_STATE.USER_LOGGED_IN)
-          resolve({})
-        }
+          resolve()
+        })
+        .catch(error => {
+          reject(error.response?.data?.errors)
+        })
+    })
+  }
 
-        identityApi
-          .refreshCookie()
-          .then(({ status, data }) => {
-            if (status === 200) {
-              onRefreshCookieSuccess(data)
-            } else {
-              onRefreshCookieError()
-            }
-          })
-          .catch(() => {
-            onRefreshCookieError()
-          })
-      })
-    },
+  const googleAuth = ({ idToken }): Promise<void> => {
+    const recipesStore = useRecipesStore()
+    recipesStore.resetUserData() //TODO why only recipes
 
-    async logout(withoutRedirect = false) {
-      await identityApi.logout()
+    return new Promise((resolve, reject) => {
+      identityApi
+        .googleAuth({ idToken })
+        .then(({ data: { userProfile } }) => {
+          state.userProfile = userProfile
+          setUserAuthState('USER_LOGGED_IN')
+          getInitUserData()
+          const redirectUrl = sessionStorage.getItem('LOGIN_REDIRECT')
+          if (redirectUrl) {
+            router.push(redirectUrl)
+            sessionStorage.removeItem('LOGIN_REDIRECT')
+          } else {
+            router.push({ name: 'home' })
+          }
+          resolve()
+        })
+        .catch(error => {
+          reject(error.response?.data?.errors)
+        })
+    })
+  }
 
-      this.userProfile = null
-      setUserAuthState(this, USER_AUTH_STATE.USER_LOGGED_OUT)
+  const refreshCookie = (): Promise<{ isFetching?: boolean }> => {
+    return new Promise((resolve, reject) => {
+      if (state.userAuthState === 'USER_FETCHING') {
+        resolve({ isFetching: true })
+        return
+      }
 
-      if (APP_PATHS.some(path => location.pathname.startsWith(path))) {
-        if (!withoutRedirect) {
+      const onRefreshCookieError = () => {
+        setUserAuthState('USER_LOGGED_OUT')
+
+        if (APP_PATHS.some(path => location.pathname.startsWith(path))) {
           sessionStorage.setItem('LOGIN_REDIRECT', location.pathname)
         }
-        await router.push({ name: 'login' })
+
+        logout()
+        reject()
       }
 
-      useShoppingListStore().resetUserData()
-      useMyKitchenStore().resetUserData()
-      useRecipesStore().resetUserData()
-      this.resetUserData()
-    },
+      const onRefreshCookieSuccess = ({ userProfile }) => {
+        if (userProfile) {
+          state.userProfile = userProfile
+        }
+        setUserAuthState('USER_LOGGED_IN')
+        resolve({})
+      }
 
-    getInitUserData() {
-      const recipesStore = useRecipesStore()
-      const ingredientsStore = useIngredientsStore()
-      const myKitchenStore = useMyKitchenStore()
+      setUserAuthState('USER_FETCHING')
 
-      recipesStore.fetchFavouriteRecipesIds()
+      identityApi
+        .refreshCookie()
+        .then(({ status, data: { userProfile } }) => {
+          if (status === 200 && userProfile !== null) {
+            onRefreshCookieSuccess({ userProfile })
+          } else {
+            onRefreshCookieError()
+          }
+        })
+        .catch(() => {
+          onRefreshCookieError()
+        })
+    })
+  }
 
-      this.fetchHiddenRecipeIds()
-      this.fetchHiddenBlogIds()
+  const logout = async (withoutRedirect = false) => {
+    await identityApi.logout()
 
-      ingredientsStore.fetchBaseProducts()
-      ingredientsStore.fetchUnitsGroupedByMeasurement()
+    state.userProfile = null
+    setUserAuthState('USER_LOGGED_OUT')
 
-      myKitchenStore.fetchProducts()
-    },
-
-    fetchHiddenRecipeIds() {
-      userApi.getHiddenRecipeIds().then(({ data }) => {
-        this.hiddenRecipeIds = data.recipeIds
-      })
-    },
-
-    fetchHiddenBlogIds() {
-      userApi.getHiddenBlogIds().then(({ data }) => {
-        this.hiddenBlogIds = data.blogIds
-      })
-    },
-
-    changeRecipeVisibility({ recipeId, visible }): Promise<void> {
-      return new Promise((resolve, reject) => {
-        userApi
-          .changeRecipeVisibility(recipeId, visible)
-          .then(({ data }) => {
-            if (data.success) {
-              if (visible) {
-                const recipeIndex = this.hiddenRecipeIds.indexOf(recipeId)
-                if (recipeIndex >= 0) {
-                  this.hiddenRecipeIds.splice(recipeIndex, 1)
-                }
-              } else {
-                this.hiddenRecipeIds.push(recipeId)
-              }
-              resolve()
-              toastPlugin.toast.show(visible ? 'Przepis został odkryty' : 'Przepis nie będzie już widoczny', ToastType.SUCCESS)
-            } else {
-              reject()
-              toastPlugin.toast.show('Wystapił błąd. Spróbuj ponownie', ToastType.ERROR)
-              // this.$toast.show('Nie udało się ukryć przepisu. Spróbuj ponownie', ToastType.ERROR)
-            }
-          })
-          .catch(() => {
-            reject()
-            toastPlugin.toast.show('Wystapił błąd. Spróbuj ponownie', ToastType.ERROR)
-          })
-      })
-    },
-
-    changeBlogVisibility({ blogId, visible }): Promise<void> {
-      return new Promise((resolve, reject) => {
-        userApi
-          .changeBlogVisibility(blogId, visible)
-          .then(({ data }) => {
-            if (data.success) {
-              if (visible) {
-                const blogIndex = this.hiddenBlogIds.indexOf(blogId)
-                if (blogIndex >= 0) {
-                  this.hiddenBlogIds.splice(blogIndex, 1)
-                }
-              } else {
-                this.hiddenBlogIds.push(blogId)
-              }
-              resolve()
-              toastPlugin.toast.show(
-                visible ? 'Przepisy z tego blogu zostały odkryte' : 'Przepisy z tego blogu nie będą już widoczne',
-                ToastType.SUCCESS
-              )
-            } else {
-              reject()
-              toastPlugin.toast.show('Wystapił błąd. Spróbuj ponownie', ToastType.ERROR)
-              // this.$toast.show('Nie udało się ukryć przepisu. Spróbuj ponownie', ToastType.ERROR)
-            }
-          })
-          .catch(() => {
-            reject()
-            toastPlugin.toast.show('Wystapił błąd. Spróbuj ponownie', ToastType.ERROR)
-          })
-      })
-    },
-
-    resetUserData() {
-      this.hiddenBlogIds = null
-      this.hiddenRecipeIds = null
+    if (APP_PATHS.some(path => location.pathname.startsWith(path))) {
+      if (!withoutRedirect) {
+        sessionStorage.setItem('LOGIN_REDIRECT', location.pathname)
+      }
+      await router.push({ name: 'login' })
     }
-  },
 
-  getters: {
-    isAuthenticated: state => state.userProfile !== null && state.userAuthState === USER_AUTH_STATE.USER_LOGGED_IN,
-    currentUserAuthState: state => state.userAuthState,
-    isRecipeHidden: state => id => state.hiddenRecipeIds?.includes(id),
-    isBlogHidden: state => id => state.hiddenBlogIds?.includes(id)
+    useShoppingListStore().resetUserData()
+    useMyKitchenStore().resetUserData()
+    useRecipesStore().resetUserData()
+    resetUserData()
+  }
+
+  const changeRecipeVisibility = ({ recipeId, visible }): Promise<void> => {
+    return new Promise((resolve, reject) => {
+      userApi
+        .changeRecipeVisibility(recipeId, visible)
+        .then(({ data }) => {
+          if (data.success) {
+            if (visible) {
+              const recipeIndex = state.hiddenRecipeIds.indexOf(recipeId)
+              if (recipeIndex >= 0) {
+                state.hiddenRecipeIds.splice(recipeIndex, 1)
+              }
+            } else {
+              state.hiddenRecipeIds.push(recipeId)
+            }
+            resolve()
+            toastPlugin.toast.show(visible ? 'Przepis został odkryty' : 'Przepis nie będzie już widoczny', ToastType.SUCCESS)
+          } else {
+            reject()
+            toastPlugin.toast.show('Wystapił błąd. Spróbuj ponownie', ToastType.ERROR)
+            // this.$toast.show('Nie udało się ukryć przepisu. Spróbuj ponownie', ToastType.ERROR)
+          }
+        })
+        .catch(() => {
+          reject()
+          toastPlugin.toast.show('Wystapił błąd. Spróbuj ponownie', ToastType.ERROR)
+        })
+    })
+  }
+
+  const changeBlogVisibility = ({ blogId, visible }): Promise<void> => {
+    return new Promise((resolve, reject) => {
+      userApi
+        .changeBlogVisibility(blogId, visible)
+        .then(({ data }) => {
+          if (data.success) {
+            if (visible) {
+              const blogIndex = state.hiddenBlogIds.indexOf(blogId)
+              if (blogIndex >= 0) {
+                state.hiddenBlogIds.splice(blogIndex, 1)
+              }
+            } else {
+              state.hiddenBlogIds.push(blogId)
+            }
+            resolve()
+            toastPlugin.toast.show(
+              visible ? 'Przepisy z tego blogu zostały odkryte' : 'Przepisy z tego blogu nie będą już widoczne',
+              ToastType.SUCCESS
+            )
+          } else {
+            reject()
+            toastPlugin.toast.show('Wystapił błąd. Spróbuj ponownie', ToastType.ERROR)
+            // this.$toast.show('Nie udało się ukryć przepisu. Spróbuj ponownie', ToastType.ERROR)
+          }
+        })
+        .catch(() => {
+          reject()
+          toastPlugin.toast.show('Wystapił błąd. Spróbuj ponownie', ToastType.ERROR)
+        })
+    })
+  }
+
+  const resetUserData = () => {
+    state.hiddenBlogIds = null
+    state.hiddenRecipeIds = null
+  }
+
+  // getter methods
+  const isRecipeHidden = (id: RecipeEntity['id']) => {
+    return state.hiddenRecipeIds?.includes(id)
+  }
+
+  const isBlogHidden = (id: BlogEntity['id']) => {
+    return state.hiddenBlogIds?.includes(id)
+  }
+
+  // getters
+  const isAuthenticated = computed(() => {
+    return state.userProfile !== null && state.userAuthState === 'USER_LOGGED_IN'
+  })
+
+  return {
+    // state
+    ...toRefs(state),
+    // actions
+    initTheme,
+    setTheme,
+    fetchUserProfile,
+    register,
+    login,
+    facebookAuth,
+    googleAuth,
+    refreshCookie,
+    logout,
+    changeRecipeVisibility,
+    changeBlogVisibility,
+    resetUserData,
+    // getter methods
+    isRecipeHidden,
+    isBlogHidden,
+    // getters
+    isAuthenticated
   }
 })

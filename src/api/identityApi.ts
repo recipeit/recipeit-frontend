@@ -1,79 +1,59 @@
-import { AxiosResponse } from 'axios'
-
 import apiClient from '@/api/apiClient'
+
+import { UserProfile } from '@/typings/userProfile'
 
 const route = 'identity'
 
-export const IDENTITY_URLS = {
-  REGISTER: `/${route}/register`,
-  LOGIN: `/${route}/login`,
-  LOGOUT: `/${route}/logout`,
-  FACEBOOK_AUTH: `/${route}/social/facebook`,
-  GOOGLE_AUTH: `/${route}/social/google`,
-  REFRESH: `/${route}/refresh`,
-  REFRESH_COOKIE: `/${route}/refresh-cookie`,
-  PROFILE: `/${route}/profile`,
-  CONFIRM_EMAIL: `/${route}/confirm-email`,
-  REQUEST_PASSWORD_RESET: `/${route}/request-password-reset`,
-  RESET_PASSWORD: `/${route}/reset-password`,
-  CHANGE_PASSWORD: `/${route}/change-password`,
-  SEND_CONFIRMATION_EMAIL: `/${route}/send-confirmation-email`,
-  DELETE_ACCOUNT: `/${route}/delete-account`
-}
-
-type UserProfile = {
-  email: string
-  username: string
-  imageUrl: string
-}
+export const REFRESH_COOKIE_URL = `/${route}/refresh-cookie`
 
 type UserProfileResponse = {
   errors?: Array<string>
-  emailUnconfirmed: boolean
-  userProfile: UserProfile
+  userProfile?: UserProfile
+}
+
+type BaseIdentityResponse = {
+  success: boolean
+  errors?: Array<string>
 }
 
 export default {
-  register(userData) {
-    return apiClient.post(IDENTITY_URLS.REGISTER, userData)
+  register(userData: { email: string; password: string; recaptchaToken: string }) {
+    return apiClient.post<UserProfileResponse>(`/${route}/register`, userData)
   },
-  login(userData): Promise<AxiosResponse<UserProfileResponse>> {
-    return apiClient.post<UserProfileResponse>(IDENTITY_URLS.LOGIN, userData)
+  login(userData: { email: string; password: string; recaptchaToken: string }) {
+    return apiClient.post<UserProfileResponse & { emailUnconfirmed?: boolean }>(`/${route}/login`, userData)
   },
   logout() {
-    return apiClient.post(IDENTITY_URLS.LOGOUT)
+    return apiClient.post(`/${route}/logout`)
   },
-  facebookAuth(userData) {
-    return apiClient.post(IDENTITY_URLS.FACEBOOK_AUTH, userData)
+  facebookAuth(userData: { accessToken: string }) {
+    return apiClient.post<UserProfileResponse>(`/${route}/social/facebook`, userData)
   },
-  googleAuth(userData) {
-    return apiClient.post(IDENTITY_URLS.GOOGLE_AUTH, userData)
-  },
-  refresh(tokenData) {
-    return apiClient.post(IDENTITY_URLS.REFRESH, tokenData)
+  googleAuth(userData: { idToken: string }) {
+    return apiClient.post<UserProfileResponse>(`/${route}/social/google`, userData)
   },
   refreshCookie() {
-    return apiClient.post(IDENTITY_URLS.REFRESH_COOKIE)
+    return apiClient.post<UserProfileResponse>(REFRESH_COOKIE_URL)
   },
-  profile(): Promise<AxiosResponse<UserProfileResponse>> {
-    return apiClient.get<UserProfileResponse>(IDENTITY_URLS.PROFILE)
+  profile() {
+    return apiClient.get<UserProfileResponse>(`/${route}/profile`)
   },
-  confirmEmail(data) {
-    return apiClient.post(IDENTITY_URLS.CONFIRM_EMAIL, data)
+  confirmEmail(data: { email: string; token: string }) {
+    return apiClient.post<BaseIdentityResponse>(`/${route}/confirm-email`, data)
   },
-  requestPasswordReset(data) {
-    return apiClient.post(IDENTITY_URLS.REQUEST_PASSWORD_RESET, data)
+  requestPasswordReset(data: { email: string; recaptchaToken: string }) {
+    return apiClient.post<BaseIdentityResponse>(`/${route}/request-password-reset`, data)
   },
-  resetPassword(data) {
-    return apiClient.post(IDENTITY_URLS.RESET_PASSWORD, data)
+  resetPassword(data: { email: string; token: string; password: string; confirmPassword: string; recaptchaToken: string }) {
+    return apiClient.post<BaseIdentityResponse>(`/${route}/reset-password`, data)
   },
-  changePassword(data) {
-    return apiClient.post(IDENTITY_URLS.CHANGE_PASSWORD, data)
+  changePassword(data: { currentPassword: string; newPassword: string; newPasswordConfirmation: string; recaptchaToken: string }) {
+    return apiClient.post<BaseIdentityResponse>(`/${route}/change-password`, data)
   },
-  sendConfirmationEmail(data) {
-    return apiClient.post(IDENTITY_URLS.SEND_CONFIRMATION_EMAIL, data)
+  sendConfirmationEmail(data: { email: string; recaptchaToken: string }) {
+    return apiClient.post<BaseIdentityResponse>(`/${route}/send-confirmation-email`, data)
   },
-  deleteAccount(data) {
-    return apiClient.delete(IDENTITY_URLS.DELETE_ACCOUNT, data)
+  deleteAccount(data: { recaptchaToken: string }) {
+    return apiClient.delete<BaseIdentityResponse>(`/${route}/delete-account`, data)
   }
 }
