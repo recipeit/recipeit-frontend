@@ -108,7 +108,7 @@ export default defineComponent({
       let userFetchSuccess = false
 
       try {
-        await userStore.fetchUserProfile({ getInitUserData: true })
+        await userStore.fetchUserProfile({ fetchInitUserData: true })
         userFetchSuccess = true
       } catch {
         userFetchSuccess = false
