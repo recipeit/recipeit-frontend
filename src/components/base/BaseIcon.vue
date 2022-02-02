@@ -5,7 +5,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { computed, defineComponent, PropType } from 'vue'
+
+import { IconWeight } from '@/typings/icons'
 
 import icons from '@/components/base/icons'
 
@@ -16,14 +18,18 @@ export default defineComponent({
       required: true
     },
     weight: {
-      type: String,
+      type: String as PropType<IconWeight>,
       default: 'regular'
     }
   },
 
-  computed: {
-    iconObject() {
-      return icons[this.weight]?.[this.icon]
+  setup(props) {
+    const iconObject = computed(() => {
+      return icons[props.weight]?.[props.icon]
+    })
+
+    return {
+      iconObject
     }
   }
 })

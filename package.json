@@ -6,6 +6,7 @@
     "serve": "vite",
     "build": "vite build",
     "lint": "eslint --ext .js,.ts,.vue --ignore-path .gitignore src",
+    "lint-fix": "eslint --ext .js,.ts,.vue --ignore-path .gitignore --fix src",
     "type-check": "vue-tsc --noEmit"
   },
   "dependencies": {

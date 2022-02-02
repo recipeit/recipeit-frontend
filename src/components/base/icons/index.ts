@@ -1,6 +1,8 @@
 import kebabCase from 'lodash.kebabcase'
 
-const components = {}
+import { IconSet } from '@/typings/icons'
+
+const components: IconSet = {}
 
 const icons = import.meta.globEager('./*.svg')
 
