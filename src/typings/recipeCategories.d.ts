@@ -1,4 +1,6 @@
-export type RecipeCategoryGroup = 'Daytime' | 'Type' | 'Occasion' | 'Cuisine'
+import { RecipeCategoryGroups } from '@/constants/recipeCategories'
+
+export type RecipeCategoryGroup = typeof RecipeCategoryGroups[number]
 
 export type RecipeCategoryDayTime = 'Breakfast' | 'Dinner' | 'Supper'
 

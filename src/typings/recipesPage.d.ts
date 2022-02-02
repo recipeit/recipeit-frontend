@@ -1,5 +1,5 @@
 import { RecipeEntity } from '@/typings/entities'
-import { RecipeFilterGroup, RecipeSortingMethod } from '@/typings/recipeFilters'
+import { RecipeFilterGroup, RecipeFilterOptions, RecipeSortingMethod, RecipeSortingOptions } from '@/typings/recipeFilters'
 
 type Page<T> = {
   items: Array<T>
@@ -15,10 +15,6 @@ export type RecipeFilterKeyAsQueryParam = `filters.${Lowercase<RecipeFilterGroup
 
 export type RecipeFilters = {
   [key in RecipeFilterGroup]?: Array<string | number>
-}
-
-export type RecipeFilterOptions = {
-  [key in RecipeFilterGroup]: Array<string | number>
 }
 
 export type RecipesFilteredPageParams = {
@@ -43,7 +39,7 @@ export type RecipesFilteredPage = Page<RecipeEntity> & {
   search: string
   orderMethod: RecipeSortingMethod
   filters: RecipeFilters
-  orderMethodOptions: Array<RecipeSortingMethod>
+  orderMethodOptions: RecipeSortingOptions
   filterOptions: RecipeFilterOptions
   defaultOrderMethod: RecipeSortingMethod
 }

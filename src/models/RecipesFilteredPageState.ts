@@ -1,6 +1,6 @@
 import { RecipeEntity } from '@/typings/entities'
-import { RecipeSortingMethod } from '@/typings/recipeFilters'
-import { RecipeFilterOptions, RecipeFilters, RecipesFilteredPage } from '@/typings/recipesPage'
+import { RecipeFilterOptions, RecipeSortingMethod, RecipeSortingOptions } from '@/typings/recipeFilters'
+import { RecipeFilters, RecipesFilteredPage } from '@/typings/recipesPage'
 
 export class RecipesFilteredPageState {
   fetching = false
@@ -16,7 +16,7 @@ export class RecipesFilteredPageState {
   filters: RecipeFilters
   orderMethod: RecipeSortingMethod
   filterOptions: RecipeFilterOptions = null
-  orderMethodOptions: Array<RecipeSortingMethod> = null
+  orderMethodOptions: RecipeSortingOptions = null
   defaultOrderMethod: RecipeSortingMethod = null
 
   constructor(orderMethod?: RecipeSortingMethod, filters?: RecipeFilters, search?: string) {

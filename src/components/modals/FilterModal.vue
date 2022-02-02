@@ -66,12 +66,12 @@
               :key="option.value"
               v-model="selected[groupValue]"
               :value="option.key"
-              :excluding="group.type === 'NONE'"
+              :excluding="group.type === 'None'"
               class="filter__group__option"
               @click="pillCheckboxClickHandler($event)"
             >
               {{
-                CATEGORY_GROUPS.includes(groupValue)
+                RecipeCategoryGroups.find(validGroup => validGroup === groupValue)
                   ? $t(`recipeCategory.${option.value}`).replace('Kuchnia ', '')
                   : $t(`recipeFilterOptions.${groupValue}.${option.value}`)
               }}
@@ -93,17 +93,19 @@
 
 <script lang="ts">
 import sortby from 'lodash.sortby'
-import { computed, defineComponent, reactive, toRefs } from 'vue'
+import { computed, defineComponent, PropType, reactive, toRefs } from 'vue'
+
+import { RecipeCategoryGroups } from '@/constants/recipeCategories'
 
 import { useIngredientsStore } from '@/stores/ingredients'
+
+import { RecipeFilterGroup, RecipeFilterOptions, RecipeSortingOptions } from '@/typings/recipeFilters'
 
 import ProductIcon from '@/components/ProductIcon.vue'
 
 const OPTION_KEYS = {
   BASE_PRODUCTS: 'BaseProducts'
 }
-
-const CATEGORY_GROUPS = ['Daytime', 'Type', 'Occasion', 'Cuisine']
 
 export default defineComponent({
   components: {
@@ -112,11 +114,11 @@ export default defineComponent({
 
   props: {
     options: {
-      type: Object,
+      type: Object as PropType<RecipeFilterOptions>,
       required: true
     },
     orderOptions: {
-      type: Object,
+      type: Object as PropType<RecipeSortingOptions>,
       required: true
     },
     defaultSelected: {
@@ -171,7 +173,7 @@ export default defineComponent({
       data.orderSelected = newValue || props.defaultOrderSelected
     }
 
-    const orderedGroupOptions = groupKey => {
+    const orderedGroupOptions = (groupKey: RecipeFilterGroup) => {
       const options = props.options[groupKey]?.options
       const defaultSelectedIds = props.defaultSelected[groupKey]
       if (options) {
@@ -194,7 +196,7 @@ export default defineComponent({
     return {
       // consts
       OPTION_KEYS,
-      CATEGORY_GROUPS,
+      RecipeCategoryGroups,
       // data
       ...toRefs(data),
       // computed
