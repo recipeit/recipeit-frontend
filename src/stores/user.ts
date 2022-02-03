@@ -308,7 +308,6 @@ export const useUserStore = defineStore('user', () => {
           } else {
             reject()
             toastPlugin.toast.show('Wystapił błąd. Spróbuj ponownie', 'error')
-            // this.$toast.show('Nie udało się ukryć przepisu. Spróbuj ponownie', 'error')
           }
         })
         .catch(() => {
@@ -340,7 +339,6 @@ export const useUserStore = defineStore('user', () => {
           } else {
             reject()
             toastPlugin.toast.show('Wystapił błąd. Spróbuj ponownie', 'error')
-            // this.$toast.show('Nie udało się ukryć przepisu. Spróbuj ponownie', 'error')
           }
         })
         .catch(() => {

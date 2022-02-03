@@ -8,7 +8,7 @@ export const FACEBOOK_INIT_PARAMS = {
   cookie: false,
   xfbml: false
 }
-export const FACEBOOK_LOGIN_PARAMS = {
+export const FACEBOOK_LOGIN_PARAMS: fb.LoginOptions = {
   scope: 'email,public_profile',
   auth_type: 'rerequest'
 }
