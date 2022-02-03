@@ -12,9 +12,11 @@ const getDataLayer = () => {
   return (window.dataLayer = window.dataLayer || [])
 }
 
+// exported
+
 const gtag = (...params) => {
   const dataLayer = getDataLayer()
-  dataLayer.push(params)
+  dataLayer.push(...params)
 }
 
 const init = async () => {
@@ -28,7 +30,6 @@ const init = async () => {
 }
 
 export default {
-  getDataLayer,
   gtag,
   init
 }

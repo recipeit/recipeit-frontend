@@ -10,6 +10,8 @@ const getFB = async (): Promise<fb.FacebookStatic> => {
   return window.FB
 }
 
+// exported
+
 const init = async () => {
   window.fbAsyncInit = async () => {
     const FB = await getFB()
@@ -35,7 +37,6 @@ const login = async () => {
 }
 
 export default {
-  getFB,
   init,
   login
 }

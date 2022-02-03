@@ -88,9 +88,7 @@ export default defineComponent({
       open,
       hide
     }
-  },
-
-  methods: {}
+  }
 })
 </script>
 

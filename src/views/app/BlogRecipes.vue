@@ -206,8 +206,7 @@ export default defineComponent({
       showInvisibleInfoModal,
       copyLinkToClipboard
     }
-  },
-  methods: {}
+  }
 })
 </script>
 

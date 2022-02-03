@@ -187,8 +187,7 @@ export default defineComponent({
       setImageRef,
       showPrev
     }
-  },
-  methods: {}
+  }
 })
 </script>
 
