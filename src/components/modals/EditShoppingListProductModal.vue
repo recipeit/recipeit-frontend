@@ -4,18 +4,14 @@
       <BaseModalTitle>Edytuj produkt</BaseModalTitle>
     </BaseModalHeader>
     <BaseModalBody>
-      <Form :id="formID" :validation-schema="schema" :initial-values="initialValues" @submit="editProduct($event)">
-        <ProductModalForm />
+      <Form :id="formID" v-slot="{ values }" :validation-schema="schema" :initial-values="initialValues" @submit="editProduct($event)">
+        <ProductModalForm :amount="values.amount" />
         <!-- <BaseInput class="form-row" label="Dodatkowa nazwa" type="text" v-model="editedProduct.name"/> -->
       </Form>
     </BaseModalBody>
     <BaseModalFooter>
-      <BaseButton class="submit-button" stroked @click="$emit('close')">
-        Anuluj
-      </BaseButton>
-      <BaseButton class="submit-button" raised color="primary" type="submit" :form="formID" :loading="sending">
-        Edytuj
-      </BaseButton>
+      <BaseButton class="submit-button" stroked @click="$emit('close')"> Anuluj </BaseButton>
+      <BaseButton class="submit-button" raised color="primary" type="submit" :form="formID" :loading="sending"> Edytuj </BaseButton>
     </BaseModalFooter>
   </SheetModalContent>
 </template>
@@ -70,9 +66,7 @@ export default defineComponent({
     const sending = ref(false)
 
     const schema = Yup.object().shape({
-      baseProduct: Yup.object()
-        .required('REQUIRED')
-        .typeError('REQUIRED'),
+      baseProduct: Yup.object().required('REQUIRED').typeError('REQUIRED'),
       amount: Yup.number()
         .typeError('Niepoprawna liczba')
         .transform((cv, ov) => {

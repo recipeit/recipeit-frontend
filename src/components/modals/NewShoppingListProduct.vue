@@ -4,8 +4,8 @@
       <BaseModalTitle>Dodaj nowy produkt</BaseModalTitle>
     </BaseModalHeader>
     <BaseModalBody>
-      <Form :id="formID" :validation-schema="schema" @submit="addProduct($event)">
-        <ProductModalForm :product-autofocus="true" />
+      <Form :id="formID" v-slot="{ values }" :validation-schema="schema" @submit="addProduct($event)">
+        <ProductModalForm :amount="values.amount" :product-autofocus="true" />
         <!-- <BaseInput class="form-row" label="Dodatkowa nazwa" type="text" v-model="newProduct.name"/> -->
       </Form>
     </BaseModalBody>
