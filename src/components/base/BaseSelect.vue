@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div ref="mainElement">
     <div
-      ref="select"
+      ref="selectElement"
       :class="['base-select', { 'base-select--focus': opened, 'base-select--multiple': multiple }]"
       :tabindex="searchable ? -1 : 0"
       @focus="open()"
@@ -38,7 +38,7 @@
         <template v-if="searchable">
           <input
             v-show="opened"
-            ref="search"
+            ref="searchElement"
             :value="search"
             class="base-select__field__input"
             tabindex="0"
@@ -57,7 +57,7 @@
       <transition name="fade">
         <div
           v-show="opened"
-          ref="options"
+          ref="optionsElement"
           :class="['base-select__options', { 'base-select__options--above': isAbove }]"
           :style="{ maxHeight: optimizedHeight + 'px' }"
           @mousedown.prevent
@@ -81,11 +81,11 @@
                     }
               "
             >
-              <slot v-if="option.isLabel" name="groupLabel" :label="option['groupLabel']">
-                {{ option['groupLabel'] }}
+              <slot v-if="option.isLabel" name="groupLabel" :label="option.label">
+                {{ option.label }}
               </slot>
-              <slot v-else name="option" :option="option" :search="search" :index="index">
-                {{ label ? option[label] : option }}
+              <slot v-else name="option" :option="option.option" :search="search" :index="index">
+                {{ option.label }}
               </slot>
             </li>
             <li
@@ -109,11 +109,11 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import sortby from 'lodash.sortby'
-import { nextTick } from 'vue'
+import { computed, defineComponent, nextTick, onMounted, PropType, reactive, ref, toRefs, watch } from 'vue'
 
-import { setFocus } from '@/directives/autofocus'
+import { setFocus as setFocusDirective } from '@/directives/autofocus'
 
 import uniqueID from '@/functions/uniqueID'
 
@@ -149,13 +149,35 @@ const OPEN_DIRECTIONS = {
   BELOW: 'below'
 }
 
-export default {
+type SingleOption = string | number | object
+
+type LabelOption = {
+  groupLabel: string
+  isLabel: true
+}
+
+type GroupedOption = {
+  groupLabel: string
+  groupValues: Array<SingleOption>
+  // [key: string]: string | Array<SingleOption>
+}
+
+type FilteredOption = {
+  isLabel: boolean
+  label: string
+  option?: SingleOption
+}
+
+export default defineComponent({
   model: {
     prop: 'value',
     event: 'change'
   },
+
   props: {
-    errors: Array,
+    errors: {
+      type: Array as PropType<Array<string>>
+    },
     searchable: {
       type: Boolean,
       default: true
@@ -168,15 +190,16 @@ export default {
       type: Number
     },
     value: {
-      type: [String, Number, Object],
+      type: [String, Number, Object, Array] as PropType<SingleOption | Array<SingleOption>>,
       default: null
     },
     options: {
-      type: Array,
+      type: Array as PropType<Array<SingleOption | GroupedOption>>,
       required: true
     },
-    groupLabel: String,
-    groupValues: String,
+    grouped: {
+      type: Boolean
+    },
     trackBy: {
       type: String
     },
@@ -198,89 +221,109 @@ export default {
     },
     defaultOpenDirection: {
       type: String,
-      validator: value => Object.values(OPEN_DIRECTIONS).includes(value),
+      validator: (value: string) => Object.values(OPEN_DIRECTIONS).includes(value),
       default: OPEN_DIRECTIONS.BELOW
     },
     customLabel: {
-      type: Function,
-      default(option, label) {
-        if (isEmpty(option)) return ''
-        return label ? option[label] : option
-      }
+      type: Function as PropType<(option: SingleOption, label?: string) => string>
     },
-
     autofocus: {
       type: Boolean,
       default: false
     }
   },
-  emits: ['change', 'blur', 'focus'],
-  data: component => ({
-    search: '',
-    opened: false,
-    preferredOpenDirection: component.defaultOpenDirection,
-    optimizedHeight: component.maxHeight,
-    pointer: null,
-    id: 'base-select-' + uniqueID().getID()
-  }),
-  computed: {
-    erorrsID() {
-      return `${this.id}-errors`
-    },
-    isGrouped() {
-      return this.groupLabel && this.groupValues
-    },
-    placeholderAsLabel() {
-      if (this.multiple) {
-        return this.searchable
-          ? this.opened || (this.value !== null && this.value.length > 0)
-          : this.value !== null && this.value.length > 0
-      }
-      return this.searchable ? this.opened || this.value !== null : this.value !== null
-    },
-    showSelectedValue() {
-      if (this.multiple) {
-        return this.searchable ? !this.opened && this.value !== null && this.value.length > 0 : this.value !== null && this.value.length > 0
-      }
-      return this.searchable ? !this.opened && this.value !== null : this.value !== null
-    },
-    filteredOptions() {
-      if (!this.searchable || !this.search) {
-        return this.isGrouped ? this.plainOptions(this.options) : this.options
-      } else if (this.isGrouped) {
-        const filteredGroups = this.options.map(group => {
-          const filteredValues = this.filterOptions(group[this.groupValues])
-          return filteredValues.length > 0
-            ? {
-                [this.groupLabel]: group[this.groupLabel],
-                [this.groupValues]: filteredValues
-              }
-            : []
-        })
 
-        if (!this.formattedSearch) return this.plainOptions(filteredGroups)
+  emits: ['change', 'blur', 'focus'],
+
+  setup(props, { emit }) {
+    // refs
+    const mainElement = ref(null)
+    const selectElement = ref(null)
+    const searchElement = ref(null)
+    const optionsElement = ref(null)
+
+    // data
+    const data = reactive({
+      search: '',
+      opened: false,
+      preferredOpenDirection: props.defaultOpenDirection,
+      optimizedHeight: props.maxHeight,
+      pointer: null as number,
+      id: 'base-select-' + uniqueID().getID()
+    })
+
+    // internal computed
+
+    // computed
+    const erorrsID = computed(() => {
+      return `${data.id}-errors`
+    })
+
+    // const isGrouped = computed(() => {
+    //   return !!props.groupLabel && !!props.groupValues
+    // })
+
+    const placeholderAsLabel = computed(() => {
+      if (props.multiple && Array.isArray(props.value)) {
+        return props.searchable
+          ? data.opened || (props.value !== null && props.value.length > 0)
+          : props.value !== null && props.value.length > 0
+      }
+      return props.searchable ? data.opened || props.value !== null : props.value !== null
+    })
+
+    const showSelectedValue = computed(() => {
+      if (props.multiple && Array.isArray(props.value)) {
+        return props.searchable
+          ? !data.opened && props.value !== null && props.value.length > 0
+          : props.value !== null && props.value.length > 0
+      }
+      return props.searchable ? !data.opened && props.value !== null : props.value !== null
+    })
+
+    const filteredOptions = computed((): Array<FilteredOption> => {
+      if (!props.searchable || !data.search) {
+        return props.grouped
+          ? plainOptions(props.options as Array<GroupedOption>)
+          : props.options.map(option => ({ isLabel: false, label: props.label ? option[props.label] : option, option }))
+      } else if (props.grouped) {
+        const filteredGroups = props.options
+          .map((group: GroupedOption): GroupedOption => {
+            const filteredValues = filterOptions(group.groupValues as Array<SingleOption>)
+            return filteredValues.length > 0
+              ? {
+                  groupLabel: group.groupLabel,
+                  groupValues: filteredValues
+                }
+              : null
+          })
+          .filter(group => group)
+
+        if (!formattedSearch.value) return plainOptions(filteredGroups)
 
         const sortedFilteredGroups = sortby(filteredGroups, group => {
-          const options = group && !Array.isArray(group) ? group[this.groupValues] : null
-          return options?.some(option => this.optionSearchableValue(option).toLowerCase().includes(this.formattedSearch)) ? 0 : 1
+          const options = group && !Array.isArray(group) ? (group.groupValues as Array<SingleOption>) : null
+          return options?.some(option => optionSearchableValue(option).toLowerCase().includes(formattedSearch.value)) ? 0 : 1
         })
 
-        return this.plainOptions(sortedFilteredGroups)
+        return plainOptions(sortedFilteredGroups)
       } else {
-        return this.filterOptions(this.options)
+        return filterOptions(props.options).map(option => ({ isLabel: false, label: props.label ? option[props.label] : option, option }))
       }
-    },
-    filteredOptionsLimited() {
-      if (this.limit) {
-        let limit = this.limit
-        if (this.filteredOptions && this.filteredOptions[limit - 1]?.isLabel) {
+    })
+
+    const filteredOptionsLimited = computed(() => {
+      if (props.limit) {
+        let limit = props.limit
+        if (filteredOptions.value?.[limit - 1]?.isLabel) {
           limit++
         }
-        return this.filteredOptions?.slice(0, limit)
+        return filteredOptions.value?.slice(0, limit)
       }
-      return this.filteredOptions
-    },
-    isAbove() {
+      return filteredOptions.value
+    })
+
+    const isAbove = computed(() => {
       // if (this.openDirection === 'above' || this.openDirection === 'top') {
       //   return true
       // } else if (
@@ -289,250 +332,329 @@ export default {
       // ) {
       //   return false
       // } else {
-      return this.preferredOpenDirection === OPEN_DIRECTIONS.ABOVE
+      return data.preferredOpenDirection === OPEN_DIRECTIONS.ABOVE
       // }
-    },
-    formattedSearch() {
-      return this.search?.toLowerCase() || this.search
-    }
-  },
-  watch: {
-    filteredOptionsLimited() {
-      this.pointerAdjust()
-      this.scrollOptionsToTop()
-    },
-    options() {
-      // TODO multiple
-      // TODO grouped
-      if (this.multiple) {
-        // if (this.value) {
-        //   const newValue = this.value.filter(o => this.options.includes(this.value))
-        //   this.$emit('change', newList)
-        // }
-      } else {
-        if (this.value && !this.options.includes(this.value)) {
-          this.selectOption(null)
-        }
+    })
+
+    const formattedSearch = computed(() => {
+      return data.search?.toLowerCase() || data.search
+    })
+
+    // internal methods
+
+    // methods
+    const getCustomLabel = (option: SingleOption, label?: string): string => {
+      if (props.customLabel) {
+        return props.customLabel(option, label)
       }
+
+      if (isEmpty(option)) return ''
+      return label ? option[label] : option
     }
-  },
-  mounted() {
-    if (this.autofocus) {
-      this.setFocus()
+
+    const setFocus = () => {
+      setFocusDirective(selectElement.value)
     }
-  },
-  methods: {
-    setFocus() {
-      setFocus(this.$refs.select)
-    },
-    isOptionSelected(option) {
-      const { getKeyFromValue, value } = this
+
+    const isOptionSelected = (option: SingleOption) => {
       const optionKey = getKeyFromValue(option)
 
-      if (this.multiple) {
-        const index = value?.findIndex(v => getKeyFromValue(v) === optionKey)
+      if (props.multiple && Array.isArray(props.value)) {
+        const index = props.value?.findIndex(v => getKeyFromValue(v) === optionKey)
         return index >= 0
       } else {
-        return optionKey === getKeyFromValue(value)
+        return optionKey === getKeyFromValue(props.value)
       }
-    },
-    getKeyFromValue(value) {
-      const { trackBy } = this
-      if (trackBy) {
-        return value ? value[trackBy] : null
+    }
+
+    const getKeyFromValue = (value: SingleOption): string => {
+      if (props.trackBy) {
+        return value ? value[props.trackBy] : null
       }
-      return value
-    },
-    async addPointerElement() {
-      if (this.filteredOptionsLimited.length > 0) {
-        await this.selectOption(this.filteredOptionsLimited[this.pointer])
+      return value as string
+    }
+
+    const addPointerElement = async () => {
+      if (filteredOptionsLimited.value.length > 0) {
+        await selectOption(filteredOptionsLimited.value[data.pointer])
       } else {
-        await this.hide()
+        await hide()
       }
-    },
-    pointerForward() {
-      if (this.pointer !== null && this.pointer < this.filteredOptionsLimited.length - 1) {
-        this.pointer++
+    }
+
+    const pointerForward = () => {
+      if (data.pointer !== null && data.pointer < filteredOptionsLimited.value.length - 1) {
+        data.pointer++
       } else {
-        this.pointer = 0
+        data.pointer = 0
       }
 
       //RISKY TODO
-      if (this.filteredOptionsLimited[this.pointer].isLabel) {
-        this.pointer++
+      if (filteredOptionsLimited.value[data.pointer].isLabel) {
+        data.pointer++
       }
       // /* istanbul ignore else */
-      // if (this.pointer < this.filteredOptionsLimited.length - 1) {
+      // if (data.pointer < filteredOptionsLimited.value.length - 1) {
       //   this.pointer++
       //   /* istanbul ignore next */
       //   if (this.$refs.list.scrollTop <= this.pointerPosition - (this.visibleElements - 1) * this.optionHeight) {
       //     this.$refs.list.scrollTop = this.pointerPosition - (this.visibleElements - 1) * this.optionHeight
       //   }
       //   /* istanbul ignore else */
-      //   if (this.filteredOptionsLimited[this.pointer] && this.filteredOptionsLimited[this.pointer].$isLabel && !this.groupSelect)
+      //   if (filteredOptionsLimited.value[this.pointer] && filteredOptionsLimited.value[this.pointer].$isLabel && !this.groupSelect)
       //     this.pointerForward()
       // }
       // this.pointerDirty = true
-    },
-    pointerBackward() {
-      if (this.pointer !== null && this.pointer > 0) {
-        this.pointer--
+    }
+
+    const pointerBackward = () => {
+      if (data.pointer !== null && data.pointer > 0) {
+        data.pointer--
       } else {
-        this.pointer = this.filteredOptionsLimited.length - 1
+        data.pointer = filteredOptionsLimited.value.length - 1
       }
 
       //RISKY TODO
-      if (this.filteredOptionsLimited[this.pointer].isLabel) {
-        this.pointer--
+      if (filteredOptionsLimited.value[data.pointer].isLabel) {
+        data.pointer--
 
-        if (this.pointer < 0) {
-          this.pointer = this.filteredOptionsLimited.length - 1
+        if (data.pointer < 0) {
+          data.pointer = filteredOptionsLimited.value.length - 1
         }
       }
-      // if (this.pointer > 0) {
-      //   this.pointer--
+      // if (data.pointer > 0) {
+      //   data.pointer--
       //   /* istanbul ignore else */
       //   if (this.$refs.list.scrollTop >= this.pointerPosition) {
       //     this.$refs.list.scrollTop = this.pointerPosition
       //   }
       //   /* istanbul ignore else */
-      //   if (this.filteredOptionsLimited[this.pointer] && this.filteredOptionsLimited[this.pointer].$isLabel && !this.groupSelect)
+      //   if (filteredOptionsLimited.value[this.pointer] && filteredOptionsLimited.value[this.pointer].$isLabel && !this.groupSelect)
       //     this.pointerBackward()
       // } else {
       //   /* istanbul ignore else */
-      //   if (this.filteredOptionsLimited[this.pointer] && this.filteredOptionsLimited[0].$isLabel && !this.groupSelect) this.pointerForward()
+      //   if (filteredOptionsLimited.value[this.pointer] && filteredOptionsLimited.value[0].$isLabel && !this.groupSelect) this.pointerForward()
       // }
       // this.pointerDirty = true
-    },
-    pointerReset() {
-      this.pointer = null
+    }
+
+    const pointerReset = () => {
+      data.pointer = null
       // /* istanbul ignore else */
       // if (!this.closeOnSelect) return
-      // this.pointer = 0
+      // data.pointer = 0
       // /* istanbul ignore else */
       // if (this.$refs.list) {
       //   this.$refs.list.scrollTop = 0
       // }
-    },
-    pointerSet(index) {
-      this.pointer = index
-    },
-    pointerAdjust() {
-      if (this.pointer >= this.filteredOptionsLimited.length - 1) {
-        this.pointer = this.filteredOptionsLimited.length ? this.filteredOptionsLimited.length - 1 : 0
+    }
+
+    const pointerSet = (index: number) => {
+      data.pointer = index
+    }
+
+    const pointerAdjust = () => {
+      if (data.pointer >= filteredOptionsLimited.value.length - 1) {
+        data.pointer = filteredOptionsLimited.value.length ? filteredOptionsLimited.value.length - 1 : 0
       }
-    },
+    }
 
-    updateSearch(query) {
-      this.search = query
-    },
-    async open() {
-      if (this.opened) return
+    const updateSearch = (query: string) => {
+      data.search = query
+    }
 
-      this.opened = true
-      this.adjustPosition()
+    const open = async () => {
+      if (data.opened) return
+
+      data.opened = true
+      adjustPosition()
 
       await nextTick()
 
-      this.scrollOptionsToTop()
-      if (this.searchable) {
-        this.$refs.search?.focus()
+      scrollOptionsToTop()
+      if (props.searchable) {
+        searchElement.value?.focus()
       } else {
-        this.$refs.select?.focus()
+        selectElement.value?.focus()
       }
-      this.$emit('focus')
-    },
-    async hide() {
-      if (!this.opened) return
+      emit('focus')
+    }
 
-      this.opened = false
-      this.pointerReset()
+    const hide = async () => {
+      if (!data.opened) return
+
+      data.opened = false
+      pointerReset()
 
       // TODO gdzieś błąd z tym, że po zaznaczeniu wartości, menu się chowa, ale dalej gdzieś zostaje focus
 
       await nextTick()
-      if (this.searchable) {
-        this.$refs.search?.blur()
+      if (props.searchable) {
+        searchElement.value?.blur()
       } else {
-        this.$refs.select?.blur()
+        selectElement.value?.blur()
       }
-      this.$emit('blur')
-    },
-    async selectOption(newValue) {
-      if (!this.multiple) {
-        await this.hide()
+      emit('blur')
+    }
+
+    const selectOption = async newValue => {
+      if (!props.multiple) {
+        await hide()
       }
 
-      const { value, getKeyFromValue } = this
-
-      if (this.multiple) {
+      if (props.multiple && Array.isArray(props.value)) {
         const newSelectedKey = getKeyFromValue(newValue)
-        const index = value?.findIndex(v => getKeyFromValue(v) === newSelectedKey)
+        const index = props.value?.findIndex(v => getKeyFromValue(v) === newSelectedKey)
 
         if (index >= 0) {
-          const newList = [...value]
+          const newList = [...props.value]
           newList.splice(index, 1)
-          this.$emit('change', newList)
+          emit('change', newList)
         } else {
-          this.$emit('change', [...value, newValue])
+          emit('change', [...props.value, newValue])
         }
       } else {
-        let selectCurrentSelected = value ? getKeyFromValue(newValue) === getKeyFromValue(value) : null
+        let selectCurrentSelected = props.value ? getKeyFromValue(newValue) === getKeyFromValue(props.value) : null
 
-        this.$emit('change', selectCurrentSelected ? null : newValue)
+        emit('change', selectCurrentSelected ? null : newValue)
       }
 
-      if (this.searchable) {
-        this.search = ''
+      if (props.searchable) {
+        data.search = ''
       }
-    },
-    adjustPosition() {
+    }
+
+    const adjustPosition = () => {
       if (typeof window === 'undefined') return
 
-      const spaceAbove = this.$el.getBoundingClientRect().top
-      const spaceBelow = window.innerHeight - this.$el.getBoundingClientRect().bottom
-      const hasEnoughSpaceBelow = spaceBelow > this.maxHeight
+      const spaceAbove = mainElement.value.getBoundingClientRect().top
+      const spaceBelow = window.innerHeight - mainElement.value.getBoundingClientRect().bottom
+      const hasEnoughSpaceBelow = spaceBelow > props.maxHeight
 
       if (
         hasEnoughSpaceBelow ||
-        spaceBelow > spaceAbove ||
-        this.openDirection === OPEN_DIRECTIONS.BELOW ||
-        this.openDirection === 'bottom'
+        spaceBelow > spaceAbove
+        // this.openDirection === OPEN_DIRECTIONS.BELOW ||
+        // this.openDirection === 'bottom'
       ) {
-        this.preferredOpenDirection = OPEN_DIRECTIONS.BELOW
-        this.optimizedHeight = Math.min(spaceBelow - 40, this.maxHeight)
+        data.preferredOpenDirection = OPEN_DIRECTIONS.BELOW
+        data.optimizedHeight = Math.min(spaceBelow - 40, props.maxHeight)
       } else {
-        this.preferredOpenDirection = OPEN_DIRECTIONS.ABOVE
-        this.optimizedHeight = Math.min(spaceAbove - 40, this.maxHeight)
+        data.preferredOpenDirection = OPEN_DIRECTIONS.ABOVE
+        data.optimizedHeight = Math.min(spaceAbove - 40, props.maxHeight)
       }
-    },
-    plainOptions(options) {
-      return options.flatMap(group =>
-        group[this.groupValues]?.length > 0 ? [{ groupLabel: group[this.groupLabel], isLabel: true }, ...group[this.groupValues]] : []
-      )
-    },
-    optionSearchableValue(option) {
-      return this.searchBy ? option[this.searchBy] : this.customLabel(option, this.label)
-    },
-    filterOptions(options) {
-      const { formattedSearch, optionSearchableValue } = this
-      const result = options.filter(option => includes(optionSearchableValue(option), this.search))
+    }
 
-      if (!formattedSearch) return result
+    const plainOptions = (options: Array<GroupedOption>): Array<FilteredOption> => {
+      return options.flatMap(
+        (group): Array<FilteredOption> =>
+          group.groupValues?.length > 0
+            ? [
+                { label: group.groupLabel, isLabel: true },
+                ...group.groupValues.map(option => ({ isLabel: false, label: props.label ? option[props.label] : option, option }))
+              ]
+            : []
+      )
+    }
+
+    const optionSearchableValue2 = (option: FilteredOption): string => {
+      return props.searchBy ? option[props.searchBy] : getCustomLabel(option.option, props.label)
+    }
+
+    const optionSearchableValue = (option: SingleOption): string => {
+      console.log(option)
+      return props.searchBy ? option[props.searchBy] : getCustomLabel(option, props.label)
+    }
+
+    const filterOptions = (options: Array<SingleOption>) => {
+      // const { formattedSearch, optionSearchableValue } = this
+      const result = options.filter(option => includes(optionSearchableValue(option), data.search))
+
+      if (!formattedSearch.value) return result
 
       return sortby(result, [
-        option => (optionSearchableValue(option).toLowerCase().includes(formattedSearch) ? 0 : 1),
+        option => (optionSearchableValue(option).toLowerCase().includes(formattedSearch.value) ? 0 : 1),
         option => optionSearchableValue(option).length,
         option => optionSearchableValue(option)
       ])
-    },
-    scrollOptionsToTop() {
-      if (this.$refs.options) {
-        this.$refs.options.scrollTop = 0
+    }
+
+    const scrollOptionsToTop = () => {
+      if (optionsElement.value) {
+        optionsElement.value.scrollTop = 0
       }
     }
+
+    // watchers
+    watch(filteredOptionsLimited, () => {
+      pointerAdjust()
+      scrollOptionsToTop()
+    })
+
+    watch(
+      () => props.options,
+      () => {
+        // TODO multiple
+        // TODO grouped
+        if (props.multiple) {
+          // if (props.value) {
+          //   const newValue = props.value.filter(o => props.options.includes(props.value))
+          //   emit('change', newList)
+          // }
+        } else {
+          if (props.value && !props.options.includes(props.value)) {
+            selectOption(null)
+          }
+        }
+      }
+    )
+
+    // lifecycle hooks
+    onMounted(() => {
+      if (props.autofocus) {
+        setFocus()
+      }
+    })
+
+    return {
+      // refs
+      mainElement,
+      selectElement,
+      searchElement,
+      optionsElement,
+      // data
+      ...toRefs(data),
+      // computed
+      erorrsID,
+      // isGrouped,
+      placeholderAsLabel,
+      showSelectedValue,
+      filteredOptions,
+      filteredOptionsLimited,
+      isAbove,
+      formattedSearch,
+      // methods
+      setFocus,
+      isOptionSelected,
+      getKeyFromValue,
+      addPointerElement,
+      pointerForward,
+      pointerBackward,
+      pointerReset,
+      pointerSet,
+      pointerAdjust,
+      updateSearch,
+      open,
+      hide,
+      selectOption,
+      adjustPosition,
+      plainOptions,
+      optionSearchableValue,
+      filterOptions,
+      scrollOptionsToTop
+    }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

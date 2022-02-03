@@ -11,9 +11,8 @@
       :limit="1000"
       :searchable="true"
       :errors="errors"
+      :grouped="true"
       v-bind="field"
-      group-label="groupKey"
-      group-values="groupValues"
       @click.stop
     >
       <template #groupLabel="{ label }">
@@ -36,9 +35,8 @@
         :searchable="true"
         :custom-label="unitCustomLabel"
         :errors="errors"
+        :grouped="true"
         v-bind="field"
-        group-label="groupKey"
-        group-values="groupValues"
       >
         <template #label="{ option }">{{ $tc(`units.${option}`, unitLabelAmount) }}</template>
         <template #option="{ option }">{{ $tc(`units.${option}`, unitLabelAmount) }}</template>

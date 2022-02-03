@@ -45,8 +45,8 @@ export const useIngredientsStore = defineStore('ingredients', () => {
     const grouped = groupby(sorted, 'category')
     const sortedGroups = sortby(Object.entries(grouped), ([group]) => PRODUCT_CATEGORY_ORDER[group])
 
-    return sortedGroups.map(([groupKey, groupValues]) => ({
-      groupKey,
+    return sortedGroups.map(([groupLabel, groupValues]) => ({
+      groupLabel,
       groupValues
     }))
   })

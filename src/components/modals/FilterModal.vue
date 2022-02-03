@@ -47,8 +47,7 @@
               :searchable="true"
               :limit="1000"
               :value="selected[OPTION_KEYS.BASE_PRODUCTS]"
-              group-label="groupKey"
-              group-values="groupValues"
+              :grouped="true"
               @click.stop
               @change="selected[OPTION_KEYS.BASE_PRODUCTS] = $event"
             >
@@ -173,9 +172,9 @@ export default defineComponent({
       data.orderSelected = newValue || props.defaultOrderSelected
     }
 
-    const orderedGroupOptions = (groupKey: RecipeFilterGroup) => {
-      const options = props.options[groupKey]?.options
-      const defaultSelectedIds = props.defaultSelected[groupKey]
+    const orderedGroupOptions = (groupLabel: RecipeFilterGroup) => {
+      const options = props.options[groupLabel]?.options
+      const defaultSelectedIds = props.defaultSelected[groupLabel]
       if (options) {
         return sortby(options, o => {
           return !defaultSelectedIds?.includes(o.key)

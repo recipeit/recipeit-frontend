@@ -28,8 +28,7 @@
       :options="groupedBaseProducts"
       :limit="1000"
       :searchable="true"
-      group-label="groupKey"
-      group-values="groupValues"
+      :grouped="true"
       @click.stop
       @change="addProductFromSelect($event)"
       @blur="selectFocused = false"

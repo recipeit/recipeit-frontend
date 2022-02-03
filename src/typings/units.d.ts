@@ -1,6 +1,6 @@
 export type UnitGroupName = 'popular' | 'weight' | 'volume' | 'length' | 'unset'
 
 export type UnitGroup = {
-  groupKey: UnitGroupName
+  groupLabel: UnitGroupName
   groupValue: Array<string>
 }
