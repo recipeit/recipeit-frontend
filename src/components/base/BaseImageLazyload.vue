@@ -1,12 +1,12 @@
 <template>
-  <div :class="classList">
+  <div ref="mainElement" :class="classList">
     <img v-if="visible" :src="renderSrc" class="image" @load.passive="onLoadHandler($event)" @error.passive="onErrorHandler($event)" />
     <img v-if="blurredBackground" class="blurred-background" :src="renderSrc" />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { computed, defineComponent, onBeforeUnmount, onMounted, reactive, ref, toRefs, watch } from 'vue'
 
 export default defineComponent({
   props: {
@@ -31,65 +31,46 @@ export default defineComponent({
 
   emits: ['load', 'error'],
 
-  data: () => ({
-    observer: null,
-    loaded: false,
-    error: false,
-    visible: false
-  }),
+  setup(props, { emit }) {
+    // refs
+    const mainElement = ref(null)
 
-  computed: {
-    renderSrc() {
-      return this.visible ? (this.error ? this.errorPlaceholder : this.src) : null
-    },
-    classList() {
+    // internal data
+    let observer: IntersectionObserver = null
+
+    // data
+    const data = reactive({
+      loaded: false,
+      error: false,
+      visible: false
+    })
+
+    // computed
+    const renderSrc = computed(() => {
+      return data.visible ? (data.error ? props.errorPlaceholder : props.src) : null
+    })
+
+    const classList = computed(() => {
       return {
         'base-image-lazyload': true,
-        'base-image-lazyload--loaded': this.loaded,
-        'base-image-lazyload--error': this.error,
-        'base-image-lazyload--with-blurred-background': this.blurredBackground
+        'base-image-lazyload--loaded': data.loaded,
+        'base-image-lazyload--error': data.error,
+        'base-image-lazyload--with-blurred-background': props.blurredBackground
       }
+    })
+
+    // internal methods
+    const reset = () => {
+      observer?.disconnect()
+      observer = null
+      data.visible = false
+      data.loaded = false
+      data.error = false
     }
-  },
 
-  watch: {
-    src(newValue, oldValue) {
-      if (newValue !== oldValue) {
-        this.reset()
-        this.init()
-      }
-    }
-  },
-
-  mounted() {
-    if (this.src) {
-      this.init()
-    }
-  },
-
-  beforeUnmount() {
-    this.reset()
-  },
-
-  methods: {
-    onLoadHandler(event) {
-      this.loaded = true
-      this.$emit('load', event)
-    },
-    onErrorHandler(event) {
-      this.error = true
-      this.$emit('error', event)
-    },
-    reset() {
-      this.observer?.disconnect()
-      this.observer = null
-      this.visible = false
-      this.loaded = false
-      this.error = false
-    },
-    init() {
+    const init = () => {
       if ('IntersectionObserver' in window) {
-        const isInViewport = element => {
+        const isInViewport = (element: HTMLElement) => {
           const rect = element.getBoundingClientRect()
           return (
             rect.top >= 0 &&
@@ -100,22 +81,68 @@ export default defineComponent({
         }
 
         const isIntersectingHandler = () => {
-          this.visible = true
-          this.observer.disconnect()
+          data.visible = true
+          observer.disconnect()
         }
 
-        this.observer = new IntersectionObserver(([image]) => {
+        observer = new IntersectionObserver(([image]) => {
           if (image.isIntersecting) {
             isIntersectingHandler()
           }
-        }, this.intersectionOptions)
+        }, props.intersectionOptions)
 
-        if (isInViewport(this.$el)) {
+        if (isInViewport(mainElement.value)) {
           isIntersectingHandler()
         } else {
-          this.observer.observe(this.$el)
+          observer.observe(mainElement.value)
         }
       }
+    }
+
+    // methods
+    const onLoadHandler = (event: Event) => {
+      data.loaded = true
+      emit('load', event)
+    }
+
+    const onErrorHandler = event => {
+      data.error = true
+      emit('error', event)
+    }
+
+    // watchers
+    watch(
+      () => props.src,
+      (newValue, oldValue) => {
+        if (newValue !== oldValue) {
+          reset()
+          init()
+        }
+      }
+    )
+
+    // lifecycle hooks
+    onMounted(() => {
+      if (props.src) {
+        init()
+      }
+    })
+
+    onBeforeUnmount(() => {
+      reset()
+    })
+
+    return {
+      // refs
+      mainElement,
+      // data
+      ...toRefs(data),
+      // computed
+      renderSrc,
+      classList,
+      // methods
+      onLoadHandler,
+      onErrorHandler
     }
   }
 })

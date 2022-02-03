@@ -3,22 +3,22 @@
     <div class="sheet-modal-container">
       <transition
         name="slide"
-        @before-enter="beforeModalEnter"
-        @after-enter="afterModalEnter"
-        @before-leave="beforeModalLeave"
-        @after-leave="afterModalLeave"
+        @before-enter="beforeModalEnter()"
+        @after-enter="afterModalEnter()"
+        @before-leave="beforeModalLeave()"
+        @after-leave="afterModalLeave()"
       >
         <div
           v-if="opened && !modalClosed"
-          ref="scroller"
+          ref="scrollerElement"
           class="sheet-modal-container__scroller"
           :style="scrollerStyle"
-          @click="maybeClose"
-          @touchmove="onPointerMove"
-          @touchstart="onPointerDown"
-          @touchend="onPointerUp"
+          @click="maybeClose($event)"
+          @touchmove="onPointerMove($event)"
+          @touchstart="onPointerDown($event)"
+          @touchend="onPointerUp()"
         >
-          <div ref="modal" class="sheet-modal">
+          <div ref="modalElement" class="sheet-modal">
             <slot />
           </div>
         </div>
@@ -32,7 +32,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { computed, defineComponent, nextTick, reactive, ref, toRefs } from 'vue'
 
 export default defineComponent({
   props: {
@@ -48,54 +48,65 @@ export default defineComponent({
 
   emits: ['close', 'closed'],
 
-  data: () => ({
-    modalClosing: false,
-    modalOpening: false,
-    modalClosed: false,
-    isDown: false,
-    offset: null,
-    transformTop: null
-  }),
+  setup(props, { emit }) {
+    // refs
+    const modalElement = ref<HTMLDivElement>(null)
+    const scrollerElement = ref<HTMLDivElement>(null)
 
-  computed: {
-    scrollerStyle() {
-      if (this.isDown && this.transformTop && this.transformTop >= 0 && this.$refs.scroller.scrollTop === 0) {
+    // data
+    const data = reactive({
+      modalClosing: false,
+      modalOpening: false,
+      modalClosed: false,
+      isDown: false,
+      offset: null as { x: number; y: number; initial: boolean },
+      transformTop: null as number
+    })
+
+    // computed
+    const scrollerStyle = computed(() => {
+      if (data.isDown && data.transformTop >= 0 && scrollerElement.value.scrollTop === 0) {
         return {
-          transform: `translate3d(0, ${this.transformTop}px, 0)`,
+          transform: `translate3d(0, ${data.transformTop}px, 0)`,
           'transition-duration': '0ms'
         }
       }
       return null
-    }
-  },
+    })
 
-  methods: {
-    maybeClose(e) {
-      if (!this.blockCloseOnBackdrop && this.$refs.modal && !this.$refs.modal.contains(e.target)) {
-        this.$emit('close')
+    // methods
+    const maybeClose = (e: MouseEvent) => {
+      // TODO z jakiegoś powodu narzeka
+      if (!props.blockCloseOnBackdrop && modalElement.value && !modalElement.value.contains(e.target as HTMLElement)) {
+        emit('close')
       }
-    },
-    beforeModalEnter() {
-      this.modalOpening = true
-    },
-    afterModalEnter() {
-      this.modalOpening = false
-    },
-    beforeModalLeave() {
-      this.modalClosing = true
-    },
-    afterModalLeave() {
-      this.modalClosing = false
-      this.$emit('closed')
-    },
-    onPointerDown(e) {
-      this.isDown = true
+    }
 
-      if (this.$refs.scroller.scrollTop !== 0) return
+    const beforeModalEnter = () => {
+      data.modalOpening = true
+    }
 
-      let tempElement = e.target
+    const afterModalEnter = () => {
+      data.modalOpening = false
+    }
+
+    const beforeModalLeave = () => {
+      data.modalClosing = true
+    }
+
+    const afterModalLeave = () => {
+      data.modalClosing = false
+      emit('closed')
+    }
+
+    const onPointerDown = (e: TouchEvent) => {
+      data.isDown = true
+
+      if (scrollerElement.value.scrollTop !== 0) return
+
+      let tempElement = e.target as HTMLElement // TODO z jakiegoś powodu narzeka
       let preventScroll = false
-      while (tempElement !== this.$refs.scroller && tempElement.parentElement && this.$refs.scroller) {
+      while (tempElement !== scrollerElement.value && tempElement.parentElement && scrollerElement.value) {
         if (tempElement.scrollHeight > tempElement.clientHeight && tempElement.scrollTop > 0) {
           preventScroll = true
           break
@@ -105,50 +116,71 @@ export default defineComponent({
 
       if (!preventScroll) {
         const { clientX: x, clientY: y } = e.changedTouches[0]
-        this.offset = { x, y, initial: true }
+        data.offset = { x, y, initial: true }
       }
-    },
-    onPointerUp() {
-      if (!this.blockCloseOnBackdrop && this.transformTop > 128 && this.$refs.scroller.scrollTop === 0) {
-        this.$nextTick(() => {
-          this.$nextTick(() => {
-            this.$emit('close')
-          })
-        })
-      }
-      this.isDown = false
-      this.offset = null
-      this.transformTop = null
-    },
-    onPointerMove(event) {
-      if (this.$refs.scroller.scrollTop !== 0) {
-        this.offset = null
+    }
+
+    const onPointerMove = (event: TouchEvent) => {
+      if (scrollerElement.value.scrollTop !== 0) {
+        data.offset = null
       }
 
-      if (this.isDown && this.offset) {
+      if (data.isDown && data.offset) {
         const { clientX, clientY } = event.changedTouches[0]
 
-        const newOffsetX = clientX - this.offset.x
-        const newOffsetY = clientY - this.offset.y
+        const newOffsetX = clientX - data.offset.x
+        const newOffsetY = clientY - data.offset.y
 
-        if (this.offset.initial && Math.abs(newOffsetX) > Math.abs(newOffsetY)) {
-          this.offset = null
+        if (data.offset.initial && Math.abs(newOffsetX) > Math.abs(newOffsetY)) {
+          data.offset = null
           return false
         }
 
-        if (this.offset.initial && Math.abs(newOffsetX) < Math.abs(newOffsetY)) {
-          this.offset.initial = false
+        if (data.offset.initial && Math.abs(newOffsetX) < Math.abs(newOffsetY)) {
+          data.offset.initial = false
         }
 
-        if (!this.offset.initial) {
-          this.transformTop = newOffsetY
+        if (!data.offset.initial) {
+          data.transformTop = newOffsetY
 
-          if (this.$refs.scroller.scrollTop === 0 && this.transformTop >= 0) {
+          if (scrollerElement.value.scrollTop === 0 && data.transformTop >= 0) {
             event.preventDefault()
           }
         }
       }
       return false
+    }
+
+    const onPointerUp = () => {
+      if (!props.blockCloseOnBackdrop && data.transformTop > 128 && scrollerElement.value.scrollTop === 0) {
+        nextTick(() => {
+          nextTick(() => {
+            emit('close')
+          })
+        })
+      }
+      data.isDown = false
+      data.offset = null
+      data.transformTop = null
+    }
+
+    return {
+      // refs
+      modalElement,
+      scrollerElement,
+      // data
+      ...toRefs(data),
+      // computed
+      scrollerStyle,
+      // methods
+      maybeClose,
+      beforeModalEnter,
+      afterModalEnter,
+      beforeModalLeave,
+      afterModalLeave,
+      onPointerDown,
+      onPointerMove,
+      onPointerUp
     }
   }
 })

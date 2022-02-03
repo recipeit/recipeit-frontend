@@ -95,9 +95,7 @@
               i {{ filteredOptions.length - filteredOptionsLimited.length }} innnych opcji
             </li>
           </ul>
-          <div v-else class="base-select__options__empty">
-            Brak pasujących elementów
-          </div>
+          <div v-else class="base-select__options__empty">Brak pasujących elementów</div>
         </div>
       </transition>
     </div>
@@ -170,7 +168,7 @@ export default {
       type: Number
     },
     value: {
-      type: [String, Object],
+      type: [String, Number, Object],
       default: null
     },
     options: {
@@ -264,13 +262,7 @@ export default {
 
         const sortedFilteredGroups = sortby(filteredGroups, group => {
           const options = group && !Array.isArray(group) ? group[this.groupValues] : null
-          return options?.some(option =>
-            this.optionSearchableValue(option)
-              .toLowerCase()
-              .includes(this.formattedSearch)
-          )
-            ? 0
-            : 1
+          return options?.some(option => this.optionSearchableValue(option).toLowerCase().includes(this.formattedSearch)) ? 0 : 1
         })
 
         return this.plainOptions(sortedFilteredGroups)
@@ -529,12 +521,7 @@ export default {
       if (!formattedSearch) return result
 
       return sortby(result, [
-        option =>
-          optionSearchableValue(option)
-            .toLowerCase()
-            .includes(formattedSearch)
-            ? 0
-            : 1,
+        option => (optionSearchableValue(option).toLowerCase().includes(formattedSearch) ? 0 : 1),
         option => optionSearchableValue(option).length,
         option => optionSearchableValue(option)
       ])

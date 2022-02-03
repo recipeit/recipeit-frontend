@@ -9,7 +9,6 @@ import { THEME_DEFAULT, THEME_STORAGE_KEY } from '@/configs/theme'
 import { Themes } from '@/constants/themes'
 
 import toastPlugin from '@/plugins/toast'
-import { ToastType } from '@/plugins/toast/toastType'
 
 import router from '@/router'
 import { APP_PATHS } from '@/router/paths'
@@ -305,16 +304,16 @@ export const useUserStore = defineStore('user', () => {
               state.hiddenRecipeIds.push(recipeId)
             }
             resolve()
-            toastPlugin.toast.show(visible ? 'Przepis został odkryty' : 'Przepis nie będzie już widoczny', ToastType.SUCCESS)
+            toastPlugin.toast.show(visible ? 'Przepis został odkryty' : 'Przepis nie będzie już widoczny', 'success')
           } else {
             reject()
-            toastPlugin.toast.show('Wystapił błąd. Spróbuj ponownie', ToastType.ERROR)
-            // this.$toast.show('Nie udało się ukryć przepisu. Spróbuj ponownie', ToastType.ERROR)
+            toastPlugin.toast.show('Wystapił błąd. Spróbuj ponownie', 'error')
+            // this.$toast.show('Nie udało się ukryć przepisu. Spróbuj ponownie', 'error')
           }
         })
         .catch(() => {
           reject()
-          toastPlugin.toast.show('Wystapił błąd. Spróbuj ponownie', ToastType.ERROR)
+          toastPlugin.toast.show('Wystapił błąd. Spróbuj ponownie', 'error')
         })
     })
   }
@@ -336,17 +335,17 @@ export const useUserStore = defineStore('user', () => {
             resolve()
             toastPlugin.toast.show(
               visible ? 'Przepisy z tego blogu zostały odkryte' : 'Przepisy z tego blogu nie będą już widoczne',
-              ToastType.SUCCESS
+              'success'
             )
           } else {
             reject()
-            toastPlugin.toast.show('Wystapił błąd. Spróbuj ponownie', ToastType.ERROR)
-            // this.$toast.show('Nie udało się ukryć przepisu. Spróbuj ponownie', ToastType.ERROR)
+            toastPlugin.toast.show('Wystapił błąd. Spróbuj ponownie', 'error')
+            // this.$toast.show('Nie udało się ukryć przepisu. Spróbuj ponownie', 'error')
           }
         })
         .catch(() => {
           reject()
-          toastPlugin.toast.show('Wystapił błąd. Spróbuj ponownie', ToastType.ERROR)
+          toastPlugin.toast.show('Wystapił błąd. Spróbuj ponownie', 'error')
         })
     })
   }

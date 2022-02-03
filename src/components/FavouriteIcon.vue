@@ -27,13 +27,17 @@ export default defineComponent({
 
   emits: ['added', 'removed'],
 
-  methods: {
-    onClick() {
-      if (this.isFavourite) {
-        this.$emit('removed')
+  setup(props, { emit }) {
+    const onClick = () => {
+      if (props.isFavourite) {
+        emit('removed')
       } else {
-        this.$emit('added')
+        emit('added')
       }
+    }
+
+    return {
+      onClick
     }
   }
 })

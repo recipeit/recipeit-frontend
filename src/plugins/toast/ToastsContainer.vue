@@ -15,11 +15,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, reactive, toRefs } from 'vue'
 
 import uniqueID from '@/functions/uniqueID'
 
 import Toast from '@/plugins/toast/Toast.vue'
+
+import { IToastContainer, ToastInstance } from './typings'
 
 export default defineComponent({
   name: 'ToastsContainer',
@@ -28,29 +30,40 @@ export default defineComponent({
     Toast
   },
 
-  data() {
-    return {
-      toasts: []
+  setup() {
+    // data
+    const data = reactive({
+      toasts: [] as Array<ToastInstance>
+    })
+
+    // methods
+    const appendToast: IToastContainer['appendToast'] = (message, type, seconds) => {
+      data.toasts.push({ id: uniqueID().getID(), message, type, seconds })
     }
+
+    const appendCancellableToast: IToastContainer['appendCancellableToast'] = (message, type, seconds, cancelCallback) => {
+      data.toasts.push({ id: uniqueID().getID(), message, type, seconds, cancellable: true, onCancel: cancelCallback })
+    }
+
+    const removeToast: IToastContainer['removeToast'] = id => {
+      const index = data.toasts.findIndex(v => v.id === id)
+      if (index !== -1) {
+        data.toasts.splice(index, 1)
+      }
+    }
+
+    return {
+      // data
+      ...toRefs(data),
+      // methods
+      appendToast,
+      appendCancellableToast,
+      removeToast
+    } as IToastContainer
   },
 
   created() {
     this.$toast._setGlobalToastsContainer(this)
-  },
-
-  methods: {
-    appendToast(message, type, seconds) {
-      this.toasts.push({ id: uniqueID().getID(), message, type, seconds })
-    },
-    appendCancellableToast(message, type, seconds, cancelCallback) {
-      this.toasts.push({ id: uniqueID().getID(), message, type, seconds, cancellable: true, onCancel: cancelCallback })
-    },
-    removeToast(id) {
-      const index = this.toasts.findIndex(v => v.id === id)
-      if (index !== -1) {
-        this.toasts.splice(index, 1)
-      }
-    }
   }
 })
 </script>

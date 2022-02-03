@@ -9,9 +9,7 @@
         <Field v-slot="{ field, errors }" type="password" name="currentPassword">
           <BaseInput class="form-row" label="Obecne hasło" type="password" v-bind="field" :errors="errors" />
         </Field>
-        <BaseLink tag="button" class="forgot-password-button" color="primary" @click="forgotPassword()">
-          nie pamiętasz hasła?
-        </BaseLink>
+        <BaseLink tag="button" class="forgot-password-button" color="primary" @click="forgotPassword()"> nie pamiętasz hasła? </BaseLink>
 
         <Field v-slot="{ field, errors }" type="password" name="newPassword">
           <BaseInput class="form-row" label="Nowe hasło" type="password" v-bind="field" :errors="errors" />
@@ -27,12 +25,8 @@
       <RecaptchaBranding class="recaptcha-branding" />
     </BaseModalBody>
     <BaseModalFooter>
-      <BaseButton class="submit-button" stroked @click="$emit('close')">
-        Anuluj
-      </BaseButton>
-      <BaseButton class="submit-button" raised color="primary" :form="formID" :loading="sending">
-        Zapisz
-      </BaseButton>
+      <BaseButton class="submit-button" stroked @click="$emit('close')"> Anuluj </BaseButton>
+      <BaseButton class="submit-button" raised color="primary" :form="formID" :loading="sending"> Zapisz </BaseButton>
     </BaseModalFooter>
   </SheetModalContent>
 </template>
@@ -49,7 +43,6 @@ import { RECAPTCHA_ACTIONS } from '@/configs/recaptcha'
 import uniqueID from '@/functions/uniqueID'
 
 import { useToast } from '@/plugins/toast'
-import { ToastType } from '@/plugins/toast/toastType'
 
 import recaptcha from '@/services/recaptcha'
 
@@ -104,7 +97,7 @@ export default defineComponent({
             .changePassword({ ...values, recaptchaToken })
             .then(() => {
               emit('close', { success: true })
-              toast.show('Hasło zmienione!', ToastType.SUCCESS)
+              toast.show('Hasło zmienione!', 'success')
             })
             .catch(error => {
               const errors = error?.response?.data?.errors

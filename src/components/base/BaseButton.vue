@@ -6,7 +6,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue'
+import { computed, defineComponent, PropType } from 'vue'
 
 import Spinner from '@/components/Spinner.vue'
 
@@ -46,16 +46,20 @@ export default defineComponent({
     }
   },
 
-  computed: {
-    classList() {
+  setup(props) {
+    const classList = computed(() => {
       return [
-        this.color ? `button--${this.color}` : '',
-        this.stroked ? 'button--stroked' : '',
-        this.raised ? 'button--raised' : '',
-        this.subtle ? 'button--subtle' : '',
-        this.size === 'small' ? 'button--small' : '',
-        this.loading ? 'loading' : ''
+        props.color ? `button--${props.color}` : '',
+        props.stroked ? 'button--stroked' : '',
+        props.raised ? 'button--raised' : '',
+        props.subtle ? 'button--subtle' : '',
+        props.size === 'small' ? 'button--small' : '',
+        props.loading ? 'loading' : ''
       ]
+    })
+
+    return {
+      classList
     }
   }
 })

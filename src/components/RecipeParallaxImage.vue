@@ -1,33 +1,45 @@
 <template>
-  <div ref="block" class="parallax-image">
-    <div ref="image" class="parallax-image-image">
+  <div ref="blockElement" class="parallax-image">
+    <div ref="imageElement" class="parallax-image-image">
       <slot />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, onBeforeMount, onBeforeUnmount, onMounted, ref } from 'vue'
 
 export default defineComponent({
-  beforeMount() {
-    window.addEventListener('scroll', this.scrollHandler, false)
-  },
+  setup() {
+    // refs
+    const blockElement = ref(null)
+    const imageElement = ref(null)
 
-  mounted() {
-    this.scrollHandler()
-  },
-
-  beforeUnmount() {
-    window.removeEventListener('scroll', this.scrollHandler, false)
-  },
-
-  methods: {
-    scrollHandler() {
-      const parentHeight = this.$refs.block.offsetHeight
+    // internal methods
+    const scrollHandler = () => {
+      const parentHeight = blockElement.value.offsetHeight
       const scrollFactor = Math.max(0, Math.min(window.pageYOffset / parentHeight, 1))
       const transformValue = (scrollFactor * parentHeight) / 2
-      this.$refs.image.style.transform = `translate3d(0, ${transformValue}px ,0)`
+      imageElement.value.style.transform = `translate3d(0, ${transformValue}px ,0)`
+    }
+
+    // lifecycle hooks
+    onBeforeMount(() => {
+      window.addEventListener('scroll', scrollHandler, false)
+    })
+
+    onMounted(() => {
+      scrollHandler()
+    })
+
+    onBeforeUnmount(() => {
+      window.removeEventListener('scroll', scrollHandler, false)
+    })
+
+    return {
+      // refs
+      blockElement,
+      imageElement
     }
   }
 })

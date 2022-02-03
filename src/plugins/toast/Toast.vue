@@ -7,16 +7,14 @@
     <BaseLink v-if="!cancellable" tag="button" class="toast__close" color="text-secondary" @click="hide()">
       <BaseIcon icon="close" weight="semi-bold" />
     </BaseLink>
-    <BaseLink v-else tag="button" class="toast__cancel" color="primary" @click="cancel()">
-      cofnij
-    </BaseLink>
+    <BaseLink v-else tag="button" class="toast__cancel" color="primary" @click="cancel()"> cofnij </BaseLink>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { computed, defineComponent, onMounted, PropType, reactive, toRefs } from 'vue'
 
-import { ToastType } from '@/plugins/toast/toastType'
+import { ToastType } from './typings'
 
 export default defineComponent({
   props: {
@@ -25,8 +23,8 @@ export default defineComponent({
       required: true
     },
     type: {
-      type: String,
-      default: ToastType.INFO
+      type: String as PropType<ToastType>,
+      default: 'info'
     },
     message: {
       type: String,
@@ -42,48 +40,63 @@ export default defineComponent({
 
   emits: ['hide'],
 
-  data() {
+  setup(props, { emit }) {
+    // data
+    const data = reactive({ timer: null })
+
+    // computed
+    const icon = computed(() => {
+      switch (props.type) {
+        case 'success':
+          return 'small-check'
+        case 'warning':
+          return 'warning'
+        case 'error':
+          return 'small-close'
+        default:
+          return 'info'
+      }
+    })
+
+    // methods
+    const hide = () => {
+      emit('hide')
+    }
+
+    const setTimer = () => {
+      if (data.timer) {
+        resetTimer()
+      }
+
+      data.timer = setTimeout(() => {
+        hide()
+      }, props.seconds * 1000)
+    }
+
+    const resetTimer = () => {
+      clearTimeout(data.timer)
+      data.timer = null
+    }
+
+    const cancel = () => {
+      props.cancelCallback?.()
+      hide()
+    }
+
+    onMounted(() => {
+      setTimer()
+    })
+
     return {
-      timer: null
-    }
-  },
-
-  computed: {
-    icon() {
-      const { type } = this
-      if (type === ToastType.SUCCESS) return 'small-check'
-      if (type === ToastType.WARNING) return 'warning'
-      if (type === ToastType.ERROR) return 'small-close'
-      return 'info'
-    }
-  },
-
-  mounted() {
-    this.setTimer()
-  },
-
-  methods: {
-    hide() {
-      this.$emit('hide')
-    },
-    setTimer() {
-      if (this.timer) {
-        this.resetTimer()
-      }
-
-      this.timer = setTimeout(() => {
-        this.hide()
-      }, this.seconds * 1000)
-    },
-    resetTimer() {
-      clearTimeout(this.timer)
-      this.timer = null
-    },
-    cancel() {
-      if (this.cancelCallback) {
-        this.cancelCallback()
-      }
-      this.hide()
+      // data
+      ...toRefs(data),
+      // computed
+      icon,
+      // methods
+      hide,
+      setTimer,
+      resetTimer,
+      cancel
     }
   }
 })

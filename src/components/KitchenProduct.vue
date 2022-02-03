@@ -27,9 +27,7 @@
           <BaseIcon icon="trash" weight="semi-bold" />
         </a>
 
-        <template #popper>
-          Usuń produkt
-        </template>
+        <template #popper> Usuń produkt </template>
       </VTooltip>
     </div>
   </Product>
@@ -42,7 +40,6 @@ import myKitchenApi from '@/api/myKitchenApi'
 
 import { useModal } from '@/plugins/global-sheet-modal'
 import { useToast } from '@/plugins/toast'
-import { ToastType } from '@/plugins/toast/toastType'
 
 import { useMyKitchenStore } from '@/stores/myKitchen'
 import { useShoppingListStore } from '@/stores/shoppingList'
@@ -92,7 +89,7 @@ export default defineComponent({
           expirationDates = data
         }
       } catch (e) {
-        toast.show('Wystąpił błąd podczas pobierania danych', ToastType.ERROR)
+        toast.show('Wystąpił błąd podczas pobierania danych', 'error')
       }
 
       modal.show(
@@ -123,7 +120,7 @@ export default defineComponent({
             unit
           })
           .catch(() => {
-            toast.show('Nie udało się dodać produktu do listy zakupów', ToastType.ERROR)
+            toast.show('Nie udało się dodać produktu do listy zakupów', 'error')
           })
           .finally(() => {
             addToShoppingListLoading.value = false

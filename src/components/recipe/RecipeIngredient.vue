@@ -45,7 +45,6 @@ import { stringifiedAmount } from '@/functions/amount'
 
 import { useModal } from '@/plugins/global-sheet-modal'
 import { useToast } from '@/plugins/toast'
-import { ToastType } from '@/plugins/toast/toastType'
 
 import { useShoppingListStore } from '@/stores/shoppingList'
 import { useIngredientsStore } from '@/stores/ingredients'
@@ -134,7 +133,7 @@ export default defineComponent({
       try {
         await shoppingListStore.addProduct(product)
       } catch {
-        toast.show('Nie udało się dodać produktu do listy zakupów', ToastType.ERROR)
+        toast.show('Nie udało się dodać produktu do listy zakupów', 'error')
       } finally {
         data.loading = false
       }

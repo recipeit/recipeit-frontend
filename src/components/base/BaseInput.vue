@@ -29,7 +29,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { computed, defineComponent, reactive, toRefs } from 'vue'
 
 import uniqueID from '@/functions/uniqueID'
 
@@ -50,7 +50,7 @@ export default defineComponent({
     type: {
       type: String,
       default: 'text',
-      validator: (prop: string) => ['text', 'password'].includes(prop)
+      validator: (prop: string) => ['text', 'number', 'password'].includes(prop)
     },
     tabindex: {
       type: Number,
@@ -68,42 +68,62 @@ export default defineComponent({
 
   emits: ['focus', 'blur'],
 
-  data: () => ({
-    focused: false,
-    id: 'base-input-' + uniqueID().getID()
-  }),
+  setup(props, { emit }) {
+    // data
+    const data = reactive({
+      focused: false,
+      id: 'base-input-' + uniqueID().getID()
+    })
 
-  computed: {
-    baseInputClasses() {
+    // computed
+    const baseInputClasses = computed(() => {
       return {
         'base-input': true,
-        'base-input--focus': this.focused,
-        'base-input--invalid': this.errors && this.errors.length > 0,
-        'base-input--disabled': this.disabled
+        'base-input--focus': data.focused,
+        'base-input--invalid': props.errors && props.errors.length > 0,
+        'base-input--disabled': props.disabled
       }
-    },
-    erorrsID() {
-      return `${this.id}-errors`
-    },
-    hasValue() {
-      const stringValue = this.value?.toString()
+    })
+
+    const erorrsID = computed(() => {
+      return `${data.id}-errors`
+    })
+
+    const hasValue = computed(() => {
+      const stringValue = props.value?.toString()
       if (stringValue === null) return false
       if (stringValue === undefined) return false
       if (stringValue === '') return false
       return true
+    })
+
+    // methods
+    const setFocus = () => {
+      data.focused = true
+      emit('focus')
+    }
+
+    const setBlur = () => {
+      data.focused = false
+      emit('blur')
+    }
+
+    return {
+      // data
+      ...toRefs(data),
+      // computed
+      baseInputClasses,
+      erorrsID,
+      hasValue,
+      // methods
+      setFocus,
+      setBlur
     }
   },
 
-  methods: {
-    setFocus() {
-      this.focused = true
-      this.$emit('focus')
-    },
-    setBlur() {
-      this.focused = false
-      this.$emit('blur')
-    }
-  }
+  computed: {},
+
+  methods: {}
 })
 </script>
 

@@ -2,13 +2,9 @@
   <div class="layout__page__content blog-recipes">
     <div v-if="errors" class="error-page">
       <img class="error-image" src="@/assets/img/broccoli-sad.svg" alt="" />
-      <span class="error-text">
-        Ojjj... nie znaleźliśmy takiego blogu
-      </span>
+      <span class="error-text"> Ojjj... nie znaleźliśmy takiego blogu </span>
       <router-link v-slot="{ href, navigate }" :to="{ name: APP_HOME }" custom>
-        <BaseButton tag="a" :href="href" class="recipe-button" stroked @click="navigate($event)">
-          Wróć na stronę główną
-        </BaseButton>
+        <BaseButton tag="a" :href="href" class="recipe-button" stroked @click="navigate($event)"> Wróć na stronę główną </BaseButton>
       </router-link>
     </div>
     <template v-else>
@@ -78,7 +74,6 @@ import backgroundErrorUrl from '@/assets/img/blog-bg.webp'
 import { useClipboard } from '@/plugins/clipboard'
 import { useModal } from '@/plugins/global-sheet-modal'
 import { useToast } from '@/plugins/toast'
-import { ToastType } from '@/plugins/toast/toastType'
 
 import { APP_HOME } from '@/router/names'
 
@@ -164,11 +159,11 @@ export default defineComponent({
       const url = window.location.origin + route.path
 
       if (!url) {
-        toast.show('Nie udało się skopiować do schowka', ToastType.ERROR)
+        toast.show('Nie udało się skopiować do schowka', 'error')
       } else if (clipboard(url)) {
-        toast.show('Skopiowano do schowka', ToastType.SUCCESS)
+        toast.show('Skopiowano do schowka', 'success')
       } else {
-        toast.show('Nie udało się skopiować do schowka', ToastType.ERROR)
+        toast.show('Nie udało się skopiować do schowka', 'error')
       }
     }
 

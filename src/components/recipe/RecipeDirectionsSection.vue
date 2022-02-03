@@ -36,7 +36,6 @@ import min from 'lodash.min'
 import { computed, defineComponent, PropType, ref, watch } from 'vue'
 
 import { useToast } from '@/plugins/toast'
-import { ToastType } from '@/plugins/toast/toastType'
 
 import { useRecipesStore } from '@/stores/recipes'
 
@@ -86,7 +85,7 @@ export default defineComponent({
       const remaining = difference(allIndexes.value, newValue)
       if (!remaining || remaining.length === 0) {
         finishedDirections.value = []
-        toast.show('Super! Udało Ci się ukończyć przepis', ToastType.SUCCESS)
+        toast.show('Super! Udało Ci się ukończyć przepis', 'success')
       }
     })
 

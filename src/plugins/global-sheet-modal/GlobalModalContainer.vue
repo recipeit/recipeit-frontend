@@ -12,10 +12,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { computed, defineComponent, nextTick, onBeforeMount, reactive, toRefs, watch } from 'vue'
 
 import Modal from '@/plugins/global-sheet-modal/Modal.vue'
+import { useModal } from '@/plugins/global-sheet-modal'
 import { nextId } from '@/plugins/global-sheet-modal/utils'
+
+import { IGlobalModalContainer, ModalInstance } from './typings'
 
 export default defineComponent({
   name: 'GlobalSheetModalContainer',
@@ -24,45 +27,29 @@ export default defineComponent({
     Modal
   },
 
-  data: () => ({
-    modals: []
-  }),
+  setup() {
+    // usings
+    const modal = useModal()
 
-  computed: {
-    anyModalOpened() {
-      return this.modals.filter(m => m.opened).length > 0
-    },
-    anyModalOpenedOrClosing() {
-      return this.modals.length > 0
-    }
-  },
-
-  watch: {
-    anyModalOpenedOrClosing(value) {
-      const scrollWidth = window.innerWidth - document.body.offsetWidth
-      const bodyRequireScroll = document.body.scrollHeight > document.body.clientHeight
-      document.body.style.overflowY = value ? 'hidden' : null
-      document.body.style.paddingRight = value && bodyRequireScroll ? `${scrollWidth}px` : null
-    }
-  },
-
-  created() {
-    this.$modal._setGlobalModalContainer(this)
-    document.addEventListener('keyup', e => {
-      if (e.keyCode === 27 && this.anyModalOpened) {
-        const opened = this.modals.filter(m => m.opened)
-        const modal = opened[opened.length - 1]
-        if (!modal.blockCloseOnBackdrop) {
-          this.$modal.hide(opened[opened.length - 1].id)
-        }
-      }
+    // data
+    const data = reactive({
+      modals: [] as Array<ModalInstance>
     })
-  },
 
-  methods: {
-    add(component, props = {}, events = {}, { blockCloseOnBackdrop = false } = {}) {
+    // computed
+    const anyModalOpened: IGlobalModalContainer['anyModalOpened'] = computed(() => {
+      return data.modals.some(({ opened }) => opened)
+    })
+
+    const anyModalOpenedOrClosing: IGlobalModalContainer['anyModalOpenedOrClosing'] = computed(() => {
+      return data.modals.length > 0
+    })
+
+    // methods
+    const add: IGlobalModalContainer['add'] = (component, props = {}, events = {}, { blockCloseOnBackdrop = false } = {}) => {
       const id = nextId()
-      this.modals.push({
+
+      data.modals.push({
         id: id,
         opened: false,
         component: component,
@@ -70,31 +57,75 @@ export default defineComponent({
         events: events,
         blockCloseOnBackdrop: !!blockCloseOnBackdrop
       })
-      this.$nextTick(() => {
-        this.open(id)
+
+      nextTick(() => {
+        open(id)
       })
-    },
-    remove(id) {
-      const index = this.modals.findIndex(v => v.id === id)
-      if (index !== -1) {
-        this.modals[index].opened = false
-      }
-    },
-    open(id) {
-      const index = this.modals.findIndex(v => v.id === id)
-      if (index !== -1) {
-        this.modals[index].opened = true
-      }
-    },
-    close(id) {
-      this.$modal.hide(id)
-    },
-    afterModalTransitionLeave(id) {
-      const index = this.modals.findIndex(v => v.id === id)
-      if (index !== -1) {
-        this.modals.splice(index, 1)
+    }
+
+    const remove: IGlobalModalContainer['remove'] = id => {
+      const foundModal = data.modals.find(v => v.id === id)
+      if (foundModal) {
+        foundModal.opened = false
       }
     }
+
+    const open: IGlobalModalContainer['open'] = id => {
+      const foundModal = data.modals.find(v => v.id === id)
+      if (foundModal) {
+        foundModal.opened = true
+      }
+    }
+
+    const close: IGlobalModalContainer['close'] = id => {
+      modal.hide(id)
+    }
+
+    const afterModalTransitionLeave: IGlobalModalContainer['afterModalTransitionLeave'] = id => {
+      const index = data.modals.findIndex(v => v.id === id)
+      if (index !== -1) {
+        data.modals.splice(index, 1)
+      }
+    }
+
+    // watchers
+    watch(anyModalOpenedOrClosing, value => {
+      const scrollWidth = window.innerWidth - document.body.offsetWidth
+      const bodyRequireScroll = document.body.scrollHeight > document.body.clientHeight
+      document.body.style.overflowY = value ? 'hidden' : null
+      document.body.style.paddingRight = value && bodyRequireScroll ? `${scrollWidth}px` : null
+    })
+
+    // lifecycle hooks
+    onBeforeMount(() => {
+      document.addEventListener('keyup', e => {
+        if (e.keyCode === 27 && anyModalOpened.value) {
+          const opened = data.modals.filter(m => m.opened)
+          const modalToClose = opened[opened.length - 1]
+          if (!modalToClose.blockCloseOnBackdrop) {
+            modal.hide(modalToClose.id)
+          }
+        }
+      })
+    })
+
+    return {
+      // data
+      ...toRefs(data),
+      // computed
+      anyModalOpened,
+      anyModalOpenedOrClosing,
+      // methods
+      add,
+      remove,
+      open,
+      close,
+      afterModalTransitionLeave
+    } as IGlobalModalContainer
+  },
+
+  created() {
+    this.$modal._setGlobalModalContainer(this)
   }
 })
 </script>

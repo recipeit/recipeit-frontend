@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue'
+import { computed, defineComponent, PropType } from 'vue'
 
 import { BaseLinkColor, BaseLinkTag } from '@/typings/link'
 
@@ -21,9 +21,13 @@ export default defineComponent({
     }
   },
 
-  computed: {
-    classList() {
-      return ['link', this.color ? `link--color-${this.color}` : null]
+  setup(props) {
+    const classList = computed(() => {
+      return ['link', props.color ? `link--color-${props.color}` : null]
+    })
+
+    return {
+      classList
     }
   }
 })

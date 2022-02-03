@@ -1,4 +1,5 @@
 import { ProductCategory } from '@/typings/productCategories'
+import { TimeOfDay } from '@/typings/timesOfDay'
 
 export type BlogEntity = {
   id: string
@@ -79,4 +80,15 @@ export type RecipeIngredientEntity = {
   baseProductIdsArray: Array<number>
   mainBaseProductId: number
   // baseProduct:null
+}
+
+export type UserPlannedRecipe = {
+  id: string
+  userId: string
+  recipeId: RecipeEntity['id']
+  day: string
+  timeOfDay: TimeOfDay
+
+  // public virtual IdentityUser User { get; set; }
+  // public virtual Recipe Recipe { get; set; }
 }

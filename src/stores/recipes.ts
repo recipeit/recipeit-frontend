@@ -7,7 +7,6 @@ import userApi from '@/api/userApi'
 import { FINISHED_DIRECTIONS_STORAGE_KEY } from '@/configs/storage'
 
 import toastPlugin from '@/plugins/toast'
-import { ToastType } from '@/plugins/toast/toastType'
 
 import { DateYMDString } from '@/typings/dates'
 import { RecipeEntity } from '@/typings/entities'
@@ -92,7 +91,7 @@ export const useRecipesStore = defineStore('recipes', () => {
   }) => {
     const response = await userApi.addRecipeToPlanned(recipeId, { day, timeOfDay })
 
-    toastPlugin.toast.show('Przepis zaplanowany!', ToastType.SUCCESS)
+    toastPlugin.toast.show('Przepis zaplanowany!', 'success')
 
     return response
   }

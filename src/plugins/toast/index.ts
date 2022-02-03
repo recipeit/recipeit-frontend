@@ -2,12 +2,14 @@ import { App } from 'vue'
 
 import ToastsContainer from '@/plugins/toast/ToastsContainer.vue'
 
-const Plugin = {
-  toast: null,
-  install: (app: App) => {
-    let globalToastsContainer: typeof ToastsContainer
+import { IToastContainer, ToastPlugin } from './typings'
 
-    const $toast = {
+const Plugin = {
+  toast: null as ToastPlugin,
+  install: (app: App) => {
+    let globalToastsContainer: IToastContainer
+
+    const $toast: ToastPlugin = {
       _setGlobalToastsContainer(container) {
         globalToastsContainer = container
       },
