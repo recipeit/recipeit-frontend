@@ -30,7 +30,7 @@ export default defineComponent({
     Toast
   },
 
-  setup() {
+  setup(): IToastContainer {
     // data
     const data = reactive({
       toasts: [] as Array<ToastInstance>
@@ -59,7 +59,7 @@ export default defineComponent({
       appendToast,
       appendCancellableToast,
       removeToast
-    } as IToastContainer
+    }
   },
 
   created() {

@@ -74,7 +74,7 @@ export default defineComponent({
     const days = Array.from({ length: 7 }, (_, i) => {
       const day = dayjs().add(i, 'days')
       return {
-        value: day.format('YYYY-MM-DD') as DateYMDString,
+        value: day.format('YYYY-MM-DD'),
         label: day.calendar()
       }
     })

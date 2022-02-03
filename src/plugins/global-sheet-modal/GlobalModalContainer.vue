@@ -27,7 +27,7 @@ export default defineComponent({
     Modal
   },
 
-  setup() {
+  setup(): IGlobalModalContainer {
     // usings
     const modal = useModal()
 
@@ -121,7 +121,7 @@ export default defineComponent({
       open,
       close,
       afterModalTransitionLeave
-    } as IGlobalModalContainer
+    }
   },
 
   created() {
