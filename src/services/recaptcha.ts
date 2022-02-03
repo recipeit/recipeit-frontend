@@ -12,6 +12,8 @@ const getGoogleRecaptcha = async (): Promise<ReCaptchaV2.ReCaptcha> => {
   return window.grecaptcha
 }
 
+// exported
+
 const init = async () => {
   await getGoogleRecaptcha()
 }
@@ -29,7 +31,6 @@ const execute = async (action: RecaptchaAction) => {
 }
 
 export default {
-  getGoogleRecaptcha,
   init,
   execute
 }

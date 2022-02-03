@@ -119,11 +119,7 @@ export default defineComponent({
       setFocus,
       setBlur
     }
-  },
-
-  computed: {},
-
-  methods: {}
+  }
 })
 </script>
 

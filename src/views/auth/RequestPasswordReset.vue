@@ -54,7 +54,7 @@
 
 <script lang="ts">
 import { Field, Form } from 'vee-validate'
-import { defineComponent } from 'vue'
+import { defineComponent, onBeforeMount, reactive, toRefs } from 'vue'
 import { useMeta } from 'vue-meta'
 import * as yup from 'yup'
 
@@ -65,11 +65,17 @@ import { RECAPTCHA_ACTIONS } from '@/configs/recaptcha'
 import { emailSchema } from '@/configs/schemas'
 import { BASE_URL } from '@/configs/url'
 
+import { useErrorHandler } from '@/error'
+
 import { AUTH_REQUEST_PASSWORD_RESET } from '@/router/paths'
 
 import recaptcha from '@/services/recaptcha'
 
 import RecaptchaBranding from '@/components/RecaptchaBranding.vue'
+
+type RequestPasswordResetData = {
+  state: 'BEFORE' | 'SENDING' | 'SUCCESS' | 'ERROR'
+}
 
 export default defineComponent({
   components: {
@@ -86,32 +92,30 @@ export default defineComponent({
   },
 
   setup(props) {
+    // usings
+    const errorHandler = useErrorHandler()
     useMeta({
       title: 'Zapomniałem hasła',
       link: [{ rel: 'canonical', href: `${BASE_URL}${AUTH_REQUEST_PASSWORD_RESET}` }]
     })
 
+    // consts
     const schema = yup.object({
       email: emailSchema()
     })
+
     const initialValues = {
       email: props.initialEmail
     }
 
-    return { schema, initialValues }
-  },
+    // data
+    const data = reactive<RequestPasswordResetData>({
+      state: 'BEFORE'
+    })
 
-  data: () => ({
-    state: 'BEFORE'
-  }),
-
-  beforeMount() {
-    this.state = 'BEFORE'
-  },
-
-  methods: {
-    async requestPasswordReset({ email }) {
-      this.state = 'SENDING'
+    // methods
+    const requestPasswordReset = async ({ email }) => {
+      data.state = 'SENDING'
 
       recaptcha
         .execute(RECAPTCHA_ACTIONS.REQUEST_PASSWORD_RESET)
@@ -122,21 +126,36 @@ export default defineComponent({
               recaptchaToken
             })
             .then(() => {
-              this.state = 'SUCCESS'
+              data.state = 'SUCCESS'
             })
             .catch(error => {
-              this.state = 'ERROR'
-              this.$errorHandler.captureError(error, {
+              data.state = 'ERROR'
+              errorHandler.captureError(error, {
                 [ERROR_ACTION_TAG_NAME]: 'auth.requestPasswordReset'
               })
             })
         })
         .catch(error => {
-          this.state = 'ERROR'
-          this.$errorHandler.captureError(error, {
+          data.state = 'ERROR'
+          errorHandler.captureError(error, {
             [ERROR_ACTION_TAG_NAME]: 'auth.requestPasswordReset.recaptcha'
           })
         })
+    }
+
+    // lifecycle hooks
+    onBeforeMount(() => {
+      data.state = 'BEFORE'
+    })
+
+    return {
+      // consts
+      schema,
+      initialValues,
+      // data
+      ...toRefs(data),
+      // methods
+      requestPasswordReset
     }
   }
 })

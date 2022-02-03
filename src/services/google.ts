@@ -26,6 +26,8 @@ const getAuth = async () => {
   })
 }
 
+// exported
+
 const init = async () => {
   await getGoogleApi()
 }
@@ -47,8 +49,6 @@ const login = async () => {
 }
 
 export default {
-  getGoogleApi,
-  getAuth,
   init,
   login
 }
