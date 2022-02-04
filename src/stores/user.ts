@@ -33,6 +33,8 @@ type UserStoreState = {
 }
 
 export const useUserStore = defineStore('user', () => {
+  const router = useRouter()
+
   // state
   const state = reactive<UserStoreState>({
     theme: null,
@@ -116,10 +118,8 @@ export const useUserStore = defineStore('user', () => {
     }
   }
 
-  const register = ({ email, password, recaptchaToken }): Promise<void> => {
-    const router = useRouter()
-
-    return new Promise((resolve, reject) => {
+  const register = ({ email, password, recaptchaToken }) => {
+    return new Promise<void>((resolve, reject) => {
       identityApi
         .register({ email, password, recaptchaToken })
         .then(({ data: { userProfile } }) => {
@@ -141,11 +141,10 @@ export const useUserStore = defineStore('user', () => {
     })
   }
 
-  const login = ({ email, password, recaptchaToken }): Promise<void> => {
-    const router = useRouter()
+  const login = ({ email, password, recaptchaToken }) => {
     useRecipesStore().resetUserData() //TODO why only recipes
 
-    return new Promise((resolve, reject) => {
+    return new Promise<void>((resolve, reject) => {
       identityApi
         .login({ email, password, recaptchaToken })
         .then(({ data }) => {
@@ -177,11 +176,10 @@ export const useUserStore = defineStore('user', () => {
     })
   }
 
-  const facebookAuth = ({ accessToken }): Promise<void> => {
-    const router = useRouter()
+  const facebookAuth = ({ accessToken }) => {
     useRecipesStore().resetUserData() //TODO why only recipes
 
-    return new Promise((resolve, reject) => {
+    return new Promise<void>((resolve, reject) => {
       identityApi
         .facebookAuth({ accessToken })
         .then(({ data: { userProfile } }) => {
@@ -204,7 +202,6 @@ export const useUserStore = defineStore('user', () => {
   }
 
   const googleAuth = ({ idToken }): Promise<void> => {
-    const router = useRouter()
     useRecipesStore().resetUserData() //TODO why only recipes
 
     return new Promise((resolve, reject) => {
@@ -273,7 +270,6 @@ export const useUserStore = defineStore('user', () => {
   }
 
   const logout = async (withoutRedirect = false) => {
-    const router = useRouter()
     await identityApi.logout()
 
     state.userProfile = null

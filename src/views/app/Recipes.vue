@@ -69,7 +69,6 @@ export default defineComponent({
     const recipesList = recipeFilteredPagedList(recipeApi.getRecipes)
 
     const fetchAvailableRecipesCount = async ({ orderMethod, filters, search }: RecipesFilteredPageParams = {}) => {
-      console.log({ orderMethod, filters, search })
       availableRecipesCount.value = null
       const queryParams = fetchRecipesQueryParams(orderMethod, filters, search)
       const { data } = await userApi.getAvailableRecipesCount(queryParams)

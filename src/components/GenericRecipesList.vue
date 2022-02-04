@@ -255,7 +255,6 @@ export default defineComponent({
       let observer = intersectionObservers[pageNumber]
 
       const isIntersectingHandler = () => {
-        // console.log('sproboje ładować')
         if (!fetchingPages[pageNumber]) {
           fetchingPages[pageNumber] = true
           props
