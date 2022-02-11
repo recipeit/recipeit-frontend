@@ -29,7 +29,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, reactive, toRefs } from 'vue'
+import { computed, defineComponent, PropType, reactive, toRefs } from 'vue'
 
 import uniqueID from '@/functions/uniqueID'
 
@@ -44,7 +44,7 @@ export default defineComponent({
       type: [String, Number],
       default: null
     },
-    errors: Array,
+    errors: Array as PropType<Array<string>>,
     placeholder: String,
     label: String,
     type: {

@@ -131,7 +131,7 @@
           <BaseLink :href="reportLinkHref" color="text-secondary" class="report-link">zgłoś błąd w przepisie</BaseLink>
         </div>
 
-        <BaseAdSenseAd />
+        <!-- <BaseAdSenseAd /> -->
       </div>
     </div>
     <div v-else>Wczytuję...</div>
