@@ -118,7 +118,7 @@ export default defineComponent({
     const shoppingListStore = useShoppingListStore()
     const userStore = useUserStore()
 
-    // refs
+    // template refs
     const addProductSelect = ref(null)
 
     // data
@@ -193,7 +193,7 @@ export default defineComponent({
     })
 
     return {
-      // refs
+      // template refs
       addProductSelect,
       // data
       ...toRefs(data),

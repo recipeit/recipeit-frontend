@@ -11,7 +11,7 @@ import { defineComponent, onBeforeMount, onBeforeUnmount, onMounted, ref } from 
 
 export default defineComponent({
   setup() {
-    // refs
+    // template refs
     const blockElement = ref(null)
     const imageElement = ref(null)
 
@@ -37,7 +37,7 @@ export default defineComponent({
     })
 
     return {
-      // refs
+      // template refs
       blockElement,
       imageElement
     }

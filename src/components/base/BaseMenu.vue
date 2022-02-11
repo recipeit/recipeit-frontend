@@ -34,7 +34,7 @@ export default defineComponent({
   },
 
   setup(props) {
-    // refs
+    // template refs
     const dropdownContainerElement = ref(null)
 
     // data
@@ -79,7 +79,7 @@ export default defineComponent({
     }
 
     return {
-      // refs
+      // template refs
       dropdownContainerElement,
       // data
       ...toRefs(data),

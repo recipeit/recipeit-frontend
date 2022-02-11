@@ -60,7 +60,7 @@ export default defineComponent({
     // usings
     const userStore = useUserStore()
 
-    // refs
+    // template refs
     const blockElement = ref(null)
     const imagesElement = ref(null)
 
@@ -172,7 +172,7 @@ export default defineComponent({
     })
 
     return {
-      // refs
+      // template refs
       blockElement,
       imagesElement,
       // data

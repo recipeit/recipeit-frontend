@@ -32,7 +32,7 @@ export default defineComponent({
   emits: ['load', 'error'],
 
   setup(props, { emit }) {
-    // refs
+    // template refs
     const mainElement = ref(null)
 
     // internal data
@@ -133,7 +133,7 @@ export default defineComponent({
     })
 
     return {
-      // refs
+      // template refs
       mainElement,
       // data
       ...toRefs(data),
