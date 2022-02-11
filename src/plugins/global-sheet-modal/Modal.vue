@@ -32,7 +32,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, nextTick, reactive, ref, toRefs } from 'vue'
+import { computed, defineComponent, nextTick, reactive, shallowRef, toRefs } from 'vue'
 
 export default defineComponent({
   props: {
@@ -49,9 +49,9 @@ export default defineComponent({
   emits: ['close', 'closed'],
 
   setup(props, { emit }) {
-    // refs
-    const modalElement = ref<HTMLDivElement>(null)
-    const scrollerElement = ref<HTMLDivElement>(null)
+    // template refs
+    const modalElement = shallowRef<HTMLDivElement>(null)
+    const scrollerElement = shallowRef<HTMLDivElement>(null)
 
     // data
     const data = reactive({
@@ -165,7 +165,7 @@ export default defineComponent({
     }
 
     return {
-      // refs
+      // template refs
       modalElement,
       scrollerElement,
       // data
