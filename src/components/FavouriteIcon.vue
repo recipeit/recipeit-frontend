@@ -11,7 +11,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, PropType } from 'vue'
+
+import { BaseLinkColor } from '@/typings/link'
 
 export default defineComponent({
   props: {
@@ -20,7 +22,7 @@ export default defineComponent({
       default: false
     },
     color: {
-      type: String,
+      type: String as PropType<BaseLinkColor>,
       default: 'text-secondary'
     }
   },
