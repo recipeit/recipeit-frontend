@@ -3,7 +3,7 @@
     <template #header>
       <AddBlogHeader />
     </template>
-    <div class="add-blog-content" v-html="ADD_BLOG_HTML" />
+    <AddBlogMarkdown class="add-blog-content" />
     <div>
       <div v-for="{ urls, size, height, width } in bannerList" :key="size" class="banner-group">
         <span class="banner-size">{{ size }}</span>
@@ -17,11 +17,11 @@
 import { defineComponent } from 'vue'
 import { useMeta } from 'vue-meta'
 
-import ADD_BLOG_HTML from '@/assets/docs/addblog/addblog.html?raw'
-
 import { BASE_URL } from '@/configs/url'
 
 import AnonymousPage from '@/layouts/AnonymousPage.vue'
+
+import AddBlogMarkdown from '@/markdowns/addblog/addblog.md'
 
 import { ADD_BLOG } from '@/router/paths'
 
@@ -29,7 +29,7 @@ import AddBlogBanner from '@/components/AddBlogBanner.vue'
 import AddBlogHeader from '@/components/landingPage/AddBlogHeader.vue'
 
 export default defineComponent({
-  components: { AnonymousPage, AddBlogHeader, AddBlogBanner },
+  components: { AnonymousPage, AddBlogMarkdown, AddBlogHeader, AddBlogBanner },
 
   setup() {
     useMeta({
@@ -53,7 +53,6 @@ export default defineComponent({
     ]
 
     return {
-      ADD_BLOG_HTML,
       bannerList
     }
   }

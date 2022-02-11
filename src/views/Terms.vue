@@ -1,6 +1,6 @@
 <template>
   <AnonymousPage>
-    <div class="terms" v-html="TERMS_HTML" />
+    <TermsMarkdown class="terms" />
   </AnonymousPage>
 </template>
 
@@ -8,26 +8,22 @@
 import { defineComponent } from 'vue'
 import { useMeta } from 'vue-meta'
 
-import TERMS_HTML from '@/assets/docs/terms/terms_v1.html?raw'
-
 import { BASE_URL } from '@/configs/url'
 
 import AnonymousPage from '@/layouts/AnonymousPage.vue'
 
+import TermsMarkdown from '@/markdowns/terms/terms_v1.md'
+
 import { TERMS } from '@/router/paths'
 
 export default defineComponent({
-  components: { AnonymousPage },
+  components: { AnonymousPage, TermsMarkdown },
 
   setup() {
     useMeta({
       title: 'Regulamin',
       link: [{ rel: 'canonical', href: `${BASE_URL}${TERMS}` }]
     })
-
-    return {
-      TERMS_HTML
-    }
   }
 })
 </script>

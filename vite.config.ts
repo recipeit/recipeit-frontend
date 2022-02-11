@@ -2,24 +2,24 @@ import vue from '@vitejs/plugin-vue'
 import { execSync } from 'child_process'
 import path from 'path'
 import { defineConfig, loadEnv } from 'vite'
+import markdown from 'vite-plugin-md'
 import { VitePWA } from 'vite-plugin-pwa'
 import viteSentry from 'vite-plugin-sentry'
 import svgLoader from 'vite-svg-loader'
-
-import { buildMarkdowns } from './src/markdowns'
 
 export default ({ mode }) => {
   process.env = { ...process.env, ...loadEnv(mode, process.cwd()) }
 
   const isProduction = process.env.NODE_ENV === 'production'
 
-  buildMarkdowns(!isProduction)
-
   process.env.VUE_APP_VERSION = execSync('git rev-parse HEAD').toString().trim()
 
   const plugins = [
-    vue(),
+    vue({
+      include: [/\.vue$/, /\.md$/]
+    }),
     svgLoader(),
+    markdown(),
     VitePWA({
       // themeColor: null,
       // msTileColor: '#FFFFFF',
@@ -34,10 +34,15 @@ export default ({ mode }) => {
       //   msTileImage: 'pwa/icons/msapplication-icon-144x144.png'
       // },
       base: '/',
-      srcDir: 'src',
-      filename: 'service-worker.js',
-      strategies: 'injectManifest',
-      injectRegister: 'auto',
+      // srcDir: 'src',
+      // filename: 'service-worker.js',
+
+      workbox: {
+        cleanupOutdatedCaches: false,
+        sourcemap: true
+      },
+      // strategies: 'injectManifest',
+      // injectRegister: 'auto',
       includeAssets: ['favicon.ico', 'robots.txt'],
       manifest: {
         name: 'Recipeit',
