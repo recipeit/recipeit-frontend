@@ -35,7 +35,7 @@ export default ({ mode }) => {
       // },
       base: '/',
       // srcDir: 'src',
-      // filename: 'service-worker.js',
+      filename: 'service-worker.js',
 
       workbox: {
         sourcemap: false
