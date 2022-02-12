@@ -3,7 +3,7 @@
     <template #header>
       <AddBlogHeader />
     </template>
-    <AddBlogMarkdown class="add-blog-content" />
+    <AddBlogMarkdown />
     <div>
       <div v-for="{ urls, size, height, width } in bannerList" :key="size" class="banner-group">
         <span class="banner-size">{{ size }}</span>
@@ -61,57 +61,6 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .add-blog {
-  .add-blog-content {
-    font-size: 0.75rem;
-    line-height: 1.75;
-
-    :deep(h1) {
-      font-size: 1.25rem;
-    }
-
-    :deep(h2) {
-      font-size: 1rem;
-      margin: 1.5rem 0;
-    }
-
-    :deep(h3) {
-      font-size: 0.875rem;
-      margin: 1.5rem 0;
-    }
-
-    :deep(ol) {
-      counter-reset: list;
-    }
-
-    :deep(ol > li) {
-      position: relative;
-      list-style: none;
-    }
-
-    :deep(ol > li::before) {
-      position: absolute;
-      left: -24px;
-      content: counter(list, decimal) '. ';
-      counter-increment: list;
-      font-weight: bold;
-    }
-
-    :deep(ul) {
-      list-style: disc;
-      padding-inline-start: 40px;
-    }
-
-    :deep(ul > li) {
-      margin: 0.75rem 0;
-    }
-
-    :deep(a) {
-      text-decoration: none;
-      font-weight: bold;
-      color: var(--color-primary);
-    }
-  }
-
   .banner-item {
     margin-top: 12px;
   }
