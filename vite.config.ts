@@ -34,14 +34,10 @@ export default ({ mode }) => {
       //   msTileImage: 'pwa/icons/msapplication-icon-144x144.png'
       // },
       base: '/',
-      // srcDir: 'src',
-      filename: 'service-worker.js',
-
+      // filename: 'service-worker.js',
       workbox: {
         sourcemap: false
       },
-      // strategies: 'injectManifest',
-      // injectRegister: 'auto',
       includeAssets: ['favicon.ico', 'robots.txt'],
       manifest: {
         name: 'Recipeit',
