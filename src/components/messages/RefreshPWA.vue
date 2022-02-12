@@ -2,9 +2,7 @@
   <MessageContainer v-if="needRefresh">
     <Message>
       <div class="update-message-content">
-        <div class="update-message-text">
-          Dostępna jest aktualizacja aplikacji
-        </div>
+        <div class="update-message-text">Dostępna jest aktualizacja aplikacji</div>
         <BaseButton color="primary" size="small" raised @click="update()">Odśwież</BaseButton>
       </div>
     </Message>
@@ -18,11 +16,20 @@ import { defineComponent, watchEffect } from 'vue'
 import MessageContainer from '@/components/MessageContainer.vue'
 import Message from '@/components/Message.vue'
 
+const intervalMS = 60 * 1000
+
 export default defineComponent({
   components: { MessageContainer, Message },
 
   setup() {
-    const { needRefresh, updateServiceWorker } = useRegisterSW()
+    const { needRefresh, updateServiceWorker } = useRegisterSW({
+      onRegistered(r) {
+        r &&
+          setInterval(() => {
+            r.update()
+          }, intervalMS)
+      }
+    })
 
     let userInteracted = false
     let refreshing = false

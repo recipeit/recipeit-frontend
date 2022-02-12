@@ -41,6 +41,7 @@ export default ({ mode }) => {
       includeAssets: ['favicon.ico', 'robots.txt'],
       manifest: {
         name: 'Recipeit',
+        lang: 'pl',
         short_name: 'Recipeit',
         start_url: 'https://recipeit.pl',
         theme_color: '#FFFFFF',
