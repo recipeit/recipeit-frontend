@@ -38,8 +38,7 @@ export default ({ mode }) => {
       // filename: 'service-worker.js',
 
       workbox: {
-        cleanupOutdatedCaches: false,
-        sourcemap: true
+        sourcemap: false
       },
       // strategies: 'injectManifest',
       // injectRegister: 'auto',
@@ -152,7 +151,7 @@ export default ({ mode }) => {
     },
 
     build: {
-      sourcemap: true
+      sourcemap: 'hidden'
     }
   })
 }
