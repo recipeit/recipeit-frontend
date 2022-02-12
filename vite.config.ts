@@ -34,7 +34,7 @@ export default ({ mode }) => {
       //   msTileImage: 'pwa/icons/msapplication-icon-144x144.png'
       // },
       base: '/',
-      // filename: 'service-worker.js',
+      filename: 'service-worker.js',
       workbox: {
         sourcemap: false
       },
