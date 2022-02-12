@@ -34,7 +34,10 @@ export default ({ mode }) => {
       //   msTileImage: 'pwa/icons/msapplication-icon-144x144.png'
       // },
       base: '/',
+      srcDir: 'src',
       filename: 'service-worker.js',
+      strategies: 'injectManifest',
+      injectRegister: 'auto',
       workbox: {
         sourcemap: false
       },

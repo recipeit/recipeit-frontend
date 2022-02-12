@@ -1,0 +1,50 @@
+.markdown-body {
+  font-size: 0.75rem;
+  line-height: 1.75;
+
+  h1 {
+    font-size: 1.25rem;
+  }
+
+  h2 {
+    font-size: 1rem;
+    margin: 1.5rem 0;
+  }
+
+  h3 {
+    font-size: 0.875rem;
+    margin: 1.5rem 0;
+  }
+
+  ol {
+    counter-reset: list;
+
+    > li {
+      position: relative;
+      list-style: none;
+
+      &::before {
+        position: absolute;
+        left: -24px;
+        content: counter(list, decimal) '. ';
+        counter-increment: list;
+        font-weight: bold;
+      }
+    }
+  }
+
+  ul {
+    list-style: disc;
+    padding-inline-start: 40px;
+
+    > li {
+      margin: 0.75rem 0;
+    }
+  }
+
+  a {
+    text-decoration: none;
+    font-weight: bold;
+    color: var(--color-primary);
+  }
+}
