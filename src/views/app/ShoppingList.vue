@@ -122,7 +122,7 @@ export default defineComponent({
     const modal = useModal()
     const i18n = useI18n()
 
-    // refs
+    // template refs
     const addProductSelect = ref(null)
 
     // data
@@ -205,7 +205,7 @@ export default defineComponent({
     return {
       // consts
       PRODUCT_GROUP_ICONS,
-      // refs
+      // template refs
       addProductSelect,
       // data
       ...toRefs(data),

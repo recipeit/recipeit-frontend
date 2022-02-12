@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { computed, reactive, toRefs } from 'vue'
+import { useRouter } from 'vue-router'
 
 import identityApi from '@/api/identityApi'
 import userApi from '@/api/userApi'
@@ -8,10 +9,8 @@ import { THEME_DEFAULT, THEME_STORAGE_KEY } from '@/configs/theme'
 
 import { Themes } from '@/constants/themes'
 
-import toastPlugin from '@/plugins/toast'
-import { ToastType } from '@/plugins/toast/toastType'
+import { useToast } from '@/plugins/toast'
 
-import router from '@/router'
 import { APP_PATHS } from '@/router/paths'
 
 import { useIngredientsStore } from '@/stores/ingredients'
@@ -34,6 +33,8 @@ type UserStoreState = {
 }
 
 export const useUserStore = defineStore('user', () => {
+  const router = useRouter()
+
   // state
   const state = reactive<UserStoreState>({
     theme: null,
@@ -117,8 +118,8 @@ export const useUserStore = defineStore('user', () => {
     }
   }
 
-  const register = ({ email, password, recaptchaToken }): Promise<void> => {
-    return new Promise((resolve, reject) => {
+  const register = ({ email, password, recaptchaToken }) => {
+    return new Promise<void>((resolve, reject) => {
       identityApi
         .register({ email, password, recaptchaToken })
         .then(({ data: { userProfile } }) => {
@@ -140,11 +141,10 @@ export const useUserStore = defineStore('user', () => {
     })
   }
 
-  const login = ({ email, password, recaptchaToken }): Promise<void> => {
-    const recipesStore = useRecipesStore()
-    recipesStore.resetUserData() //TODO why only recipes
+  const login = ({ email, password, recaptchaToken }) => {
+    useRecipesStore().resetUserData() //TODO why only recipes
 
-    return new Promise((resolve, reject) => {
+    return new Promise<void>((resolve, reject) => {
       identityApi
         .login({ email, password, recaptchaToken })
         .then(({ data }) => {
@@ -176,11 +176,10 @@ export const useUserStore = defineStore('user', () => {
     })
   }
 
-  const facebookAuth = ({ accessToken }): Promise<void> => {
-    const recipesStore = useRecipesStore()
-    recipesStore.resetUserData() //TODO why only recipes
+  const facebookAuth = ({ accessToken }) => {
+    useRecipesStore().resetUserData() //TODO why only recipes
 
-    return new Promise((resolve, reject) => {
+    return new Promise<void>((resolve, reject) => {
       identityApi
         .facebookAuth({ accessToken })
         .then(({ data: { userProfile } }) => {
@@ -203,8 +202,7 @@ export const useUserStore = defineStore('user', () => {
   }
 
   const googleAuth = ({ idToken }): Promise<void> => {
-    const recipesStore = useRecipesStore()
-    recipesStore.resetUserData() //TODO why only recipes
+    useRecipesStore().resetUserData() //TODO why only recipes
 
     return new Promise((resolve, reject) => {
       identityApi
@@ -305,16 +303,15 @@ export const useUserStore = defineStore('user', () => {
               state.hiddenRecipeIds.push(recipeId)
             }
             resolve()
-            toastPlugin.toast.show(visible ? 'Przepis został odkryty' : 'Przepis nie będzie już widoczny', ToastType.SUCCESS)
+            useToast().show(visible ? 'Przepis został odkryty' : 'Przepis nie będzie już widoczny', 'success')
           } else {
             reject()
-            toastPlugin.toast.show('Wystapił błąd. Spróbuj ponownie', ToastType.ERROR)
-            // this.$toast.show('Nie udało się ukryć przepisu. Spróbuj ponownie', ToastType.ERROR)
+            useToast().show('Wystapił błąd. Spróbuj ponownie', 'error')
           }
         })
         .catch(() => {
           reject()
-          toastPlugin.toast.show('Wystapił błąd. Spróbuj ponownie', ToastType.ERROR)
+          useToast().show('Wystapił błąd. Spróbuj ponownie', 'error')
         })
     })
   }
@@ -334,19 +331,15 @@ export const useUserStore = defineStore('user', () => {
               state.hiddenBlogIds.push(blogId)
             }
             resolve()
-            toastPlugin.toast.show(
-              visible ? 'Przepisy z tego blogu zostały odkryte' : 'Przepisy z tego blogu nie będą już widoczne',
-              ToastType.SUCCESS
-            )
+            useToast().show(visible ? 'Przepisy z tego blogu zostały odkryte' : 'Przepisy z tego blogu nie będą już widoczne', 'success')
           } else {
             reject()
-            toastPlugin.toast.show('Wystapił błąd. Spróbuj ponownie', ToastType.ERROR)
-            // this.$toast.show('Nie udało się ukryć przepisu. Spróbuj ponownie', ToastType.ERROR)
+            useToast().show('Wystapił błąd. Spróbuj ponownie', 'error')
           }
         })
         .catch(() => {
           reject()
-          toastPlugin.toast.show('Wystapił błąd. Spróbuj ponownie', ToastType.ERROR)
+          useToast().show('Wystapił błąd. Spróbuj ponownie', 'error')
         })
     })
   }

@@ -1,13 +1,14 @@
 import { createI18n } from 'vue-i18n'
 
-import pl from '@/i18n/locales/pl'
+import plMessages from '@/i18n/locales/messages/pl'
+import plPluralizationRules from '@/i18n/locales/pluralization/pl'
 
 const messages = {
-  pl: pl.messages
+  pl: plMessages
 }
 
 const pluralizationRules = {
-  pl: pl.pluralizationRules
+  pl: plPluralizationRules
 }
 
 export default createI18n({

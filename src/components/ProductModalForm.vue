@@ -64,6 +64,9 @@ export default defineComponent({
     productAutofocus: {
       type: Boolean,
       default: false
+    },
+    amount: {
+      type: [String, Number]
     }
   },
 
@@ -75,7 +78,7 @@ export default defineComponent({
     // computed
     const groupedBaseProducts = computed(() => ingredientsStore.groupedBaseProducts)
     const units = computed(() => ingredientsStore.units)
-    const unitLabelAmount = computed(() => parseFloat(props.amount) || 1) // TODO fix amount translation
+    const unitLabelAmount = computed(() => (typeof props.amount === 'string' ? parseFloat(props.amount) : props.amount || 1)) // TODO fix amount translation
 
     // methods
     const unitCustomLabel = value => {

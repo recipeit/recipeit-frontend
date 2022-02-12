@@ -22,7 +22,6 @@ import { ERROR_ACTION_TAG_NAME } from '@/configs/error'
 import { useErrorHandler } from '@/error'
 
 import { useToast } from '@/plugins/toast'
-import { ToastType } from '@/plugins/toast/toastType'
 
 import FacebookService from '@/services/facebook'
 import GoogleService from '@/services/google'
@@ -61,7 +60,7 @@ export default defineComponent({
             ? 'Nie udało nam się uzyskać Twojego adresu email'
             : 'Wystąpił problem podczas próby logowania'
 
-        toast.show(toastContent, ToastType.ERROR)
+        toast.show(toastContent, 'error')
         errorHandler.captureError(errors, {
           [ERROR_ACTION_TAG_NAME]: 'authSocialMixin.loginFacebook'
         })
@@ -76,7 +75,7 @@ export default defineComponent({
         const idToken = await GoogleService.login()
         await userStore.googleAuth({ idToken })
       } catch (error) {
-        toast.show('Wystąpił problem podczas próby logowania', ToastType.ERROR)
+        toast.show('Wystąpił problem podczas próby logowania', 'error')
         errorHandler.captureError(error, {
           [ERROR_ACTION_TAG_NAME]: 'authSocialMixin.loginGoogle'
         })

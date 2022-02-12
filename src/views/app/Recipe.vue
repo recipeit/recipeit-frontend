@@ -131,7 +131,7 @@
           <BaseLink :href="reportLinkHref" color="text-secondary" class="report-link">zgłoś błąd w przepisie</BaseLink>
         </div>
 
-        <BaseAdSenseAd />
+        <!-- <BaseAdSenseAd /> -->
       </div>
     </div>
     <div v-else>Wczytuję...</div>
@@ -155,7 +155,6 @@ import dayjs from '@/functions/dayjs'
 import { useClipboard } from '@/plugins/clipboard'
 import { useModal } from '@/plugins/global-sheet-modal'
 import { useToast } from '@/plugins/toast'
-import { ToastType } from '@/plugins/toast/toastType'
 
 import { APP_HOME, APP_RECIPES } from '@/router/names'
 
@@ -302,11 +301,11 @@ export default defineComponent({
       const url = window.location.origin + route.path
 
       if (!url) {
-        toast.show('Nie udało się skopiować do schowka', ToastType.ERROR)
+        toast.show('Nie udało się skopiować do schowka', 'error')
       } else if (clipboard(url)) {
-        toast.show('Skopiowano do schowka', ToastType.SUCCESS)
+        toast.show('Skopiowano do schowka', 'success')
       } else {
-        toast.show('Nie udało się skopiować do schowka', ToastType.ERROR)
+        toast.show('Nie udało się skopiować do schowka', 'error')
       }
     }
 

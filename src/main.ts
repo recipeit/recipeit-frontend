@@ -6,6 +6,8 @@ import { createMetaManager, defaultConfig } from 'vue-meta'
 import VTooltip from 'v-tooltip'
 import 'v-tooltip/dist/v-tooltip.css'
 
+import { RecipeitGlobalComponents } from '@/components/base'
+
 import autofocus from '@/directives/autofocus'
 import blurOnClick from '@/directives/blurOnClick'
 
@@ -34,15 +36,9 @@ if (useSentry) {
 }
 
 const app = createApp(App)
-const components = import.meta.globEager('./components/base/*.vue')
 
-Object.entries(components).forEach(([path, definition]) => {
-  const componentName = path
-    .split('/')
-    .pop()
-    .replace(/\.\w+$/, '')
-
-  app.component(componentName, definition.default)
+Object.entries(RecipeitGlobalComponents).forEach(([name, component]) => {
+  app.component(name, component)
 })
 
 app

@@ -7,7 +7,9 @@ export type PlannedRecipesResponseListItem = {
   name: string
 }
 
+export type DayPlan = { [key in TimeOfDay]: Array<PlannedRecipesResponseListItem> }
+
 export type PlannedRecipesResponse = {
   day: string
-  dayPlan: { [key in TimeOfDay]: Array<PlannedRecipesResponseListItem> }
+  dayPlan: DayPlan
 }

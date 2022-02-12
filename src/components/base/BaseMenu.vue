@@ -11,7 +11,7 @@
       <slot name="toggle" :focused="toggleFocused" />
     </div>
     <transition name="slide-in">
-      <div v-show="opened" ref="dropdownContainer" class="menu__dropdown-container">
+      <div v-show="opened" ref="dropdownContainerElement" class="menu__dropdown-container">
         <slot name="dropdown" />
       </div>
     </transition>
@@ -19,7 +19,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, reactive, ref, toRefs } from 'vue'
 
 export default defineComponent({
   props: {
@@ -33,41 +33,60 @@ export default defineComponent({
     }
   },
 
-  data: () => ({
-    opened: false,
-    toggleFocused: false
-  }),
+  setup(props) {
+    // template refs
+    const dropdownContainerElement = ref(null)
 
-  methods: {
-    toggle(event) {
-      if (this.opened) {
-        this.hide()
+    // data
+    const data = reactive({
+      opened: false,
+      toggleFocused: false
+    })
+
+    // methods
+    const toggle = (event: Event) => {
+      if (data.opened) {
+        hide()
       } else {
-        this.open(event)
+        open(event)
       }
-    },
-    open(event) {
-      if (this.opened) return
+    }
+
+    const open = (event: Event) => {
+      if (data.opened) return
       event.stopPropagation()
-      window.addEventListener('click', this.onClick)
-      this.opened = true
-    },
-    hide() {
-      if (!this.opened) return
-      window.removeEventListener('click', this.onClick)
-      this.opened = false
-    },
-    onClick(event) {
-      let tempEl = event?.target
-      while (tempEl !== this.$refs.dropdownContainer && tempEl.parentElement) {
+      window.addEventListener('click', onClick)
+      data.opened = true
+    }
+
+    const hide = () => {
+      if (!data.opened) return
+      window.removeEventListener('click', onClick)
+      data.opened = false
+    }
+
+    const onClick = (event: Event) => {
+      let tempEl = event?.target as HTMLElement // TODO znowu nie wiem dlaczego on tego nie wie
+      while (tempEl !== dropdownContainerElement.value && tempEl.parentElement) {
         tempEl = tempEl.parentElement
       }
 
-      const clickInside = tempEl === this.$refs.dropdownContainer
+      const clickInside = tempEl === dropdownContainerElement.value
 
-      if (this.hideOnClick || !clickInside) {
-        this.hide()
+      if (props.hideOnClick || !clickInside) {
+        hide()
       }
+    }
+
+    return {
+      // template refs
+      dropdownContainerElement,
+      // data
+      ...toRefs(data),
+      // methods
+      toggle,
+      open,
+      hide
     }
   }
 })

@@ -77,55 +77,66 @@ const isCookieAllowed = (cookieName: string) => {
   return data.acceptedCookies.includes(cookieName)
 }
 
-export default {
-  init() {
-    if (data.initialized) {
-      return
-    }
+// exported
 
-    data.acceptedCookies = GDPR_OPTIONS.filter(cookieName => Cookies.get(cookieName) === 'true') || []
-    data.initialized = true
-
-    if (this.analyticsAllowed()) {
-      AnalyticsService.init()
-    }
-  },
-
-  getAvailableCookies() {
-    return GDPR_OPTIONS
-  },
-
-  getAcceptedCookies() {
-    this.init()
-    return data.acceptedCookies
-  },
-
-  acceptAll() {
-    GDPR_OPTIONS.forEach(cookieName => {
-      setGDPRCookie(cookieName, 'true')
-    })
-    this.setGDPRModalShowed()
-  },
-
-  acceptSelected(allowedCookies: Array<string>) {
-    GDPR_OPTIONS.forEach(cookieName => {
-      const allowed = allowedCookies.includes(cookieName)
-      setGDPRCookie(cookieName, allowed.toString().toLowerCase())
-    })
-    this.setGDPRModalShowed()
-  },
-
-  showGDPRModal() {
-    const isRobot = detectRobot(navigator.userAgent)
-
-    return Cookies.get(COOKIES_MESSAGE_COOKIE_NAME) !== 'true' && !isRobot
-  },
-
-  setGDPRModalShowed() {
-    Cookies.set(COOKIES_MESSAGE_COOKIE_NAME, 'true', { expires: 365 })
-  },
-
-  analyticsAllowed() {
-    return isCookieAllowed(COOKIES_ANALYTICS_COOKIE_NAME)
+const init = () => {
+  if (data.initialized) {
+    return
   }
+
+  data.acceptedCookies = GDPR_OPTIONS.filter(cookieName => Cookies.get(cookieName) === 'true') || []
+  data.initialized = true
+
+  if (analyticsAllowed()) {
+    AnalyticsService.init()
+  }
+}
+
+const getAvailableCookies = () => {
+  return GDPR_OPTIONS
+}
+
+const getAcceptedCookies = () => {
+  init()
+  return data.acceptedCookies
+}
+
+const acceptAll = () => {
+  GDPR_OPTIONS.forEach(cookieName => {
+    setGDPRCookie(cookieName, 'true')
+  })
+  setGDPRModalShowed()
+}
+
+const acceptSelected = (allowedCookies: Array<string>) => {
+  GDPR_OPTIONS.forEach(cookieName => {
+    const allowed = allowedCookies.includes(cookieName)
+    setGDPRCookie(cookieName, allowed.toString().toLowerCase())
+  })
+  setGDPRModalShowed()
+}
+
+const showGDPRModal = () => {
+  const isRobot = detectRobot(navigator.userAgent)
+
+  return Cookies.get(COOKIES_MESSAGE_COOKIE_NAME) !== 'true' && !isRobot
+}
+
+const setGDPRModalShowed = () => {
+  Cookies.set(COOKIES_MESSAGE_COOKIE_NAME, 'true', { expires: 365 })
+}
+
+const analyticsAllowed = () => {
+  return isCookieAllowed(COOKIES_ANALYTICS_COOKIE_NAME)
+}
+
+export default {
+  init,
+  getAvailableCookies,
+  getAcceptedCookies,
+  acceptAll,
+  acceptSelected,
+  showGDPRModal,
+  setGDPRModalShowed,
+  analyticsAllowed
 }

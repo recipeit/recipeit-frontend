@@ -1,6 +1,6 @@
 <template>
   <AnonymousPage>
-    <div class="privacy-policy" v-html="PRIVACY_POLICY_HTML" />
+    <PrivacyPolicyMarkdown class="privacy-policy" />
   </AnonymousPage>
 </template>
 
@@ -8,26 +8,22 @@
 import { defineComponent } from 'vue'
 import { useMeta } from 'vue-meta'
 
-import PRIVACY_POLICY_HTML from '@/assets/docs/privacypolicy/privacypolicy_v1.html?raw'
-
 import { BASE_URL } from '@/configs/url'
 
 import AnonymousPage from '@/layouts/AnonymousPage.vue'
 
+import PrivacyPolicyMarkdown from '@/markdowns/privacypolicy/privacypolicy_v1.md'
+
 import { PRIVACY_POLICY } from '@/router/paths'
 
 export default defineComponent({
-  components: { AnonymousPage },
+  components: { AnonymousPage, PrivacyPolicyMarkdown },
 
   setup() {
     useMeta({
       title: 'Polityka Prywatności',
       link: [{ rel: 'canonical', href: `${BASE_URL}${PRIVACY_POLICY}` }]
     })
-
-    return {
-      PRIVACY_POLICY_HTML
-    }
   }
 })
 </script>

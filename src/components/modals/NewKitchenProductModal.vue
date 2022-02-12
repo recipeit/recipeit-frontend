@@ -4,8 +4,8 @@
       <BaseModalTitle>Dodaj nowy produkt</BaseModalTitle>
     </BaseModalHeader>
     <BaseModalBody>
-      <Form :id="formID" :validation-schema="schema" :initial-values="initialValues" @submit="addProduct($event)">
-        <ProductModalForm :product-autofocus="true" />
+      <Form :id="formID" v-slot="{ values }" :validation-schema="schema" :initial-values="initialValues" @submit="addProduct($event)">
+        <ProductModalForm :amount="values.amount" :product-autofocus="true" />
         <!-- <BaseInput class="form-row" label="Dodatkowa nazwa" type="text" v-model="newProduct.name"/> -->
         <ExpirationDatesFormSection v-model="expirationDatesForm" />
       </Form>
@@ -60,9 +60,7 @@ export default defineComponent({
     })
 
     const schema = Yup.object().shape({
-      baseProduct: Yup.object()
-        .required('REQUIRED')
-        .typeError('REQUIRED'),
+      baseProduct: Yup.object().required('REQUIRED').typeError('REQUIRED'),
       amount: Yup.number()
         .typeError('Niepoprawna liczba')
         .transform((cv, ov) => {

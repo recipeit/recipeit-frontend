@@ -21,6 +21,8 @@ import recipeApi from '@/api/recipeApi'
 
 import { APP_RECIPES } from '@/router/names'
 
+import { RecipeCategoryWithGroup } from '@/typings/recipeCategories'
+
 import PopularCategory from '@/components/PopularCategory.vue'
 import SectionTitle from '@/components/SectionTitle.vue'
 
@@ -28,8 +30,7 @@ export default defineComponent({
   components: { PopularCategory, SectionTitle },
 
   setup() {
-    // const store = useStore()
-    const popularCategories = ref(null)
+    const popularCategories = ref<Array<RecipeCategoryWithGroup>>(null)
 
     onBeforeMount(async () => {
       const { data } = await recipeApi.getPopularCategories()

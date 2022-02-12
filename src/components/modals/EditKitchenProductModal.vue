@@ -4,8 +4,8 @@
       <BaseModalTitle>Edytuj produkt</BaseModalTitle>
     </BaseModalHeader>
     <BaseModalBody>
-      <Form :id="formID" :validation-schema="schema" :initial-values="initialValues" @submit="editProduct($event)">
-        <ProductModalForm />
+      <Form :id="formID" v-slot="{ values }" :validation-schema="schema" :initial-values="initialValues" @submit="editProduct($event)">
+        <ProductModalForm :amount="values.amount" />
         <!-- <BaseInput class="form-row" label="Dodatkowa nazwa" type="text" v-model="editedProduct.name"/> -->
         <ExpirationDatesFormSection v-model="expirationDatesForm" :product-id="product.id" />
       </Form>

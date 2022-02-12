@@ -86,7 +86,7 @@ export default defineComponent({
             if (!date) return
             const newDates: Array<DateYMDString> = [
               ...props.modelValue,
-              `${date.year}-${date.month.toString().padStart(2, '0')}-${date.day.toString().padStart(2, '0')}` as DateYMDString // TODO maybe better solution
+              `${date.year}-${date.month.toString().padStart(2, '0')}-${date.day.toString().padStart(2, '0')}`
             ]
             emit('update:modelValue', newDates)
           }

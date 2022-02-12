@@ -1,7 +1,7 @@
 import { nextTick } from 'vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
-import modalPlugin from '@/plugins/global-sheet-modal'
+import { useModal } from '@/plugins/global-sheet-modal'
 import progressbarPlugin from '@/plugins/progressbar'
 
 import * as NAMES from '@/router/names'
@@ -252,8 +252,9 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  if (modalPlugin.modal && modalPlugin.modal.anyModalOpened()) {
-    modalPlugin.modal.hideLast()
+  const modal = useModal()
+  if (modal.anyModalOpened()) {
+    modal.hideLast()
     if (typeof to === 'object' && to.params.closeModalAndGo) {
       next()
     }

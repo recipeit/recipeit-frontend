@@ -35,9 +35,10 @@
 </template>
 
 <script lang="ts">
-import { markRaw, watch, ref, defineComponent, PropType } from 'vue'
+import { markRaw, watch, defineComponent, PropType, reactive, toRefs } from 'vue'
 
-import { ToastType } from '@/plugins/toast/toastType'
+import { useModal } from '@/plugins/global-sheet-modal'
+import { useToast } from '@/plugins/toast'
 
 import FilterModal from '@/components/modals/FilterModal.vue'
 
@@ -64,87 +65,100 @@ export default defineComponent({
 
   emits: ['search'],
 
-  setup(props) {
-    const searchString = ref(props.search)
+  setup(props, { emit }) {
+    // usings
+    const modal = useModal()
+    const toast = useToast()
 
-    watch(
-      () => [props.search, props.fetchingPages],
-      () => {
-        if (searchString.value !== props.search && !Object.values(props.fetchingPages).some(v => v)) {
-          searchString.value = props.search
-        }
-      }
-    )
+    // data
+    const data = reactive({
+      searchString: props.search,
+      searchTimeoutCallback: null
+    })
 
-    return {
-      searchString
+    // internal methods
+    const anyPageFetching = () => {
+      return Object.values(props.fetchingPages).some(v => v)
     }
-  },
 
-  data: () => ({
-    searchTimeoutCallback: null
-  }),
-
-  methods: {
-    anyPageFetching() {
-      return Object.values(this.fetchingPages).some(v => v)
-    },
-    openFilterModal() {
-      if (this.anyPageFetching()) {
+    // methods
+    const openFilterModal = () => {
+      if (anyPageFetching()) {
         return
       }
 
-      if (!this.filters || !this.sortings) {
-        this.$toast.show('Nie udało się wyświetlić filtrów', ToastType.ERROR)
+      if (!props.filters || !props.sortings) {
+        toast.show('Nie udało się wyświetlić filtrów', 'error')
         return
       }
 
-      console.log({ filters: this.filters })
-
-      this.$modal.show(
+      modal.show(
         markRaw(FilterModal),
         {
-          options: this.filters,
-          defaultSelected: this.appliedFilters,
-          orderOptions: this.sortings,
-          defaultOrderSelected: this.appliedSorting || this.defaultSorting
+          options: props.filters,
+          defaultSelected: props.appliedFilters,
+          orderOptions: props.sortings,
+          defaultOrderSelected: props.appliedSorting || props.defaultSorting
         },
         {
           close: result => {
-            const defaultOrderMethodSelected = !result || !result.orderSelected || result.orderSelected === this.defaultSorting
+            const defaultOrderMethodSelected = !result || !result.orderSelected || result.orderSelected === props.defaultSorting
             if (result?.selected || result?.orderSelected) {
-              this.$emit('search', {
+              emit('search', {
                 orderMethod: defaultOrderMethodSelected ? null : result.orderSelected,
                 filters: result.selected,
-                search: this.searchString
+                search: data.searchString
               })
             }
           }
         }
       )
-    },
-    onSearchInput(newValue) {
-      this.searchString = newValue
-      if (this.searchTimeoutCallback) {
-        clearTimeout(this.searchTimeoutCallback)
+    }
+
+    const onSearchInput = (newValue: string) => {
+      data.searchString = newValue
+      if (data.searchTimeoutCallback) {
+        clearTimeout(data.searchTimeoutCallback)
       }
-      this.searchTimeoutCallback = setTimeout(() => {
-        this.emitSearch()
+      data.searchTimeoutCallback = setTimeout(() => {
+        emitSearch()
       }, 750)
-    },
-    searchNow() {
-      if (this.searchTimeoutCallback) {
-        clearTimeout(this.searchTimeoutCallback)
-        this.searchTimeoutCallback = null
+    }
+
+    const searchNow = () => {
+      if (data.searchTimeoutCallback) {
+        clearTimeout(data.searchTimeoutCallback)
+        data.searchTimeoutCallback = null
       }
-      this.emitSearch()
-    },
-    emitSearch() {
-      if ((!this.searchString && !this.search === true) || this.searchString === this.search || this.anyPageFetching()) {
+      emitSearch()
+    }
+
+    const emitSearch = () => {
+      if ((!data.searchString && !props.search === true) || data.searchString === props.search || anyPageFetching()) {
         return
       }
 
-      this.$emit('search', { orderMethod: this.appliedSorting, filters: this.appliedFilters, search: this.searchString })
+      emit('search', { orderMethod: props.appliedSorting, filters: props.appliedFilters, search: data.searchString })
+    }
+
+    // watchers
+    watch(
+      () => [props.search, props.fetchingPages],
+      () => {
+        if (data.searchString !== props.search && !Object.values(props.fetchingPages).some(v => v)) {
+          data.searchString = props.search
+        }
+      }
+    )
+
+    return {
+      // data
+      ...toRefs(data),
+      // methods
+      openFilterModal,
+      onSearchInput,
+      searchNow,
+      emitSearch
     }
   }
 })

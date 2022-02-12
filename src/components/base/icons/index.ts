@@ -7,14 +7,14 @@ const components: IconSet = {}
 const icons = import.meta.globEager('./*.svg')
 
 Object.entries(icons).forEach(([path, { default: component }]) => {
-  const name = path
+  const [weightCamel, iconCamel] = path
     .split('/')
     .pop()
     .replace(/\.\w+$/, '')
     .split(/\s+/)
 
-  const weight = kebabCase(name[0])
-  const icon = kebabCase(name[1])
+  const weight = kebabCase(weightCamel)
+  const icon = kebabCase(iconCamel)
 
   if (!(weight in components)) components[weight] = {}
 

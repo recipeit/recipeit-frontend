@@ -41,7 +41,7 @@ export const useIngredientsStore = defineStore('ingredients', () => {
 
   // getters
   const groupedBaseProducts = computed(() => {
-    const sorted = sortby(state.baseProducts, 'baseProductName')
+    const sorted = sortby(state.baseProducts, [({ name }) => name, ({ name }) => name.length])
     const grouped = groupby(sorted, 'category')
     const sortedGroups = sortby(Object.entries(grouped), ([group]) => PRODUCT_CATEGORY_ORDER[group])
 

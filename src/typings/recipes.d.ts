@@ -1,11 +1,6 @@
 import { RecipeEntity, RecipeIngredientEntity } from '@/typings/entities'
+import { RecipeCategoryWithGroup } from '@/typings/recipeCategories'
 import { IngredientUserState } from '@/typings/recipeIngredient'
-
-export type RecipeCategoryWithGroup = {
-  key: number
-  value: string
-  categoryGroup: string
-}
 
 export type RecipeDetailsViewModel = {
   recipeId: string
