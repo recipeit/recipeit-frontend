@@ -16,18 +16,30 @@ import { defineComponent, watchEffect } from 'vue'
 import MessageContainer from '@/components/MessageContainer.vue'
 import Message from '@/components/Message.vue'
 
-const intervalMS = 60 * 1000
+const subintervalMS = 60 * 1000
+const intervalMS = 60 * 60 * 1000
 
 export default defineComponent({
   components: { MessageContainer, Message },
 
   setup() {
     const { needRefresh, updateServiceWorker } = useRegisterSW({
-      onRegistered(r) {
-        r &&
-          setInterval(() => {
-            r.update()
-          }, intervalMS)
+      onRegistered(registration) {
+        if (!registration) {
+          return
+        }
+
+        let lastUpdated = Date.now()
+
+        setInterval(() => {
+          const now = Date.now()
+
+          if (now - lastUpdated > intervalMS) {
+            registration.update()
+          }
+
+          lastUpdated = now
+        }, subintervalMS)
       }
     })
 
