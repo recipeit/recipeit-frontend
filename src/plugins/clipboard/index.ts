@@ -58,7 +58,10 @@ const Plugin = {
   install: (app: App) => {
     app.config.globalProperties.$clipboard = $clipboard
 
-    const generateId = (id => () => '$' + id++)(1)
+    const generateId = (
+      id => () =>
+        '$' + id++
+    )(1)
     const handlers = {}
 
     const removeHandler = (id: string) => {
@@ -127,6 +130,4 @@ const Plugin = {
 
 export default Plugin
 
-export function useClipboard() {
-  return $clipboard
-}
+export const useClipboard = () => $clipboard

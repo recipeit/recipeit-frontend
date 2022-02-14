@@ -45,6 +45,4 @@ const Plugin = {
 
 export default Plugin
 
-export function useToast() {
-  return Plugin.toast
-}
+export const useToast = () => Plugin.toast

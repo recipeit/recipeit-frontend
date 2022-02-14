@@ -24,7 +24,7 @@ import { Form } from 'vee-validate'
 import { defineComponent, reactive, toRefs } from 'vue'
 import * as Yup from 'yup'
 
-import uniqueID from '@/functions/uniqueID'
+import { getUniqueId } from '@/functions/uniqueId'
 
 import { useMyKitchenStore } from '@/stores/myKitchen'
 
@@ -41,7 +41,7 @@ export default defineComponent({
     const myKitchenStore = useMyKitchenStore()
 
     // consts
-    const formID = 'form-' + uniqueID().getID()
+    const formID = 'form-' + getUniqueId()
 
     const initialValues = {
       unit: 'piece'

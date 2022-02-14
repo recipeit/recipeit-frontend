@@ -36,6 +36,4 @@ const Plugin: ErrorHandlerPlugin = {
 
 export default Plugin
 
-export function useErrorHandler() {
-  return Plugin.errorHandler
-}
+export const useErrorHandler = () => Plugin.errorHandler

@@ -23,12 +23,8 @@
       <RecaptchaBranding class="recaptcha-branding" />
     </BaseModalBody>
     <BaseModalFooter>
-      <BaseButton class="submit-button" stroked @click="$emit('close')">
-        Nie chcę
-      </BaseButton>
-      <BaseButton class="submit-button" raised color="danger" :form="formID" :loading="sending">
-        Usuń konto
-      </BaseButton>
+      <BaseButton class="submit-button" stroked @click="$emit('close')"> Nie chcę </BaseButton>
+      <BaseButton class="submit-button" raised color="danger" :form="formID" :loading="sending"> Usuń konto </BaseButton>
     </BaseModalFooter>
   </SheetModalContent>
 </template>
@@ -42,7 +38,7 @@ import identityApi from '@/api/identityApi'
 
 import { RECAPTCHA_ACTIONS } from '@/configs/recaptcha'
 
-import uniqueID from '@/functions/uniqueID'
+import { getUniqueId } from '@/functions/uniqueId'
 
 import recaptcha from '@/services/recaptcha'
 
@@ -51,10 +47,7 @@ import { useUserStore } from '@/stores/user'
 import RecaptchaBranding from '@/components/RecaptchaBranding.vue'
 
 const generateCode = () => {
-  return Math.random()
-    .toString(36)
-    .substring(7)
-    .toUpperCase()
+  return Math.random().toString(36).substring(7).toUpperCase()
 }
 
 export default defineComponent({
@@ -74,7 +67,7 @@ export default defineComponent({
     const userStore = useUserStore()
 
     // consts
-    const formID = 'form-' + uniqueID().getID()
+    const formID = 'form-' + getUniqueId()
 
     // data
     const data = reactive({

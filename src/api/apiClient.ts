@@ -62,11 +62,11 @@ apiClient.interceptors.response.use(
   }
 )
 
-function subscribeTokenRefresh(cb: Subscriber) {
+const subscribeTokenRefresh = (cb: Subscriber) => {
   subscribers.push(cb)
 }
 
-function onRefreshed(success: boolean) {
+const onRefreshed = (success: boolean) => {
   subscribers.map(cb => cb(success))
   subscribers = []
 }

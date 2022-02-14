@@ -115,7 +115,7 @@ import { nextTick } from 'vue'
 
 import { setFocus } from '@/directives/autofocus'
 
-import uniqueID from '@/functions/uniqueID'
+import { getUniqueId } from '@/functions/uniqueId'
 
 const isEmpty = opt => {
   if (opt === 0) return false
@@ -221,7 +221,7 @@ export default {
     preferredOpenDirection: component.defaultOpenDirection,
     optimizedHeight: component.maxHeight,
     pointer: null,
-    id: 'base-select-' + uniqueID().getID()
+    id: 'base-select-' + getUniqueId()
   }),
   computed: {
     erorrsID() {

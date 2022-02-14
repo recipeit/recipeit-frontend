@@ -21,7 +21,7 @@ import { Form } from 'vee-validate'
 import { computed, defineComponent, reactive, ref, toRefs } from 'vue'
 import * as Yup from 'yup'
 
-import uniqueID from '@/functions/uniqueID'
+import { getUniqueId } from '@/functions/uniqueId'
 
 import { useIngredientsStore } from '@/stores/ingredients'
 import { useShoppingListStore } from '@/stores/shoppingList'
@@ -50,7 +50,7 @@ export default defineComponent({
     const baseProducts = computed(() => ingredientsStore.baseProducts)
 
     // consts
-    const formID = 'form-' + uniqueID().getID()
+    const formID = 'form-' + getUniqueId()
 
     const initialValues = {
       baseProduct: props.product.baseProductId ? baseProducts.value?.find(p => p.id === props.product.baseProductId) : null,

@@ -23,7 +23,7 @@ import { Form } from 'vee-validate'
 import { defineComponent, reactive, toRefs } from 'vue'
 import * as Yup from 'yup'
 
-import uniqueID from '@/functions/uniqueID'
+import { getUniqueId } from '@/functions/uniqueId'
 
 import { useShoppingListStore } from '@/stores/shoppingList'
 
@@ -39,7 +39,7 @@ export default defineComponent({
     const shoppingListStore = useShoppingListStore()
 
     // consts
-    const formID = 'form-' + uniqueID().getID()
+    const formID = 'form-' + getUniqueId()
 
     // data
     const data = reactive({

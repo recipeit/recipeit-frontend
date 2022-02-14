@@ -44,7 +44,7 @@ import * as Yup from 'yup'
 import { TimesOfDay } from '@/constants/timesOfDay'
 
 import dayjs from '@/functions/dayjs'
-import uniqueID from '@/functions/uniqueID'
+import { getUniqueId } from '@/functions/uniqueId'
 
 import { useRecipesStore } from '@/stores/recipes'
 
@@ -70,7 +70,7 @@ export default defineComponent({
     const recipesStore = useRecipesStore()
 
     // consts
-    const formID = 'form-' + uniqueID().getID()
+    const formID = 'form-' + getUniqueId()
     const days = Array.from({ length: 7 }, (_, i) => {
       const day = dayjs().add(i, 'days')
       return {

@@ -17,7 +17,7 @@
 <script lang="ts">
 import { defineComponent, reactive, toRefs } from 'vue'
 
-import uniqueID from '@/functions/uniqueID'
+import { getUniqueId } from '@/functions/uniqueId'
 
 import Toast from '@/plugins/toast/Toast.vue'
 
@@ -38,11 +38,11 @@ export default defineComponent({
 
     // methods
     const appendToast: IToastContainer['appendToast'] = (message, type, seconds) => {
-      data.toasts.push({ id: uniqueID().getID(), message, type, seconds })
+      data.toasts.push({ id: getUniqueId(), message, type, seconds })
     }
 
     const appendCancellableToast: IToastContainer['appendCancellableToast'] = (message, type, seconds, cancelCallback) => {
-      data.toasts.push({ id: uniqueID().getID(), message, type, seconds, cancellable: true, onCancel: cancelCallback })
+      data.toasts.push({ id: getUniqueId(), message, type, seconds, cancellable: true, onCancel: cancelCallback })
     }
 
     const removeToast: IToastContainer['removeToast'] = id => {
