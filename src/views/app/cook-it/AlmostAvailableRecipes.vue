@@ -1,14 +1,15 @@
 <template>
   <div class="layout__page__content almost-available-recipes">
     <PageHeader title="Dokup i ugotuj" :back-button="true" :search="true" />
-    <GenericRecipesList
+
+    <GenericRecipesListWithFilters
       :recipes="recipesList.recipes.value"
       :errors="recipesList.recipesErrors.value"
       :load-handler="pageNumber => recipesList.loadRecipesPage(pageNumber)"
       @reload="recipesList.reloadRecipes($event)"
       @reload-with-query="recipesList.reloadRecipesWithQuery($event)"
     >
-      <template #count="{ count, fetching}">
+      <template #count="{ count, fetching }">
         <div v-if="count !== 0" class="recipes-count" :class="{ 'hide-text': fetching }">
           <BaseIcon class="recipes-count-icon" icon="basket" />
           <span>
@@ -16,9 +17,7 @@
             >, które możesz przygotować po dokupieniu paru składników
           </span>
         </div>
-        <div v-else class="recipes-count-loading">
-          wczytuję
-        </div>
+        <div v-else class="recipes-count-loading">wczytuję</div>
       </template>
 
       <template #empty-with-filters>
@@ -37,9 +36,7 @@
           <img class="empty-list-message-image" src="@/assets/img/broccoli-happy.svg" alt="" />
           <p class="empty-list-message-title">Najpierw dodaj coś do swojej kuchni</p>
           <router-link v-slot="{ href, navigate }" :to="{ name: 'my-kitchen' }" custom>
-            <BaseButton tag="a" :href="href" stroked @click="navigate($event)">
-              Przejdź do kuchni
-            </BaseButton>
+            <BaseButton tag="a" :href="href" stroked @click="navigate($event)"> Przejdź do kuchni </BaseButton>
           </router-link>
         </div>
 
@@ -52,7 +49,7 @@
           </p>
         </div>
       </template>
-    </GenericRecipesList>
+    </GenericRecipesListWithFilters>
   </div>
 </template>
 
@@ -66,14 +63,14 @@ import { useMyKitchenStore } from '@/stores/myKitchen'
 
 import recipeFilteredPagedList from '@/views/app/composable/recipeFilteredPagedList'
 
-import GenericRecipesList from '@/components/GenericRecipesList.vue'
+import GenericRecipesListWithFilters from '@/components/GenericRecipesListWithFilters.vue'
 import PageHeader from '@/components/PageHeader.vue'
 
 export default defineComponent({
   name: 'AlmostAvailableRecipes',
 
   components: {
-    GenericRecipesList,
+    GenericRecipesListWithFilters,
     PageHeader
   },
 

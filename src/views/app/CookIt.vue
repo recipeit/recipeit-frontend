@@ -3,7 +3,7 @@
     <div class="cook-it-layout">
       <PageHeader :title="$t('cookIt.title')" />
 
-      <GenericRecipesList
+      <GenericRecipesListWithFilters
         :recipes="recipesList.recipes.value"
         :errors="recipesList.recipesErrors.value"
         :load-handler="pageNumber => recipesList.loadRecipesPage(pageNumber)"
@@ -99,7 +99,7 @@
             </p>
           </div>
         </template>
-      </GenericRecipesList>
+      </GenericRecipesListWithFilters>
     </div>
   </div>
 </template>
@@ -117,7 +117,7 @@ import { RecipesFilteredPageParams } from '@/typings/recipesPage'
 
 import recipeFilteredPagedList from '@/views/app/composable/recipeFilteredPagedList'
 
-import GenericRecipesList from '@/components/GenericRecipesList.vue'
+import GenericRecipesListWithFilters from '@/components/GenericRecipesListWithFilters.vue'
 import HorizontalRecipesList from '@/components/HorizontalRecipesList.vue'
 import PageHeader from '@/components/PageHeader.vue'
 import SectionTitle from '@/components/SectionTitle.vue'
@@ -125,7 +125,7 @@ import SectionTitle from '@/components/SectionTitle.vue'
 export default defineComponent({
   name: 'CookIt',
 
-  components: { GenericRecipesList, PageHeader, HorizontalRecipesList, SectionTitle },
+  components: { GenericRecipesListWithFilters, PageHeader, HorizontalRecipesList, SectionTitle },
 
   setup() {
     useMeta({

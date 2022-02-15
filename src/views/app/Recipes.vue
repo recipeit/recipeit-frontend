@@ -2,7 +2,7 @@
   <div class="layout__page__content recipes">
     <PageHeader :title="$t('recipes.title')" />
 
-    <GenericRecipesList
+    <GenericRecipesListWithFilters
       :recipes="recipesList.recipes.value"
       :errors="recipesList.recipesErrors.value"
       :load-handler="pageNumber => recipesList.loadRecipesPage(pageNumber)"
@@ -23,7 +23,7 @@
           </span>
         </div>
       </template>
-    </GenericRecipesList>
+    </GenericRecipesListWithFilters>
   </div>
 </template>
 
@@ -41,14 +41,14 @@ import { RecipesFilteredPageParams } from '@/typings/recipesPage'
 
 import recipeFilteredPagedList from '@/views/app/composable/recipeFilteredPagedList'
 
-import GenericRecipesList from '@/components/GenericRecipesList.vue'
+import GenericRecipesListWithFilters from '@/components/GenericRecipesListWithFilters.vue'
 import PageHeader from '@/components/PageHeader.vue'
 
 export default defineComponent({
   name: 'Recipes',
 
   components: {
-    GenericRecipesList,
+    GenericRecipesListWithFilters,
     PageHeader
   },
 
