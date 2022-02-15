@@ -22,15 +22,15 @@
 
     <template v-if="recipes.totalCount === 0 && !recipes.fetching">
       <slot v-if="filtersCount > 0 || recipes.search" name="empty-with-filters">
-        <EmptyListMessage
-          :title="'Nie znaleźliśmy przepisów dla użytych filtrów'"
-          :button-text="'Wyczyść filtry'"
-          @button-click="clearFilters()"
-        />
+        <EmptyListMessage :button-text="'Wyczyść filtry'" @button-click="clearFilters()">
+          <template #title>Nie znaleźliśmy przepisów dla użytych filtrów</template>
+        </EmptyListMessage>
       </slot>
 
       <slot v-else name="empty-without-filters">
-        <EmptyListMessage :title="'Nie znaleźliśmy przepisów pasujących do Twoich produktów'" />
+        <EmptyListMessage>
+          <template #title>Nie znaleźliśmy przepisów pasujących do Twoich produktów</template>
+        </EmptyListMessage>
       </slot>
     </template>
 

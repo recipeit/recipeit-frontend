@@ -21,33 +21,32 @@
       </template>
 
       <template #empty-with-filters>
-        <div class="empty-list-message">
-          <img class="empty-list-message-image" src="@/assets/img/broccoli-sad.svg" alt="" />
-          <p class="empty-list-message-title">Nie znaleźliśmy przepisów dla użytych filtrów</p>
-          <p class="empty-list-message-sub">
-            Możesz <BaseLink class="empty-list-message-link" color="primary">wyczyścić filtry</BaseLink> lub sprawdzić całą
-            <BaseLink class="empty-list-message-link" color="primary">bazę przepisów</BaseLink>.
-          </p>
-        </div>
+        <EmptyListMessage>
+          <template #title>Nie znaleźliśmy przepisów dla użytych filtrów</template>
+          <template #sub>
+            Możesz <BaseLink class="message-link" color="primary">wyczyścić filtry</BaseLink> lub sprawdzić całą
+            <BaseLink class="message-link" color="primary">bazę przepisów</BaseLink>.
+          </template>
+        </EmptyListMessage>
       </template>
 
       <template #empty-without-filters>
-        <div v-if="kitchenProductsCount === 0" class="empty-list-message">
-          <img class="empty-list-message-image" src="@/assets/img/broccoli-happy.svg" alt="" />
-          <p class="empty-list-message-title">Najpierw dodaj coś do swojej kuchni</p>
-          <router-link v-slot="{ href, navigate }" :to="{ name: 'my-kitchen' }" custom>
-            <BaseButton tag="a" :href="href" stroked @click="navigate($event)"> Przejdź do kuchni </BaseButton>
-          </router-link>
-        </div>
+        <EmptyListMessage v-if="kitchenProductsCount === 0" :broccoli="'happy'">
+          <template #title>Najpierw dodaj coś do swojej kuchni</template>
+          <template #button>
+            <router-link v-slot="{ href, navigate }" :to="{ name: 'my-kitchen' }" custom>
+              <BaseButton tag="a" :href="href" stroked @click="navigate($event)">Przejdź do kuchni</BaseButton>
+            </router-link>
+          </template>
+        </EmptyListMessage>
 
-        <div v-else class="empty-list-message">
-          <img class="empty-list-message-image" src="@/assets/img/broccoli-sad.svg" alt="" />
-          <p class="empty-list-message-title">Nie znaleźliśmy przepisów pasujących do Twoich produktów</p>
-          <p class="empty-list-message-sub">
-            Możesz <BaseLink class="empty-list-message-link" color="primary">wyczyścić filtry</BaseLink> lub sprawdzić całą
-            <BaseLink class="empty-list-message-link" color="primary">bazę przepisów</BaseLink>.
-          </p>
-        </div>
+        <EmptyListMessage v-else class="empty-list-message">
+          <template #title>Nie znaleźliśmy przepisów pasujących do Twoich produktów</template>
+          <template #sub>
+            Możesz <BaseLink class="message-link" color="primary">wyczyścić filtry</BaseLink> lub sprawdzić całą
+            <BaseLink class="message-link" color="primary">bazę przepisów</BaseLink>.
+          </template>
+        </EmptyListMessage>
       </template>
     </GenericRecipesListWithFilters>
   </div>
@@ -65,13 +64,15 @@ import recipeFilteredPagedList from '@/views/app/composable/recipeFilteredPagedL
 
 import GenericRecipesListWithFilters from '@/components/GenericRecipesListWithFilters.vue'
 import PageHeader from '@/components/PageHeader.vue'
+import EmptyListMessage from '@/components/EmptyListMessage.vue'
 
 export default defineComponent({
   name: 'AlmostAvailableRecipes',
 
   components: {
     GenericRecipesListWithFilters,
-    PageHeader
+    PageHeader,
+    EmptyListMessage
   },
 
   setup() {
@@ -102,34 +103,6 @@ export default defineComponent({
 .almost-available-recipes {
   display: flex;
   flex-direction: column;
-
-  .empty-list-message {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    line-height: 2.25;
-
-    .empty-list-message-image {
-      width: 96px;
-    }
-
-    .empty-list-message-title {
-      margin-bottom: 1rem;
-      font-size: 0.875rem;
-      line-height: 1.5;
-    }
-
-    .empty-list-message-link {
-      font-weight: bold;
-    }
-
-    .empty-list-message-sub {
-      font-size: 0.75rem;
-    }
-  }
 
   .recipes-count {
     padding: 1.25rem 1.5rem;

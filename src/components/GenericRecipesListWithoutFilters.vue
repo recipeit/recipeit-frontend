@@ -4,7 +4,9 @@
 
     <template v-if="recipes.totalCount === 0 && !recipes.fetching">
       <slot name="empty-without-filters">
-        <EmptyListMessage :title="'Nie znaleźliśmy przepisów pasujących do Twoich produktów'" />
+        <EmptyListMessage>
+          <template #title>Nie znaleźliśmy przepisów pasujących do Twoich produktów</template>
+        </EmptyListMessage>
       </slot>
     </template>
 
