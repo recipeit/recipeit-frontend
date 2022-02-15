@@ -65,7 +65,7 @@
       </BaseButton>
     </div>
 
-    <BaseLink v-if="products && products.length > 0" color="primary" class="purchase-all-button" @click="purchaseAll">
+    <BaseLink v-if="products?.length > 0" color="primary" class="purchase-all-button" @click="purchaseAll">
       {{ $t('shoppingList.purchaseAllButton') }}
     </BaseLink>
 

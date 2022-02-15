@@ -7,8 +7,8 @@
     <slot name="button">
       <BaseButton v-if="buttonText" class="message-button" stroked @click="buttonClickHandler()">{{ buttonText }}</BaseButton>
     </slot>
-    <p v-if="$slots.sub" class="message-sub">
-      <slot name="sub" />
+    <p v-if="$slots.sub" class="message-details">
+      <slot name="details" />
     </p>
   </div>
 </template>
@@ -70,7 +70,7 @@ export default defineComponent({
     line-height: 1.5;
   }
 
-  .message-sub {
+  .message-details {
     font-size: 0.75rem;
 
     :deep(.message-link) {

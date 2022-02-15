@@ -23,7 +23,7 @@
       <template #empty-with-filters>
         <EmptyListMessage>
           <template #title>Nie znaleźliśmy przepisów dla użytych filtrów</template>
-          <template #sub>
+          <template #details>
             Możesz <BaseLink class="message-link" color="primary">wyczyścić filtry</BaseLink> lub sprawdzić całą
             <BaseLink class="message-link" color="primary">bazę przepisów</BaseLink>.
           </template>
@@ -42,7 +42,7 @@
 
         <EmptyListMessage v-else class="empty-list-message">
           <template #title>Nie znaleźliśmy przepisów pasujących do Twoich produktów</template>
-          <template #sub>
+          <template #details>
             Możesz <BaseLink class="message-link" color="primary">wyczyścić filtry</BaseLink> lub sprawdzić całą
             <BaseLink class="message-link" color="primary">bazę przepisów</BaseLink>.
           </template>

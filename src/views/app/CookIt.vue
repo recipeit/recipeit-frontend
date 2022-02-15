@@ -49,7 +49,7 @@
         <template #empty-with-filters>
           <EmptyListMessage>
             <template #title>Nie znaleźliśmy przepisów dla użytych filtrów</template>
-            <template #sub>
+            <template #details>
               <template v-if="almostAvailableRecipesList.recipes.value.totalCount">
                 Możesz
                 <BaseLink tag="button" class="message-link" color="primary" @click="reloadRecipes()">wyczyścić filtry</BaseLink>
@@ -88,7 +88,7 @@
 
           <EmptyListMessage v-else>
             <template #title>Nie znaleźliśmy przepisów pasujących do Twoich produktów</template>
-            <template #sub>
+            <template #details>
               <router-link v-slot="{ href, navigate }" :to="{ name: 'almost-available', query: $route.query }" custom>
                 <BaseLink :href="href" color="primary" class="message-link" @click="navigate($event)">
                   Zobacz propozycje przepisów
