@@ -4,7 +4,7 @@
       <BaseModalTitle>Zaplanuj przepis</BaseModalTitle>
     </BaseModalHeader>
     <BaseModalBody>
-      <Form :id="formID" :validation-schema="schema" :initial-values="initialValues" class="form-columns" @submit="planRecipe($event)">
+      <form :id="formID" class="form-columns" @submit="onSubmit($event)">
         <Field v-slot="{ field, errors }" name="day">
           <BaseSelect
             :searchable="false"
@@ -22,7 +22,7 @@
             <template #option="{ option }">{{ $t(`timeOfDay.${option}`) }}</template>
           </BaseSelect>
         </Field>
-      </Form>
+      </form>
       <div v-for="(error, i) in errorList" :key="i" class="error">
         {{ error }}
       </div>
@@ -37,9 +37,9 @@
 </template>
 
 <script lang="ts">
-import { Field, Form } from 'vee-validate'
+import { Field, useForm } from 'vee-validate'
 import { defineComponent, reactive, toRefs } from 'vue'
-import * as Yup from 'yup'
+import { object as yupObject, string as yupString } from 'yup'
 
 import { TimesOfDay } from '@/constants/timesOfDay'
 
@@ -48,12 +48,19 @@ import uniqueID from '@/functions/uniqueID'
 
 import { useRecipesStore } from '@/stores/recipes'
 
-import { DateYMDString } from '@/typings/dates'
+type Day = {
+  value: string
+  label: string
+}
+
+type PlanRecipeForm = {
+  day: object
+  timeOfDay: string
+}
 
 export default defineComponent({
   components: {
-    Field,
-    Form
+    Field
   },
 
   props: {
@@ -66,22 +73,29 @@ export default defineComponent({
   emits: ['close'],
 
   setup(props, { emit }) {
-    // usings
-    const recipesStore = useRecipesStore()
-
     // consts
     const formID = 'form-' + uniqueID().getID()
-    const days = Array.from({ length: 7 }, (_, i) => {
+    const days = Array.from({ length: 7 }, (_, i): Day => {
       const day = dayjs().add(i, 'days')
       return {
         value: day.format('YYYY-MM-DD'),
         label: day.calendar()
       }
     })
-    const initialValues = {
-      day: days[0],
-      timeOfDay: TimesOfDay[0]
-    }
+
+    // usings
+    const recipesStore = useRecipesStore()
+
+    const { handleSubmit } = useForm<PlanRecipeForm>({
+      validationSchema: yupObject().shape({
+        day: yupObject().required('REQUIRED').typeError('REQUIRED'),
+        timeOfDay: yupString().required('REQUIRED').typeError('REQUIRED')
+      }),
+      initialValues: {
+        day: days[0],
+        timeOfDay: TimesOfDay[0]
+      }
+    })
 
     // data
     const data = reactive({
@@ -89,22 +103,19 @@ export default defineComponent({
       sending: false
     })
 
-    const schema = Yup.object({
-      day: Yup.object().required('REQUIRED').typeError('REQUIRED'),
-      timeOfDay: Yup.string().required('REQUIRED').typeError('REQUIRED')
-    })
-
     // methods
-    const planRecipe = async ({ day, timeOfDay }) => {
+    const onSubmit = handleSubmit(async ({ day, timeOfDay }) => {
       data.sending = true
       data.errorList = null
+
+      const { value } = day as Day
 
       try {
         const {
           data: { success, errors }
         } = await recipesStore.addRecipeToPlanned({
           recipeId: props.recipeId,
-          day: day.value,
+          day: value,
           timeOfDay: timeOfDay
         })
 
@@ -119,19 +130,17 @@ export default defineComponent({
       } finally {
         data.sending = false
       }
-    }
+    })
 
     return {
       // consts
       formID,
       TimesOfDay,
       days,
-      initialValues,
       // data
       ...toRefs(data),
-      schema,
       // methods
-      planRecipe
+      onSubmit
     }
   }
 })

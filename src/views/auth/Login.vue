@@ -4,29 +4,15 @@
     <p class="subtitle">
       lub
       <router-link v-slot="{ href, navigate }" :to="{ name: 'register' }" custom>
-        <BaseLink :href="href" color="primary" @click="navigate($event)">
-          utwórz konto
-        </BaseLink>
+        <BaseLink :href="href" color="primary" @click="navigate($event)">utwórz konto</BaseLink>
       </router-link>
     </p>
 
     <!-- <p>lub za pomocą adresu email</p> -->
 
-    <Form v-slot="{ values }" :validation-schema="schema" :initial-values="initialValues" @submit="login($event)">
-      <Field v-slot="{ field, errors }" name="email">
-        <BaseInput class="form-row" label="E-mail" type="text" v-bind="field" :errors="errors" :disabled="anySending" />
-      </Field>
-      <Field v-slot="{ field, errors }" name="password">
-        <BaseInput
-          class="form-row"
-          label="Hasło"
-          type="password"
-          v-bind="field"
-          :errors="errors"
-          :disabled="anySending"
-          :autofocus="hasInitialEmail"
-        />
-      </Field>
+    <form @submit="onSubmit($event)">
+      <BaseInputField name="email" class="form-row" label="E-mail" type="text" :disabled="anySending" />
+      <BaseInputField name="password" class="form-row" label="Hasło" type="password" :disabled="anySending" :autofocus="hasInitialEmail" />
       <BaseButton
         class="form-row auth-main__content__submit"
         raised
@@ -50,7 +36,7 @@
       >
         nie pamiętasz hasła?
       </BaseLink>
-    </Form>
+    </form>
 
     <AuthSocialList @lock-inputs="socialSending = true" @unlock-inputs="socialSending = false" />
 
@@ -59,11 +45,11 @@
 </template>
 
 <script lang="ts">
-import { Field, Form } from 'vee-validate'
+import { useForm } from 'vee-validate'
 import { computed, defineComponent, reactive, toRefs } from 'vue'
 import { useMeta } from 'vue-meta'
 import { useRouter } from 'vue-router'
-import * as yup from 'yup'
+import { object as yupObject } from 'yup'
 
 import { ERROR_ACTION_TAG_NAME } from '@/configs/error'
 import { RECAPTCHA_ACTIONS } from '@/configs/recaptcha'
@@ -82,12 +68,15 @@ import AuthSocialList from '@/views/auth/AuthSocialList.vue'
 
 import RecaptchaBranding from '@/components/RecaptchaBranding.vue'
 
+type LoginForm = {
+  email: string
+  password: string
+}
+
 export default defineComponent({
   components: {
     RecaptchaBranding,
-    AuthSocialList,
-    Field,
-    Form
+    AuthSocialList
   },
 
   props: {
@@ -108,12 +97,19 @@ export default defineComponent({
     const router = useRouter()
     const errorHandler = useErrorHandler()
 
+    const { handleSubmit, values } = useForm<LoginForm>({
+      validationSchema: yupObject().shape({
+        email: emailSchema(),
+        password: passwordSchema()
+      }),
+      initialValues: {
+        email: props.email,
+        password: null
+      }
+    })
+
     // consts
     const hasInitialEmail = !!props.email
-
-    const initialValues = {
-      email: props.email
-    }
 
     // data
     const data = reactive({
@@ -122,18 +118,13 @@ export default defineComponent({
       socialSending: false
     })
 
-    const schema = yup.object({
-      email: emailSchema(),
-      password: passwordSchema()
-    })
-
     // computed
     const anySending = computed(() => {
       return data.sending || data.socialSending
     })
 
     // methods
-    const login = values => {
+    const onSubmit = handleSubmit(values => {
       data.errorList = null
       data.sending = true
 
@@ -158,7 +149,7 @@ export default defineComponent({
             [ERROR_ACTION_TAG_NAME]: 'auth.login.recaptcha'
           })
         })
-    }
+    })
 
     const goToRequestPasswordReset = email => {
       router.push({ name: 'request-password-reset', params: { initialEmail: email || '' } })
@@ -167,14 +158,13 @@ export default defineComponent({
     return {
       // consts
       hasInitialEmail,
-      initialValues,
       //data
       ...toRefs(data),
-      schema,
+      values,
       // computed
       anySending,
       // methods
-      login,
+      onSubmit,
       goToRequestPasswordReset
     }
   }

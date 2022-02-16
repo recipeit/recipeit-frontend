@@ -5,10 +5,8 @@
     <template v-if="state === 'BEFORE' || state === 'SENDING'">
       <p class="subtitle">Wprowadź adres e-mail, aby zresetować hasło. Może być konieczne sprawdzenie folderu ze spamem.</p>
 
-      <Form :validation-schema="schema" :initial-values="initialValues" @submit="requestPasswordReset($event)">
-        <Field v-slot="{ field, errors }" name="email">
-          <BaseInput class="form-row" label="E-mail" v-bind="field" :errors="errors" :disabled="state === 'SENDING'" />
-        </Field>
+      <form @submit="onSubmit($event)">
+        <BaseInputField name="email" class="form-row" label="E-mail" :disabled="state === 'SENDING'" />
 
         <div class="buttons">
           <BaseButton class="form-row auth-main__content__submit" raised color="primary" type="submit" :loading="state === 'SENDING'">
@@ -21,7 +19,7 @@
             </BaseButton>
           </router-link>
         </div>
-      </Form>
+      </form>
 
       <RecaptchaBranding class="recaptcha-branding" />
     </template>
@@ -53,10 +51,10 @@
 </template>
 
 <script lang="ts">
-import { Field, Form } from 'vee-validate'
+import { useForm } from 'vee-validate'
 import { defineComponent, onBeforeMount, reactive, toRefs } from 'vue'
 import { useMeta } from 'vue-meta'
-import * as yup from 'yup'
+import { object as yupObject } from 'yup'
 
 import identityApi from '@/api/identityApi'
 
@@ -77,11 +75,13 @@ type RequestPasswordResetData = {
   state: 'BEFORE' | 'SENDING' | 'SUCCESS' | 'ERROR'
 }
 
+type RequestPasswordResetForm = {
+  email: string
+}
+
 export default defineComponent({
   components: {
-    RecaptchaBranding,
-    Field,
-    Form
+    RecaptchaBranding
   },
 
   props: {
@@ -99,14 +99,14 @@ export default defineComponent({
       link: [{ rel: 'canonical', href: `${BASE_URL}${AUTH_REQUEST_PASSWORD_RESET}` }]
     })
 
-    // consts
-    const schema = yup.object({
-      email: emailSchema()
+    const { handleSubmit } = useForm<RequestPasswordResetForm>({
+      validationSchema: yupObject().shape({
+        email: emailSchema()
+      }),
+      initialValues: {
+        email: props.initialEmail
+      }
     })
-
-    const initialValues = {
-      email: props.initialEmail
-    }
 
     // data
     const data = reactive<RequestPasswordResetData>({
@@ -114,7 +114,7 @@ export default defineComponent({
     })
 
     // methods
-    const requestPasswordReset = async ({ email }) => {
+    const onSubmit = handleSubmit(async ({ email }) => {
       data.state = 'SENDING'
 
       recaptcha
@@ -141,7 +141,7 @@ export default defineComponent({
             [ERROR_ACTION_TAG_NAME]: 'auth.requestPasswordReset.recaptcha'
           })
         })
-    }
+    })
 
     // lifecycle hooks
     onBeforeMount(() => {
@@ -149,13 +149,10 @@ export default defineComponent({
     })
 
     return {
-      // consts
-      schema,
-      initialValues,
       // data
       ...toRefs(data),
       // methods
-      requestPasswordReset
+      onSubmit
     }
   }
 })

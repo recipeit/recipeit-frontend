@@ -9,16 +9,10 @@
       </router-link>
     </p>
 
-    <Form :validation-schema="schema" @submit="register($event)">
-      <Field v-slot="{ field, errors }" name="email">
-        <BaseInput class="form-row" label="E-mail" type="text" v-bind="field" :errors="errors" :disabled="anySending" />
-      </Field>
-      <Field v-slot="{ field, errors }" name="password">
-        <BaseInput class="form-row" label="Hasło" type="password" v-bind="field" :errors="errors" :disabled="anySending" />
-      </Field>
-      <Field v-slot="{ field, errors }" name="confirmPassword">
-        <BaseInput class="form-row" label="Potwierdź hasło" type="password" v-bind="field" :errors="errors" :disabled="anySending" />
-      </Field>
+    <form @submit="onSubmit($event)">
+      <BaseInputField name="email" class="form-row" label="E-mail" type="text" :disabled="anySending" />
+      <BaseInputField name="password" class="form-row" label="Hasło" type="password" :disabled="anySending" />
+      <BaseInputField name="confirmPassword" class="form-row" label="Potwierdź hasło" type="password" :disabled="anySending" />
       <BaseButton
         class="form-row auth-main__content__submit"
         raised
@@ -29,7 +23,7 @@
       >
         Zarejestruj się
       </BaseButton>
-    </Form>
+    </form>
 
     <ul v-if="errorList" class="auth-main__content__errors">
       <li v-for="(error, index) in errorList" :key="index">{{ $t(`errorCode.${error}`) }}</li>
@@ -57,10 +51,10 @@
 </template>
 
 <script lang="ts">
-import { Field, Form } from 'vee-validate'
+import { useForm } from 'vee-validate'
 import { computed, defineComponent, reactive, toRefs } from 'vue'
 import { useMeta } from 'vue-meta'
-import * as yup from 'yup'
+import { object as yupObject } from 'yup'
 
 import { ERROR_ACTION_TAG_NAME } from '@/configs/error'
 import { RECAPTCHA_ACTIONS } from '@/configs/recaptcha'
@@ -79,12 +73,16 @@ import AuthSocialList from '@/views/auth/AuthSocialList.vue'
 
 import RecaptchaBranding from '@/components/RecaptchaBranding.vue'
 
+type RegisterForm = {
+  email: string
+  password: string
+  confirmPassword: string
+}
+
 export default defineComponent({
   components: {
     RecaptchaBranding,
-    AuthSocialList,
-    Field,
-    Form
+    AuthSocialList
   },
 
   setup() {
@@ -97,17 +95,19 @@ export default defineComponent({
     const userStore = useUserStore()
     const errorHandler = useErrorHandler()
 
+    const { handleSubmit } = useForm<RegisterForm>({
+      validationSchema: yupObject().shape({
+        email: emailSchema(),
+        password: newPasswordSchema(),
+        confirmPassword: confirmNewPasswordSchema('password')
+      })
+    })
+
     // data
     const data = reactive({
       errorList: null,
       sending: false,
       socialSending: false
-    })
-
-    const schema = yup.object({
-      email: emailSchema(),
-      password: newPasswordSchema(),
-      confirmPassword: confirmNewPasswordSchema('password')
     })
 
     // computed
@@ -116,7 +116,7 @@ export default defineComponent({
     })
 
     // methods
-    const register = value => {
+    const onSubmit = handleSubmit(value => {
       data.sending = true
       data.errorList = null
 
@@ -144,16 +144,15 @@ export default defineComponent({
             [ERROR_ACTION_TAG_NAME]: 'auth.register.recaptcha'
           })
         })
-    }
+    })
 
     return {
       // data
       ...toRefs(data),
-      schema,
       // computed
       anySending,
       // methods
-      register
+      onSubmit
     }
   }
 })
