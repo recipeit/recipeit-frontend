@@ -91,7 +91,6 @@ export default defineComponent({
     // data
     const data = reactive({
       focused: false,
-      // dirty: false,
       id: 'base-input-' + uniqueID().getID()
     })
 
@@ -127,9 +126,6 @@ export default defineComponent({
 
     const setBlur = (event: FocusEvent) => {
       data.focused = false
-      // if (!data.dirty) {
-      //   data.dirty = true
-      // }
       handleBlur(event)
       emit('blur', event)
     }
