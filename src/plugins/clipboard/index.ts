@@ -3,7 +3,7 @@ import { App } from 'vue'
 const cssText = 'position:fixed;pointer-events:none;z-index:-9999;opacity:0;'
 const copyErrorMessage = 'Failed to copy value to clipboard. Unknown type.'
 
-const $clipboard = input => {
+const $clipboard = (input: string) => {
   let value: string
 
   if (typeof input !== 'string') {
@@ -58,7 +58,10 @@ const Plugin = {
   install: (app: App) => {
     app.config.globalProperties.$clipboard = $clipboard
 
-    const generateId = (id => () => '$' + id++)(1)
+    const generateId = (
+      id => () =>
+        '$' + id++
+    )(1)
     const handlers = {}
 
     const removeHandler = (id: string) => {

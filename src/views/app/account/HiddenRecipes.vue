@@ -1,17 +1,13 @@
 <template>
   <div class="layout__page__content hidden-recipes">
     <PageHeader title="Ukryte przepisy" :back-button="true" />
-    <div v-if="hiddenRecipes === null">
-      ...wczytuje
-    </div>
+    <div v-if="hiddenRecipes === null">...wczytuje</div>
     <ul v-else-if="hiddenRecipes.length > 0" class="recipes-list">
       <li v-for="recipe in hiddenRecipes" :key="recipe.id" class="recipes-list-item">
         <HiddenRecipe :recipe="recipe" @unhide="unhideRecipe(recipe.id)" />
       </li>
     </ul>
-    <div v-else>
-      Nie ukryłeś jeszcze żadnego przepisu
-    </div>
+    <div v-else>Nie ukryłeś jeszcze żadnego przepisu</div>
   </div>
 </template>
 

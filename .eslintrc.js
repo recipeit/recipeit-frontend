@@ -1,4 +1,4 @@
-const prettierConfig = require('./.prettierrc.js')
+// const prettierConfig = require('./.prettierrc.js')
 
 module.exports = {
   root: true,
@@ -18,7 +18,7 @@ module.exports = {
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'vue/no-v-html': 0,
     'vue/require-default-prop': 0,
-    'vue/multi-word-component-names': 0,
+    'vue/multi-word-component-names': 0
     // 'sort-imports': [
     //   'warn',
     //   {
@@ -29,6 +29,6 @@ module.exports = {
     //     allowSeparatedGroups: true
     //   }
     // ],
-    'prettier/prettier': ['error', prettierConfig]
+    // 'prettier/prettier': ['error', prettierConfig]
   }
 }

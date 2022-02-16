@@ -1,17 +1,13 @@
 <template>
   <div class="layout__page__content hidden-blogs">
     <PageHeader title="Ukryte blogi" :back-button="true" />
-    <div v-if="hiddenBlogs === null">
-      ...wczytuje
-    </div>
+    <div v-if="hiddenBlogs === null">...wczytuje</div>
     <ul v-else-if="hiddenBlogs.length > 0" class="blogs-list">
       <li v-for="blog in hiddenBlogs" :key="blog.id" class="blogs-list-item">
         <HiddenBlog :blog="blog" @unhide="unhideBlog(blog.id)" />
       </li>
     </ul>
-    <div v-else>
-      Nie ukryłeś jeszcze żadnego blogu
-    </div>
+    <div v-else>Nie ukryłeś jeszcze żadnego blogu</div>
   </div>
 </template>
 

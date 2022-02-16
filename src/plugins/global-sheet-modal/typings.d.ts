@@ -1,4 +1,4 @@
-import { ComputedRef, Ref } from 'vue'
+import { Ref } from 'vue'
 
 export type ModalInstanceProps = { [key: string]: unknown }
 
