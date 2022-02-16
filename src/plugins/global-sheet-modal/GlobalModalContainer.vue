@@ -37,11 +37,11 @@ export default defineComponent({
     })
 
     // computed
-    const anyModalOpened: IGlobalModalContainer['anyModalOpened'] = computed(() => {
+    const anyModalOpened = computed(() => {
       return data.modals.some(({ opened }) => opened)
     })
 
-    const anyModalOpenedOrClosing: IGlobalModalContainer['anyModalOpenedOrClosing'] = computed(() => {
+    const anyModalOpenedOrClosing = computed(() => {
       return data.modals.length > 0
     })
 
@@ -88,6 +88,10 @@ export default defineComponent({
       }
     }
 
+    const getAnyModalOpened: IGlobalModalContainer['getAnyModalOpened'] = () => anyModalOpened.value
+
+    const getModals: IGlobalModalContainer['getModals'] = () => data.modals
+
     // watchers
     watch(anyModalOpenedOrClosing, value => {
       const scrollWidth = window.innerWidth - document.body.offsetWidth
@@ -99,11 +103,11 @@ export default defineComponent({
     // lifecycle hooks
     onBeforeMount(() => {
       document.addEventListener('keyup', e => {
-        if (e.keyCode === 27 && anyModalOpened.value) {
-          const opened = data.modals.filter(m => m.opened)
-          const modalToClose = opened[opened.length - 1]
-          if (!modalToClose.blockCloseOnBackdrop) {
-            modal.hide(modalToClose.id)
+        if (e.key === 'Escape' && anyModalOpened.value) {
+          const opened = data.modals.filter(({ opened }) => opened)
+          const { id, blockCloseOnBackdrop } = opened[opened.length - 1]
+          if (!blockCloseOnBackdrop) {
+            modal.hide(id)
           }
         }
       })
@@ -112,15 +116,14 @@ export default defineComponent({
     return {
       // data
       ...toRefs(data),
-      // computed
-      anyModalOpened,
-      anyModalOpenedOrClosing,
       // methods
       add,
       remove,
       open,
       close,
-      afterModalTransitionLeave
+      afterModalTransitionLeave,
+      getAnyModalOpened,
+      getModals
     }
   },
 
