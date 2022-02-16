@@ -8,6 +8,7 @@
         :id="id"
         v-autofocus="autofocus"
         :type="type"
+        :inputmode="inputmode"
         :tabindex="tabindex"
         :placeholder="placeholder"
         :value="inputValue"
@@ -31,7 +32,7 @@
 
 <script lang="ts">
 import { useField } from 'vee-validate'
-import { computed, defineComponent, PropType, reactive, toRefs } from 'vue'
+import { computed, defineComponent, InputHTMLAttributes, PropType, reactive, toRefs } from 'vue'
 
 import uniqueID from '@/functions/uniqueID'
 
@@ -59,6 +60,10 @@ export default defineComponent({
     type: {
       type: String as PropType<InputFieldType>,
       default: 'text'
+    },
+    inputmode: {
+      type: String as PropType<InputHTMLAttributes['inputmode']>,
+      default: null
     },
     tabindex: {
       type: Number,

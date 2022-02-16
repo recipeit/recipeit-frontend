@@ -11,7 +11,7 @@
     <!-- <p>lub za pomocą adresu email</p> -->
 
     <form @submit="onSubmit($event)">
-      <BaseInputField name="email" class="form-row" label="E-mail" type="text" :disabled="anySending" />
+      <BaseInputField name="email" class="form-row" label="E-mail" type="text" inputmode="email" :disabled="anySending" />
       <BaseInputField name="password" class="form-row" label="Hasło" type="password" :disabled="anySending" :autofocus="hasInitialEmail" />
       <BaseButton
         class="form-row auth-main__content__submit"

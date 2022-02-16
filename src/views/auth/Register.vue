@@ -10,7 +10,7 @@
     </p>
 
     <form @submit="onSubmit($event)">
-      <BaseInputField name="email" class="form-row" label="E-mail" type="text" :disabled="anySending" />
+      <BaseInputField name="email" class="form-row" label="E-mail" type="text" inputmode="email" :disabled="anySending" />
       <BaseInputField name="password" class="form-row" label="Hasło" type="password" :disabled="anySending" />
       <BaseInputField name="confirmPassword" class="form-row" label="Potwierdź hasło" type="password" :disabled="anySending" />
       <BaseButton

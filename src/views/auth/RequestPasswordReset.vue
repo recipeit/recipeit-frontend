@@ -6,7 +6,7 @@
       <p class="subtitle">Wprowadź adres e-mail, aby zresetować hasło. Może być konieczne sprawdzenie folderu ze spamem.</p>
 
       <form @submit="onSubmit($event)">
-        <BaseInputField name="email" class="form-row" label="E-mail" :disabled="state === 'SENDING'" />
+        <BaseInputField name="email" class="form-row" label="E-mail" type="text" inputmode="email" :disabled="state === 'SENDING'" />
 
         <div class="buttons">
           <BaseButton class="form-row auth-main__content__submit" raised color="primary" type="submit" :loading="state === 'SENDING'">
