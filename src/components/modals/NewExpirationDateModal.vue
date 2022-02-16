@@ -49,7 +49,7 @@ import { computed, defineComponent } from 'vue'
 import { number as yupNumber } from 'yup'
 
 import dayjs from '@/functions/dayjs'
-import uniqueID from '@/functions/uniqueID'
+import { getUniqueId } from '@/functions/uniqueId'
 
 import { ExpirationDateForm } from '@/typings/expirationDates'
 
@@ -57,7 +57,7 @@ export default defineComponent({
   emits: ['close'],
 
   setup(_, { emit }) {
-    const formID = 'form-' + uniqueID().getID()
+    const formID = 'form-' + getUniqueId()
     const currentYear = dayjs().year()
 
     const myForm = useForm<ExpirationDateForm>({

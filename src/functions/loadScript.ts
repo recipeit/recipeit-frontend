@@ -3,7 +3,7 @@ export const Locations = {
   BODY: 'BODY'
 }
 
-export default function loadScript(src: string, location = Locations.HEAD): Promise<void> {
+export default (src: string, location = Locations.HEAD): Promise<void> => {
   return new Promise((resolve, reject) => {
     if (document.querySelector(`script[src="${src}"]`)) resolve()
 

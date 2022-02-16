@@ -35,7 +35,7 @@ import identityApi from '@/api/identityApi'
 import { confirmNewPasswordSchema, newPasswordSchema } from '@/configs/schemas'
 import { RECAPTCHA_ACTIONS } from '@/configs/recaptcha'
 
-import uniqueID from '@/functions/uniqueID'
+import { getUniqueId } from '@/functions/uniqueId'
 
 import { useToast } from '@/plugins/toast'
 
@@ -76,7 +76,7 @@ export default defineComponent({
     })
 
     // consts
-    const formID = 'form-' + uniqueID().getID()
+    const formID = 'form-' + getUniqueId()
 
     // data
     const data = reactive({

@@ -36,7 +36,7 @@ import identityApi from '@/api/identityApi'
 
 import { RECAPTCHA_ACTIONS } from '@/configs/recaptcha'
 
-import uniqueID from '@/functions/uniqueID'
+import { getUniqueId } from '@/functions/uniqueId'
 
 import recaptcha from '@/services/recaptcha'
 
@@ -81,7 +81,7 @@ export default defineComponent({
     })
 
     // consts
-    const formID = 'form-' + uniqueID().getID()
+    const formID = 'form-' + getUniqueId()
 
     // data
     const data = reactive({

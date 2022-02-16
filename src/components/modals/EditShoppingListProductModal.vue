@@ -21,7 +21,7 @@ import { useForm } from 'vee-validate'
 import { defineComponent, ref } from 'vue'
 import { object as yupObject, number as yupNumber, string as yupString } from 'yup'
 
-import uniqueID from '@/functions/uniqueID'
+import { getUniqueId } from '@/functions/uniqueId'
 
 import { useIngredientsStore } from '@/stores/ingredients'
 import { useShoppingListStore } from '@/stores/shoppingList'
@@ -69,7 +69,7 @@ export default defineComponent({
     })
 
     // consts
-    const formID = 'form-' + uniqueID().getID()
+    const formID = 'form-' + getUniqueId()
 
     // data
     const sending = ref(false)
