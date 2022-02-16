@@ -104,7 +104,7 @@ export default defineComponent({
       }),
       initialValues: {
         email: props.email,
-        password: null
+        password: ''
       }
     })
 

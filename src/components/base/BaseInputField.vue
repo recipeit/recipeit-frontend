@@ -12,17 +12,17 @@
         :placeholder="placeholder"
         :value="inputValue"
         :disabled="disabled"
-        :aria-describedby="errors ? erorrsID : null"
-        :aria-invalid="errors ? true : null"
+        :aria-describedby="errorList ? erorrsID : null"
+        :aria-invalid="errorList ? true : null"
         @focus.stop="setFocus($event)"
         @blur.stop="setBlur($event)"
         @input="handleChange($event)"
       />
     </div>
-    <div v-if="errors?.length > 0" class="base-input__errors">
+    <div v-if="errorList?.length > 0" class="base-input__errors">
       <slot name="errors">
         <ul :id="erorrsID" class="base-input__errors__list">
-          <li v-for="(error, i) in errors" :key="i">{{ $t(`errorCode.${error}`) }}</li>
+          <li v-for="(error, i) in errorList" :key="i">{{ $t(`errorCode.${error}`) }}</li>
         </ul>
       </slot>
     </div>
@@ -115,9 +115,9 @@ export default defineComponent({
       return true
     })
 
-    // const errorList = computed(() => {
-    //   return data.dirty ? errors.value : null
-    // })
+    const errorList = computed(() => {
+      return meta.touched ? errors.value : null
+    })
 
     // methods
     const setFocus = (event: FocusEvent) => {
@@ -137,17 +137,14 @@ export default defineComponent({
     return {
       // usings
       handleChange,
-      handleBlur,
-      errors,
       inputValue,
-      meta,
       // data
       ...toRefs(data),
       // computed
       baseInputClasses,
       erorrsID,
       hasValue,
-      // errorList,
+      errorList,
       // methods
       setFocus,
       setBlur
