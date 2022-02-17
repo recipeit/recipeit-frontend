@@ -1,20 +1,22 @@
 import vue from '@vitejs/plugin-vue'
 import { execSync } from 'child_process'
 import path from 'path'
-import { defineConfig, loadEnv } from 'vite'
+import { defineConfig, loadEnv, UserConfig } from 'vite'
 import markdown from 'vite-plugin-md'
 import { VitePWA } from 'vite-plugin-pwa'
 import viteSentry from 'vite-plugin-sentry'
 import svgLoader from 'vite-svg-loader'
 
 export default ({ mode }) => {
-  process.env = { ...process.env, ...loadEnv(mode, process.cwd()) }
+  process.env = {
+    ...process.env,
+    ...loadEnv(mode, process.cwd()),
+    VUE_APP_VERSION: execSync('git rev-parse HEAD').toString().trim()
+  }
 
   const isProduction = process.env.NODE_ENV === 'production'
 
-  process.env.VUE_APP_VERSION = execSync('git rev-parse HEAD').toString().trim()
-
-  const plugins = [
+  const plugins: UserConfig['plugins'] = [
     vue({
       include: [/\.vue$/, /\.md$/]
     }),
@@ -110,12 +112,8 @@ export default ({ mode }) => {
   }
 
   return defineConfig({
-    plugins,
-
-    server: {
-      host: 'localhost',
-      port: 8080,
-      https: true
+    build: {
+      sourcemap: process.env.VITE_SOURCE_MAP === 'true' ? true : 'hidden'
     },
 
     css: {
@@ -129,6 +127,8 @@ export default ({ mode }) => {
       }
     },
 
+    plugins,
+
     resolve: {
       alias: [
         {
@@ -138,8 +138,10 @@ export default ({ mode }) => {
       ]
     },
 
-    build: {
-      sourcemap: 'hidden'
+    server: {
+      host: 'localhost',
+      port: 8080,
+      https: true
     }
   })
 }
