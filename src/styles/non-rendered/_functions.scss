@@ -81,7 +81,7 @@
   $map: (
     'color': #{$color},
     // 'color-hover': #{lighten($color, 10)},
-      // 'color-active': #{lighten($color, 20)}
+    // 'color-active': #{lighten($color, 20)}
   );
   @return $map;
 }
