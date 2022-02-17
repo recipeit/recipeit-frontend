@@ -1,15 +1,16 @@
 <template>
   <SheetModalContent class="invisible-blog-info-modal">
     <BaseModalHeader @close="$emit('close')">
-      <BaseModalTitle><BaseIcon class="header-icon" icon="eye-hidden" weight="semi-bold" />Ukryty blog - co oznacza?</BaseModalTitle>
+      <BaseModalTitle>
+        <BaseIcon class="header-icon" icon="eye-hidden" weight="semi-bold" />
+        Ukryty blog - co oznacza?
+      </BaseModalTitle>
     </BaseModalHeader>
     <BaseModalBody>
       <p class="paragraph">
         Przepisy z ukrytego blogu nie pojawiają się w bazie przepisów oraz nie są proponowane do wykonania z Twoich produków.
       </p>
-      <p class="paragraph">
-        Ukryć możesz zarówno cały blog, jak i pojedynczy przepis.
-      </p>
+      <p class="paragraph">Ukryć możesz zarówno cały blog, jak i pojedynczy przepis.</p>
       <p class="paragraph">
         Listę ukrytych przepisów i blogów znajdziesz w
         <router-link v-slot="{ href, navigate }" :to="{ name: 'account', params: { closeModalAndGo: true } }" custom>
@@ -18,9 +19,7 @@
       </p>
     </BaseModalBody>
     <BaseModalFooter>
-      <BaseButton class="submit-button" stroked @click="$emit('close')">
-        OK!
-      </BaseButton>
+      <BaseButton class="submit-button" stroked @click="$emit('close')">OK!</BaseButton>
     </BaseModalFooter>
   </SheetModalContent>
 </template>

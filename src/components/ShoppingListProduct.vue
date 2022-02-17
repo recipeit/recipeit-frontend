@@ -6,9 +6,7 @@
           <BaseIcon icon="trash" weight="semi-bold" />
         </a>
 
-        <template #popper>
-          Usuń produkt
-        </template>
+        <template #popper>Usuń produkt</template>
       </VTooltip>
 
       <VTooltip>
@@ -16,9 +14,7 @@
           <BaseIcon icon="check" weight="semi-bold" />
         </a>
 
-        <template #popper>
-          Dodaj produkt do kuchni
-        </template>
+        <template #popper>Dodaj produkt do kuchni</template>
       </VTooltip>
     </div>
   </Product>

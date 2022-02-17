@@ -1,16 +1,11 @@
-import * as yup from 'yup'
+import { string as yupString, ref as yupRef } from 'yup'
 
-export const emailSchema = () =>
-  yup
-    .string()
-    .required('REQUIRED')
-    .email('INVALID_EMAIL')
+export const emailSchema = () => yupString().required('REQUIRED').email('INVALID_EMAIL')
 
-export const passwordSchema = () => yup.string().required('REQUIRED')
+export const passwordSchema = () => yupString().required('REQUIRED')
 
 export const newPasswordSchema = () =>
-  yup
-    .string()
+  yupString()
     .min(6, 'REQUIRED_AT_LEAST_6_CHAR')
     .matches(/^(?=.*[a-z])/, 'REQUIRED_AT_LEAST_ONE_LOWER')
     .matches(/^(?=.*[A-Z])/, 'REQUIRED_AT_LEAST_ONE_UPPER')
@@ -19,7 +14,6 @@ export const newPasswordSchema = () =>
     .required('REQUIRED')
 
 export const confirmNewPasswordSchema = (passwordFieldName: string) =>
-  yup
-    .string()
-    .oneOf([yup.ref(passwordFieldName), null], 'WRONG_PASSWORD_COMBINATION')
+  yupString()
+    .oneOf([yupRef(passwordFieldName), null], 'WRONG_PASSWORD_COMBINATION')
     .required('REQUIRED')

@@ -15,9 +15,7 @@
         </template>
         <template v-else>
           <router-link v-slot="{ href, navigate }" :to="{ name: AUTH_LOGIN }" custom>
-            <BaseButton class="header-button" tag="a" :href="href" stroked @click="navigate($event)">
-              Zaloguj się
-            </BaseButton>
+            <BaseButton class="header-button" tag="a" :href="href" stroked @click="navigate($event)">Zaloguj się</BaseButton>
           </router-link>
           <router-link v-slot="{ href, navigate }" :to="{ name: AUTH_REGISTER }" custom>
             <BaseButton class="header-button" tag="a" :href="href" raised color="primary" @click="navigate($event)">

@@ -6,9 +6,7 @@
     <BaseModalBody>
       <BaseCheckbox class="checkbox" :model-value="true" :disabled="true">
         <template #label>
-          <div>
-            Wymagane ciasteczka
-          </div>
+          <div>Wymagane ciasteczka</div>
           <div class="description">
             Te ciasteczka są używane m.in. do logowania, przesyłania formularzy czy zapamiętywania Twoich preferencji.
           </div>
@@ -17,9 +15,7 @@
 
       <BaseCheckbox v-model="consents" class="checkbox" :value="COOKIES_ANALYTICS_COOKIE_NAME">
         <template #label>
-          <div>
-            Analityczne ciasteczka
-          </div>
+          <div>Analityczne ciasteczka</div>
           <div class="description">
             Dzięki tym ciasteczkom możemy badać aktywność naszych użytkowników w serwisie z wykorzystaniem Google Analytics. Pozwala nam to
             szybciej znajdywać zaistniałe problemy oraz dopasowywać aplikację do użytkownikow.
@@ -28,9 +24,7 @@
       </BaseCheckbox>
     </BaseModalBody>
     <BaseModalFooter>
-      <BaseButton class="submit-button" stroked @click="allowSelected()">
-        Zapisz
-      </BaseButton>
+      <BaseButton class="submit-button" stroked @click="allowSelected()">Zapisz</BaseButton>
     </BaseModalFooter>
   </SheetModalContent>
 </template>

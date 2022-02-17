@@ -2,19 +2,13 @@
   <div class="footer-auth">
     <Container class="footer-auth-container">
       <div class="footer-auth-content">
-        <h2 class="footer-auth-header">
-          Zacznij korzystać z Recipeit już teraz!
-        </h2>
+        <h2 class="footer-auth-header">Zacznij korzystać z Recipeit już teraz!</h2>
         <div class="footer-auth-buttons">
           <router-link v-slot="{ href, navigate }" :to="{ name: 'register' }" custom>
-            <BaseButton class="button button--main" tag="span" :href="href" @click="navigate($event)">
-              Utwórz konto
-            </BaseButton>
+            <BaseButton class="button button--main" tag="span" :href="href" @click="navigate($event)">Utwórz konto</BaseButton>
           </router-link>
           <router-link v-slot="{ href, navigate }" :to="{ name: 'login' }" custom>
-            <BaseButton class="button button--secondary" tag="span" :href="href" @click="navigate($event)">
-              Zaloguj się
-            </BaseButton>
+            <BaseButton class="button button--secondary" tag="span" :href="href" @click="navigate($event)">Zaloguj się</BaseButton>
           </router-link>
         </div>
       </div>

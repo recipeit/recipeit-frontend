@@ -36,7 +36,9 @@
 
     <template v-else>
       <GenericRecipesListHeader :count="recipes.totalCount" :show-all-link="showAllLink" :fetching="showFetchingInfo">
-        <slot name="count" :count="recipes.totalCount" :fetching="showFetchingInfo" />
+        <template #count="{ count, fetching }">
+          <slot name="count" :count="count" :fetching="fetching" />
+        </template>
       </GenericRecipesListHeader>
 
       <GenericRecipesListGrid ref="gridComponent" :recipes="recipes" :load-handler="loadHandler" @initial-height="initialHeight = $event" />

@@ -2,6 +2,7 @@ import { Ref } from 'vue'
 
 export type ModalInstanceProps = { [key: string]: unknown }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type ModalInstanceEvents = { [key: string]: (...props: Array<any>) => void }
 
 export type ModalInstanceOptions = { blockCloseOnBackdrop?: boolean }

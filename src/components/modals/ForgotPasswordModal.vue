@@ -11,26 +11,20 @@
         </div>
       </div>
       <div v-else class="success-after-send">
-        <p class="message">
-          Sprawdź swoją skrzyknę pocztową!
-        </p>
+        <p class="message">Sprawdź swoją skrzyknę pocztową!</p>
       </div>
 
       <RecaptchaBranding class="recaptcha-branding" />
     </BaseModalBody>
     <BaseModalFooter>
       <template v-if="!success">
-        <BaseButton class="submit-button" stroked @click="$emit('close')">
-          Anuluj
-        </BaseButton>
+        <BaseButton class="submit-button" stroked @click="$emit('close')">Anuluj</BaseButton>
         <BaseButton class="submit-button" raised color="primary" :loading="sending" @click="onConfirmForgotPassword()">
-          {{ 'Wyślij e-mail' }}
+          Wyślij e-mail
         </BaseButton>
       </template>
       <template v-else>
-        <BaseButton class="submit-button" stroked @click="$emit('close')">
-          Ok
-        </BaseButton>
+        <BaseButton class="submit-button" stroked @click="$emit('close')">Ok</BaseButton>
       </template>
     </BaseModalFooter>
   </SheetModalContent>

@@ -59,7 +59,7 @@
                 </router-link>
                 , bądź sprawdzić
                 <router-link v-slot="{ href, navigate }" :to="{ name: 'almost-available', query: $route.query }" custom>
-                  <BaseLink :href="href" class="message-link" color="primary" @click="navigate($event)"> propozycje przepisów </BaseLink>
+                  <BaseLink :href="href" class="message-link" color="primary" @click="navigate($event)">propozycje przepisów</BaseLink>
                 </router-link>
                 po dokupieniu paru składników.
               </template>
@@ -81,7 +81,7 @@
             <template #title>Najpierw dodaj coś do swojej kuchni</template>
             <template #button>
               <router-link v-slot="{ href, navigate }" :to="{ name: 'my-kitchen' }" custom>
-                <BaseButton tag="a" :href="href" stroked @click="navigate($event)"> Przejdź do kuchni </BaseButton>
+                <BaseButton tag="a" :href="href" stroked @click="navigate($event)">Przejdź do kuchni</BaseButton>
               </router-link>
             </template>
           </EmptyListMessage>
@@ -90,9 +90,9 @@
             <template #title>Nie znaleźliśmy przepisów pasujących do Twoich produktów</template>
             <template #details>
               <router-link v-slot="{ href, navigate }" :to="{ name: 'almost-available', query: $route.query }" custom>
-                <BaseLink :href="href" color="primary" class="message-link" @click="navigate($event)">
-                  Zobacz propozycje przepisów
-                </BaseLink> </router-link
+                <BaseLink :href="href" color="primary" class="message-link" @click="navigate($event)"
+                  >Zobacz propozycje przepisów</BaseLink
+                ></router-link
               >, które przygotujesz po dokupieniu paru składników
             </template>
           </EmptyListMessage>

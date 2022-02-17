@@ -19,12 +19,8 @@
       </p>
     </BaseModalBody>
     <BaseModalFooter>
-      <BaseButton class="submit-button" stroked @click="customizeOptions()">
-        Opcje
-      </BaseButton>
-      <BaseButton class="submit-button" color="primary" raised @click="acceptAll()">
-        Akceptuję
-      </BaseButton>
+      <BaseButton class="submit-button" stroked @click="customizeOptions()">Opcje</BaseButton>
+      <BaseButton class="submit-button" color="primary" raised @click="acceptAll()">Akceptuję</BaseButton>
     </BaseModalFooter>
   </SheetModalContent>
 </template>

@@ -15,14 +15,10 @@
         <p class="description">Nie pozwól aby Twoje produkty się przeterminowały. Recipeit pokaże Ci, co możesz z nich przygotować.</p>
         <div class="user-buttons">
           <router-link v-slot="{ href, navigate }" :to="{ name: 'register' }" custom>
-            <BaseButton class="user-button user-button--main" tag="a" :href="href" @click="navigate($event)">
-              Utwórz konto
-            </BaseButton>
+            <BaseButton class="user-button user-button--main" tag="a" :href="href" @click="navigate($event)">Utwórz konto</BaseButton>
           </router-link>
           <router-link v-slot="{ href, navigate }" :to="{ name: 'login' }" custom>
-            <BaseButton class="user-button user-button--secondary" tag="a" :href="href" @click="navigate($event)">
-              Zaloguj się
-            </BaseButton>
+            <BaseButton class="user-button user-button--secondary" tag="a" :href="href" @click="navigate($event)">Zaloguj się</BaseButton>
           </router-link>
         </div>
       </div>

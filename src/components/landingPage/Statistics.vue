@@ -14,9 +14,7 @@
     <div ref="statisticCards" class="statistics-cards" @scroll="handleControlsDisability()">
       <StatisticsCard v-for="(statistic, index) in statistics" :key="index" :icon="statistic.icon" :description="statistic.description" />
     </div>
-    <Container class="statistics-footer-container">
-      Źródło: wyniki badań IOŚ-PIB, SGGW w ramach projektu PROM, 2020 r.
-    </Container>
+    <Container class="statistics-footer-container">Źródło: wyniki badań IOŚ-PIB, SGGW w ramach projektu PROM, 2020 r.</Container>
   </div>
 </template>
 

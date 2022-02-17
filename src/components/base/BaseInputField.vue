@@ -34,7 +34,7 @@
 import { useField } from 'vee-validate'
 import { computed, defineComponent, InputHTMLAttributes, PropType, reactive, toRefs } from 'vue'
 
-import uniqueID from '@/functions/uniqueID'
+import { getUniqueId } from '@/functions/uniqueId'
 
 type InputFieldType = 'text' | 'number' | 'password'
 
@@ -96,7 +96,7 @@ export default defineComponent({
     // data
     const data = reactive({
       focused: false,
-      id: 'base-input-' + uniqueID().getID()
+      id: 'base-input-' + getUniqueId()
     })
 
     // computed
