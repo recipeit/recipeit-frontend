@@ -71,7 +71,6 @@ export default defineComponent({
 
   props: {
     recipes: {
-      // TODO trzeba rozdzielić że albo to albo tamto
       type: Object as PropType<RecipesFilteredPageState>
     },
     errors: {
