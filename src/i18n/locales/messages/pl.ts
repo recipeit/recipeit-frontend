@@ -90,6 +90,7 @@ const messages: Messages = {
     Alcohol: 'Alkohole',
     Paste: 'Do smarowania',
     Preserves: 'Przetwory',
+    Additives: 'Dodatki',
 
     // Occasion
     Christmas: 'Boże Narodzenie',

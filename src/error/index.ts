@@ -1,4 +1,4 @@
-import * as Sentry from '@sentry/browser'
+import { withScope as sentryWithScope, captureException as sentryCaptureException } from '@sentry/browser'
 import { Primitive } from '@sentry/types'
 import { App } from 'vue'
 
@@ -18,12 +18,12 @@ const Plugin: ErrorHandlerPlugin = {
   install: app => {
     const $errorHandler: ErrorHandler = {
       captureError(error: CapturedError, tags = {}) {
-        Sentry.withScope(scope => {
+        sentryWithScope(scope => {
           if (Object.keys(tags)) {
             scope.setTags(tags)
           }
 
-          Sentry.captureException(error)
+          sentryCaptureException(error)
         })
       }
     }

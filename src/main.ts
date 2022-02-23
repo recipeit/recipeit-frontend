@@ -1,4 +1,4 @@
-import * as Sentry from '@sentry/browser'
+import { init as sentryInit, withScope as sentryWithScope, captureException as sentryCaptureException } from '@sentry/browser'
 import { Integrations } from '@sentry/tracing'
 import { createPinia } from 'pinia'
 import { createApp } from 'vue'
@@ -27,7 +27,7 @@ import App from '@/App.vue'
 const useSentry = process.env.NODE_ENV === 'production'
 
 if (useSentry) {
-  Sentry.init({
+  sentryInit({
     dsn: process.env.VITE_SENTRY_DSN,
     release: process.env.VUE_APP_VERSION,
     integrations: [new Integrations.BrowserTracing()],
@@ -63,10 +63,10 @@ app
   .directive('autofocus', autofocus)
 
 if (useSentry) {
-  app.config.errorHandler = (error, instance, info) => {
-    Sentry.withScope(scope => {
+  app.config.errorHandler = (error, _, info) => {
+    sentryWithScope(scope => {
       scope.setTag('info', info)
-      Sentry.captureException(error)
+      sentryCaptureException(error)
     })
   }
   // window.addEventListener('error', event => {

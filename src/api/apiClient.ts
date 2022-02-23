@@ -1,4 +1,4 @@
-import * as Sentry from '@sentry/browser'
+import { captureException as sentryCaptureException } from '@sentry/browser'
 import axios from 'axios'
 
 import { REFRESH_COOKIE_URL } from '@/api/identityApi'
@@ -55,7 +55,7 @@ apiClient.interceptors.response.use(
       })
     }
 
-    Sentry.captureException(error)
+    sentryCaptureException(error)
 
     // specific error handling done elsewhere
     return Promise.reject(error)

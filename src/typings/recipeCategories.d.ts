@@ -22,6 +22,7 @@ export type RecipeCategoryType =
   | 'Alcohol'
   | 'Paste'
   | 'Preserves'
+  | 'Additives'
 
 export type RecipeCategoryOccasion =
   | 'Christmas'
