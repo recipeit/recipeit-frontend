@@ -10,12 +10,10 @@
       <p class="message">
         Jeżeli dalej chcesz usunąć swoje konto, wprowadź kod <b class="code">{{ code }}</b> w poniższe pole.
       </p>
-      <Form :id="formID" class="form" :validation-schema="schema" @submit="deleteAccount()">
+      <form :id="formID" class="form" @submit="onSubmit($event)">
         <BaseInput class="form-row" label="E-mail" type="text" :disabled="true" :value="email" />
-        <Field v-slot="{ field, errors }" name="code">
-          <BaseInput class="form-row" label="Kod" type="text" v-bind="field" :errors="errors" />
-        </Field>
-      </Form>
+        <BaseInputField name="code" class="form-row" label="Kod" type="text" />
+      </form>
       <div v-for="(error, i) in errors" :key="i" class="error">
         {{ error }}
       </div>
@@ -30,9 +28,9 @@
 </template>
 
 <script lang="ts">
-import { Field, Form } from 'vee-validate'
+import { useForm } from 'vee-validate'
 import { defineComponent, onBeforeMount, reactive, toRefs } from 'vue'
-import * as Yup from 'yup'
+import { object as yupObject, string as yupString } from 'yup'
 
 import identityApi from '@/api/identityApi'
 
@@ -46,12 +44,16 @@ import { useUserStore } from '@/stores/user'
 
 import RecaptchaBranding from '@/components/RecaptchaBranding.vue'
 
+type DeleteAccountForm = {
+  code: string
+}
+
 const generateCode = () => {
   return Math.random().toString(36).substring(7).toUpperCase()
 }
 
 export default defineComponent({
-  components: { RecaptchaBranding, Field, Form },
+  components: { RecaptchaBranding },
 
   props: {
     email: {
@@ -66,6 +68,18 @@ export default defineComponent({
     // usings
     const userStore = useUserStore()
 
+    const { handleSubmit } = useForm<DeleteAccountForm>({
+      validationSchema: yupObject().shape({
+        code: yupString()
+          .test({
+            name: 'codeMatches',
+            message: 'Wprowadź prawidłowy kod',
+            test: value => (value !== undefined ? value.toUpperCase() === data.code.toUpperCase() : true)
+          })
+          .required('REQUIRED')
+      })
+    })
+
     // consts
     const formID = 'form-' + getUniqueId()
 
@@ -76,18 +90,8 @@ export default defineComponent({
       code: ''
     })
 
-    const schema = Yup.object().shape({
-      code: Yup.string()
-        .test({
-          name: 'codeMatches',
-          message: 'Wprowadź prawidłowy kod',
-          test: value => (value !== undefined ? value.toUpperCase() === data.code.toUpperCase() : true)
-        })
-        .required('REQUIRED')
-    })
-
     // methods
-    const deleteAccount = () => {
+    const onSubmit = handleSubmit(() => {
       data.sending = true
       data.errors = []
 
@@ -114,7 +118,7 @@ export default defineComponent({
         .catch(() => {
           data.sending = false
         })
-    }
+    })
 
     // lifecycle hooks
     onBeforeMount(async () => {
@@ -127,9 +131,8 @@ export default defineComponent({
       formID,
       // data
       ...toRefs(data),
-      schema,
       // methods
-      deleteAccount
+      onSubmit
     }
   }
 })

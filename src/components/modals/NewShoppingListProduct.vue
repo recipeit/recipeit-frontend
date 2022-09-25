@@ -4,10 +4,10 @@
       <BaseModalTitle>Dodaj nowy produkt</BaseModalTitle>
     </BaseModalHeader>
     <BaseModalBody>
-      <Form :id="formID" v-slot="{ values }" :validation-schema="schema" @submit="addProduct($event)">
+      <form :id="formID" @submit="onSubmit($event)">
         <ProductModalForm :amount="values.amount" :product-autofocus="true" />
         <!-- <BaseInput class="form-row" label="Dodatkowa nazwa" type="text" v-model="newProduct.name"/> -->
-      </Form>
+      </form>
     </BaseModalBody>
     <BaseModalFooter>
       <BaseButton class="submit-button" raised color="primary" type="submit" :form="formID" :loading="sending">
@@ -19,24 +19,46 @@
 </template>
 
 <script lang="ts">
-import { Form } from 'vee-validate'
+import { useForm } from 'vee-validate'
 import { defineComponent, reactive, toRefs } from 'vue'
-import * as Yup from 'yup'
+import { object as yupObject, number as yupNumber, string as yupString } from 'yup'
 
 import { getUniqueId } from '@/functions/uniqueId'
 
 import { useShoppingListStore } from '@/stores/shoppingList'
 
+import { BaseProductEntity } from '@/typings/entities'
+import { ProductForm } from '@/typings/forms'
+
 import ProductModalForm from '@/components/ProductModalForm.vue'
 
 export default defineComponent({
-  components: { Form, ProductModalForm },
+  components: { ProductModalForm },
 
   emits: ['close'],
 
   setup(_, { emit }) {
     // usings
     const shoppingListStore = useShoppingListStore()
+
+    const { handleSubmit, values } = useForm<ProductForm>({
+      validationSchema: yupObject().shape({
+        baseProduct: yupObject().required('REQUIRED').typeError('REQUIRED'),
+        amount: yupNumber()
+          .typeError('Niepoprawna liczba')
+          .transform((cv, ov) => {
+            return ov === '' ? undefined : cv
+          })
+          .positive('Ilość musi być większa od 0')
+          .nullable(),
+        unit: yupString().nullable()
+      }),
+      initialValues: {
+        baseProduct: null,
+        amount: null,
+        unit: null
+      }
+    })
 
     // consts
     const formID = 'form-' + getUniqueId()
@@ -46,24 +68,14 @@ export default defineComponent({
       sending: false
     })
 
-    const schema = Yup.object().shape({
-      baseProduct: Yup.object().required('REQUIRED').typeError('REQUIRED'),
-      amount: Yup.number()
-        .typeError('Niepoprawna liczba')
-        .transform((cv, ov) => {
-          return ov === '' ? undefined : cv
-        })
-        .positive('Ilość musi być większa od 0')
-        .nullable(),
-      unit: Yup.object().nullable()
-    })
-
     // methods
-    const addProduct = ({ baseProduct, amount, unit }) => {
+    const onSubmit = handleSubmit(({ baseProduct, amount, unit }) => {
       data.sending = true
 
+      const { id: baseProductId } = baseProduct as BaseProductEntity
+
       const requestData = {
-        baseProductId: baseProduct.id,
+        baseProductId,
         amount: amount || undefined,
         unit
       }
@@ -76,16 +88,16 @@ export default defineComponent({
         .finally(() => {
           data.sending = false
         })
-    }
+    })
 
     return {
       // consts
       formID,
       // data
       ...toRefs(data),
-      schema,
+      values,
       // methods
-      addProduct
+      onSubmit
     }
   }
 })

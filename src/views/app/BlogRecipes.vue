@@ -49,7 +49,7 @@
       <BlogDetails v-if="blogDetails" :blog="blogDetails" class="blog-details-row" />
       <div v-else>...wczytuję</div>
 
-      <GenericRecipesList
+      <GenericRecipesListWithoutFilters
         :recipes="recipesList.recipes.value"
         :errors="recipesList.recipesErrors.value"
         :show-filter-buttons="false"
@@ -82,7 +82,7 @@ import { useUserStore } from '@/stores/user'
 import recipePagedList from '@/views/app/composable/recipePagedList'
 
 import BlogDetails from '@/components/BlogDetails.vue'
-import GenericRecipesList from '@/components/GenericRecipesList.vue'
+import GenericRecipesListWithoutFilters from '@/components/GenericRecipesListWithoutFilters.vue'
 import RecipeParallaxImage from '@/components/RecipeParallaxImage.vue'
 import InvisibleBlogInfoModal from '@/components/modals/InvisibleBlogInfoModal.vue'
 
@@ -91,7 +91,7 @@ export default defineComponent({
 
   components: {
     RecipeParallaxImage,
-    GenericRecipesList,
+    GenericRecipesListWithoutFilters,
     BlogDetails
   },
 

@@ -26,9 +26,7 @@
   </Field>
 
   <div class="form-row form-columns">
-    <Field v-slot="{ field, errors }" type="text" name="amount">
-      <BaseInput class="amount-input" label="Ilość" type="number" v-bind="field" :errors="errors" />
-    </Field>
+    <BaseInputField name="amount" class="amount-input" label="Ilość" type="number" />
     <Field v-slot="{ field, errors }" type="text" name="unit">
       <BaseSelect
         placeholder="Jednostka"

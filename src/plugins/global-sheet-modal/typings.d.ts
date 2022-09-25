@@ -1,7 +1,8 @@
-import { ComputedRef, Ref } from 'vue'
+import { Ref } from 'vue'
 
 export type ModalInstanceProps = { [key: string]: unknown }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type ModalInstanceEvents = { [key: string]: (...props: Array<any>) => void }
 
 export type ModalInstanceOptions = { blockCloseOnBackdrop?: boolean }
@@ -18,15 +19,14 @@ export type ModalInstance = {
 export interface IGlobalModalContainer {
   // data
   modals: Ref<Array<ModalInstance>>
-  // computed
-  anyModalOpened: ComputedRef<boolean>
-  anyModalOpenedOrClosing: ComputedRef<boolean>
   // methods
   add: (component: Component, props: ModalInstanceProps, events: ModalInstanceEvents, options?: ModalInstanceOptions) => void
   remove: (id: ModalInstance['id']) => void
   open: (id: ModalInstance['id']) => void
   close: (id: ModalInstance['id']) => void
   afterModalTransitionLeave: (id: ModalInstance['id']) => void
+  getAnyModalOpened: () => boolean
+  getModals: () => Array<ModalInstance>
 }
 
 export type GlobalSheetModalOptions = {

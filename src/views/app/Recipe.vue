@@ -2,9 +2,9 @@
   <div class="layout__page__content recipe-page">
     <div v-if="errors" class="error-page">
       <img class="error-image" src="@/assets/img/broccoli-sad.svg" alt="" />
-      <span class="error-text"> Ojjj... nie znaleźliśmy takiego przepisu </span>
+      <span class="error-text">Ojjj... nie znaleźliśmy takiego przepisu</span>
       <router-link v-slot="{ href, navigate }" :to="{ name: APP_HOME }" custom>
-        <BaseButton tag="a" :href="href" class="recipe-button" stroked @click="navigate($event)"> Wróć na stronę główną </BaseButton>
+        <BaseButton tag="a" :href="href" class="recipe-button" stroked @click="navigate($event)">Wróć na stronę główną</BaseButton>
       </router-link>
     </div>
     <div v-else-if="recipe && recipe.details" :class="['recipe', { 'recipe--hidden': isHidden }]">
@@ -121,11 +121,13 @@
         <div class="recipe-bottom-buttons-section">
           <!-- <BaseButton class="update-button" stroked>Zjedzone! Zaaktualizuj kuchnię</BaseButton> -->
           <BaseButton class="plan-button" raised color="primary" @click="openPlanRecipeModal()">
-            <BaseIcon class="plan-button__icon" icon="clock" /> Zaplanuj na później
+            <BaseIcon class="plan-button__icon" icon="clock" />
+            Zaplanuj na później
           </BaseButton>
 
           <BaseButton v-if="recipe.url" target="_blank" :href="recipe.url" tag="a" class="original-link" stroked>
-            <BaseIcon class="plan-button__icon" icon="arrow-right" /> Przejdź do oryginału
+            <BaseIcon class="plan-button__icon" icon="arrow-right" />
+            Przejdź do oryginału
           </BaseButton>
 
           <BaseLink :href="reportLinkHref" color="text-secondary" class="report-link">zgłoś błąd w przepisie</BaseLink>

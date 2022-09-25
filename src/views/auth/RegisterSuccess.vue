@@ -29,9 +29,7 @@
       </div>
 
       <div class="no-email-section">
-        <span>
-          Nie otrzymałeś wiadomości?
-        </span>
+        <span>Nie otrzymałeś wiadomości?</span>
         <BaseLink tag="button" color="primary" :disabled="sendingSecondEmail" @click="sendConfirmationEmail()">Wyślij jeszcze raz</BaseLink>
 
         <ul v-if="errors" class="auth-main__content__errors">

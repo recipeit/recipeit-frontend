@@ -54,6 +54,8 @@ export default {
     return apiClient.post<BaseIdentityResponse>(`/${route}/send-confirmation-email`, data)
   },
   deleteAccount(data: { recaptchaToken: string }) {
-    return apiClient.delete<BaseIdentityResponse>(`/${route}/delete-account`, data)
+    return apiClient.delete<BaseIdentityResponse>(`/${route}/delete-account`, {
+      params: data
+    })
   }
 }

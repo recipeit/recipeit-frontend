@@ -4,20 +4,14 @@
       <BaseModalTitle>Zmień hasło</BaseModalTitle>
     </BaseModalHeader>
     <BaseModalBody>
-      <Form :id="formID" :validation-schema="schema" @submit="changePassword($event)">
+      <form :id="formID" @submit="onSubmit($event)">
         <BaseInput class="form-row" label="E-mail" type="text" :disabled="true" :value="email" />
-        <Field v-slot="{ field, errors }" type="password" name="currentPassword">
-          <BaseInput class="form-row" label="Obecne hasło" type="password" v-bind="field" :errors="errors" />
-        </Field>
+        <BaseInputField name="currentPassword" type="password" class="form-row" label="Obecne hasło" />
         <BaseLink tag="button" class="forgot-password-button" color="primary" @click="forgotPassword()"> nie pamiętasz hasła? </BaseLink>
 
-        <Field v-slot="{ field, errors }" type="password" name="newPassword">
-          <BaseInput class="form-row" label="Nowe hasło" type="password" v-bind="field" :errors="errors" />
-        </Field>
-        <Field v-slot="{ field, errors }" type="password" name="newPasswordConfirmation">
-          <BaseInput class="form-row" label="Potwierdź nowe hasło" type="password" v-bind="field" :errors="errors" />
-        </Field>
-      </Form>
+        <BaseInputField name="newPassword" type="password" class="form-row" label="Nowe hasło" />
+        <BaseInputField name="newPasswordConfirmation" type="password" class="form-row" label="Potwierdź nowe hasło" />
+      </form>
       <div v-for="(error, i) in errors" :key="i" class="error">
         {{ error }}
       </div>
@@ -32,12 +26,13 @@
 </template>
 
 <script lang="ts">
-import { Field, Form } from 'vee-validate'
+import { useForm } from 'vee-validate'
 import { defineComponent, onBeforeMount, reactive, toRefs } from 'vue'
-import * as Yup from 'yup'
+import { object as yupObject, string as yupString } from 'yup'
 
 import identityApi from '@/api/identityApi'
 
+import { confirmNewPasswordSchema, newPasswordSchema } from '@/configs/schemas'
 import { RECAPTCHA_ACTIONS } from '@/configs/recaptcha'
 
 import { getUniqueId } from '@/functions/uniqueId'
@@ -48,11 +43,15 @@ import recaptcha from '@/services/recaptcha'
 
 import RecaptchaBranding from '@/components/RecaptchaBranding.vue'
 
+type ChangePasswordForm = {
+  currentPassword: string
+  newPassword: string
+  newPasswordConfirmation: string
+}
+
 export default defineComponent({
   components: {
-    RecaptchaBranding,
-    Field,
-    Form
+    RecaptchaBranding
   },
 
   props: {
@@ -65,28 +64,28 @@ export default defineComponent({
   emits: ['close'],
 
   setup(_, { emit }) {
+    // usings
     const toast = useToast()
+
+    const { handleSubmit } = useForm<ChangePasswordForm>({
+      validationSchema: yupObject().shape({
+        currentPassword: yupString().required('REQUIRED'),
+        newPassword: newPasswordSchema(),
+        newPasswordConfirmation: confirmNewPasswordSchema('newPassword')
+      })
+    })
+
+    // consts
     const formID = 'form-' + getUniqueId()
+
+    // data
     const data = reactive({
       sending: false,
       errors: []
     })
 
-    const schema = Yup.object().shape({
-      currentPassword: Yup.string().required('REQUIRED'),
-      newPassword: Yup.string()
-        .min(6, 'REQUIRED_AT_LEAST_6_CHAR')
-        .matches(/^(?=.*[a-z])/, 'REQUIRED_AT_LEAST_ONE_LOWER')
-        .matches(/^(?=.*[A-Z])/, 'REQUIRED_AT_LEAST_ONE_UPPER')
-        .matches(/^(?=.*[0-9])/, 'REQUIRED_AT_LEAST_ONE_DIGIT')
-        .matches(/^(?=.*[!@#$%^&*])/, 'REQUIRED_AT_LEAST_ONE_NON_ALPHANUM')
-        .required('REQUIRED'),
-      newPasswordConfirmation: Yup.string()
-        .oneOf([Yup.ref('newPassword'), null], 'WRONG_PASSWORD_COMBINATION')
-        .required('REQUIRED')
-    })
-
-    const changePassword = values => {
+    // methods
+    const onSubmit = handleSubmit(values => {
       data.sending = true
       data.errors = []
 
@@ -112,22 +111,25 @@ export default defineComponent({
         .catch(() => {
           data.sending = false
         })
-    }
+    })
 
     const forgotPassword = () => {
       emit('close', { success: false, openForgotPasswordModal: true })
     }
 
+    // lifecycle hooks
     onBeforeMount(async () => {
       await recaptcha.init()
     })
 
     return {
-      ...toRefs(data),
-      changePassword,
-      forgotPassword,
+      // consts
       formID,
-      schema
+      // data
+      ...toRefs(data),
+      // methods
+      onSubmit,
+      forgotPassword
     }
   }
 })

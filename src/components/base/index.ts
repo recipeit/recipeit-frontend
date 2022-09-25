@@ -4,6 +4,7 @@ import BaseCheckbox from '@/components/base/BaseCheckbox.vue'
 import BaseIcon from '@/components/base/BaseIcon.vue'
 import BaseImageLazyload from '@/components/base/BaseImageLazyload.vue'
 import BaseInput from '@/components/base/BaseInput.vue'
+import BaseInputField from '@/components/base/BaseInputField.vue'
 import BaseLink from '@/components/base/BaseLink.vue'
 import BaseMenu from '@/components/base/BaseMenu.vue'
 import BaseMenuLink from '@/components/base/BaseMenuLink.vue'
@@ -24,6 +25,7 @@ export const RecipeitGlobalComponents = {
   BaseIcon,
   BaseImageLazyload,
   BaseInput,
+  BaseInputField,
   BaseLink,
   BaseMenu,
   BaseMenuLink,

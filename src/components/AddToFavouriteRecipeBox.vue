@@ -2,9 +2,7 @@
   <div class="skeleton-recipe-box">
     <div class="skeleton-recipe-box__image-container">
       <div class="skeleton-recipe-box__image-container__image">
-        <div class="hint">
-          Kliknij serce aby dodać do ulubionych
-        </div>
+        <div class="hint">Kliknij serce aby dodać do ulubionych</div>
 
         <div class="recipe-box-props">
           <div class="prop-favourite">

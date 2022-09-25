@@ -68,7 +68,7 @@
               :value="option.key"
               :excluding="group.type === 'None'"
               class="filter__group__option"
-              @click="pillCheckboxClickHandler($event)"
+              @click="pillCheckboxClickHandler()"
             >
               {{
                 RecipeCategoryGroups.find(validGroup => validGroup === groupValue)

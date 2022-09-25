@@ -46,7 +46,7 @@
 <script lang="ts">
 import { useField, useForm } from 'vee-validate'
 import { computed, defineComponent } from 'vue'
-import * as Yup from 'yup'
+import { number as yupNumber } from 'yup'
 
 import dayjs from '@/functions/dayjs'
 import { getUniqueId } from '@/functions/uniqueId'
@@ -71,19 +71,14 @@ export default defineComponent({
       errors: yearErrors,
       handleBlur: yearOnBlur,
       handleChange: yearOnChange
-    } = useField('year', Yup.number().required('REQUIRED').typeError('REQUIRED'))
+    } = useField('year', yupNumber().required('REQUIRED').typeError('REQUIRED'))
     const {
       value: monthValue,
       errors: monthErrors,
       handleBlur: monthOnBlur,
       handleChange: monthOnChange
-    } = useField('month', Yup.number().required('REQUIRED').typeError('REQUIRED'))
-    const {
-      value: dayValue,
-      errors: dayErrors,
-      handleBlur: dayOnBlur,
-      handleChange: dayOnChange
-    } = useField('day', Yup.number().nullable())
+    } = useField('month', yupNumber().required('REQUIRED').typeError('REQUIRED'))
+    const { value: dayValue, errors: dayErrors, handleBlur: dayOnBlur, handleChange: dayOnChange } = useField('day', yupNumber().nullable())
 
     const years = Array.from({ length: 15 }, (_, i) => i + currentYear)
     const months = Array.from({ length: 12 }, (_, i) => i + 1)

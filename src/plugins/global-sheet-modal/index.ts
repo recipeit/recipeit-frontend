@@ -24,27 +24,23 @@ const Plugin = {
         }
       },
       hide(id) {
-        if (usedOptions.globalModalContainer == null) {
+        if (usedOptions.globalModalContainer === null) {
           console.warn('[global-sheet-modal] Global modal container is not present')
         } else {
           usedOptions.globalModalContainer.remove(id)
         }
       },
       anyModalOpened() {
-        if (usedOptions.globalModalContainer == null) {
-          return false
-        } else {
-          return usedOptions.globalModalContainer.anyModalOpened.value
-        }
+        return !!usedOptions.globalModalContainer?.getAnyModalOpened()
       },
       hideLast() {
-        if (usedOptions.globalModalContainer == null) {
+        if (usedOptions.globalModalContainer === null) {
           console.warn('[global-sheet-modal] Global modal container is not present')
         } else {
-          const openedModals = usedOptions.globalModalContainer.modals.value.filter(m => m.opened)
+          const openedModals = usedOptions.globalModalContainer.getModals().filter(({ opened }) => opened)
           if (openedModals.length > 0) {
-            const lastModal = openedModals[openedModals.length - 1]
-            usedOptions.globalModalContainer.remove(lastModal.id)
+            const { id } = openedModals[openedModals.length - 1]
+            usedOptions.globalModalContainer.remove(id)
           }
         }
       }

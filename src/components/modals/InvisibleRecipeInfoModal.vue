@@ -4,12 +4,8 @@
       <BaseModalTitle><BaseIcon class="header-icon" icon="eye-hidden" weight="semi-bold" />Ukryty przepis - co oznacza?</BaseModalTitle>
     </BaseModalHeader>
     <BaseModalBody>
-      <p class="paragraph">
-        Ukryty przepis nie pojawia się w bazie przepisów oraz nie jest proponowany do wykonania z Twoich produków.
-      </p>
-      <p class="paragraph">
-        Ukryć możesz zarówno pojedynczy przepis, jak i wszystkie przepisy danego twórcy.
-      </p>
+      <p class="paragraph">Ukryty przepis nie pojawia się w bazie przepisów oraz nie jest proponowany do wykonania z Twoich produków.</p>
+      <p class="paragraph">Ukryć możesz zarówno pojedynczy przepis, jak i wszystkie przepisy danego twórcy.</p>
       <p class="paragraph">
         Listę ukrytych przepisów i blogów znajdziesz w
         <router-link v-slot="{ href, navigate }" :to="{ name: 'account', params: { closeModalAndGo: true } }" custom>
@@ -18,9 +14,7 @@
       </p>
     </BaseModalBody>
     <BaseModalFooter>
-      <BaseButton class="submit-button" stroked @click="$emit('close')">
-        OK!
-      </BaseButton>
+      <BaseButton class="submit-button" stroked @click="$emit('close')">OK!</BaseButton>
     </BaseModalFooter>
   </SheetModalContent>
 </template>

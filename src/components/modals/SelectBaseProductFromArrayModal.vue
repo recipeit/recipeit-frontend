@@ -17,9 +17,7 @@
       </ul>
     </BaseModalBody>
     <BaseModalFooter>
-      <BaseButton class="cancel-button" stroked @click="$emit('close')">
-        Anuluj
-      </BaseButton>
+      <BaseButton class="cancel-button" stroked @click="$emit('close')">Anuluj</BaseButton>
     </BaseModalFooter>
   </SheetModalContent>
 </template>

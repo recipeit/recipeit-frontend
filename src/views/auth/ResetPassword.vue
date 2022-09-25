@@ -3,16 +3,12 @@
     <template v-if="state === 'BEFORE'">
       <h1>Zmiana hasła</h1>
 
-      <Form :validation-schema="schema" @submit="resetPassword($event)">
+      <form @submit="onSubmit($event)">
         <BaseInput class="form-row" label="E-mail" type="text" :value="email" :disabled="true" />
-        <Field v-slot="{ field, errors }" name="password" type="password">
-          <BaseInput class="form-row" label="Hasło" type="password" v-bind="field" :errors="errors" />
-        </Field>
-        <Field v-slot="{ field, errors }" name="confirmPassword" type="password">
-          <BaseInput class="form-row" label="Potwierdź hasło" type="password" v-bind="field" :errors="errors" />
-        </Field>
+        <BaseInputField name="password" class="form-row" label="Hasło" type="password" />
+        <BaseInputField name="confirmPassword" class="form-row" label="Potwierdź hasło" type="password" />
         <BaseButton class="form-row auth-main__content__submit" raised color="primary" type="submit">Zmień hasło</BaseButton>
-      </Form>
+      </form>
     </template>
 
     <template v-else-if="state === 'SENDING'">
@@ -29,9 +25,7 @@
 
       <div>
         <router-link v-slot="{ href, navigate }" :to="{ name: 'login' }" custom>
-          <BaseButton tag="a" class="login-button" :href="href" raised color="primary" @click="navigate($event)">
-            Zaloguj się
-          </BaseButton>
+          <BaseButton tag="a" class="login-button" :href="href" raised color="primary" @click="navigate($event)"> Zaloguj się </BaseButton>
         </router-link>
       </div>
     </template>
@@ -52,11 +46,11 @@
 </template>
 
 <script lang="ts">
-import { Field, Form } from 'vee-validate'
+import { useForm } from 'vee-validate'
 import { defineComponent, onBeforeMount, reactive, toRefs } from 'vue'
 import { useMeta } from 'vue-meta'
 import { useRoute } from 'vue-router'
-import * as Yup from 'yup'
+import { object as yupObject } from 'yup'
 
 import identityApi from '@/api/identityApi'
 
@@ -73,10 +67,13 @@ import recaptcha from '@/services/recaptcha'
 
 import Spinner from '@/components/Spinner.vue'
 
+type ResetPasswordForm = {
+  password: string
+  confirmPassword: string
+}
+
 export default defineComponent({
   components: {
-    Field,
-    Form,
     Spinner
   },
 
@@ -89,6 +86,13 @@ export default defineComponent({
     // usings
     const errorHandler = useErrorHandler()
 
+    const { handleSubmit } = useForm<ResetPasswordForm>({
+      validationSchema: yupObject().shape({
+        password: newPasswordSchema(),
+        confirmPassword: confirmNewPasswordSchema('confirmPassword')
+      })
+    })
+
     // data
     const data = reactive({
       state: 'BEFORE',
@@ -96,13 +100,8 @@ export default defineComponent({
       token: null
     })
 
-    const schema = Yup.object({
-      password: newPasswordSchema(),
-      confirmPassword: confirmNewPasswordSchema('confirmPassword')
-    })
-
     // methods
-    const resetPassword = ({ password, confirmPassword }) => {
+    const onSubmit = handleSubmit(({ password, confirmPassword }) => {
       data.state = 'SENDING'
 
       recaptcha
@@ -136,7 +135,7 @@ export default defineComponent({
             [ERROR_ACTION_TAG_NAME]: 'auth.resetPassword.recaptcha'
           })
         })
-    }
+    })
 
     // lifecycle hooks
     onBeforeMount(() => {
@@ -156,9 +155,8 @@ export default defineComponent({
     return {
       // data
       ...toRefs(data),
-      schema,
       // methodss
-      resetPassword
+      onSubmit
     }
   }
 })

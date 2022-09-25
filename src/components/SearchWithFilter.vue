@@ -8,7 +8,8 @@
       class="recipes-list-search__input"
       :value="searchString"
       :placeholder="placeholder"
-      @input="onSearchInput($event.target.value)"
+      inputmode="search"
+      @input="onSearchInput(($event.target as HTMLInputElement).value)"
       @keydown.enter.self="searchNow()"
     />
 

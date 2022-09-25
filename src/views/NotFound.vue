@@ -1,13 +1,9 @@
 <template>
   <div class="not-found">
     <img class="not-found-image" src="@/assets/img/broccoli-sad.svg" alt="" />
-    <span class="not-found-text">
-      Ojjj... nie znaleźliśmy takiej strony
-    </span>
+    <span class="not-found-text">Ojjj... nie znaleźliśmy takiej strony</span>
     <router-link v-slot="{ href, navigate }" :to="{ name: LANDING_PAGE }" custom>
-      <BaseButton tag="a" :href="href" class="not-found-button" stroked @click="navigate($event)">
-        Wróć na stronę główną
-      </BaseButton>
+      <BaseButton tag="a" :href="href" class="not-found-button" stroked @click="navigate($event)">Wróć na stronę główną</BaseButton>
     </router-link>
   </div>
 </template>

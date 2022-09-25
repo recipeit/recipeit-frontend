@@ -1,8 +1,6 @@
 <template>
   <Container class="social-media">
-    <h2 class="header">
-      Bądź na bieżąco
-    </h2>
+    <h2 class="header">Bądź na bieżąco</h2>
     <div class="social-list">
       <a class="social-logo" :href="FACEBOOK_PROFILE_URL" v-html="FacebookLogo" />
       <a class="social-logo" :href="INSTAGRAM_PROFILE_URL" v-html="InstagramLogo" />

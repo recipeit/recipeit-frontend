@@ -7,25 +7,30 @@
       action-text="usuń znaczniki"
       @action-click="resetFinishedDirections()"
     />
-    <div v-if="directions?.length > 1" class="recipe-directions-list">
-      <BaseCheckbox
-        v-for="(paragraph, index) in directions"
-        :key="index"
-        v-model="finishedDirections"
-        :class="{
-          'recipe-directions-list-item': true,
-          'recipe-directions-list-item--selected': index === selectedDirection,
-          'recipe-directions-list-item--finished': finishedDirections.includes(index)
-        }"
-        :value="index"
-      >
-        <template #label>
-          <div>{{ paragraph }}</div>
-        </template>
-      </BaseCheckbox>
+
+    <div v-if="preparedDirections[0] === 'grouped'">
+      <div v-for="{ groupName, subDirections } in preparedDirections[1]" :key="groupName" class="recipe-directions-list">
+        <div v-if="groupName" class="recipe-directions-group-name">{{ groupName }}</div>
+        <BaseCheckbox
+          v-for="{ value, index } in subDirections"
+          :key="index"
+          v-model="finishedDirections"
+          :class="{
+            'recipe-directions-list-item': true,
+            'recipe-directions-list-item--selected': index === selectedDirection,
+            'recipe-directions-list-item--finished': finishedDirections.includes(index)
+          }"
+          :value="index"
+        >
+          <template #label>
+            <div>{{ value }}</div>
+          </template>
+        </BaseCheckbox>
+      </div>
     </div>
-    <p v-else-if="directions?.length === 1" class="recipe-single-direction">
-      {{ directions[0] }}
+
+    <p v-else class="recipe-single-direction">
+      {{ preparedDirections[1] }}
     </p>
   </div>
 </template>
@@ -42,6 +47,15 @@ import { useRecipesStore } from '@/stores/recipes'
 import { RecipeEntity } from '@/typings/entities'
 
 import SectionTitle from '@/components/SectionTitle.vue'
+import groupBy from 'lodash.groupby'
+
+type GroupedDirectionsItem = {
+  groupName?: string
+  subDirections: Array<{ index: number; value: string }>
+}
+
+const groupRegex = /\[RCPT_GROUP=(\d+)\](.+)/
+const groupItemRegex = /\[RCPT_GROUP_ITEM=(\d+)\](.+)/
 
 export default defineComponent({
   components: { SectionTitle },
@@ -66,8 +80,51 @@ export default defineComponent({
     const finishedDirections = ref<Array<number>>(recipesStore.getFinishedDirectionsForRecipe(props.recipeId) || [])
 
     // computed
+    const preparedDirections = computed<[type: 'single', value: string] | [type: 'grouped', value: Array<GroupedDirectionsItem>]>(() => {
+      if (props.directions?.length <= 1) {
+        return ['single', props.directions[0]]
+      }
+
+      if (props.directions.some(direction => direction.startsWith('[RCPT_GROUP'))) {
+        const groups = Object.fromEntries(
+          props.directions
+            .filter(direction => direction.startsWith('[RCPT_GROUP='))
+            .map(direction => {
+              const [, groupKey, groupName] = direction.match(groupRegex)
+
+              return [groupKey, groupName]
+            })
+        )
+
+        const realDirections = props.directions
+          .filter(direction => !direction.startsWith('[RCPT_GROUP='))
+          .map((direction, index) => {
+            const [, groupKey, value] = direction.match(groupItemRegex)
+
+            return {
+              groupKey,
+              index,
+              value
+            }
+          })
+
+        const groupedRealDirection = groupBy(realDirections, ({ groupKey }) => groupKey)
+
+        const lol = Object.entries(groupedRealDirection).map(([groupKey, list]) => ({
+          groupName: groups[groupKey],
+          subDirections: list.map(({ value, index }) => ({ value, index }))
+        }))
+
+        return ['grouped', lol]
+      }
+
+      return ['grouped', [{ subDirections: props.directions.map((value, index) => ({ value, index })) }]]
+    })
+
     const allIndexes = computed(() => {
-      return props.directions.map((_, index) => index)
+      if (preparedDirections.value[0] == 'single') return [0]
+
+      return preparedDirections.value[1].flatMap(({ subDirections }) => subDirections).map(({ index }) => index)
     })
 
     const selectedDirection = computed(() => {
@@ -94,6 +151,7 @@ export default defineComponent({
       finishedDirections,
       // computed
       selectedDirection,
+      preparedDirections,
       // methods
       resetFinishedDirections
     }
@@ -115,6 +173,19 @@ $border-offset: 3px;
         margin-right: 16px;
       }
     }
+  }
+
+  .recipe-directions-list + .recipe-directions-list {
+    margin-top: 32px;
+  }
+
+  .recipe-directions-group-name {
+    // margin-left: 32px;
+    // text-transform: uppercase;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    // font-size: 0.875rem;
+    text-align: center;
   }
 
   .recipe-directions-list-item {

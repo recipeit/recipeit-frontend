@@ -4,11 +4,11 @@
       <BaseModalTitle>Edytuj produkt</BaseModalTitle>
     </BaseModalHeader>
     <BaseModalBody>
-      <Form :id="formID" v-slot="{ values }" :validation-schema="schema" :initial-values="initialValues" @submit="editProduct($event)">
+      <form :id="formID" @submit="onSubmit($event)">
         <ProductModalForm :amount="values.amount" />
         <!-- <BaseInput class="form-row" label="Dodatkowa nazwa" type="text" v-model="editedProduct.name"/> -->
         <ExpirationDatesFormSection v-model="expirationDatesForm" :product-id="product.id" />
-      </Form>
+      </form>
     </BaseModalBody>
     <BaseModalFooter>
       <BaseButton class="submit-button" stroked @click="$emit('close')"> Anuluj </BaseButton>
@@ -18,23 +18,24 @@
 </template>
 
 <script lang="ts">
-import { Form } from 'vee-validate'
-import { computed, defineComponent, PropType, reactive, ref, toRefs } from 'vue'
-import * as Yup from 'yup'
+import { useForm } from 'vee-validate'
+import { defineComponent, PropType, reactive, ref, toRefs } from 'vue'
+import { object as yupObject, number as yupNumber, string as yupString } from 'yup'
 
 import { getUniqueId } from '@/functions/uniqueId'
 
 import { useIngredientsStore } from '@/stores/ingredients'
 import { useMyKitchenStore } from '@/stores/myKitchen'
 
-import { UserKitchenProductEntity } from '@/typings/entities'
+import { BaseProductEntity, UserKitchenProductEntity } from '@/typings/entities'
 import { DateYMDString } from '@/typings/dates'
+import { ProductForm } from '@/typings/forms'
 
 import ProductModalForm from '@/components/ProductModalForm.vue'
 import ExpirationDatesFormSection from '@/components/modals/ExpirationDatesFormSection.vue'
 
 export default defineComponent({
-  components: { Form, ProductModalForm, ExpirationDatesFormSection },
+  components: { ProductModalForm, ExpirationDatesFormSection },
 
   props: {
     product: {
@@ -54,17 +55,27 @@ export default defineComponent({
     const ingredientsStore = useIngredientsStore()
     const myKitchenStore = useMyKitchenStore()
 
-    // computed
-    const baseProducts = computed(() => ingredientsStore.baseProducts)
+    const { handleSubmit, values } = useForm<ProductForm>({
+      validationSchema: yupObject().shape({
+        baseProduct: yupObject().required('REQUIRED').typeError('REQUIRED'),
+        amount: yupNumber()
+          .typeError('Niepoprawna liczba')
+          .transform((cv, ov) => {
+            return ov === '' ? undefined : cv
+          })
+          .positive('Ilość musi być większa od 0')
+          .nullable(),
+        unit: yupString().nullable()
+      }),
+      initialValues: {
+        baseProduct: props.product.baseProductId ? ingredientsStore.baseProducts?.find(p => p.id === props.product.baseProductId) : null,
+        amount: props.product.amount,
+        unit: props.product.unit
+      }
+    })
 
     // consts
     const formID = 'form-' + getUniqueId()
-
-    const initialValues = {
-      baseProduct: props.product.baseProductId ? baseProducts.value?.find(p => p.id === props.product.baseProductId) : null,
-      amount: props.product.amount,
-      unit: props.product.unit
-    }
 
     // data
     const data = reactive({
@@ -74,26 +85,16 @@ export default defineComponent({
 
     const sending = ref(false)
 
-    const schema = Yup.object().shape({
-      baseProduct: Yup.object().required('REQUIRED').typeError('REQUIRED'),
-      amount: Yup.number()
-        .typeError('Niepoprawna liczba')
-        .transform((cv, ov) => {
-          return ov === '' ? undefined : cv
-        })
-        .positive('Ilość musi być większa od 0')
-        .nullable(),
-      unit: Yup.string().nullable()
-    })
-
     // methods
-    const editProduct = ({ baseProduct, amount, unit }) => {
+    const onSubmit = handleSubmit(({ baseProduct, amount, unit }) => {
       sending.value = true
+
+      const { id: baseProductId } = baseProduct as BaseProductEntity
 
       const requestData = {
         product: {
           id: props.product.id,
-          baseProductId: baseProduct.id,
+          baseProductId,
           amount: amount || undefined,
           unit
         },
@@ -108,18 +109,17 @@ export default defineComponent({
         .finally(() => {
           sending.value = false
         })
-    }
+    })
 
     return {
       // consts
       formID,
-      initialValues,
       // data
       ...toRefs(data),
       sending,
-      schema,
+      values,
       // methods
-      editProduct
+      onSubmit
     }
   }
 })

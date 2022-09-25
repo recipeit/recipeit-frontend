@@ -1,7 +1,7 @@
 <template>
   <div class="layout__page__content">
     <PageHeader title="Ulubione" :back-button="true" />
-    <GenericRecipesList
+    <GenericRecipesListWithoutFilters
       :show-filter-buttons="false"
       :recipes="recipesList.recipes.value"
       :errors="recipesList.recipesErrors.value"
@@ -20,14 +20,14 @@ import userApi from '@/api/userApi'
 
 import recipePagedList from '@/views/app/composable/recipePagedList'
 
-import GenericRecipesList from '@/components/GenericRecipesList.vue'
+import GenericRecipesListWithoutFilters from '@/components/GenericRecipesListWithoutFilters.vue'
 import PageHeader from '@/components/PageHeader.vue'
 
 export default defineComponent({
   name: 'AvailableRecipes',
 
   components: {
-    GenericRecipesList,
+    GenericRecipesListWithoutFilters,
     PageHeader
   },
 

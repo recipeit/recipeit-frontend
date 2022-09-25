@@ -65,7 +65,7 @@ export default defineComponent({
       data.opened = false
     }
 
-    const onClick = (event: Event) => {
+    const onClick = (event: MouseEvent) => {
       let tempEl = event?.target as HTMLElement // TODO znowu nie wiem dlaczego on tego nie wie
       while (tempEl !== dropdownContainerElement.value && tempEl.parentElement) {
         tempEl = tempEl.parentElement
