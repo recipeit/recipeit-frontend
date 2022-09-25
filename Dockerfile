@@ -15,7 +15,6 @@ RUN pnpm build
 FROM nginx:stable-alpine as production-stage
 COPY --from=build-stage /app/dist /app/dist
 VOLUME /app/dist/static
+VOLUME /etc/letsencrypt
 COPY nginx.conf /etc/nginx/nginx.conf
-COPY .cert/fullchain.pem /etc/letsencrypt/live/recipeit.pl/fullchain.pem
-COPY .cert/privkey.pem /etc/letsencrypt/live/recipeit.pl/privkey.pem
 CMD ["nginx", "-g", "daemon off;"]
